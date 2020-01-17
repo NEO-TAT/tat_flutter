@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/airplay_screen.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/email_screen.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/NewAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/home_screen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/pages_screen.dart';
 
@@ -31,7 +31,7 @@ class _NavigationKeepAliveState extends State<NavigationKeepAlive>
         controller: _controller,
         children: <Widget>[
           AirPlayScreen(),
-          EmailScreen(),
+          NewAnnouncementScreen(),
           HomeScreen(),
           PagesScreen()
         ],

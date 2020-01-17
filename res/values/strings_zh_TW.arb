@@ -1,0 +1,9 @@
+{
+  "app_name":"北科課程助手",
+  "login":"登入" ,
+  "loginSave" : "帳號密碼已儲存",
+  "accountNull" : "請輸入帳號",
+  "passwordNull": "請輸入密碼",
+  "password" : "密碼",
+  "account" : "帳號"
+}

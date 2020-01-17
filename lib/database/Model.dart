@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_app/database/CreateModel.dart';
 import 'package:flutter_app/database/dataformat/UserData.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
@@ -10,12 +11,13 @@ import 'package:sqflite/sqflite.dart';
 
 class Model {
   // make this a singleton class
+  static final _className = "Model";
   Model._privateConstructor();
   static final Model instance = Model._privateConstructor();
 
   static final _databaseName = "Database.db";
   static final _databaseVersion = 1;
-  static final List<CreateModel> dbCreateList = [ UserData().dbCreate ];
+  static final List<CreateModel> dbCreateList = [ UserData.dbCreate ];
 
   static Database _database;
   Future<Database> get database async {
@@ -55,7 +57,7 @@ class Model {
     for ( String s in createSqlList){
       sql += s;
     }
-    print(sql);
+    Log.d( _className , sql);
     await db.execute(sql);
   }
 }

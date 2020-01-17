@@ -1,0 +1,9 @@
+{
+  "app_name":"ISchoolHelper",
+  "login":"login",
+  "loginSave" : "Login save",
+  "accountNull": "Please enter account",
+  "passwordNull": "Please enter password",
+  "password" : "Password",
+  "account" : "account"
+}

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/connector/NTUTConnector.dart';
 import 'package:flutter_app/database/DataModel.dart';
 import 'package:flutter_app/database/dataformat/UserData.dart';
+import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,161 +19,184 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final FocusNode _passwordFocus = new FocusNode();
   final FocusNode _accountFocus = new FocusNode();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    UserData().load().then((value) {
-      if (value) {
-        _accountControl.text = UserData().account;
-        _passwordControl.text = UserData().password;
-      }
-    });
+    _accountControl.text = "";
+    _passwordControl.text = "";
   }
+
+  void _loginPress(BuildContext context , DataModel db) {
+    UserData user = db.user;
+    if (_formKey.currentState.validate()) {
+      _passwordFocus.unfocus();
+      _accountFocus.unfocus();
+      user.account = _accountControl.text.toString();
+      user.password = _passwordControl.text.toString();
+      user.save().then((value) {
+        //Navigator.of(context).push( CustomRoute(BottomNavigationWidget() ));
+        Fluttertoast.showToast(
+            msg: S.of(context).loginSave,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        NTUTConnector.login( user.account , user.password );
+        Navigator.push(context, CustomRoute(BottomNavigationWidget()) );
+      });
+    }
+  }
+
+  String _validatorAccount(String value){
+    if (value.isEmpty) {
+      return S.of(context).accountNull;
+    }
+    return null;
+  }
+
+  String _validatorPassword(String value){
+    if (value.isEmpty) {
+      return S.of(context).passwordNull;
+    }
+    return null;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DataModel>(
       builder: (context, dataModel, _) => MaterialApp(
           home: Scaffold(
-            backgroundColor: Colors.white,
-            body: ListView(
+        backgroundColor: Colors.white,
+        body: ListView(
+          children: <Widget>[
+            Stack(
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    ClipPath(
-                      clipper: WaveClipper2(),
-                      child: Container(
-                        child: Column(),
-                        width: double.infinity,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Color(0x22ff3a5a), Color(0x22fe494d)])),
-                      ),
-                    ),
-                    ClipPath(
-                      clipper: WaveClipper3(),
-                      child: Container(
-                        child: Column(),
-                        width: double.infinity,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Color(0x44ff3a5a), Color(0x44fe494d)])),
-                      ),
-                    ),
-                    ClipPath(
-                      clipper: WaveClipper1(),
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 40,
-                            ),
-                            Icon(
-                              Icons.fastfood,
-                              color: Colors.white,
-                              size: 60,
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              "Taste Me",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 30),
-                            ),
-                          ],
+                ClipPath(
+                  clipper: WaveClipper2(),
+                  child: Container(
+                    child: Column(),
+                    width: double.infinity,
+                    height: 300,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Color(0x22ff3a5a), Color(0x22fe494d)])),
+                  ),
+                ),
+                ClipPath(
+                  clipper: WaveClipper3(),
+                  child: Container(
+                    child: Column(),
+                    width: double.infinity,
+                    height: 300,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Color(0x44ff3a5a), Color(0x44fe494d)])),
+                  ),
+                ),
+                ClipPath(
+                  clipper: WaveClipper1(),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 40,
                         ),
-                        width: double.infinity,
-                        height: 300,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Color(0xffff3a5a), Color(0xfffe494d)])),
-                      ),
+                        Icon(
+                          Icons.fastfood,
+                          color: Colors.white,
+                          size: 60,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Taste Me",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 30),
+                        ),
+                      ],
                     ),
-                  ],
+                    width: double.infinity,
+                    height: 300,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [Color(0xffff3a5a), Color(0xfffe494d)])),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Form(
+              key: _formKey,
+              child: Column(children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  child: Material(
+                    elevation: 2.0,
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    child: TextFormField(
+                      controller: _accountControl,
+                      cursorColor: Colors.deepOrange,
+                      textInputAction: TextInputAction.done,
+                      focusNode: _accountFocus,
+                      onEditingComplete: () {
+                        FocusScope.of(context).requestFocus(_passwordFocus);
+                      },
+                      validator: (value) => _validatorAccount(value),
+                      decoration: InputDecoration(
+                          hintText: S.of(context).account,
+                          prefixIcon: Material(
+                            elevation: 0,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            child: Icon(
+                              Icons.account_circle,
+                              color: Colors.red,
+                            ),
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 13)),
+                    ),
+                  ),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
-                Form(
-                  key: _formKey,
-                  child: Column(children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32),
-                      child: Material(
-                        elevation: 2.0,
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        child: TextFormField(
-                          controller: _accountControl,
-                          cursorColor: Colors.deepOrange,
-                          textInputAction: TextInputAction.done,
-                          focusNode: _accountFocus,
-                          onEditingComplete: () {
-                            FocusScope.of(context).requestFocus(_passwordFocus);
-                          },
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter account';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              hintText: "Account",
-                              prefixIcon: Material(
-                                elevation: 0,
-                                borderRadius: BorderRadius.all(Radius.circular(30)),
-                                child: Icon(
-                                  Icons.account_circle,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 13)),
-                        ),
-                      ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32),
+                  child: Material(
+                    elevation: 2.0,
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    child: TextFormField(
+                      controller: _passwordControl,
+                      cursorColor: Colors.deepOrange,
+                      obscureText: true,
+                      focusNode: _passwordFocus,
+                      validator: (value) => _validatorPassword(value),
+                      decoration: InputDecoration(
+                          hintText: S.of(context).password,
+                          prefixIcon: Material(
+                            elevation: 0,
+                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            child: Icon(
+                              Icons.lock,
+                              color: Colors.red,
+                            ),
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 13)),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32),
-                      child: Material(
-                        elevation: 2.0,
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        child: TextFormField(
-                          controller: _passwordControl,
-                          cursorColor: Colors.deepOrange,
-                          obscureText: true,
-                          focusNode: _passwordFocus,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter password';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              hintText: "Password",
-                              prefixIcon: Material(
-                                elevation: 0,
-                                borderRadius: BorderRadius.all(Radius.circular(30)),
-                                child: Icon(
-                                  Icons.lock,
-                                  color: Colors.red,
-                                ),
-                              ),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 13)),
-                        ),
-                      ),
-                    ),
-                  ]),
+                  ),
                 ),
                 SizedBox(
                   height: 25,
@@ -183,40 +209,22 @@ class _LoginPageState extends State<LoginPage> {
                           color: Color(0xffff3a5a)),
                       child: FlatButton(
                         child: Text(
-                          "Login",
+                          S.of(context).login,
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                               fontSize: 18),
                         ),
-                        //onPressed: _loginPress(user),
-                        onPressed: (){
-                          if (_formKey.currentState.validate()){
-                            dataModel.user.account = _accountControl.text.toString();
-                            dataModel.user.password = _passwordControl.text.toString();
-                            dataModel.user.login();
-                            _passwordFocus.unfocus();
-                            _accountFocus.unfocus();
-                            Navigator.push(context, new MaterialPageRoute(builder: (context) => new BottomNavigationWidget()),);
-                            //Navigator.of(context).push( CustomRoute(BottomNavigationWidget() ));
-                          }
-                        },
+                        onPressed: () => _loginPress( context , dataModel),
                       ),
                     )),
-              ],
+              ]),
             ),
-          )),
+          ],
+        ),
+      )),
     );
   }
-
-
-
-  _loginPress(UserData user){
-
-  }
-
-
-
 }
 
 class WaveClipper1 extends CustomClipper<Path> {

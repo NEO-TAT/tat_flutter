@@ -1,5 +1,5 @@
 import 'package:flutter_app/debug/error/HandleError.dart';
-import 'package:flutter_app/debug/log/PrintLog.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:sqflite/sqflite.dart';
 import '../CreateModel.dart';
 import '../Model.dart';
@@ -9,50 +9,51 @@ class UserData {
   static final String _account = "account";
   static final String _password = 'password';
   static final String _id = 'id';
-  static final Map<String, dynamic> data = {
+  static final Map<String, dynamic> _data = {
     _id : 1,
     _account  : "",
     _password : ""
   };
   static final table = "UserData";
-  final CreateModel dbCreate = CreateModel(table , data );
+  static final CreateModel dbCreate = CreateModel(table , _data );
 
   String get account {
-    return data[_account];
+    return _data[_account];
   }
   String get password {
-    return data[_password];
+    return _data[_password];
   }
   set account(String value) {
-    data[_account] = value;
+    _data[_account] = value;
   }
   set password(String value) {
-    data[_password] = value;
+    _data[_password] = value;
   }
 
-  void login() async{
+  Future<int> save() async{
     Database db = await Model.instance.database;
-    await db.insert(
+    int insertId = await db.insert(
       table,
-      data,
+      _data,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    List<Map<String, dynamic>> dataList = await db.query(table);
-    for ( Map<String, dynamic> data in dataList ){
-      Log.d( _className , data.toString());
-    }
-    Log.d( _className , dataList.length.toString() );
+    _data['id'] = insertId;
+    return insertId;
   }
 
   Future<bool> load() async{
     Database db = await Model.instance.database;
     try{
-      List<Map<String, dynamic>> data = await db.query(table , where: "id = ?", whereArgs: [1] );
-      account = data.elementAt(0)[_account];
-      password = data.elementAt(0)[_password];
-      return true;
+      List<Map<String, dynamic>> data = await db.query(table , where: "id = ?", whereArgs: [ _data['id'] ] );
+      if ( data.length != 0) {
+        account = data[0][_account];
+        password = data[0][_password];
+        return true;
+      }else {
+        return false;
+      }
     }on Exception catch(e){
-      HandleError.sendError(e);
+      HandleError.sendError( _className , e);
       return false;
     }
   }
