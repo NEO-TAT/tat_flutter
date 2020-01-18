@@ -9,7 +9,7 @@ class CustomRoute extends PageRouteBuilder {
   final Widget widget;
   CustomRoute(this.widget)
       : super(
-    transitionDuration: const Duration(seconds: 2),
+    transitionDuration: const Duration(seconds: 1),
     pageBuilder: (BuildContext context, Animation<double> animation,
         Animation<double> secondaryAnimation) {
       return widget;

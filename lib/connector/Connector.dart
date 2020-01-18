@@ -28,12 +28,7 @@ class Connector {
 
   static Future<String> getDataByGet(String url) async{
     headers["User-Agent"] =  _userAgent;
-    String cookies = _getCookies(url);
-    if ( cookies != null ){
-      headers[_setCookiesKey] = cookies;
-    }else{
-      headers.remove(_setCookiesKey);
-    }
+    _setHeadersCookies(url);
     try {
       var response = await http.get(url, headers: headers).timeout(_timeOut);
       if (response.statusCode == 200) {
@@ -54,6 +49,15 @@ class Connector {
     }
   }
 
+  static _setHeadersCookies(String url){
+    String cookies = _getCookies(url);
+    if ( cookies != null ){
+      headers[_setCookiesKey] = cookies;
+    }else{
+      headers.remove(_setCookiesKey);
+    }
+  }
+
   static String _getCookies(String url){
     String host = _getHost(url);
     return cookieManager.getCookies(host);
@@ -64,6 +68,13 @@ class Connector {
     host = host.split(":")[0];
     return host;
   }
+
+
+  static Map<String,String> getLoginHeaders(String url){
+    _setHeadersCookies(url);
+    return headers;
+  }
+
 
 
 }

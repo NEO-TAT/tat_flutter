@@ -49,6 +49,7 @@ class UserData extends  DataFormat {
       _data,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    Log.d(this.toString());
     _data['id'] = insertId;
     return true;
   }
@@ -66,6 +67,9 @@ class UserData extends  DataFormat {
         userPhoto   = data[0][_userPhoto];
         passwordExpiredRemind = data[0][_passwordExpiredRemind];
         userDn = data[0][_userDn];
+        if (account.isEmpty || password.isEmpty ){
+          return false;
+        }
         Log.d(this.toString());
         return true;
       }else {
@@ -78,9 +82,27 @@ class UserData extends  DataFormat {
     }
   }
 
+  void logout(){
+    account     = "";
+    password    = "";
+    givenName   = null;
+    userMail    = null;
+    userPhoto   = null;
+    passwordExpiredRemind = null;
+    userDn = null;
+    save();
+  }
+
   @override
   String toString() {
-    String text = sprintf( " account:%s \n password:%s \n givenName:%s \n userMail:%s \n userPhoto:%s" , [account , password , givenName , userMail , userPhoto]);
+    String text = sprintf( '''
+    account:%s
+    password:%s
+    givenName:%s
+    userMail:%s
+    userPhoto:%s
+    passwordExpiredRemind:%s
+    userDn:%s''' , [account , password , givenName , userMail , userPhoto , passwordExpiredRemind ,userDn ]);
     return text;
   }
 

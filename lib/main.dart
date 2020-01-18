@@ -16,16 +16,19 @@ Future<Null> main() async {
     Log.e(details.toString());
   };
   runZoned(() {
-    runApp(  ChangeNotifierProvider(
-      create: (_) => DataModel.instance,
-      child: MyApp(),
-    ) );
+    runApp( MyApp(),
+    );
   }, onError: (Object obj, StackTrace stack) {
     String log = Log.buildLog(stack.toString());
     Log.e( sprintf("ErrorType : %s , %s" , [obj.toString() , log] ));
   });
 }
 
+class R extends S {
+  static of(BuildContext context) {
+    return S.current;
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override

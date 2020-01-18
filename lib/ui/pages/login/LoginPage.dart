@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/connector/NTUTConnector.dart';
 import 'package:flutter_app/database/DataModel.dart';
 import 'package:flutter_app/database/dataformat/UserData.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+
+import '../../../main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,8 +30,8 @@ class _LoginPageState extends State<LoginPage> {
     _passwordControl.text = "";
   }
 
-  void _loginPress(BuildContext context , DataModel db) {
-    UserData user = db.user;
+  void _loginPress(BuildContext context) {
+    UserData user = DataModel.instance.user;
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
@@ -37,39 +40,36 @@ class _LoginPageState extends State<LoginPage> {
       user.save().then((value) {
         //Navigator.of(context).push( CustomRoute(BottomNavigationWidget() ));
         Fluttertoast.showToast(
-            msg: S.of(context).loginSave,
+            msg: R.of(context).loginSave,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
-        Navigator.push(context, CustomRoute(BottomNavigationWidget()) );
+        Navigator.push(context, CustomRoute(BottomNavigationWidget()));
       });
     }
   }
 
-  String _validatorAccount(String value){
+  String _validatorAccount(String value) {
     if (value.isEmpty) {
-      return S.of(context).accountNull;
+      return R.of(context).accountNull;
     }
     return null;
   }
 
-  String _validatorPassword(String value){
+  String _validatorPassword(String value) {
     if (value.isEmpty) {
-      return S.of(context).passwordNull;
+      return R.of(context).passwordNull;
     }
     return null;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DataModel>(
-      builder: (context, dataModel, _) => MaterialApp(
-          home: Scaffold(
+    return MaterialApp(
+      home: Scaffold(
         backgroundColor: Colors.white,
         body: ListView(
           children: <Widget>[
@@ -82,8 +82,9 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 300,
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Color(0x22ff3a5a), Color(0x22fe494d)])),
+                      gradient: LinearGradient(
+                          colors: [Color(0x22ff3a5a), Color(0x22fe494d)]),
+                    ),
                   ),
                 ),
                 ClipPath(
@@ -93,8 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 300,
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Color(0x44ff3a5a), Color(0x44fe494d)])),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0x44ff3a5a),
+                          Color(0x44fe494d),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 ClipPath(
@@ -125,8 +131,13 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 300,
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [Color(0xffff3a5a), Color(0xfffe494d)])),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xffff3a5a),
+                          Color(0xfffe494d),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -136,26 +147,31 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Form(
               key: _formKey,
-              child: Column(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32),
-                  child: Material(
-                    elevation: 2.0,
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    child: TextFormField(
-                      controller: _accountControl,
-                      cursorColor: Colors.deepOrange,
-                      textInputAction: TextInputAction.done,
-                      focusNode: _accountFocus,
-                      onEditingComplete: () {
-                        FocusScope.of(context).requestFocus(_passwordFocus);
-                      },
-                      validator: (value) => _validatorAccount(value),
-                      decoration: InputDecoration(
-                          hintText: S.of(context).account,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Material(
+                      elevation: 2.0,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30),
+                      ),
+                      child: TextFormField(
+                        controller: _accountControl,
+                        cursorColor: Colors.deepOrange,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _accountFocus,
+                        onEditingComplete: () {
+                          FocusScope.of(context).requestFocus(_passwordFocus);
+                        },
+                        validator: (value) => _validatorAccount(value),
+                        decoration: InputDecoration(
+                          hintText: R.of(context).account,
                           prefixIcon: Material(
                             elevation: 0,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
                             child: Icon(
                               Icons.account_circle,
                               color: Colors.red,
@@ -163,26 +179,27 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 13)),
+                              horizontal: 25, vertical: 13),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 32),
-                  child: Material(
-                    elevation: 2.0,
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    child: TextFormField(
-                      controller: _passwordControl,
-                      cursorColor: Colors.deepOrange,
-                      obscureText: true,
-                      focusNode: _passwordFocus,
-                      validator: (value) => _validatorPassword(value),
-                      decoration: InputDecoration(
-                          hintText: S.of(context).password,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Material(
+                      elevation: 2.0,
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      child: TextFormField(
+                        controller: _passwordControl,
+                        cursorColor: Colors.deepOrange,
+                        obscureText: true,
+                        focusNode: _passwordFocus,
+                        validator: (value) => _validatorPassword(value),
+                        decoration: InputDecoration(
+                          hintText: R.of(context).password,
                           prefixIcon: Material(
                             elevation: 0,
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -193,14 +210,17 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 13)),
+                            horizontal: 25,
+                            vertical: 13,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Padding(
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 32),
                     child: Container(
                       decoration: BoxDecoration(
@@ -208,20 +228,22 @@ class _LoginPageState extends State<LoginPage> {
                           color: Color(0xffff3a5a)),
                       child: FlatButton(
                         child: Text(
-                          S.of(context).login,
+                          R.of(context).login,
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                               fontSize: 18),
                         ),
-                        onPressed: () => _loginPress( context , dataModel),
+                        onPressed: () => _loginPress(context),
                       ),
-                    )),
-              ]),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }

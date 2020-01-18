@@ -27,9 +27,7 @@ class Model {
     return _database;
   }
   
-  void _deleteModel() async{
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, _databaseName);
+  void _deleteModel(String path) async{
     await deleteDatabase(path);
   }
   
@@ -37,6 +35,7 @@ class Model {
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
+    //deleteDatabase(path);
     return await openDatabase(path,
         version: _databaseVersion,
         onCreate: _onCreate);

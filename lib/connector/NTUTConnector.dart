@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_app/connector/Connector.dart';
 import 'package:flutter_app/database/DataModel.dart';
 import 'package:flutter_app/database/dataformat/UserData.dart';
+import 'package:flutter_app/database/json/UserDataJson.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:html/parser.dart';
 
@@ -40,7 +42,14 @@ class NTUTConnector {
       } else if (result.contains("帳號已被鎖住")) {
         return LoginStatus.AccountLock;
       } else {
-        //Log.d(  UserData.fromJson(json.decode(result)).toString() );
+        UserDataJson jsonParse = UserDataJson.fromJson(json.decode(result));
+        UserData user = DataModel.instance.user;
+        user.givenName = jsonParse.givenName;
+        user.userMail = jsonParse.userMail;
+        user.userPhoto = jsonParse.userPhoto;
+        user.passwordExpiredRemind = jsonParse.passwordExpiredRemind;
+        user.userDn = jsonParse.userDn;
+        user.save();
         return LoginStatus.LoginSuccess;
       }
     } on Exception catch(e){
@@ -51,4 +60,15 @@ class NTUTConnector {
       return LoginStatus.UnknownError;
     }
   }
+
+  static CachedNetworkImageProvider getUserImage(){
+    String userPhoto = DataModel.instance.user.userPhoto;
+    String url = getPictureUrl + userPhoto;
+    return CachedNetworkImageProvider(
+        url,
+        headers: Connector.getLoginHeaders(url)
+    );
+  }
+
+
 }

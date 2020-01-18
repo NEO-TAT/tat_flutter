@@ -10,6 +10,7 @@ import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
+import '../../../main.dart';
 import 'pages/SettingScreen.dart';
 import 'pages/NewAnnouncementScreen.dart';
 import 'pages/home_screen.dart';
@@ -40,7 +41,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       }else{
         String account = user.account;
         String password = user.password;
-        MyProgressDialog.showProgressDialog(context, S.of(context).logging);
+        MyProgressDialog.showProgressDialog(context, R.of(context).logging);
         NTUTConnector.login(account, password).then( (value) {
           MyProgressDialog.hideProgressDialog();
           String errorMessage ;
@@ -48,16 +49,16 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             case LoginStatus.LoginSuccess:
               break;
             case LoginStatus.AccountPasswordFail:
-              errorMessage = S.of(context).accountPasswordFail;
+              errorMessage = R.of(context).accountPasswordFail;
               break;
             case LoginStatus.ConnectTimeOut:
-              errorMessage = S.of(context).connectTimeOut;
+              errorMessage = R.of(context).connectTimeOut;
               break;
             case LoginStatus.AuthCodeFail:
-              errorMessage = S.of(context).authCodeFail;
+              errorMessage = R.of(context).authCodeFail;
               break;
             case LoginStatus.AccountLock:
-              errorMessage = S.of(context).accountLock;
+              errorMessage = R.of(context).accountLock;
               break;
             default:
               errorMessage = "錯誤";
@@ -77,9 +78,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DataModel>(
-      builder: (context, dataModel, _) =>
-      MaterialApp(
+    return MaterialApp(
         home: Scaffold(
           body: list[_currentIndex],
           bottomNavigationBar: BottomNavigationBar(
@@ -130,7 +129,6 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             type: BottomNavigationBarType.shifting,
           ),
         )
-      )
     );
   }
 }
