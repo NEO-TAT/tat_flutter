@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AirPlayScreen extends StatelessWidget{
+class SettingScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('AirPlay'),),
+      appBar: AppBar(title: Text('Setting'),),
     );
   }
 }

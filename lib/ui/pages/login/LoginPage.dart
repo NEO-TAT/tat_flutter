@@ -44,7 +44,6 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: Colors.red,
             textColor: Colors.white,
             fontSize: 16.0);
-        NTUTConnector.login( user.account , user.password );
         Navigator.push(context, CustomRoute(BottomNavigationWidget()) );
       });
     }

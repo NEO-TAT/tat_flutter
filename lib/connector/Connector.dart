@@ -1,31 +1,68 @@
+import 'package:flutter_app/connector/MyCookiesManger.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:http/http.dart' as http;
 import 'package:requests/requests.dart';
 import 'package:sprintf/sprintf.dart';
 
 class Connector {
-  static final _className = "Connector";
+  static final MyCookieManager cookieManager = MyCookieManager.instance;
+  static final String _getCookiesKey = 'set-cookie';
+  static final String _setCookiesKey = 'Cookie';
+  static final String _userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36";
+  static final Duration _timeOut = Duration(seconds:15);
   static Map<String, String> headers= {
-    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36",
-    "Upgrade-Insecure-Requests":"1"
+    "User-Agent": _userAgent,
+    "Upgrade-Insecure-Requests":"1" ,
+    "Referer": "https://nportal.ntut.edu.tw"
   };
-  static Future<String> getDataByPost(String url, Map<String, String> data) async{
-    var response = await http.post(url , body: data , headers:headers);
-    handleCookies(url);
-    return response.body;
+  static Future<String> getDataByPost(String url, Map<String, String> data) async {
+    headers["User-Agent"] =  "Direk Android App";
+    try {
+      var response = await http.post(url, body: data, headers: headers).timeout(_timeOut);
+      _handleCookies(url, response.headers[_getCookiesKey]);
+      return response.body;
+    } on Exception catch (e) {
+      throw e;
+    }
   }
 
   static Future<String> getDataByGet(String url) async{
-    var response = await http.get(url , headers:headers);
-    return response.body;
+    headers["User-Agent"] =  _userAgent;
+    String cookies = _getCookies(url);
+    if ( cookies != null ){
+      headers[_setCookiesKey] = cookies;
+    }else{
+      headers.remove(_setCookiesKey);
+    }
+    try {
+      var response = await http.get(url, headers: headers).timeout(_timeOut);
+      if (response.statusCode == 200) {
+        _handleCookies(url, response.headers[_getCookiesKey]);
+        return response.body;
+      } else {
+        return "";
+      }
+    } on Exception catch(e){
+      throw e;
+    }
   }
 
-  static handleCookies(String url) async {
-    String hostname = Requests.getHostname(url);
-    Map<String, String> cookies = await Requests.getStoredCookies(hostname);
-    for ( String key in cookies.keys ){
-      Log.e(_className , sprintf("key: %s , %s" , [key , cookies[key] ] ));
+  static _handleCookies(String url , String cookies ) async {
+    String host = _getHost(url);
+    if (cookies != null){
+      cookieManager.setCookies(host, cookies);
     }
+  }
+
+  static String _getCookies(String url){
+    String host = _getHost(url);
+    return cookieManager.getCookies(host);
+  }
+
+  static String _getHost(String url){
+    String host = Requests.getHostname(url);
+    host = host.split(":")[0];
+    return host;
   }
 
 

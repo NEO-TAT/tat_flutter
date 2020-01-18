@@ -3,10 +3,14 @@ import 'package:flutter_app/connector/NTUTConnector.dart';
 import 'package:flutter_app/database/DataModel.dart';
 import 'package:flutter_app/database/dataformat/UserData.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/other/MyAlertDialog.dart';
+import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
-import 'pages/airplay_screen.dart';
+import 'pages/SettingScreen.dart';
 import 'pages/NewAnnouncementScreen.dart';
 import 'pages/home_screen.dart';
 import 'pages/pages_screen.dart';
@@ -17,7 +21,6 @@ class BottomNavigationWidget extends StatefulWidget {
 }
 
 class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
-  static final String _className = "BottomNavigationWidgetState";
   final _bottomNavigationColor = Colors.blue;
   int _currentIndex = 0;
   List<Widget> list = List();
@@ -28,19 +31,49 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       ..add(HomeScreen())
       ..add(NewAnnouncementScreen())
       ..add(PagesScreen())
-      ..add(AirPlayScreen());
-    DataModel.instance.user.load().then((value) {
-      Log.e ( _className , value.toString() );
+      ..add(SettingScreen());
+    super.initState();
+    UserData user = DataModel.instance.user;
+    user.load().then((value) {
       if (!value) {  //尚未登入
         Navigator.of(context).push( CustomRoute(LoginPage() ));
       }else{
-        String account = DataModel.instance.user.account;
-        String password = DataModel.instance.user.password;
-        NTUTConnector.login(account, password);
+        String account = user.account;
+        String password = user.password;
+        MyProgressDialog.showProgressDialog(context, S.of(context).logging);
+        NTUTConnector.login(account, password).then( (value) {
+          MyProgressDialog.hideProgressDialog();
+          String errorMessage ;
+          switch (value) {
+            case LoginStatus.LoginSuccess:
+              break;
+            case LoginStatus.AccountPasswordFail:
+              errorMessage = S.of(context).accountPasswordFail;
+              break;
+            case LoginStatus.ConnectTimeOut:
+              errorMessage = S.of(context).connectTimeOut;
+              break;
+            case LoginStatus.AuthCodeFail:
+              errorMessage = S.of(context).authCodeFail;
+              break;
+            case LoginStatus.AccountLock:
+              errorMessage = S.of(context).accountLock;
+              break;
+            default:
+              errorMessage = "錯誤";
+              Log.d(value.toString());
+              break;
+          }
+          if (errorMessage != null){
+            //MyAlertDialog.showStyle3AlertDialog(context, errorMessage);
+            MyAlertDialog.showStyle3AlertDialog(context, errorMessage);
+          }
+
+        });
       }
     });
-    super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {

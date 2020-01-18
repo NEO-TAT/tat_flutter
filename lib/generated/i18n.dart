@@ -21,13 +21,20 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
-  String get account => "account";
+  String get account => "Account";
+  String get accountLock => "AccountLock";
   String get accountNull => "Please enter account";
+  String get accountPasswordFail => "AccountPasswordFail";
+  String get alertError => "Some thing error";
   String get app_name => "ISchoolHelper";
+  String get authCodeFail => "AuthCodeFail";
+  String get connectTimeOut => "ConnectTimeOut";
+  String get logging => "logging...";
   String get login => "login";
   String get loginSave => "Login save";
   String get password => "Password";
   String get passwordNull => "Please enter password";
+  String get warning => "Warning";
 }
 
 class $zh_TW extends S {
@@ -37,17 +44,31 @@ class $zh_TW extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get app_name => "北科課程助手";
-  @override
-  String get password => "密碼";
-  @override
   String get loginSave => "帳號密碼已儲存";
   @override
+  String get accountLock => "帳號已被鎖住";
+  @override
   String get passwordNull => "請輸入密碼";
+  @override
+  String get accountPasswordFail => "帳號密碼錯誤";
   @override
   String get accountNull => "請輸入帳號";
   @override
   String get login => "登入";
+  @override
+  String get alertError => "發生錯誤";
+  @override
+  String get app_name => "北科課程助手";
+  @override
+  String get password => "密碼";
+  @override
+  String get authCodeFail => "驗證碼錯誤";
+  @override
+  String get logging => "登入中...";
+  @override
+  String get warning => "警告";
+  @override
+  String get connectTimeOut => "連接逾時";
   @override
   String get account => "帳號";
 }

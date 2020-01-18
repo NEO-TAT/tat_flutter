@@ -5,5 +5,12 @@
   "accountNull" : "請輸入帳號",
   "passwordNull": "請輸入密碼",
   "password" : "密碼",
-  "account" : "帳號"
+  "account" : "帳號",
+  "logging" : "登入中...",
+  "warning" : "警告",
+  "accountPasswordFail": "帳號密碼錯誤",
+  "alertError" : "發生錯誤",
+  "connectTimeOut" : "連接逾時",
+  "authCodeFail" : "驗證碼錯誤",
+  "accountLock" : "帳號已被鎖住"
 }

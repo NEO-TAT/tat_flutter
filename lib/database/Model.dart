@@ -9,15 +9,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'DataModel.dart';
+
 class Model {
   // make this a singleton class
-  static final _className = "Model";
   Model._privateConstructor();
   static final Model instance = Model._privateConstructor();
 
   static final _databaseName = "Database.db";
   static final _databaseVersion = 1;
-  static final List<CreateModel> dbCreateList = [ UserData.dbCreate ];
+  static final List<CreateModel> dbCreateList = [ DataModel.instance.user.dbCreate ];
 
   static Database _database;
   Future<Database> get database async {
@@ -25,12 +26,17 @@ class Model {
     _database = await _initDatabase();
     return _database;
   }
-
+  
+  void _deleteModel() async{
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
+    await deleteDatabase(path);
+  }
+  
   // this opens the database (and creates it if it doesn't exist)
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
-    //deleteDatabase(path);
     return await openDatabase(path,
         version: _databaseVersion,
         onCreate: _onCreate);
@@ -39,25 +45,22 @@ class Model {
   Future _onCreate(Database db, int version) async {
     List<String> createSqlList = List();
     for( CreateModel dbCreate in dbCreateList){
-      String sqlTable = sprintf( 'CREATE TABLE %s' , [dbCreate.table] );
-      String sqlData = '';
-      if ( dbCreate.data.containsKey('id')){
-        String sqlKey   = 'id INTEGER PRIMARY KEY';
-        sqlData += sqlKey;
-      }
-      for( String key in dbCreate.data.keys ){
-        if ( key == 'id') continue;
-        if (sqlData != '') sqlData += ',';
-        sqlData += sprintf( '%s TEXT NOT NULL' , [key] );
-      }
-      String sqlItem = sprintf( '%s ( %s );' , [ sqlTable , sqlData] );
+      String sqlItem = dbCreate.createTable;
       createSqlList.add(sqlItem);
     }
     String sql = '';
     for ( String s in createSqlList){
+      if (sql.isNotEmpty ) sql += ",";
       sql += s;
     }
-    Log.d( _className , sql);
-    await db.execute(sql);
+
+
+    try{
+      await db.execute(sql);
+      Log.d(sql);
+    } on Exception catch(e){
+      Log.e(e.toString());
+    }
   }
+
 }

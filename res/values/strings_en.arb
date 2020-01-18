@@ -5,5 +5,12 @@
   "accountNull": "Please enter account",
   "passwordNull": "Please enter password",
   "password" : "Password",
-  "account" : "account"
+  "account" : "Account",
+  "logging" : "logging...",
+  "warning" : "Warning",
+  "accountPasswordFail": "AccountPasswordFail",
+  "alertError" : "Some thing error",
+  "connectTimeOut" : "ConnectTimeOut",
+  "authCodeFail" : "AuthCodeFail",
+  "accountLock" : "AccountLock"
 }
