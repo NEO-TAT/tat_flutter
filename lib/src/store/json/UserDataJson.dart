@@ -8,6 +8,7 @@ class UserDataJson{
   String userDn;
 
   UserDataJson({Key key, givenName ,userMail , userPhoto, passwordExpiredRemind , userDn }) {
+    if ( givenName == null ) throw Exception("Json Error");
     this.givenName = givenName;
     this.userMail = userMail;
     this.userPhoto = userPhoto;

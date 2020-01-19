@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:flutter_app/database/CreateModel.dart';
-import 'package:flutter_app/database/dataformat/UserData.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'CreateModel.dart';
 import 'DataModel.dart';
 
 class Model {
@@ -31,7 +29,7 @@ class Model {
     await deleteDatabase(path);
   }
   
-  // this opens the database (and creates it if it doesn't exist)
+  // this opens the src.database (and creates it if it doesn't exist)
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);

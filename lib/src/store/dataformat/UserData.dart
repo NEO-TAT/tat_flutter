@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/Connector.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:sqflite/sqflite.dart';
 import '../Model.dart';
@@ -90,6 +91,7 @@ class UserData extends  DataFormat {
     userPhoto   = null;
     passwordExpiredRemind = null;
     userDn = null;
+    Connector.cookieManager.clearCookies();
     save();
   }
 

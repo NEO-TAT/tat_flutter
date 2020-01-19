@@ -6,11 +6,21 @@
   "passwordNull": "請輸入密碼",
   "password" : "密碼",
   "account" : "帳號",
-  "logging" : "登入中...",
+  "loggingNTUT": "登入校園入口網站中...",
+  "loggingISchool": "登入北科i學園中...",
   "warning" : "警告",
   "accountPasswordFail": "帳號密碼錯誤",
   "alertError" : "發生錯誤",
   "connectTimeOut" : "連接逾時",
   "authCodeFail" : "驗證碼錯誤",
-  "accountLock" : "帳號已被鎖住"
+  "accountLock" : "帳號已被鎖住",
+  "networkError" : "網路發生錯誤",
+  "unknownError" : "發生未知錯誤",
+  "passwordExpiredWarning" : "密碼即將過期，請盡快更新密碼",
+  "ok" : "確定",
+  "cancel" : "取消",
+  "updatePassword" : "更新",
+  "resetAccountPassword" : "設定",
+  "restart" : "重試",
+  "pleaseLogin" : "請登入"
 }

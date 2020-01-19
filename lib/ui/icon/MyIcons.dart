@@ -23,4 +23,5 @@ class MyIcon {
   MyIcon._();
   static const _kFontFam = 'MyIcon';
   static const IconData logout = const IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData arrows_cw = const IconData(0xe801, fontFamily: _kFontFam);
 }

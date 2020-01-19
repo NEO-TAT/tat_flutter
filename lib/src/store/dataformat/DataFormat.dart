@@ -1,5 +1,6 @@
-import 'package:flutter_app/database/CreateModel.dart';
 import 'package:sqflite/sqlite_api.dart';
+
+import '../CreateModel.dart';
 
 abstract class DataFormat {
   CreateModel dbCreate;

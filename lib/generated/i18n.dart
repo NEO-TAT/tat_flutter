@@ -28,12 +28,22 @@ class S implements WidgetsLocalizations {
   String get alertError => "Some thing error";
   String get app_name => "ISchoolHelper";
   String get authCodeFail => "AuthCodeFail";
+  String get cancel => "Cancel";
   String get connectTimeOut => "ConnectTimeOut";
-  String get logging => "logging...";
+  String get loggingISchool => "Logging ISchool...";
+  String get loggingNTUT => "Logging NTUT...";
   String get login => "login";
   String get loginSave => "Login save";
+  String get networkError => "networkError";
+  String get ok => "Ok";
   String get password => "Password";
+  String get passwordExpiredWarning => "passwordExpiredWarning";
   String get passwordNull => "Please enter password";
+  String get pleaseLogin => "Please Login";
+  String get resetAccountPassword => "Reset";
+  String get restart => "Restart";
+  String get unknownError => "unknownError";
+  String get updatePassword => "Update";
   String get warning => "Warning";
 }
 
@@ -44,9 +54,17 @@ class $zh_TW extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
+  String get cancel => "取消";
+  @override
   String get loginSave => "帳號密碼已儲存";
   @override
+  String get updatePassword => "更新";
+  @override
   String get accountLock => "帳號已被鎖住";
+  @override
+  String get restart => "重試";
+  @override
+  String get passwordExpiredWarning => "密碼即將過期，請盡快更新密碼";
   @override
   String get passwordNull => "請輸入密碼";
   @override
@@ -56,7 +74,13 @@ class $zh_TW extends S {
   @override
   String get login => "登入";
   @override
+  String get loggingNTUT => "登入校園入口網站中...";
+  @override
+  String get resetAccountPassword => "設定";
+  @override
   String get alertError => "發生錯誤";
+  @override
+  String get unknownError => "發生未知錯誤";
   @override
   String get app_name => "北科課程助手";
   @override
@@ -64,11 +88,17 @@ class $zh_TW extends S {
   @override
   String get authCodeFail => "驗證碼錯誤";
   @override
-  String get logging => "登入中...";
+  String get loggingISchool => "登入北科i學園中...";
   @override
   String get warning => "警告";
   @override
   String get connectTimeOut => "連接逾時";
+  @override
+  String get pleaseLogin => "請登入";
+  @override
+  String get ok => "確定";
+  @override
+  String get networkError => "網路發生錯誤";
   @override
   String get account => "帳號";
 }

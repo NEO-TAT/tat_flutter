@@ -1,8 +1,9 @@
-import 'package:flutter_app/connector/MyCookiesManger.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:http/http.dart' as http;
 import 'package:requests/requests.dart';
 import 'package:sprintf/sprintf.dart';
+
+import 'MyCookiesManger.dart';
 
 class Connector {
   static final MyCookieManager cookieManager = MyCookieManager.instance;
@@ -26,11 +27,16 @@ class Connector {
     }
   }
 
-  static Future<String> getDataByGet(String url) async{
+  static Future<String> getDataByGet(String url , [Map<String, String> data]) async{
     headers["User-Agent"] =  _userAgent;
     _setHeadersCookies(url);
+    if( data != null ){
+      Uri newUrl = Uri.http( _getHost(url) , _getPath(url) ,  data);
+      url = newUrl.toString();
+      Log.d( "put data $url");
+    }
     try {
-      var response = await http.get(url, headers: headers).timeout(_timeOut);
+      var response = await http.get(url,headers: headers ).timeout(_timeOut);
       if (response.statusCode == 200) {
         _handleCookies(url, response.headers[_getCookiesKey]);
         return response.body;
@@ -64,9 +70,12 @@ class Connector {
   }
 
   static String _getHost(String url){
-    String host = Requests.getHostname(url);
-    host = host.split(":")[0];
+    String host = Uri.parse(url).host;
     return host;
+  }
+  static String _getPath(String url){
+    String path = Uri.parse(url).path;
+    return path;
   }
 
 

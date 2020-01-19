@@ -25,7 +25,7 @@ class MyAlertDialog {
         SizedBox(
           width: 16,
         ),
-        Text(S.of(context).warning),
+        Text( S.current.warning ),
       ]),
       content: Text(message),
       actions: <Widget>[
@@ -81,16 +81,18 @@ class MyAlertDialog {
     );
   }
 
-  static void showStyle3AlertDialog(BuildContext context, String message) {
-    AwesomeDialog(context: context,
-        dialogType: DialogType.INFO,
+  static void showStyle3AlertDialog(BuildContext context, String message , DialogType type) {
+    AwesomeDialog(
+        context: context,
+        dialogType: type,
         animType: AnimType.BOTTOMSLIDE,
-        tittle: S.of(context).alertError,
+        tittle: S.current.alertError,
         desc: message,
         btnCancelOnPress: () {},
         btnOkOnPress: () {}
         ).show();
   }
+
 
 
 

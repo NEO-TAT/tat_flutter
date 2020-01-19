@@ -1,9 +1,13 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/connector/NTUTConnector.dart';
-import 'package:flutter_app/database/DataModel.dart';
-import 'package:flutter_app/database/dataformat/UserData.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/store/DataModel.dart';
+import 'package:flutter_app/src/store/dataformat/UserData.dart';
+import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/NTUTLoginTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/MyAlertDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
@@ -25,7 +29,6 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   final _bottomNavigationColor = Colors.blue;
   int _currentIndex = 0;
   List<Widget> list = List();
-
   @override
   void initState() {
     list
@@ -36,45 +39,19 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     super.initState();
     UserData user = DataModel.instance.user;
     user.load().then((value) {
-      if (!value) {  //尚未登入
-        Navigator.of(context).push( CustomRoute(LoginPage() ));
-      }else{
-        String account = user.account;
-        String password = user.password;
-        MyProgressDialog.showProgressDialog(context, R.of(context).logging);
-        NTUTConnector.login(account, password).then( (value) {
-          MyProgressDialog.hideProgressDialog();
-          String errorMessage ;
-          switch (value) {
-            case LoginStatus.LoginSuccess:
-              break;
-            case LoginStatus.AccountPasswordFail:
-              errorMessage = R.of(context).accountPasswordFail;
-              break;
-            case LoginStatus.ConnectTimeOut:
-              errorMessage = R.of(context).connectTimeOut;
-              break;
-            case LoginStatus.AuthCodeFail:
-              errorMessage = R.of(context).authCodeFail;
-              break;
-            case LoginStatus.AccountLock:
-              errorMessage = R.of(context).accountLock;
-              break;
-            default:
-              errorMessage = "錯誤";
-              Log.d(value.toString());
-              break;
-          }
-          if (errorMessage != null){
-            //MyAlertDialog.showStyle3AlertDialog(context, errorMessage);
-            MyAlertDialog.showStyle3AlertDialog(context, errorMessage);
-          }
-
-        });
+      if (!value) {
+        //尚未登入
+        Navigator.of(context).push(CustomRoute(LoginPage()));
+      } else {
+        _login();
       }
     });
   }
 
+ void _login() {
+    TaskHandler.instance.addTask( NTUTLoginTask(context) );
+    TaskHandler.instance.startTask();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +105,6 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             },
             type: BottomNavigationBarType.shifting,
           ),
-        )
-    );
+        ));
   }
 }

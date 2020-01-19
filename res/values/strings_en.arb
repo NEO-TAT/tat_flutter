@@ -6,11 +6,21 @@
   "passwordNull": "Please enter password",
   "password" : "Password",
   "account" : "Account",
-  "logging" : "logging...",
+  "loggingNTUT": "Logging NTUT...",
+  "loggingISchool": "Logging ISchool...",
   "warning" : "Warning",
   "accountPasswordFail": "AccountPasswordFail",
   "alertError" : "Some thing error",
   "connectTimeOut" : "ConnectTimeOut",
   "authCodeFail" : "AuthCodeFail",
-  "accountLock" : "AccountLock"
+  "accountLock" : "AccountLock",
+  "networkError" : "networkError",
+  "unknownError" : "unknownError",
+  "passwordExpiredWarning" : "passwordExpiredWarning",
+  "ok" : "Ok",
+  "cancel" : "Cancel",
+  "updatePassword" : "Update",
+  "resetAccountPassword" : "Reset",
+  "restart" : "Restart",
+  "pleaseLogin" : "Please Login"
 }

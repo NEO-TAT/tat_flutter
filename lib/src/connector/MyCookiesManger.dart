@@ -18,6 +18,14 @@ class MyCookieManager {
     _addCookies(host , cookiesList);
   }
 
+  String _getCookiesKey(String cookies){
+    return cookies.split("=")[0];
+  }
+
+  void clearCookies(){
+    cookiesMap = Map();
+  }
+
   String getCookies(String host){
     String result = '';
     if ( cookiesMap.containsKey(host) ){

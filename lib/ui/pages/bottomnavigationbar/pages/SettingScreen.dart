@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/connector/NTUTConnector.dart';
-import 'package:flutter_app/database/DataModel.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/icon/MyIcons.dart';
+import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/store/DataModel.dart';
+import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:random_color/random_color.dart';
 
-enum onListViewPress{ Setting , Logout , Report , About }
+enum onListViewPress{ Setting , Logout , Report , About , ChangePassword}
 
 class SettingScreen extends StatelessWidget {
 
@@ -20,6 +21,11 @@ class SettingScreen extends StatelessWidget {
       "icon": Icons.settings ,
       "title": "設定" ,
       "onPress" : onListViewPress.Setting
+    },
+    {
+      "icon": MyIcon.arrows_cw ,
+      "title": "更改密碼",
+      "onPress" : onListViewPress.ChangePassword
     },
     {
       "icon": MyIcon.logout ,
@@ -69,7 +75,8 @@ class SettingScreen extends StatelessWidget {
             return GestureDetector(
                 child: WidgetANimator(widget) ,
                 onTap: () {
-                  _onListViewPress( context ,listViewData[index-1]['onPress'] );
+                  if ( index!=0)
+                    _onListViewPress( context ,listViewData[index-1]['onPress'] );
                 }
             );
           },
@@ -85,6 +92,34 @@ class SettingScreen extends StatelessWidget {
   Container _buildHeader(BuildContext context) {
     String givenName = DataModel.instance.user.givenName;
     String userMail = DataModel.instance.user.userMail;
+    if ( givenName == null ||  userMail == null ){
+      return Container(
+        //color: Colors.yellow,
+        margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+        constraints: BoxConstraints(maxHeight: 60),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            CircleAvatar(
+              radius: 30.0,
+              backgroundImage: NTUTConnector.getUserImage(),
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    S.current.pleaseLogin,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ])
+          ],
+        ),
+      );
+    }
     return Container(
       //color: Colors.yellow,
       margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
@@ -94,7 +129,8 @@ class SettingScreen extends StatelessWidget {
         children: <Widget>[
           CircleAvatar(
               radius: 30.0,
-              backgroundImage: NTUTConnector.getUserImage()),
+              backgroundImage: NTUTConnector.getUserImage(),
+          ),
           SizedBox(
             width: 10.0,
           ),

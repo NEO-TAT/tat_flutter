@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/connector/NTUTConnector.dart';
-import 'package:flutter_app/database/DataModel.dart';
-import 'package:flutter_app/database/dataformat/UserData.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/store/DataModel.dart';
+import 'package:flutter_app/src/store/dataformat/UserData.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -26,8 +25,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _accountControl.text = "";
-    _passwordControl.text = "";
+    _accountControl.text = DataModel.instance.user.account;
+    _passwordControl.text = DataModel.instance.user.password;
   }
 
   void _loginPress(BuildContext context) {
@@ -40,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       user.save().then((value) {
         //Navigator.of(context).push( CustomRoute(BottomNavigationWidget() ));
         Fluttertoast.showToast(
-            msg: R.of(context).loginSave,
+            msg: S.current.loginSave,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIos: 1,
@@ -54,14 +53,14 @@ class _LoginPageState extends State<LoginPage> {
 
   String _validatorAccount(String value) {
     if (value.isEmpty) {
-      return R.of(context).accountNull;
+      return S.current.accountNull;
     }
     return null;
   }
 
   String _validatorPassword(String value) {
     if (value.isEmpty) {
-      return R.of(context).passwordNull;
+      return S.current.passwordNull;
     }
     return null;
   }
@@ -166,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         validator: (value) => _validatorAccount(value),
                         decoration: InputDecoration(
-                          hintText: R.of(context).account,
+                          hintText: S.current.account,
                           prefixIcon: Material(
                             elevation: 0,
                             borderRadius: BorderRadius.all(
@@ -199,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                         focusNode: _passwordFocus,
                         validator: (value) => _validatorPassword(value),
                         decoration: InputDecoration(
-                          hintText: R.of(context).password,
+                          hintText: S.current.password,
                           prefixIcon: Material(
                             elevation: 0,
                             borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -228,7 +227,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Color(0xffff3a5a)),
                       child: FlatButton(
                         child: Text(
-                          R.of(context).login,
+                          S.current.login,
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
