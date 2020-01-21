@@ -1,24 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:progress_dialog/progress_dialog.dart';
+
+import 'CustomProgressDialog.dart';
+import 'ProgressDialog.dart';
 
 
-class MyProgressDialog{
+class MyProgressDialog {
+  static StyleProgressDialog _progressDialog = StyleProgressDialog();
+  static BuildContext _context;
+
+  static void showProgressDialog(BuildContext context, String message) {
+    _context = context;
+    _progressDialog.showProgressDialog(context,dismissAfter: Duration(seconds: 5),textToBeDisplayed:message,onDismiss:(){
+    });
+  }
+
+  static void hideProgressDialog()  {
+    _progressDialog.dismissProgressDialog(_context);
+  }
+
+
+}
+
+
+
+
+/*
+class MyProgressDialog {
   static ProgressDialog _progressDialog;
   static BuildContext _context;
-  static void showProgressDialog( BuildContext context , String message ){
 
+  static void showProgressDialog(BuildContext context, String message) {
     hideProgressDialog();
     _progressDialog = new ProgressDialog(
-        context ,
-        showLogs:false
+      context,
+      showLogs: false,
+      useRootNavigator:false,
     );
 
 
-
     _progressDialog.style(
-        message: message,
+      message: message,
         /*
         borderRadius: 10.0,
         backgroundColor: Colors.white,
@@ -35,36 +58,15 @@ class MyProgressDialog{
          */
     );
     _progressDialog.show();
-
   }
 
-  static void hideProgressDialog() async{
-
-    if( _progressDialog!= null ){
-      if ( _progressDialog.isShowing() ){
-        bool value = await _progressDialog.hide();
-        if (!value){
-          Log.e( "hideProgressDialog Fail" );
-        }else{
-          Log.d("hideProgressDialog Success");
-        }
-      }else{
-        Log.d("ProgressDialog is not display");
-      }
-    }else{
-      Log.d("ProgressDialog is Null");
-    }
-
-
-    /*
+  static void hideProgressDialog() async {
     if( _progressDialog != null ){
       _progressDialog.dismiss();
     }
-    _progressDialog = null;
 
-     */
-    //_progressDialog.dismissProgressDialog( _context);
   }
 
 
 }
+*/

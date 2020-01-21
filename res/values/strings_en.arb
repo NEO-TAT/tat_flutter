@@ -22,5 +22,9 @@
   "updatePassword" : "Update",
   "resetAccountPassword" : "Reset",
   "restart" : "Restart",
-  "pleaseLogin" : "Please Login"
+  "pleaseLogin" : "Please Login",
+  "checkLogin" : "checkLogin",
+  "getISchoolNewAnnouncementError" : "getISchoolNewAnnouncementError",
+  "loginISchoolFail" : "login ISchool Fail",
+  "getISchoolNewAnnouncement" : "Getting ISchoolNewAnnouncement"
 }

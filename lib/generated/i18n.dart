@@ -29,10 +29,14 @@ class S implements WidgetsLocalizations {
   String get app_name => "ISchoolHelper";
   String get authCodeFail => "AuthCodeFail";
   String get cancel => "Cancel";
+  String get checkLogin => "checkLogin";
   String get connectTimeOut => "ConnectTimeOut";
+  String get getISchoolNewAnnouncement => "Getting ISchoolNewAnnouncement";
+  String get getISchoolNewAnnouncementError => "getISchoolNewAnnouncementError";
   String get loggingISchool => "Logging ISchool...";
   String get loggingNTUT => "Logging NTUT...";
   String get login => "login";
+  String get loginISchoolFail => "login ISchool Fail";
   String get loginSave => "Login save";
   String get networkError => "networkError";
   String get ok => "Ok";
@@ -47,8 +51,12 @@ class S implements WidgetsLocalizations {
   String get warning => "Warning";
 }
 
-class $zh_TW extends S {
-  const $zh_TW();
+class $en extends S {
+  const $en();
+}
+
+class $zh extends S {
+  const $zh();
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
@@ -57,12 +65,6 @@ class $zh_TW extends S {
   String get cancel => "取消";
   @override
   String get loginSave => "帳號密碼已儲存";
-  @override
-  String get updatePassword => "更新";
-  @override
-  String get accountLock => "帳號已被鎖住";
-  @override
-  String get restart => "重試";
   @override
   String get passwordExpiredWarning => "密碼即將過期，請盡快更新密碼";
   @override
@@ -74,25 +76,15 @@ class $zh_TW extends S {
   @override
   String get login => "登入";
   @override
-  String get loggingNTUT => "登入校園入口網站中...";
+  String get checkLogin => "檢查登入...";
   @override
   String get resetAccountPassword => "設定";
   @override
   String get alertError => "發生錯誤";
   @override
-  String get unknownError => "發生未知錯誤";
-  @override
-  String get app_name => "北科課程助手";
-  @override
   String get password => "密碼";
   @override
-  String get authCodeFail => "驗證碼錯誤";
-  @override
-  String get loggingISchool => "登入北科i學園中...";
-  @override
   String get warning => "警告";
-  @override
-  String get connectTimeOut => "連接逾時";
   @override
   String get pleaseLogin => "請登入";
   @override
@@ -100,11 +92,25 @@ class $zh_TW extends S {
   @override
   String get networkError => "網路發生錯誤";
   @override
+  String get updatePassword => "更新";
+  @override
+  String get accountLock => "帳號已被鎖住";
+  @override
+  String get restart => "重試";
+  @override
+  String get loggingNTUT => "登入校園入口網站中...";
+  @override
+  String get unknownError => "發生未知錯誤";
+  @override
+  String get app_name => "北科課程助手";
+  @override
+  String get authCodeFail => "驗證碼錯誤";
+  @override
+  String get loggingISchool => "登入北科i學園中...";
+  @override
+  String get connectTimeOut => "連接逾時";
+  @override
   String get account => "帳號";
-}
-
-class $en extends S {
-  const $en();
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
@@ -112,8 +118,8 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale("zh", "TW"),
       Locale("en", ""),
+      Locale("zh", ""),
     ];
   }
 
@@ -138,11 +144,11 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
     final String lang = getLang(locale);
     if (lang != null) {
       switch (lang) {
-        case "zh_TW":
-          S.current = const $zh_TW();
-          return SynchronousFuture<S>(S.current);
         case "en":
           S.current = const $en();
+          return SynchronousFuture<S>(S.current);
+        case "zh":
+          S.current = const $zh();
           return SynchronousFuture<S>(S.current);
         default:
           // NO-OP.

@@ -84,7 +84,7 @@ class CustomProgressDialog extends StatelessWidget {
 }
 
 //the code below is writeen by Vikas-Jilla and the above code is from existing material dialog library
-class ProgressDialog {
+class StyleProgressDialog {
   bool isDismissed = true;
   var lock = Lock();
   Timer _timer;

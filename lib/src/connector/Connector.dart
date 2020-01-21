@@ -14,7 +14,7 @@ class Connector {
   static Map<String, String> headers= {
     "User-Agent": _userAgent,
     "Upgrade-Insecure-Requests":"1" ,
-    "Referer": "https://nportal.ntut.edu.tw"
+    "Referer": "https://nportal.ntut.edu.tw",
   };
   static Future<String> getDataByPost(String url, Map<String, String> data) async {
     headers["User-Agent"] =  "Direk Android App";

@@ -17,5 +17,8 @@ abstract class TaskModel {
   BuildContext get context {
     return _context;
   }
+  void reStartTask() {
+    TaskHandler.instance.startTask();
+  }
   Future<TaskStatus> taskStart();
 }

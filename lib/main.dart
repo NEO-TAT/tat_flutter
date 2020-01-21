@@ -13,31 +13,37 @@ Future<Null> main() async {
     Log.e(details.toString());
   };
   runZoned(() {
-    runApp(MyApp());
+    runApp( MyApp() );
   },
-    /*
-  zoneSpecification: ZoneSpecification(
-    print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
-      Log.e(line);
-    },
-  ), */
     onError: (Object obj, StackTrace stack) {
     String log = Log.buildLog(stack.toString());
     Log.e(sprintf("ErrorType : %s , %s", [obj.toString(), log]));
   });
 }
 
-/*
-class R extends S {
-  static of(BuildContext context) {
-    return S.current;
-  }
-}
- */
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //Locale myLocale = Localizations.localeOf(context);
+    //Log.d( myLocale.toString() );
     return MaterialApp(
+      localizationsDelegates: [
+        S.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
+      title: 'Navigation Basics',
+      home: Scaffold(
+        body: BottomNavigationWidget(),
+      ),
+    );
+  }
+}
+
+/*
+MaterialApp(
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
         S.delegate,
@@ -50,5 +56,4 @@ class MyApp extends StatelessWidget {
       //home: BottomNavigationWidget(),
       home: BottomNavigationWidget(),
     );
-  }
-}
+ */

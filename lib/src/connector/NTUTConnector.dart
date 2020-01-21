@@ -32,8 +32,7 @@ class NTUTConnector {
 
   static Future<NTUTLoginStatus> login(String account , String password) async{
     try {
-    _isLogin = await _checkLogin();
-    if( isLogin ) return NTUTLoginStatus.LoginSuccess;
+    _isLogin = false;
     Map<String, String> data = {
       "muid": account,
       "mpassword": password,
@@ -48,7 +47,10 @@ class NTUTConnector {
         return NTUTLoginStatus.AuthCodeFailError;
       } else if (result.contains("帳號已被鎖住")) {
         return NTUTLoginStatus.AccountLockWarning;
+      }else if (result.contains("重新登入")) {
+        return NTUTLoginStatus.UnknownError;
       } else {
+
         UserDataJson jsonParse = UserDataJson.fromJson(json.decode(result));
         UserData user = DataModel.instance.user;
         user.givenName = jsonParse.givenName;
@@ -56,7 +58,7 @@ class NTUTConnector {
         user.userPhoto = jsonParse.userPhoto;
         user.passwordExpiredRemind = jsonParse.passwordExpiredRemind;
         user.userDn = jsonParse.userDn;
-        user.save();
+        //user.save();
         _isLogin = true;
         if ( user.passwordExpiredRemind == 'true' ){
           return NTUTLoginStatus.PasswordExpiredWarning;
@@ -99,14 +101,14 @@ class NTUTConnector {
     return _isLogin;
   }
 
-  static Future<bool> _checkLogin() async{
-    Log.d("CheckLogin");
+  static Future<bool> checkLogin() async{
+    Log.d("NTUT CheckLogin");
     try{
       String result = await Connector.getDataByGet( _checkLoginUrl);
       if (result.isEmpty || result.contains("請重新登入")) {
         return false;
       } else {
-        Log.d("Is Readly Login");
+        Log.d("NTUT Is Readly Login");
         return true;
       }
     }on Exception catch(e){

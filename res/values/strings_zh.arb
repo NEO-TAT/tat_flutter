@@ -22,5 +22,6 @@
   "updatePassword" : "更新",
   "resetAccountPassword" : "設定",
   "restart" : "重試",
-  "pleaseLogin" : "請登入"
+  "pleaseLogin" : "請登入",
+  "checkLogin" : "檢查登入..."
 }

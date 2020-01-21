@@ -7,12 +7,14 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/DataModel.dart';
 import 'package:flutter_app/src/store/dataformat/UserData.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/NTUTLoginTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/MyAlertDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-import 'package:progress_dialog/progress_dialog.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import '../../../main.dart';
 import 'pages/SettingScreen.dart';
@@ -49,7 +51,9 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   }
 
  void _login() {
-    TaskHandler.instance.addTask( NTUTLoginTask(context) );
+    //TaskHandler.instance.addTask( NTUTLoginTask(context) );
+    //TaskHandler.instance.addTask( ISchoolLoginTask(context) );
+    TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context) );
     TaskHandler.instance.startTask();
   }
 
@@ -105,6 +109,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             },
             type: BottomNavigationBarType.shifting,
           ),
-        ));
+        ),
+    );
   }
 }

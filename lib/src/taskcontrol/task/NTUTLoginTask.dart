@@ -8,8 +8,12 @@ import 'package:flutter_app/src/store/dataformat/UserData.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/other/MyAlertDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widget.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+
+import '../../../main.dart';
 
 class NTUTLoginTask extends TaskModel{
   static final String taskName = "NTUTLoginTask";
@@ -22,23 +26,17 @@ class NTUTLoginTask extends TaskModel{
     String account = user.account;
     String password = user.password;
     MyProgressDialog.showProgressDialog(context, S.current.loggingNTUT);
-    try{
-      NTUTLoginStatus value = await NTUTConnector.login(account, password);
-      MyProgressDialog.hideProgressDialog();
-      if( value != NTUTLoginStatus.LoginSuccess){
-        _handleLoginError(value);
-        return TaskStatus.TaskFail;
-      }else{
-        return TaskStatus.TaskSuccess;
-      }
-    }on Exception catch(e) {
-      MyProgressDialog.hideProgressDialog();
-      Log.e(e.toString());
+    NTUTLoginStatus value = await NTUTConnector.login(account, password);
+    MyProgressDialog.hideProgressDialog();
+    if( value != NTUTLoginStatus.LoginSuccess){
+      _handleError(value);
       return TaskStatus.TaskFail;
+    }else{
+      return TaskStatus.TaskSuccess;
     }
   }
 
-  void _handleLoginError( NTUTLoginStatus value){
+  void _handleError( NTUTLoginStatus value){
     switch (value) {
       case NTUTLoginStatus.PasswordExpiredWarning:
         AwesomeDialog(
@@ -157,7 +155,7 @@ class NTUTLoginTask extends TaskModel{
   }
 
   void _reLogin(){
-    TaskHandler.instance.startTask();
+    reStartTask();
   }
 
 
