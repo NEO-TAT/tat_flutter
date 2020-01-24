@@ -12,10 +12,13 @@ class MyCookieManager {
     //37ff5364b2b59a19c61eebceb233268b=0b417nttrt68cp91u5609jjh05; path=/; HttpOnly,cookie_login=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT
     List<String> cookiesList = List();
     for ( String cookiesItem in cookies.split(",")){
-      String realCookies = cookiesItem.split(";")[0];
-      if ( realCookies.contains("=")){
-        cookiesList.add(realCookies);
-        Log.d( sprintf( "Host: %s , Cookies: %s" , [host , realCookies] ) );
+      List<String> cookiesSplit = cookiesItem.split(";");
+      String realCookies = cookiesSplit[0];
+      if ( realCookies.contains("=") && cookiesSplit.length > 1){
+        if( cookiesSplit[1].toLowerCase().contains("path")){
+          cookiesList.add(realCookies);
+        }
+        //Log.d( sprintf( "Host: %s , Cookies: %s" , [host , realCookies] ) );
       }
     }
     _addCookies(host , cookiesList);
@@ -60,8 +63,10 @@ class MyCookieManager {
         String value = _getCookiesValue(cookiesItem);
         if ( cookiesList.containsKey( key ) ){
           Log.d( sprintf( "Host: %s , Replace Cookies: %s=%s" , [host , key , value] ) );
-          cookiesList[key] = value;
+        }else{
+          Log.d( sprintf( "Host: %s , Add Cookies: %s=%s" , [host , key , value] ) );
         }
+        cookiesList[key] = value;
       }
       cookiesMap[host] = cookiesList;
     }

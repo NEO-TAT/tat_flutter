@@ -37,10 +37,10 @@ class NTUTConnector {
       "muid": account,
       "mpassword": password,
       "forceMobile": "mobile" ,
-      "authcode" : "" ,
-      "md5Code" : ""
+      //"authcode" : "" ,
+      //"md5Code" : ""
     };
-      String result = await Connector.getDataByPost( _loginUrl, data);
+      String result = await Connector.getDataByPost( _loginUrl, data , userAgent : "Direk Android App");
       if (result.contains("帳號或密碼錯誤")) {
         return NTUTLoginStatus.AccountPasswordIncorrect;
       } else if (result.contains("驗證碼")) {
@@ -50,7 +50,6 @@ class NTUTConnector {
       }else if (result.contains("重新登入")) {
         return NTUTLoginStatus.UnknownError;
       } else {
-
         UserDataJson jsonParse = UserDataJson.fromJson(json.decode(result));
         UserData user = DataModel.instance.user;
         user.givenName = jsonParse.givenName;
@@ -104,6 +103,7 @@ class NTUTConnector {
   static Future<bool> checkLogin() async{
     Log.d("NTUT CheckLogin");
     try{
+      Connector.setStoreCookies = false;
       String result = await Connector.getDataByGet( _checkLoginUrl);
       if (result.isEmpty || result.contains("請重新登入")) {
         return false;

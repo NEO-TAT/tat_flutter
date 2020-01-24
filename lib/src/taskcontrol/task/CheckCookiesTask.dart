@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
@@ -12,12 +13,17 @@ class CheckCookiesTask extends TaskModel{
   @override
   Future<TaskStatus> taskStart() async{
     MyProgressDialog.showProgressDialog(context, S.current.checkLogin);
-    bool isLoginNTUT = await NTUTConnector.checkLogin();
-    bool isLoginSchool = await ISchoolConnector.checkLogin();
-    MyProgressDialog.hideProgressDialog();
-    if( isLoginSchool && isLoginNTUT){
-      return TaskStatus.TaskSuccess;
-    }else{
+    try{
+      bool isLoginNTUT = await NTUTConnector.checkLogin();
+      bool isLoginSchool = await ISchoolConnector.checkLogin();
+      MyProgressDialog.hideProgressDialog();
+      if( isLoginSchool && isLoginNTUT){
+        return TaskStatus.TaskSuccess;
+      }else{
+        return TaskStatus.TaskFail;
+      }
+    }on Exception catch(e){
+      Log.e(e.toString());
       return TaskStatus.TaskFail;
     }
   }

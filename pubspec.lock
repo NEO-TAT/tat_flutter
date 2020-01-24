@@ -175,13 +175,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.1"
-  hex:
-    dependency: transitive
-    description:
-      name: hex
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.2"
   html:
     dependency: "direct main"
     description:
@@ -217,13 +210,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.0"
-  logging:
-    dependency: transitive
-    description:
-      name: logging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.4"
   matcher:
     dependency: transitive
     description:
@@ -315,13 +301,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  requests:
-    dependency: "direct main"
-    description:
-      name: requests
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.3"
   shared_preferences:
     dependency: "direct main"
     description:

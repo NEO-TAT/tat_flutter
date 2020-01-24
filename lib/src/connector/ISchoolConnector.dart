@@ -1,5 +1,6 @@
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:html/dom.dart';
+import 'package:http/http.dart' as http;
 import 'package:html/parser.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -16,8 +17,10 @@ enum ISchoolLoginStatus {
 
 class ISchoolConnector {
   static bool _isLogin = false;
-  static final String _postLoginISchoolUrl =
+  static final String _getLoginISchoolUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
+  static final String _postLoginISchoolUrl =
+      "https://ischool.ntut.edu.tw/learning/auth/login.php";
   static final String _iSchoolUrl = "https://ischool.ntut.edu.tw";
   static final String _iSchoolFileUrl =
       "https://ischool.ntut.edu.tw/learning/document/document.php";
@@ -37,9 +40,12 @@ class ISchoolConnector {
       List<Element> nodes;
       Map<String, String> data = {
         "apUrl": "https://ischool.ntut.edu.tw/learning/auth/login.php",
-        "apOu": "ischool"
+        "apOu": "ischool" ,
+        "sso" : "true" ,
+        "datetime1" : DateTime.now().millisecondsSinceEpoch.toString()
       };
-      result = await Connector.getDataByGet(_postLoginISchoolUrl, data);
+      result = await Connector.getDataByGet( _getLoginISchoolUrl, data);
+      Log.d(result);
       tagNode = parse(result);
       nodes = tagNode.getElementsByTagName("input");
       data = Map();
@@ -48,8 +54,13 @@ class ISchoolConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
+      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       Log.d(data.toString());
-      result = await Connector.getDataByPost(_iSchoolUrl, data);
+      http.Response response = await Connector.getDataByPostResponse( jumpUrl, data);
+      Connector.printHeader(response.headers);
+      Log.d(response.body);
+      String res = await Connector.getDataByGet( _iSchoolUrl);
+      Log.d(res);
       _isLogin = true;
       return ISchoolLoginStatus.LoginSuccess;
     } on Exception catch (e) {
@@ -72,9 +83,12 @@ class ISchoolConnector {
       Map<String, String> data = {
         "box": "inbox",
       };
+      return false;
       result = await Connector.getDataByGet(_iSchoolNewAnnouncementUrl, data);
-      tagNode = parse(result);
-      Log.d( tagNode.outerHtml );
+      Log.d( result );
+      return false;
+      //tagNode = parse(result);
+      //Log.d( tagNode.outerHtml );
       /*
       nodes = tagNode.getElementsByTagName("tbody"); // 取得兩個取第二個
       nodes = nodes[1].getElementsByTagName("tr");
@@ -122,9 +136,9 @@ class ISchoolConnector {
   static Future<bool> checkLogin() async {
     Log.d("ISchool CheckLogin");
     try {
-      String result =
-          await Connector.getDataByGet(_iSchoolCourseAnnouncementUrl);
-      if (result.isEmpty) {
+      Connector.setStoreCookies = false;
+      http.Response response = await Connector.getDataByGetResponse( _iSchoolUrl );
+      if ( response.statusCode != 200  ||  response.body.contains("location.href=") ) {
         return false;
       } else {
         Log.d("ISchool Is Readly Login");
