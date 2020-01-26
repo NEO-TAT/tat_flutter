@@ -91,7 +91,6 @@ class UserData extends  DataFormat {
     userPhoto   = null;
     passwordExpiredRemind = null;
     userDn = null;
-    Connector.cookieManager.clearCookies();
     save();
   }
 

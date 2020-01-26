@@ -27,13 +27,17 @@ class MyApp extends StatelessWidget {
     //Locale myLocale = Localizations.localeOf(context);
     //Log.d( myLocale.toString() );
     return MaterialApp(
+      routes: {
+        '/home': (context) => BottomNavigationWidget(),
+        '/login': (context) => LoginPage(),
+      },
       localizationsDelegates: [
         S.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
+      //localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
       title: 'Navigation Basics',
       home: Scaffold(
         body: BottomNavigationWidget(),

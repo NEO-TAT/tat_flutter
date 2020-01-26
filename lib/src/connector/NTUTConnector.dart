@@ -11,6 +11,7 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:html/parser.dart';
 
 import 'Connector.dart';
+import 'ConnectorParameter.dart';
 
 enum NTUTLoginStatus {
   LoginSuccess ,
@@ -32,15 +33,19 @@ class NTUTConnector {
 
   static Future<NTUTLoginStatus> login(String account , String password) async{
     try {
-    _isLogin = false;
-    Map<String, String> data = {
-      "muid": account,
-      "mpassword": password,
-      "forceMobile": "mobile" ,
-      //"authcode" : "" ,
-      //"md5Code" : ""
-    };
-      String result = await Connector.getDataByPost( _loginUrl, data , userAgent : "Direk Android App");
+      ConnectorParameter parameter;
+      _isLogin = false;
+      Map<String, String> data = {
+        "muid": account,
+        "mpassword": password,
+        "forceMobile": "mobile" ,
+        //"authcode" : "" ,
+        //"md5Code" : ""
+      };
+      parameter = ConnectorParameter(_loginUrl);
+      parameter.data = data;
+      parameter.userAgent = "Direk Android App";
+      String result = await Connector.getDataByPost( parameter );
       if (result.contains("帳號或密碼錯誤")) {
         return NTUTLoginStatus.AccountPasswordIncorrect;
       } else if (result.contains("驗證碼")) {
@@ -58,10 +63,10 @@ class NTUTConnector {
         user.passwordExpiredRemind = jsonParse.passwordExpiredRemind;
         user.userDn = jsonParse.userDn;
         //user.save();
-        _isLogin = true;
         if ( user.passwordExpiredRemind == 'true' ){
           return NTUTLoginStatus.PasswordExpiredWarning;
         }
+        _isLogin = true;
         return NTUTLoginStatus.LoginSuccess;
       }
     } on Exception catch(e){
@@ -102,13 +107,16 @@ class NTUTConnector {
 
   static Future<bool> checkLogin() async{
     Log.d("NTUT CheckLogin");
+    ConnectorParameter parameter;
+    _isLogin = false;
     try{
-      Connector.setStoreCookies = false;
-      String result = await Connector.getDataByGet( _checkLoginUrl);
+      parameter = ConnectorParameter(_checkLoginUrl);
+      String result = await Connector.getDataByGet( parameter );
       if (result.isEmpty || result.contains("請重新登入")) {
         return false;
       } else {
         Log.d("NTUT Is Readly Login");
+        _isLogin = true;
         return true;
       }
     }on Exception catch(e){

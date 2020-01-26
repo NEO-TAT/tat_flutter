@@ -1,9 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/ConnectorParameter.dart';
 import 'package:html/dom.dart';
-import 'package:http/http.dart' as http;
 import 'package:html/parser.dart';
 import 'package:sprintf/sprintf.dart';
-
 import 'Connector.dart';
 import 'NTUTConnector.dart';
 
@@ -36,6 +36,7 @@ class ISchoolConnector {
   static Future<ISchoolLoginStatus> login() async {
     String result;
     try {
+      ConnectorParameter parameter;
       Document tagNode;
       List<Element> nodes;
       Map<String, String> data = {
@@ -44,8 +45,9 @@ class ISchoolConnector {
         "sso" : "true" ,
         "datetime1" : DateTime.now().millisecondsSinceEpoch.toString()
       };
-      result = await Connector.getDataByGet( _getLoginISchoolUrl, data);
-      Log.d(result);
+      parameter = ConnectorParameter(_getLoginISchoolUrl);
+      parameter.data = data;
+      result = await Connector.getDataByGet( parameter );
       tagNode = parse(result);
       nodes = tagNode.getElementsByTagName("input");
       data = Map();
@@ -55,12 +57,11 @@ class ISchoolConnector {
         data[name] = value;
       }
       String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      Log.d(data.toString());
-      http.Response response = await Connector.getDataByPostResponse( jumpUrl, data);
-      Connector.printHeader(response.headers);
-      Log.d(response.body);
-      String res = await Connector.getDataByGet( _iSchoolUrl);
-      Log.d(res);
+      parameter = ConnectorParameter(jumpUrl);
+      parameter.data  = data;
+      Response response = await Connector.getDataByPostResponse( parameter );
+      //String res = await Connector.getDataByGet( _iSchoolUrl);
+      //Log.d(res);
       _isLogin = true;
       return ISchoolLoginStatus.LoginSuccess;
     } on Exception catch (e) {
@@ -70,6 +71,7 @@ class ISchoolConnector {
   }
 
   static Future<bool> getISchoolNewAnnouncement() async {
+    ConnectorParameter parameter;
     int i, j;
     String result;
     String title;
@@ -83,13 +85,11 @@ class ISchoolConnector {
       Map<String, String> data = {
         "box": "inbox",
       };
-      return false;
-      result = await Connector.getDataByGet(_iSchoolNewAnnouncementUrl, data);
-      Log.d( result );
-      return false;
-      //tagNode = parse(result);
-      //Log.d( tagNode.outerHtml );
-      /*
+      parameter = ConnectorParameter( _iSchoolNewAnnouncementUrl );
+      parameter.data = data;
+      result = await Connector.getDataByGet( parameter );
+      tagNode = parse(result);
+
       nodes = tagNode.getElementsByTagName("tbody"); // 取得兩個取第二個
       nodes = nodes[1].getElementsByTagName("tr");
       for (i = 0; i < nodes.length; i++) {
@@ -101,27 +101,25 @@ class ISchoolConnector {
                   nodesItem[j].getElementsByTagName("a")[1].attributes["href"];
               uid = nodesItem[j]
                   .getElementsByClassName("im_context")[0]
-                  .toString();
+                  .innerHtml;
               uid = uid.replaceAll(" ", "");
               uid = uid.replaceAll("[", "");
               uid = uid.split("-")[0];
               href = href.replaceAll("amp;", ""); //修正&後出現amp;問題
               messageId = Uri.parse(href).queryParameters["messageId"];
-              title = nodesItem[j].getElementsByTagName("a")[1].toString();
+              title = nodesItem[j].getElementsByTagName("a")[1].innerHtml;
               break;
             case 1:
-              sender = nodesItem[j].getElementsByTagName("a").toString();
+              sender = nodesItem[j].getElementsByTagName("a")[0].innerHtml;
               break;
             case 2:
-              postTime = nodesItem[j].toString();
+              postTime = nodesItem[j].innerHtml;
               break;
           }
         }
-        Log.d(sprintf("title:%s , postTime:%s , sender:%s , messageId:%s",
-            [title, postTime, sender, messageId]));
+        Log.d(sprintf("  title:%s \n  postTime:%s \n  sender:%s \n  messageId:%s \n  uid:%s \n \n",
+            [title, postTime, sender, messageId, uid]));
       }
-
-       */
       return true;
     } on Exception catch (e) {
       Log.e(e.toString());
@@ -135,13 +133,16 @@ class ISchoolConnector {
 
   static Future<bool> checkLogin() async {
     Log.d("ISchool CheckLogin");
+    ConnectorParameter parameter;
+    _isLogin = false;
     try {
-      Connector.setStoreCookies = false;
-      http.Response response = await Connector.getDataByGetResponse( _iSchoolUrl );
-      if ( response.statusCode != 200  ||  response.body.contains("location.href=") ) {
+      parameter = ConnectorParameter(_iSchoolUrl);
+      Response response = await Connector.getDataByGetResponse( parameter );
+      if ( response.statusCode != 200 ) {
         return false;
       } else {
         Log.d("ISchool Is Readly Login");
+        _isLogin = true;
         return true;
       }
     } on Exception catch (e) {

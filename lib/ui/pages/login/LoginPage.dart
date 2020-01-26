@@ -8,8 +8,6 @@ import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widge
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import '../../../main.dart';
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
