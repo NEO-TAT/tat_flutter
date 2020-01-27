@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
@@ -32,9 +33,13 @@ class TaskHandler {
     }
   }
 
-  void startTask() async{
+  void startTask( [BuildContext context]) async{
     while ( _taskQueue.length > 0 ){
       TaskModel task = _taskQueue.removeAt(0);
+      if( context != null ){
+        task.setContext = context;
+        Log.d( "SetContext") ;
+      }
       Log.d( "Start " + task.getTaskName );
       try {
         TaskStatus result = await task.taskStart();

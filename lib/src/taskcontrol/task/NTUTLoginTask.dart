@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
@@ -15,28 +16,28 @@ import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 
 import '../../../main.dart';
 
-class NTUTLoginTask extends TaskModel{
+class NTUTLoginTask extends TaskModel {
   static final String taskName = "NTUTLoginTask";
-  NTUTLoginTask(BuildContext context) : super(context , taskName);
 
+  NTUTLoginTask(BuildContext context) : super(context, taskName);
 
   @override
-  Future<TaskStatus> taskStart() async{
+  Future<TaskStatus> taskStart() async {
     UserData user = DataModel.instance.user;
     String account = user.account;
     String password = user.password;
     MyProgressDialog.showProgressDialog(context, S.current.loggingNTUT);
     NTUTLoginStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
-    if( value != NTUTLoginStatus.LoginSuccess){
+    if (value != NTUTLoginStatus.LoginSuccess) {
       _handleError(value);
       return TaskStatus.TaskFail;
-    }else{
+    } else {
       return TaskStatus.TaskSuccess;
     }
   }
 
-  void _handleError( NTUTLoginStatus value){
+  void _handleError(NTUTLoginStatus value) {
     switch (value) {
       case NTUTLoginStatus.PasswordExpiredWarning:
         AwesomeDialog(
@@ -45,14 +46,13 @@ class NTUTLoginTask extends TaskModel{
             animType: AnimType.BOTTOMSLIDE,
             tittle: S.current.alertError,
             desc: S.current.passwordExpiredWarning,
-            btnOkText: S.current.updatePassword ,
+            btnOkText: S.current.updatePassword,
             btnCancelText: S.current.cancel,
-            useRootNavigator : true,
+            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
-            }
-        ).show();
+            }).show();
         break;
       case NTUTLoginStatus.AccountLockWarning:
         AwesomeDialog(
@@ -61,14 +61,13 @@ class NTUTLoginTask extends TaskModel{
             animType: AnimType.BOTTOMSLIDE,
             tittle: S.current.alertError,
             desc: S.current.accountLock,
-            btnOkText: S.current.restart ,
+            btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator : true,
+            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
-            }
-        ).show();
+            }).show();
         break;
       case NTUTLoginStatus.AccountPasswordIncorrect:
         AwesomeDialog(
@@ -77,14 +76,13 @@ class NTUTLoginTask extends TaskModel{
             animType: AnimType.BOTTOMSLIDE,
             tittle: S.current.alertError,
             desc: S.current.accountPasswordFail,
-            btnOkText: S.current.resetAccountPassword ,
+            btnOkText: S.current.resetAccountPassword,
             btnCancelText: S.current.cancel,
-            useRootNavigator : true,
+            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
-              Navigator.of(context).push( CustomRoute(LoginPage() ));
-            }
-        ).show();
+              Navigator.of(context).push(CustomRoute(LoginPage()));
+            }).show();
         break;
       case NTUTLoginStatus.ConnectTimeOutError:
         AwesomeDialog(
@@ -93,14 +91,13 @@ class NTUTLoginTask extends TaskModel{
             animType: AnimType.BOTTOMSLIDE,
             tittle: S.current.alertError,
             desc: S.current.connectTimeOut,
-            btnOkText: S.current.restart ,
+            btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator : true,
+            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
-            }
-        ).show();
+            }).show();
         break;
       case NTUTLoginStatus.AuthCodeFailError:
         AwesomeDialog(
@@ -109,14 +106,13 @@ class NTUTLoginTask extends TaskModel{
             animType: AnimType.BOTTOMSLIDE,
             tittle: S.current.alertError,
             desc: S.current.authCodeFail,
-            btnOkText: S.current.restart ,
+            btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator : true,
+            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
-            }
-        ).show();
+            }).show();
         break;
       case NTUTLoginStatus.NetworkError:
         AwesomeDialog(
@@ -125,40 +121,35 @@ class NTUTLoginTask extends TaskModel{
             animType: AnimType.BOTTOMSLIDE,
             tittle: S.current.alertError,
             desc: S.current.networkError,
-            btnOkText: S.current.restart ,
+            btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator : true,
+            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
-            }
-        ).show();
+            }).show();
         break;
       default:
         AwesomeDialog(
-            context: context,
-            dialogType: DialogType.ERROR,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: S.current.unknownError,
-            btnOkText: S.current.restart ,
-            btnCancelText: S.current.cancel,
-            useRootNavigator : true,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              _reLogin();
-            },
+          context: context,
+          dialogType: DialogType.ERROR,
+          animType: AnimType.BOTTOMSLIDE,
+          tittle: S.current.alertError,
+          desc: S.current.unknownError,
+          btnOkText: S.current.restart,
+          btnCancelText: S.current.cancel,
+          useRootNavigator: true,
+          btnCancelOnPress: () {},
+          btnOkOnPress: () {
+            _reLogin();
+          },
         ).show();
         Log.d(value.toString());
         break;
     }
   }
 
-  void _reLogin(){
+  void _reLogin() {
     reStartTask();
   }
-
-
-
-
 }

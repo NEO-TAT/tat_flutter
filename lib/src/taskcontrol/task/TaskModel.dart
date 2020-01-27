@@ -14,9 +14,15 @@ abstract class TaskModel {
     return _taskName;
   }
 
+  set setContext(BuildContext value) {
+    _context = value;
+  }
+
   BuildContext get context {
     return _context;
   }
+
+
   void reStartTask() {
     TaskHandler.instance.startTask();
   }

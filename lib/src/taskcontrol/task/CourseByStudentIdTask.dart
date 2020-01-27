@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
@@ -11,7 +12,7 @@ class CourseByStudentIdTask extends TaskModel{
 
   @override
   Future<TaskStatus> taskStart() async{
-    MyProgressDialog.showProgressDialog(context, "getcourse");
+    MyProgressDialog.showProgressDialog(context, S.current.getCourse );
     try{
       CourseConnector.getCourseByStudentId(id);
       MyProgressDialog.hideProgressDialog();

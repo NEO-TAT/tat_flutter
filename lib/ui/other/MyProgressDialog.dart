@@ -10,15 +10,22 @@ class MyProgressDialog {
   static StyleProgressDialog _progressDialog = StyleProgressDialog();
   static BuildContext _context;
 
-  static void showProgressDialog(BuildContext context, String message) {
+  static void showProgressDialog(BuildContext context, String message) async{
     _context = context;
-    _progressDialog.showProgressDialog(context,dismissAfter: Duration(seconds: 5),textToBeDisplayed:message,onDismiss:(){
-    });
+    _progressDialog.showProgressDialog(
+        context,
+        dismissAfter: Duration(seconds: 10 ),
+        textToBeDisplayed:message,
+        onDismiss:(){
+
+        }
+        );
   }
 
   static void hideProgressDialog()  {
     _progressDialog.dismissProgressDialog(_context);
   }
+
 
 
 }

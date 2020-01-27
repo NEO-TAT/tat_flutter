@@ -31,6 +31,7 @@ class S implements WidgetsLocalizations {
   String get cancel => "Cancel";
   String get checkLogin => "checkLogin";
   String get connectTimeOut => "ConnectTimeOut";
+  String get getCourse => "Getting Course";
   String get getISchoolNewAnnouncement => "Getting ISchoolNewAnnouncement";
   String get getISchoolNewAnnouncementError => "getISchoolNewAnnouncementError";
   String get loggingISchool => "Logging ISchool...";
@@ -73,6 +74,8 @@ class $zh extends S {
   String get accountPasswordFail => "帳號密碼錯誤";
   @override
   String get accountNull => "請輸入帳號";
+  @override
+  String get getCourse => "取得課表...";
   @override
   String get login => "登入";
   @override

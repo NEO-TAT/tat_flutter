@@ -43,26 +43,15 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       ..add(PagesScreen())
       ..add(SettingScreen());
     super.initState();
-    DataModel.instance.init().then( (value) {
-      UserData user = DataModel.instance.user;
-      if (user.account.isEmpty || user.password.isEmpty) {
-        //尚未登入
-        Navigator.of(context).push(CustomRoute(LoginPage()));
-      } else {
-        _login();
-      }
-    });
+    _addTask();
   }
 
- void _login() {
-    //TaskHandler.instance.addTask( NTUTLoginTask(context) );
-    //TaskHandler.instance.addTask( ISchoolLoginTask(context) );
+ void _addTask() async{
     TaskHandler.instance.addTask( CheckCookiesTask(context) );
     TaskHandler.instance.addTask( CourseLoginTask(context) );
-    //TaskHandler.instance.addTask( CourseByCourseIdTask(context , "261046 ) );
-    TaskHandler.instance.addTask( CourseByStudentIdTask(context , "106360113" ) );
-    //TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context) );
-    TaskHandler.instance.startTask();
+    //TaskHandler.instance.addTask( CourseByCourseIdTask(context , "261046" ) );
+    //TaskHandler.instance.addTask( CourseByStudentIdTask(context , "106360113" ) );
+    TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context) );
   }
 
   @override

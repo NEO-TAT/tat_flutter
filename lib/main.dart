@@ -31,12 +31,15 @@ class MyApp extends StatelessWidget {
         '/home': (context) => BottomNavigationWidget(),
         '/login': (context) => LoginPage(),
       },
+
       localizationsDelegates: [
         S.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
+
+
       //localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
       title: 'Navigation Basics',
       home: Scaffold(
@@ -45,19 +48,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-/*
-MaterialApp(
-      localizationsDelegates: [
-        // ... app-specific localization delegate[s] here
-        S.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      //localeResolutionCallback: S.delegate.resolution(fallback: const Locale('zh' , 'TW' )),
-      title: 'Navigation Basics',
-      //home: BottomNavigationWidget(),
-      home: BottomNavigationWidget(),
-    );
- */

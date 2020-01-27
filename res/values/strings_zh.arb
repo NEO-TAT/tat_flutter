@@ -23,5 +23,6 @@
   "resetAccountPassword" : "設定",
   "restart" : "重試",
   "pleaseLogin" : "請登入",
-  "checkLogin" : "檢查登入..."
+  "checkLogin" : "檢查登入...",
+  "getCourse" : "取得課表..."
 }
