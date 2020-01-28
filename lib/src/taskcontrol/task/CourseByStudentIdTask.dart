@@ -1,26 +1,27 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
-import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
+import 'TaskModel.dart';
+
 class CourseByStudentIdTask extends TaskModel{
-  static final String taskName = "CourseByCourseIdTask";
+  static final String taskName = "CourseByStudentIdTask";
   String id;
-  CourseByStudentIdTask(BuildContext context , this.id) : super(context, taskName);
+  String year;
+  String semester;
+  CourseByStudentIdTask(BuildContext context,this.id,this.year,this.semester) : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async{
-    MyProgressDialog.showProgressDialog(context, S.current.getCourse );
-    try{
-      CourseConnector.getCourseByStudentId(id);
-      MyProgressDialog.hideProgressDialog();
+    MyProgressDialog.showProgressDialog(context, "getcourse");
+    bool value = await CourseConnector.getCourseByStudentId(id , year , semester );
+    MyProgressDialog.hideProgressDialog();
+    if( value ) {
       return TaskStatus.TaskSuccess;
-    }on Exception catch(e){
-      Log.e(e.toString());
+    }else {
       return TaskStatus.TaskFail;
     }
   }
+
 
 }

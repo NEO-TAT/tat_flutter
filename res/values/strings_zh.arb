@@ -24,5 +24,9 @@
   "restart" : "重試",
   "pleaseLogin" : "請登入",
   "checkLogin" : "檢查登入...",
-  "getCourse" : "取得課表..."
+  "getISchoolNewAnnouncementError" : "取得最新公告錯誤",
+  "loginISchoolFail" : "登入北科I學園錯誤",
+  "getISchoolNewAnnouncement" : "取得最新公告...",
+  "getCourse" : "取得課表...",
+  "loginCourse" : "登入課程系統..."
 }

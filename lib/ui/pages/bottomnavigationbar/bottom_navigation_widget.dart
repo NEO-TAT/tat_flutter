@@ -10,6 +10,7 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseByCourseIdTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseByStudentIdTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/SemesterByStudentIdTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
@@ -48,10 +49,10 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
  void _addTask() async{
     TaskHandler.instance.addTask( CheckCookiesTask(context) );
-    TaskHandler.instance.addTask( CourseLoginTask(context) );
+    //TaskHandler.instance.addTask( CourseLoginTask(context) );
     //TaskHandler.instance.addTask( CourseByCourseIdTask(context , "261046" ) );
-    //TaskHandler.instance.addTask( CourseByStudentIdTask(context , "106360113" ) );
-    TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context) );
+    TaskHandler.instance.addTask( CourseByStudentIdTask(context , "106360113" , "106" , "1" ) );
+    //TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context) );
   }
 
   @override

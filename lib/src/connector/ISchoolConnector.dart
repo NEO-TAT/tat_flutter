@@ -7,7 +7,7 @@ import 'package:sprintf/sprintf.dart';
 import 'Connector.dart';
 import 'NTUTConnector.dart';
 
-enum ISchoolLoginStatus {
+enum ISchoolConnectorStatus {
   LoginSuccess,
   LoginFail,
   ConnectTimeOutError,
@@ -33,7 +33,7 @@ class ISchoolConnector {
   static final String _iSchoolDownloadUrl =
       "https://ischool.ntut.edu.tw/learning/backends/download.php";
 
-  static Future<ISchoolLoginStatus> login() async {
+  static Future<ISchoolConnectorStatus> login() async {
     String result;
     try {
       ConnectorParameter parameter;
@@ -63,10 +63,10 @@ class ISchoolConnector {
       //String res = await Connector.getDataByGet( _iSchoolUrl);
       //Log.d(res);
       _isLogin = true;
-      return ISchoolLoginStatus.LoginSuccess;
+      return ISchoolConnectorStatus.LoginSuccess;
     } on Exception catch (e) {
       Log.e(e.toString());
-      return ISchoolLoginStatus.LoginFail;
+      return ISchoolConnectorStatus.LoginFail;
     }
   }
 
@@ -146,7 +146,9 @@ class ISchoolConnector {
         return true;
       }
     } on Exception catch (e) {
-      throw e;
+      //throw e;
+      Log.e(e.toString());
+      return false;
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
@@ -11,13 +12,12 @@ class CourseLoginTask extends TaskModel{
 
   @override
   Future<TaskStatus> taskStart() async{
-    MyProgressDialog.showProgressDialog(context, "CourseLogin");
-    try{
-      CourseConnector.login();
-      MyProgressDialog.hideProgressDialog();
+    MyProgressDialog.showProgressDialog(context, S.current.loginCourse );
+    CourseConnectorStatus value = await CourseConnector.login();
+    MyProgressDialog.hideProgressDialog();
+    if( value == CourseConnectorStatus.LoginSuccess){
       return TaskStatus.TaskSuccess;
-    }on Exception catch(e){
-      Log.e(e.toString());
+    }else{
       return TaskStatus.TaskFail;
     }
   }

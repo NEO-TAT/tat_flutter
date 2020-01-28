@@ -13,7 +13,7 @@ import 'package:html/parser.dart';
 import 'Connector.dart';
 import 'ConnectorParameter.dart';
 
-enum NTUTLoginStatus {
+enum NTUTConnectorStatus {
   LoginSuccess ,
   PasswordExpiredWarning ,
   AccountLockWarning ,   //帳號鎖住
@@ -31,7 +31,7 @@ class NTUTConnector {
   static final String _getPictureUrl = "https://nportal.ntut.edu.tw/photoView.do?realname=";
   static final String _checkLoginUrl = "https://nportal.ntut.edu.tw/myPortal.do";
 
-  static Future<NTUTLoginStatus> login(String account , String password) async{
+  static Future<NTUTConnectorStatus> login(String account , String password) async{
     try {
       ConnectorParameter parameter;
       _isLogin = false;
@@ -47,13 +47,13 @@ class NTUTConnector {
       parameter.userAgent = "Direk Android App";
       String result = await Connector.getDataByPost( parameter );
       if (result.contains("帳號或密碼錯誤")) {
-        return NTUTLoginStatus.AccountPasswordIncorrect;
+        return NTUTConnectorStatus.AccountPasswordIncorrect;
       } else if (result.contains("驗證碼")) {
-        return NTUTLoginStatus.AuthCodeFailError;
+        return NTUTConnectorStatus.AuthCodeFailError;
       } else if (result.contains("帳號已被鎖住")) {
-        return NTUTLoginStatus.AccountLockWarning;
+        return NTUTConnectorStatus.AccountLockWarning;
       }else if (result.contains("重新登入")) {
-        return NTUTLoginStatus.UnknownError;
+        return NTUTConnectorStatus.UnknownError;
       } else {
         UserDataJson jsonParse = UserDataJson.fromJson(json.decode(result));
         UserData user = DataModel.instance.user;
@@ -64,20 +64,20 @@ class NTUTConnector {
         user.userDn = jsonParse.userDn;
         //user.save();
         if ( user.passwordExpiredRemind == 'true' ){
-          return NTUTLoginStatus.PasswordExpiredWarning;
+          return NTUTConnectorStatus.PasswordExpiredWarning;
         }
         _isLogin = true;
-        return NTUTLoginStatus.LoginSuccess;
+        return NTUTConnectorStatus.LoginSuccess;
       }
     } on Exception catch(e){
       Log.e(e.toString());
       if ( e is TimeoutException){
-        return NTUTLoginStatus.ConnectTimeOutError;
+        return NTUTConnectorStatus.ConnectTimeOutError;
       }
       else if ( e is SocketException){
-        return NTUTLoginStatus.NetworkError;
+        return NTUTConnectorStatus.NetworkError;
       }
-      return NTUTLoginStatus.UnknownError;
+      return NTUTConnectorStatus.UnknownError;
     }
   }
 
@@ -120,7 +120,9 @@ class NTUTConnector {
         return true;
       }
     }on Exception catch(e){
-      throw e;
+      //throw e;
+      Log.e(e.toString());
+      return false;
     }
 
   }

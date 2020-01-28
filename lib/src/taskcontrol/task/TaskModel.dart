@@ -27,4 +27,6 @@ abstract class TaskModel {
     TaskHandler.instance.startTask();
   }
   Future<TaskStatus> taskStart();
+  //Future<List<TaskModel>> taskErrorList();
+
 }

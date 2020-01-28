@@ -15,9 +15,9 @@ class ISchoolLoginTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, S.current.loggingISchool);
-    ISchoolLoginStatus value = await ISchoolConnector.login();
+    ISchoolConnectorStatus value = await ISchoolConnector.login();
     MyProgressDialog.hideProgressDialog();
-    if (value == ISchoolLoginStatus.LoginSuccess) {
+    if (value == ISchoolConnectorStatus.LoginSuccess) {
       return TaskStatus.TaskSuccess;
     } else {
       _handleError();

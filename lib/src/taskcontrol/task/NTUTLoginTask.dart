@@ -27,9 +27,9 @@ class NTUTLoginTask extends TaskModel {
     String account = user.account;
     String password = user.password;
     MyProgressDialog.showProgressDialog(context, S.current.loggingNTUT);
-    NTUTLoginStatus value = await NTUTConnector.login(account, password);
+    NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
-    if (value != NTUTLoginStatus.LoginSuccess) {
+    if (value != NTUTConnectorStatus.LoginSuccess) {
       _handleError(value);
       return TaskStatus.TaskFail;
     } else {
@@ -37,9 +37,9 @@ class NTUTLoginTask extends TaskModel {
     }
   }
 
-  void _handleError(NTUTLoginStatus value) {
+  void _handleError(NTUTConnectorStatus value) {
     switch (value) {
-      case NTUTLoginStatus.PasswordExpiredWarning:
+      case NTUTConnectorStatus.PasswordExpiredWarning:
         AwesomeDialog(
             context: context,
             dialogType: DialogType.INFO,
@@ -54,7 +54,7 @@ class NTUTLoginTask extends TaskModel {
               _reLogin();
             }).show();
         break;
-      case NTUTLoginStatus.AccountLockWarning:
+      case NTUTConnectorStatus.AccountLockWarning:
         AwesomeDialog(
             context: context,
             dialogType: DialogType.INFO,
@@ -69,7 +69,7 @@ class NTUTLoginTask extends TaskModel {
               _reLogin();
             }).show();
         break;
-      case NTUTLoginStatus.AccountPasswordIncorrect:
+      case NTUTConnectorStatus.AccountPasswordIncorrect:
         AwesomeDialog(
             context: context,
             dialogType: DialogType.INFO,
@@ -84,7 +84,7 @@ class NTUTLoginTask extends TaskModel {
               Navigator.of(context).push(CustomRoute(LoginPage()));
             }).show();
         break;
-      case NTUTLoginStatus.ConnectTimeOutError:
+      case NTUTConnectorStatus.ConnectTimeOutError:
         AwesomeDialog(
             context: context,
             dialogType: DialogType.ERROR,
@@ -99,7 +99,7 @@ class NTUTLoginTask extends TaskModel {
               _reLogin();
             }).show();
         break;
-      case NTUTLoginStatus.AuthCodeFailError:
+      case NTUTConnectorStatus.AuthCodeFailError:
         AwesomeDialog(
             context: context,
             dialogType: DialogType.ERROR,
@@ -114,7 +114,7 @@ class NTUTLoginTask extends TaskModel {
               _reLogin();
             }).show();
         break;
-      case NTUTLoginStatus.NetworkError:
+      case NTUTConnectorStatus.NetworkError:
         AwesomeDialog(
             context: context,
             dialogType: DialogType.ERROR,

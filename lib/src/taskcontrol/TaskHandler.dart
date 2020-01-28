@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/CourseLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/NTUTLoginTask.dart';
@@ -58,24 +62,34 @@ class TaskHandler {
 
   void _handleErrorTask(TaskModel task ) async{
     Log.d( "Task fail " + task.getTaskName );
-    if (task is NTUTLoginTask){
-      _addFirstTask( NTUTLoginTask(task.context) );
-    }else if (task is ISchoolLoginTask){
-      _addFirstTask( CheckCookiesTask(task.context) );
+
+    if (task is ISchoolLoginTask || task is CourseLoginTask || task is NTUTLoginTask){
+      _addFirstTask( task );
     }
-    else if (task is ISchoolNewAnnouncementTask){
+    else if (task is CheckCookiesTask){
+      if( NTUTConnector.isLogin ){
+        if( !CourseConnector.isLogin){
+          _addFirstTask( CourseLoginTask(task.context) );
+        }
+        if( !ISchoolConnector.isLogin){
+          _addFirstTask( ISchoolLoginTask(task.context) );
+        }
+      }else{
+        _addFirstTaskList( [
+          NTUTLoginTask(task.context) ,
+          ISchoolLoginTask(task.context) ,
+          CourseLoginTask(task.context)
+        ]);
+      }
+      startTask();
+    }
+    else{
       _addFirstTaskList( [
         CheckCookiesTask(task.context),
         task
       ]);
     }
-    else if (task is CheckCookiesTask){
-      _addFirstTaskList( [
-        NTUTLoginTask(task.context) ,
-        ISchoolLoginTask(task.context)
-      ]);
-      startTask();
-    }
+
   }
 
 

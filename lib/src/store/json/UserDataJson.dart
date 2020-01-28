@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'UserDataJson.g.dart';
+
+@JsonSerializable()
 class UserDataJson{
   String givenName;
   String userMail;
@@ -7,24 +11,9 @@ class UserDataJson{
   String passwordExpiredRemind;
   String userDn;
 
-  UserDataJson({Key key, givenName ,userMail , userPhoto, passwordExpiredRemind , userDn }) {
-    if ( givenName == null ) throw Exception("Json Error");
-    this.givenName = givenName;
-    this.userMail = userMail;
-    this.userPhoto = userPhoto;
-    this.passwordExpiredRemind = passwordExpiredRemind;
-    this.userDn = userDn;
-  }
+  UserDataJson({ this.givenName , this.userMail , this.userPhoto , this.passwordExpiredRemind , this.userDn });
 
-  factory UserDataJson.fromJson(Map<String, dynamic> json) {
-    return UserDataJson(
-      givenName: json['givenName'],
-      userMail: json['userMail'],
-      userPhoto: json['userPhoto'],
-      passwordExpiredRemind: json['passwordExpiredRemind'],
-      userDn: json['userDn'],
-    );
-  }
-
+  factory UserDataJson.fromJson(Map<String, dynamic> json) => _$UserDataJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$UserDataJsonToJson(this);
 
 }

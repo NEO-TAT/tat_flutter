@@ -37,6 +37,7 @@ class S implements WidgetsLocalizations {
   String get loggingISchool => "Logging ISchool...";
   String get loggingNTUT => "Logging NTUT...";
   String get login => "login";
+  String get loginCourse => "loginCourse";
   String get loginISchoolFail => "login ISchool Fail";
   String get loginSave => "Login save";
   String get networkError => "networkError";
@@ -87,11 +88,15 @@ class $zh extends S {
   @override
   String get password => "密碼";
   @override
+  String get loginISchoolFail => "登入北科I學園錯誤";
+  @override
   String get warning => "警告";
   @override
   String get pleaseLogin => "請登入";
   @override
   String get ok => "確定";
+  @override
+  String get getISchoolNewAnnouncementError => "取得最新公告錯誤";
   @override
   String get networkError => "網路發生錯誤";
   @override
@@ -100,6 +105,10 @@ class $zh extends S {
   String get accountLock => "帳號已被鎖住";
   @override
   String get restart => "重試";
+  @override
+  String get getISchoolNewAnnouncement => "取得最新公告...";
+  @override
+  String get loginCourse => "登入課程系統...";
   @override
   String get loggingNTUT => "登入校園入口網站中...";
   @override
