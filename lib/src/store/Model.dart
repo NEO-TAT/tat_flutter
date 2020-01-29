@@ -91,9 +91,6 @@ class Model {
 
   void addCourseTable(CourseTableJson addCourseTable) {
     List<CourseTableJson> tableList = courseTableList;
-    Log.d( courseTableList.length.toString() );
-    Log.d( tableList.length.toString() );
-
     for( int i = 0 ; i < tableList.length ; i++ ){
       CourseTableJson table = tableList[i];
       //Log.d( table.courseSemester.toString() );
@@ -104,9 +101,21 @@ class Model {
       }
     }
     tableList.add(addCourseTable);
-    Log.d( courseTableList.length.toString() );
-    Log.d( tableList.length.toString() );
   }
+
+  CourseTableJson getCourseTable(CourseSemesterJson courseSemester) {
+    List<CourseTableJson> tableList = courseTableList;
+
+    for( int i = 0 ; i < tableList.length ; i++ ){
+      CourseTableJson table = tableList[i];
+      if ( table.courseSemester == courseSemester ){
+        return table;
+      }
+    }
+    return null;
+  }
+
+
 
   
   Future<void> _writeString(String key , String value) async{

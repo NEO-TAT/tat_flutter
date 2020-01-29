@@ -1,3 +1,4 @@
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
@@ -48,6 +49,23 @@ class CourseTableJson {
         , [courseSemester.toString() ]);
 
   }
+
+  CourseDetailJson getCourseDetailByTime(String day , String time){
+    int intDay = int.parse(day)+1;
+    if( intDay == 7 ) intDay = 0;
+    for( CourseDetailJson detail in courseDetail){
+      List<CourseTimeJson> dayTime = detail.courseTime[intDay];
+      if( dayTime.length > 0 ){
+        for( CourseTimeJson courseTime in dayTime){
+          if( courseTime.time.contains(time)){
+            return detail;
+          }
+        }
+      }
+    }
+    return null;
+  }
+  
 }
 
 

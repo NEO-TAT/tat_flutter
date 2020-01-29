@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/SettingScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/NewAnnouncementScreen.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/home_screen.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/pages_screen.dart';
 
 class NavigationKeepAlive extends StatefulWidget {
@@ -32,7 +32,7 @@ class _NavigationKeepAliveState extends State<NavigationKeepAlive>
         children: <Widget>[
           SettingScreen(),
           NewAnnouncementScreen(),
-          HomeScreen(),
+          CourseTablePage(),
           PagesScreen()
         ],
         physics: NeverScrollableScrollPhysics(),

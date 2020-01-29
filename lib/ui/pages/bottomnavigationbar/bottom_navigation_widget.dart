@@ -22,7 +22,7 @@ import 'package:provider/provider.dart';
 import '../../../main.dart';
 import 'pages/SettingScreen.dart';
 import 'pages/NewAnnouncementScreen.dart';
-import 'pages/home_screen.dart';
+import 'pages/CourseTablePage.dart';
 import 'pages/pages_screen.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
@@ -37,7 +37,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   @override
   void initState() {
     list
-      ..add(HomeScreen())
+      ..add(CourseTablePage())
       ..add(NewAnnouncementScreen())
       ..add(PagesScreen())
       ..add(SettingScreen());
