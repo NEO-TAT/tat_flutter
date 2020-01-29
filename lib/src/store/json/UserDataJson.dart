@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
+
+import 'StringInit.dart';
 part 'UserDataJson.g.dart';
 
 
-class StringInit {
-  static String init(String value){
-    return (value != null)? value : "";
-  }
-}
+
 
 @JsonSerializable()
 class UserDataJson {

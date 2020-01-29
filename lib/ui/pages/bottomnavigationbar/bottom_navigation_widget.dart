@@ -49,7 +49,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     TaskHandler.instance.addTask( CheckCookiesTask(context) );
     //TaskHandler.instance.addTask( CourseLoginTask(context) );
     //TaskHandler.instance.addTask( CourseByCourseIdTask(context , "261046" ) );
-    TaskHandler.instance.addTask( CourseByStudentIdTask(context , "106360113" , "106" , "1" ) );
+    TaskHandler.instance.addTask( CourseByStudentIdTask(context , "106360113" , "108" , "2" ) );
     //TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context) );
   }
 

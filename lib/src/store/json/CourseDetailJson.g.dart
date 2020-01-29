@@ -6,6 +6,59 @@ part of 'CourseDetailJson.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+CourseTableJsonList _$CourseTableJsonListFromJson(Map<String, dynamic> json) {
+  return CourseTableJsonList(
+    courseTableList: (json['courseTableList'] as List)
+        ?.map((e) => e == null
+            ? null
+            : CourseTableJson.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$CourseTableJsonListToJson(
+        CourseTableJsonList instance) =>
+    <String, dynamic>{
+      'courseTableList': instance.courseTableList,
+    };
+
+CourseSemesterJsonList _$CourseSemesterJsonListFromJson(
+    Map<String, dynamic> json) {
+  return CourseSemesterJsonList(
+    courseSemesterList: (json['courseSemesterList'] as List)
+        ?.map((e) => e == null
+            ? null
+            : CourseSemesterJson.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$CourseSemesterJsonListToJson(
+        CourseSemesterJsonList instance) =>
+    <String, dynamic>{
+      'courseSemesterList': instance.courseSemesterList,
+    };
+
+CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
+  return CourseTableJson(
+    courseSemester: json['courseSemester'] == null
+        ? null
+        : CourseSemesterJson.fromJson(
+            json['courseSemester'] as Map<String, dynamic>),
+    courseDetail: (json['courseDetail'] as List)
+        ?.map((e) => e == null
+            ? null
+            : CourseDetailJson.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$CourseTableJsonToJson(CourseTableJson instance) =>
+    <String, dynamic>{
+      'courseSemester': instance.courseSemester,
+      'courseDetail': instance.courseDetail,
+    };
+
 CourseDetailJson _$CourseDetailJsonFromJson(Map<String, dynamic> json) {
   return CourseDetailJson(
     courseName: json['courseName'] as String,
@@ -20,10 +73,7 @@ CourseDetailJson _$CourseDetailJsonFromJson(Map<String, dynamic> json) {
                 : CourseTimeJson.fromJson(e as Map<String, dynamic>))
             ?.toList())
         ?.toList(),
-  )..courseSemester = json['courseSemester'] == null
-      ? null
-      : CourseSemesterJson.fromJson(
-          json['courseSemester'] as Map<String, dynamic>);
+  );
 }
 
 Map<String, dynamic> _$CourseDetailJsonToJson(CourseDetailJson instance) =>
@@ -32,7 +82,6 @@ Map<String, dynamic> _$CourseDetailJsonToJson(CourseDetailJson instance) =>
       'courseId': instance.courseId,
       'courseHref': instance.courseHref,
       'teacherName': instance.teacherName,
-      'courseSemester': instance.courseSemester,
       'courseTime': instance.courseTime,
     };
 

@@ -51,6 +51,7 @@ dependencies:
   pull_to_refresh: ^1.5.8
   random_color: ^1.0.3
   big5: ^0.0.4
+  quiver: ^2.0.5
 
 
 dev_dependencies:

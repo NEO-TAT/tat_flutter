@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:big5/big5.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
@@ -139,7 +140,7 @@ class CourseConnector {
 
 
 
-  static Future<bool> getCourseByStudentId(String studentId , String year , String semester) async{
+  static Future<CourseTableJson> getCourseByStudentId(String studentId , String year , String semester) async{
     try{
       ConnectorParameter parameter;
       Document tagNode;
@@ -148,8 +149,8 @@ class CourseConnector {
       String courseName , courseId , courseHref;
       List<List<CourseTimeJson>> courseTime;
       List<String> teacherName;
-      CourseDetailJson courseItem;
       List<CourseClassroomJson> courseClassroom;
+      CourseTableJson courseTable = CourseTableJson();
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -163,9 +164,9 @@ class CourseConnector {
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];
       nodes = node.getElementsByTagName("tr");
+      courseTable.courseSemester = CourseSemesterJson( year:year , semester:semester );
 
       for ( int i = 3 ; i < nodes.length-1 ; i++){
-        courseItem = CourseDetailJson();
         courseTime = List();
         courseClassroom = List();
         teacherName = List();
@@ -205,20 +206,20 @@ class CourseConnector {
         courseId = nodesOne[0].text.replaceAll("\n", "");
         courseHref = nodesOne[1].getElementsByTagName("a")[0].attributes["href"];
 
-        courseItem.teacherName = teacherName;
-        courseItem.courseName = courseName;
-        courseItem.courseTime = courseTime;
-        courseItem.courseHref = courseHref;
-        courseItem.courseId = courseId;
-
-        String myJson = json.encode(courseItem);
-        Log.d( myJson  );
+        var courseDetail = CourseDetailJson(
+          courseName : courseName ,
+          courseId : courseId ,
+          teacherName : teacherName ,
+          courseHref : courseHref ,
+          courseTime : courseTime ,
+        );
+        courseTable.courseDetail.add( courseDetail );
       }
-      return true;
+      return courseTable;
     }on Exception catch(e){
       //throw e;
       Log.e(e.toString());
-      return false;
+      return null;
     }
   }
 
