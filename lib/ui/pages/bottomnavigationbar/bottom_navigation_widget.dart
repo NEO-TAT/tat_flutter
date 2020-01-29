@@ -4,8 +4,6 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/store/DataModel.dart';
-import 'package:flutter_app/src/store/dataformat/UserData.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseByCourseIdTask.dart';

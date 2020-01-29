@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/store/DataModel.dart';
-import 'package:flutter_app/src/store/dataformat/UserData.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:html/parser.dart';
-
+import '../store/Model.dart';
+import '../store/json/UserDataJson.dart';
+import '../store/json/UserDataJson.dart';
 import 'Connector.dart';
 import 'ConnectorParameter.dart';
 
@@ -28,7 +27,7 @@ class NTUTConnector {
   static bool _isLogin = false;
   static final String _loginUrl = "https://nportal.ntut.edu.tw/login.do";
   static final String _indexUrl = "https://nportal.ntut.edu.tw/index.do";
-  static final String _getPictureUrl = "https://nportal.ntut.edu.tw/photoView.do?realname=";
+  static final String _getPictureUrl = "https://nportal.ntut.edu.tw/photoView.do";
   static final String _checkLoginUrl = "https://nportal.ntut.edu.tw/myPortal.do";
 
   static Future<NTUTConnectorStatus> login(String account , String password) async{
@@ -55,15 +54,10 @@ class NTUTConnector {
       }else if (result.contains("重新登入")) {
         return NTUTConnectorStatus.UnknownError;
       } else {
-        UserDataJson jsonParse = UserDataJson.fromJson(json.decode(result));
-        UserData user = DataModel.instance.user;
-        user.givenName = jsonParse.givenName;
-        user.userMail = jsonParse.userMail;
-        user.userPhoto = jsonParse.userPhoto;
-        user.passwordExpiredRemind = jsonParse.passwordExpiredRemind;
-        user.userDn = jsonParse.userDn;
-        //user.save();
-        if ( user.passwordExpiredRemind == 'true' ){
+        UserInfoJson userInfo = UserInfoJson.fromJson(json.decode(result));
+        Model.instance.userData.info = userInfo;
+        Model.instance.save( Model.userDataJsonKey );
+        if ( userInfo.passwordExpiredRemind == 'true' ){
           return NTUTConnectorStatus.PasswordExpiredWarning;
         }
         _isLogin = true;
@@ -83,11 +77,14 @@ class NTUTConnector {
 
   static CachedNetworkImageProvider getUserImage(){
     ImageProvider image ;
-    String userPhoto = DataModel.instance.user.userPhoto;
+    String userPhoto = Model.instance.userData.info.userPhoto ;
     if ( NTUTConnector.isLogin && userPhoto!=null){
       Log.d( "getUserImage");
-      String userPhoto = DataModel.instance.user.userPhoto;
-      String url = _getPictureUrl + userPhoto;
+      String url = _getPictureUrl;
+      Map<String,String> data = {
+        "realname" : userPhoto
+      };
+      url = Uri.https( Uri.parse(url).host , Uri.parse(url).path , data ).toString();
       image = CachedNetworkImageProvider(
           url,
           headers: Connector.getLoginHeaders(url)

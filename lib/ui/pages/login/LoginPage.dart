@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/store/DataModel.dart';
-import 'package:flutter_app/src/store/dataformat/UserData.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+
+import '../../../src/store/Model.dart';
+import '../../../src/store/json/UserDataJson.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,33 +20,32 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final FocusNode _passwordFocus = new FocusNode();
   final FocusNode _accountFocus = new FocusNode();
-
+  UserDataJson userData;
   @override
   void initState() {
     super.initState();
-    _accountControl.text = DataModel.instance.user.account;
-    _passwordControl.text = DataModel.instance.user.password;
+    userData  = Model.instance.userData;
+    _accountControl.text = userData.account;
+    _passwordControl.text = userData.password;
   }
 
-  void _loginPress(BuildContext context) {
-    UserData user = DataModel.instance.user;
+  void _loginPress(BuildContext context) async{
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
-      user.account = _accountControl.text.toString();
-      user.password = _passwordControl.text.toString();
-      user.save().then((value) {
-        //Navigator.of(context).push( CustomRoute(BottomNavigationWidget() ));
-        Fluttertoast.showToast(
-            msg: S.current.loginSave,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        Navigator.push(context, CustomRoute(BottomNavigationWidget()));
-      });
+      userData.account = _accountControl.text.toString();
+      userData.password = _passwordControl.text.toString();
+      await Model.instance.save( Model.userDataJsonKey );
+      Fluttertoast.showToast(
+          msg: S.current.loginSave,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.push(context, CustomRoute(BottomNavigationWidget()));
+
     }
   }
 

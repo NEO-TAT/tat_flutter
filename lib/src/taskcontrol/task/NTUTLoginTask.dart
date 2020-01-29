@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/store/DataModel.dart';
-import 'package:flutter_app/src/store/dataformat/UserData.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
@@ -15,6 +13,8 @@ import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widge
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 
 import '../../../main.dart';
+import '../../store/Model.dart';
+import '../../store/json/UserDataJson.dart';
 
 class NTUTLoginTask extends TaskModel {
   static final String taskName = "NTUTLoginTask";
@@ -23,9 +23,9 @@ class NTUTLoginTask extends TaskModel {
 
   @override
   Future<TaskStatus> taskStart() async {
-    UserData user = DataModel.instance.user;
-    String account = user.account;
-    String password = user.password;
+    UserDataJson userData = Model.instance.userData ;
+    String account = userData.account;
+    String password = userData.password;
     MyProgressDialog.showProgressDialog(context, S.current.loggingNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();

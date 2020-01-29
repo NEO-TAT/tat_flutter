@@ -146,10 +146,10 @@ class CourseConnector {
       Element node;
       List<Element> nodes , nodesOne;
       String courseName , courseId , courseHref;
-      List<List<CourseTime>> courseTime;
+      List<List<CourseTimeJson>> courseTime;
       List<String> teacherName;
-      CourseDetail courseItem;
-      List<CourseClassroom> courseClassroom;
+      CourseDetailJson courseItem;
+      List<CourseClassroomJson> courseClassroom;
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -165,7 +165,7 @@ class CourseConnector {
       nodes = node.getElementsByTagName("tr");
 
       for ( int i = 3 ; i < nodes.length-1 ; i++){
-        courseItem = CourseDetail();
+        courseItem = CourseDetailJson();
         courseTime = List();
         courseClassroom = List();
         teacherName = List();
@@ -175,19 +175,19 @@ class CourseConnector {
           teacherName.add( node.text );
         }
         for( Element node in nodesOne[15].getElementsByTagName("a") ){
-          CourseClassroom classroom = CourseClassroom();
+          CourseClassroomJson classroom = CourseClassroomJson();
           classroom.name = node.text;
           classroom.href = node.attributes["href"];
           courseClassroom.add( classroom );
         }
         int courseDay = 0;
         for( int j = 8 ; j < 8 + 7 ; j++ ){
-          List<CourseTime> courseTimeList = List();
+          List<CourseTimeJson> courseTimeList = List();
           String time = nodesOne[j].text;
           if( strQ2B(time).replaceAll(" ", "").isNotEmpty ){
             int timeLength = time.split(" ").length;
             for ( String t in time.split(" ").getRange(1, timeLength ).toList() ){
-              CourseTime courseTimeItem  = CourseTime();
+              CourseTimeJson courseTimeItem  = CourseTimeJson();
               courseTimeItem.time = t;
               if( courseClassroom.length >= 1){
                 int classroomIndex = ( courseDay < courseClassroom.length ) ? courseDay : courseClassroom.length-1;

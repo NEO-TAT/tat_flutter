@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/store/DataModel.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:random_color/random_color.dart';
+
+import '../../../../src/store/Model.dart';
+import '../../../../src/store/json/UserDataJson.dart';
 
 enum onListViewPress{ Setting , Logout , Report , About , ChangePassword}
 
@@ -48,7 +50,7 @@ class SettingScreen extends StatelessWidget {
   void _onListViewPress(BuildContext context , onListViewPress value) {
     switch(value){
       case onListViewPress.Logout:
-        DataModel.instance.user.logout();
+        Model.instance.logout();
         Navigator.of(context).push( CustomRoute(LoginPage() ));
         break;
       default:
@@ -90,8 +92,9 @@ class SettingScreen extends StatelessWidget {
   }
 
   Container _buildHeader(BuildContext context) {
-    String givenName = DataModel.instance.user.givenName;
-    String userMail = DataModel.instance.user.userMail;
+    UserInfoJson userInfo = Model.instance.userData.info;
+    String givenName = userInfo.givenName;
+    String userMail = userInfo.userMail;
     if ( givenName == null ||  userMail == null ){
       return Container(
         //color: Colors.yellow,
