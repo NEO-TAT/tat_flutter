@@ -46,16 +46,15 @@ class _CourseTablePage extends State<CourseTablePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
-      body: gradView(),
+        appBar: AppBar(
+          title: Text('Home'),
+        ),
+        body: gradView(context ),
     );
   }
 
-  Widget gradView(){
-    return Scaffold(
-      body: Container(
+  Widget gradView(BuildContext context){
+    return Container(
         alignment: Alignment.center,
         child: AnimationLimiter(
           child: GridView.count(
@@ -68,7 +67,7 @@ class _CourseTablePage extends State<CourseTablePage> {
                   columnCount: columnCount,
                   child: ScaleAnimation(
                     child: FadeInAnimation(
-                      child: gradViewItem(index),
+                      child: gradViewItem(context , index),
                     ),
                   ),
                 );
@@ -76,19 +75,77 @@ class _CourseTablePage extends State<CourseTablePage> {
             ),
           ),
         ),
-      )
     );
   }
 
-  Widget gradViewItem(int index){
+  Widget gradViewItem(BuildContext context ,int index){
     int mod = columnCount;
     CourseDetailJson courseDetail;
     if( courseTable != null){
       courseDetail = courseTable.getCourseDetailByTime( (index % mod ).floor().toString() , sectionNumber[ (index / mod).floor() ] );
     }
     String name = (courseDetail != null) ? courseDetail.courseName : "No";
-    return Text( name , textAlign: TextAlign.center );
+    return RaisedButton(
+      child: Text( name , textAlign: TextAlign.center  ),
+      onPressed: () {
+        if( courseDetail != null){
+          showMyMaterialDialog(context , courseDetail );
+        }
+      },
+      color: Colors.red,
+    );
   }
+
+
+  void showMyMaterialDialog(BuildContext context ,CourseDetailJson detail) {
+      showDialog(
+        context: context,
+        useRootNavigator: false,
+        builder: (context) {
+          return new AlertDialog(
+            title: Text( detail.courseName ),
+            content: Column(
+              mainAxisSize : MainAxisSize.min ,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text("課號:"),
+                    Text( detail.courseId )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Text("地點:"),
+                    Text( detail.courseId )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Text("授課老師:"),
+                    Text( detail.teacherName.toString() )
+                  ],
+                )
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("課程公告"),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: new Text("詳細內容"),
+              ),
+            ],
+          );
+        });
+  }
+
+
 
   _countRowAndColumn(){
     columnCount = 5;
