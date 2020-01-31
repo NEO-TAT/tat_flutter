@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
-import 'JsonInit.dart';
+import '../JsonInit.dart';
 part 'UserDataJson.g.dart';
-
-
 
 
 @JsonSerializable()

@@ -48,7 +48,6 @@ class NTUTLoginTask extends TaskModel {
             desc: S.current.passwordExpiredWarning,
             btnOkText: S.current.updatePassword,
             btnCancelText: S.current.cancel,
-            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
@@ -63,7 +62,6 @@ class NTUTLoginTask extends TaskModel {
             desc: S.current.accountLock,
             btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
@@ -78,7 +76,6 @@ class NTUTLoginTask extends TaskModel {
             desc: S.current.accountPasswordFail,
             btnOkText: S.current.resetAccountPassword,
             btnCancelText: S.current.cancel,
-            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               Navigator.of(context).push(CustomRoute(LoginPage()));
@@ -93,7 +90,6 @@ class NTUTLoginTask extends TaskModel {
             desc: S.current.connectTimeOut,
             btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
@@ -108,7 +104,6 @@ class NTUTLoginTask extends TaskModel {
             desc: S.current.authCodeFail,
             btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
@@ -123,7 +118,6 @@ class NTUTLoginTask extends TaskModel {
             desc: S.current.networkError,
             btnOkText: S.current.restart,
             btnCancelText: S.current.cancel,
-            useRootNavigator: true,
             btnCancelOnPress: () {},
             btnOkOnPress: () {
               _reLogin();
@@ -138,7 +132,6 @@ class NTUTLoginTask extends TaskModel {
           desc: S.current.unknownError,
           btnOkText: S.current.restart,
           btnCancelText: S.current.cancel,
-          useRootNavigator: true,
           btnCancelOnPress: () {},
           btnOkOnPress: () {
             _reLogin();

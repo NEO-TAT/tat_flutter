@@ -28,5 +28,7 @@
   "loginISchoolFail" : "登入北科I學園錯誤",
   "getISchoolNewAnnouncement" : "取得最新公告...",
   "getCourse" : "取得課表...",
-  "loginCourse" : "登入課程系統..."
+  "loginCourse" : "登入課程系統..." ,
+  "getCourseSemester" : "取得學期清單中...",
+  "getCourseDetail"  : "課程資料讀取中..."
 }

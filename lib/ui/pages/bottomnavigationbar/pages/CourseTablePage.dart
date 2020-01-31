@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CourseByCourseIdTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/CourseByStudentIdTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/NTUTLoginTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:random_color/random_color.dart';
 import '../../../../src/store/Model.dart';
 import '../../../../src/store/json/UserDataJson.dart';
 
@@ -30,9 +34,10 @@ class _CourseTablePage extends State<CourseTablePage> {
         Navigator.of(context).push(CustomRoute(LoginPage()));
       } else {
         courseTable = Model.instance.getCourseTable( SemesterJson( year:"108" , semester: "2" ) );
-        if( courseTable == null ){
+        if( courseTable == null || true){
           _login();
         }else{
+          TaskHandler.instance.startTask( context );
           _showCourseTable();
         }
       }
@@ -40,6 +45,10 @@ class _CourseTablePage extends State<CourseTablePage> {
   }
 
   void _login() async{
+    //TaskHandler.instance.addTask( CourseByCourseIdTask(context , "264615" ) );
+    TaskHandler.instance.addTask( CourseByStudentIdTask(context , "106360113" , "108" , "1" ) );
+    TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context) );
+
     TaskHandler.instance.startTask( context );
   }
 
@@ -49,7 +58,7 @@ class _CourseTablePage extends State<CourseTablePage> {
         appBar: AppBar(
           title: Text('Home'),
         ),
-        body: gradView(context ),
+        body: gradView(context),
     );
   }
 
@@ -85,11 +94,20 @@ class _CourseTablePage extends State<CourseTablePage> {
     int dayIndex = (index % mod ).floor() + 1;
     int sectionNumberIndex = (index / mod).floor();
 
-    CourseDetailJson courseDetail;
+    CourseTableDetailJson courseDetail;
     if(courseTable != null){
       courseDetail = courseTable.getCourseDetailByTime( Day.values[dayIndex] , SectionNumber.values[sectionNumberIndex]  );
     }
-    String name = (courseDetail != null) ? courseDetail.course.name : "No";
+    String name = (courseDetail != null) ? courseDetail.course.name : "";
+
+    Color color;
+    if( name.isEmpty ){
+      color = (sectionNumberIndex % 2 == 1)?Colors.white : Color(0xFFF8F8F8);
+    }else{
+      color = Colors.cyanAccent;
+    }
+
+
     return RaisedButton(
       padding: EdgeInsets.fromLTRB(10 , 10 , 10 , 10),
       child: Text(
@@ -102,19 +120,17 @@ class _CourseTablePage extends State<CourseTablePage> {
       ),
       onPressed: () {
         if( courseDetail != null){
-          if( courseDetail.course.href.isNotEmpty){
             showMyMaterialDialog(context , courseDetail );
-          }
         }
       },
-      color: Colors.red,
+      color: color,
     );
 
 
   }
 
 
-  void showMyMaterialDialog(BuildContext context ,CourseDetailJson courseDetail) {
+  void showMyMaterialDialog(BuildContext context ,CourseTableDetailJson courseDetail) {
       CourseJson course = courseDetail.course;
       String teacherName = courseDetail.getTeacherName();
       showDialog(

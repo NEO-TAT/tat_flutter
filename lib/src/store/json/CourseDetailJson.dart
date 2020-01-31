@@ -2,7 +2,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
-import 'JsonInit.dart';
+import '../JsonInit.dart';
 part 'CourseDetailJson.g.dart';
 
 
@@ -39,7 +39,7 @@ enum SectionNumber{
 @JsonSerializable()
 class CourseTableJson {
   SemesterJson courseSemester;  //課程學期資料
-  Map < Day , Map< SectionNumber , CourseDetailJson > > courseDetailMap;
+  Map < Day , Map< SectionNumber , CourseTableDetailJson > > courseDetailMap;
 
   CourseTableJson({ this.courseSemester ,this.courseDetailMap }){
     courseSemester = ( courseSemester != null )?courseSemester : SemesterJson();
@@ -67,20 +67,18 @@ class CourseTableJson {
     courseSemester = SemesterJson( year: year , semester: semester);
   }
 
-
-
-  CourseDetailJson getCourseDetailByTime(Day day , SectionNumber sectionNumber){
+  CourseTableDetailJson getCourseDetailByTime(Day day , SectionNumber sectionNumber){
     return courseDetailMap[day][sectionNumber];
   }
 
-  void setCourseDetailByTime(Day day , SectionNumber sectionNumber ,CourseDetailJson courseDetail ) {
+  void setCourseDetailByTime(Day day , SectionNumber sectionNumber ,CourseTableDetailJson courseDetail ) {
     if( courseDetailMap[day].containsKey(sectionNumber) ){
       throw Exception("衝堂");
     }
     courseDetailMap[day][sectionNumber] = courseDetail;
   }
 
-  bool setCourseDetailByTimeString(Day day , String sectionNumber ,CourseDetailJson courseDetail ) {
+  bool setCourseDetailByTimeString(Day day , String sectionNumber ,CourseTableDetailJson courseDetail ) {
     bool add = false;
     if( courseDetailMap[day].containsKey(sectionNumber) ){
       throw Exception("衝堂");
@@ -94,18 +92,34 @@ class CourseTableJson {
     }
     return add;
   }
+
+  String getCourseNameByCourseId( String courseId){
+    for( Day day in Day.values){
+      for( SectionNumber number in SectionNumber.values ){
+        CourseTableDetailJson courseDetail = courseDetailMap[day][number];
+        if( courseDetail != null ){
+          if( courseDetail.course.id == courseId ){
+            return courseDetail.course.name;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+
   
 }
 
 
 
 @JsonSerializable()
-class CourseDetailJson{
+class CourseTableDetailJson{
   CourseJson course;
   ClassroomJson classroom;
   List<TeacherJson> teacher;
 
-  CourseDetailJson( { this.course , this.classroom , this. teacher }) {
+  CourseTableDetailJson( { this.course , this.classroom , this. teacher }) {
     course    = (course    != null) ? course    : CourseJson();
     classroom = (classroom != null) ? classroom : ClassroomJson();
     teacher   = (teacher   != null) ? teacher   : List();
@@ -128,12 +142,12 @@ class CourseDetailJson{
     return name;
   }
 
-  void  setClassroom(ClassroomJson value){
+  void  setClassroom(ClassroomJson value) {
     classroom = value;
   }
 
-  factory CourseDetailJson.fromJson(Map<String, dynamic> json) => _$CourseDetailJsonFromJson(json);
-  Map<String, dynamic> toJson() => _$CourseDetailJsonToJson(this);
+  factory CourseTableDetailJson.fromJson(Map<String, dynamic> json) => _$CourseTableDetailJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseTableDetailJsonToJson(this);
 
 }
 
@@ -152,7 +166,7 @@ class CourseJson{
 
   @override
   String toString() {
-    return sprintf( "%s %s" , [name , href]);
+    return sprintf( "%s %s" , [name , id]);
   }
 
   factory CourseJson.fromJson(Map<String, dynamic> json) => _$CourseJsonFromJson(json);

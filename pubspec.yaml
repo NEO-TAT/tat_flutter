@@ -53,6 +53,7 @@ dependencies:
   big5: ^0.0.4
   quiver: ^2.0.5
   flutter_staggered_animations: ^0.1.2
+  intl: ^0.16.0
 
 
 dev_dependencies:

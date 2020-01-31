@@ -36,7 +36,6 @@ class ISchoolNewAnnouncementTask extends TaskModel{
       desc: S.current.getISchoolNewAnnouncementError,
       btnOkText: S.current.restart ,
       btnCancelText: S.current.cancel,
-      useRootNavigator : true,
       btnCancelOnPress: () {},
       btnOkOnPress: () {
         reStartTask();

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
@@ -11,10 +13,10 @@ class CourseByCourseIdTask extends TaskModel{
 
   @override
   Future<TaskStatus> taskStart() async{
-    MyProgressDialog.showProgressDialog(context, "getcourse");
-    bool value = await CourseConnector.getCourseByCourseId(id);
+    MyProgressDialog.showProgressDialog(context, S.current.getCourseDetail );
+    CourseInfoJson courseInfo = await CourseConnector.getCourseByCourseId(id);
     MyProgressDialog.hideProgressDialog();
-    if( value ) {
+    if( courseInfo != null ) {
       return TaskStatus.TaskSuccess;
     }else {
       return TaskStatus.TaskFail;

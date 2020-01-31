@@ -51,7 +51,8 @@ CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
                 _$enumDecodeNullable(_$SectionNumberEnumMap, k),
                 e == null
                     ? null
-                    : CourseDetailJson.fromJson(e as Map<String, dynamic>)),
+                    : CourseTableDetailJson.fromJson(
+                        e as Map<String, dynamic>)),
           )),
     ),
   );
@@ -126,8 +127,9 @@ const _$DayEnumMap = {
   Day.UnKnown: 'UnKnown',
 };
 
-CourseDetailJson _$CourseDetailJsonFromJson(Map<String, dynamic> json) {
-  return CourseDetailJson(
+CourseTableDetailJson _$CourseTableDetailJsonFromJson(
+    Map<String, dynamic> json) {
+  return CourseTableDetailJson(
     course: json['course'] == null
         ? null
         : CourseJson.fromJson(json['course'] as Map<String, dynamic>),
@@ -141,7 +143,8 @@ CourseDetailJson _$CourseDetailJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CourseDetailJsonToJson(CourseDetailJson instance) =>
+Map<String, dynamic> _$CourseTableDetailJsonToJson(
+        CourseTableDetailJson instance) =>
     <String, dynamic>{
       'course': instance.course,
       'classroom': instance.classroom,

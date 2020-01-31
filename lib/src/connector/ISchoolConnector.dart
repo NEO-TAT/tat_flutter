@@ -1,6 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/ConnectorParameter.dart';
+import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
+import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:sprintf/sprintf.dart';
@@ -32,6 +36,9 @@ class ISchoolConnector {
       "https://ischool.ntut.edu.tw/learning/messaging/readmessage.php";
   static final String _iSchoolDownloadUrl =
       "https://ischool.ntut.edu.tw/learning/backends/download.php";
+
+
+  //https://ischool.ntut.edu.tw/learning/messaging/messagebox.php?box=inbox&SelectorReadStatus=all&page=1&cmd=exDeleteMessage&messageId=5109
 
   static Future<ISchoolConnectorStatus> login() async {
     String result;
@@ -70,20 +77,17 @@ class ISchoolConnector {
     }
   }
 
-  static Future<bool> getISchoolNewAnnouncement() async {
+  static Future<bool> getISchoolNewAnnouncement( [int page = 1]) async {
     ConnectorParameter parameter;
     int i, j;
     String result;
-    String title;
-    String postTime;
-    String sender;
-    String messageId;
-    String uid;
     Document tagNode;
     List<Element> nodes, nodesItem;
     try {
       Map<String, String> data = {
         "box": "inbox",
+        "SelectorReadStatus" : "all" ,
+        "page" : page.toString() ,
       };
       parameter = ConnectorParameter( _iSchoolNewAnnouncementUrl );
       parameter.data = data;
@@ -93,18 +97,23 @@ class ISchoolConnector {
       nodes = tagNode.getElementsByTagName("tbody"); // 取得兩個取第二個
       nodes = nodes[1].getElementsByTagName("tr");
       for (i = 0; i < nodes.length; i++) {
-        nodesItem = nodes[i].getElementsByTagName("td");
+        //郵件是否已讀
+        bool isRead = nodes[i].classes.toString().contains("un");
+
+        String title, postTime , sender, messageId , courseId;
+
+        nodesItem = nodes[i].getElementsByTagName("td");  //三個 -> 課號 訊息 寄件者
         for (j = 0; j < nodesItem.length; j++) {
           switch (j) {
             case 0:
               String href =
                   nodesItem[j].getElementsByTagName("a")[1].attributes["href"];
-              uid = nodesItem[j]
+              courseId = nodesItem[j]
                   .getElementsByClassName("im_context")[0]
                   .innerHtml;
-              uid = uid.replaceAll(" ", "");
-              uid = uid.replaceAll("[", "");
-              uid = uid.split("-")[0];
+              courseId = courseId.replaceAll(" ", "");
+              courseId = courseId.replaceAll("[", "");
+              courseId = courseId.split("-")[0];
               href = href.replaceAll("amp;", ""); //修正&後出現amp;問題
               messageId = Uri.parse(href).queryParameters["messageId"];
               title = nodesItem[j].getElementsByTagName("a")[1].innerHtml;
@@ -113,12 +122,38 @@ class ISchoolConnector {
               sender = nodesItem[j].getElementsByTagName("a")[0].innerHtml;
               break;
             case 2:
-              postTime = nodesItem[j].innerHtml;
+              postTime = nodesItem[j].innerHtml;  //2019/10/09, PM 03:11
               break;
           }
         }
-        Log.d(sprintf("  title:%s \n  postTime:%s \n  sender:%s \n  messageId:%s \n  uid:%s \n \n",
-            [title, postTime, sender, messageId, uid]));
+
+        int year  = int.parse( postTime.split("/")[0] );
+        int month = int.parse( postTime.split("/")[1] );
+        int day   = int.parse( postTime.split("/")[2].split(",")[0] );
+        int hour  = int.parse( postTime.split(",")[1].split(" ")[2].split(":")[0] );
+        if( postTime.contains("PM")){
+          hour += 12;
+        }
+        int minute  = int.parse( postTime.split(",")[1].split(" ")[2].split(":")[1] );
+        String courseName;
+        courseName = Model.instance.getCourseNameByCourseId(courseId);
+        if(courseName == null ){
+          Log.d("Not find the courseName");
+          CourseInfoJson courseInfo = await CourseConnector.getCourseByCourseId(courseId);
+          courseName =  courseInfo.courseDetail.course.name;
+        }
+
+        NewAnnouncementJson newAnnouncement = NewAnnouncementJson(
+          title: title ,
+          sender: sender ,
+          isRead: isRead ,
+          messageId: messageId,
+          courseId : courseId ,
+          courseName: courseName,
+          time : DateTime( year,month,day,hour,minute )
+        );
+
+        Log.d( newAnnouncement.toString() );
       }
       return true;
     } on Exception catch (e) {

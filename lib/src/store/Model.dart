@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +11,7 @@ import 'package:sprintf/sprintf.dart';
 import '../connector/DioConnector.dart';
 import 'json/CourseDetailJson.dart';
 import 'json/CourseDetailJson.dart';
+import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
 
 class Model {
@@ -19,10 +21,12 @@ class Model {
   static String userDataJsonKey = "UserDataJsonKey";
   static String courseTableJsonKey = "CourseTableJsonListKey";
   static String courseSemesterJsonKey = "CourseSemesterListJson";
-
+  static String newAnnouncementJsonKey = "newAnnouncementJson";
   UserDataJson userData;
+  NewAnnouncementJsonList newAnnouncementList;
   List<CourseTableJson> courseTableList;
   List<SemesterJson> courseSemesterList;
+
 
 /*
   UserDataJson get userData{
@@ -38,6 +42,18 @@ class Model {
   }
 
  */
+
+  String getCourseNameByCourseId( String courseId){
+    String name;
+    for( CourseTableJson courseDetail in courseTableList){
+      name = courseDetail.getCourseNameByCourseId(courseId);
+      if( name != null ){
+        return name;
+      }
+    }
+    return null;
+  }
+
 
 
   Future<void> init() async {
@@ -66,15 +82,15 @@ class Model {
 
 
   Future<void> logout() async{
-    List<String> clearKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey];
+    List<String> clearKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey,newAnnouncementJsonKey];
     for( String key in clearKey){
       _clearSetting(key);
     }
   }
 
   Future<void> save(String key) async {
-    List<String> saveKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey];
-    List saveObj = [userData ,courseTableList , courseSemesterList];
+    List<String> saveKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey,newAnnouncementJsonKey];
+    List saveObj = [userData ,courseTableList , courseSemesterList,newAnnouncementList];
     if( saveKey.contains(key) ){
       int index = saveKey.indexOf(key);
       if( key.contains("List") ){
@@ -113,8 +129,6 @@ class Model {
     }
     return null;
   }
-
-
 
   
   Future<void> _writeString(String key , String value) async{
