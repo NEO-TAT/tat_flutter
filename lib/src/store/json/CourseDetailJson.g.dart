@@ -26,9 +26,8 @@ CourseSemesterJsonList _$CourseSemesterJsonListFromJson(
     Map<String, dynamic> json) {
   return CourseSemesterJsonList(
     courseSemesterList: (json['courseSemesterList'] as List)
-        ?.map((e) => e == null
-            ? null
-            : CourseSemesterJson.fromJson(e as Map<String, dynamic>))
+        ?.map((e) =>
+            e == null ? null : SemesterJson.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
@@ -43,86 +42,161 @@ CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
   return CourseTableJson(
     courseSemester: json['courseSemester'] == null
         ? null
-        : CourseSemesterJson.fromJson(
-            json['courseSemester'] as Map<String, dynamic>),
-    courseDetail: (json['courseDetail'] as List)
-        ?.map((e) => e == null
-            ? null
-            : CourseDetailJson.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+        : SemesterJson.fromJson(json['courseSemester'] as Map<String, dynamic>),
+    courseDetailMap: (json['courseDetailMap'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(
+          _$enumDecodeNullable(_$DayEnumMap, k),
+          (e as Map<String, dynamic>)?.map(
+            (k, e) => MapEntry(
+                _$enumDecodeNullable(_$SectionNumberEnumMap, k),
+                e == null
+                    ? null
+                    : CourseDetailJson.fromJson(e as Map<String, dynamic>)),
+          )),
+    ),
   );
 }
 
 Map<String, dynamic> _$CourseTableJsonToJson(CourseTableJson instance) =>
     <String, dynamic>{
       'courseSemester': instance.courseSemester,
-      'courseDetail': instance.courseDetail,
+      'courseDetailMap': instance.courseDetailMap?.map((k, e) => MapEntry(
+          _$DayEnumMap[k],
+          e?.map((k, e) => MapEntry(_$SectionNumberEnumMap[k], e)))),
     };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$SectionNumberEnumMap = {
+  SectionNumber.T_1: 'T_1',
+  SectionNumber.T_2: 'T_2',
+  SectionNumber.T_3: 'T_3',
+  SectionNumber.T_4: 'T_4',
+  SectionNumber.T_N: 'T_N',
+  SectionNumber.T_5: 'T_5',
+  SectionNumber.T_6: 'T_6',
+  SectionNumber.T_7: 'T_7',
+  SectionNumber.T_8: 'T_8',
+  SectionNumber.T_9: 'T_9',
+  SectionNumber.T_A: 'T_A',
+  SectionNumber.T_B: 'T_B',
+  SectionNumber.T_C: 'T_C',
+  SectionNumber.T_D: 'T_D',
+  SectionNumber.T_UnKnown: 'T_UnKnown',
+};
+
+const _$DayEnumMap = {
+  Day.Sunday: 'Sunday',
+  Day.Monday: 'Monday',
+  Day.Tuesday: 'Tuesday',
+  Day.Wednesday: 'Wednesday',
+  Day.Thursday: 'Thursday',
+  Day.Friday: 'Friday',
+  Day.Saturday: 'Saturday',
+  Day.UnKnown: 'UnKnown',
+};
 
 CourseDetailJson _$CourseDetailJsonFromJson(Map<String, dynamic> json) {
   return CourseDetailJson(
-    courseName: json['courseName'] as String,
-    courseId: json['courseId'] as String,
-    courseHref: json['courseHref'] as String,
-    teacherName:
-        (json['teacherName'] as List)?.map((e) => e as String)?.toList(),
-    courseTime: (json['courseTime'] as List)
-        ?.map((e) => (e as List)
-            ?.map((e) => e == null
-                ? null
-                : CourseTimeJson.fromJson(e as Map<String, dynamic>))
-            ?.toList())
+    course: json['course'] == null
+        ? null
+        : CourseJson.fromJson(json['course'] as Map<String, dynamic>),
+    classroom: json['classroom'] == null
+        ? null
+        : ClassroomJson.fromJson(json['classroom'] as Map<String, dynamic>),
+    teacher: (json['teacher'] as List)
+        ?.map((e) =>
+            e == null ? null : TeacherJson.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
 Map<String, dynamic> _$CourseDetailJsonToJson(CourseDetailJson instance) =>
     <String, dynamic>{
-      'courseName': instance.courseName,
-      'courseId': instance.courseId,
-      'courseHref': instance.courseHref,
-      'teacherName': instance.teacherName,
-      'courseTime': instance.courseTime,
+      'course': instance.course,
+      'classroom': instance.classroom,
+      'teacher': instance.teacher,
     };
 
-CourseTimeJson _$CourseTimeJsonFromJson(Map<String, dynamic> json) {
-  return CourseTimeJson(
-    time: json['time'] as String,
-    classroom: json['classroom'] == null
-        ? null
-        : CourseClassroomJson.fromJson(
-            json['classroom'] as Map<String, dynamic>),
+CourseJson _$CourseJsonFromJson(Map<String, dynamic> json) {
+  return CourseJson(
+    name: json['name'] as String,
+    href: json['href'] as String,
+    id: json['id'] as String,
   );
 }
 
-Map<String, dynamic> _$CourseTimeJsonToJson(CourseTimeJson instance) =>
+Map<String, dynamic> _$CourseJsonToJson(CourseJson instance) =>
     <String, dynamic>{
-      'time': instance.time,
-      'classroom': instance.classroom,
+      'name': instance.name,
+      'id': instance.id,
+      'href': instance.href,
     };
 
-CourseClassroomJson _$CourseClassroomJsonFromJson(Map<String, dynamic> json) {
-  return CourseClassroomJson(
+ClassroomJson _$ClassroomJsonFromJson(Map<String, dynamic> json) {
+  return ClassroomJson(
     name: json['name'] as String,
     href: json['href'] as String,
   );
 }
 
-Map<String, dynamic> _$CourseClassroomJsonToJson(
-        CourseClassroomJson instance) =>
+Map<String, dynamic> _$ClassroomJsonToJson(ClassroomJson instance) =>
     <String, dynamic>{
       'name': instance.name,
       'href': instance.href,
     };
 
-CourseSemesterJson _$CourseSemesterJsonFromJson(Map<String, dynamic> json) {
-  return CourseSemesterJson(
+TeacherJson _$TeacherJsonFromJson(Map<String, dynamic> json) {
+  return TeacherJson(
+    name: json['name'] as String,
+    href: json['href'] as String,
+  );
+}
+
+Map<String, dynamic> _$TeacherJsonToJson(TeacherJson instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'href': instance.href,
+    };
+
+SemesterJson _$SemesterJsonFromJson(Map<String, dynamic> json) {
+  return SemesterJson(
     year: json['year'] as String,
     semester: json['semester'] as String,
   );
 }
 
-Map<String, dynamic> _$CourseSemesterJsonToJson(CourseSemesterJson instance) =>
+Map<String, dynamic> _$SemesterJsonToJson(SemesterJson instance) =>
     <String, dynamic>{
       'year': instance.year,
       'semester': instance.semester,

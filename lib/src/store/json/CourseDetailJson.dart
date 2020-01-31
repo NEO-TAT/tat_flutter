@@ -2,9 +2,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
-
-import 'StringInit.dart';
-import 'UserDataJson.dart';
+import 'JsonInit.dart';
 part 'CourseDetailJson.g.dart';
 
 
@@ -21,7 +19,7 @@ class CourseTableJsonList {
 
 @JsonSerializable()
 class CourseSemesterJsonList {
-  List<CourseSemesterJson> courseSemesterList;
+  List<SemesterJson> courseSemesterList;
 
   CourseSemesterJsonList({this.courseSemesterList});
 
@@ -30,14 +28,29 @@ class CourseSemesterJsonList {
 
 }
 
+enum Day{
+  Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday , UnKnown
+}
+
+enum SectionNumber{
+  T_1 , T_2, T_3, T_4, T_N, T_5, T_6 , T_7 , T_8 , T_9 , T_A , T_B , T_C , T_D , T_UnKnown
+}
 
 @JsonSerializable()
 class CourseTableJson {
-  CourseSemesterJson courseSemester;
-  List<CourseDetailJson> courseDetail;
+  SemesterJson courseSemester;  //課程學期資料
+  Map < Day , Map< SectionNumber , CourseDetailJson > > courseDetailMap;
 
-  CourseTableJson({this.courseSemester, this.courseDetail}){
-    this.courseDetail = ( this.courseDetail != null )?this.courseDetail : List();
+  CourseTableJson({ this.courseSemester ,this.courseDetailMap }){
+    courseSemester = ( courseSemester != null )?courseSemester : SemesterJson();
+    if( courseDetailMap != null ){
+      courseDetailMap = courseDetailMap;
+    }else{
+      courseDetailMap = Map();
+      for( Day value in Day.values) {
+        courseDetailMap[ value ] = Map();
+      }
+    }
   }
 
   factory CourseTableJson.fromJson(Map<String, dynamic> json) => _$CourseTableJsonFromJson(json);
@@ -45,25 +58,41 @@ class CourseTableJson {
 
   String toString() {
     return sprintf(
-        " courseSemester  :%s \n "
-        , [courseSemester.toString() ]);
-
+        " courseSemester  :%s \n " +
+        " courseDetail  :%s \n "
+        , [ courseSemester.toString() , courseDetailMap.toString() ]);
   }
 
-  CourseDetailJson getCourseDetailByTime(String day , String time){
-    int intDay = int.parse(day)+1;
-    if( intDay == 7 ) intDay = 0;
-    for( CourseDetailJson detail in courseDetail){
-      List<CourseTimeJson> dayTime = detail.courseTime[intDay];
-      if( dayTime.length > 0 ){
-        for( CourseTimeJson courseTime in dayTime){
-          if( courseTime.time.contains(time)){
-            return detail;
-          }
-        }
+  void setCourseSemester(String year , String semester){
+    courseSemester = SemesterJson( year: year , semester: semester);
+  }
+
+
+
+  CourseDetailJson getCourseDetailByTime(Day day , SectionNumber sectionNumber){
+    return courseDetailMap[day][sectionNumber];
+  }
+
+  void setCourseDetailByTime(Day day , SectionNumber sectionNumber ,CourseDetailJson courseDetail ) {
+    if( courseDetailMap[day].containsKey(sectionNumber) ){
+      throw Exception("衝堂");
+    }
+    courseDetailMap[day][sectionNumber] = courseDetail;
+  }
+
+  bool setCourseDetailByTimeString(Day day , String sectionNumber ,CourseDetailJson courseDetail ) {
+    bool add = false;
+    if( courseDetailMap[day].containsKey(sectionNumber) ){
+      throw Exception("衝堂");
+    }
+    for( SectionNumber value in SectionNumber.values ){
+      String time  = value.toString().split("_")[1];
+      if( sectionNumber.contains(time) ){
+        courseDetailMap[day][value] = courseDetail;
+        add = true;
       }
     }
-    return null;
+    return add;
   }
   
 }
@@ -72,78 +101,118 @@ class CourseTableJson {
 
 @JsonSerializable()
 class CourseDetailJson{
-  String courseName;
-  String courseId;
-  String courseHref;
-  List<String> teacherName;
-  List<List<CourseTimeJson>> courseTime; //Sunday Monday Tuesday Wednesday Thursday Friday Saturday
+  CourseJson course;
+  ClassroomJson classroom;
+  List<TeacherJson> teacher;
 
-  CourseDetailJson({this.courseName, this.courseId, this.courseHref, this.teacherName, this.courseTime}){
-    this.courseName = StringInit.init(this.courseName);
-    this.courseId = StringInit.init(this.courseId);
-    this.courseHref = StringInit.init(this.courseHref);
-    this.teacherName = (teacherName != null) ? this.teacherName : List();
+  CourseDetailJson( { this.course , this.classroom , this. teacher }) {
+    course    = (course    != null) ? course    : CourseJson();
+    classroom = (classroom != null) ? classroom : ClassroomJson();
+    teacher   = (teacher   != null) ? teacher   : List();
   }
 
+  @override
   String toString() {
-    return sprintf(
-            " courseName  :%s \n " +
-            " courseId    :%s \n " +
-            " courseHref  :%s \n " +
-            " teacherName :%s \n " +
-            " courseTime : %s \n"
-            , [courseName , courseId , courseHref , teacherName.toString() , courseTime.toString()]);
+    return sprintf( "course : %s \n  classroom : %s \n teacher : %s" , [course.toString() , classroom.toString() , teacher.toString() ]);
+  }
 
+  void addTeacher(TeacherJson teacherJson){
+    teacher.add(teacherJson);
+  }
+
+  String getTeacherName(){
+    String name = "";
+    for(TeacherJson value in teacher){
+      name += value.name + ' ';
+    }
+    return name;
+  }
+
+  void  setClassroom(ClassroomJson value){
+    classroom = value;
   }
 
   factory CourseDetailJson.fromJson(Map<String, dynamic> json) => _$CourseDetailJsonFromJson(json);
   Map<String, dynamic> toJson() => _$CourseDetailJsonToJson(this);
 
-
 }
 
 
 @JsonSerializable()
-class CourseTimeJson{
-  String time;
-  CourseClassroomJson classroom;
-
-  CourseTimeJson( {this.time, this.classroom} );
-  @override
-  String toString() {
-    return sprintf( "\n %s %s" , [time  , classroom.toString() ]);
-  }
-
-  factory CourseTimeJson.fromJson(Map<String, dynamic> json) => _$CourseTimeJsonFromJson(json);
-  Map<String, dynamic> toJson() => _$CourseTimeJsonToJson(this);
-}
-
-@JsonSerializable()
-class CourseClassroomJson{
+class CourseJson{
   String name;
+  String id;
   String href;
 
-  CourseClassroomJson( {this.name , this.href} );
+  CourseJson( {this.name , this.href , this.id} ){
+    name = JsonInit.stringInit(name);
+    href = JsonInit.stringInit(href);
+    id = JsonInit.stringInit(id);
+  }
 
   @override
   String toString() {
     return sprintf( "%s %s" , [name , href]);
   }
 
-  factory CourseClassroomJson.fromJson(Map<String, dynamic> json) => _$CourseClassroomJsonFromJson(json);
-  Map<String, dynamic> toJson() => _$CourseClassroomJsonToJson(this);
+  factory CourseJson.fromJson(Map<String, dynamic> json) => _$CourseJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseJsonToJson(this);
 
 }
 
 
 @JsonSerializable()
-class CourseSemesterJson {
+class ClassroomJson{
+  String name;
+  String href;
+
+  ClassroomJson( {this.name , this.href} ){
+    name = JsonInit.stringInit(name);
+    href = JsonInit.stringInit(href);
+  }
+
+
+  @override
+  String toString() {
+    return sprintf( "%s %s" , [name , href]);
+  }
+
+  factory ClassroomJson.fromJson(Map<String, dynamic> json) => _$ClassroomJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$ClassroomJsonToJson(this);
+
+}
+
+
+@JsonSerializable()
+class TeacherJson{
+  String name;
+  String href;
+
+  TeacherJson( {this.name , this.href} ){
+    name = JsonInit.stringInit(name);
+    href = JsonInit.stringInit(href);
+  }
+
+  @override
+  String toString() {
+    return sprintf( "%s %s" , [name , href]);
+  }
+
+  factory TeacherJson.fromJson(Map<String, dynamic> json) => _$TeacherJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$TeacherJsonToJson(this);
+
+}
+
+
+
+@JsonSerializable()
+class SemesterJson {
   String year;
   String semester;
-  CourseSemesterJson( {this.year , this.semester} );
+  SemesterJson( {this.year , this.semester} );
 
-  factory CourseSemesterJson.fromJson(Map<String, dynamic> json) => _$CourseSemesterJsonFromJson(json);
-  Map<String, dynamic> toJson() => _$CourseSemesterJsonToJson(this);
+  factory SemesterJson.fromJson(Map<String, dynamic> json) => _$SemesterJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$SemesterJsonToJson(this);
 
   @override
   String toString() {
@@ -152,7 +221,7 @@ class CourseSemesterJson {
 
   @override
   bool operator ==(dynamic  o) {
-    return (o.semester == semester && o.year == year && o is CourseSemesterJson );
+    return (o.semester == semester && o.year == year && o is SemesterJson );
   }
 
   int get hashCode => hash2(semester.hashCode, year.hashCode);

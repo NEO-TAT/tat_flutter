@@ -145,12 +145,10 @@ class CourseConnector {
       ConnectorParameter parameter;
       Document tagNode;
       Element node;
-      List<Element> nodes , nodesOne;
-      String courseName , courseId , courseHref;
-      List<List<CourseTimeJson>> courseTime;
-      List<String> teacherName;
-      List<CourseClassroomJson> courseClassroom;
+      List<Element> courseNodes , nodesOne , nodes;
       CourseTableJson courseTable = CourseTableJson();
+      courseTable.setCourseSemester(year, semester);
+
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -163,58 +161,66 @@ class CourseConnector {
       Response response = await Connector.getDataByPostResponse( parameter );
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];
-      nodes = node.getElementsByTagName("tr");
-      courseTable.courseSemester = CourseSemesterJson( year:year , semester:semester );
+      courseNodes = node.getElementsByTagName("tr");
 
-      for ( int i = 3 ; i < nodes.length-1 ; i++){
-        courseTime = List();
-        courseClassroom = List();
-        teacherName = List();
-        nodesOne = nodes[i].getElementsByTagName("td");
-        courseName = nodesOne[1].getElementsByTagName("a")[0].innerHtml;
-        for( Element node in nodesOne[6].getElementsByTagName("a") ){
-          teacherName.add( node.text );
+      for ( int i = 2 ; i < courseNodes.length-1 ; i++){
+
+        CourseDetailJson courseDetail = CourseDetailJson();
+        CourseJson course = CourseJson();
+
+        nodesOne = courseNodes[i].getElementsByTagName("td");
+
+        //取得課號
+        nodes = nodesOne[0].getElementsByTagName("a");
+        if ( nodes.length >= 1 ){
+          course.id   = nodes[0].text;
+          course.href = nodes[0].attributes["href"];
         }
+
+        //取的課程名稱/課程連結
+        nodes = nodesOne[1].getElementsByTagName("a");
+        if ( nodes.length >= 1 ){
+          course.name = nodes[0].innerHtml;
+        }else{
+          course.name = nodesOne[1].text;
+        }
+
+        courseDetail.course = course;
+
+        //取得老師名稱
+        for( Element node in nodesOne[6].getElementsByTagName("a") ){
+          TeacherJson teacher = TeacherJson();
+          teacher.name = node.text;
+          teacher.href = node.attributes["href"];
+          courseDetail.addTeacher( teacher );
+        }
+
+        //取得教室名稱
+        List<ClassroomJson> classroomList = List();
         for( Element node in nodesOne[15].getElementsByTagName("a") ){
-          CourseClassroomJson classroom = CourseClassroomJson();
+          ClassroomJson classroom = ClassroomJson();
           classroom.name = node.text;
           classroom.href = node.attributes["href"];
-          courseClassroom.add( classroom );
+          classroomList.add( classroom );
         }
         int courseDay = 0;
+        bool add = false;
         for( int j = 8 ; j < 8 + 7 ; j++ ){
-          List<CourseTimeJson> courseTimeList = List();
           String time = nodesOne[j].text;
-          if( strQ2B(time).replaceAll(" ", "").isNotEmpty ){
-            int timeLength = time.split(" ").length;
-            for ( String t in time.split(" ").getRange(1, timeLength ).toList() ){
-              CourseTimeJson courseTimeItem  = CourseTimeJson();
-              courseTimeItem.time = t;
-              if( courseClassroom.length >= 1){
-                int classroomIndex = ( courseDay < courseClassroom.length ) ? courseDay : courseClassroom.length-1;
-                courseTimeItem.classroom =  courseClassroom[classroomIndex];
-              }
-              courseTimeList.add( courseTimeItem );
-            }
-            courseTime.add(courseTimeList);
-            courseDay++;
-          }else{
-            courseTime.add( List() );
+          //計算教室
+          if( classroomList.length >= 1){
+            int classroomIndex = ( courseDay < classroomList.length ) ? courseDay : classroomList.length-1;
+            courseDetail.classroom = classroomList[ classroomIndex ];
           }
+          courseDay++;
+          //加入課程時間
+          add |= courseTable.setCourseDetailByTimeString( Day.values[ j - 8 ] , time, courseDetail);
         }
-
-        courseId = nodesOne[0].text.replaceAll("\n", "");
-        courseHref = nodesOne[1].getElementsByTagName("a")[0].attributes["href"];
-
-        var courseDetail = CourseDetailJson(
-          courseName : courseName ,
-          courseId : courseId ,
-          teacherName : teacherName ,
-          courseHref : courseHref ,
-          courseTime : courseTime ,
-        );
-        courseTable.courseDetail.add( courseDetail );
+        if( !add ){  //代表課程沒有時間
+          courseTable.setCourseDetailByTime( Day.UnKnown, SectionNumber.T_UnKnown, courseDetail);
+        }
       }
+      //Log.d( courseTable.toString() );
       return courseTable;
     }on Exception catch(e){
       //throw e;

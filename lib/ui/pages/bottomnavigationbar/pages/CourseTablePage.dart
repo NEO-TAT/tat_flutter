@@ -29,11 +29,11 @@ class _CourseTablePage extends State<CourseTablePage> {
         //尚未登入
         Navigator.of(context).push(CustomRoute(LoginPage()));
       } else {
-        courseTable = Model.instance.getCourseTable( CourseSemesterJson( year:"106" , semester: "1" ) );
+        courseTable = Model.instance.getCourseTable( SemesterJson( year:"108" , semester: "2" ) );
         if( courseTable == null ){
           _login();
         }else{
-          _countRowAndColumn();
+          _showCourseTable();
         }
       }
     });
@@ -78,51 +78,70 @@ class _CourseTablePage extends State<CourseTablePage> {
     );
   }
 
+
   Widget gradViewItem(BuildContext context ,int index){
+
     int mod = columnCount;
+    int dayIndex = (index % mod ).floor() + 1;
+    int sectionNumberIndex = (index / mod).floor();
+
     CourseDetailJson courseDetail;
-    if( courseTable != null){
-      courseDetail = courseTable.getCourseDetailByTime( (index % mod ).floor().toString() , sectionNumber[ (index / mod).floor() ] );
+    if(courseTable != null){
+      courseDetail = courseTable.getCourseDetailByTime( Day.values[dayIndex] , SectionNumber.values[sectionNumberIndex]  );
     }
-    String name = (courseDetail != null) ? courseDetail.courseName : "No";
+    String name = (courseDetail != null) ? courseDetail.course.name : "No";
     return RaisedButton(
-      child: Text( name , textAlign: TextAlign.center  ),
+      padding: EdgeInsets.fromLTRB(10 , 10 , 10 , 10),
+      child: Text(
+          name ,
+          textAlign: TextAlign.center ,
+
+          style: TextStyle(
+              fontSize: 12,
+          ),
+      ),
       onPressed: () {
         if( courseDetail != null){
-          showMyMaterialDialog(context , courseDetail );
+          if( courseDetail.course.href.isNotEmpty){
+            showMyMaterialDialog(context , courseDetail );
+          }
         }
       },
       color: Colors.red,
     );
+
+
   }
 
 
-  void showMyMaterialDialog(BuildContext context ,CourseDetailJson detail) {
+  void showMyMaterialDialog(BuildContext context ,CourseDetailJson courseDetail) {
+      CourseJson course = courseDetail.course;
+      String teacherName = courseDetail.getTeacherName();
       showDialog(
         context: context,
         useRootNavigator: false,
         builder: (context) {
           return new AlertDialog(
-            title: Text( detail.courseName ),
+            title: Text( course.name ),
             content: Column(
               mainAxisSize : MainAxisSize.min ,
               children: <Widget>[
                 Row(
                   children: <Widget>[
                     Text("課號:"),
-                    Text( detail.courseId )
+                    Text( course.id )
                   ],
                 ),
                 Row(
                   children: <Widget>[
                     Text("地點:"),
-                    Text( detail.courseId )
+                    Text( course.id )
                   ],
                 ),
                 Row(
                   children: <Widget>[
                     Text("授課老師:"),
-                    Text( detail.teacherName.toString() )
+                    Text( teacherName )
                   ],
                 )
               ],
@@ -147,14 +166,13 @@ class _CourseTablePage extends State<CourseTablePage> {
 
 
 
-  _countRowAndColumn(){
+  _showCourseTable(){
     columnCount = 5;
     rowCount = sectionNumber.length;
     setState(() {
 
     });
   }
-
 
 
 

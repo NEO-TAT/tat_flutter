@@ -22,7 +22,7 @@ class Model {
 
   UserDataJson userData;
   List<CourseTableJson> courseTableList;
-  List<CourseSemesterJson> courseSemesterList;
+  List<SemesterJson> courseSemesterList;
 
 /*
   UserDataJson get userData{
@@ -59,6 +59,7 @@ class Model {
         courseTableList.add( CourseTableJson.fromJson( json.decode(readJson) ) );
       }
     }
+
     Log.d( courseTableList.toString() );
     Log.d( courseTableList.length.toString() );
   }
@@ -93,17 +94,15 @@ class Model {
     List<CourseTableJson> tableList = courseTableList;
     for( int i = 0 ; i < tableList.length ; i++ ){
       CourseTableJson table = tableList[i];
-      //Log.d( table.courseSemester.toString() );
-      //Log.d( addCourseTable.courseSemester.toString() );
       if ( table.courseSemester == addCourseTable.courseSemester ){
-        //Log.d( "remove $i");
         tableList.removeAt(i);
       }
     }
+    Log.d(addCourseTable.toString());
     tableList.add(addCourseTable);
   }
 
-  CourseTableJson getCourseTable(CourseSemesterJson courseSemester) {
+  CourseTableJson getCourseTable(SemesterJson courseSemester) {
     List<CourseTableJson> tableList = courseTableList;
 
     for( int i = 0 ; i < tableList.length ; i++ ){
