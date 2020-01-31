@@ -26,6 +26,7 @@ dependencies:
   provider: ^4.0.1
   path_provider : ^1.5.1
   url_launcher: ^5.4.1
+  flutter_i18n: ^0.8.3
   #----------store data----------#
   shared_preferences: ^0.5.6
   sqflite: ^1.2.0
