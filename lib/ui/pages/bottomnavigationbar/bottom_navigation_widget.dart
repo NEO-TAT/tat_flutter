@@ -1,28 +1,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/CourseByCourseIdTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/CourseByStudentIdTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/SemesterByStudentIdTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/CourseLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/NTUTLoginTask.dart';
-import 'package:flutter_app/ui/other/CustomRoute.dart';
-import 'package:flutter_app/ui/other/MyAlertDialog.dart';
-import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
-import '../../../main.dart';
-import 'pages/SettingPage.dart';
-import 'pages/NewAnnouncementPage.dart';
-import 'pages/CourseTablePage.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/announcement/NewAnnouncementScreen.dart';
+import 'pages/setting/SettingScreen.dart';
+import 'pages/course/CourseTableScreen.dart';
 import 'pages/pages_screen.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
@@ -37,7 +19,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   @override
   void initState() {
     list
-      ..add(CourseTablePage())
+      ..add(CourseTableScreen())
       ..add(NewAnnouncementScreen())
       ..add(PagesScreen())
       ..add(SettingScreen());

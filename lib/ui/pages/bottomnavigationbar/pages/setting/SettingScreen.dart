@@ -8,11 +8,12 @@ import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:random_color/random_color.dart';
 
-import '../../../../src/store/Model.dart';
-import '../../../../src/store/json/UserDataJson.dart';
+import '../../../../../src/store/Model.dart';
+import '../../../../../src/store/json/UserDataJson.dart';
 
 enum onListViewPress{ Setting , Logout , Report , About , ChangePassword}
 
@@ -48,6 +49,14 @@ class SettingScreen extends StatelessWidget {
 
 
   void _onListViewPress(BuildContext context , onListViewPress value) {
+    Fluttertoast.showToast(
+        msg: value.toString(),
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
     switch(value){
       case onListViewPress.Logout:
         Model.instance.logout();
@@ -75,6 +84,7 @@ class SettingScreen extends StatelessWidget {
               widget = _buildSetting(context, listViewData[index-1]);
             }
             return GestureDetector(
+                behavior: HitTestBehavior.opaque ,  //讓透明部分有反應
                 child: WidgetANimator(widget) ,
                 onTap: () {
                   if ( index!=0)
@@ -164,7 +174,7 @@ class SettingScreen extends StatelessWidget {
   Container _buildSetting(BuildContext context , Map data) {
     return Container(
       //color: Colors.yellow,
-      margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      padding : EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

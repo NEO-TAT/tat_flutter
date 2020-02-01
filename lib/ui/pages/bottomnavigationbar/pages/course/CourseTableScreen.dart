@@ -8,15 +8,15 @@ import 'package:flutter_app/src/taskcontrol/task/SemesterByStudentIdTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../../../../src/store/Model.dart';
-import '../../../../src/store/json/UserDataJson.dart';
+import '../../../../../src/store/Model.dart';
+import '../../../../../src/store/json/UserDataJson.dart';
 
-class CourseTablePage extends StatefulWidget {
+class CourseTableScreen extends StatefulWidget {
   @override
-  _CourseTablePage createState() => _CourseTablePage();
+  _CourseTableScreen createState() => _CourseTableScreen();
 }
 
-class _CourseTablePage extends State<CourseTablePage> {
+class _CourseTableScreen extends State<CourseTableScreen> {
   final TextEditingController _studentIdControl = TextEditingController();
   CourseTableJson courseTable;
   int columnCount = 7;

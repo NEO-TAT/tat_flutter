@@ -35,6 +35,7 @@ class S implements WidgetsLocalizations {
   String get getCourseDetail => "getCourseDetail";
   String get getCourseSemester => "getCourseSemester";
   String get getISchoolNewAnnouncement => "Getting ISchoolNewAnnouncement";
+  String get getISchoolNewAnnouncementDetail => "getISchoolNewAnnouncementDetail";
   String get getISchoolNewAnnouncementError => "getISchoolNewAnnouncementError";
   String get loggingISchool => "Logging ISchool...";
   String get loggingNTUT => "Logging NTUT...";
@@ -89,6 +90,8 @@ class $zh extends S {
   String get alertError => "發生錯誤";
   @override
   String get password => "密碼";
+  @override
+  String get getISchoolNewAnnouncementDetail => "取得公告資訊...";
   @override
   String get loginISchoolFail => "登入北科I學園錯誤";
   @override

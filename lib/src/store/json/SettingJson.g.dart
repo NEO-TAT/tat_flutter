@@ -14,6 +14,10 @@ SettingJson _$SettingJsonFromJson(Map<String, dynamic> json) {
     other: json['other'] == null
         ? null
         : OtherSettingJson.fromJson(json['other'] as Map<String, dynamic>),
+    announcement: json['announcement'] == null
+        ? null
+        : AnnouncementSettingJson.fromJson(
+            json['announcement'] as Map<String, dynamic>),
   );
 }
 
@@ -21,6 +25,7 @@ Map<String, dynamic> _$SettingJsonToJson(SettingJson instance) =>
     <String, dynamic>{
       'course': instance.course,
       'other': instance.other,
+      'announcement': instance.announcement,
     };
 
 CourseSettingJson _$CourseSettingJsonFromJson(Map<String, dynamic> json) {
@@ -36,6 +41,19 @@ Map<String, dynamic> _$CourseSettingJsonToJson(CourseSettingJson instance) =>
     <String, dynamic>{
       'studentId': instance.studentId,
       'semester': instance.semester,
+    };
+
+AnnouncementSettingJson _$AnnouncementSettingJsonFromJson(
+    Map<String, dynamic> json) {
+  return AnnouncementSettingJson(
+    page: json['page'] as int,
+  );
+}
+
+Map<String, dynamic> _$AnnouncementSettingJsonToJson(
+        AnnouncementSettingJson instance) =>
+    <String, dynamic>{
+      'page': instance.page,
     };
 
 OtherSettingJson _$OtherSettingJsonFromJson(Map<String, dynamic> json) {

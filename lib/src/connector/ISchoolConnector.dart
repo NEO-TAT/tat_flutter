@@ -126,7 +126,7 @@ class ISchoolConnector {
       nodes = nodes[1].getElementsByTagName("tr");
       for (i = 0; i < nodes.length; i++) {
         //郵件是否已讀
-        bool isRead = nodes[i].classes.toString().contains("un");
+        bool isRead = !nodes[i].classes.toString().contains("un");
 
         String title, postTime , sender, messageId , courseId;
 
@@ -141,10 +141,12 @@ class ISchoolConnector {
                   .innerHtml;
               courseId = courseId.replaceAll(" ", "");
               courseId = courseId.replaceAll("[", "");
+              courseId = courseId.replaceAll("]", "");
               courseId = courseId.split("-")[0];
               href = href.replaceAll("amp;", ""); //修正&後出現amp;問題
               messageId = Uri.parse(href).queryParameters["messageId"];
               title = nodesItem[j].getElementsByTagName("a")[1].innerHtml;
+              title = title.replaceAll("amp;", ""); //修正&後出現amp;問題
               break;
             case 1:
               sender = nodesItem[j].getElementsByTagName("a")[0].innerHtml;
@@ -167,8 +169,17 @@ class ISchoolConnector {
         courseName = Model.instance.getCourseNameByCourseId(courseId);
         if(courseName == null ){
           Log.d("Not find the courseName");
-          CourseInfoJson courseInfo = await CourseConnector.getCourseByCourseId(courseId);
-          courseName =  courseInfo.courseDetail.course.name;
+          int time = 0;
+          do{
+            try{
+              CourseInfoJson courseInfo = await CourseConnector.getCourseByCourseId(courseId);
+              courseName =  courseInfo.courseDetail.course.name;
+              break;
+            }on Exception catch(e){
+              Log.d( "course : $courseId can't find the courseName" );
+              time++;
+            }
+          }while(time <= 3);
         }
 
         NewAnnouncementJson newAnnouncement = NewAnnouncementJson(
@@ -188,6 +199,32 @@ class ISchoolConnector {
       return null;
     }
   }
+
+
+  static Future<String> getISchoolNewAnnouncementDetail(String messageId) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    try {
+      String detail;
+      Map<String, String> data = {
+        "messageId": messageId,
+        "userId" : Model.instance.userData.account ,
+        "type" : "received" ,
+      };
+      parameter = ConnectorParameter( _iSchoolAnnouncementDetailUrl );
+      parameter.data = data;
+      result = await Connector.getDataByGet( parameter );
+      tagNode = parse(result);
+      detail = tagNode.getElementsByClassName("imContent")[0].innerHtml;
+      return detail;
+    } on Exception catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+
 
   static bool get isLogin {
     return _isLogin;

@@ -55,7 +55,7 @@ class Model {
     userData = ( readJson != null ) ? UserDataJson.fromJson( json.decode(readJson) ) : UserDataJson();
     Log.d( userData.toString() );
 
-    //_clearSetting(courseTableJsonKey);
+    //_clearSetting( newAnnouncementJsonKey );
 
     readJsonList = await _readStringList(courseTableJsonKey);
     courseTableList = List();

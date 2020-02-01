@@ -27,6 +27,7 @@
   "getISchoolNewAnnouncementError" : "getISchoolNewAnnouncementError",
   "loginISchoolFail" : "login ISchool Fail",
   "getISchoolNewAnnouncement" : "Getting ISchoolNewAnnouncement",
+  "getISchoolNewAnnouncementDetail" : "getISchoolNewAnnouncementDetail",
   "getCourse" : "Getting Course",
   "loginCourse" : "loginCourse",
   "getCourseSemester" : "getCourseSemester",

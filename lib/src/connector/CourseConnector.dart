@@ -71,8 +71,7 @@ class CourseConnector {
     try{
       ConnectorParameter parameter;
       Document tagNode;
-      Element node;
-      List<Element> nodes , courseNodes , courseInfoNodes;
+      List<Element>  courseNodes , courseInfoNodes;
       Map<String, String> data = {
         "code": courseId,
         "format": "-1",

@@ -8,10 +8,11 @@ part 'SettingJson.g.dart';
 class SettingJson{
   CourseSettingJson course;
   OtherSettingJson other;
-
-  SettingJson( { this.course , this.other }) {
-    course    = (course    != null) ? course    : CourseSettingJson();
-    other     = (other     != null) ? other     : OtherSettingJson();
+  AnnouncementSettingJson announcement;
+  SettingJson( { this.course , this.other , this.announcement }) {
+    course       = (course       != null) ? course       : CourseSettingJson();
+    other        = (other        != null) ? other        : OtherSettingJson();
+    announcement = (announcement != null )? announcement : AnnouncementSettingJson();
   }
 
   factory SettingJson.fromJson(Map<String, dynamic> json) => _$SettingJsonFromJson(json);
@@ -25,8 +26,8 @@ class CourseSettingJson{
   SemesterJson semester;
 
   CourseSettingJson( { this.studentId , this.semester }) {
-    studentId = JsonInit.stringInit(studentId);
-    semester  = (semester     != null) ? semester     : SemesterJson();
+    studentId    = JsonInit.stringInit(studentId);
+    semester     = (semester     != null )? semester     : SemesterJson();
   }
 
   factory CourseSettingJson.fromJson(Map<String, dynamic> json) => _$CourseSettingJsonFromJson(json);
@@ -34,6 +35,18 @@ class CourseSettingJson{
 
 
 }
+@JsonSerializable()
+class AnnouncementSettingJson{
+  int page;
+  AnnouncementSettingJson( { this.page}) {
+    page    = (page != null) ? page : 0;
+  }
+
+
+  factory AnnouncementSettingJson.fromJson(Map<String, dynamic> json) => _$AnnouncementSettingJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$AnnouncementSettingJsonToJson(this);
+}
+
 
 @JsonSerializable()
 class OtherSettingJson{

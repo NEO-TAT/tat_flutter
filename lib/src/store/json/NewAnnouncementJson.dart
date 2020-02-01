@@ -17,6 +17,7 @@ class NewAnnouncementJsonList {
     bool pass = true;
     for( NewAnnouncementJson  value in newAnnouncementList ){
       if(  value.courseId == newAnnouncement.courseId && newAnnouncement.time ==  value.time ){
+        value.isRead = newAnnouncement.isRead;
         pass = false;
         break;
       }
@@ -52,7 +53,14 @@ class NewAnnouncementJson {
   bool isRead;
   DateTime time;
 
-  NewAnnouncementJson({this.title , this.detail , this.sender, this.courseId , this.courseName ,this.messageId ,this.isRead ,this.time });
+  NewAnnouncementJson({this.title , this.detail , this.sender, this.courseId , this.courseName ,this.messageId ,this.isRead ,this.time }){
+    title      = JsonInit.stringInit(title);
+    detail     = JsonInit.stringInit(detail);
+    sender     = JsonInit.stringInit(sender);
+    courseId   = JsonInit.stringInit(courseId);
+    courseName = JsonInit.stringInit(courseName);
+    messageId  = JsonInit.stringInit(messageId);
+  }
 
   factory NewAnnouncementJson.fromJson(Map<String, dynamic> json) => _$NewAnnouncementJsonFromJson(json);
   Map<String, dynamic> toJson() => _$NewAnnouncementJsonToJson(this);
