@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
+import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NewAnnouncementScreen extends StatefulWidget {
@@ -9,24 +15,54 @@ class NewAnnouncementScreen extends StatefulWidget {
 }
 
 class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
-  List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+   List<NewAnnouncementJson> items;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAnnouncement();
+  }
+
+  void _loadAnnouncement(){
+    items = Model.instance.newAnnouncementList.newAnnouncementList;
+    if( items.length == 0 ){
+      TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context , 1) );
+      TaskHandler.instance.startTask( context );
+    }
+  }
 
   void _onRefresh() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
+    TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context , 1) );
+    await TaskHandler.instance.startTask( context );
+    _loadAnnouncement();
+    setState(() {});
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
-    items.add((items.length + 1).toString());
-    setState(() {});
-    _refreshController.loadComplete();
+    int page = (items.length ~/ 15) + 1;
+    Log.d( items.length.toString() );
+    int maxPage = await ISchoolConnector.getISchoolNewAnnouncementPage();
+    if( page < maxPage ){
+      TaskHandler.instance.addTask( ISchoolNewAnnouncementTask(context , page ) );
+      await TaskHandler.instance.startTask( context );
+      _loadAnnouncement();
+      setState(() {});
+      _refreshController.loadComplete();
+    }else{
+      Fluttertoast.showToast(
+          msg: "已經到底了",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      _refreshController.loadComplete();
+    }
   }
 
   @override
@@ -69,9 +105,9 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
           scrollDirection: Axis.vertical,
           primary: true,
           itemCount: items.length,
-          itemBuilder: (c, i) => AwesomeListItem(
-              title: "apple",
-              content: "apple",
+          itemBuilder: (context, index) => AwesomeListItem(
+              title:  items[index].title,
+              content: items[index].sender,
               color: Colors.white,
               image: "https://picsum.photos/350?random"),
         ),

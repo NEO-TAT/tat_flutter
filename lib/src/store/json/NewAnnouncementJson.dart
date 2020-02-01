@@ -6,18 +6,35 @@ import 'package:sprintf/sprintf.dart';
 import '../JsonInit.dart';
 part 'NewAnnouncementJson.g.dart';
 
-
+@JsonSerializable()
 class NewAnnouncementJsonList {
   List<NewAnnouncementJson> newAnnouncementList;
-  NewAnnouncementJsonList( this.newAnnouncementList );
+  NewAnnouncementJsonList( {this.newAnnouncementList} ){
+    newAnnouncementList = ( newAnnouncementList != null ) ? newAnnouncementList : List();
+  }
 
   void addNewAnnouncement( NewAnnouncementJson newAnnouncement ){
+    bool pass = true;
     for( NewAnnouncementJson  value in newAnnouncementList ){
-      if(  value.courseId != newAnnouncement.courseId || newAnnouncement.time != value.time ){
-        newAnnouncementList.add(newAnnouncement);
+      if(  value.courseId == newAnnouncement.courseId && newAnnouncement.time ==  value.time ){
+        pass = false;
+        break;
       }
     }
-    newAnnouncementList.sort( (a , b) => a.time.compareTo( b.time ) );  //排序
+    if( pass ){
+      Log.d( sprintf("add : %s" , [newAnnouncement.toString()]) );
+      newAnnouncementList.add(newAnnouncement);
+      newAnnouncementList.sort( (a , b) => b.time.compareTo( a.time ) );  //排序
+    }
+  }
+
+
+  factory NewAnnouncementJsonList.fromJson(Map<String, dynamic> json) => _$NewAnnouncementJsonListFromJson(json);
+  Map<String, dynamic> toJson() => _$NewAnnouncementJsonListToJson(this);
+
+  @override
+  String toString() {
+    return sprintf("%s" , [newAnnouncementList.toString()]);
   }
 
 }

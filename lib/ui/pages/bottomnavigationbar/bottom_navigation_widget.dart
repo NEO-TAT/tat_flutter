@@ -20,8 +20,8 @@ import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import '../../../main.dart';
-import 'pages/SettingScreen.dart';
-import 'pages/NewAnnouncementScreen.dart';
+import 'pages/SettingPage.dart';
+import 'pages/NewAnnouncementPage.dart';
 import 'pages/CourseTablePage.dart';
 import 'pages/pages_screen.dart';
 
@@ -53,55 +53,64 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
+          resizeToAvoidBottomPadding : false ,
           body: list[_currentIndex],
-          bottomNavigationBar: BottomNavigationBar(
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.announcement,
-                    color: _bottomNavigationColor,
-                  ),
-                  title: Text(
-                    'New',
-                    style: TextStyle(color: _bottomNavigationColor),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.email,
-                    color: _bottomNavigationColor,
-                  ),
-                  title: Text(
-                    'Email',
-                    style: TextStyle(color: _bottomNavigationColor),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.pages,
-                    color: _bottomNavigationColor,
-                  ),
-                  title: Text(
-                    'PAGES',
-                    style: TextStyle(color: _bottomNavigationColor),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.settings,
-                    color: _bottomNavigationColor,
-                  ),
-                  title: Text(
-                    'Setting',
-                    style: TextStyle(color: _bottomNavigationColor),
-                  )),
-            ],
-            currentIndex: _currentIndex,
-            onTap: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            type: BottomNavigationBarType.shifting,
-          ),
+          bottomNavigationBar: bottomNavigationBar(),
         ),
     );
   }
+
+
+
+  Widget bottomNavigationBar(){
+    return BottomNavigationBar(
+      items: [
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.announcement,
+              color: _bottomNavigationColor,
+            ),
+            title: Text(
+              'New',
+              style: TextStyle(color: _bottomNavigationColor),
+            )),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.email,
+              color: _bottomNavigationColor,
+            ),
+            title: Text(
+              'Email',
+              style: TextStyle(color: _bottomNavigationColor),
+            )),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.pages,
+              color: _bottomNavigationColor,
+            ),
+            title: Text(
+              'PAGES',
+              style: TextStyle(color: _bottomNavigationColor),
+            )),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.settings,
+              color: _bottomNavigationColor,
+            ),
+            title: Text(
+              'Setting',
+              style: TextStyle(color: _bottomNavigationColor),
+            )),
+      ],
+      currentIndex: _currentIndex,
+      onTap: (int index) {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      type: BottomNavigationBarType.shifting,
+    );
+  }
+
+
 }

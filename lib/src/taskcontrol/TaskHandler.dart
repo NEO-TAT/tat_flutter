@@ -37,7 +37,7 @@ class TaskHandler {
     }
   }
 
-  void startTask( [BuildContext context]) async{
+  Future<void> startTask( [BuildContext context]) async{
     while ( _taskQueue.length > 0 ){
       TaskModel task = _taskQueue.removeAt(0);
       if( context != null ){

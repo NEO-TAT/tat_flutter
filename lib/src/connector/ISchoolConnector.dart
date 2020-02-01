@@ -76,13 +76,41 @@ class ISchoolConnector {
       return ISchoolConnectorStatus.LoginFail;
     }
   }
+  
+  
+  static Future<int> getISchoolNewAnnouncementPage() async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    NewAnnouncementJsonList newAnnouncementJsonList = NewAnnouncementJsonList();
+    try {
+      Map<String, String> data = {
+        "box": "inbox",
+        "SelectorReadStatus" : "all" ,
+        "page" : "1" ,
+      };
+      parameter = ConnectorParameter( _iSchoolNewAnnouncementUrl );
+      parameter.data = data;
+      result = await Connector.getDataByGet( parameter );
+      tagNode = parse(result);
+      node = tagNode.getElementById("im_paging");
+      return node.getElementsByTagName("a").length + 1;
+    } on Exception catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+  
 
-  static Future<bool> getISchoolNewAnnouncement( [int page = 1]) async {
+  static Future<NewAnnouncementJsonList> getISchoolNewAnnouncement(int page) async {
     ConnectorParameter parameter;
     int i, j;
     String result;
     Document tagNode;
     List<Element> nodes, nodesItem;
+    NewAnnouncementJsonList newAnnouncementJsonList = NewAnnouncementJsonList();
     try {
       Map<String, String> data = {
         "box": "inbox",
@@ -152,13 +180,12 @@ class ISchoolConnector {
           courseName: courseName,
           time : DateTime( year,month,day,hour,minute )
         );
-
-        Log.d( newAnnouncement.toString() );
+        newAnnouncementJsonList.newAnnouncementList.add(newAnnouncement);
       }
-      return true;
+      return newAnnouncementJsonList;
     } on Exception catch (e) {
       Log.e(e.toString());
-      return false;
+      return null;
     }
   }
 

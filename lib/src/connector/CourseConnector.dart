@@ -7,6 +7,7 @@ import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
 import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 import 'Connector.dart';
 import 'ConnectorParameter.dart';
@@ -143,7 +144,7 @@ class CourseConnector {
     }
   }
 
-  static Future<bool> getSemesterByStudentId(String studentId) async{
+  static Future<List<SemesterJson>> getSemesterByStudentId(String studentId) async{
     try{
       ConnectorParameter parameter;
       Document tagNode;
@@ -159,15 +160,21 @@ class CourseConnector {
       parameter.charsetName  = 'big5';
       Response response = await Connector.getDataByPostResponse( parameter );
       tagNode = parse(response.toString());
-
-      
-      
-      
-      return true;
+      node = tagNode.getElementsByTagName("table")[0];
+      nodes = node.getElementsByTagName("tr");
+      List<SemesterJson> semesterJsonList = List();
+      for( int i = 1 ; i < nodes.length ; i++) {
+        node = nodes[i];
+        String year, semester;
+        year = node.getElementsByTagName("a")[0].text.split(" ")[0];
+        semester = node.getElementsByTagName("a")[0].text.split(" ")[2];
+        semesterJsonList.add( SemesterJson( year: year , semester:  semester ) );
+      }
+      return semesterJsonList;
     }on Exception catch(e){
       //throw e;
       Log.e(e.toString());
-      return false;
+      return null;
     }
   }
 
@@ -192,20 +199,20 @@ class CourseConnector {
 
 
 
-  static Future<CourseTableJson> getCourseByStudentId(String studentId , String year , String semester) async {
+  static Future<CourseTableJson> getCourseByStudentId(String studentId , SemesterJson semester) async {
     try {
       ConnectorParameter parameter;
       Document tagNode;
       Element node;
       List<Element> courseNodes, nodesOne, nodes;
       CourseTableJson courseTable = CourseTableJson();
-      courseTable.setCourseSemester(year, semester);
+      courseTable.setCourseSemester(semester.year, semester.semester );
 
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
-        "year": year,
-        "sem": semester,
+        "year": semester.year,
+        "sem": semester.semester,
       };
       parameter = ConnectorParameter(_postCourseUrl);
       parameter.data = data;

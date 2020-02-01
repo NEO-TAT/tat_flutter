@@ -10,14 +10,13 @@ import 'TaskModel.dart';
 class CourseByStudentIdTask extends TaskModel{
   static final String taskName = "CourseByStudentIdTask";
   String id;
-  String year;
-  String semester;
-  CourseByStudentIdTask(BuildContext context,this.id,this.year,this.semester) : super(context, taskName);
+  SemesterJson semester;
+  CourseByStudentIdTask(BuildContext context,this.id,this.semester) : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async{
     MyProgressDialog.showProgressDialog(context, S.current.getCourseSemester );
-    CourseTableJson courseTable = await CourseConnector.getCourseByStudentId(id , year , semester );
+    CourseTableJson courseTable = await CourseConnector.getCourseByStudentId(id , semester );
     MyProgressDialog.hideProgressDialog();
     Model.instance.addCourseTable( courseTable );
     await Model.instance.save( Model.courseTableJsonKey );

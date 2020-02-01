@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
+import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,34 +15,22 @@ import 'json/CourseDetailJson.dart';
 import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
 
+//flutter packages pub run build_runner build 創建Json
+
 class Model {
   Model._privateConstructor();
   static final Model instance = Model._privateConstructor();
   SharedPreferences pref;
-  static String userDataJsonKey = "UserDataJsonKey";
-  static String courseTableJsonKey = "CourseTableJsonListKey";
-  static String courseSemesterJsonKey = "CourseSemesterListJson";
+  static String userDataJsonKey         = "UserDataJsonKey";
+  static String courseTableJsonKey       = "CourseTableJsonListKey";
+  static String courseSemesterJsonKey    = "CourseSemesterListJson";
   static String newAnnouncementJsonKey = "newAnnouncementJson";
+  static String settingJsonKey           = "SettingJsonKey";
   UserDataJson userData;
   NewAnnouncementJsonList newAnnouncementList;
   List<CourseTableJson> courseTableList;
   List<SemesterJson> courseSemesterList;
-
-
-/*
-  UserDataJson get userData{
-    return _userData;
-  }
-
-  List<CourseTableJson> get courseTable{
-    return _courseTable;
-  }
-
-  List<CourseSemesterJson> get courseSemester{
-    return _courseSemester;
-  }
-
- */
+  SettingJson setting;
 
   String getCourseNameByCourseId( String courseId){
     String name;
@@ -76,21 +65,30 @@ class Model {
       }
     }
 
-    Log.d( courseTableList.toString() );
-    Log.d( courseTableList.length.toString() );
+    readJson = await _readString( newAnnouncementJsonKey );
+    newAnnouncementList = ( readJson != null ) ? NewAnnouncementJsonList.fromJson( json.decode(readJson) ) : NewAnnouncementJsonList();
+    Log.d( newAnnouncementList.toString() );
+
+
+    readJson = await _readString( settingJsonKey );
+    setting = ( readJson != null ) ? SettingJson.fromJson( json.decode(readJson) ) : SettingJson();
+    Log.d( setting.toString() );
+
+
+    //Log.d( courseTableList.toString() );
   }
 
 
   Future<void> logout() async{
-    List<String> clearKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey,newAnnouncementJsonKey];
+    List<String> clearKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey,newAnnouncementJsonKey , settingJsonKey ];
     for( String key in clearKey){
       _clearSetting(key);
     }
   }
 
   Future<void> save(String key) async {
-    List<String> saveKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey,newAnnouncementJsonKey];
-    List saveObj = [userData ,courseTableList , courseSemesterList,newAnnouncementList];
+    List<String> saveKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey,newAnnouncementJsonKey , settingJsonKey ];
+    List saveObj = [userData ,courseTableList , courseSemesterList,newAnnouncementList , setting];
     if( saveKey.contains(key) ){
       int index = saveKey.indexOf(key);
       if( key.contains("List") ){
