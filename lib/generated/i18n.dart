@@ -33,14 +33,21 @@ class S implements WidgetsLocalizations {
   String get connectTimeOut => "ConnectTimeOut";
   String get getCourse => "Getting Course";
   String get getCourseDetail => "getCourseDetail";
+  String get getCourseDetailError => "getCourseDetailError";
+  String get getCourseError => "getCourseError";
   String get getCourseSemester => "getCourseSemester";
+  String get getCourseSemesterError => "getCourseSemesterError";
   String get getISchoolNewAnnouncement => "Getting ISchoolNewAnnouncement";
   String get getISchoolNewAnnouncementDetail => "getISchoolNewAnnouncementDetail";
+  String get getISchoolNewAnnouncementDetailError => "getISchoolNewAnnouncementDetailError";
   String get getISchoolNewAnnouncementError => "getISchoolNewAnnouncementError";
+  String get getISchoolNewAnnouncementPage => "getISchoolNewAnnouncementPage";
+  String get getISchoolNewAnnouncementPageError => "getISchoolNewAnnouncementPageError";
   String get loggingISchool => "Logging ISchool...";
   String get loggingNTUT => "Logging NTUT...";
   String get login => "login";
   String get loginCourse => "loginCourse";
+  String get loginCourseError => "loginCourseError";
   String get loginISchoolFail => "login ISchool Fail";
   String get loginSave => "Login save";
   String get networkError => "networkError";
@@ -71,7 +78,11 @@ class $zh extends S {
   @override
   String get loginSave => "帳號密碼已儲存";
   @override
+  String get getCourseError => "取得課表錯誤";
+  @override
   String get passwordExpiredWarning => "密碼即將過期，請盡快更新密碼";
+  @override
+  String get loginCourseError => "登入課程系統錯誤";
   @override
   String get passwordNull => "請輸入密碼";
   @override
@@ -85,13 +96,19 @@ class $zh extends S {
   @override
   String get checkLogin => "檢查登入...";
   @override
+  String get getCourseDetailError => "課程資料讀取錯誤";
+  @override
   String get resetAccountPassword => "設定";
   @override
   String get alertError => "發生錯誤";
   @override
+  String get getCourseSemesterError => "取得學期清單錯誤";
+  @override
   String get password => "密碼";
   @override
   String get getISchoolNewAnnouncementDetail => "取得公告資訊...";
+  @override
+  String get getISchoolNewAnnouncementPage => "取得公告頁數...";
   @override
   String get loginISchoolFail => "登入北科I學園錯誤";
   @override
@@ -102,6 +119,8 @@ class $zh extends S {
   String get ok => "確定";
   @override
   String get getISchoolNewAnnouncementError => "取得最新公告錯誤";
+  @override
+  String get getISchoolNewAnnouncementPageError => "取得公告頁數錯誤";
   @override
   String get networkError => "網路發生錯誤";
   @override
@@ -126,6 +145,8 @@ class $zh extends S {
   String get app_name => "北科課程助手";
   @override
   String get authCodeFail => "驗證碼錯誤";
+  @override
+  String get getISchoolNewAnnouncementDetailError => "取得公告資訊錯誤";
   @override
   String get loggingISchool => "登入北科i學園中...";
   @override

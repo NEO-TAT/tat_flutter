@@ -7,6 +7,8 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
+import '../../../ui/other/ErrorDialog.dart';
+
 class ISchoolLoginTask extends TaskModel {
   static final String taskName = "ISchoolLoginTask";
 
@@ -26,19 +28,11 @@ class ISchoolLoginTask extends TaskModel {
   }
 
   void _handleError() {
-    AwesomeDialog(
+    ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      dialogType: DialogType.ERROR,
-      animType: AnimType.BOTTOMSLIDE,
-      tittle: S.current.alertError,
       desc: S.current.loginISchoolFail,
-      btnOkText: S.current.restart,
-      btnCancelText: S.current.cancel,
-      useRootNavigator: true,
-      btnCancelOnPress: () {},
-      btnOkOnPress: () {
-        reStartTask();
-      },
-    ).show();
+    );
+    ErrorDialog(parameter).show();
+
   }
 }

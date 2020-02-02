@@ -56,6 +56,10 @@ class DioConnector {
     }
   }
 
+  void deleteCookies() {
+     cookieJar.deleteAll();
+  }
+
 
 
   Future<String> getDataByPost( ConnectorParameter parameter) async {

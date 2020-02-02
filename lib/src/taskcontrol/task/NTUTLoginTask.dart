@@ -9,12 +9,13 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/MyAlertDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widget.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 
 import '../../../main.dart';
 import '../../store/Model.dart';
 import '../../store/json/UserDataJson.dart';
+import '../../../ui/other/ErrorDialog.dart';
 
 class NTUTLoginTask extends TaskModel {
   static final String taskName = "NTUTLoginTask";
@@ -38,111 +39,47 @@ class NTUTLoginTask extends TaskModel {
   }
 
   void _handleError(NTUTConnectorStatus value) {
+
+    ErrorDialogParameter parameter = ErrorDialogParameter(
+      context: context,
+      desc: "",
+    );
+
     switch (value) {
       case NTUTConnectorStatus.PasswordExpiredWarning:
-        AwesomeDialog(
-            context: context,
-            dialogType: DialogType.INFO,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: S.current.passwordExpiredWarning,
-            btnOkText: S.current.updatePassword,
-            btnCancelText: S.current.cancel,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              _reLogin();
-            }).show();
+        parameter.dialogType = DialogType.INFO;
+        parameter.desc = S.current.passwordExpiredWarning;
+        parameter.btnOkText = S.current.updatePassword;
         break;
       case NTUTConnectorStatus.AccountLockWarning:
-        AwesomeDialog(
-            context: context,
-            dialogType: DialogType.INFO,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: S.current.accountLock,
-            btnOkText: S.current.restart,
-            btnCancelText: S.current.cancel,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              _reLogin();
-            }).show();
+        parameter.dialogType = DialogType.INFO;
+        parameter.desc = S.current.accountLock;
         break;
       case NTUTConnectorStatus.AccountPasswordIncorrect:
-        AwesomeDialog(
-            context: context,
-            dialogType: DialogType.INFO,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: S.current.accountPasswordFail,
-            btnOkText: S.current.resetAccountPassword,
-            btnCancelText: S.current.cancel,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              Navigator.of(context).push(CustomRoute(LoginPage()));
-            }).show();
+        parameter.dialogType = DialogType.INFO;
+        parameter.desc = S.current.accountPasswordFail;
+        parameter.btnOkText = S.current.resetAccountPassword;
+        parameter.btnOkOnPress =  () {
+          Navigator.of(context).push(CustomRoute(LoginPage()));
+        };
         break;
       case NTUTConnectorStatus.ConnectTimeOutError:
-        AwesomeDialog(
-            context: context,
-            dialogType: DialogType.ERROR,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: S.current.connectTimeOut,
-            btnOkText: S.current.restart,
-            btnCancelText: S.current.cancel,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              _reLogin();
-            }).show();
+        parameter.desc = S.current.connectTimeOut;
         break;
       case NTUTConnectorStatus.AuthCodeFailError:
-        AwesomeDialog(
-            context: context,
-            dialogType: DialogType.ERROR,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: S.current.authCodeFail,
-            btnOkText: S.current.restart,
-            btnCancelText: S.current.cancel,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              _reLogin();
-            }).show();
+        parameter.desc = S.current.authCodeFail;
         break;
       case NTUTConnectorStatus.NetworkError:
-        AwesomeDialog(
-            context: context,
-            dialogType: DialogType.ERROR,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: S.current.networkError,
-            btnOkText: S.current.restart,
-            btnCancelText: S.current.cancel,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              _reLogin();
-            }).show();
+        parameter.desc = S.current.networkError;
         break;
       default:
-        AwesomeDialog(
-          context: context,
-          dialogType: DialogType.ERROR,
-          animType: AnimType.BOTTOMSLIDE,
-          tittle: S.current.alertError,
-          desc: S.current.unknownError,
-          btnOkText: S.current.restart,
-          btnCancelText: S.current.cancel,
-          btnCancelOnPress: () {},
-          btnOkOnPress: () {
-            _reLogin();
-          },
-        ).show();
-        Log.d(value.toString());
+        parameter.desc = S.current.unknownError;
         break;
     }
-  }
 
-  void _reLogin() {
-    reStartTask();
+    ErrorDialog(parameter).show();
+
+
+
   }
 }

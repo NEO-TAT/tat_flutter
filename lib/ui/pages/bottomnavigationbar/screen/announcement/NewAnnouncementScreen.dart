@@ -6,11 +6,14 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementDetailTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementPageTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/announcement/AnnouncementDetailScreen.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/announcement/page/AnnouncementDetailPage.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NewAnnouncementScreen extends StatefulWidget {
@@ -29,43 +32,47 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
     items = Model.instance.newAnnouncementList.newAnnouncementList;
     if (items.length == 0) {
       _getAnnouncement();
-    }else{
+    } else {
       _loadAnnouncement();
     }
   }
 
-
   void _getAnnouncement() async {
     //第一次
     TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, 1));
-    await TaskHandler.instance.startTask(context);
+    await TaskHandler.instance.startTaskQueue(context);
     Model.instance.setting.announcement.page = 1;
-    Model.instance.save( Model.settingJsonKey );
+    Model.instance.save(Model.settingJsonKey);
     _loadAnnouncement();
   }
 
-  void _getAnnouncementDetail( NewAnnouncementJson value) async {
+  void _getAnnouncementDetail(NewAnnouncementJson value) async {
     //第一次
-    TaskHandler.instance.addTask(ISchoolNewAnnouncementDetailTask(context, value) );
-    await TaskHandler.instance.startTask(context);
+    TaskHandler.instance
+        .addTask(ISchoolNewAnnouncementDetailTask(context, value));
+    await TaskHandler.instance.startTaskQueue(context);
     _showAnnouncementDetail(value);
   }
 
-  void _showAnnouncementDetail( NewAnnouncementJson value){
-    setState(() {
-    });
-    Navigator.of(context).push( CustomRoute(AnnouncementDetailScreen(value)));
+  void _showAnnouncementDetail(NewAnnouncementJson value) {
+    setState(() {});
+    Navigator.of(context).push(PageTransition(
+        type: PageTransitionType.leftToRight,
+        child: AnnouncementDetailPage(value)));
   }
 
   void _loadAnnouncement() async {
+    if( Model.instance.setting.announcement.maxPage == 0){  //第一次要取得頁數
+      TaskHandler.instance.addTask( ISchoolNewAnnouncementPageTask(context) );
+      await TaskHandler.instance.startTaskQueue(context);
+    }
     items = Model.instance.newAnnouncementList.newAnnouncementList;
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _onRefresh() async {
     TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, 1));
-    await TaskHandler.instance.startTask(context);
+    await TaskHandler.instance.startTaskQueue(context);
     _loadAnnouncement();
     setState(() {});
     _refreshController.refreshCompleted();
@@ -75,11 +82,11 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
     Model.instance.setting.announcement.page++;
     int page = Model.instance.setting.announcement.page;
     Log.d(items.length.toString());
-    int maxPage = await ISchoolConnector.getISchoolNewAnnouncementPage();
+    int maxPage = Model.instance.setting.announcement.maxPage;
     if (page <= maxPage) {
-      Model.instance.save( Model.settingJsonKey );
+      Model.instance.save(Model.settingJsonKey);
       TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, page));
-      await TaskHandler.instance.startTask(context);
+      await TaskHandler.instance.startTaskQueue(context);
       _loadAnnouncement();
       _refreshController.loadComplete();
     } else {
@@ -137,26 +144,36 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
           itemCount: items.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              behavior: HitTestBehavior.opaque ,  //讓透明部分有反應
+              behavior: HitTestBehavior.opaque, //讓透明部分有反應
               onTap: () {
                 NewAnnouncementJson value = items[index];
-                Fluttertoast.showToast(
-                    msg: index.toString() ,
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIos: 1,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
-
-                if( value.detail.isEmpty){
-                  _getAnnouncementDetail( value );
-                }else{
-                  _showAnnouncementDetail( value );
+                if (value.detail.isEmpty) {
+                  _getAnnouncementDetail(value);
+                } else {
+                  _showAnnouncementDetail(value);
                 }
               },
-              child: _listItem(
-                items[index],
+              child: Slidable(
+                delegate: SlidableDrawerDelegate(),
+                actionExtentRatio: 0.25,
+                child: _listItem(
+                  items[index],
+                ),
+                secondaryActions: <Widget>[
+                  new IconSlideAction(
+                    caption: 'More',
+                    color: Colors.black45,
+                    icon: Icons.more_horiz,
+                    onTap: () => {},
+                  ),
+                  new IconSlideAction(
+                    caption: 'Delete',
+                    color: Colors.red,
+                    icon: Icons.delete,
+                    onTap: () => {},
+                  ),
+                ],
+
               ),
             );
           },
@@ -166,10 +183,8 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
   }
 
   Widget _listItem(NewAnnouncementJson data) {
-    var formatter = DateFormat.yMd().add_jm();
-    String formatted = formatter.format(data.time);
-    Color color =  (!data.isRead)? Colors.black87 : Colors.black54;
-    FontWeight fontWeight =  (!data.isRead)? FontWeight.bold : FontWeight.w400;
+    Color color = (!data.isRead) ? Colors.black87 : Colors.black54;
+    FontWeight fontWeight = (!data.isRead) ? FontWeight.bold : FontWeight.w400;
     return Container(
       child: Column(
         children: <Widget>[
@@ -212,7 +227,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: fontWeight,
-                                  color: color ,
+                                  color: color,
                                   fontSize: 15.5),
                             ),
                           ],
@@ -224,14 +239,14 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
                               data.sender,
                               style: TextStyle(
                                   fontWeight: fontWeight,
-                                  color: color ,
+                                  color: color,
                                   fontSize: 15.5),
                             ),
                             Text(
-                              formatted,
+                              data.timeString,
                               style: TextStyle(
                                   fontWeight: fontWeight,
-                                  color: color ,
+                                  color: color,
                                   fontSize: 13.5),
                             ),
                           ],
@@ -249,4 +264,3 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
     );
   }
 }
-

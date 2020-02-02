@@ -47,11 +47,12 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         Navigator.of(context).push( CustomRoute( LoginPage() ) );        //尚未登入
       } else {
         SemesterJson setting = Model.instance.setting.course.semester;
+        Log.d(setting.toString());
         courseTable = Model.instance.getCourseTable( setting );
         if (courseTable == null) {
           _getCourseTable();
         } else {
-          _showCourseTable();
+          _showCourseTable( setting );
         }
       }
     });
@@ -60,17 +61,15 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   void _getCourseTable() async {
     UserDataJson userData = Model.instance.userData;
     TaskHandler.instance.addTask( SemesterByStudentIdTask( context , userData.account ) );
-    await TaskHandler.instance.startTask(context);
+    await TaskHandler.instance.startTaskQueue(context);
     SemesterJson semesterJson = Model.instance.courseSemesterList[0];  // 取得最新
-    courseTable = Model.instance.getCourseTable( semesterJson );
     Log.d( semesterJson.toString() );
-    TaskHandler.instance
-        .addTask(CourseByStudentIdTask(context, userData.account , semesterJson ));
-    await TaskHandler.instance.startTask(context);
-    _showCourseTable();
+    TaskHandler.instance.addTask(  CourseByStudentIdTask(context, userData.account , semesterJson )  );
+    await TaskHandler.instance.startTaskQueue(context);
     Model.instance.setting.course.semester = semesterJson;
     Model.instance.setting.course.studentId = userData.account;
-    Model.instance.save( Model.settingJsonKey );
+    await Model.instance.save( Model.settingJsonKey );
+    _showCourseTable(semesterJson );
   }
 
   @override
@@ -223,7 +222,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         });
   }
 
-  _showCourseTable() {
+  _showCourseTable( SemesterJson setting) {
+    courseTable = Model.instance.getCourseTable( setting );
     columnCount = 5;
     rowCount = sectionNumber.length;
     _studentIdControl.text = Model.instance.setting.course.studentId;

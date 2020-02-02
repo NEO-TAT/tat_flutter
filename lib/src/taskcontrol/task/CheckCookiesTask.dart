@@ -16,10 +16,13 @@ class CheckCookiesTask extends TaskModel{
   Future<TaskStatus> taskStart() async{
     MyProgressDialog.showProgressDialog(context, S.current.checkLogin);
     bool isLoginNTUT = await NTUTConnector.checkLogin();
+    if( !isLoginNTUT ){
+      return TaskStatus.TaskFail;
+    }
     bool isLoginSchool = await ISchoolConnector.checkLogin();
     bool isLoginCourse = await CourseConnector.checkLogin();
     MyProgressDialog.hideProgressDialog();
-    if( isLoginSchool && isLoginNTUT && isLoginCourse){
+    if( isLoginSchool  && isLoginCourse){
       return TaskStatus.TaskSuccess;
     }else{
       return TaskStatus.TaskFail;

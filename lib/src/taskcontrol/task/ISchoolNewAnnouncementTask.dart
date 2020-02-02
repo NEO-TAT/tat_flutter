@@ -9,6 +9,7 @@ import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
+import '../../../ui/other/ErrorDialog.dart';
 import 'TaskModel.dart';
 
 class ISchoolNewAnnouncementTask extends TaskModel{
@@ -37,19 +38,12 @@ class ISchoolNewAnnouncementTask extends TaskModel{
 
 
   void _handleError(){
-    AwesomeDialog(
+
+    ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      dialogType: DialogType.ERROR,
-      animType: AnimType.BOTTOMSLIDE,
-      tittle: S.current.alertError,
       desc: S.current.getISchoolNewAnnouncementError,
-      btnOkText: S.current.restart ,
-      btnCancelText: S.current.cancel,
-      btnCancelOnPress: () {},
-      btnOkOnPress: () {
-        reStartTask();
-      },
-    ).show();
+    );
+    ErrorDialog(parameter).show();
   }
 
 }

@@ -2,10 +2,10 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/pages/announcement/NewAnnouncementScreen.dart';
-import 'pages/setting/SettingScreen.dart';
-import 'pages/course/CourseTableScreen.dart';
-import 'pages/pages_screen.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/announcement/NewAnnouncementScreen.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/course/CourseTableScreen.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/InternetScreen.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/setting/SettingScreen.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     list
       ..add(CourseTableScreen())
       ..add(NewAnnouncementScreen())
-      ..add(PagesScreen())
+      ..add(InternetScreen())
       ..add(SettingScreen());
     super.initState();
     _addTask();

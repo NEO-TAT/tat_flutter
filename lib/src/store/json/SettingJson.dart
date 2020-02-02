@@ -38,8 +38,10 @@ class CourseSettingJson{
 @JsonSerializable()
 class AnnouncementSettingJson{
   int page;
-  AnnouncementSettingJson( { this.page}) {
-    page    = (page != null) ? page : 0;
+  int maxPage;
+  AnnouncementSettingJson( { this.page , this.maxPage } ) {
+    page    = (page    != null) ? page     : 0;
+    maxPage = 0;
   }
 
 

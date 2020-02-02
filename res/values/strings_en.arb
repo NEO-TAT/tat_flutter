@@ -24,12 +24,19 @@
   "restart" : "Restart",
   "pleaseLogin" : "Please Login",
   "checkLogin" : "checkLogin",
-  "getISchoolNewAnnouncementError" : "getISchoolNewAnnouncementError",
   "loginISchoolFail" : "login ISchool Fail",
   "getISchoolNewAnnouncement" : "Getting ISchoolNewAnnouncement",
+  "getISchoolNewAnnouncementError" : "getISchoolNewAnnouncementError",
   "getISchoolNewAnnouncementDetail" : "getISchoolNewAnnouncementDetail",
+  "getISchoolNewAnnouncementDetailError" : "getISchoolNewAnnouncementDetailError",
   "getCourse" : "Getting Course",
+  "getCourseError" : "getCourseError",
   "loginCourse" : "loginCourse",
+  "loginCourseError" : "loginCourseError",
   "getCourseSemester" : "getCourseSemester",
-  "getCourseDetail"  : "getCourseDetail"
+  "getCourseSemesterError" : "getCourseSemesterError",
+  "getCourseDetail"  : "getCourseDetail",
+  "getCourseDetailError" : "getCourseDetailError",
+  "getISchoolNewAnnouncementPage" : "getISchoolNewAnnouncementPage",
+  "getISchoolNewAnnouncementPageError" : "getISchoolNewAnnouncementPageError"
 }

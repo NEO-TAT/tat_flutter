@@ -24,12 +24,20 @@
   "restart" : "重試",
   "pleaseLogin" : "請登入",
   "checkLogin" : "檢查登入...",
-  "getISchoolNewAnnouncementError" : "取得最新公告錯誤",
+
   "loginISchoolFail" : "登入北科I學園錯誤",
   "getISchoolNewAnnouncement" : "取得最新公告...",
+  "getISchoolNewAnnouncementError" : "取得最新公告錯誤",
   "getISchoolNewAnnouncementDetail" : "取得公告資訊...",
+  "getISchoolNewAnnouncementDetailError" : "取得公告資訊錯誤",
+  "getISchoolNewAnnouncementPage" : "取得公告頁數...",
+  "getISchoolNewAnnouncementPageError" : "取得公告頁數錯誤",
   "getCourse" : "取得課表...",
+  "getCourseError" : "取得課表錯誤",
   "loginCourse" : "登入課程系統..." ,
+  "loginCourseError" : "登入課程系統錯誤",
   "getCourseSemester" : "取得學期清單中...",
-  "getCourseDetail"  : "課程資料讀取中..."
+  "getCourseSemesterError" : "取得學期清單錯誤",
+  "getCourseDetail"  : "課程資料讀取中...",
+  "getCourseDetailError" : "課程資料讀取錯誤"
 }

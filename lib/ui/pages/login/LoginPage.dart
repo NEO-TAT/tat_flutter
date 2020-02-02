@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/bottom_navigation_widget.dart';
+import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
@@ -67,6 +67,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        resizeToAvoidBottomPadding : false ,
         backgroundColor: Colors.white,
         body: ListView(
           children: <Widget>[

@@ -47,6 +47,7 @@ AnnouncementSettingJson _$AnnouncementSettingJsonFromJson(
     Map<String, dynamic> json) {
   return AnnouncementSettingJson(
     page: json['page'] as int,
+    maxPage: json['maxPage'] as int,
   );
 }
 
@@ -54,6 +55,7 @@ Map<String, dynamic> _$AnnouncementSettingJsonToJson(
         AnnouncementSettingJson instance) =>
     <String, dynamic>{
       'page': instance.page,
+      'maxPage': instance.maxPage,
     };
 
 OtherSettingJson _$OtherSettingJsonFromJson(Map<String, dynamic> json) {

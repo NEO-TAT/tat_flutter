@@ -24,8 +24,14 @@ abstract class TaskModel {
 
 
   void reStartTask() {
-    TaskHandler.instance.startTask();
+    TaskHandler.instance.continueTask();
   }
+
+  void giveUpTask(){
+    TaskHandler.instance.giveUpTask();
+  }
+
+
   Future<TaskStatus> taskStart();
   //Future<List<TaskModel>> taskErrorList();
 

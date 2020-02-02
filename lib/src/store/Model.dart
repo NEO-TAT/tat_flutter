@@ -49,13 +49,16 @@ class Model {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
 
+    //_clearSetting( courseTableJsonKey );
+    //_clearSetting( newAnnouncementJsonKey );
+    //_clearSetting( settingJsonKey );
+    //DioConnector.instance.deleteCookies();
+
     String readJson;
     List<String> readJsonList;
     readJson = await _readString(userDataJsonKey);
     userData = ( readJson != null ) ? UserDataJson.fromJson( json.decode(readJson) ) : UserDataJson();
     Log.d( userData.toString() );
-
-    //_clearSetting( newAnnouncementJsonKey );
 
     readJsonList = await _readStringList(courseTableJsonKey);
     courseTableList = List();
@@ -118,7 +121,9 @@ class Model {
 
   CourseTableJson getCourseTable(SemesterJson courseSemester) {
     List<CourseTableJson> tableList = courseTableList;
-
+    if(courseSemester == null ){
+      return null;
+    }
     for( int i = 0 ; i < tableList.length ; i++ ){
       CourseTableJson table = tableList[i];
       if ( table.courseSemester == courseSemester ){

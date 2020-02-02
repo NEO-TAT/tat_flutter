@@ -16,6 +16,8 @@ class TaskHandler {
   TaskHandler._privateConstructor();
   static final TaskHandler instance = TaskHandler._privateConstructor();
   static final List<TaskModel> _taskQueue = List();
+  bool taskContinue;
+  BuildContext startTaskContext;
 
   void addTask(TaskModel task) {
     _taskQueue.add(task);
@@ -37,19 +39,23 @@ class TaskHandler {
     }
   }
 
-  Future<void> startTask( [BuildContext context]) async{
+  Future<void> startTaskQueue( BuildContext context ) async{
+    startTaskContext = context;
+    for( TaskModel task in _taskQueue){
+      Log.d( "Start TaskQueue" + task.getTaskName );
+    }
     while ( _taskQueue.length > 0 ){
       TaskModel task = _taskQueue.removeAt(0);
-      if( context != null ){
-        task.setContext = context;
-        Log.d( "SetContext") ;
-      }
+      task.setContext = context;
       Log.d( "Start " + task.getTaskName );
       try {
         TaskStatus result = await task.taskStart();
         if( result == TaskStatus.TaskFail ){
+          taskContinue = false;
           _handleErrorTask( task );
-          break;
+          while(!taskContinue){
+            await Future.delayed(Duration(milliseconds: 10));
+          }
         }else{
           _handleSuccessTask( task );
         }
@@ -58,6 +64,16 @@ class TaskHandler {
         _handleErrorTask( task );
       }
     }
+    Log.d("startTaskQueue finish");
+  }
+
+  void continueTask(){
+    taskContinue = true;
+  }
+
+  void giveUpTask(){
+    continueTask();
+    _taskQueue.removeRange(0, _taskQueue.length);
   }
 
   void _handleErrorTask(TaskModel task ) async{
@@ -81,7 +97,7 @@ class TaskHandler {
           CourseLoginTask(task.context)
         ]);
       }
-      startTask();
+      continueTask();
     }
     else{
       _addFirstTaskList( [
@@ -93,7 +109,7 @@ class TaskHandler {
   }
 
 
-  void _handleSuccessTask(TaskModel task ) async{
+  void _handleSuccessTask(TaskModel task ) {
     Log.d( "Task Success " + task.getTaskName );
   }
 

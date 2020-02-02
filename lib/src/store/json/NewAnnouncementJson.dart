@@ -62,6 +62,12 @@ class NewAnnouncementJson {
     messageId  = JsonInit.stringInit(messageId);
   }
 
+  get timeString {
+    var formatter = DateFormat.yMd().add_jm();
+    String formatted = formatter.format( time );
+    return formatted;
+  }
+
   factory NewAnnouncementJson.fromJson(Map<String, dynamic> json) => _$NewAnnouncementJsonFromJson(json);
   Map<String, dynamic> toJson() => _$NewAnnouncementJsonToJson(this);
   @override

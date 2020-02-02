@@ -223,7 +223,10 @@ class TeacherJson{
 class SemesterJson {
   String year;
   String semester;
-  SemesterJson( {this.year , this.semester} );
+  SemesterJson( {this.year , this.semester} ){
+    year = JsonInit.stringInit(year);
+    semester = JsonInit.stringInit(semester);
+  }
 
   factory SemesterJson.fromJson(Map<String, dynamic> json) => _$SemesterJsonFromJson(json);
   Map<String, dynamic> toJson() => _$SemesterJsonToJson(this);
