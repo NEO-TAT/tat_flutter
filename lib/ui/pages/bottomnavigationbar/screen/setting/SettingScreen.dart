@@ -17,7 +17,12 @@ import '../../../../../src/store/json/UserDataJson.dart';
 
 enum onListViewPress{ Setting , Logout , Report , About , ChangePassword}
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
+  @override
+  _SettingScreen createState() => _SettingScreen();
+}
+
+class _SettingScreen extends State<SettingScreen> {
 
   final List<Map> listViewData = [
     {
@@ -46,6 +51,12 @@ class SettingScreen extends StatelessWidget {
       "onPress" : onListViewPress.About
     }
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
 
   void _onListViewPress(BuildContext context , onListViewPress value) {

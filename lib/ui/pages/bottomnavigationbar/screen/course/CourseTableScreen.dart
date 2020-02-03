@@ -9,6 +9,7 @@ import 'package:flutter_app/src/taskcontrol/task/SemesterByStudentIdTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:page_transition/page_transition.dart';
 import '../../../../../src/store/Model.dart';
 import '../../../../../src/store/json/UserDataJson.dart';
 
@@ -42,37 +43,39 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   @override
   void initState() {
     super.initState();
-    Model.instance.init().then((value) {
-      UserDataJson userData = Model.instance.userData;
-      if (userData.account.isEmpty || userData.password.isEmpty) {
-        Navigator.of(context).push( CustomRoute( LoginPage() ) );        //尚未登入
+    UserDataJson userData = Model.instance.userData;
+    if (userData.account.isEmpty || userData.password.isEmpty) {
+      Future.delayed(Duration(seconds: 1)).then( (_) {
+        Navigator.of(context , rootNavigator : true ).push(
+          PageTransition(type: PageTransitionType.downToUp, child: LoginPage()),
+        ); //尚未登入
+      });
+    } else {
+      SemesterJson setting = Model.instance.setting.course.semester;
+      Log.d(setting.toString());
+      courseTable = Model.instance.getCourseTable(setting);
+      if (courseTable == null) {
+        _getCourseTable();
       } else {
-        SemesterJson setting = Model.instance.setting.course.semester;
-        Log.d(setting.toString());
-        courseTable = Model.instance.getCourseTable( setting );
-        if (courseTable == null) {
-          _getCourseTable();
-        } else {
-          _showCourseTable( setting );
-        }
+        _showCourseTable(setting);
       }
-    });
-    TaskHandler.instance.addTask( CheckCookiesTask(context));
-    TaskHandler.instance.startTaskQueue(context);
+    }
   }
 
   void _getCourseTable() async {
     UserDataJson userData = Model.instance.userData;
-    TaskHandler.instance.addTask( SemesterByStudentIdTask( context , userData.account ) );
+    TaskHandler.instance
+        .addTask(SemesterByStudentIdTask(context, userData.account));
     await TaskHandler.instance.startTaskQueue(context);
-    SemesterJson semesterJson = Model.instance.courseSemesterList[0];  // 取得最新
-    Log.d( semesterJson.toString() );
-    TaskHandler.instance.addTask(  CourseByStudentIdTask(context, userData.account , semesterJson )  );
+    SemesterJson semesterJson = Model.instance.courseSemesterList[0]; // 取得最新
+    Log.d(semesterJson.toString());
+    TaskHandler.instance.addTask(
+        CourseByStudentIdTask(context, userData.account, semesterJson));
     await TaskHandler.instance.startTaskQueue(context);
     Model.instance.setting.course.semester = semesterJson;
     Model.instance.setting.course.studentId = userData.account;
-    await Model.instance.save( Model.settingJsonKey );
-    _showCourseTable(semesterJson );
+    await Model.instance.save(Model.settingJsonKey);
+    _showCourseTable(semesterJson);
   }
 
   @override
@@ -113,7 +116,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       child: AnimationLimiter(
         child: GridView.count(
           //shrinkWrap: true,
-          childAspectRatio : 1.2 ,  //控制長寬比
+          childAspectRatio: 1.2, //控制長寬比
           crossAxisCount: columnCount,
           children: List.generate(
             rowCount * columnCount,
@@ -139,7 +142,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     int mod = columnCount;
     int dayIndex = (index % mod).floor() + 1;
     int sectionNumberIndex = (index / mod).floor();
-    if( index < columnCount){
+    if (index < columnCount) {
       return Container(
         color: Colors.white,
       );
@@ -225,8 +228,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         });
   }
 
-  _showCourseTable( SemesterJson setting) {
-    courseTable = Model.instance.getCourseTable( setting );
+  _showCourseTable(SemesterJson setting) {
+    courseTable = Model.instance.getCourseTable(setting);
     columnCount = 5;
     rowCount = sectionNumber.length;
     _studentIdControl.text = Model.instance.setting.course.studentId;

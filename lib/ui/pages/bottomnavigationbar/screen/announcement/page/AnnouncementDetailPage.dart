@@ -29,6 +29,7 @@ class _AnnouncementDetailPage extends State<AnnouncementDetailPage> {
     );
   }
 
+
   Widget _showHtml() {
     return Container(
       child: Row(

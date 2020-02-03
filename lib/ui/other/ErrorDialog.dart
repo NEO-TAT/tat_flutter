@@ -14,15 +14,15 @@ class ErrorDialogParameter{
   Function btnOkOnPress;
   Function btnCancelOnPress;
   ErrorDialogParameter( { @required this.context , @required this.desc ,this.title , this.btnOkText , this.btnCancelText , this.animType , this.dialogType , this.btnCancelOnPress , this.btnOkOnPress}){
-    title              = ( title         != null )? title         : S.current.alertError;
-    btnOkText          = ( btnOkText     != null )? btnOkText     : S.current.restart;
-    btnCancelText      = ( btnCancelText != null )? btnCancelText : S.current.cancel;
-    animType           = ( animType      != null )? animType      : AnimType.BOTTOMSLIDE;
-    dialogType         = ( dialogType    != null )? dialogType    : DialogType.ERROR;
-    btnCancelOnPress   = ( btnCancelOnPress  != null )? btnCancelOnPress: (){
+    title              = title             ?? S.current.alertError;
+    btnOkText          = btnOkText         ?? S.current.restart;
+    btnCancelText      = btnCancelText     ?? S.current.cancel;
+    animType           = animType          ?? AnimType.BOTTOMSLIDE;
+    dialogType         = dialogType        ?? DialogType.ERROR;
+    btnCancelOnPress   = btnCancelOnPress  ??  (){
       TaskHandler.instance.giveUpTask();
     };
-    btnOkOnPress       = ( btnOkOnPress      != null )? btnOkOnPress    : (){
+    btnOkOnPress       = btnOkOnPress      ??  (){
       TaskHandler.instance.continueTask();
     };
   }

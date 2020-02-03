@@ -21,21 +21,22 @@ class _LoginPageState extends State<LoginPage> {
   final FocusNode _passwordFocus = new FocusNode();
   final FocusNode _accountFocus = new FocusNode();
   UserDataJson userData;
+
   @override
   void initState() {
     super.initState();
-    userData  = Model.instance.userData;
+    userData = Model.instance.userData;
     _accountControl.text = userData.account;
     _passwordControl.text = userData.password;
   }
 
-  void _loginPress(BuildContext context) async{
+  void _loginPress(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
       userData.account = _accountControl.text.toString();
       userData.password = _passwordControl.text.toString();
-      await Model.instance.save( Model.userDataJsonKey );
+      await Model.instance.save(Model.userDataJsonKey);
       Fluttertoast.showToast(
           msg: S.current.loginSave,
           toastLength: Toast.LENGTH_SHORT,
@@ -45,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
           textColor: Colors.white,
           fontSize: 16.0);
       Navigator.push(context, CustomRoute(BottomNavigationWidget()));
-
     }
   }
 
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        resizeToAvoidBottomPadding : false ,
+        //resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
         body: ListView(
           children: <Widget>[

@@ -8,21 +8,21 @@ import 'package:flutter_app/src/connector/DioConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class InternetScreen extends StatefulWidget {
   @override
-  _InternetScreen createState() => _InternetScreen();
+  _InternetScreen createState( ) => _InternetScreen();
 }
 
-class _InternetScreen extends State<InternetScreen> {
+class _InternetScreen extends State<InternetScreen> with AutomaticKeepAliveClientMixin {
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String url = "https://nportal.ntut.edu.tw/myPortal.do";
-
   String title = 'apple';
 
   // 标记是否是加载中
   bool loading = true;
   bool isLoadingCallbackPage = false;
-  GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
   StreamSubscription<String> onUrlChanged;
   StreamSubscription<WebViewStateChanged> onStateChanged;
   FlutterWebviewPlugin flutterWebViewPlugin = new FlutterWebviewPlugin();
@@ -40,8 +40,15 @@ class _InternetScreen extends State<InternetScreen> {
     });
 
     url = "https://nportal.ntut.edu.tw/index.do";
-    flutterWebViewPlugin.launch(url , headers: getHeader() );
+
+    Future.delayed(Duration(seconds: 1)).then((_){
+      flutterWebViewPlugin.reloadUrl(url);
+    });
+
+
+    Log.d( "reload" );
   }
+
 
   void _handleUrlChanged(String url) async {
     if( url == "https://nportal.ntut.edu.tw/index.do"){
@@ -110,6 +117,7 @@ class _InternetScreen extends State<InternetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);  //如果使用AutomaticKeepAliveClientMixin需要呼叫
     List<Widget> titleContent = [];
     titleContent.add(
       Text(
@@ -121,9 +129,9 @@ class _InternetScreen extends State<InternetScreen> {
       titleContent.add(CupertinoActivityIndicator());
     }
     titleContent.add(Container(width: 50.0));
+
     return new WebviewScaffold(
-      url : url,
-      //headers: myHeader,
+      //url: url,
       userAgent: presetUserAgent,
       key: scaffoldKey,
       //clearCache: true,
@@ -149,4 +157,7 @@ class _InternetScreen extends State<InternetScreen> {
     onStateChanged.cancel();
     flutterWebViewPlugin.dispose();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -21,7 +21,7 @@ class NewAnnouncementScreen extends StatefulWidget {
   _NewAnnouncementScreen createState() => _NewAnnouncementScreen();
 }
 
-class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
+class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with AutomaticKeepAliveClientMixin{
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   List<NewAnnouncementJson> items;
@@ -56,7 +56,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
 
   void _showAnnouncementDetail(NewAnnouncementJson value) {
     setState(() {});
-    Navigator.of(context).push(PageTransition(
+    Navigator.of(context).push( PageTransition(
         type: PageTransitionType.leftToRight,
         child: AnnouncementDetailPage(value)));
   }
@@ -105,6 +105,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Email'),
@@ -264,4 +265,8 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
+
 }
