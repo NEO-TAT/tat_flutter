@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseByStudentIdTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/SemesterByStudentIdTask.dart';
@@ -56,6 +57,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         }
       }
     });
+    TaskHandler.instance.addTask( CheckCookiesTask(context));
+    TaskHandler.instance.startTaskQueue(context);
   }
 
   void _getCourseTable() async {

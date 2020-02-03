@@ -21,7 +21,7 @@ enum CourseConnectorStatus {
 }
 
 class CourseConnector {
-  static bool _isLogin = false;
+  static bool _isLogin = true;
   static final String _getLoginCourseUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
   static final String _postCourseUrl =

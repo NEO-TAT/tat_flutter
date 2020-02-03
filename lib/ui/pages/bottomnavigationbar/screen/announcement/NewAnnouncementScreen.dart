@@ -62,6 +62,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
   }
 
   void _loadAnnouncement() async {
+    Log.d( Model.instance.setting.announcement.maxPage.toString() );
     if( Model.instance.setting.announcement.maxPage == 0){  //第一次要取得頁數
       TaskHandler.instance.addTask( ISchoolNewAnnouncementPageTask(context) );
       await TaskHandler.instance.startTaskQueue(context);
@@ -73,9 +74,9 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> {
   void _onRefresh() async {
     TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, 1));
     await TaskHandler.instance.startTaskQueue(context);
+    _refreshController.refreshCompleted();
     _loadAnnouncement();
     setState(() {});
-    _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {

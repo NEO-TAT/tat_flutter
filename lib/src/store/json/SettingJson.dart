@@ -40,8 +40,8 @@ class AnnouncementSettingJson{
   int page;
   int maxPage;
   AnnouncementSettingJson( { this.page , this.maxPage } ) {
-    page    = (page    != null) ? page     : 0;
-    maxPage = 0;
+    page    = (page       != null) ? page     : 0;
+    maxPage = (maxPage    != null) ? maxPage  : 0;
   }
 
 

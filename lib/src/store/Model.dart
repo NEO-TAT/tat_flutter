@@ -58,7 +58,6 @@ class Model {
     List<String> readJsonList;
     readJson = await _readString(userDataJsonKey);
     userData = ( readJson != null ) ? UserDataJson.fromJson( json.decode(readJson) ) : UserDataJson();
-    Log.d( userData.toString() );
 
     readJsonList = await _readStringList(courseTableJsonKey);
     courseTableList = List();
@@ -70,12 +69,16 @@ class Model {
 
     readJson = await _readString( newAnnouncementJsonKey );
     newAnnouncementList = ( readJson != null ) ? NewAnnouncementJsonList.fromJson( json.decode(readJson) ) : NewAnnouncementJsonList();
-    Log.d( newAnnouncementList.toString() );
 
 
     readJson = await _readString( settingJsonKey );
     setting = ( readJson != null ) ? SettingJson.fromJson( json.decode(readJson) ) : SettingJson();
-    Log.d( setting.toString() );
+
+
+    //Log.d( userData.toString() );
+    //Log.d( courseTableList.toString() );
+    //Log.d( newAnnouncementList.toString() );
+    //Log.d( setting.toString() );
 
 
     //Log.d( courseTableList.toString() );

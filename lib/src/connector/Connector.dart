@@ -49,12 +49,17 @@ class Connector {
   }
 
   static Map<String,String> getLoginHeaders(String url){
-    PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
-    Map<String,String> headers = DioConnector.instance.headers;
-    headers["Cookie"] = cookieJar.loadForRequest( Uri.parse(url) ).toString().replaceAll("[", "").replaceAll("]", "");
-    headers.remove("content-type");
-    Log.d( headers.toString() );
-    return headers;
+    try{
+      PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
+      Map<String,String> headers = DioConnector.instance.headers;
+      headers["Cookie"] = cookieJar.loadForRequest( Uri.parse(url) ).toString().replaceAll("[", "").replaceAll("]", "");
+      headers.remove("content-type");
+      Log.d( headers.toString() );
+      return headers;
+    }on Exception catch(e){
+      Log.d(e.toString());
+      return Map();
+    }
   }
 
   static void printHeader(Map<String ,String> headers){
