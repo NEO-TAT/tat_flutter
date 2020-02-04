@@ -1,12 +1,12 @@
 
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
-import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainJson.dart';
+import 'package:flutter_app/src/store/json/CoursePartJson.dart';
 
 class CourseAnnouncementScreen extends StatefulWidget {
-  final CourseTableDetailJson courseTableDetail;
-  CourseAnnouncementScreen( this.courseTableDetail );
+  final CourseInfoJson courseInfo;
+  CourseAnnouncementScreen( this.courseInfo );
 
   @override
   _CourseAnnouncementScreen createState( ) => _CourseAnnouncementScreen();
@@ -14,6 +14,7 @@ class CourseAnnouncementScreen extends StatefulWidget {
 
 class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with AutomaticKeepAliveClientMixin {
   CourseInfoJson courseInfo;
+
 
   @override
   void initState() {

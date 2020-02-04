@@ -4,26 +4,28 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
+import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainJson.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-import '../../../ui/other/ErrorDialog.dart';
-
-class CourseByCourseIdTask extends TaskModel{
-  static final String taskName = "CourseByCourseIdTask";
+class CourseSemesterTask extends TaskModel {
+  static final String taskName = "GetCourseSemesterTask";
   String id;
-  CourseByCourseIdTask(BuildContext context,this.id) : super(context, taskName);
-  static String tempDataKey = "CourseInfoTampKey";
+
+  CourseSemesterTask(BuildContext context, this.id)
+      : super(context, taskName);
+
   @override
-  Future<TaskStatus> taskStart() async{
-    MyProgressDialog.showProgressDialog(context, S.current.getCourseDetail );
-    CourseInfoJson courseInfo = await CourseConnector.getCourseByCourseId(id);
+  Future<TaskStatus> taskStart() async {
+    MyProgressDialog.showProgressDialog(context, S.current.getCourse);
+    List<SemesterJson> value = await CourseConnector.getCourseSemester(id);
     MyProgressDialog.hideProgressDialog();
-    if( courseInfo != null ) {
-      Model.instance.tempData[tempDataKey] = courseInfo;
+    if ( value != null ) {
+      Model.instance.courseSemesterList = value;
       return TaskStatus.TaskSuccess;
-    }else {
+    } else {
       _handleError();
       return TaskStatus.TaskFail;
     }
@@ -32,10 +34,8 @@ class CourseByCourseIdTask extends TaskModel{
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getCourseDetailError,
+      desc: S.current.getCourseError,
     );
     ErrorDialog(parameter).show();
   }
-
-
 }

@@ -31,9 +31,7 @@ Map<String, dynamic> _$SettingJsonToJson(SettingJson instance) =>
 CourseSettingJson _$CourseSettingJsonFromJson(Map<String, dynamic> json) {
   return CourseSettingJson(
     studentId: json['studentId'] as String,
-    semester: json['semester'] == null
-        ? null
-        : SemesterJson.fromJson(json['semester'] as Map<String, dynamic>),
+    semester: json['semester'],
   );
 }
 

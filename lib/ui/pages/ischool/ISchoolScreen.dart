@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
+import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainJson.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseFileScreen.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseInfoScreen.dart';
 
 class ISchoolScreen extends StatefulWidget {
-  final CourseTableDetailJson courseTableDetail;
+  final CourseInfoJson courseInfo;
 
-  ISchoolScreen(this.courseTableDetail);
+  ISchoolScreen(this.courseInfo);
 
   @override
   _ISchoolScreen createState() => _ISchoolScreen();
@@ -23,9 +24,9 @@ class _ISchoolScreen extends State<ISchoolScreen> {
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(  "課程", Icons.info         , CourseInfoScreen(widget.courseTableDetail) ));
-    tabPageList.add(TabPage(  "公告", Icons.announcement , CourseAnnouncementScreen(widget.courseTableDetail) ));
-    tabPageList.add(TabPage(  "檔案", Icons.file_download , CourseFileScreen(widget.courseTableDetail) ));
+    tabPageList.add(TabPage(  "課程", Icons.info         , CourseInfoScreen(widget.courseInfo) ));
+    tabPageList.add(TabPage(  "公告", Icons.announcement , CourseAnnouncementScreen(widget.courseInfo) ));
+    tabPageList.add(TabPage(  "檔案", Icons.file_download , CourseFileScreen(widget.courseInfo) ));
   }
 
   @override
@@ -36,6 +37,9 @@ class _ISchoolScreen extends State<ISchoolScreen> {
   }
 
   Widget tabPageView() {
+
+    CourseMainJson course = widget.courseInfo.main.course;
+
     return DefaultTabController(
       length: tabPageList.length,
       child: Scaffold(
@@ -43,7 +47,7 @@ class _ISchoolScreen extends State<ISchoolScreen> {
           leading: BackButton(
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Text(widget.courseTableDetail.course.name),
+          title: Text( course.name ),
           bottom: TabBar(
             indicatorPadding: EdgeInsets.all(0),
             labelPadding: EdgeInsets.all(0),

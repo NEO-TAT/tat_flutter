@@ -22,7 +22,11 @@ class UserDataJson {
 
   @override
   String toString() {
-    return sprintf(" account: %s \n password: %s \n --------UserInfoClass--------\n%s" , [account , password , info.toString() ] );
+    return sprintf(
+        "account  : %s \n"
+        "password : %s \n"
+        "info     :\n%s \n " ,
+        [account , password , info.toString() ] );
   }
 
 }
@@ -37,11 +41,11 @@ class UserInfoJson{
   String userDn;
 
   UserInfoJson({ this.givenName , this.userMail , this.userPhoto , this.passwordExpiredRemind , this.userDn }){
-    this.givenName = JsonInit.stringInit( this.givenName );
-    this.userMail = JsonInit.stringInit( this.userMail );
-    this.userPhoto = JsonInit.stringInit( this.userPhoto );
+    this.givenName  = JsonInit.stringInit( this.givenName );
+    this.userMail   = JsonInit.stringInit( this.userMail );
+    this.userPhoto  = JsonInit.stringInit( this.userPhoto );
+    this.userDn     = JsonInit.stringInit( this.userDn );
     this.passwordExpiredRemind = JsonInit.stringInit( this.passwordExpiredRemind );
-    this.userDn = JsonInit.stringInit( this.userDn );
   }
 
   factory UserInfoJson.fromJson(Map<String, dynamic> json) => _$UserInfoJsonFromJson(json);
@@ -49,7 +53,13 @@ class UserInfoJson{
 
   @override
   String toString() {
-    return sprintf(" givenName: %s \n userMail: %s \n userPhoto: %s \n passwordExpiredRemind: %s \n userDn: %s" , [givenName , userMail , userPhoto , passwordExpiredRemind , userDn ] );
+    return sprintf(
+        "givenName  : %s \n" +
+        "userMail   : %s \n" +
+        "userPhoto  : %s \n" +
+        "userDn     : %s \n" +
+        "passwordExpiredRemind: %s \n",
+        [givenName , userMail , userPhoto , passwordExpiredRemind , userDn ] );
   }
 
 

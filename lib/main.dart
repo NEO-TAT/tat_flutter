@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainJson.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';

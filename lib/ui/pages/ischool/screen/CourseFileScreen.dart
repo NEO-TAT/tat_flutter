@@ -1,12 +1,12 @@
 
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
-import 'package:flutter_app/src/store/json/CourseInfoJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainJson.dart';
+import 'package:flutter_app/src/store/json/CoursePartJson.dart';
 
 class CourseFileScreen extends StatefulWidget {
-  final CourseTableDetailJson courseTableDetail;
-  CourseFileScreen( this.courseTableDetail );
+  final CourseInfoJson courseInfo;
+  CourseFileScreen( this.courseInfo );
 
   @override
   _CourseFileScreen createState( ) => _CourseFileScreen();

@@ -10,7 +10,7 @@ part 'NewAnnouncementJson.g.dart';
 class NewAnnouncementJsonList {
   List<NewAnnouncementJson> newAnnouncementList;
   NewAnnouncementJsonList( {this.newAnnouncementList} ){
-    newAnnouncementList = ( newAnnouncementList != null ) ? newAnnouncementList : List();
+    newAnnouncementList = newAnnouncementList ?? List();
   }
 
   void addNewAnnouncement( NewAnnouncementJson newAnnouncement ){
@@ -35,7 +35,9 @@ class NewAnnouncementJsonList {
 
   @override
   String toString() {
-    return sprintf("%s" , [newAnnouncementList.toString()]);
+    return sprintf(
+        "newAnnouncementList :\n%s \n" ,
+        [newAnnouncementList.toString()]);
   }
 
 }
@@ -74,7 +76,12 @@ class NewAnnouncementJson {
   String toString() {
     var formatter = DateFormat.yMd().add_jm();
     String formatted = formatter.format( time );
-    return sprintf(" title:%s \n sender:%s \n messageId:%s \n courseName:%s \n postTime:%s \n\n",
+    return sprintf(""
+        "title      :%s \n" +
+        "sender     :%s \n" +
+        "messageId  :%s \n" +
+        "courseName :%s \n" +
+        "postTime   :%s \n",
         [title, sender, messageId, courseName, formatted ] );
   }
 }

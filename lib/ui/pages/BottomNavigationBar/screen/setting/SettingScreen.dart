@@ -59,7 +59,7 @@ class _SettingScreen extends State<SettingScreen> {
 
 
 
-  void _onListViewPress(BuildContext context , onListViewPress value) {
+  void _onListViewPress(onListViewPress value) {
     Fluttertoast.showToast(
         msg: value.toString(),
         toastLength: Toast.LENGTH_SHORT,
@@ -89,21 +89,17 @@ class _SettingScreen extends State<SettingScreen> {
           itemCount: listViewData.length+1,
           itemBuilder: (context, index) {
             Widget widget;
-            if ( index == 0){
-              widget =  _buildHeader(context);
-            }else{
-              widget = _buildSetting(context, listViewData[index-1]);
-            }
+            widget = (index == 0)?_buildHeader() : _buildSetting( listViewData[index-1]);
             return GestureDetector(
                 behavior: HitTestBehavior.opaque ,  //讓透明部分有反應
                 child: WidgetANimator(widget) ,
                 onTap: () {
                   if ( index!=0)
-                    _onListViewPress( context ,listViewData[index-1]['onPress'] );
+                    _onListViewPress( listViewData[index-1]['onPress'] );
                 }
             );
           },
-          separatorBuilder: (context, index) {
+          separatorBuilder: (context, index) {  // 顯示格線
             return Container(
               color: Colors.black12,
               height: 1,
@@ -112,7 +108,7 @@ class _SettingScreen extends State<SettingScreen> {
         ));
   }
 
-  Container _buildHeader(BuildContext context) {
+  Container _buildHeader() {
     UserInfoJson userInfo = Model.instance.userData.info;
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
@@ -156,7 +152,7 @@ class _SettingScreen extends State<SettingScreen> {
   }
 
 
-  Container _buildSetting(BuildContext context , Map data) {
+  Container _buildSetting(Map data) {
     return Container(
       //color: Colors.yellow,
       padding : EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),

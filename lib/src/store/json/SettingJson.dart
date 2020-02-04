@@ -1,7 +1,7 @@
 import 'package:flutter_app/src/store/JsonInit.dart';
-import 'package:flutter_app/src/store/json/CourseDetailJson.dart';
 import 'package:json_annotation/json_annotation.dart';
-
+import 'package:sprintf/sprintf.dart';
+import 'CourseClassJson.dart';
 part 'SettingJson.g.dart';
 
 @JsonSerializable()
@@ -10,9 +10,18 @@ class SettingJson{
   OtherSettingJson other;
   AnnouncementSettingJson announcement;
   SettingJson( { this.course , this.other , this.announcement }) {
-    course       = (course       != null) ? course       : CourseSettingJson();
-    other        = (other        != null) ? other        : OtherSettingJson();
-    announcement = (announcement != null )? announcement : AnnouncementSettingJson();
+    course       =  course       ?? CourseSettingJson();
+    other        =  other        ?? OtherSettingJson();
+    announcement =  announcement ?? AnnouncementSettingJson();
+  }
+
+  @override
+  String toString() {
+    return sprintf(
+        "course        :\n%s \n " +
+        "other         :\n%s \n " +
+        "announcement  :\n%s \n " ,
+        [course.toString() , other.toString() , announcement.toString() ] );
   }
 
   factory SettingJson.fromJson(Map<String, dynamic> json) => _$SettingJsonFromJson(json);
@@ -27,7 +36,15 @@ class CourseSettingJson{
 
   CourseSettingJson( { this.studentId , this.semester }) {
     studentId    = JsonInit.stringInit(studentId);
-    semester     = (semester     != null )? semester     : SemesterJson();
+    semester     = semester   ?? SemesterJson();
+  }
+
+  @override
+  String toString() {
+    return sprintf(
+        "studentId      :%s   \n " +
+        "semester       :\n%s \n " ,
+        [studentId , semester.toString() ] );
   }
 
   factory CourseSettingJson.fromJson(Map<String, dynamic> json) => _$CourseSettingJsonFromJson(json);
@@ -40,8 +57,16 @@ class AnnouncementSettingJson{
   int page;
   int maxPage;
   AnnouncementSettingJson( { this.page , this.maxPage } ) {
-    page    = (page       != null) ? page     : 0;
-    maxPage = (maxPage    != null) ? maxPage  : 0;
+    page    = page     ?? 0;
+    maxPage = maxPage  ?? 0;
+  }
+
+  @override
+  String toString() {
+    return sprintf(
+        "page      :%s \n " +
+        "maxPage   :%s \n " ,
+        [page.toString() , maxPage.toString() ] );
   }
 
 
@@ -56,6 +81,13 @@ class OtherSettingJson{
 
   OtherSettingJson( { this.lang }) {
     lang = JsonInit.stringInit(lang);
+  }
+
+  @override
+  String toString() {
+    return sprintf(
+        "lang      :%s \n " ,
+        [ lang ] );
   }
 
   factory OtherSettingJson.fromJson(Map<String, dynamic> json) => _$OtherSettingJsonFromJson(json);
