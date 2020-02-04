@@ -47,7 +47,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
   }
 
   void _getAnnouncementDetail(NewAnnouncementJson value) async {
-    //第一次
+    //第一次時需要取得公告
     TaskHandler.instance
         .addTask(ISchoolNewAnnouncementDetailTask(context, value));
     await TaskHandler.instance.startTaskQueue(context);
@@ -55,6 +55,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
   }
 
   void _showAnnouncementDetail(NewAnnouncementJson value) {
+    //顯示公告詳細內容
     setState(() {});
     Navigator.of(context).push( PageTransition(
         type: PageTransitionType.leftToRight,
@@ -62,13 +63,17 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
   }
 
   void _loadAnnouncement() async {
+    //取得已經儲存的公告
+    items = Model.instance.newAnnouncementList.newAnnouncementList;
+    setState(() {});
+  }
+
+  Future<void> _loadAnnouncementMaxPage() async{
     Log.d( Model.instance.setting.announcement.maxPage.toString() );
     if( Model.instance.setting.announcement.maxPage == 0){  //第一次要取得頁數
       TaskHandler.instance.addTask( ISchoolNewAnnouncementPageTask(context) );
       await TaskHandler.instance.startTaskQueue(context);
     }
-    items = Model.instance.newAnnouncementList.newAnnouncementList;
-    setState(() {});
   }
 
   void _onRefresh() async {
@@ -80,6 +85,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
   }
 
   void _onLoading() async {
+    await _loadAnnouncementMaxPage();
     Model.instance.setting.announcement.page++;
     int page = Model.instance.setting.announcement.page;
     Log.d(items.length.toString());

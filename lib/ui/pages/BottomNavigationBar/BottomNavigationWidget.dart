@@ -4,7 +4,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/announcement/NewAnnouncementScreen.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/NewAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/course/CourseTableScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/InternetScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/InternetScreen2.dart';
@@ -108,6 +108,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       _currentIndex = index;
     });
   }
+
 
 
   Widget bottomNavigationBar() {

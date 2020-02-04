@@ -31,6 +31,7 @@ class Model {
   List<CourseTableJson> courseTableList;
   List<SemesterJson> courseSemesterList;
   SettingJson setting;
+  Map<String,dynamic> tempData;
 
   String getCourseNameByCourseId( String courseId){
     String name;
@@ -48,7 +49,9 @@ class Model {
   Future<void> init() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
+    tempData = Map();
 
+    //_clearSetting( userDataJsonKey );
     //_clearSetting( courseTableJsonKey );
     //_clearSetting( newAnnouncementJsonKey );
     //_clearSetting( settingJsonKey );

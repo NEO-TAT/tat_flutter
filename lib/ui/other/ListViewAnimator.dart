@@ -27,9 +27,9 @@ class _AnimatorState extends State<Animator>
 
   @override
   void dispose() {
-    super.dispose();
     timer.cancel();
     animationController.dispose();
+    super.dispose();  //需要先dispose上面兩個才不會出錯
   }
 
   @override

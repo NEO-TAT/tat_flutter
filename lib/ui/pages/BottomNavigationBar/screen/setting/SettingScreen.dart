@@ -116,34 +116,8 @@ class _SettingScreen extends State<SettingScreen> {
     UserInfoJson userInfo = Model.instance.userData.info;
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
-    if ( givenName == null ||  userMail == null ){
-      return Container(
-        //color: Colors.yellow,
-        margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
-        constraints: BoxConstraints(maxHeight: 60),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            CircleAvatar(
-              radius: 30.0,
-              backgroundImage: NTUTConnector.getUserImage(),
-            ),
-            SizedBox(
-              width: 10.0,
-            ),
-            Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    S.current.pleaseLogin,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ])
-          ],
-        ),
-      );
-    }
+    givenName = givenName ?? S.current.pleaseLogin;
+    userMail = userMail ?? "";
     return Container(
       //color: Colors.yellow,
       margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),

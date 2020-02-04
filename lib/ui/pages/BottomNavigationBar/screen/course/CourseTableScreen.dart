@@ -7,8 +7,10 @@ import 'package:flutter_app/src/taskcontrol/task/CourseByStudentIdTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/SemesterByStudentIdTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/pages/ischool/ISchoolScreen.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../../../src/store/Model.dart';
 import '../../../../../src/store/json/UserDataJson.dart';
@@ -45,20 +47,30 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     super.initState();
     UserDataJson userData = Model.instance.userData;
     if (userData.account.isEmpty || userData.password.isEmpty) {
-      Future.delayed(Duration(seconds: 1)).then( (_) {
-        Navigator.of(context , rootNavigator : true ).push(
+      Future.delayed(Duration(seconds: 1)).then((_) {
+        Navigator.of(context, rootNavigator: true)
+            .push(
           PageTransition(type: PageTransitionType.downToUp, child: LoginPage()),
-        ); //尚未登入
+        )
+            .then((value) {
+          if (value) {
+            _loadSemester();
+          }
+        }); //尚未登入
       });
     } else {
-      SemesterJson setting = Model.instance.setting.course.semester;
-      Log.d(setting.toString());
-      courseTable = Model.instance.getCourseTable(setting);
-      if (courseTable == null) {
-        _getCourseTable();
-      } else {
-        _showCourseTable(setting);
-      }
+      _loadSemester();
+    }
+  }
+
+  void _loadSemester() {
+    SemesterJson setting = Model.instance.setting.course.semester;
+    Log.d(setting.toString());
+    courseTable = Model.instance.getCourseTable(setting);
+    if (courseTable == null) {
+      _getCourseTable();
+    } else {
+      _showCourseTable(setting);
     }
   }
 
@@ -186,46 +198,58 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     );
   }
 
+  //顯示課程對話框
   void showMyMaterialDialog(
       BuildContext context, CourseTableDetailJson courseDetail) {
     CourseJson course = courseDetail.course;
+    ClassroomJson classroom = courseDetail.classroom;
     String teacherName = courseDetail.getTeacherName();
     showDialog(
-        context: context,
-        useRootNavigator: false,
-        builder: (context) {
-          return new AlertDialog(
-            title: Text(course.name),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[Text("課號:"), Text(course.id)],
-                ),
-                Row(
-                  children: <Widget>[Text("地點:"), Text(course.id)],
-                ),
-                Row(
-                  children: <Widget>[Text("授課老師:"), Text(teacherName)],
-                )
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("課程公告"),
+      context: context,
+      useRootNavigator: false,
+      builder: (context) {
+        return new AlertDialog(
+          title: Text(course.name),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: <Widget>[Text("課號:"), Text(course.id)],
               ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: new Text("詳細內容"),
+              Row(
+                children: <Widget>[Text("地點:"), Text(classroom.name)],
               ),
+              Row(
+                children: <Widget>[Text("授課老師:"), Text(teacherName)],
+              )
             ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                if( courseDetail.course.id.isEmpty ){
+                  Fluttertoast.showToast(
+                      msg: courseDetail.course.name + "不支持",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }else {
+                  Navigator.of(context, rootNavigator: true).push(
+                      PageTransition(
+                          type: PageTransitionType.leftToRight,
+                          child: ISchoolScreen(courseDetail)));
+                }
+              },
+              child: new Text("詳細內容"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   _showCourseTable(SemesterJson setting) {

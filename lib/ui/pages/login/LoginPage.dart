@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-      Navigator.push(context, CustomRoute(BottomNavigationWidget()));
+      Navigator.of(context).pop( true );
     }
   }
 
@@ -160,6 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                         textInputAction: TextInputAction.done,
                         focusNode: _accountFocus,
                         onEditingComplete: () {
+                          _accountFocus.unfocus();
                           FocusScope.of(context).requestFocus(_passwordFocus);
                         },
                         validator: (value) => _validatorAccount(value),
@@ -195,6 +196,9 @@ class _LoginPageState extends State<LoginPage> {
                         cursorColor: Colors.deepOrange,
                         obscureText: true,
                         focusNode: _passwordFocus,
+                        onEditingComplete: () {
+                          _passwordFocus.unfocus();
+                        },
                         validator: (value) => _validatorPassword(value),
                         decoration: InputDecoration(
                           hintText: S.current.password,

@@ -133,7 +133,6 @@ class DioConnector {
     //dio.options.headers = headers;
     //Log.d( cookieJar.loadForRequest( Uri.parse(url) ).toString() );
     //Log.d( dio.options.headers.toString() );
-    dio.options.headers["user-agent"] = "Direk Android App";
     dio.options.headers["user-agent"] = parameter.userAgent ;
   }
 
