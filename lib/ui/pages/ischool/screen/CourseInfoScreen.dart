@@ -155,7 +155,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
             child: RaisedButton(
               child: Text("查詢"),
               onPressed: () {
-                Navigator.of(context , rootNavigator: true).pop();
+                Navigator.of(context , rootNavigator: true).pop( classmate.studentId );
               },
             ),
           ),

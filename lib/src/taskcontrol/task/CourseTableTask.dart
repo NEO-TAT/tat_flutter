@@ -12,39 +12,41 @@ import '../../../ui/other/ErrorDialog.dart';
 import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
-class CourseTableListTask extends TaskModel{
-  static final String taskName = "CourseTableListTask" + CheckCookiesTask.checkCourse ;
-  String id;
+class CourseTableTask extends TaskModel{
+  static final String taskName = "CourseTableTask" + CheckCookiesTask.checkCourse ;
+  String studentId;
   SemesterJson semester;
-  CourseTableListTask(BuildContext context,this.id,this.semester) : super(context, taskName);
-
+  CourseTableTask(BuildContext context,this.studentId,this.semester) : super(context, taskName);
+  static String courseTableTempKey = "CourseTableTempKey";
   @override
   Future<TaskStatus> taskStart() async{
     MyProgressDialog.showProgressDialog(context, S.current.getCourse );
-    List<CourseMainInfoJson> courseMainInfoList = await CourseConnector.getCourseMainInfoList(id , semester );
+    List<CourseMainInfoJson> courseMainInfoList = await CourseConnector.getCourseMainInfoList(studentId , semester );
     MyProgressDialog.hideProgressDialog();
-    CourseTableJson courseTable = CourseTableJson();
-    courseTable.courseSemester = semester;
+    if( courseMainInfoList != null  ) {
+      CourseTableJson courseTable = CourseTableJson();
+      courseTable.courseSemester = semester;
 
-    for( CourseMainInfoJson courseMainInfo in courseMainInfoList ) {
-      CourseInfoJson courseInfo = CourseInfoJson();
-      bool add = false;
-      for( int i = 0 ; i < 7 ; i++){
-        Day day = Day.values[i];
-        String time = courseMainInfo.course.time[ day];
-        courseInfo.main = courseMainInfo;
+      for( CourseMainInfoJson courseMainInfo in courseMainInfoList ) {
+        CourseInfoJson courseInfo = CourseInfoJson();
+        bool add = false;
+        for( int i = 0 ; i < 7 ; i++){
+          Day day = Day.values[i];
+          String time = courseMainInfo.course.time[ day];
+          courseInfo.main = courseMainInfo;
           add |= courseTable.setCourseDetailByTimeString(
               day , time, courseInfo);
+        }
+        if (!add) { //代表課程沒有時間
+          courseTable.setCourseDetailByTime(
+              Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
+        }
       }
-      if (!add) { //代表課程沒有時間
-        courseTable.setCourseDetailByTime(
-            Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
+      if( studentId == Model.instance.userData.account ){
+        Model.instance.addCourseTable( courseTable );
+        await Model.instance.save( Model.courseTableJsonKey );
       }
-    }
-    Model.instance.addCourseTable( courseTable );
-    await Model.instance.save( Model.courseTableJsonKey );
-
-    if( courseTable != null  ) {
+      Model.instance.tempData[courseTableTempKey] = courseTable;
       return TaskStatus.TaskSuccess;
     }else {
       _handleError();

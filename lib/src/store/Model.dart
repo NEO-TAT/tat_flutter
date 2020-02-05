@@ -69,7 +69,7 @@ class Model {
     //_clearSetting( settingJsonKey );
     DioConnector.instance.deleteCookies();
 
-    //courseSemesterList = courseSemesterList ?? List();
+    courseSemesterList = courseSemesterList ?? List();
 
     String readJson;
     List<String> readJsonList;
