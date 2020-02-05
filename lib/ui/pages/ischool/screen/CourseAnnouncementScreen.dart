@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/src/store/json/CourseMainJson.dart';
-import 'package:flutter_app/src/store/json/CoursePartJson.dart';
+import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 
 class CourseAnnouncementScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;

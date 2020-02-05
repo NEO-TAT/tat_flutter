@@ -36,7 +36,7 @@ class NewAnnouncementJsonList {
   @override
   String toString() {
     return sprintf(
-        "newAnnouncementList :\n%s \n" ,
+        "---------newAnnouncementList-------- \n%s \n" ,
         [newAnnouncementList.toString()]);
   }
 

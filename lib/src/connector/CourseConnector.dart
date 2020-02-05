@@ -4,8 +4,8 @@ import 'package:big5/big5.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainJson.dart';
-import 'package:flutter_app/src/store/json/CoursePartJson.dart';
+import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
@@ -116,6 +116,7 @@ class CourseConnector {
         classmate.studentName =  classmateNodes[2].text;
         classmate.studentEnglishName =  classmateNodes[3].text;
         classmate.isSelect =  !classmateNodes[4].text.contains("撤選");
+        courseExtraInfo.classmate.add(classmate);
       }
 
       return courseExtraInfo;
@@ -219,14 +220,13 @@ class CourseConnector {
         nodes = nodesOne[1].getElementsByTagName("a");  //確定是否有連結
         if (nodes.length >= 1) {
           courseMain.name = nodes[0].text;
-          courseMain.href = node.attributes['href'];
         } else {
           courseMain.name = nodesOne[1].text;
         }
-        courseMain.stage   = nodesOne[2].text;  //階段
-        courseMain.credits = nodesOne[3].text;  //學分
-        courseMain.hours   = nodesOne[4].text;  //時數
-        courseMain.note    = nodesOne[20].text;  //備註
+        courseMain.stage   = nodesOne[2].text.replaceAll("\n", "");  //階段
+        courseMain.credits = nodesOne[3].text.replaceAll("\n", "");  //學分
+        courseMain.hours   = nodesOne[4].text.replaceAll("\n", "");  //時數
+        courseMain.note    = nodesOne[20].text.replaceAll("\n", "");  //備註
         //時間
         for (int j = 0 ; j < 7 ; j ++) {
           Day day = Day.values[j];
@@ -252,6 +252,15 @@ class CourseConnector {
           classroom.href = node.attributes["href"];
           courseMainInfo.classroom.add(classroom);
         }
+
+        //取得開設教室名稱
+        for (Element node in nodesOne[7].getElementsByTagName("a")) {
+          ClassJson classInfo = ClassJson();
+          classInfo.name = node.text;
+          classInfo.href = node.attributes["href"];
+          courseMainInfo.openClass.add(classInfo);
+        }
+
         courseMainInfoList.add(courseMainInfo);
       }
 

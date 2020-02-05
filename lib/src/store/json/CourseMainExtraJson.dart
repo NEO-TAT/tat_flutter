@@ -1,10 +1,10 @@
 import 'package:flutter_app/src/store/JsonInit.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainJson.dart';
+import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
-part 'CoursePartJson.g.dart';
+part 'CourseMainExtraJson.g.dart';
 
 @JsonSerializable()
 class CourseExtraInfoJson {  //點入課程使用
@@ -21,9 +21,9 @@ class CourseExtraInfoJson {  //點入課程使用
   @override
   String toString() {
     return sprintf(
-        "courseSemester  :\n%s \n" +
-        "course          :\n%s \n" +
-        "classmateList   :\n%s \n" ,
+        "---------courseSemester--------  \n%s \n" +
+        "---------course--------          \n%s \n" +
+        "---------classmateList--------   \n%s \n" ,
         [courseSemester.toString() , course.toString() , classmate.toString() ]);
   }
 
@@ -65,9 +65,7 @@ class CourseMainInfoJson {
   String getClassroomName(){
     String name = "";
     for(ClassroomJson value in classroom){
-      if( value.mainUse ){
-        name += value.name + ' ';
-      }
+      name += value.name + ' ';
     }
     return name;
   }
@@ -75,10 +73,10 @@ class CourseMainInfoJson {
   @override
   String toString() {
     return sprintf(
-        "course        : \n%s \n "  +
-        "teacherList   : \n%s \n "  +
-        "classroomList : \n%s \n "  +
-        "openClassList : \n%s \n" ,
+        "---------course--------         \n%s \n"  +
+        "---------teacherList--------    \n%s \n"  +
+        "---------classroomList--------  \n%s \n"  +
+        "---------openClassList--------  \n%s \n" ,
         [course.toString() , teacher.toString() , classroom.toString() , openClass.toString()]);
   }
 

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/store/json/CoursePartJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,8 +11,8 @@ import 'package:sprintf/sprintf.dart';
 
 import '../connector/DioConnector.dart';
 import 'json/CourseClassJson.dart';
-import 'json/CourseMainJson.dart';
-import 'json/CourseMainJson.dart';
+import 'json/CourseTableJson.dart';
+import 'json/CourseTableJson.dart';
 import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
 
@@ -122,7 +122,7 @@ class Model {
         tableList.removeAt(i);
       }
     }
-    Log.d(addCourseTable.toString());
+    //Log.d( addCourseTable.toString());
     tableList.add(addCourseTable);
   }
 

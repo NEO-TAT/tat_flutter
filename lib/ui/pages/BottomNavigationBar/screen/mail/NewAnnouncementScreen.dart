@@ -9,7 +9,7 @@ import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementDetailTas
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementPageTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/announcement/page/AnnouncementDetailPage.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/page/AnnouncementDetailPage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/store/json/CoursePartJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
 import '../JsonInit.dart';
 import 'CourseClassJson.dart';
-part 'CourseMainJson.g.dart';
+part 'CourseTableJson.g.dart';
 
 enum Day{
   Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday , UnKnown
@@ -18,16 +18,16 @@ enum SectionNumber{
 @JsonSerializable()
 class CourseTableJson {
   SemesterJson courseSemester;  //課程學期資料
-  Map < Day , Map< SectionNumber , CourseInfoJson > > courseDetailMap;
+  Map < Day , Map< SectionNumber , CourseInfoJson > > courseInfoMap;
 
-  CourseTableJson({ this.courseSemester ,this.courseDetailMap }){
+  CourseTableJson({ this.courseSemester ,this.courseInfoMap }){
     courseSemester = courseSemester ?? SemesterJson();
-    if( courseDetailMap != null ){
-      courseDetailMap = courseDetailMap;
+    if( courseInfoMap != null ){
+      courseInfoMap = courseInfoMap;
     }else{
-      courseDetailMap = Map();
+      courseInfoMap = Map();
       for( Day value in Day.values) {
-        courseDetailMap[ value ] = Map();
+        courseInfoMap[ value ] = Map();
       }
     }
   }
@@ -36,41 +36,49 @@ class CourseTableJson {
   Map<String, dynamic> toJson() => _$CourseTableJsonToJson(this);
 
   String toString() {
+    String courseInfoString = "";
+    for(Day day in Day.values){
+      for(SectionNumber number in SectionNumber.values){
+        courseInfoString += day.toString() + "  " + number.toString() + "\n";
+        courseInfoString += courseInfoMap[day][number].toString() + "\n" ;
+      }
+    }
     return sprintf(
-        " courseSemester : %s \n " +
-        " courseDetail   : %s \n "
-        , [ courseSemester.toString() , courseDetailMap.toString() ]);
+        "---------courseSemester-------- \n%s \n" +
+        "---------courseInfo--------     \n%s \n"
+        , [ courseSemester.toString() , courseInfoString ]);
   }
 
   CourseInfoJson getCourseDetailByTime(Day day , SectionNumber sectionNumber){
-    return courseDetailMap[day][sectionNumber];
+    return courseInfoMap[day][sectionNumber];
   }
 
   void setCourseDetailByTime(Day day , SectionNumber sectionNumber ,CourseInfoJson courseInfo ) {
     if( day == Day.UnKnown ){
       for(SectionNumber value in SectionNumber.values){
-        if( !courseDetailMap[day].containsKey(value) ){
-          courseDetailMap[day][value] = courseInfo;
+        if( !courseInfoMap[day].containsKey(value) ){
+          courseInfoMap[day][value] = courseInfo;
+          break;
         }
       }
     }
-    else if( courseDetailMap[day].containsKey(sectionNumber) ) {
+    else if( courseInfoMap[day].containsKey(sectionNumber) ) {
       throw Exception("衝堂");
     }
     else{
-      courseDetailMap[day][sectionNumber] = courseInfo;
+      courseInfoMap[day][sectionNumber] = courseInfo;
     }
   }
 
-  bool setCourseDetailByTimeString(Day day , String sectionNumber ,CourseInfoJson courseDetail ) {
+  bool setCourseDetailByTimeString(Day day , String sectionNumber ,CourseInfoJson courseInfo ) {
     bool add = false;
-    if( courseDetailMap[day].containsKey(sectionNumber) ){
+    if( courseInfoMap[day].containsKey(sectionNumber) ){
       throw Exception("衝堂");
     }
     for( SectionNumber value in SectionNumber.values ){
       String time  = value.toString().split("_")[1];
       if( sectionNumber.contains(time) ){
-        courseDetailMap[day][value] = courseDetail;
+        setCourseDetailByTime( day , value , courseInfo );
         add = true;
       }
     }
@@ -80,7 +88,7 @@ class CourseTableJson {
   String getCourseNameByCourseId( String courseId){
     for( Day day in Day.values){
       for( SectionNumber number in SectionNumber.values ){
-        CourseInfoJson courseDetail = courseDetailMap[day][number];
+        CourseInfoJson courseDetail = courseInfoMap[day][number];
         if( courseDetail != null ){
           if( courseDetail.main.course.id == courseId ){
             return courseDetail.main.course.name;
@@ -108,8 +116,8 @@ class CourseInfoJson{
   @override
   String toString() {
     return sprintf(
-        "main : %s \n" +
-        "extra: %s \n "
+        "---------main--------  \n%s \n" +
+        "---------extra-------- \n%s \n"
         , [main.toString() , extra.toString() ]);
   }
 

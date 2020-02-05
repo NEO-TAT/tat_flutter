@@ -4,7 +4,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CoursePartJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 

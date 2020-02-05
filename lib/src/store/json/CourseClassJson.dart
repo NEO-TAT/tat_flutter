@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
 import '../JsonInit.dart';
-import 'CourseMainJson.dart';
+import 'CourseTableJson.dart';
 
 part 'CourseClassJson.g.dart';
 
@@ -38,7 +38,7 @@ class CourseMainJson{
         "credits :%s \n" +
         "hours   :%s \n" +
         "note    :%s \n" ,
-        [name , id , stage , credits , hours , note]);
+        [name , id , href , stage , credits , hours , note]);
   }
 
   factory CourseMainJson.fromJson(Map<String, dynamic> json) => _$CourseMainJsonFromJson(json);

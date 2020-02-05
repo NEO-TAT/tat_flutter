@@ -5,13 +5,13 @@ import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainJson.dart';
+import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 class CourseSemesterTask extends TaskModel {
-  static final String taskName = "GetCourseSemesterTask";
+  static final String taskName = "CourseSemesterTask";
   String id;
 
   CourseSemesterTask(BuildContext context, this.id)
@@ -19,7 +19,7 @@ class CourseSemesterTask extends TaskModel {
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.getCourse);
+    MyProgressDialog.showProgressDialog(context, S.current.getCourseSemester);
     List<SemesterJson> value = await CourseConnector.getCourseSemester(id);
     MyProgressDialog.hideProgressDialog();
     if ( value != null ) {

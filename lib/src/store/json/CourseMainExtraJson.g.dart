@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'CoursePartJson.dart';
+part of 'CourseMainExtraJson.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

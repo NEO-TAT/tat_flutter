@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'CourseMainJson.dart';
+part of 'CourseTableJson.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -11,7 +11,7 @@ CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
     courseSemester: json['courseSemester'] == null
         ? null
         : SemesterJson.fromJson(json['courseSemester'] as Map<String, dynamic>),
-    courseDetailMap: (json['courseDetailMap'] as Map<String, dynamic>)?.map(
+    courseInfoMap: (json['courseDetailMap'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(
           _$enumDecodeNullable(_$DayEnumMap, k),
           (e as Map<String, dynamic>)?.map(
@@ -28,7 +28,7 @@ CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$CourseTableJsonToJson(CourseTableJson instance) =>
     <String, dynamic>{
       'courseSemester': instance.courseSemester,
-      'courseDetailMap': instance.courseDetailMap?.map((k, e) => MapEntry(
+      'courseDetailMap': instance.courseInfoMap?.map((k, e) => MapEntry(
           _$DayEnumMap[k],
           e?.map((k, e) => MapEntry(_$SectionNumberEnumMap[k], e)))),
     };

@@ -18,9 +18,9 @@ class SettingJson{
   @override
   String toString() {
     return sprintf(
-        "course        :\n%s \n " +
-        "other         :\n%s \n " +
-        "announcement  :\n%s \n " ,
+        "---------course--------        \n%s \n" +
+        "---------other--------         \n%s \n" +
+        "---------announcement--------  \n%s \n" ,
         [course.toString() , other.toString() , announcement.toString() ] );
   }
 
@@ -42,8 +42,8 @@ class CourseSettingJson{
   @override
   String toString() {
     return sprintf(
-        "studentId      :%s   \n " +
-        "semester       :\n%s \n " ,
+        "studentId      :%s   \n" +
+        "---------semester--------       :\n%s \n" ,
         [studentId , semester.toString() ] );
   }
 

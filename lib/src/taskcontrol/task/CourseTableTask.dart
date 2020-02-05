@@ -5,47 +5,35 @@ import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CoursePartJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'package:flutter_app/src/store/json/CourseMainJson.dart';
+import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import '../../../ui/other/ErrorDialog.dart';
 import 'TaskModel.dart';
 
-class CourseMainInfoListTask extends TaskModel{
-  static final String taskName = "CourseMainInfoListTask";
+class CourseTableListTask extends TaskModel{
+  static final String taskName = "CourseTableListTask";
   String id;
   SemesterJson semester;
-  CourseMainInfoListTask(BuildContext context,this.id,this.semester) : super(context, taskName);
+  CourseTableListTask(BuildContext context,this.id,this.semester) : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async{
-    MyProgressDialog.showProgressDialog(context, S.current.getCourseSemester );
+    MyProgressDialog.showProgressDialog(context, S.current.getCourse );
     List<CourseMainInfoJson> courseMainInfoList = await CourseConnector.getCourseMainInfoList(id , semester );
     MyProgressDialog.hideProgressDialog();
     CourseTableJson courseTable = CourseTableJson();
+    courseTable.courseSemester = semester;
 
     for( CourseMainInfoJson courseMainInfo in courseMainInfoList ) {
       CourseInfoJson courseInfo = CourseInfoJson();
-      courseInfo.main = courseMainInfo;
-      int courseDay = 0;
-      int classroomIndex = 0;
-      int classroomLength = courseMainInfo.classroom.length;
       bool add = false;
-      for (int j = 0; j < 7; j++) {
-        Day day = Day.values[j];
-        String time = courseMainInfo.course.time[day];
-        //計算教室
-        if (classroomLength >= 1) {
-          classroomIndex = (courseDay < classroomLength)
-              ? courseDay
-              : classroomLength - 1;
-          courseMainInfo.classroom[classroomIndex].mainUse = true;  // 標記
-        }
-        courseDay++;
-        //加入課程時間
-        add |= courseTable.setCourseDetailByTimeString(
-            day , time, courseInfo);
-        courseMainInfo.classroom[classroomIndex].mainUse = false;  //取消標記
+      for( int i = 0 ; i < 7 ; i++){
+        Day day = Day.values[i];
+        String time = courseMainInfo.course.time[ day];
+        courseInfo.main = courseMainInfo;
+          add |= courseTable.setCourseDetailByTimeString(
+              day , time, courseInfo);
       }
       if (!add) { //代表課程沒有時間
         courseTable.setCourseDetailByTime(

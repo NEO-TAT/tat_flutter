@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainJson.dart';
+import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseFileScreen.dart';

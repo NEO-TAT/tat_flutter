@@ -3,7 +3,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CoursePartJson.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';

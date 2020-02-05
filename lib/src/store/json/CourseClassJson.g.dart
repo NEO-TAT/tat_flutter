@@ -78,14 +78,17 @@ const _$DayEnumMap = {
 
 CourseExtraJson _$CourseExtraJsonFromJson(Map<String, dynamic> json) {
   return CourseExtraJson(
+    name: json['name'] as String,
     category: json['category'] as String,
     selectNumber: json['selectNumber'] as String,
     withdrawNumber: json['withdrawNumber'] as String,
-  );
+  )..id = json['id'] as String;
 }
 
 Map<String, dynamic> _$CourseExtraJsonToJson(CourseExtraJson instance) =>
     <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
       'category': instance.category,
       'selectNumber': instance.selectNumber,
       'withdrawNumber': instance.withdrawNumber,
@@ -151,6 +154,7 @@ ClassmateJson _$ClassmateJsonFromJson(Map<String, dynamic> json) {
     studentName: json['studentName'] as String,
     studentId: json['studentId'] as String,
     isSelect: json['isSelect'] as bool,
+    href: json['href'] as String,
   );
 }
 
@@ -160,5 +164,6 @@ Map<String, dynamic> _$ClassmateJsonToJson(ClassmateJson instance) =>
       'studentEnglishName': instance.studentEnglishName,
       'studentName': instance.studentName,
       'studentId': instance.studentId,
+      'href': instance.href,
       'isSelect': instance.isSelect,
     };

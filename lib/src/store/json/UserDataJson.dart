@@ -25,7 +25,7 @@ class UserDataJson {
     return sprintf(
         "account  : %s \n"
         "password : %s \n"
-        "info     :\n%s \n " ,
+        "---------info--------     \n%s \n" ,
         [account , password , info.toString() ] );
   }
 
