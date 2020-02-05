@@ -69,7 +69,7 @@ class NTUTConnector {
         _isLogin = true;
         return NTUTConnectorStatus.LoginSuccess;
       }
-    } on Exception catch(e){
+    } catch(e){
       Log.e(e.toString());
       if ( e is TimeoutException || e is DioError ){
         return NTUTConnectorStatus.ConnectTimeOutError;
@@ -122,7 +122,7 @@ class NTUTConnector {
         _isLogin = true;
         return true;
       }
-    }on Exception catch(e){
+    } catch(e){
       //throw e;
       Log.e(e.toString());
       return false;

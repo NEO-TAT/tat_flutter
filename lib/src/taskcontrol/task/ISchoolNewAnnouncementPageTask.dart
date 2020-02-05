@@ -6,10 +6,11 @@ import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
+import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
 class ISchoolNewAnnouncementPageTask extends TaskModel{
-  static final String taskName = "ISchoolNewAnnouncementPageTask";
+  static final String taskName = "ISchoolNewAnnouncementPageTask" + CheckCookiesTask.checkISchool ;
   ISchoolNewAnnouncementPageTask(BuildContext context) : super(context , taskName);
 
   @override

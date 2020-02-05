@@ -13,7 +13,7 @@ class Connector {
     try{
       String result = await DioConnector.instance.getDataByPost( parameter );
       return result;
-    } on Exception catch(e){
+    } catch(e){
       throw e;
     }
   }
@@ -22,7 +22,7 @@ class Connector {
     try{
       String result = await DioConnector.instance.getDataByGet( parameter );
       return result;
-    } on Exception catch(e){
+    } catch(e){
       throw e;
     }
   }
@@ -32,7 +32,7 @@ class Connector {
     try{
       result = await DioConnector.instance.getDataByGetResponse( parameter  );
       return result;
-    } on Exception catch(e){
+    } catch(e){
       throw e;
     }
   }
@@ -43,7 +43,7 @@ class Connector {
     try{
       result = await DioConnector.instance.getDataByPostResponse( parameter );
       return result;
-    } on Exception catch(e){
+    } catch(e){
       throw e;
     }
   }
@@ -56,7 +56,7 @@ class Connector {
       headers.remove("content-type");
       Log.d( headers.toString() );
       return headers;
-    }on Exception catch(e){
+    } catch(e){
       Log.d(e.toString());
       return Map();
     }

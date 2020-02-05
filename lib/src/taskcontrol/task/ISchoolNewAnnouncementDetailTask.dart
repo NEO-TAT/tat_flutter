@@ -10,10 +10,11 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 import '../../../ui/other/ErrorDialog.dart';
+import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
 class ISchoolNewAnnouncementDetailTask extends TaskModel{
-  static final String taskName = "ISchoolNewAnnouncementDetailTask";
+  static final String taskName = "ISchoolNewAnnouncementDetailTask" + CheckCookiesTask.checkISchool ;
   static NewAnnouncementJson announcement;
   ISchoolNewAnnouncementDetailTask(BuildContext context,NewAnnouncementJson value) : super(context , taskName){
     announcement = value;

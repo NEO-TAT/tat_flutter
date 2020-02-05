@@ -9,10 +9,11 @@ import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import '../../../ui/other/ErrorDialog.dart';
+import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
 class CourseTableListTask extends TaskModel{
-  static final String taskName = "CourseTableListTask";
+  static final String taskName = "CourseTableListTask" + CheckCookiesTask.checkCourse ;
   String id;
   SemesterJson semester;
   CourseTableListTask(BuildContext context,this.id,this.semester) : super(context, taskName);

@@ -8,9 +8,10 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 import '../../../ui/other/ErrorDialog.dart';
+import 'CheckCookiesTask.dart';
 
 class ISchoolLoginTask extends TaskModel {
-  static final String taskName = "ISchoolLoginTask";
+  static final String taskName = "ISchoolLoginTask" + CheckCookiesTask.checkISchool ;
 
   ISchoolLoginTask(BuildContext context) : super(context, taskName);
 

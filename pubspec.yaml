@@ -49,8 +49,8 @@ dependencies:
   font_awesome_flutter: ^8.5.0
   community_material_icon: ^3.5.95
   #---------json----------#
-  analyzer : ^0.39.4
-  json_serializable: ^3.2.5
+  #analyzer : ^0.39.4
+  #json_serializable: ^3.2.5
   json_annotation: ^3.0.1
   #----------other----------#
   cached_network_image: ^2.0.0

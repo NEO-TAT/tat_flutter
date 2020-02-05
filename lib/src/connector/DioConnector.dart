@@ -51,7 +51,7 @@ class DioConnector {
       String appDocPath = appDocDir.path;
       cookieJar = PersistCookieJar( dir : appDocPath + "/.cookies/" );
       dio.interceptors.add( CookieManager(cookieJar) );
-    } on Exception catch(e){
+    } catch(e){
       Log.e(e.toString());
     }
   }
@@ -70,7 +70,7 @@ class DioConnector {
       }else{
         throw connectorError;
       }
-    } on Exception catch (e) {
+    } catch (e) {
       throw e;
     }
   }
@@ -84,7 +84,7 @@ class DioConnector {
       } else {
         throw connectorError;
       }
-    } on Exception catch(e){
+    } catch(e){
       throw e;
     }
   }
@@ -100,7 +100,7 @@ class DioConnector {
       Log.d( sprintf("Get : %s" , [ _putDataToUrl(url, data) ]  ));
       response = await dio.get(url , queryParameters : data );
       return response;
-    } on Exception catch(e){
+    } catch(e){
         throw e;
     }
   }
@@ -116,7 +116,7 @@ class DioConnector {
       Log.d( sprintf("Post : %s" , [ _putDataToUrl(url, data) ]  ));
       response = await dio.post( url , data: data );
       return response;
-    } on Exception catch (e) {
+    } catch (e) {
         throw e;
     }
   }

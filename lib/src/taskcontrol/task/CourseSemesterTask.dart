@@ -10,8 +10,10 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
+import 'CheckCookiesTask.dart';
+
 class CourseSemesterTask extends TaskModel {
-  static final String taskName = "CourseSemesterTask";
+  static final String taskName = "CourseSemesterTask" + CheckCookiesTask.checkCourse ;
   String id;
 
   CourseSemesterTask(BuildContext context, this.id)

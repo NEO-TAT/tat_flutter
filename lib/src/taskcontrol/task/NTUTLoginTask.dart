@@ -1,24 +1,19 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
-import 'package:flutter_app/ui/other/MyAlertDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-
-import '../../../main.dart';
 import '../../store/Model.dart';
 import '../../store/json/UserDataJson.dart';
 import '../../../ui/other/ErrorDialog.dart';
 
 class NTUTLoginTask extends TaskModel {
-  static final String taskName = "NTUTLoginTask";
+  static final String taskName = "NTUTLoginTask" + CheckCookiesTask.checkNTUT ;
 
   NTUTLoginTask(BuildContext context) : super(context, taskName);
 

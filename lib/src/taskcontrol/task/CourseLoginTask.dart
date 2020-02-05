@@ -6,10 +6,11 @@ import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 import '../../../ui/other/ErrorDialog.dart';
+import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
 class CourseLoginTask extends TaskModel{
-  static final String taskName = "CourseLoginTask";
+  static final String taskName = "CourseLoginTask" + CheckCookiesTask.checkCourse ;
   CourseLoginTask(BuildContext context) : super(context, taskName);
 
   @override

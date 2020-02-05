@@ -175,7 +175,7 @@ class ISchoolConnector {
               CourseExtraInfoJson courseMainInfo = await CourseConnector.getCourseExtraInfo(courseId);
               courseName =  courseMainInfo.course.name;
               break;
-            }on Exception catch(e){
+            } catch(e){
               Log.d( "course : $courseId can't find the courseName" );
               time++;
             }
@@ -194,7 +194,7 @@ class ISchoolConnector {
         newAnnouncementJsonList.newAnnouncementList.add(newAnnouncement);
       }
       return newAnnouncementJsonList;
-    } on Exception catch (e) {
+    } catch (e) {
       Log.e(e.toString());
       return null;
     }
@@ -218,7 +218,7 @@ class ISchoolConnector {
       tagNode = parse(result);
       detail = tagNode.getElementsByClassName("imContent")[0].innerHtml;
       return detail;
-    } on Exception catch (e) {
+    } catch (e) {
       Log.e(e.toString());
       return null;
     }
@@ -244,7 +244,7 @@ class ISchoolConnector {
         _isLogin = true;
         return true;
       }
-    } on Exception catch (e) {
+    } catch (e) {
       //throw e;
       Log.e(e.toString());
       return false;

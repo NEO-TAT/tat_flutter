@@ -7,13 +7,14 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 import '../../../ui/other/ErrorDialog.dart';
 import 'TaskModel.dart';
 
 class ISchoolNewAnnouncementTask extends TaskModel{
-  static final String taskName = "ISchoolNewAnnouncementTask";
+  static final String taskName = "ISchoolNewAnnouncementTask" + CheckCookiesTask.checkISchool + CheckCookiesTask.checkCourse;
   static int page;
   ISchoolNewAnnouncementTask(BuildContext context,int inPage) : super(context , taskName){
     page = inPage;

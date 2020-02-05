@@ -28,21 +28,20 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
   @override
   void initState() {
+    super.initState();
     Model.instance.init().then((value) {
       bottomPageList.add(BottomPage(CourseTableScreen()      ));
       bottomPageList.add(BottomPage(NewAnnouncementScreen()  ));
       bottomPageList.add(BottomPage(InternetScreen2()        ));
       bottomPageList.add(BottomPage(SettingScreen()          ));
       setState(() {
-
       });
     });
-    super.initState();
     _addTask();
   }
 
-  void _addTask() async {
-    TaskHandler.instance.addTask(CheckCookiesTask(context));
+  void _addTask(){
+    TaskHandler.instance.addTask( CheckCookiesTask(context));
   }
 
   @override

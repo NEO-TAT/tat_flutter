@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "1.0.3"
   analyzer:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
@@ -421,7 +421,7 @@ packages:
     source: hosted
     version: "3.0.1"
   json_serializable:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: json_serializable
       url: "https://pub.dartlang.org"

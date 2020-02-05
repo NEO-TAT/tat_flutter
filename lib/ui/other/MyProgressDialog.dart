@@ -14,7 +14,7 @@ class MyProgressDialog {
     _context = context;
     _progressDialog.showProgressDialog(
         context,
-        dismissAfter: Duration(seconds: 10 ),
+        dismissAfter: Duration(seconds: 20 ),
         textToBeDisplayed:message,
         onDismiss:(){
 

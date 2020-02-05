@@ -9,8 +9,13 @@ enum LogMode{
 class Log{
   static String _lastLog = "";
   static void e( String data ) {
+    myLog( LogMode.LogDebug , data );
+  }
+
+  static void error( String data ) {
     myLog( LogMode.LogError , data );
   }
+
 
   static void d(String data ) {
     myLog( LogMode.LogDebug , data );

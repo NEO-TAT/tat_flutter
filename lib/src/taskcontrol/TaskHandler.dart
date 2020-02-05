@@ -24,8 +24,7 @@ class TaskHandler {
   }
 
   void _addFirstTask(TaskModel task){
-    Log.d( "add Task " + task.getTaskName );
-    _taskQueue.insert(0, task);
+    _addFirstTaskList( [task] );
   }
 
   void _addFirstTaskList(List<TaskModel> taskList){
@@ -42,7 +41,7 @@ class TaskHandler {
   Future<void> startTaskQueue( BuildContext context ) async{
     startTaskContext = context;
     for( TaskModel task in _taskQueue){
-      Log.d( "Start TaskQueue" + task.getTaskName );
+      Log.d( "Task: " + task.getTaskName );
     }
     while ( _taskQueue.length > 0 ){
       TaskModel task = _taskQueue.removeAt(0);
@@ -59,7 +58,7 @@ class TaskHandler {
         }else{
           _handleSuccessTask( task );
         }
-      }on Exception catch(e){
+      } catch(e){
         Log.e(e.toString());
         _handleErrorTask( task );
       }
@@ -101,7 +100,7 @@ class TaskHandler {
     }
     else{
       _addFirstTaskList( [
-        CheckCookiesTask(task.context),
+        CheckCookiesTask(task.context , checkSystem: task.getTaskName ),
         task
       ]);
     }

@@ -118,7 +118,6 @@ class CourseConnector {
         classmate.isSelect =  !classmateNodes[4].text.contains("撤選");
         courseExtraInfo.classmate.add(classmate);
       }
-
       return courseExtraInfo;
     }on Exception catch(e){
       //throw e;
@@ -133,6 +132,9 @@ class CourseConnector {
       Document tagNode;
       Element node;
       List<Element> nodes;
+      bool a;
+      a.toString();
+
 
       Map<String, String> data = {
         "code": studentId,
@@ -154,7 +156,7 @@ class CourseConnector {
         semesterJsonList.add( SemesterJson( year: year , semester:  semester ) );
       }
       return semesterJsonList;
-    }on Exception catch(e){
+    } catch(e){
       //throw e;
       Log.e(e.toString());
       return null;
@@ -266,7 +268,7 @@ class CourseConnector {
 
 
       return courseMainInfoList;
-    } on Exception catch (e) {
+    } catch (e) {
       //throw e;
       Log.e(e.toString());
       return null;
@@ -292,7 +294,7 @@ class CourseConnector {
         _isLogin = true;
         return true;
       }
-    } on Exception catch (e) {
+    } catch (e) {
       //throw e;
       Log.e(e.toString());
       return false;

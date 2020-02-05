@@ -10,16 +10,21 @@ import 'generated/i18n.dart';
 import 'ui/pages/login/LoginPage.dart';
 
 Future<Null> main() async {
+
+  runApp( MyApp() );
   FlutterError.onError = (FlutterErrorDetails details) async {
-    Log.e(details.toString());
+    Log.error(details.toString());
   };
+  //runApp( MyApp() );
   runZoned(() {
     runApp( MyApp() );
   },
     onError: (Object obj, StackTrace stack) {
     String log = Log.buildLog(stack.toString());
-    Log.e(sprintf("ErrorType : %s , %s", [obj.toString(), log]));
+    Log.error(sprintf("ErrorType : %s , %s", [obj.toString(), log]));
   });
+
+
 }
 
 class MyApp extends StatelessWidget {
