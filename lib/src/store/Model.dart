@@ -46,6 +46,17 @@ class Model {
   }
 
 
+  List<String> getSemesterListString(){
+    List<String> stringList = List();
+    if( courseSemesterList != null ){
+      for( SemesterJson value in courseSemesterList){
+        stringList.add( value.year + "-" + value.semester );
+      }
+    }
+    return stringList;
+  }
+
+
 
   Future<void> init() async {
     pref = await SharedPreferences.getInstance();
@@ -56,7 +67,9 @@ class Model {
     //_clearSetting( courseTableJsonKey );
     //_clearSetting( newAnnouncementJsonKey );
     //_clearSetting( settingJsonKey );
-    //DioConnector.instance.deleteCookies();
+    DioConnector.instance.deleteCookies();
+
+    //courseSemesterList = courseSemesterList ?? List();
 
     String readJson;
     List<String> readJsonList;
@@ -77,7 +90,6 @@ class Model {
 
     readJson = await _readString( settingJsonKey );
     setting = ( readJson != null ) ? SettingJson.fromJson( json.decode(readJson) ) : SettingJson();
-
 
     //Log.d( userData.toString() );
     //Log.d( courseTableList.toString() );

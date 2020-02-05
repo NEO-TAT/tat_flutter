@@ -28,6 +28,10 @@ class CourseMainJson{
     time    = time ?? Map();
   }
 
+  bool get isEmpty {
+    return name.isEmpty && href.isEmpty && note.isEmpty && stage.isEmpty && credits.isEmpty && hours.isEmpty;
+  }
+
   @override
   String toString() {
     return sprintf(
@@ -64,6 +68,10 @@ class CourseExtraJson{
     withdrawNumber    = JsonInit.stringInit(withdrawNumber);
   }
 
+  bool get isEmpty {
+    return id.isEmpty && name.isEmpty && category.isEmpty && selectNumber.isEmpty && withdrawNumber.isEmpty;
+  }
+
   @override
   String toString() {
     return sprintf(
@@ -89,6 +97,10 @@ class ClassJson{
   ClassJson( {this.name , this.href} ){
     name = JsonInit.stringInit(name);
     href = JsonInit.stringInit(href);
+  }
+
+  bool get isEmpty {
+    return name.isEmpty && href.isEmpty;
   }
 
   @override
@@ -118,6 +130,9 @@ class ClassroomJson{
     mainUse = mainUse ?? false;
   }
 
+  bool get isEmpty {
+    return name.isEmpty && href.isEmpty;
+  }
 
   @override
   String toString() {
@@ -142,6 +157,10 @@ class TeacherJson{
   TeacherJson( {this.name , this.href} ){
     name = JsonInit.stringInit(name);
     href = JsonInit.stringInit(href);
+  }
+
+  bool get isEmpty {
+    return name.isEmpty && href.isEmpty;
   }
 
   @override
@@ -170,6 +189,11 @@ class SemesterJson {
 
   factory SemesterJson.fromJson(Map<String, dynamic> json) => _$SemesterJsonFromJson(json);
   Map<String, dynamic> toJson() => _$SemesterJsonToJson(this);
+
+
+  bool get isEmpty {
+    return year.isEmpty && semester.isEmpty;
+  }
 
   @override
   String toString() {
@@ -205,6 +229,10 @@ class ClassmateJson {
     studentId          = JsonInit.stringInit(studentId);
     href               = JsonInit.stringInit(href);
     isSelect           = isSelect ?? false;
+  }
+
+  bool get isEmpty {
+    return className.isEmpty && studentEnglishName.isEmpty && studentName.isEmpty && studentId.isEmpty && href.isEmpty;
   }
 
   @override

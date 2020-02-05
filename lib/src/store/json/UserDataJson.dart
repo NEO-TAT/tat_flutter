@@ -20,6 +20,11 @@ class UserDataJson {
   factory UserDataJson.fromJson(Map<String, dynamic> json) => _$UserDataJsonFromJson(json);
   Map<String, dynamic> toJson() => _$UserDataJsonToJson(this);
 
+  bool get isEmpty {
+    return account.isEmpty && password.isEmpty && info.isEmpty;
+  }
+
+
   @override
   String toString() {
     return sprintf(
@@ -50,6 +55,11 @@ class UserInfoJson{
 
   factory UserInfoJson.fromJson(Map<String, dynamic> json) => _$UserInfoJsonFromJson(json);
   Map<String, dynamic> toJson() => _$UserInfoJsonToJson(this);
+
+  bool get isEmpty {
+    return givenName.isEmpty && userMail.isEmpty && userPhoto.isEmpty && userDn.isEmpty && passwordExpiredRemind.isEmpty;
+  }
+
 
   @override
   String toString() {

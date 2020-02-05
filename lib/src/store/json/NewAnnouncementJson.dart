@@ -29,6 +29,10 @@ class NewAnnouncementJsonList {
     }
   }
 
+  bool get isEmpty {
+    return newAnnouncementList.length == 0;
+  }
+
 
   factory NewAnnouncementJsonList.fromJson(Map<String, dynamic> json) => _$NewAnnouncementJsonListFromJson(json);
   Map<String, dynamic> toJson() => _$NewAnnouncementJsonListToJson(this);
@@ -68,6 +72,11 @@ class NewAnnouncementJson {
     var formatter = DateFormat.yMd().add_jm();
     String formatted = formatter.format( time );
     return formatted;
+  }
+
+
+  bool get isEmpty {
+    return title.isEmpty && detail.isEmpty && sender.isEmpty && courseId.isEmpty && courseName.isEmpty && messageId.isEmpty;
   }
 
   factory NewAnnouncementJson.fromJson(Map<String, dynamic> json) => _$NewAnnouncementJsonFromJson(json);

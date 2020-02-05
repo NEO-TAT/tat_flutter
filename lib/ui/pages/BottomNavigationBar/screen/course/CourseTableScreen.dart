@@ -1,3 +1,6 @@
+import 'package:direct_select_flutter/direct_select_container.dart';
+import 'package:direct_select_flutter/direct_select_item.dart';
+import 'package:direct_select_flutter/direct_select_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -12,6 +15,7 @@ import 'package:flutter_app/ui/pages/ischool/ISchoolScreen.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../../../src/store/Model.dart';
 import '../../../../../src/store/json/UserDataJson.dart';
@@ -42,44 +46,94 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         )
             .then((value) {
           if (value) {
-            _loadSemester();
+            _loadSetting();
           }
         }); //尚未登入
       });
     } else {
-      _loadSemester();
+      _loadSetting();
     }
   }
 
-  void _loadSemester() {
-    SemesterJson setting = Model.instance.setting.course.semester;
-    Log.d(setting.toString());
-    courseTable = Model.instance.getCourseTable(setting);
+  void _loadSetting() {
+    SemesterJson semesterSetting = Model.instance.setting.course.semester;
+    String studentId = Model.instance.setting.course.studentId;
+    Log.d(semesterSetting.toString());
+    courseTable = Model.instance.getCourseTable(semesterSetting);
     //Log.d( courseTable.toString() );
     if (courseTable == null) {
-      _getCourseTable();
+      _getCourseTable( semesterSetting , studentId);
     } else {
-      _showCourseTable(setting);
+      _showCourseTable(semesterSetting , studentId );
     }
   }
 
-  void _getCourseTable() async {
+  void _getCourseTable(SemesterJson semesterSetting , String studentId) async {
     UserDataJson userData = Model.instance.userData;
-    TaskHandler.instance.addTask(CourseSemesterTask(context, userData.account));
+    if( studentId.isEmpty ){
+      studentId = userData.account;
+    }
+    TaskHandler.instance.addTask(CourseSemesterTask(context, studentId ));
     await TaskHandler.instance.startTaskQueue(context);
-    SemesterJson semesterJson = Model.instance.courseSemesterList[0]; // 取得最新
+    SemesterJson semesterJson;
+    semesterJson = (semesterSetting.isEmpty)? Model.instance.courseSemesterList[0] : semesterSetting ; // 取得最新
     Log.d(semesterJson.toString());
-    TaskHandler.instance.addTask(
-        CourseTableListTask(context, userData.account, semesterJson));
+    TaskHandler.instance
+        .addTask(CourseTableListTask(context, userData.account, semesterJson));
     await TaskHandler.instance.startTaskQueue(context);
     Model.instance.setting.course.semester = semesterJson;
     Model.instance.setting.course.studentId = userData.account;
     await Model.instance.save(Model.settingJsonKey);
-    _showCourseTable(semesterJson);
+    _showCourseTable(semesterJson , studentId );
   }
+
+  Widget _getSemesterItem(SemesterJson semester){
+    String semesterString = semester.year + "-" + semester.semester;
+    return FlatButton(
+      child: Text(semesterString),
+      onPressed: (){
+        Log.d( semester.toString() );
+        Model.instance.setting.course.semester = semester;
+        Navigator.of(context).pop();
+        _loadSetting();
+      },
+    );
+  }
+
+  void _showSemesterList() async{
+    if( Model.instance.courseSemesterList == null ){
+      TaskHandler.instance.addTask( CourseSemesterTask(context , _studentIdControl.text  ));
+      await TaskHandler.instance.startTaskQueue(context);
+    }
+    List<SemesterJson> semesterList = Model.instance.courseSemesterList;
+    showDialog(
+      useRootNavigator: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: double.minPositive,
+            child: ListView.builder(
+              itemCount: semesterList.length,
+              shrinkWrap: true, //使清單最小化
+              itemBuilder: (BuildContext context, int index) {
+                return _getSemesterItem(semesterList[index]);
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
+    SemesterJson semesterSetting = Model.instance.setting.course.semester;
+    String semester = semesterSetting.year + "-" + semesterSetting.semester;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -95,10 +149,25 @@ class _CourseTableScreen extends State<CourseTableScreen> {
                     controller: _studentIdControl,
                   ),
                 ),
-                RaisedButton(
-                  child: Text("click"),
-                  onPressed: () => {},
-                )
+                FlatButton(
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          semester,
+                          textAlign: TextAlign.center,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(5),
+                        ),
+                        Icon(Icons.arrow_drop_down),
+                      ],
+                    ),
+                  ),
+                  onPressed: () {
+                    _showSemesterList();
+                  },
+                ),
               ],
             ),
           ),
@@ -120,7 +189,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           crossAxisCount: columnCount,
           children: List.generate(
             rowCount * columnCount,
-            (int index) {
+                (int index) {
               return AnimationConfiguration.staggeredGrid(
                 position: index,
                 duration: const Duration(milliseconds: 375),
@@ -154,8 +223,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       courseInfo = courseTable.getCourseDetailByTime(
           Day.values[dayIndex], SectionNumber.values[sectionNumberIndex]);
     }
-    name = (courseInfo != null)? courseInfo.main.course.name: "";
-    if( name.isEmpty ){
+    name = (courseInfo != null) ? courseInfo.main.course.name : "";
+    if (name.isEmpty) {
       color = (sectionNumberIndex % 2 == 1) ? Colors.white : Color(0xFFF8F8F8);
       return Container(
         color: color,
@@ -176,7 +245,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           ),
         ),
         onPressed: () {
-          if ( courseInfo != null) {
+          if (courseInfo != null) {
             showMyMaterialDialog(context, courseInfo);
           }
         },
@@ -189,7 +258,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   void showMyMaterialDialog(BuildContext context, CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
-    String teacherName   = courseInfo.main.getTeacherName();
+    String teacherName = courseInfo.main.getTeacherName();
     showDialog(
       context: context,
       useRootNavigator: false,
@@ -203,7 +272,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
                 children: <Widget>[Text("課號:"), Text(course.id)],
               ),
               Row(
-                children: <Widget>[Text("地點:"), Text( classroomName )],
+                children: <Widget>[Text("地點:"), Text(classroomName)],
               ),
               Row(
                 children: <Widget>[Text("授課老師:"), Text(teacherName)],
@@ -214,7 +283,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
             FlatButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                if ( course.id.isEmpty) {
+                if (course.id.isEmpty) {
                   Fluttertoast.showToast(
                       msg: course.name + "不支持",
                       toastLength: Toast.LENGTH_SHORT,
@@ -238,12 +307,12 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     );
   }
 
-  void _showCourseTable(SemesterJson setting) {
+  void _showCourseTable(SemesterJson setting , String studentId) {
     courseTable = Model.instance.getCourseTable(setting);
-    Log.d( setting.toString() );
+    Log.d(setting.toString());
     columnCount = 5;
     rowCount = SectionNumber.values.length - 1;
-    _studentIdControl.text = Model.instance.setting.course.studentId;
+    _studentIdControl.text = studentId;
     setState(() {});
   }
 }

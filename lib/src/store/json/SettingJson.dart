@@ -15,6 +15,10 @@ class SettingJson{
     announcement =  announcement ?? AnnouncementSettingJson();
   }
 
+  bool get isEmpty {
+    return course.isEmpty && other.isEmpty && announcement.isEmpty;
+  }
+
   @override
   String toString() {
     return sprintf(
@@ -39,6 +43,10 @@ class CourseSettingJson{
     semester     = semester   ?? SemesterJson();
   }
 
+  bool get isEmpty {
+    return studentId.isEmpty && semester.isEmpty;
+  }
+
   @override
   String toString() {
     return sprintf(
@@ -61,6 +69,10 @@ class AnnouncementSettingJson{
     maxPage = maxPage  ?? 0;
   }
 
+  bool get isEmpty {
+    return page == 0 && maxPage == 0;
+  }
+
   @override
   String toString() {
     return sprintf(
@@ -81,6 +93,10 @@ class OtherSettingJson{
 
   OtherSettingJson( { this.lang }) {
     lang = JsonInit.stringInit(lang);
+  }
+
+  bool get isEmpty {
+    return lang.isEmpty;
   }
 
   @override
