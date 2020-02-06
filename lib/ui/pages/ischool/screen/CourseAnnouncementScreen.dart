@@ -1,8 +1,16 @@
-
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
+import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolCourseAnnouncementTask.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CourseAnnouncementScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -13,16 +21,23 @@ class CourseAnnouncementScreen extends StatefulWidget {
 }
 
 class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with AutomaticKeepAliveClientMixin {
-  CourseInfoJson courseInfo;
-
-
+  List<CourseAnnouncementJson> courseAnnouncementList = List();
   @override
   void initState() {
-    _addTask();
     super.initState();
+    Future.delayed(Duration.zero, () {
+      _addTask();
+    });
   }
 
   void _addTask() async {
+    String courseId = widget.courseInfo.main.course.id;
+    TaskHandler.instance.addTask( ISchoolCourseAnnouncementTask(context , courseId));
+    await TaskHandler.instance.startTaskQueue(context);
+    courseAnnouncementList = Model.instance.tempData[ ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey];
+    setState(() {
+
+    });
   }
 
 
@@ -30,8 +45,52 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
   Widget build(BuildContext context) {
     super.build(context);  //如果使用AutomaticKeepAliveClientMixin需要呼叫
     return Container(
-      child: Text("ann"),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.separated(
+              itemCount: courseAnnouncementList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                    behavior: HitTestBehavior.opaque, //讓透明部分有反應
+                    child: _buildCourseAnnouncement(courseAnnouncementList[index]),
+                    onTap: () {
+                    },);
+              },
+              separatorBuilder: (context, index) {
+                // 顯示格線
+                return Container(
+                  color: Colors.black12,
+                  height: 1,
+                );
+              },
+            ),
+          ),
+        ],
+      )
     );
+  }
+
+
+  Widget _buildCourseAnnouncement( CourseAnnouncementJson courseAnnouncement){
+    return HtmlWidget(
+      courseAnnouncement.detail,
+      onTapUrl: (url) {
+        if( Uri.parse(url).host.contains("ischool") ){
+
+        }else{
+          _launchURL( url );
+        }
+      },
+    );
+  }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override

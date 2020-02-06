@@ -5,6 +5,7 @@ import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
@@ -13,22 +14,19 @@ import '../../../ui/other/ErrorDialog.dart';
 import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
-class ISchoolNewAnnouncementDetailTask extends TaskModel{
-  static final String taskName = "ISchoolNewAnnouncementDetailTask" + CheckCookiesTask.checkISchool ;
-  static NewAnnouncementJson announcement;
-  ISchoolNewAnnouncementDetailTask(BuildContext context,NewAnnouncementJson value) : super(context , taskName){
-    announcement = value;
-  }
+class ISchoolCourseAnnouncementTask extends TaskModel{
+  static final String taskName = "ISchoolCourseAnnouncementTask" + CheckCookiesTask.checkISchool ;
+  final String courseId;
+  static String courseAnnouncementListTempKey = "CourseAnnouncementListTempKey";
+  ISchoolCourseAnnouncementTask(BuildContext context,this.courseId) : super(context , taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.getISchoolNewAnnouncementDetail );
-    String value = await ISchoolConnector.getNewAnnouncementDetail( announcement.messageId );
+    MyProgressDialog.showProgressDialog(context, S.current.getISchoolCourseAnnouncement );
+    List<CourseAnnouncementJson> value = await ISchoolConnector.getCourseAnnouncement( courseId );
     MyProgressDialog.hideProgressDialog();
     if( value != null ){
-      announcement.detail = value;
-      announcement.isRead = true;
-      Model.instance.save( Model.newAnnouncementJsonKey );
+      Model.instance.tempData[courseAnnouncementListTempKey] = value;
       return TaskStatus.TaskSuccess;
     }else{
       _handleError();
@@ -40,7 +38,7 @@ class ISchoolNewAnnouncementDetailTask extends TaskModel{
   void _handleError(){
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getISchoolNewAnnouncementDetailError,
+      desc: S.current.getISchoolCourseAnnouncementError,
     );
     ErrorDialog(parameter).show();
 

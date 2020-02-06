@@ -30,7 +30,9 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
   @override
   void initState() {
     super.initState();
-    _addTask();
+    Future.delayed(Duration.zero, () {
+      _addTask();
+    });
   }
 
   void _addTask() async {

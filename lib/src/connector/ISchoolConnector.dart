@@ -3,6 +3,8 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
+import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:html/dom.dart';
@@ -78,7 +80,7 @@ class ISchoolConnector {
   }
   
   
-  static Future<int> getISchoolNewAnnouncementPage() async {
+  static Future<int> getNewAnnouncementPage() async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -104,7 +106,7 @@ class ISchoolConnector {
   }
   
 
-  static Future<NewAnnouncementJsonList> getISchoolNewAnnouncement(int page) async {
+  static Future<NewAnnouncementJsonList> getNewAnnouncement(int page) async {
     ConnectorParameter parameter;
     int i, j;
     String result;
@@ -201,7 +203,7 @@ class ISchoolConnector {
   }
 
 
-  static Future<String> getISchoolNewAnnouncementDetail(String messageId) async {
+  static Future<String> getNewAnnouncementDetail(String messageId) async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -223,6 +225,93 @@ class ISchoolConnector {
       return null;
     }
   }
+
+  static Future<List<CourseAnnouncementJson>> getCourseAnnouncement(String courseId) async{
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    try {
+      Map<String, String> data = {
+        "cidReset": "true",
+        "cidReq" : courseId ,
+      };
+      List<CourseAnnouncementJson> courseAnnouncementList = List();
+      parameter = ConnectorParameter( _iSchoolCourseAnnouncementUrl );
+      parameter.data = data;
+      result = await Connector.getDataByGet( parameter );
+      tagNode = parse(result);
+      node = tagNode.getElementById("courseRightContent");
+      nodes = node.getElementsByClassName("item");
+      for( int i = 0 ; i< nodes.length ; i++){
+        node = nodes[i];
+        CourseAnnouncementJson courseAnnouncement = CourseAnnouncementJson();
+        courseAnnouncement.detail = node.innerHtml;
+        courseAnnouncementList.add(courseAnnouncement);
+      }
+      return courseAnnouncementList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+
+  static Future<List<CourseFileJson>> getCourseFile(String courseId) async{
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> courseFileNodes , nodes , itemNodes;
+    try {
+      Map<String, String> data = {
+        "cidReset": "true",
+        "cidReq" : courseId ,
+      };
+      List<CourseFileJson> courseFileList = List();
+      parameter = ConnectorParameter( _iSchoolFileUrl );
+      parameter.data = data;
+      result = await Connector.getDataByGet( parameter );
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("tbody")[1];
+
+      courseFileNodes = node.getElementsByTagName("tr");
+
+      for( int i = 0 ; i< courseFileNodes.length ; i++){
+        CourseFileJson courseFile = CourseFileJson();
+        nodes = courseFileNodes[i].getElementsByTagName("td");
+        //檔案名稱
+        courseFile.name = nodes[0].text;
+        //檔案上傳時間
+        node = nodes[ nodes.length -1 ]; //時間
+        List<String> splitString = node.text.split(".");
+        int year = int.parse(  splitString[0]  );
+        int month = int.parse(  splitString[1]  );
+        int day = int.parse(  splitString[2]  );
+        courseFile.time = DateTime( year , month , day);
+        //檔案類型
+        for( int j = 1 ; j < nodes.length - 1 ; j++ ){
+          itemNodes = nodes[j].getElementsByTagName("a");
+          if( itemNodes.length > 0 ){
+            FileType fileType = FileType();
+            String href  = itemNodes[0].attributes["href"];
+            href = href.replaceAll("amp;" , "");
+            fileType.href = href;
+            fileType.type = CourseFileType.values[j-1];
+            courseFile.fileType.add( fileType ) ;
+          }
+        }
+        courseFileList.add(courseFile);
+      }
+      return courseFileList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+
 
 
 
@@ -250,4 +339,19 @@ class ISchoolConnector {
       return false;
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -64,9 +64,9 @@ class Model {
     tempData = Map();
 
     //_clearSetting( userDataJsonKey );
-    _clearSetting( courseTableJsonKey );
-    _clearSetting( newAnnouncementJsonKey );
-    _clearSetting( settingJsonKey );
+    //_clearSetting( courseTableJsonKey );
+    //_clearSetting( newAnnouncementJsonKey );
+    //_clearSetting( settingJsonKey );
     //DioConnector.instance.deleteCookies();
 
     courseSemesterList = courseSemesterList ?? List();

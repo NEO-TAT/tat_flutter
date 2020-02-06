@@ -15,7 +15,7 @@ import 'package:random_color/random_color.dart';
 import '../../../../../src/store/Model.dart';
 import '../../../../../src/store/json/UserDataJson.dart';
 
-enum onListViewPress{ Setting , Logout , Report , About , ChangePassword}
+enum onListViewPress { Setting, Logout, Report, About, ChangePassword }
 
 class SettingScreen extends StatefulWidget {
   @override
@@ -23,41 +23,22 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreen extends State<SettingScreen> {
-
   final List<Map> listViewData = [
+    {"icon": Icons.settings, "title": "設定", "onPress": onListViewPress.Setting},
     {
-      "icon": Icons.settings ,
-      "title": "設定" ,
-      "onPress" : onListViewPress.Setting
-    },
-    {
-      "icon": MyIcon.arrows_cw ,
+      "icon": MyIcon.arrows_cw,
       "title": "更改密碼",
-      "onPress" : onListViewPress.ChangePassword
+      "onPress": onListViewPress.ChangePassword
     },
-    {
-      "icon": MyIcon.logout ,
-      "title": "登出" ,
-      "onPress" : onListViewPress.Logout
-    },
-    {
-      "icon": Icons.report ,
-      "title": "意見反饋",
-      "onPress" : onListViewPress.Report
-    },
-    {
-      "icon": Icons.info ,
-      "title": "關於",
-      "onPress" : onListViewPress.About
-    }
+    {"icon": MyIcon.logout, "title": "登出", "onPress": onListViewPress.Logout},
+    {"icon": Icons.report, "title": "意見反饋", "onPress": onListViewPress.Report},
+    {"icon": Icons.info, "title": "關於", "onPress": onListViewPress.About}
   ];
 
   @override
   void initState() {
     super.initState();
   }
-
-
 
   void _onListViewPress(onListViewPress value) {
     Fluttertoast.showToast(
@@ -68,44 +49,46 @@ class _SettingScreen extends State<SettingScreen> {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0);
-    switch(value){
+    switch (value) {
       case onListViewPress.Logout:
         Model.instance.logout();
-        Navigator.of(context).push( CustomRoute(LoginPage() ));
+        Navigator.of(context).push(CustomRoute(LoginPage()));
         break;
       default:
         break;
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Setting'),
-        ),
-        body: ListView.separated(
-          itemCount: listViewData.length+1,
-          itemBuilder: (context, index) {
-            Widget widget;
-            widget = (index == 0)?_buildHeader() : _buildSetting( listViewData[index-1]);
-            return GestureDetector(
-                behavior: HitTestBehavior.opaque ,  //讓透明部分有反應
-                child: WidgetANimator(widget) ,
-                onTap: () {
-                  if ( index!=0)
-                    _onListViewPress( listViewData[index-1]['onPress'] );
-                }
-            );
-          },
-          separatorBuilder: (context, index) {  // 顯示格線
-            return Container(
-              color: Colors.black12,
-              height: 1,
-            );
-          },
-        ));
+      appBar: AppBar(
+        title: Text('Setting'),
+      ),
+      body: ListView.separated(
+        itemCount: listViewData.length + 1,
+        itemBuilder: (context, index) {
+          Widget widget;
+          widget = (index == 0)
+              ? _buildHeader()
+              : _buildSetting(listViewData[index - 1]);
+          return GestureDetector(
+              behavior: HitTestBehavior.opaque, //讓透明部分有反應
+              child: WidgetANimator(widget),
+              onTap: () {
+                if (index != 0)
+                  _onListViewPress(listViewData[index - 1]['onPress']);
+              });
+        },
+        separatorBuilder: (context, index) {
+          // 顯示格線
+          return Container(
+            color: Colors.black12,
+            height: 1,
+          );
+        },
+      ),
+    );
   }
 
   Container _buildHeader() {
@@ -122,8 +105,8 @@ class _SettingScreen extends State<SettingScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           CircleAvatar(
-              radius: 30.0,
-              backgroundImage: NTUTConnector.getUserImage(),
+            radius: 30.0,
+            backgroundImage: NTUTConnector.getUserImage(),
           ),
           SizedBox(
             width: 10.0,
@@ -151,19 +134,18 @@ class _SettingScreen extends State<SettingScreen> {
     );
   }
 
-
   Container _buildSetting(Map data) {
     return Container(
       //color: Colors.yellow,
-      padding : EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      padding:
+          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Icon(
-            data['icon'] ,
-            color: RandomColor().randomColor(
-                colorSaturation: ColorSaturation.highSaturation
-            ),
+            data['icon'],
+            color: RandomColor()
+                .randomColor(colorSaturation: ColorSaturation.highSaturation),
           ),
           SizedBox(
             width: 20.0,
@@ -176,5 +158,4 @@ class _SettingScreen extends State<SettingScreen> {
       ),
     );
   }
-
 }

@@ -23,7 +23,7 @@ class ISchoolNewAnnouncementTask extends TaskModel{
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, S.current.getISchoolNewAnnouncement );
-    NewAnnouncementJsonList value = await ISchoolConnector.getISchoolNewAnnouncement(page);
+    NewAnnouncementJsonList value = await ISchoolConnector.getNewAnnouncement(page);
     MyProgressDialog.hideProgressDialog();
     if( value != null ){
       for(NewAnnouncementJson item in  value.newAnnouncementList ){

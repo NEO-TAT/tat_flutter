@@ -9,6 +9,7 @@ import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/course/CourseTab
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/InternetScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/InternetScreen2.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/setting/SettingScreen.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'BottomPage.dart';
@@ -40,8 +41,9 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     _addTask();
   }
 
-  void _addTask(){
+  void _addTask() async{
     TaskHandler.instance.addTask( CheckCookiesTask(context));
+    await FlutterDownloader.initialize();
   }
 
   @override

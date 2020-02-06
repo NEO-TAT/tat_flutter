@@ -15,8 +15,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <application
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
+    <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="NTUTCourseHelper"
         android:icon="@mipmap/ic_launcher">
@@ -38,5 +39,16 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <provider
+            android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
+            android:authorities="${applicationId}.flutter_downloader.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
     </application>
 </manifest>

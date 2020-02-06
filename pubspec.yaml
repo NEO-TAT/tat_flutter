@@ -42,8 +42,8 @@ dependencies:
   giffy_dialog: ^1.6.1
   awesome_dialog: ^0.1.1
   flutter_slidable: ^0.4.7
-  direct_select_flutter: ^1.0.5
-  gzx_dropdown_menu: ^1.0.3
+  #direct_select_flutter: ^1.0.5
+  #gzx_dropdown_menu: ^1.0.3
   #----------WebView----------#
   webview_flutter: 0.3.19+5
   flutter_webview_plugin: ^0.3.10+1
@@ -69,6 +69,10 @@ dependencies:
   page_transition: ^1.1.5
   flutter_staggered_animations: ^0.1.2
   flutter_selectable_text: ^0.3.1
+  #----------download----------#
+  flutter_downloader: ^1.4.1
+  open_file: ^3.0.1
+  permission_handler: ^4.2.0+hotfix.3
 
 
 dev_dependencies:

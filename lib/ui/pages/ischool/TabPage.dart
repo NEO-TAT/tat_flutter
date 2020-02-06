@@ -15,7 +15,12 @@ class TabPage {
         Text(title),
       ],
     );
-    tabPage = initPage;
+    tabPage = Navigator(
+        key: navigatorKey,
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+              builder: (context) => initPage);
+        });
   }
 }
 
@@ -53,6 +58,10 @@ class TabPageList {
 
   Widget getPage(int index) {
     return tabPageList[index].tabPage;
+  }
+
+  GlobalKey<NavigatorState> getKey(int index) {
+    return tabPageList[index].navigatorKey;
   }
 
   int get length {

@@ -38,5 +38,9 @@
   "getCourseDetail"  : "getCourseDetail",
   "getCourseDetailError" : "getCourseDetailError",
   "getISchoolNewAnnouncementPage" : "getISchoolNewAnnouncementPage",
-  "getISchoolNewAnnouncementPageError" : "getISchoolNewAnnouncementPageError"
+  "getISchoolNewAnnouncementPageError" : "getISchoolNewAnnouncementPageError",
+  "getISchoolCourseAnnouncement": "getISchoolCourseAnnouncement",
+  "getISchoolCourseAnnouncementError": "getCourseAnnouncementError",
+  "getISchoolCourseFile" : "getISchoolCourseFile",
+  "getISchoolCourseFileError" : "getISchoolCourseFileError",
 }

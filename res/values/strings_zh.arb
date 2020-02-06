@@ -39,5 +39,9 @@
   "getCourseSemester" : "取得學期清單中...",
   "getCourseSemesterError" : "取得學期清單錯誤",
   "getCourseDetail"  : "課程資料讀取中...",
-  "getCourseDetailError" : "課程資料讀取錯誤"
+  "getCourseDetailError" : "課程資料讀取錯誤",
+  "getISchoolCourseAnnouncement": "取得課程公告...",
+  "getISchoolCourseAnnouncementError": "取得課程公告錯誤",
+  "getISchoolCourseFile" : "取得課程檔案",
+  "getISchoolCourseFileError" : "取得課程檔案錯誤"
 }

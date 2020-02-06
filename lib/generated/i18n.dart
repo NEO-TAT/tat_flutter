@@ -37,6 +37,10 @@ class S implements WidgetsLocalizations {
   String get getCourseError => "getCourseError";
   String get getCourseSemester => "getCourseSemester";
   String get getCourseSemesterError => "getCourseSemesterError";
+  String get getISchoolCourseAnnouncement => "getISchoolCourseAnnouncement";
+  String get getISchoolCourseAnnouncementError => "getCourseAnnouncementError";
+  String get getISchoolCourseFile => "getISchoolCourseFile";
+  String get getISchoolCourseFileError => "getISchoolCourseFileError";
   String get getISchoolNewAnnouncement => "Getting ISchoolNewAnnouncement";
   String get getISchoolNewAnnouncementDetail => "getISchoolNewAnnouncementDetail";
   String get getISchoolNewAnnouncementDetailError => "getISchoolNewAnnouncementDetailError";
@@ -92,11 +96,15 @@ class $zh extends S {
   @override
   String get getCourse => "取得課表...";
   @override
+  String get getISchoolCourseAnnouncementError => "取得課程公告錯誤";
+  @override
   String get login => "登入";
   @override
   String get checkLogin => "檢查登入...";
   @override
   String get getCourseDetailError => "課程資料讀取錯誤";
+  @override
+  String get getISchoolCourseAnnouncement => "取得課程公告...";
   @override
   String get resetAccountPassword => "設定";
   @override
@@ -105,6 +113,8 @@ class $zh extends S {
   String get getCourseSemesterError => "取得學期清單錯誤";
   @override
   String get password => "密碼";
+  @override
+  String get getISchoolCourseFileError => "取得課程檔案錯誤";
   @override
   String get getISchoolNewAnnouncementDetail => "取得公告資訊...";
   @override
@@ -137,6 +147,8 @@ class $zh extends S {
   String get getCourseSemester => "取得學期清單中...";
   @override
   String get loginCourse => "登入課程系統...";
+  @override
+  String get getISchoolCourseFile => "取得課程檔案";
   @override
   String get loggingNTUT => "登入校園入口網站中...";
   @override
