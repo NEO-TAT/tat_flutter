@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/app_provider.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/category_provider.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/core_provider.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -10,21 +13,25 @@ import 'generated/i18n.dart';
 import 'ui/pages/login/LoginPage.dart';
 
 Future<Null> main() async {
-
-  runApp( MyApp() );
   FlutterError.onError = (FlutterErrorDetails details) async {
     Log.error(details.toString());
   };
   //runApp( MyApp() );
   runZoned(() {
-    runApp( MyApp() );
-  },
-    onError: (Object obj, StackTrace stack) {
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AppProvider()),
+          ChangeNotifierProvider(create: (_) => CoreProvider()),
+          ChangeNotifierProvider(create: (_) => CategoryProvider()),
+        ],
+        child: MyApp(),
+      ),
+    );
+  }, onError: (Object obj, StackTrace stack) {
     String log = Log.buildLog(stack.toString());
     Log.error(sprintf("ErrorType : %s , %s", [obj.toString(), log]));
   });
-
-
 }
 
 class MyApp extends StatelessWidget {

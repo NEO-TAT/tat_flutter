@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
+import 'FileViewer/FileViewerPage.dart';
 
 class OtherScreen extends StatefulWidget {
   @override
@@ -7,10 +9,17 @@ class OtherScreen extends StatefulWidget {
 }
 
 class _OtherScreen extends State<OtherScreen> {
-
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).push(
+        PageTransition(
+          type: PageTransitionType.rightToLeft,
+          child: FileViewerPage(),
+        ),
+      );
+    });
   }
 
   @override
@@ -22,6 +31,4 @@ class _OtherScreen extends State<OtherScreen> {
       body: Text("apple"),
     );
   }
-
-
 }

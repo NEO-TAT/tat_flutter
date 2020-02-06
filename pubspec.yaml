@@ -50,6 +50,8 @@ dependencies:
   #---------icon----------#
   font_awesome_flutter: ^8.5.0
   community_material_icon: ^3.5.95
+  cupertino_icons: ^0.1.2
+  flutter_icons: ^1.0.0+1
   #---------json----------#
   #analyzer : ^0.39.4
   #json_serializable: ^3.2.5
@@ -74,6 +76,7 @@ dependencies:
   open_file: ^3.0.1
   permission_handler: ^4.2.0+hotfix.3
   mime_type: ^0.2.5
+  video_player: ^0.10.2+5
 
 dev_dependencies:
   flutter_test:

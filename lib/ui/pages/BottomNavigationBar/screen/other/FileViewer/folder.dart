@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:filex/providers/core_provider.dart';
-import 'package:filex/providers/category_provider.dart';
-import 'package:filex/util/file_utils.dart';
-import 'package:filex/widgets/custom_alert.dart';
-import 'package:filex/widgets/dir_item.dart';
-import 'package:filex/widgets/file_item.dart';
-import 'package:filex/widgets/path_bar.dart';
-import 'package:filex/widgets/sort_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/category_provider.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/core_provider.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/util/file_utils.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/custom_alert.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/dir_item.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/file_item.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/path_bar.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/sort_sheet.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:path/path.dart' as pathlib;
 import 'package:provider/provider.dart';

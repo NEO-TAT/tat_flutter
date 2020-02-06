@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/Connector.dart';
 import 'package:flutter_app/src/connector/DioConnector.dart';
+import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/permission/Permission.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
@@ -58,18 +59,6 @@ class _CourseFileScreen extends State<CourseFileScreen>
 
 
   void _addTask() async {
-    bool checkPermission = await Permission.check(context);
-    if( !checkPermission ){
-      Fluttertoast.showToast(
-          msg: "沒有權限",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-      return;
-    }
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
     TaskHandler.instance.addTask(ISchoolCourseFileTask(context, courseId));
@@ -188,23 +177,6 @@ class _CourseFileScreen extends State<CourseFileScreen>
     return widgetList;
   }
 
-  Future<String> _findLocalPath() async {
-    final directory = Theme.of(context).platform == TargetPlatform.android
-        ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
-    return directory.path;
-  }
-
-  Future<String> _getDownloadDir( String name ) async{
-    var _localPath = (await _findLocalPath()) + '/$name';
-    final savedDir = Directory(_localPath);
-    bool hasExisted = await savedDir.exists();
-    if (!hasExisted) {
-      savedDir.create();
-    }
-    return savedDir.path;
-  }
-
 
   void _downloadOneFile(int index) async{
     Fluttertoast.showToast(
@@ -216,7 +188,7 @@ class _CourseFileScreen extends State<CourseFileScreen>
         textColor: Colors.white,
         fontSize: 16.0);
     CourseFileJson courseFile = courseFileList[index];
-    String path = await _getDownloadDir( widget.courseInfo.main.course.name );
+    String path = await FileStore.getDownloadDir( context , widget.courseInfo.main.course.name );
     Log.d( path );
 
     FileType fileType =  courseFile.fileType[0];
