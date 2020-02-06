@@ -89,6 +89,21 @@ class DioConnector {
     }
   }
 
+  Future<Map<String, List<String>>> getHeadersByGet( ConnectorParameter parameter ) async{
+    Response response;
+    try {
+      Log.d( parameter.url );
+      response = await dio.get(parameter.url);
+      if (response.statusCode == HttpStatus.ok ) {
+        return response.headers.map;
+      } else {
+        throw connectorError;
+      }
+    } catch(e){
+      throw e;
+    }
+  }
+
 
   Future<Response> getDataByGetResponse(  ConnectorParameter parameter ) async{
     Response response;

@@ -42,29 +42,17 @@ class _CourseFileScreen extends State<CourseFileScreen>
   }
 
   void _flutterDownloaderInit() async{
-    WidgetsFlutterBinding.ensureInitialized();
-
-    IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
-    _port.listen((dynamic data) {
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
-      setState((){ });
-    });
     FlutterDownloader.registerCallback(downloadCallback);
     _addTask();
   }
 
-
-  @override
-  void dispose() {
-    IsolateNameServer.removePortNameMapping('downloader_send_port');
-    super.dispose();
-  }
-
   static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
-    final SendPort send = IsolateNameServer.lookupPortByName('downloader_send_port');
-    send.send([id, status, progress]);
+    if( status == DownloadTaskStatus.complete ){
+      Log.d( "id : $id is complete" );
+    }else if( status == DownloadTaskStatus.failed ){
+      Log.d( "id : $id is fail" );
+      //FlutterDownloader.retry(taskId: id);
+    }
   }
 
 
@@ -219,20 +207,38 @@ class _CourseFileScreen extends State<CourseFileScreen>
 
 
   void _downloadOneFile(int index) async{
+    Fluttertoast.showToast(
+        msg: "下載準備開始",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
     CourseFileJson courseFile = courseFileList[index];
     String path = await _getDownloadDir( widget.courseInfo.main.course.name );
     Log.d( path );
-    String url = courseFile.fileType[0].fileUrl;
+
+    FileType fileType =  courseFile.fileType[0];
+
+    String url = fileType.fileUrl;
+    String realFileName = await Connector.getFileName(url);
+    if( realFileName != null) {
+      String fileExtension =  realFileName.split(".").reversed.toList()[0] ;
+      realFileName  = courseFile.name + "." + fileExtension;
+      Log.d(realFileName);
+    }
+
     await FlutterDownloader.enqueue(
       url:  url,
       savedDir: path,
+      fileName: realFileName,
       headers: Connector.getLoginHeaders(url),
       showNotification: true,
       // show download progress in status bar (for Android)
-      openFileFromNotification:
-      true, // click on notification to open downloaded file (for Android)
+      openFileFromNotification: true,
+      // click on notification to open downloaded file (for Android)
     );
-
   }
 
 

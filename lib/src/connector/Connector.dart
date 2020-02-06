@@ -62,6 +62,20 @@ class Connector {
     }
   }
 
+
+  static Future<String> getFileName(String url) async{
+    try{
+      ConnectorParameter parameter = ConnectorParameter(url);
+      Map<String, List<String>> headers = await DioConnector.instance.getHeadersByGet(parameter);
+      List<String> name = headers[ "content-disposition"];
+      Log.d( name[0]);
+      return name[0].split('"')[1];
+    } catch(e){
+      Log.d(e.toString());
+      return null;
+    }
+  }
+
   static void printHeader(Map<String ,String> headers){
     for(String key in headers.keys){
       Log.d( sprintf("%s : %s" , [ key , headers[key] ] ) );

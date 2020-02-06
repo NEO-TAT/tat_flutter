@@ -73,7 +73,7 @@ dependencies:
   flutter_downloader: ^1.4.1
   open_file: ^3.0.1
   permission_handler: ^4.2.0+hotfix.3
-
+  mime_type: ^0.2.5
 
 dev_dependencies:
   flutter_test:
