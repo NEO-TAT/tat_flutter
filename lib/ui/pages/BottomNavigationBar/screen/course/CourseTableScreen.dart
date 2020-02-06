@@ -27,7 +27,8 @@ class CourseTableScreen extends StatefulWidget {
 
 class _CourseTableScreen extends State<CourseTableScreen> {
   final TextEditingController _studentIdControl = TextEditingController();
-  CourseTableJson courseTable;
+  final FocusNode _studentFocus = new FocusNode();
+  CourseTableJson courseTableData;
   int columnCount = 14;
   int rowCount = 7;
 
@@ -56,15 +57,11 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   }
 
   void _loadSetting() {
-    SemesterJson semesterSetting = Model.instance.setting.course.semester;
-    String studentId = Model.instance.setting.course.studentId;
-    Log.d(semesterSetting.toString());
-    courseTable = Model.instance.getCourseTable(semesterSetting);
-    //Log.d( courseTable.toString() );
-    if (courseTable == null) {
-      _getCourseTable(semesterSetting, studentId);
+    CourseTableJson courseTable = Model.instance.setting.course.info;
+    if ( courseTable.isEmpty ) {
+      _getCourseTable();
     } else {
-      _showCourseTable(semesterSetting, studentId);
+      _showCourseTable( courseTable );
     }
   }
 
@@ -73,30 +70,32 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     await TaskHandler.instance.startTaskQueue(context);
   }
 
-  void _getCourseTable(SemesterJson semesterSetting, String studentId) async{
+  void _getCourseTable( {SemesterJson semesterSetting, String studentId} ) async{
     UserDataJson userData = Model.instance.userData;
-    if (studentId.isEmpty) {
-      studentId = userData.account;
+    studentId = studentId ?? userData.account;
+    if ( courseTableData?.studentId != studentId){
+      Model.instance.courseSemesterList = List();  //需重設因為更換了studentId
     }
-
     SemesterJson semesterJson;
-    if( semesterSetting.isEmpty ){
+    if( semesterSetting == null ){
       await _getSemesterList(studentId);
       semesterJson = Model.instance.courseSemesterList[0];
     }else{
       semesterJson = semesterSetting;
-      Model.instance.courseSemesterList = List();  //需重設
     }
-    Log.d(semesterJson.toString());
-    TaskHandler.instance
-        .addTask(CourseTableTask(context, studentId , semesterJson));
-    await TaskHandler.instance.startTaskQueue(context);
-    Model.instance.setting.course.semester = semesterJson;
-    Model.instance.setting.course.studentId = studentId;
-    if( studentId == userData.account ){
-      await Model.instance.save(Model.settingJsonKey);
+
+
+    CourseTableJson courseTable;
+    courseTable = Model.instance.getCourseTable(studentId, semesterSetting);  //去取找是否已經暫存
+    if( courseTable == null ){
+      TaskHandler.instance
+          .addTask(CourseTableTask(context, studentId , semesterJson));
+      await TaskHandler.instance.startTaskQueue(context);
+      courseTable = Model.instance.tempData[CourseTableTask.courseTableTempKey];
     }
-    _showCourseTable(semesterJson, studentId);
+    Model.instance.setting.course.info = courseTable;  //儲存課表
+    Model.instance.save( Model.settingJsonKey );
+    _showCourseTable( courseTable );
   }
 
   Widget _getSemesterItem(SemesterJson semester) {
@@ -105,14 +104,13 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       child: Text(semesterString),
       onPressed: () {
         Log.d(semester.toString());
-        Model.instance.setting.course.semester = semester;
+        _getCourseTable( semesterSetting:  semester , studentId: _studentIdControl.text ); //取得課表
         Navigator.of(context).pop();
-        _loadSetting();
       },
     );
   }
 
-  void _showSemesterList() async {
+  void _showSemesterList() async {  //顯示選擇學期
     if (Model.instance.courseSemesterList.length == 0) {
       TaskHandler.instance
           .addTask(CourseSemesterTask(context, _studentIdControl.text));
@@ -141,9 +139,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SemesterJson semesterSetting = Model.instance.setting.course.semester;
-    String semester = semesterSetting.year + "-" + semesterSetting.semester;
-
+    SemesterJson semesterSetting = courseTableData?.courseSemester ?? SemesterJson();
+    String semesterString = semesterSetting.year + "-" + semesterSetting.semester;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -156,7 +153,12 @@ class _CourseTableScreen extends State<CourseTableScreen> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    onEditingComplete: (){
+                      _getCourseTable( studentId: _studentIdControl.text);
+                      _studentFocus.unfocus();
+                    },
                     controller: _studentIdControl,
+                    focusNode: _studentFocus,
                   ),
                 ),
                 FlatButton(
@@ -164,7 +166,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          semester,
+                          semesterString,
                           textAlign: TextAlign.center,
                         ),
                         Padding(
@@ -229,8 +231,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     String name;
     CourseInfoJson courseInfo;
     Color color;
-    if (courseTable != null) {
-      courseInfo = courseTable.getCourseDetailByTime(
+    if (courseTableData != null) {
+      courseInfo = courseTableData.getCourseDetailByTime(
           Day.values[dayIndex], SectionNumber.values[sectionNumberIndex]);
     }
     name = (courseInfo != null) ? courseInfo.main.course.name : "";
@@ -256,7 +258,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         ),
         onPressed: () {
           if (courseInfo != null) {
-            showMyMaterialDialog(courseInfo);
+            showCourseDetailDialog(courseInfo);
           }
         },
         color: Colors.blue,
@@ -265,7 +267,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   }
 
   //顯示課程對話框
-  void showMyMaterialDialog(CourseInfoJson courseInfo) {
+  void showCourseDetailDialog(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
@@ -322,25 +324,18 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         ),
       ).then( (value) {
         if( value != null ){
-          SemesterJson semesterSetting = Model.instance.setting.course.semester;
-          _getCourseTable(semesterSetting, value);
+          SemesterJson semesterSetting = Model.instance.setting.course.info.courseSemester;
+          _getCourseTable( semesterSetting:semesterSetting , studentId: value );
         }
       });
     }
   }
 
-  void _showCourseTable(SemesterJson setting, String studentId) {
-    String account = Model.instance.userData.account;
-    Log.d(studentId );
-    if( studentId == account){
-      courseTable = Model.instance.getCourseTable(setting);
-    }else{
-      courseTable = Model.instance.tempData[CourseTableTask.courseTableTempKey];
-    }
-    Log.d(setting.toString());
+  void _showCourseTable( CourseTableJson courseTable) {
+    courseTableData = courseTable;
     columnCount = 5;
     rowCount = SectionNumber.values.length - 1;
-    _studentIdControl.text = studentId;
+    _studentIdControl.text = courseTable.studentId;
     setState(() {});
   }
 }

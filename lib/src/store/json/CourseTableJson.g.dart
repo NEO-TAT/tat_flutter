@@ -11,7 +11,7 @@ CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
     courseSemester: json['courseSemester'] == null
         ? null
         : SemesterJson.fromJson(json['courseSemester'] as Map<String, dynamic>),
-    courseInfoMap: (json['courseDetailMap'] as Map<String, dynamic>)?.map(
+    courseInfoMap: (json['courseInfoMap'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(
           _$enumDecodeNullable(_$DayEnumMap, k),
           (e as Map<String, dynamic>)?.map(
@@ -22,13 +22,14 @@ CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
                     : CourseInfoJson.fromJson(e as Map<String, dynamic>)),
           )),
     ),
-  );
+  )..studentId = json['studentId'] as String;
 }
 
 Map<String, dynamic> _$CourseTableJsonToJson(CourseTableJson instance) =>
     <String, dynamic>{
       'courseSemester': instance.courseSemester,
-      'courseDetailMap': instance.courseInfoMap?.map((k, e) => MapEntry(
+      'studentId': instance.studentId,
+      'courseInfoMap': instance.courseInfoMap?.map((k, e) => MapEntry(
           _$DayEnumMap[k],
           e?.map((k, e) => MapEntry(_$SectionNumberEnumMap[k], e)))),
     };

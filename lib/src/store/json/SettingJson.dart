@@ -1,4 +1,5 @@
 import 'package:flutter_app/src/store/JsonInit.dart';
+import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseClassJson.dart';
@@ -35,31 +36,29 @@ class SettingJson{
 
 @JsonSerializable()
 class CourseSettingJson{
-  String studentId;
-  SemesterJson semester;
+  CourseTableJson info;
 
-  CourseSettingJson( { this.studentId , this.semester }) {
-    studentId    = JsonInit.stringInit(studentId);
-    semester     = semester   ?? SemesterJson();
+  CourseSettingJson( { this.info }) {
+    info  = info  ?? CourseTableJson();
   }
 
   bool get isEmpty {
-    return studentId.isEmpty && semester.isEmpty;
+    return info.isEmpty;
   }
 
   @override
   String toString() {
     return sprintf(
-        "studentId      :%s   \n" +
-        "---------semester--------       :\n%s \n" ,
-        [studentId , semester.toString() ] );
+        "---------courseInfo--------       :\n%s \n" ,
+        [ info.toString() ] );
   }
 
   factory CourseSettingJson.fromJson(Map<String, dynamic> json) => _$CourseSettingJsonFromJson(json);
   Map<String, dynamic> toJson() => _$CourseSettingJsonToJson(this);
 
-
 }
+
+
 @JsonSerializable()
 class AnnouncementSettingJson{
   int page;

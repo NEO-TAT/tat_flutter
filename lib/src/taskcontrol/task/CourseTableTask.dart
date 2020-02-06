@@ -26,7 +26,9 @@ class CourseTableTask extends TaskModel{
     if( courseMainInfoList != null  ) {
       CourseTableJson courseTable = CourseTableJson();
       courseTable.courseSemester = semester;
+      courseTable.studentId = studentId;
 
+      //依照時間創建課表
       for( CourseMainInfoJson courseMainInfo in courseMainInfoList ) {
         CourseInfoJson courseInfo = CourseInfoJson();
         bool add = false;
@@ -42,7 +44,7 @@ class CourseTableTask extends TaskModel{
               Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
         }
       }
-      if( studentId == Model.instance.userData.account ){
+      if( studentId == Model.instance.userData.account ){  //只儲存自己的課表
         Model.instance.addCourseTable( courseTable );
         await Model.instance.save( Model.courseTableJsonKey );
       }

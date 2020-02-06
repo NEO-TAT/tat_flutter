@@ -20,6 +20,7 @@ class CourseMainJson{
 
   CourseMainJson( {this.name , this.href , this.id , this.credits , this.hours , this.stage , this.note , this.time } ){
     name    = JsonInit.stringInit(name);
+    id      = JsonInit.stringInit(id);
     href    = JsonInit.stringInit(href);
     note    = JsonInit.stringInit(note);
     stage   = JsonInit.stringInit(stage);

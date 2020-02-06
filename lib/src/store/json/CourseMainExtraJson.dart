@@ -18,6 +18,10 @@ class CourseExtraInfoJson {  //點入課程使用
     course         = course         ?? CourseExtraJson();
   }
 
+  bool get isEmpty {
+    return classmate.isEmpty && courseSemester.isEmpty && course.isEmpty;
+  }
+
   @override
   String toString() {
     return sprintf(
@@ -69,6 +73,11 @@ class CourseMainInfoJson {
     }
     return name;
   }
+
+  bool get isEmpty {
+    return course.isEmpty && teacher.length == 0 && classroom.length == 0 && openClass.length == 0;
+  }
+
 
   @override
   String toString() {

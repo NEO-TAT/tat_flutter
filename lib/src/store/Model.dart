@@ -64,10 +64,10 @@ class Model {
     tempData = Map();
 
     //_clearSetting( userDataJsonKey );
-    //_clearSetting( courseTableJsonKey );
-    //_clearSetting( newAnnouncementJsonKey );
-    //_clearSetting( settingJsonKey );
-    DioConnector.instance.deleteCookies();
+    _clearSetting( courseTableJsonKey );
+    _clearSetting( newAnnouncementJsonKey );
+    _clearSetting( settingJsonKey );
+    //DioConnector.instance.deleteCookies();
 
     courseSemesterList = courseSemesterList ?? List();
 
@@ -127,6 +127,10 @@ class Model {
   }
 
   void addCourseTable(CourseTableJson addCourseTable) {
+    if( addCourseTable.studentId != userData.account ){  //只儲存自己的課表
+      Log.d( "is not the same studentId");
+      return;
+    }
     List<CourseTableJson> tableList = courseTableList;
     for( int i = 0 ; i < tableList.length ; i++ ){
       CourseTableJson table = tableList[i];
@@ -138,14 +142,14 @@ class Model {
     tableList.add(addCourseTable);
   }
 
-  CourseTableJson getCourseTable(SemesterJson courseSemester) {
+  CourseTableJson getCourseTable(String studentId , SemesterJson courseSemester) {
     List<CourseTableJson> tableList = courseTableList;
-    if(courseSemester == null ){
+    if(courseSemester == null || studentId.isEmpty ){
       return null;
     }
     for( int i = 0 ; i < tableList.length ; i++ ){
       CourseTableJson table = tableList[i];
-      if ( table.courseSemester == courseSemester ){
+      if ( table.courseSemester == courseSemester && table.studentId == studentId ){
         return table;
       }
     }

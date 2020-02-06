@@ -18,9 +18,11 @@ enum SectionNumber{
 @JsonSerializable()
 class CourseTableJson {
   SemesterJson courseSemester;  //課程學期資料
+  String studentId;
   Map < Day , Map< SectionNumber , CourseInfoJson > > courseInfoMap;
 
   CourseTableJson({ this.courseSemester ,this.courseInfoMap }){
+    studentId = JsonInit.stringInit(studentId);
     courseSemester = courseSemester ?? SemesterJson();
     if( courseInfoMap != null ){
       courseInfoMap = courseInfoMap;
@@ -44,10 +46,16 @@ class CourseTableJson {
       }
     }
     return sprintf(
+        "studentId :%s \n " +
         "---------courseSemester-------- \n%s \n" +
         "---------courseInfo--------     \n%s \n"
-        , [ courseSemester.toString() , courseInfoString ]);
+        , [ studentId , courseSemester.toString() , courseInfoString ]);
   }
+
+  bool get isEmpty{
+    return studentId.isEmpty && courseSemester.isEmpty;
+  }
+
 
   CourseInfoJson getCourseDetailByTime(Day day , SectionNumber sectionNumber){
     return courseInfoMap[day][sectionNumber];
@@ -112,6 +120,11 @@ class CourseInfoJson{
     main  = main  ?? CourseMainInfoJson();
     extra = extra ?? CourseExtraInfoJson();
   }
+
+  bool get isEmpty{
+    return main.isEmpty && extra.isEmpty;
+  }
+
 
   @override
   String toString() {

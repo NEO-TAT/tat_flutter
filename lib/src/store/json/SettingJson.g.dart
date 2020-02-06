@@ -30,17 +30,15 @@ Map<String, dynamic> _$SettingJsonToJson(SettingJson instance) =>
 
 CourseSettingJson _$CourseSettingJsonFromJson(Map<String, dynamic> json) {
   return CourseSettingJson(
-    studentId: json['studentId'] as String,
-    semester: json['semester'] == null
+    info: json['info'] == null
         ? null
-        : SemesterJson.fromJson(json['semester'] as Map<String, dynamic>),
+        : CourseTableJson.fromJson(json['info'] as Map<String, dynamic>),
   );
 }
 
 Map<String, dynamic> _$CourseSettingJsonToJson(CourseSettingJson instance) =>
     <String, dynamic>{
-      'studentId': instance.studentId,
-      'semester': instance.semester,
+      'info': instance.info,
     };
 
 AnnouncementSettingJson _$AnnouncementSettingJsonFromJson(
