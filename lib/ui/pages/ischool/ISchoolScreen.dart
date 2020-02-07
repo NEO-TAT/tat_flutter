@@ -42,10 +42,9 @@ class _ISchoolScreen extends State<ISchoolScreen>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        bool pop = !tabPageList
-            .getKey(_currentIndex)
-            .currentState
-            .canPop(); //子分頁是否可以返回
+        var currentState = tabPageList.getKey(_currentIndex).currentState;
+        bool pop = (currentState == null)?true:currentState.canPop();
+        Log.d(pop.toString());
         return pop;
       },
       child: MaterialApp(
@@ -60,6 +59,7 @@ class _ISchoolScreen extends State<ISchoolScreen>
     return DefaultTabController(
       length: tabPageList.length,
       child: Scaffold(
+
         appBar: AppBar(
           leading: BackButton(
             onPressed: () => Navigator.of(context).pop(),

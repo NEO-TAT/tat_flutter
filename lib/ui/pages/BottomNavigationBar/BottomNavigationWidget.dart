@@ -33,7 +33,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     super.initState();
     Model.instance.init().then((value) {
       bottomPageList.add(BottomPage(CourseTableScreen()      ));
-      bottomPageList.add(BottomPage(NewAnnouncementScreen()  ));
+      bottomPageList.add(BottomPage(NewAnnouncementScreen() , useNavigatorKey : true ));
       bottomPageList.add(BottomPage(OtherScreen()            ));
       bottomPageList.add(BottomPage(SettingScreen()          ));
       setState(() {
@@ -57,7 +57,8 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   Widget willPop(){
     return WillPopScope(
       onWillPop: () async{
-        bool pop =  !bottomPageList.getKey(_currentIndex).currentState.canPop();  //子分頁是否可以返回
+        var currentState = bottomPageList.getKey(_currentIndex).currentState;
+        bool pop = (currentState == null)?true:currentState.canPop();
         if( pop ){
           _closeAppTime++;
           Fluttertoast.showToast(

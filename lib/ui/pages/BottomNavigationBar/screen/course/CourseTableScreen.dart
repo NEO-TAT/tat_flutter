@@ -34,7 +34,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     UserDataJson userData = Model.instance.userData;
     if (userData.account.isEmpty || userData.password.isEmpty) {
       Future.delayed(Duration(seconds: 1)).then((_) {
-        Navigator.of(context, rootNavigator: true)
+        Navigator.of(context)
             .push(
           PageTransition(
             type: PageTransitionType.downToUp,

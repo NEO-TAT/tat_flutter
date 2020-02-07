@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -33,30 +34,48 @@ class _CourseFileScreen extends State<CourseFileScreen>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();
-  ReceivePort _port = ReceivePort();
+
   @override
   void initState() {
     super.initState();
+    BackButtonInterceptor.add(myInterceptor);
     Future.delayed(Duration.zero, () {
       _flutterDownloaderInit();
     });
   }
 
-  void _flutterDownloaderInit() async{
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent) {
+    if( selectList.inSelectMode ){
+      selectList.leaveSelectMode();
+      setState(() {
+
+      });
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  void _flutterDownloaderInit() async {
     FlutterDownloader.registerCallback(downloadCallback);
     _addTask();
   }
 
-  static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
-    if( status == DownloadTaskStatus.complete ){
-      Log.d( "id : $id is complete" );
-    }else if( status == DownloadTaskStatus.failed ){
-      Log.d( "id : $id is fail" );
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    if (status == DownloadTaskStatus.complete) {
+      Log.d("id : $id is complete");
+    } else if (status == DownloadTaskStatus.failed) {
+      Log.d("id : $id is fail");
       //FlutterDownloader.retry(taskId: id);
     }
   }
-
-
 
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
@@ -72,7 +91,15 @@ class _CourseFileScreen extends State<CourseFileScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
-    return _buildFileList();
+    return WillPopScope(
+      onWillPop: () async {
+        Log.d("aaaaa");
+        return true;
+      },
+      child: Scaffold(
+        body: _buildFileList(),
+      ),
+    );
   }
 
   Widget _buildFileList() {
@@ -90,7 +117,7 @@ class _CourseFileScreen extends State<CourseFileScreen>
                     if (selectList.inSelectMode) {
                       selectList.setItemReverse(index);
                       setState(() {});
-                    }else{
+                    } else {
                       _downloadOneFile(index);
                     }
                   },
@@ -177,8 +204,7 @@ class _CourseFileScreen extends State<CourseFileScreen>
     return widgetList;
   }
 
-
-  void _downloadOneFile(int index) async{
+  void _downloadOneFile(int index) async {
     Fluttertoast.showToast(
         msg: "下載準備開始",
         toastLength: Toast.LENGTH_SHORT,
@@ -188,21 +214,22 @@ class _CourseFileScreen extends State<CourseFileScreen>
         textColor: Colors.white,
         fontSize: 16.0);
     CourseFileJson courseFile = courseFileList[index];
-    String path = await FileStore.getDownloadDir( context , widget.courseInfo.main.course.name );
-    Log.d( path );
+    String path = await FileStore.getDownloadDir(
+        context, widget.courseInfo.main.course.name);
+    Log.d(path);
 
-    FileType fileType =  courseFile.fileType[0];
+    FileType fileType = courseFile.fileType[0];
 
     String url = fileType.fileUrl;
     String realFileName = await Connector.getFileName(url);
-    if( realFileName != null) {
-      String fileExtension =  realFileName.split(".").reversed.toList()[0] ;
-      realFileName  = courseFile.name + "." + fileExtension;
+    if (realFileName != null) {
+      String fileExtension = realFileName.split(".").reversed.toList()[0];
+      realFileName = courseFile.name + "." + fileExtension;
       Log.d(realFileName);
     }
 
     await FlutterDownloader.enqueue(
-      url:  url,
+      url: url,
       savedDir: path,
       fileName: realFileName,
       headers: Connector.getLoginHeaders(url),
@@ -212,7 +239,6 @@ class _CourseFileScreen extends State<CourseFileScreen>
       // click on notification to open downloaded file (for Android)
     );
   }
-
 
   @override
   bool get wantKeepAlive => true;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'FileViewer/FileViewerPage.dart';
@@ -12,11 +13,15 @@ class _OtherScreen extends State<OtherScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      Navigator.of(context).push(
+    Future.delayed(Duration.zero, () async{
+      String path = await FileStore.findLocalPath(context);
+      Navigator.push(context ,
         PageTransition(
           type: PageTransitionType.rightToLeft,
-          child: FileViewerPage(),
+          child: FileViewerPage(
+            title: "FileViewer",
+            path: path,
+          ),
         ),
       );
     });

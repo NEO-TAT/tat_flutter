@@ -7,7 +7,8 @@ class TabPage {
   Widget tab;
   Widget tabPage;
 
-  TabPage(String title, IconData icons, Widget initPage) {
+  TabPage(String title, IconData icons, Widget initPage,
+      {useNavigatorKey: false}) {
     navigatorKey = GlobalKey();
     tab = Column(
       children: <Widget>[
@@ -15,12 +16,13 @@ class TabPage {
         Text(title),
       ],
     );
-    tabPage = Navigator(
-        key: navigatorKey,
-        onGenerateRoute: (routeSettings) {
-          return MaterialPageRoute(
-              builder: (context) => initPage);
-        });
+    tabPage = (useNavigatorKey)
+        ? Navigator(
+            key: navigatorKey,
+            onGenerateRoute: (routeSettings) {
+              return MaterialPageRoute(builder: (context) => initPage);
+            })
+        : initPage;
   }
 }
 

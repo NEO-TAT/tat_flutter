@@ -5,9 +5,9 @@ class BottomPage {
   GlobalKey<NavigatorState> navigatorKey;
   Widget page;
 
-  BottomPage(Widget initPage) {
+  BottomPage(Widget initPage , { useNavigatorKey : false }) {
     navigatorKey = GlobalKey();
-    page = _buildNavigator(initPage);
+    page = useNavigatorKey ? _buildNavigator(initPage) : initPage ;
   }
 
   Widget _buildNavigator(Widget initPage) {
