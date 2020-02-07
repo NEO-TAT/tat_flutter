@@ -31,14 +31,13 @@ class CourseScoreJson {
     takeCredit = takeCredit ?? 0;
   }
 
-  String getTotalCreditString(){
+  String getTotalCreditString() {
     double total;
-    for(ScoreJson score in courseScoreList){
+    for (ScoreJson score in courseScoreList) {
       total += score.credit;
     }
     return totalCredit ?? total.toString();
   }
-
 
   @override
   String toString() {
@@ -65,11 +64,29 @@ class CourseScoreJson {
 }
 
 class RankJson {
+  RankItemJson course;
+  RankItemJson department;
+
+  RankJson({this.course, this.department}) {
+    course = course ?? RankItemJson();
+    department = department ?? RankItemJson();
+  }
+
+  @override
+  String toString() {
+    return sprintf(
+        "---------course--------     \n%s \n" +
+            "---------department--------          \n%s \n",
+        [course.toString(), department.toString()]);
+  }
+}
+
+class RankItemJson {
   double rank;
   double total;
   double percentage;
 
-  RankJson({this.percentage, this.rank, this.total}) {
+  RankItemJson({this.percentage, this.rank, this.total}) {
     percentage = percentage ?? 0;
     rank = rank ?? 0;
     total = total ?? 0;

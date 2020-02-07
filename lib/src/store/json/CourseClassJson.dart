@@ -206,7 +206,7 @@ class SemesterJson {
 
   @override
   bool operator ==(dynamic  o) {
-    return (o.semester == semester && o.year == year && o is SemesterJson );
+    return (int.parse(o.semester) == int.parse(semester) && int.parse(o.year) == int.parse(year) && o is SemesterJson );
   }
 
   int get hashCode => hash2(semester.hashCode, year.hashCode);
