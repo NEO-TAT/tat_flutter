@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/page/ScoreViewerPage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
 
@@ -16,23 +17,24 @@ enum onListViewPress { Score, FileViewer }
 class _OtherScreen extends State<OtherScreen> {
   final List<Map> listViewData = [
     {"icon": Icons.search, "title": "分數查詢", "onPress": onListViewPress.Score},
-    {"icon": Icons.file_download, "title": "下載檔案", "onPress": onListViewPress.FileViewer},
+    {
+      "icon": Icons.file_download,
+      "title": "下載檔案",
+      "onPress": onListViewPress.FileViewer
+    },
   ];
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {
-
-    });
+    Future.delayed(Duration.zero, () async {});
   }
 
   void _onListViewPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.FileViewer:
-        FileStore.findLocalPath(context).then( (filePath) {
-          Navigator.push(
-            context,
+        FileStore.findLocalPath(context).then((filePath) {
+          Navigator.of(context).push(
             PageTransition(
               type: PageTransitionType.leftToRight,
               child: FileViewerPage(
@@ -43,12 +45,18 @@ class _OtherScreen extends State<OtherScreen> {
           );
         });
         break;
+      case onListViewPress.Score:
+        Navigator.of(context).push(
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            child: ScoreViewerPage(),
+          ),
+        );
+        break;
       default:
         break;
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +68,12 @@ class _OtherScreen extends State<OtherScreen> {
         itemCount: listViewData.length,
         itemBuilder: (context, index) {
           Widget widget;
-          widget = _buildOther( listViewData[index] );
+          widget = _buildOther(listViewData[index]);
           return GestureDetector(
               behavior: HitTestBehavior.opaque, //讓透明部分有反應
               child: WidgetANimator(widget),
               onTap: () {
-                if (index != 0)
-                  _onListViewPress(listViewData[index]['onPress']);
+                _onListViewPress(listViewData[index]['onPress']);
               });
         },
         separatorBuilder: (context, index) {
@@ -80,12 +87,11 @@ class _OtherScreen extends State<OtherScreen> {
     );
   }
 
-
   Container _buildOther(Map data) {
     return Container(
       //color: Colors.yellow,
       padding:
-      EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -105,5 +111,4 @@ class _OtherScreen extends State<OtherScreen> {
       ),
     );
   }
-
 }

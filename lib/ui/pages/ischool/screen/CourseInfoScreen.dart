@@ -96,8 +96,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
   }
 
   Widget getAnimationList() {
-    return Scaffold(
-      body: AnimationLimiter(
+    return AnimationLimiter(
         child: ListView.builder(
           itemCount: listItem.length,
           itemBuilder: (BuildContext context, int index) {
@@ -119,8 +118,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
             );
           },
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildCourseInfo(String text) {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../../../src/store/Model.dart';
@@ -37,14 +37,7 @@ class _LoginPageState extends State<LoginPage> {
       userData.account = _accountControl.text.toString();
       userData.password = _passwordControl.text.toString();
       await Model.instance.save(Model.userDataJsonKey);
-      Fluttertoast.showToast(
-          msg: S.current.loginSave,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      MyToast.show( S.current.loginSave) ;
       Navigator.of(context).pop( true );
     }
   }

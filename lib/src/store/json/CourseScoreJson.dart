@@ -31,12 +31,28 @@ class CourseScoreJson {
     takeCredit = takeCredit ?? 0;
   }
 
+  bool get isRankEmpty {
+    return history.isEmpty && now.isEmpty;
+  }
+
+  String getAverageScoreString() {
+    return averageScore.toString();
+  }
+
+  String getPerformanceScoreString() {
+    return performanceScore.toString();
+  }
+
+  String getTakeCreditString() {
+    return takeCredit.toString();
+  }
+
   String getTotalCreditString() {
-    double total;
+    double total = 0;
     for (ScoreJson score in courseScoreList) {
       total += score.credit;
     }
-    return totalCredit ?? total.toString();
+    return (totalCredit != 0) ? totalCredit.toString() : total.toString();
   }
 
   @override
@@ -72,6 +88,10 @@ class RankJson {
     department = department ?? RankItemJson();
   }
 
+  bool get isEmpty {
+    return course.isEmpty && department.isEmpty;
+  }
+
   @override
   String toString() {
     return sprintf(
@@ -90,6 +110,10 @@ class RankItemJson {
     percentage = percentage ?? 0;
     rank = rank ?? 0;
     total = total ?? 0;
+  }
+
+  bool get isEmpty {
+    return rank == 0 && total == 0 && percentage == 0;
   }
 
   @override

@@ -9,9 +9,9 @@ import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementDetailTas
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementPageTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/page/AnnouncementDetailPage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -99,28 +99,14 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
         _loadAnnouncement();
       }else{
         needRefresh = true;
-        Fluttertoast.showToast(
-            msg: "再拉一次更新",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIos: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        MyToast.show( "再拉一次更新" );
         Future.delayed(Duration(seconds: 2) , (){
           needRefresh = false;
         });
       }
       _refreshController.loadComplete();
     } else {
-      Fluttertoast.showToast(
-          msg: "已經到底了",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      MyToast.show( "已經到底了" );
       _refreshController.loadComplete();
     }
   }

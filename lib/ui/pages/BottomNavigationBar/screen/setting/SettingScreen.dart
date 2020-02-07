@@ -7,8 +7,8 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:random_color/random_color.dart';
 
@@ -41,14 +41,7 @@ class _SettingScreen extends State<SettingScreen> {
   }
 
   void _onListViewPress(onListViewPress value) {
-    Fluttertoast.showToast(
-        msg: value.toString(),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    MyToast.show( value.toString() );
     switch (value) {
       case onListViewPress.Logout:
         Model.instance.logout();

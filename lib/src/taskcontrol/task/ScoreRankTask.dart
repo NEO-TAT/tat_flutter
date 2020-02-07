@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ScoreConnector.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
@@ -9,7 +10,7 @@ import 'TaskModel.dart';
 
 class ScoreRankTask extends TaskModel {
   static final String taskName = "ScoreRankTask" + CheckCookiesTask.checkNTUT ;
-
+  static String scoreRankTempKey = "ScoreRankTempKey";
   ScoreRankTask(BuildContext context) : super(context, taskName);
 
   @override
@@ -22,6 +23,7 @@ class ScoreRankTask extends TaskModel {
       _handleError();
       return TaskStatus.TaskFail;
     } else {
+      Model.instance.tempData[scoreRankTempKey] = courseList;
       return TaskStatus.TaskSuccess;
     }
   }

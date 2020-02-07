@@ -42,6 +42,7 @@ dependencies:
   giffy_dialog: ^1.6.1
   awesome_dialog: ^0.1.1
   flutter_slidable: ^0.4.7  #email使用抽屜
+  configurable_expansion_tile: ^1.0.0
   #direct_select_flutter: ^1.0.5
   #gzx_dropdown_menu: ^1.0.3
   #----------WebView----------#

@@ -16,8 +16,8 @@ import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolCourseFileTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CourseFileScreen extends StatefulWidget {
@@ -204,14 +204,7 @@ class _CourseFileScreen extends State<CourseFileScreen>
   }
 
   void _downloadOneFile(int index) async {
-    Fluttertoast.showToast(
-        msg: "下載準備開始",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    MyToast.show( "下載準備開始" );
     CourseFileJson courseFile = courseFileList[index];
     String path = await FileStore.getDownloadDir(
         context, widget.courseInfo.main.course.name);

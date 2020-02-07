@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/util/consts.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier{
@@ -62,11 +62,7 @@ class AppProvider extends ChangeNotifier{
 
 
   void showToast(value) {
-    Fluttertoast.showToast(
-      msg: value,
-      toastLength: Toast.LENGTH_SHORT,
-      timeInSecForIos: 1,
-    );
+    MyToast.show( value );
     notifyListeners();
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/NewAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/OtherScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/course/CourseTableScreen.dart';
@@ -12,8 +13,6 @@ import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/Interne
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/InternetScreen2.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/setting/SettingScreen.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
 import 'BottomPage.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
@@ -62,14 +61,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
         bool pop = (currentState == null)?true:currentState.canPop();
         if( pop ){
           _closeAppTime++;
-          Fluttertoast.showToast(
-              msg: "在按一次關閉",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIos: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          MyToast.show( "在按一次關閉" );
           Future.delayed(Duration(seconds: 2)).then( (_){
             _closeAppTime = 0;
           });

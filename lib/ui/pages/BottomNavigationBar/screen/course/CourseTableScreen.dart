@@ -9,10 +9,10 @@ import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart
 import 'package:flutter_app/src/taskcontrol/task/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolScreen.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../../../src/store/Model.dart';
 import '../../../../../src/store/json/UserDataJson.dart';
@@ -56,8 +56,6 @@ class _CourseTableScreen extends State<CourseTableScreen> {
 
   void _loadSetting() {
     CourseTableJson courseTable = Model.instance.setting.course.info;
-    TaskHandler.instance.addTask( ScoreRankTask(context));
-    TaskHandler.instance.startTaskQueue(context);
     if (courseTable.isEmpty) {
       _getCourseTable();
     } else {
@@ -318,14 +316,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
     if (course.id.isEmpty) {
-      Fluttertoast.showToast(
-          msg: course.name + "不支持",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      MyToast.show( course.name + "不支持" );
     } else {
       Navigator.of(context, rootNavigator: true)
           .push(
