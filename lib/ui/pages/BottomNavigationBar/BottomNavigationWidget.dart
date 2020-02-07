@@ -4,6 +4,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/NewAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/OtherScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/course/CourseTableScreen.dart';
@@ -141,7 +142,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
               color: _bottomNavigationColor,
             ),
             title: Text(
-              'PAGES',
+              'Other',
               style: TextStyle(color: _bottomNavigationColor),
             )),
         BottomNavigationBarItem(

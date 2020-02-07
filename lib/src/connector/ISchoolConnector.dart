@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/ConnectorParameter.dart';
+import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
@@ -10,8 +10,8 @@ import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:sprintf/sprintf.dart';
-import 'Connector.dart';
 import 'NTUTConnector.dart';
+import 'core/Connector.dart';
 
 enum ISchoolConnectorStatus {
   LoginSuccess,
@@ -73,7 +73,7 @@ class ISchoolConnector {
       //Log.d(res);
       _isLogin = true;
       return ISchoolConnectorStatus.LoginSuccess;
-    } on Exception catch (e) {
+    } catch (e) {
       Log.e(e.toString());
       return ISchoolConnectorStatus.LoginFail;
     }
@@ -99,7 +99,7 @@ class ISchoolConnector {
       tagNode = parse(result);
       node = tagNode.getElementById("im_paging");
       return node.getElementsByTagName("a").length + 1;
-    } on Exception catch (e) {
+    } catch (e) {
       Log.e(e.toString());
       return null;
     }

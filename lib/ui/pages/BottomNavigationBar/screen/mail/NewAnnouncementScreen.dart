@@ -25,6 +25,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   List<NewAnnouncementJson> items;
+  bool needRefresh = false;
 
   @override
   void initState() {
@@ -91,10 +92,25 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
     Log.d(items.length.toString());
     int maxPage = Model.instance.setting.announcement.maxPage;
     if (page <= maxPage) {
-      Model.instance.save(Model.settingJsonKey);
-      TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, page));
-      await TaskHandler.instance.startTaskQueue(context);
-      _loadAnnouncement();
+      if( needRefresh ){
+        Model.instance.save(Model.settingJsonKey);
+        TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, page));
+        await TaskHandler.instance.startTaskQueue(context);
+        _loadAnnouncement();
+      }else{
+        needRefresh = true;
+        Fluttertoast.showToast(
+            msg: "再拉一次更新",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        Future.delayed(Duration(seconds: 2) , (){
+          needRefresh = false;
+        });
+      }
       _refreshController.loadComplete();
     } else {
       Fluttertoast.showToast(

@@ -9,6 +9,7 @@ import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseExtraInfoTask.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sprintf/sprintf.dart';
 
 class CourseInfoScreen extends StatefulWidget {
@@ -24,12 +25,14 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
     with AutomaticKeepAliveClientMixin {
   CourseMainInfoJson courseMainInfo;
   CourseExtraInfoJson courseExtraInfo;
+  bool isLoading = true;
   final List<Widget> courseData = List();
   final List<Widget> listItem = List();
 
   @override
   void initState() {
     super.initState();
+    isLoading = true;
     Future.delayed(Duration.zero, () {
       _addTask();
     });
@@ -69,6 +72,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
       listItem
           .add(_buildClassmateInfo(i, widget.courseInfo.extra.classmate[i]));
     }
+    isLoading = false;
     setState(() {});
   }
 
@@ -79,21 +83,42 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
       padding: EdgeInsets.only(top: 20),
       child: Column(
         children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              itemCount: listItem.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                  child: Container(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: listItem[index]),
-                  onTap: () {},
-                );
-              },
-            ),
-          ),
+          (isLoading)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Expanded(
+                  child: getAnimationList(),
+                ),
         ],
+      ),
+    );
+  }
+
+  Widget getAnimationList() {
+    return Scaffold(
+      body: AnimationLimiter(
+        child: ListView.builder(
+          itemCount: listItem.length,
+          itemBuilder: (BuildContext context, int index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque, //讓透明部分有反應
+                    child: Container(
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        child: listItem[index]),
+                    onTap: () {},
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -157,7 +182,8 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
             child: RaisedButton(
               child: Text("查詢"),
               onPressed: () {
-                Navigator.of(context , rootNavigator: true).pop( classmate.studentId );
+                Navigator.of(context, rootNavigator: true)
+                    .pop(classmate.studentId);
               },
             ),
           ),

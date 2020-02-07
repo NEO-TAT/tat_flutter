@@ -7,6 +7,7 @@ import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseTableTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseSemesterTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolScreen.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
@@ -24,6 +25,7 @@ class CourseTableScreen extends StatefulWidget {
 class _CourseTableScreen extends State<CourseTableScreen> {
   final TextEditingController _studentIdControl = TextEditingController();
   final FocusNode _studentFocus = new FocusNode();
+  bool isLoading = true;
   CourseTableJson courseTableData;
   int columnCount = 14;
   int rowCount = 7;
@@ -54,44 +56,48 @@ class _CourseTableScreen extends State<CourseTableScreen> {
 
   void _loadSetting() {
     CourseTableJson courseTable = Model.instance.setting.course.info;
-    if ( courseTable.isEmpty ) {
+    TaskHandler.instance.addTask( ScoreRankTask(context));
+    TaskHandler.instance.startTaskQueue(context);
+    if (courseTable.isEmpty) {
       _getCourseTable();
     } else {
-      _showCourseTable( courseTable );
+      _showCourseTable(courseTable);
     }
   }
 
-  Future<void> _getSemesterList(String studentId) async{
+  Future<void> _getSemesterList(String studentId) async {
     TaskHandler.instance.addTask(CourseSemesterTask(context, studentId));
     await TaskHandler.instance.startTaskQueue(context);
   }
 
-  void _getCourseTable( {SemesterJson semesterSetting, String studentId} ) async{
+  void _getCourseTable({SemesterJson semesterSetting, String studentId}) async {
+    Log.d("_getCourseTable");
+    await Future.delayed(Duration(microseconds: 100));  //等待頁面刷新
     UserDataJson userData = Model.instance.userData;
     studentId = studentId ?? userData.account;
-    if ( courseTableData?.studentId != studentId){
-      Model.instance.courseSemesterList = List();  //需重設因為更換了studentId
+    if (courseTableData?.studentId != studentId) {
+      Model.instance.courseSemesterList = List(); //需重設因為更換了studentId
     }
     SemesterJson semesterJson;
-    if( semesterSetting == null ){
+    if (semesterSetting == null) {
       await _getSemesterList(studentId);
       semesterJson = Model.instance.courseSemesterList[0];
-    }else{
+    } else {
       semesterJson = semesterSetting;
     }
 
-
     CourseTableJson courseTable;
-    courseTable = Model.instance.getCourseTable(studentId, semesterSetting);  //去取找是否已經暫存
-    if( courseTable == null ){
+    courseTable =
+        Model.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
+    if (courseTable == null) {
       TaskHandler.instance
-          .addTask(CourseTableTask(context, studentId , semesterJson));
+          .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
       courseTable = Model.instance.tempData[CourseTableTask.courseTableTempKey];
     }
-    Model.instance.setting.course.info = courseTable;  //儲存課表
-    Model.instance.save( Model.settingJsonKey );
-    _showCourseTable( courseTable );
+    Model.instance.setting.course.info = courseTable; //儲存課表
+    Model.instance.save(Model.settingJsonKey);
+    _showCourseTable(courseTable);
   }
 
   Widget _getSemesterItem(SemesterJson semester) {
@@ -99,14 +105,16 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     return FlatButton(
       child: Text(semesterString),
       onPressed: () {
-        Log.d(semester.toString());
-        _getCourseTable( semesterSetting:  semester , studentId: _studentIdControl.text ); //取得課表
         Navigator.of(context).pop();
+        _getCourseTable(
+            semesterSetting: semester,
+            studentId: _studentIdControl.text); //取得課表
       },
     );
   }
 
-  void _showSemesterList() async {  //顯示選擇學期
+  void _showSemesterList() async {
+    //顯示選擇學期
     if (Model.instance.courseSemesterList.length == 0) {
       TaskHandler.instance
           .addTask(CourseSemesterTask(context, _studentIdControl.text));
@@ -135,8 +143,10 @@ class _CourseTableScreen extends State<CourseTableScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SemesterJson semesterSetting = courseTableData?.courseSemester ?? SemesterJson();
-    String semesterString = semesterSetting.year + "-" + semesterSetting.semester;
+    SemesterJson semesterSetting =
+        courseTableData?.courseSemester ?? SemesterJson();
+    String semesterString =
+        semesterSetting.year + "-" + semesterSetting.semester;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -149,8 +159,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
-                    onEditingComplete: (){
-                      _getCourseTable( studentId: _studentIdControl.text);
+                    onEditingComplete: () {
+                      _getCourseTable(studentId: _studentIdControl.text);
                       _studentFocus.unfocus();
                     },
                     controller: _studentIdControl,
@@ -180,38 +190,42 @@ class _CourseTableScreen extends State<CourseTableScreen> {
             ),
           ),
           Expanded(
-            child: gradView(context),
+            child: gradView(),
           )
         ],
       ),
     );
   }
 
-  Widget gradView(BuildContext context) {
+  Widget gradView() {
     return Container(
       alignment: Alignment.center,
-      child: AnimationLimiter(
-        child: GridView.count(
-          //shrinkWrap: true,
-          childAspectRatio: 1.2, //控制長寬比
-          crossAxisCount: columnCount,
-          children: List.generate(
-            rowCount * columnCount,
-            (int index) {
-              return AnimationConfiguration.staggeredGrid(
-                position: index,
-                duration: const Duration(milliseconds: 375),
-                columnCount: columnCount,
-                child: ScaleAnimation(
-                  child: FadeInAnimation(
-                    child: gradViewItem(context, index),
-                  ),
+      child: (isLoading)
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : AnimationLimiter(
+              child: GridView.count(
+                //shrinkWrap: true,
+                childAspectRatio: 1.2, //控制長寬比
+                crossAxisCount: columnCount,
+                children: List.generate(
+                  rowCount * columnCount,
+                  (int index) {
+                    return AnimationConfiguration.staggeredGrid(
+                      position: index,
+                      duration: const Duration(milliseconds: 375),
+                      columnCount: columnCount,
+                      child: ScaleAnimation(
+                        child: FadeInAnimation(
+                          child: gradViewItem(context, index),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 
@@ -313,25 +327,34 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           textColor: Colors.white,
           fontSize: 16.0);
     } else {
-      Navigator.of(context, rootNavigator: true).push(
+      Navigator.of(context, rootNavigator: true)
+          .push(
         PageTransition(
           type: PageTransitionType.leftToRight,
           child: ISchoolScreen(courseInfo),
         ),
-      ).then( (value) {
-        if( value != null ){
-          SemesterJson semesterSetting = Model.instance.setting.course.info.courseSemester;
-          _getCourseTable( semesterSetting:semesterSetting , studentId: value );
+      )
+          .then((value) {
+        if (value != null) {
+          SemesterJson semesterSetting =
+              Model.instance.setting.course.info.courseSemester;
+          _getCourseTable(semesterSetting: semesterSetting, studentId: value);
         }
       });
     }
   }
 
-  void _showCourseTable( CourseTableJson courseTable) {
+  void _showCourseTable(CourseTableJson courseTable) async {
     courseTableData = courseTable;
     columnCount = 5;
     rowCount = SectionNumber.values.length - 1;
     _studentIdControl.text = courseTable.studentId;
-    setState(() {});
+    setState(() {
+      isLoading = true;
+    });
+    await Future.delayed(Duration(microseconds: 500));
+    setState(() {
+      isLoading = false;
+    });
   }
 }

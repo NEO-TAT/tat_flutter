@@ -15,6 +15,7 @@ class CheckCookiesTask extends TaskModel{
   static String checkCourse = "__Course__";
   static String checkISchool = "__ISchool__";
   static String checkNTUT = "__NTUT__";
+  static String checkScore = "__Score__";
   CheckCookiesTask(BuildContext context , {this.checkSystem} ) : super(context , taskName){
     checkSystem  = checkSystem ?? checkCourse + checkISchool + checkNTUT;
   }

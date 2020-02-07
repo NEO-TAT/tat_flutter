@@ -10,8 +10,8 @@ import 'package:html/parser.dart';
 import '../store/Model.dart';
 import '../store/json/UserDataJson.dart';
 import '../store/json/UserDataJson.dart';
-import 'Connector.dart';
-import 'ConnectorParameter.dart';
+import 'core/Connector.dart';
+import 'core/ConnectorParameter.dart';
 
 enum NTUTConnectorStatus {
   LoginSuccess ,

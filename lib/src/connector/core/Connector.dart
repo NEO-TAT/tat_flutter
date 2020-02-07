@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/DioConnector.dart';
 import 'package:sprintf/sprintf.dart';
 
 import 'ConnectorParameter.dart';
+import 'DioConnector.dart';
 
 class Connector {
 

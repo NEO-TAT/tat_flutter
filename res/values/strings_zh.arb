@@ -43,5 +43,7 @@
   "getISchoolCourseAnnouncement": "取得課程公告...",
   "getISchoolCourseAnnouncementError": "取得課程公告錯誤",
   "getISchoolCourseFile" : "取得課程檔案",
-  "getISchoolCourseFileError" : "取得課程檔案錯誤"
+  "getISchoolCourseFileError" : "取得課程檔案錯誤",
+  "getScoreRank" : "取得成績中...",
+  "getScoreRankError" : "取得成績錯誤"
 }

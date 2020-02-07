@@ -10,8 +10,8 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
-import 'Connector.dart';
-import 'ConnectorParameter.dart';
+import 'core/Connector.dart';
+import 'core/ConnectorParameter.dart';
 
 enum CourseConnectorStatus {
   LoginSuccess,
@@ -61,7 +61,7 @@ class CourseConnector {
       Response response = await Connector.getDataByPostResponse( parameter );
       _isLogin = true;
       return CourseConnectorStatus.LoginSuccess;
-    } on Exception catch (e) {
+    } catch (e) {
       Log.e(e.toString());
       return CourseConnectorStatus.LoginFail;
     }
@@ -119,7 +119,7 @@ class CourseConnector {
         courseExtraInfo.classmate.add(classmate);
       }
       return courseExtraInfo;
-    }on Exception catch(e){
+    } catch(e){
       //throw e;
       Log.e(e.toString());
       return null;
