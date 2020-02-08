@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -9,7 +10,10 @@ import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseExtraInfoTask.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewPluginScreen.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 
 class CourseInfoScreen extends StatefulWidget {
@@ -28,14 +32,29 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
   bool isLoading = true;
   final List<Widget> courseData = List();
   final List<Widget> listItem = List();
+  bool canPop = true;
 
   @override
   void initState() {
     super.initState();
     isLoading = true;
+    BackButtonInterceptor.add(myInterceptor);
     Future.delayed(Duration.zero, () {
       _addTask();
     });
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent) {
+    if (!canPop) {
+      Navigator.of(context).pop();
+    }
+    return !canPop;
   }
 
   void _addTask() async {
@@ -53,12 +72,20 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         sprintf("學分:%s    ", [courseMainInfo.course.credits])));
     courseData.add(_buildCourseInfo(
         sprintf("類別:%s    ", [courseExtraInfo.course.category])));
-    courseData.add(_buildCourseInfo(
-        sprintf("授課老師:%s", [courseMainInfo.getTeacherName()])));
+    courseData.add(_buildCourseInfoWithButton(
+        sprintf("授課老師:%s", [courseMainInfo.getTeacherName()]),
+        "教學大綱",
+        CourseMainJson.getRealHref(courseMainInfo.course.scheduleHref)));
     courseData.add(_buildCourseInfo(
         sprintf("開課班級:%s", [courseMainInfo.getOpenClassName()])));
-    courseData.add(_buildCourseInfo(
-        sprintf("教室:%s    ", [courseMainInfo.getClassroomName()])));
+    //courseData.add();
+
+    courseData.add(_buildMultiButtonInfo(
+        "教室: ",
+        "教室使用",
+        courseMainInfo.getClassroomName().split(" "),
+        courseMainInfo.getClassroomHref().split(" ")));
+
     courseData.add(_buildCourseInfo(
         sprintf("修課人數:%s", [courseExtraInfo.course.selectNumber])));
     courseData.add(_buildCourseInfo(
@@ -85,11 +112,11 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         children: <Widget>[
           (isLoading)
               ? Center(
-                  child: CircularProgressIndicator(),
-                )
+            child: CircularProgressIndicator(),
+          )
               : Expanded(
-                  child: getAnimationList(),
-                ),
+            child: getAnimationList(),
+          ),
         ],
       ),
     );
@@ -97,31 +124,32 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
 
   Widget getAnimationList() {
     return AnimationLimiter(
-        child: ListView.builder(
-          itemCount: listItem.length,
-          itemBuilder: (BuildContext context, int index) {
-            return AnimationConfiguration.staggeredList(
-              position: index,
-              duration: const Duration(milliseconds: 375),
-              child: SlideAnimation(
-                verticalOffset: 50.0,
-                child: FadeInAnimation(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                    child: Container(
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: listItem[index]),
-                    onTap: () {},
-                  ),
+      child: ListView.builder(
+        itemCount: listItem.length,
+        itemBuilder: (BuildContext context, int index) {
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            child: SlideAnimation(
+              verticalOffset: 50.0,
+              child: FadeInAnimation(
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque, //讓透明部分有反應
+                  child: Container(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: listItem[index]),
+                  onTap: () {},
                 ),
               ),
-            );
-          },
-        ),
-      );
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget _buildCourseInfo(String text) {
+    TextStyle textStyle = TextStyle(fontSize: 18);
     return Container(
       padding: EdgeInsets.only(bottom: 5),
       child: Row(
@@ -130,7 +158,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
           Expanded(
             child: Text(
               text,
-              style: TextStyle(fontSize: 18),
+              style: textStyle,
             ),
           ),
         ],
@@ -138,14 +166,103 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
     );
   }
 
+
+  void _launchWebView(String title, String url) {
+    canPop = false;
+    Navigator
+        .of(context)
+        .push(
+      PageTransition(
+        type: PageTransitionType.downToUp,
+        child: WebViewPluginScreen(title, url),
+      ),
+    )
+        .then((_) {
+      canPop = true;
+    });
+    }
+
+
+  Widget _buildCourseInfoWithButton(String text, String buttonText,
+      String url) {
+    TextStyle textStyle = TextStyle(fontSize: 18);
+    return Container(
+      padding: EdgeInsets.only(bottom: 5),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.details),
+          Expanded(
+            child: Text(
+              text,
+              style: textStyle,
+            ),
+          ),
+          (url.isNotEmpty)
+              ? RaisedButton(
+            child: Text(
+              buttonText,
+            ),
+            onPressed: () {
+              _launchWebView(buttonText, url);
+            },
+          )
+              : Container()
+        ],
+      ),
+    );
+  }
+
   Widget _buildInfoTitle(String title) {
+    TextStyle textStyle = TextStyle(fontSize: 24);
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 5),
       child: Row(
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(fontSize: 24),
+            style: textStyle,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMultiButtonInfo(String title, String buttonText,
+      List<String> textList, List<String> urlList) {
+    TextStyle textStyle = TextStyle(fontSize: 18);
+    List<Widget> classroomItemList = List();
+    for (int i = 0 ; i < textList.length ; i++) {
+      String text = textList[i];
+      classroomItemList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            text,
+            style: textStyle,
+          ),
+          RaisedButton(
+            onPressed: () {
+              _launchWebView(buttonText, urlList[i]);
+            },
+            child: Text(buttonText),
+          )
+        ],
+      ));
+    }
+    Widget classroomWidget = Column(
+      children: classroomItemList,
+    );
+    return Container(
+      padding: EdgeInsets.only(bottom: 5),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.details),
+          Text(
+            title,
+            style: textStyle,
+          ),
+          Expanded(
+            child: classroomWidget,
           ),
         ],
       ),
@@ -161,9 +278,9 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         children: <Widget>[
           Expanded(
               child: Text(
-            classmate.className,
-            textAlign: TextAlign.center,
-          )),
+                classmate.className,
+                textAlign: TextAlign.center,
+              )),
           Expanded(
             child: Text(
               classmate.studentId,

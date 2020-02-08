@@ -229,6 +229,10 @@ class CourseConnector {
         courseMain.credits = nodesOne[3].text.replaceAll("\n", "");  //學分
         courseMain.hours   = nodesOne[4].text.replaceAll("\n", "");  //時數
         courseMain.note    = nodesOne[20].text.replaceAll("\n", "");  //備註
+        if(nodesOne[19].getElementsByTagName("a").length > 0  ){
+          courseMain.scheduleHref    = nodesOne[19].getElementsByTagName("a")[0].attributes["href"];  //教學進度大綱
+        }
+
         //時間
         for (int j = 0 ; j < 7 ; j ++) {
           Day day = Day.values[j];

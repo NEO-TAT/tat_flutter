@@ -44,7 +44,6 @@ class _ISchoolScreen extends State<ISchoolScreen>
       onWillPop: () async {
         var currentState = tabPageList.getKey(_currentIndex).currentState;
         bool pop = (currentState == null)?true:currentState.canPop();
-        Log.d(pop.toString());
         return pop;
       },
       child: MaterialApp(

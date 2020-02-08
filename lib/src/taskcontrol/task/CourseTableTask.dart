@@ -27,7 +27,6 @@ class CourseTableTask extends TaskModel{
       CourseTableJson courseTable = CourseTableJson();
       courseTable.courseSemester = semester;
       courseTable.studentId = studentId;
-
       //依照時間創建課表
       for( CourseMainInfoJson courseMainInfo in courseMainInfoList ) {
         CourseInfoJson courseInfo = CourseInfoJson();

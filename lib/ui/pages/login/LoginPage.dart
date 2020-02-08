@@ -37,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
       userData.account = _accountControl.text.toString();
       userData.password = _passwordControl.text.toString();
       await Model.instance.save(Model.userDataJsonKey);
-      MyToast.show( S.current.loginSave) ;
-      Navigator.of(context).pop( true );
+      MyToast.show(S.current.loginSave);
+      Navigator.of(context).pop(true);
     }
   }
 
@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        //resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
         body: ListView(
           children: <Widget>[
@@ -103,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40,
                         ),
                         Icon(
-                          Icons.fastfood,
+                          Icons.account_circle,
                           color: Colors.white,
                           size: 60,
                         ),
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 20,
                         ),
                         Text(
-                          "Taste Me",
+                          "Account",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,

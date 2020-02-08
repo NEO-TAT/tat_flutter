@@ -71,7 +71,17 @@ class CourseMainInfoJson {
     for(ClassroomJson value in classroom){
       name += value.name + ' ';
     }
-    return name;
+    return name.substring(0,name.length-1);
+  }
+
+  String getClassroomHref(){
+    String name = "";
+    for(ClassroomJson value in classroom){
+      if(value.href.isNotEmpty ){
+        name += ClassroomJson.getRealHref(value.href) + ' ';
+      }
+    }
+    return name.substring(0,name.length-1);
   }
 
   bool get isEmpty {

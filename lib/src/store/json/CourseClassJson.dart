@@ -16,9 +16,17 @@ class CourseMainJson{
   String stage ;     //階段
   String credits;    //學分
   String hours;      //時數
+  String scheduleHref; // 教學進度大綱
   Map<Day,String> time; //時間
 
-  CourseMainJson( {this.name , this.href , this.id , this.credits , this.hours , this.stage , this.note , this.time } ){
+  static String getRealHref(String url){
+    if( url.isEmpty ){
+      return "";
+    }
+    return "https://aps.ntut.edu.tw/course/tw/" + url;
+  }
+
+  CourseMainJson( {this.name , this.href , this.id , this.credits , this.hours , this.stage , this.note , this.time , this.scheduleHref} ){
     name    = JsonInit.stringInit(name);
     id      = JsonInit.stringInit(id);
     href    = JsonInit.stringInit(href);
@@ -26,11 +34,12 @@ class CourseMainJson{
     stage   = JsonInit.stringInit(stage);
     credits = JsonInit.stringInit(credits);
     hours   = JsonInit.stringInit(hours);
+    scheduleHref = JsonInit.stringInit(scheduleHref);
     time    = time ?? Map();
   }
 
   bool get isEmpty {
-    return name.isEmpty && href.isEmpty && note.isEmpty && stage.isEmpty && credits.isEmpty && hours.isEmpty;
+    return name.isEmpty && href.isEmpty && note.isEmpty && stage.isEmpty && credits.isEmpty && hours.isEmpty && scheduleHref.isEmpty;
   }
 
   @override
@@ -42,8 +51,9 @@ class CourseMainJson{
         "stage   :%s \n" +
         "credits :%s \n" +
         "hours   :%s \n" +
+        "scheduleHref   :%s \n" +
         "note    :%s \n" ,
-        [name , id , href , stage , credits , hours , note]);
+        [name , id , href , stage , credits , hours , scheduleHref ,  note]);
   }
 
   factory CourseMainJson.fromJson(Map<String, dynamic> json) => _$CourseMainJsonFromJson(json);
@@ -133,6 +143,13 @@ class ClassroomJson{
 
   bool get isEmpty {
     return name.isEmpty && href.isEmpty;
+  }
+
+  static String getRealHref(String url){
+    if( url.isEmpty ){
+      return "";
+    }
+    return "https://aps.ntut.edu.tw/course/tw/" + url;
   }
 
   @override

@@ -68,9 +68,9 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     await TaskHandler.instance.startTaskQueue(context);
   }
 
-  void _getCourseTable({SemesterJson semesterSetting, String studentId}) async {
+  void _getCourseTable({SemesterJson semesterSetting, String studentId , bool refresh : false }) async {
     Log.d("_getCourseTable");
-    await Future.delayed(Duration(microseconds: 100));  //等待頁面刷新
+    await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.userData;
     studentId = studentId ?? userData.account;
     if (courseTableData?.studentId != studentId) {
@@ -85,8 +85,10 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     }
 
     CourseTableJson courseTable;
-    courseTable =
-        Model.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
+    if(!refresh){
+      courseTable =
+          Model.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
+    }
     if (courseTable == null) {
       TaskHandler.instance
           .addTask(CourseTableTask(context, studentId, semesterJson));
@@ -139,6 +141,16 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     );
   }
 
+  _onPopupMenuSelect(int value) {
+    switch (value) {
+      case 1:
+        _getCourseTable( semesterSetting : courseTableData?.courseSemester , studentId: _studentIdControl.text , refresh: true);
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SemesterJson semesterSetting =
@@ -149,6 +161,22 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Home'),
+        actions: [
+          PopupMenuButton<int>(
+            // overflow menu
+            onSelected: (value) {
+              _onPopupMenuSelect(value);
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: 1,
+                  child: Text("重新整理"),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -189,7 +217,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           ),
           Expanded(
             child: gradView(),
-          )
+          ),
         ],
       ),
     );
@@ -274,7 +302,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     );
   }
 
-  //顯示課程對話框
+//顯示課程對話框
   void showCourseDetailDialog(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
@@ -316,7 +344,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
     if (course.id.isEmpty) {
-      MyToast.show( course.name + "不支持" );
+      MyToast.show(course.name + "不支持");
     } else {
       Navigator.of(context, rootNavigator: true)
           .push(

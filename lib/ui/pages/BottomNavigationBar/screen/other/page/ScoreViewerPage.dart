@@ -1,5 +1,6 @@
 import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
@@ -16,12 +17,26 @@ class ScoreViewerPage extends StatefulWidget {
   _ScoreViewerPage createState() => _ScoreViewerPage();
 }
 
+class ExpansionTile {
+  double expansionHeight; //隱藏時高度
+  double height; //關閉時高度
+  int index;
+  bool isExpansion;
+  GlobalKey<AppExpansionTileState> key;
+
+  ExpansionTile() {
+    key = GlobalKey();
+    isExpansion = false;
+  }
+}
+
 class _ScoreViewerPage extends State<ScoreViewerPage> {
   bool isLoading = true;
   List<CourseScoreJson> courseScoreList;
   ScrollController _scrollController = ScrollController();
-  final List<GlobalKey<AppExpansionTileState>> _expansionTileList = List();
-  bool isExpansion = false;
+  List<ExpansionTile> _expansionControlList = List();
+  double deviceHeight;
+
   @override
   void initState() {
     super.initState();
@@ -33,8 +48,10 @@ class _ScoreViewerPage extends State<ScoreViewerPage> {
     await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = Model.instance.tempData[ScoreRankTask.scoreRankTempKey];
     for (int i = 0; i <= courseScoreList.length; i++) {
-      _expansionTileList.add((GlobalKey()));
+      //增加展開控制器
+      _expansionControlList.add((ExpansionTile()));
     }
+    deviceHeight = MediaQuery.of(context).size.height;
     setState(() {
       isLoading = false;
     });
@@ -44,6 +61,14 @@ class _ScoreViewerPage extends State<ScoreViewerPage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _buildComplete(double height, int index) async {
+    if (isLoading) return;
+    await Future.delayed(Duration(milliseconds: 400));
+    double office = height * index + 10;
+    _scrollController.animateTo(office,
+        duration: Duration(seconds: 1), curve: Curves.ease);
   }
 
   @override
@@ -70,20 +95,13 @@ class _ScoreViewerPage extends State<ScoreViewerPage> {
   }
 
   Widget getAnimationList() {
-
     int length = courseScoreList.length;
-    length += 1;
     return AnimationLimiter(
       child: ListView.builder(
         controller: _scrollController,
         shrinkWrap: true,
         itemCount: length,
         itemBuilder: (BuildContext context, int index) {
-          if( index ==  courseScoreList.length ){
-            return Container(
-              height: 300,
-            );
-          }
           return AnimationConfiguration.staggeredList(
             position: index,
             duration: const Duration(milliseconds: 375),
@@ -122,7 +140,7 @@ class _ScoreViewerPage extends State<ScoreViewerPage> {
     widgetList.add(_buildRank(courseScore));
 
     Widget widget = Container(
-      padding: EdgeInsets.only(top: 10,bottom: 10),
+      padding: EdgeInsets.only(top: 10, bottom: 10),
       child: new Material(
         //INK可以實現裝飾容器
         child: new Ink(
@@ -154,26 +172,22 @@ class _ScoreViewerPage extends State<ScoreViewerPage> {
     return Container(
       key: _myKey,
       child: AppExpansionTile(
-        key: _expansionTileList[index],
+        key: _expansionControlList[index].key,
         title: widget,
         children: widgetList,
         onExpansionChanged: (value) {
-          RenderObject renderObject = _myKey.currentContext.findRenderObject();  //找尋物件大小
-          double height = renderObject.semanticBounds.size.height;
+          _expansionControlList[index].isExpansion = value;
           if (value) {
-            isExpansion = true;
+            RenderObject renderObject =
+                _myKey.currentContext.findRenderObject(); //找尋物件大小
+            double height = renderObject.semanticBounds.size.height;
             for (int i = 0; i < courseScoreList.length; i++) {
               // 關閉其他視窗
               if (i != index) {
-                _expansionTileList[i].currentState.collapse();
+                _expansionControlList[i].key.currentState.collapse();
               }
             }
-            setState(() {
-
-            });
-            _scrollController.animateTo(height * index + 10 , duration: Duration(seconds: 1 ), curve: Curves.ease );
-          }else{
-            isExpansion = false;
+            _buildComplete(height, index);
           }
         },
       ),
