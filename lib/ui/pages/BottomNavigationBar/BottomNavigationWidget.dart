@@ -59,7 +59,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       onWillPop: () async{
         var currentState = bottomPageList.getKey(_currentIndex).currentState;
         bool pop = (currentState == null)?true:!currentState.canPop();
-        Log.d(pop.toString());
+        //Log.d(pop.toString());
         if( pop ){
           _closeAppTime++;
           MyToast.show( "在按一次關閉" );

@@ -18,6 +18,7 @@ CourseMainJson _$CourseMainJsonFromJson(Map<String, dynamic> json) {
     time: (json['time'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(_$enumDecodeNullable(_$DayEnumMap, k), e as String),
     ),
+    scheduleHref: json['scheduleHref'] as String,
   );
 }
 
@@ -30,6 +31,7 @@ Map<String, dynamic> _$CourseMainJsonToJson(CourseMainJson instance) =>
       'stage': instance.stage,
       'credits': instance.credits,
       'hours': instance.hours,
+      'scheduleHref': instance.scheduleHref,
       'time': instance.time?.map((k, e) => MapEntry(_$DayEnumMap[k], e)),
     };
 

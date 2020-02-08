@@ -78,8 +78,6 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         CourseMainJson.getRealHref(courseMainInfo.course.scheduleHref)));
     courseData.add(_buildCourseInfo(
         sprintf("開課班級:%s", [courseMainInfo.getOpenClassName()])));
-    //courseData.add();
-
     courseData.add(_buildMultiButtonInfo(
         "教室: ",
         "教室使用",
