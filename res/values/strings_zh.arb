@@ -45,5 +45,7 @@
   "getISchoolCourseFile" : "取得課程檔案",
   "getISchoolCourseFileError" : "取得課程檔案錯誤",
   "getScoreRank" : "取得成績中...",
-  "getScoreRankError" : "取得成績錯誤"
+  "getScoreRankError" : "取得成績錯誤",
+  "deleteMessage" : "刪除訊息中...",
+  "deleteMessageError" : "刪除錯誤"
 }

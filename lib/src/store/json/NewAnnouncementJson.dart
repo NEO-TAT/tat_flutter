@@ -13,10 +13,10 @@ class NewAnnouncementJsonList {
     newAnnouncementList = newAnnouncementList ?? List();
   }
 
-  void addNewAnnouncement( NewAnnouncementJson newAnnouncement ){
+  bool addNewAnnouncement( NewAnnouncementJson newAnnouncement ){
     bool pass = true;
     for( NewAnnouncementJson  value in newAnnouncementList ){
-      if(  value.courseId == newAnnouncement.courseId && newAnnouncement.time ==  value.time ){
+      if(  value.messageId == newAnnouncement.messageId ){  // 利用messageId辨識是否相同
         value.isRead = newAnnouncement.isRead;
         pass = false;
         break;
@@ -27,6 +27,7 @@ class NewAnnouncementJsonList {
       newAnnouncementList.add(newAnnouncement);
       newAnnouncementList.sort( (a , b) => b.time.compareTo( a.time ) );  //排序
     }
+    return pass;
   }
 
   bool get isEmpty {

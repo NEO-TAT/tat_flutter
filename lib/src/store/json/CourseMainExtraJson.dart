@@ -78,7 +78,7 @@ class CourseMainInfoJson {
     String name = "";
     for(ClassroomJson value in classroom){
       if(value.href.isNotEmpty ){
-        name += ClassroomJson.getRealHref(value.href) + ' ';
+        name += value.href + ' ';
       }
     }
     return name.substring(0,name.length-1);
@@ -87,7 +87,6 @@ class CourseMainInfoJson {
   bool get isEmpty {
     return course.isEmpty && teacher.length == 0 && classroom.length == 0 && openClass.length == 0;
   }
-
 
   @override
   String toString() {

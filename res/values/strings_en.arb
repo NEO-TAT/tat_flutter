@@ -44,5 +44,7 @@
   "getISchoolCourseFile" : "getISchoolCourseFile",
   "getISchoolCourseFileError" : "getISchoolCourseFileError",
   "getScoreRank" : "getScoreRank",
-  "getScoreRankError" : "getScoreRankError"
+  "getScoreRankError" : "getScoreRankError",
+  "deleteMessage" : "deleteMessage",
+  "deleteMessageError" : "deleteMessageError"
 }

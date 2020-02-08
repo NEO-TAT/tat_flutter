@@ -1,14 +1,18 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolDeleteNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementPageTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/page/AnnouncementDetailPage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -94,7 +98,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
       Future.delayed(Duration(seconds: 2), () {
         needRefresh = false;
       });
-    }else{
+    } else {
       await _loadAnnouncementMaxPage();
       Model.instance.setting.announcement.page++;
       int page = Model.instance.setting.announcement.page;
@@ -112,12 +116,40 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
     _refreshController.loadComplete();
   }
 
+  _onPopupMenuSelect(int value) async{
+    switch (value) {
+      case 1:
+        await Model.instance.clearNewAnnouncement();
+        _getAnnouncement();
+        break;
+      default:
+        break;
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Email'),
+        actions: [
+          PopupMenuButton<int>(
+            // overflow menu
+            onSelected: (value) {
+              _onPopupMenuSelect(value);
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: 1,
+                  child: Text("清除並重新整理"),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: SmartRefresher(
         enablePullDown: true,
@@ -172,16 +204,12 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
                 ),
                 secondaryActions: <Widget>[
                   new IconSlideAction(
-                    caption: 'More',
-                    color: Colors.black45,
-                    icon: Icons.more_horiz,
-                    onTap: () => {},
-                  ),
-                  new IconSlideAction(
                     caption: 'Delete',
                     color: Colors.red,
                     icon: Icons.delete,
-                    onTap: () => {},
+                    onTap: () {
+                      _deleteMessage( index );
+                    },
                   ),
                 ],
               ),
@@ -191,6 +219,31 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
       ),
     );
   }
+
+  void _deleteMessage( int index ){
+    NewAnnouncementJson newAnnouncement =  items[index];
+    ErrorDialogParameter parameter = ErrorDialogParameter(
+        context: context,
+        dialogType: DialogType.INFO,
+        title: "警告",
+        desc: "確定要刪除訊息嗎",
+        btnOkText: "確定",
+        btnCancelText: S.current.cancel,
+        btnOkOnPress: () async{
+          TaskHandler.instance.addTask( ISchoolDeleteNewAnnouncementTask(context , newAnnouncement.messageId ) );
+          await TaskHandler.instance.startTaskQueue(context);
+          bool isDelete = Model.instance.tempData[ISchoolDeleteNewAnnouncementTask.isDeleteKey];
+          if( isDelete ){
+            Model.instance.newAnnouncementList.newAnnouncementList.removeAt(index);
+            Model.instance.save( Model.newAnnouncementJsonKey );
+            items.removeAt(index);
+            setState(() {});
+          }
+        });
+    ErrorDialog(parameter).show();
+
+  }
+
 
   Widget _listItem(NewAnnouncementJson data) {
     Color color = (!data.isRead) ? Colors.black87 : Colors.black54;

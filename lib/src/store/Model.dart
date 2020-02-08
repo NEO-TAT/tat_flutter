@@ -44,6 +44,13 @@ class Model {
     return null;
   }
 
+  Future<void> clearNewAnnouncement() async{
+    newAnnouncementList = NewAnnouncementJsonList();
+    setting.announcement = AnnouncementSettingJson();
+    await save(newAnnouncementJsonKey);
+    await save(settingJsonKey);
+  }
+
 
   List<String> getSemesterListString(){
     List<String> stringList = List();

@@ -42,7 +42,7 @@ class FileType{
   }
 
   String get fileUrl {
-    return "https://ischool.ntut.edu.tw" + href;
+    return href;
   }
 
 }

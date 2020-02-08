@@ -7,6 +7,7 @@ import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolCourseAnnouncementTask.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_html/flutter_html.dart';
@@ -63,11 +64,7 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
               child: ListView.separated(
                 itemCount: courseAnnouncementList.length,
                 itemBuilder: (context, index) {
-                  return GestureDetector(
-                    behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                    child: _buildCourseAnnouncement(courseAnnouncementList[index]),
-                    onTap: () {
-                    },);
+                  return _buildHtmlWidgetCourseAnnouncement(courseAnnouncementList[index]);
                 },
                 separatorBuilder: (context, index) {
                   // 顯示格線
@@ -84,20 +81,37 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
   }
 
 
-
-
-  Widget _buildCourseAnnouncement( CourseAnnouncementJson courseAnnouncement){
+  Widget _buildHtmlWidgetCourseAnnouncement( CourseAnnouncementJson courseAnnouncement){
     return HtmlWidget(
       courseAnnouncement.detail,
       onTapUrl: (url) {
-        if( Uri.parse(url).host.contains("ischool") ){
-
-        }else{
-          _launchURL( url );
-        }
+        onUrlTap(url);
       },
     );
   }
+
+  void onUrlTap(String url){
+    Log.d( url );
+    if( Uri.parse(url).host.contains("ischool") ){
+      MyToast.show("請直接移到下載頁面");
+    }else{
+      _launchURL( url );
+    }
+  }
+
+  Widget _buildHtmlCourseAnnouncement( CourseAnnouncementJson courseAnnouncement){
+    return Html(
+      data: courseAnnouncement.detail,
+      //useRichText: false,
+      padding: EdgeInsets.all(8.0),
+      backgroundColor: Colors.white,
+      onLinkTap: (url) {
+        onUrlTap(url);
+      },
+    );
+  }
+
+
 
   _launchURL(String url) async {
     if (await canLaunch(url)) {

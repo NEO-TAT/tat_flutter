@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/permission/Permission.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -225,30 +226,10 @@ class _CourseFileScreen extends State<CourseFileScreen>
       MyToast.show("下載準備開始");
     }
     CourseFileJson courseFile = courseFileList[index];
-    String path = await FileStore.getDownloadDir(
-        context, widget.courseInfo.main.course.name);
-    Log.d(path);
-
     FileType fileType = courseFile.fileType[0];
-
+    String dirName = widget.courseInfo.main.course.name;
     String url = fileType.fileUrl;
-    String realFileName = await Connector.getFileName(url);
-    if (realFileName != null) {
-      String fileExtension = realFileName.split(".").reversed.toList()[0];
-      realFileName = courseFile.name + "." + fileExtension;
-      Log.d(realFileName);
-    }
-
-    await FlutterDownloader.enqueue(
-      url: url,
-      savedDir: path,
-      fileName: realFileName,
-      headers: Connector.getLoginHeaders(url),
-      showNotification: true,
-      // show download progress in status bar (for Android)
-      openFileFromNotification: true,
-      // click on notification to open downloaded file (for Android)
-    );
+    await FileDownload.download(context, url, dirName , courseFile.name);
   }
 
   @override

@@ -1,7 +1,12 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -24,33 +29,12 @@ class _AnnouncementDetailPage extends State<AnnouncementDetailPage> {
         title: Text(widget.data.courseName),
       ),
       body: SingleChildScrollView(
-        child: _showHtml2(),
+        child: _showAnnouncementDetail(),
       ),
     );
   }
 
-
-  Widget _showHtml() {
-    return Container(
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: GestureDetector(
-              child: HtmlWidget(
-                widget.data.detail,
-                onTapUrl: (url) {
-                  Log.d(url);
-                },
-              ),
-              onLongPress: () {},
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _showHtml2() {
+  Widget _showAnnouncementDetail() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -99,64 +83,92 @@ class _AnnouncementDetailPage extends State<AnnouncementDetailPage> {
           Row(
             children: <Widget>[
               Expanded(
-                child: Html(
-                  data: widget.data.detail,
-                  //useRichText: false,
-                  padding: EdgeInsets.all(8.0),
-                  backgroundColor: Colors.white,
-                  /*
-              defaultTextStyle: TextStyle(fontFamily: 'serif'),
-              linkStyle: const TextStyle(
-                color: Colors.redAccent,
-              ),
-               */
-                  onLinkTap: (url) {
-                    if( Uri.parse(url).host.contains("ischool") ){
-
-                    }else{
-                      _launchURL( url );
-                    }
-                  },
-                  onImageTap: (src) {
-                    // Display the image in large form.
-                  },
-                  //Must have useRichText set to false for this to work.
-                  customRender: (node, children) {
-                    if (node is dom.Element) {
-                      switch (node.localName) {
-                        case "video":
-                          break;
-                        case "custom_tag":
-                          break;
-                      }
-                    }
-                    return Text("");
-                  },
-                  customTextAlign: (dom.Node node) {
-                    if (node is dom.Element) {
-                      switch (node.localName) {
-                        case "p":
-                          return TextAlign.justify;
-                      }
-                    }
-                    return null;
-                  },
-                  customTextStyle: (dom.Node node, TextStyle baseStyle) {
-                    if (node is dom.Element) {
-                      switch (node.localName) {
-                        case "p":
-                          return baseStyle
-                              .merge(TextStyle(height: 2, fontSize: 20));
-                      }
-                    }
-                    return baseStyle;
-                  },
-                ),
+                child: _showHtmlWidget(),
               ),
             ],
           )
         ],
       ),
+    );
+  }
+
+  Widget _showHtmlWidget() {
+    return HtmlWidget(
+      widget.data.detail,
+      onTapUrl: (url) {
+        onUrlTap(url);
+      },
+    );
+  }
+
+  void onUrlTap(String url) {
+    Log.d(url);
+    if (Uri.parse(url).host.contains("ischool")) {
+      ErrorDialogParameter parameter = ErrorDialogParameter(
+          context: context,
+          dialogType: DialogType.INFO,
+          title: "偵測到檔案附件",
+          desc: "確定要下載檔案嗎",
+          btnOkText: "下載",
+          btnCancelText: S.current.cancel,
+          btnOkOnPress: () {
+            MyToast.show("下載即將開始");
+            FileDownload.download(context, url, widget.data.courseName);
+          });
+      ErrorDialog(parameter).show();
+    } else {
+      _launchURL(url);
+    }
+  }
+
+  Widget _showHtml() {
+    return Html(
+      data: widget.data.detail,
+      //useRichText: false,
+      padding: EdgeInsets.all(8.0),
+      backgroundColor: Colors.white,
+      /*
+              defaultTextStyle: TextStyle(fontFamily: 'serif'),
+              linkStyle: const TextStyle(
+                color: Colors.redAccent,
+              ),
+               */
+      onLinkTap: (url) {
+        onUrlTap(url);
+      },
+      onImageTap: (src) {
+        // Display the image in large form.
+      },
+      //Must have useRichText set to false for this to work.
+      customRender: (node, children) {
+        if (node is dom.Element) {
+          switch (node.localName) {
+            case "video":
+              break;
+            case "custom_tag":
+              break;
+          }
+        }
+        return Text("");
+      },
+      customTextAlign: (dom.Node node) {
+        if (node is dom.Element) {
+          switch (node.localName) {
+            case "p":
+              return TextAlign.justify;
+          }
+        }
+        return null;
+      },
+      customTextStyle: (dom.Node node, TextStyle baseStyle) {
+        if (node is dom.Element) {
+          switch (node.localName) {
+            case "p":
+              return baseStyle.merge(TextStyle(height: 2, fontSize: 20));
+          }
+        }
+        return baseStyle;
+      },
     );
   }
 
@@ -167,7 +179,4 @@ class _AnnouncementDetailPage extends State<AnnouncementDetailPage> {
       throw 'Could not launch $url';
     }
   }
-
-
-
 }

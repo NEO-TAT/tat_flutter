@@ -19,13 +19,6 @@ class CourseMainJson{
   String scheduleHref; // 教學進度大綱
   Map<Day,String> time; //時間
 
-  static String getRealHref(String url){
-    if( url.isEmpty ){
-      return "";
-    }
-    return "https://aps.ntut.edu.tw/course/tw/" + url;
-  }
-
   CourseMainJson( {this.name , this.href , this.id , this.credits , this.hours , this.stage , this.note , this.time , this.scheduleHref} ){
     name    = JsonInit.stringInit(name);
     id      = JsonInit.stringInit(id);
@@ -143,13 +136,6 @@ class ClassroomJson{
 
   bool get isEmpty {
     return name.isEmpty && href.isEmpty;
-  }
-
-  static String getRealHref(String url){
-    if( url.isEmpty ){
-      return "";
-    }
-    return "https://aps.ntut.edu.tw/course/tw/" + url;
   }
 
   @override
