@@ -40,6 +40,7 @@ class _CourseFileScreen extends State<CourseFileScreen>
     BackButtonInterceptor.add(myInterceptor);
     Future.delayed(Duration.zero, () {
       _flutterDownloaderInit();
+      FileStore.findLocalPath(context);
     });
   }
 
@@ -50,13 +51,11 @@ class _CourseFileScreen extends State<CourseFileScreen>
   }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
-    if( selectList.inSelectMode ){
+    if (selectList.inSelectMode) {
       selectList.leaveSelectMode();
-      setState(() {
-
-      });
+      setState(() {});
       return true;
-    }else{
+    } else {
       return false;
     }
   }
@@ -90,15 +89,33 @@ class _CourseFileScreen extends State<CourseFileScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
-    return WillPopScope(
-      onWillPop: () async {
-        Log.d("aaaaa");
-        return true;
-      },
-      child: Scaffold(
-        body: _buildFileList(),
-      ),
-    );
+    return Scaffold(
+        body: (courseFileList.length > 0)
+            ? _buildFileList()
+            : Center(
+                child: Text("無任何檔案"),
+              ),
+        floatingActionButton: (selectList.inSelectMode)
+            ? FloatingActionButton(
+                // FloatingActionButton: 浮動按鈕
+                onPressed: _floatingDownloadPress,
+                // 按下觸發的方式名稱: void _incrementCounter()
+                tooltip: '下載',
+                // 按住按鈕時出現的提示字
+                child: Icon(Icons.file_download),
+              )
+            : null);
+  }
+
+  Future<void> _floatingDownloadPress() async{
+    MyToast.show("下載準備開始");
+    for (int i = 0; i < courseFileList.length; i++) {
+      if (selectList.getItemSelect(i)) {
+        await _downloadOneFile(i, false);
+      }
+    }
+    selectList.leaveSelectMode();
+    setState(() {});
   }
 
   Widget _buildFileList() {
@@ -203,8 +220,10 @@ class _CourseFileScreen extends State<CourseFileScreen>
     return widgetList;
   }
 
-  void _downloadOneFile(int index) async {
-    MyToast.show( "下載準備開始" );
+  Future<void> _downloadOneFile(int index, [showToast = true]) async {
+    if (showToast) {
+      MyToast.show("下載準備開始");
+    }
     CourseFileJson courseFile = courseFileList[index];
     String path = await FileStore.getDownloadDir(
         context, widget.courseInfo.main.course.name);

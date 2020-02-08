@@ -277,7 +277,14 @@ class ISchoolConnector {
       node = tagNode.getElementsByTagName("tbody")[1];
 
       courseFileNodes = node.getElementsByTagName("tr");
-
+      if( courseFileNodes.length  == 1 ){
+        nodes = courseFileNodes[0].getElementsByClassName("comment");
+        if( nodes.length == 1){
+          if( nodes[0].innerHtml.contains("無") ){
+            return courseFileList;
+          }
+        }
+      }
       for( int i = 0 ; i< courseFileNodes.length ; i++){
         CourseFileJson courseFile = CourseFileJson();
         nodes = courseFileNodes[i].getElementsByTagName("td");

@@ -371,7 +371,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     setState(() {
       isLoading = true;
     });
-    await Future.delayed(Duration(microseconds: 500));
+    await Future.delayed(Duration(milliseconds: 50));
     setState(() {
       isLoading = false;
     });

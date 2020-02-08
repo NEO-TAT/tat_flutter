@@ -21,7 +21,8 @@ class NewAnnouncementScreen extends StatefulWidget {
   _NewAnnouncementScreen createState() => _NewAnnouncementScreen();
 }
 
-class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with AutomaticKeepAliveClientMixin{
+class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
+    with AutomaticKeepAliveClientMixin {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   List<NewAnnouncementJson> items;
@@ -58,7 +59,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
   void _showAnnouncementDetail(NewAnnouncementJson value) {
     //顯示公告詳細內容
     setState(() {});
-    Navigator.of(context).push( PageTransition(
+    Navigator.of(context).push(PageTransition(
         type: PageTransitionType.leftToRight,
         child: AnnouncementDetailPage(value)));
   }
@@ -69,10 +70,11 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
     setState(() {});
   }
 
-  Future<void> _loadAnnouncementMaxPage() async{
-    Log.d( Model.instance.setting.announcement.maxPage.toString() );
-    if( Model.instance.setting.announcement.maxPage == 0){  //第一次要取得頁數
-      TaskHandler.instance.addTask( ISchoolNewAnnouncementPageTask(context) );
+  Future<void> _loadAnnouncementMaxPage() async {
+    Log.d(Model.instance.setting.announcement.maxPage.toString());
+    if (Model.instance.setting.announcement.maxPage == 0) {
+      //第一次要取得頁數
+      TaskHandler.instance.addTask(ISchoolNewAnnouncementPageTask(context));
       await TaskHandler.instance.startTaskQueue(context);
     }
   }
@@ -86,29 +88,28 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
   }
 
   void _onLoading() async {
-    await _loadAnnouncementMaxPage();
-    Model.instance.setting.announcement.page++;
-    int page = Model.instance.setting.announcement.page;
-    Log.d(items.length.toString());
-    int maxPage = Model.instance.setting.announcement.maxPage;
-    if (page <= maxPage) {
-      if( needRefresh ){
+    if (!needRefresh) {
+      needRefresh = true;
+      MyToast.show("再拉一次更新");
+      Future.delayed(Duration(seconds: 2), () {
+        needRefresh = false;
+      });
+    }else{
+      await _loadAnnouncementMaxPage();
+      Model.instance.setting.announcement.page++;
+      int page = Model.instance.setting.announcement.page;
+      Log.d(items.length.toString());
+      int maxPage = Model.instance.setting.announcement.maxPage;
+      if (page <= maxPage) {
         Model.instance.save(Model.settingJsonKey);
         TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, page));
         await TaskHandler.instance.startTaskQueue(context);
         _loadAnnouncement();
-      }else{
-        needRefresh = true;
-        MyToast.show( "再拉一次更新" );
-        Future.delayed(Duration(seconds: 2) , (){
-          needRefresh = false;
-        });
+      } else {
+        MyToast.show("已經到底了");
       }
-      _refreshController.loadComplete();
-    } else {
-      MyToast.show( "已經到底了" );
-      _refreshController.loadComplete();
     }
+    _refreshController.loadComplete();
   }
 
   @override
@@ -183,7 +184,6 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
                     onTap: () => {},
                   ),
                 ],
-
               ),
             );
           },
@@ -276,5 +276,4 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen> with Automatic
 
   @override
   bool get wantKeepAlive => true;
-
 }

@@ -44,32 +44,46 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
   @override
   Widget build(BuildContext context) {
     super.build(context);  //如果使用AutomaticKeepAliveClientMixin需要呼叫
+    return  Scaffold(
+      body: (courseAnnouncementList.length > 0)
+          ? _buildCourseAnnouncementList()
+          : Center(
+        child: Text("無任何公告"),
+      ),
+    );
+  }
+
+
+
+  Widget _buildCourseAnnouncementList(){
     return Container(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.separated(
-              itemCount: courseAnnouncementList.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.separated(
+                itemCount: courseAnnouncementList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
                     behavior: HitTestBehavior.opaque, //讓透明部分有反應
                     child: _buildCourseAnnouncement(courseAnnouncementList[index]),
                     onTap: () {
                     },);
-              },
-              separatorBuilder: (context, index) {
-                // 顯示格線
-                return Container(
-                  color: Colors.black12,
-                  height: 1,
-                );
-              },
+                },
+                separatorBuilder: (context, index) {
+                  // 顯示格線
+                  return Container(
+                    color: Colors.black12,
+                    height: 1,
+                  );
+                },
+              ),
             ),
-          ),
-        ],
-      )
+          ],
+        )
     );
   }
+
+
 
 
   Widget _buildCourseAnnouncement( CourseAnnouncementJson courseAnnouncement){
