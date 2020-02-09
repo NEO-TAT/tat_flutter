@@ -47,5 +47,6 @@
   "getScoreRank" : "取得成績中...",
   "getScoreRankError" : "取得成績錯誤",
   "deleteMessage" : "刪除訊息中...",
-  "deleteMessageError" : "刪除錯誤"
+  "deleteMessageError" : "刪除錯誤",
+  "searchingCourse" : "課表查詢"
 }

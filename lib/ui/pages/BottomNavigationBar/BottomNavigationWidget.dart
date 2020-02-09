@@ -113,11 +113,11 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       items: [
         BottomNavigationBarItem(
             icon: Icon(
-          Icons.announcement,
+          Icons.search,
           color: _bottomNavigationColor,
         ),
             title: Text(
-              'New',
+              'Search',
               style: TextStyle(color: _bottomNavigationColor),
             )),
         BottomNavigationBarItem(

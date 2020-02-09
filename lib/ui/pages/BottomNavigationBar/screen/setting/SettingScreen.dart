@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:community_material_icon/community_material_icon.dart';
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
@@ -46,6 +47,13 @@ class _SettingScreen extends State<SettingScreen> {
       case onListViewPress.Logout:
         Model.instance.logout();
         Navigator.of(context).push(CustomRoute(LoginPage()));
+        break;
+      case onListViewPress.About:
+        EasyDialog(
+            contentPadding : EdgeInsets.all(10),
+            title: Text("這是一個關於北科課程的APP" , ),
+            description: Text("Power by morris13579")).show(context);
+        return;
         break;
       default:
         break;

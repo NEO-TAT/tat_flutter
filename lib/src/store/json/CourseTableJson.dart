@@ -119,6 +119,23 @@ class CourseTableJson {
     return add;
   }
 
+
+  List<String> getCourseIdList(){
+    List<String> courseIdList = List();
+    for( Day day in Day.values){
+      for( SectionNumber number in SectionNumber.values ){
+        CourseInfoJson courseInfo = courseInfoMap[day][number];
+        if( courseInfo != null ){
+          String id = courseInfo.main.course.id;
+          if( !courseIdList.contains( id) ){
+            courseIdList.add(id);
+          }
+        }
+      }
+    }
+    return courseIdList;
+  }
+
   String getCourseNameByCourseId( String courseId){
     for( Day day in Day.values){
       for( SectionNumber number in SectionNumber.values ){
@@ -150,7 +167,18 @@ class CourseInfoJson{
   bool get isEmpty{
     return main.isEmpty && extra.isEmpty;
   }
+/*
+  @override
+  bool operator ==(dynamic  o) {
+    if( isEmpty || o.isEmpty || !(o is CourseInfoJson) ){
+      return false;
+    }else{
+      return ( main.course.id == o.main.course.id );
+    }
+  }
 
+  int get hashCode => hash2(main.hashCode, extra.hashCode);
+*/
 
   @override
   String toString() {

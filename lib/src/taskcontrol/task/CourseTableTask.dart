@@ -55,6 +55,7 @@ class CourseTableTask extends TaskModel{
     }
   }
 
+
   void _handleError() {
 
     ErrorDialogParameter parameter = ErrorDialogParameter(

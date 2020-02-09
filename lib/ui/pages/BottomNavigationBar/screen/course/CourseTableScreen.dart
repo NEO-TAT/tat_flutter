@@ -1,12 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseTableTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseSemesterTask.dart';
-import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolScreen.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
@@ -113,9 +114,9 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
       courseTable = Model.instance.tempData[CourseTableTask.courseTableTempKey];
+      Model.instance.setting.course.info = courseTable; //儲存課表
+      Model.instance.save(Model.settingJsonKey);
     }
-    Model.instance.setting.course.info = courseTable; //儲存課表
-    Model.instance.save(Model.settingJsonKey);
     _showCourseTable(courseTable);
   }
 
@@ -182,7 +183,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text(S.current.searchingCourse),
         actions: [
           PopupMenuButton<int>(
             // overflow menu
@@ -218,7 +219,11 @@ class _CourseTableScreen extends State<CourseTableScreen> {
                       hintText: "請輸入學號",
                     ),
                     onEditingComplete: () {
-                      _getCourseTable(studentId: _studentIdControl.text);
+                      if (_studentIdControl.text.isEmpty) {
+                        MyToast.show("請輸入學號");
+                      } else {
+                        _getCourseTable(studentId: _studentIdControl.text);
+                      }
                       _studentFocus.unfocus();
                     },
                     controller: _studentIdControl,
@@ -261,14 +266,24 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: 1 + courseTableControl.getSectionIntList.length,
-              itemBuilder: (context, index) {
-                Widget widget;
-                widget =
-                    (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
-                return WidgetANimator(widget);
-              },
+          : AnimationLimiter(
+              child: ListView.builder(
+                itemCount: 1 + courseTableControl.getSectionIntList.length,
+                itemBuilder: (context, index) {
+                  Widget widget;
+                  widget =
+                      (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: ScaleAnimation(
+                      child: FadeInAnimation(
+                        child: widget,
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
     );
   }
@@ -299,11 +314,11 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   Widget _buildCourseTable(int index) {
     int section = courseTableControl.getSectionIntList[index];
     Color color = (index % 2 == 1) ? Colors.white : Color(0xFFF8F8F8);
-
     List<Widget> widgetList = List();
     widgetList.add(
       Container(
         width: sectionWidth,
+        alignment: Alignment.center,
         child: Text(
           courseTableControl.getSectionString(section),
           textAlign: TextAlign.center,
@@ -313,6 +328,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     for (int day in courseTableControl.getDayIntList) {
       CourseInfoJson courseInfo =
           courseTableControl.getCourseInfo(day, section);
+      Color color = courseTableControl.getCourseInfoColor(day, section);
       courseInfo = courseInfo ?? CourseInfoJson();
       widgetList.add(
         Expanded(
@@ -330,9 +346,9 @@ class _CourseTableScreen extends State<CourseTableScreen> {
                       textAlign: TextAlign.center,
                     ),
                     onPressed: () {
-                      showCourseDetailDialog(courseInfo);
+                      showCourseDetailDialog(section, courseInfo);
                     },
-                    color: Colors.blue,
+                    color: color,
                   ),
                 ),
         ),
@@ -348,89 +364,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     );
   }
 
-/*
-  Widget _buildGradView() {
-    return Container(
-      alignment: Alignment.center,
-      child: (isLoading)
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : AnimationLimiter(
-              child: GridView.count(
-                //shrinkWrap: true,
-                childAspectRatio: 1.2, //控制長寬比
-                crossAxisCount: columnCount,
-                children: List.generate(
-                  rowCount * columnCount,
-                  (int index) {
-                    return AnimationConfiguration.staggeredGrid(
-                      position: index,
-                      duration: const Duration(milliseconds: 375),
-                      columnCount: columnCount,
-                      child: ScaleAnimation(
-                        child: FadeInAnimation(
-                          child: _buildGradViewItem(context, index),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-    );
-  }
-
-  Widget _buildGradViewItem(BuildContext context, int index) {
-    int mod = columnCount;
-    int dayIndex = (index % mod).floor() + 1;
-    int sectionNumberIndex = (index / mod).floor();
-    if (index < columnCount) {
-      return Container(
-        color: Colors.white,
-      );
-    }
-    String name;
-    CourseInfoJson courseInfo;
-    Color color;
-    if (courseTableData != null) {
-      courseInfo = courseTableData.getCourseDetailByTime(
-          Day.values[dayIndex], SectionNumber.values[sectionNumberIndex]);
-    }
-    courseInfo = courseInfo ?? CourseInfoJson();
-    name = courseInfo.main.course.name;
-    if (name.isEmpty) {
-      color = (sectionNumberIndex % 2 == 1) ? Colors.white : Color(0xFFF8F8F8);
-      return Container(
-        color: color,
-      );
-    }
-
-    return Container(
-      color: color,
-      height: 100,
-      padding: EdgeInsets.fromLTRB(1, 1, 1, 1),
-      child: RaisedButton(
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: Text(
-          name,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 12,
-          ),
-        ),
-        onPressed: () {
-          showCourseDetailDialog(courseInfo);
-        },
-        color: Colors.blue,
-      ),
-    );
-  }
-
- */
-
 //顯示課程對話框
-  void showCourseDetailDialog(CourseInfoJson courseInfo) {
+  void showCourseDetailDialog(int section, CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
@@ -438,21 +373,30 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       context: context,
       useRootNavigator: false,
       builder: (context) {
-        return new AlertDialog(
+        return AlertDialog(
+          contentPadding: EdgeInsets.fromLTRB(24.0, 20.0, 10.0, 10.0),
           title: Text(course.name),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Row(
-                children: <Widget>[Text("課號:"), Text(course.id)],
-              ),
-              Row(
-                children: <Widget>[Text("地點:"), Text(classroomName)],
-              ),
-              Row(
-                children: <Widget>[Text("授課老師:"), Text(teacherName)],
-              )
-            ],
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[Text("課號:"), Text(course.id)],
+                ),
+                Row(
+                  children: <Widget>[
+                    Text("時間:"),
+                    Text(courseTableControl.getTimeString(section))
+                  ],
+                ),
+                Row(
+                  children: <Widget>[Text("地點:"), Text(classroomName)],
+                ),
+                Row(
+                  children: <Widget>[Text("授課老師:"), Text(teacherName)],
+                )
+              ],
+            ),
           ),
           actions: <Widget>[
             FlatButton(
@@ -465,6 +409,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         );
       },
     );
+
   }
 
   void _showCourseDetail(CourseInfoJson courseInfo) {
