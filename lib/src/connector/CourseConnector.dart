@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:big5/big5.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -8,8 +5,6 @@ import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:intl/intl.dart';
-import 'package:sprintf/sprintf.dart';
 import 'core/Connector.dart';
 import 'core/ConnectorParameter.dart';
 

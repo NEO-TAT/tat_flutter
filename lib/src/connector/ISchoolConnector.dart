@@ -9,8 +9,6 @@ import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:sprintf/sprintf.dart';
-import 'NTUTConnector.dart';
 import 'core/Connector.dart';
 
 enum ISchoolConnectorStatus {

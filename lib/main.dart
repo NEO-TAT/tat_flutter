@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/app_provider.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/category_provider.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/core_provider.dart';
@@ -10,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'debug/log/Log.dart';
 import 'generated/i18n.dart';
-import 'ui/pages/login/LoginPage.dart';
 
 Future<Null> main() async {
   FlutterError.onError = (FlutterErrorDetails details) async {

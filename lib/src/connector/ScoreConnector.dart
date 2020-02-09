@@ -4,7 +4,6 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-
 import 'core/Connector.dart';
 import 'core/ConnectorParameter.dart';
 

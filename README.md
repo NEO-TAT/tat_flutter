@@ -1,4 +1,4 @@
-# ntut_course_helper
+# ntutcoursehelper
 
 A new Flutter application.
 
