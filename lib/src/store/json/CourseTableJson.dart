@@ -8,7 +8,7 @@ import 'CourseClassJson.dart';
 part 'CourseTableJson.g.dart';
 
 enum Day{
-  Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday , UnKnown
+  Monday, Tuesday, Wednesday, Thursday, Friday, Saturday , Sunday , UnKnown
 }
 
 enum SectionNumber{
@@ -34,6 +34,31 @@ class CourseTableJson {
     }
   }
 
+  bool isDayInCourseTable(Day day){
+    bool pass = false;
+    for(SectionNumber number in SectionNumber.values){
+      if( courseInfoMap[day][number] != null ){
+        pass = true;
+        break;
+      }
+    }
+    return pass;
+  }
+
+
+
+  bool isSectionNumberInCourseTable(SectionNumber number){
+    bool pass = false;
+    for(Day day in Day.values){
+      if( courseInfoMap[day].containsKey(number) ){
+        pass = true;
+        break;
+      }
+    }
+    return pass;
+  }
+
+
   factory CourseTableJson.fromJson(Map<String, dynamic> json) => _$CourseTableJsonFromJson(json);
   Map<String, dynamic> toJson() => _$CourseTableJsonToJson(this);
 
@@ -56,7 +81,6 @@ class CourseTableJson {
     return studentId.isEmpty && courseSemester.isEmpty;
   }
 
-
   CourseInfoJson getCourseDetailByTime(Day day , SectionNumber sectionNumber){
     return courseInfoMap[day][sectionNumber];
   }
@@ -66,9 +90,11 @@ class CourseTableJson {
       for(SectionNumber value in SectionNumber.values){
         if( !courseInfoMap[day].containsKey(value) ){
           courseInfoMap[day][value] = courseInfo;
+          //Log.d( day.toString() + value.toString() + courseInfo.toString() );
           break;
         }
       }
+
     }
     else if( courseInfoMap[day].containsKey(sectionNumber) ) {
       throw Exception("衝堂");

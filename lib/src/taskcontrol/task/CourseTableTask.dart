@@ -31,9 +31,9 @@ class CourseTableTask extends TaskModel{
       for( CourseMainInfoJson courseMainInfo in courseMainInfoList ) {
         CourseInfoJson courseInfo = CourseInfoJson();
         bool add = false;
-        for( int i = 0 ; i < 7 ; i++){
+        for( int i = 0 ; i < 7 ; i++ ){
           Day day = Day.values[i];
-          String time = courseMainInfo.course.time[ day];
+          String time = courseMainInfo.course.time[day];
           courseInfo.main = courseMainInfo;
           add |= courseTable.setCourseDetailByTimeString(
               day , time, courseInfo);

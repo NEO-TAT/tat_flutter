@@ -26,7 +26,7 @@ class ISchoolConnector {
   static final String _getLoginISchoolUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
 
-  static final String _iSchoolUrl = "https://ischool.ntut.edu.tw";
+  static final String _iSchoolUrl = "https://ischool.ntut.edu.tw/";
   static final String _postLoginISchoolUrl =
       _iSchoolUrl + "/learning/auth/login.php";
   static final String _iSchoolFileUrl =

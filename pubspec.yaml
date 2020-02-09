@@ -62,6 +62,7 @@ dependencies:
   big5: ^0.0.4     #big5 decode encode
   quiver: ^2.0.5   #hashcode
   intl: ^0.16.0    #DateTime to String
+  keyboard_visibility: ^0.5.6
   #----------html viewer----------#
   flutter_html: ^0.11.1
   flutter_widget_from_html_core : ^0.3.2+1
@@ -78,6 +79,7 @@ dependencies:
   flutter_selectable_text: ^0.3.1        #提供可以複製的TEXT
   pull_to_refresh: ^1.5.8
   cached_network_image: ^2.0.0
+  auto_size_text: ^2.1.0
 
 
 dev_dependencies:

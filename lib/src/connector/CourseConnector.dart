@@ -25,7 +25,7 @@ class CourseConnector {
   static bool _isLogin = true;
   static final String _getLoginCourseUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
-  static final String _courseHost = "https://aps.ntut.edu.tw/course/tw";
+  static final String _courseHost = "https://aps.ntut.edu.tw/course/tw/";
   static final String _postCourseUrl = _courseHost + "/Select.jsp";
   static final String _checkLoginUrl = _courseHost + "/Select.jsp";
 
@@ -184,7 +184,7 @@ class CourseConnector {
       Document tagNode;
       Element node;
       List<Element> courseNodes, nodesOne, nodes;
-
+      List<Day> dayEnum = [ Day.Sunday , Day.Monday, Day.Tuesday, Day.Wednesday, Day.Thursday, Day.Friday, Day.Saturday];
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -231,7 +231,7 @@ class CourseConnector {
 
         //時間
         for (int j = 0; j < 7; j++) {
-          Day day = Day.values[j];
+          Day day = dayEnum[j]; //要做變換網站是從星期日開始
           String time = nodesOne[j + 8].text;
           time = strQ2B(time);
           courseMain.time[day] = time;

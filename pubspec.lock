@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   awesome_dialog:
     dependency: "direct main"
     description:
@@ -469,6 +476,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.5"
+  keyboard_visibility:
+    dependency: "direct main"
+    description:
+      name: keyboard_visibility
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.6"
   logging:
     dependency: transitive
     description:

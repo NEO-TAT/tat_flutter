@@ -79,10 +79,11 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
     courseData.add(_buildCourseInfo(
         sprintf("開課班級:%s", [courseMainInfo.getOpenClassName()])));
     courseData.add(_buildMultiButtonInfo(
-        "教室: ",
-        "教室使用",
-        courseMainInfo.getClassroomName().split(" "),
-        courseMainInfo.getClassroomHref().split(" ")));
+      "教室: ",
+      "教室使用",
+      courseMainInfo.getClassroomNameList(),
+      courseMainInfo.getClassroomHrefList(),
+    ));
 
     courseData.add(_buildCourseInfo(
         sprintf("修課人數:%s", [courseExtraInfo.course.selectNumber])));
@@ -110,11 +111,11 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         children: <Widget>[
           (isLoading)
               ? Center(
-            child: CircularProgressIndicator(),
-          )
+                  child: CircularProgressIndicator(),
+                )
               : Expanded(
-            child: getAnimationList(),
-          ),
+                  child: getAnimationList(),
+                ),
         ],
       ),
     );
@@ -164,11 +165,9 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
     );
   }
 
-
   void _launchWebView(String title, String url) {
     canPop = false;
-    Navigator
-        .of(context)
+    Navigator.of(context)
         .push(
       PageTransition(
         type: PageTransitionType.downToUp,
@@ -178,11 +177,10 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         .then((_) {
       canPop = true;
     });
-    }
+  }
 
-
-  Widget _buildCourseInfoWithButton(String text, String buttonText,
-      String url) {
+  Widget _buildCourseInfoWithButton(
+      String text, String buttonText, String url) {
     TextStyle textStyle = TextStyle(fontSize: 18);
     return Container(
       padding: EdgeInsets.only(bottom: 5),
@@ -197,13 +195,13 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
           ),
           (url.isNotEmpty)
               ? RaisedButton(
-            child: Text(
-              buttonText,
-            ),
-            onPressed: () {
-              _launchWebView(buttonText, url);
-            },
-          )
+                  child: Text(
+                    buttonText,
+                  ),
+                  onPressed: () {
+                    _launchWebView(buttonText, url);
+                  },
+                )
               : Container()
         ],
       ),
@@ -229,7 +227,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
       List<String> textList, List<String> urlList) {
     TextStyle textStyle = TextStyle(fontSize: 18);
     List<Widget> classroomItemList = List();
-    for (int i = 0 ; i < textList.length ; i++) {
+    for (int i = 0; i < textList.length; i++) {
       String text = textList[i];
       classroomItemList.add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -276,9 +274,9 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         children: <Widget>[
           Expanded(
               child: Text(
-                classmate.className,
-                textAlign: TextAlign.center,
-              )),
+            classmate.className,
+            textAlign: TextAlign.center,
+          )),
           Expanded(
             child: Text(
               classmate.studentId,
