@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
@@ -62,7 +63,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
         //Log.d(pop.toString());
         if( pop ){
           _closeAppTime++;
-          MyToast.show( "在按一次關閉" );
+          MyToast.show( S.current.closeOnce );
           Future.delayed(Duration(seconds: 2)).then( (_){
             _closeAppTime = 0;
           });
@@ -92,7 +93,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       controller: pageController,
       onPageChanged: onPageChanged,
       children: bottomPageList.pageList,
-      physics: NeverScrollableScrollPhysics(), // 禁止滑动
+      physics: NeverScrollableScrollPhysics(), // 禁止滑動
     );
   }
 
@@ -113,9 +114,9 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       items: [
         BottomNavigationBarItem(
             icon: Icon(
-          Icons.search,
-          color: _bottomNavigationColor,
-        ),
+              Icons.search,
+              color: _bottomNavigationColor,
+            ),
             title: Text(
               'Search',
               style: TextStyle(color: _bottomNavigationColor),

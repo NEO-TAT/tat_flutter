@@ -107,12 +107,12 @@ class _AnnouncementDetailPage extends State<AnnouncementDetailPage> {
       ErrorDialogParameter parameter = ErrorDialogParameter(
           context: context,
           dialogType: DialogType.INFO,
-          title: "偵測到檔案附件",
-          desc: "確定要下載檔案嗎",
-          btnOkText: "下載",
+          title: S.current.fileAttachmentDetected,
+          desc: S.current.areYouSureToDownload,
+          btnOkText: S.current.download,
           btnCancelText: S.current.cancel,
           btnOkOnPress: () {
-            MyToast.show("下載即將開始");
+            MyToast.show(S.current.downloadWillStart);
             FileDownload.download(context, url, widget.data.courseName);
           });
       ErrorDialog(parameter).show();

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:native_color/native_color.dart';
 
@@ -12,7 +13,16 @@ class CourseTableControl {
   bool isHideN = false;
   bool isHideABCD = false;
   CourseTableJson courseTable;
-  List<String> dayStringList = ["一", "二", "三", "四", "五", "六", "日", ""];
+  List<String> dayStringList = [
+    S.current.Monday,
+    S.current.Tuesday,
+    S.current.Wednesday,
+    S.current.Thursday,
+    S.current.Friday,
+    S.current.Saturday,
+    S.current.Sunday,
+    S.current.UnKnown
+  ];
   List<String> timeList = [
     "08:10 - 09:00",
     "09:10 - 10:00",

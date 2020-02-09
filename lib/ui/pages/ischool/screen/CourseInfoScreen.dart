@@ -2,16 +2,14 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseExtraInfoTask.dart';
-import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewPluginScreen.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
@@ -64,36 +62,37 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
     await TaskHandler.instance.startTaskQueue(context);
     courseExtraInfo = Model.instance.tempData[CourseExtraInfoTask.tempDataKey];
     widget.courseInfo.extra = courseExtraInfo;
-    courseData.add(
-        _buildCourseInfo(sprintf("課號:%s    ", [courseMainInfo.course.id])));
-    courseData.add(
-        _buildCourseInfo(sprintf("課程名稱:%s", [courseMainInfo.course.name])));
     courseData.add(_buildCourseInfo(
-        sprintf("學分:%s    ", [courseMainInfo.course.credits])));
+        sprintf("%s: %s", [S.current.courseId, courseMainInfo.course.id])));
     courseData.add(_buildCourseInfo(
-        sprintf("類別:%s    ", [courseExtraInfo.course.category])));
+        sprintf("%s: %s", [S.current.courseName, courseMainInfo.course.name])));
+    courseData.add(_buildCourseInfo(sprintf(
+        "%s: %s    ", [S.current.credit, courseMainInfo.course.credits])));
+    courseData.add(_buildCourseInfo(sprintf(
+        "%s: %s    ", [S.current.category, courseExtraInfo.course.category])));
     courseData.add(_buildCourseInfoWithButton(
-        sprintf("授課老師:%s", [courseMainInfo.getTeacherName()]),
-        "教學大綱",
+        sprintf(
+            "%s: %s", [S.current.instructor, courseMainInfo.getTeacherName()]),
+        S.current.syllabus,
         courseMainInfo.course.scheduleHref));
-    courseData.add(_buildCourseInfo(
-        sprintf("開課班級:%s", [courseMainInfo.getOpenClassName()])));
+    courseData.add(_buildCourseInfo(sprintf(
+        "%s: %s", [S.current.startClass, courseMainInfo.getOpenClassName()])));
     courseData.add(_buildMultiButtonInfo(
-      "教室: ",
-      "教室使用",
+      sprintf("%s: ", [S.current.classroom, courseMainInfo.getTeacherName()]),
+      S.current.classroomUse,
       courseMainInfo.getClassroomNameList(),
       courseMainInfo.getClassroomHrefList(),
     ));
 
     courseData.add(_buildCourseInfo(
-        sprintf("修課人數:%s", [courseExtraInfo.course.selectNumber])));
+        sprintf("%s: %s", [ S.current.numberOfStudent , courseExtraInfo.course.selectNumber])));
     courseData.add(_buildCourseInfo(
-        sprintf("撤選人數:%s", [courseExtraInfo.course.withdrawNumber])));
+        sprintf("%s: %s", [S.current.numberOfWithdraw , courseExtraInfo.course.withdrawNumber])));
 
     listItem.removeRange(0, listItem.length);
-    listItem.add(_buildInfoTitle("課程資料"));
+    listItem.add(_buildInfoTitle(S.current.courseData));
     listItem.addAll(courseData);
-    listItem.add(_buildInfoTitle("學生清單"));
+    listItem.add(_buildInfoTitle(S.current.studentList));
     for (int i = 0; i < courseExtraInfo.classmate.length; i++) {
       listItem
           .add(_buildClassmateInfo(i, widget.courseInfo.extra.classmate[i]));

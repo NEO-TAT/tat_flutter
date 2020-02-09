@@ -10,7 +10,7 @@ import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/path_bar.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/sort_sheet.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:path/path.dart' as pathlib;
+import 'package:path/path.dart' as pathLib;
 import 'package:provider/provider.dart';
 
 class FileViewerPage extends StatefulWidget {
@@ -50,7 +50,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
     });
     for(FileSystemEntity file in l){
       if(!showHidden){
-        if(!pathlib.basename(file.path).startsWith(".")){
+        if(!pathLib.basename(file.path).startsWith(".")){
           setState(() {
             files.add(file);
           });
@@ -398,7 +398,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
   renameDialog(BuildContext context, String path, String type){
     final TextEditingController name = TextEditingController();
     setState(() {
-      name.text = pathlib.basename(path);
+      name.text = pathLib.basename(path);
     });
     showDialog(
       context: context,
@@ -467,8 +467,8 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                       onPressed: () async{
                         if(name.text.isNotEmpty){
                           if(type == "file"){
-                            if(!File(path.replaceAll(pathlib.basename(path), "")+"${name.text}").existsSync()){
-                              await File(path).rename(path.replaceAll(pathlib.basename(path), "")+"${name.text}").catchError((e){
+                            if(!File(path.replaceAll(pathLib.basename(path), "")+"${name.text}").existsSync()){
+                              await File(path).rename(path.replaceAll(pathLib.basename(path), "")+"${name.text}").catchError((e){
                                 print(e.toString());
                                 if(e.toString().contains("Permission denied")){
                                   Provider.of<CoreProvider>(context, listen: false).showToast("Cannot write to this device!");
@@ -478,10 +478,10 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                               Provider.of<CoreProvider>(context, listen: false).showToast("A File with that name already exists!");
                             }
                           }else{
-                            if(Directory(path.replaceAll(pathlib.basename(path), "")+"${name.text}").existsSync()){
+                            if(Directory(path.replaceAll(pathLib.basename(path), "")+"${name.text}").existsSync()){
                               Provider.of<CoreProvider>(context, listen: false).showToast("A Folder with that name already exists!");
                             }else{
-                              await Directory(path).rename(path.replaceAll(pathlib.basename(path), "")+"${name.text}").catchError((e){
+                              await Directory(path).rename(path.replaceAll(pathLib.basename(path), "")+"${name.text}").catchError((e){
                                 print(e.toString());
                                 if(e.toString().contains("Permission denied")){
                                   Provider.of<CoreProvider>(context, listen: false).showToast("Cannot write to this device!");

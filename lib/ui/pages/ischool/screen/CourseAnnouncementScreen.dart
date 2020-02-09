@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -49,7 +50,7 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
       body: (courseAnnouncementList.length > 0)
           ? _buildCourseAnnouncementList()
           : Center(
-        child: Text("無任何公告"),
+        child: Text(S.current.noAnyAnnouncement),
       ),
     );
   }
@@ -93,7 +94,7 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
   void onUrlTap(String url){
     Log.d( url );
     if( Uri.parse(url).host.contains("ischool") ){
-      MyToast.show("請直接移到下載頁面");
+      MyToast.show(S.current.pleaseMoveToFilePage);
     }else{
       _launchURL( url );
     }

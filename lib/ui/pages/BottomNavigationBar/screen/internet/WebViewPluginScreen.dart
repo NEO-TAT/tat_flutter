@@ -7,12 +7,15 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 class WebViewPluginScreen extends StatefulWidget {
   final String url;
   final String title;
-  WebViewPluginScreen(this.title , this.url);
+
+  WebViewPluginScreen(this.title, this.url);
+
   @override
-  _WebViewPluginScreen createState( ) => _WebViewPluginScreen();
+  _WebViewPluginScreen createState() => _WebViewPluginScreen();
 }
 
-class _WebViewPluginScreen extends State<WebViewPluginScreen> with AutomaticKeepAliveClientMixin {
+class _WebViewPluginScreen extends State<WebViewPluginScreen>
+    with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String initUrl;
 
@@ -25,19 +28,17 @@ class _WebViewPluginScreen extends State<WebViewPluginScreen> with AutomaticKeep
   @override
   void initState() {
     super.initState();
-    initUrl = widget.url;
     onStateChanged =
         flutterWebViewPlugin.onStateChanged.listen((WebViewStateChanged state) {
-          _handleStateChange(state);
-        });
+      _handleStateChange(state);
+    });
     onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((url) {
       _handleUrlChanged(url);
     });
+    initUrl = widget.url;
   }
 
-
-  void _handleUrlChanged(String url) async {
-  }
+  void _handleUrlChanged(String url) async {}
 
   void _handleStateChange(WebViewStateChanged state) async {
     switch (state.type) {
@@ -60,7 +61,7 @@ class _WebViewPluginScreen extends State<WebViewPluginScreen> with AutomaticKeep
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);  //如果使用AutomaticKeepAliveClientMixin需要呼叫
+    super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
     List<Widget> titleContent = [];
     titleContent.add(
       Text(

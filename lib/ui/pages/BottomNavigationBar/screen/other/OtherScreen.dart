@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/page/ScoreViewerPage.dart';
@@ -16,10 +17,10 @@ enum onListViewPress { Score, FileViewer }
 
 class _OtherScreen extends State<OtherScreen> {
   final List<Map> listViewData = [
-    {"icon": Icons.search, "title": "分數查詢", "onPress": onListViewPress.Score},
+    {"icon": Icons.search, "title": S.current.scoreSearch , "onPress": onListViewPress.Score},
     {
       "icon": Icons.file_download,
-      "title": "下載檔案",
+      "title": S.current.downloadFile,
       "onPress": onListViewPress.FileViewer
     },
   ];
@@ -38,7 +39,7 @@ class _OtherScreen extends State<OtherScreen> {
             PageTransition(
               type: PageTransitionType.leftToRight,
               child: FileViewerPage(
-                title: "FileViewer",
+                title: S.current.fileViewer,
                 path: filePath,
               ),
             ),
@@ -62,7 +63,7 @@ class _OtherScreen extends State<OtherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Other'),
+        title: Text(S.current.titleElse),
       ),
       body: ListView.separated(
         itemCount: listViewData.length,
@@ -71,7 +72,7 @@ class _OtherScreen extends State<OtherScreen> {
           widget = _buildOther(listViewData[index]);
           return GestureDetector(
               behavior: HitTestBehavior.opaque, //讓透明部分有反應
-              child: WidgetANimator(widget),
+              child: WidgetAnimator(widget),
               onTap: () {
                 _onListViewPress(listViewData[index]['onPress']);
               });

@@ -20,28 +20,28 @@ class MyAlertDialog {
 
  */
 
-      var dialog = CupertinoAlertDialog(
-        content: Text(
-          "你好,我是你苹果爸爸的界面",
-          style: TextStyle(fontSize: 20),
+    var dialog = CupertinoAlertDialog(
+      content: Text(
+        "你好,我是你蘋果爸爸的界面",
+        style: TextStyle(fontSize: 20),
+      ),
+      actions: <Widget>[
+        CupertinoButton(
+          child: Text("取消"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        actions: <Widget>[
-          CupertinoButton(
-            child: Text("取消"),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          CupertinoButton(
-            child: Text("确定"),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      );
+        CupertinoButton(
+          child: Text("確定"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
 
-      showDialog(context: context, builder: (_) => dialog);
+    showDialog(context: context, builder: (_) => dialog);
 
   }
 
@@ -94,25 +94,13 @@ class MyAlertDialog {
         textAlign: TextAlign.center,
       ),
       buttonOkText:
-          Text("ok", style: TextStyle(fontSize: 18.0, color: Colors.white)),
+      Text("ok", style: TextStyle(fontSize: 18.0, color: Colors.white)),
       buttonCancelText:
-          Text("clear", style: TextStyle(fontSize: 18.0, color: Colors.white)),
+      Text("clear", style: TextStyle(fontSize: 18.0, color: Colors.white)),
       onOkButtonPressed: () {
         Navigator.of(context).pop();
       },
     );
   }
 
-  static void showStyle3AlertDialog(
-      BuildContext context, String message, DialogType type) {
-    AwesomeDialog(
-            context: context,
-            dialogType: type,
-            animType: AnimType.BOTTOMSLIDE,
-            tittle: S.current.alertError,
-            desc: message,
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {})
-        .show();
-  }
 }

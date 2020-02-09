@@ -3,7 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class Permission {
   static Future<bool> check(BuildContext context) async {
-    // 先对所在平台进行判断
+    // 先對所在平台進行判斷
     if (Theme.of(context).platform == TargetPlatform.android) {
       PermissionStatus permission = await PermissionHandler()
           .checkPermissionStatus(PermissionGroup.storage);

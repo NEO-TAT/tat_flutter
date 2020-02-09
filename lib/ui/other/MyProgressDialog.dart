@@ -26,8 +26,6 @@ class MyProgressDialog {
     _progressDialog.dismissProgressDialog(_context);
   }
 
-
-
 }
 
 

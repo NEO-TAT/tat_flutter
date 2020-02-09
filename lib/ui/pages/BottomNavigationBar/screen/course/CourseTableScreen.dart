@@ -14,6 +14,7 @@ import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:sprintf/sprintf.dart';
 import '../../../../../src/store/Model.dart';
 import '../../../../../src/store/json/UserDataJson.dart';
 import 'CourseTableControl.dart';
@@ -89,7 +90,6 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       {SemesterJson semesterSetting,
       String studentId,
       bool refresh: false}) async {
-    Log.d("_getCourseTable");
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.userData;
     studentId = studentId ?? userData.account;
@@ -183,7 +183,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(S.current.searchingCourse),
+        title: Text(S.current.titleCourse),
         actions: [
           PopupMenuButton<int>(
             // overflow menu
@@ -194,7 +194,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
               return [
                 PopupMenuItem(
                   value: 1,
-                  child: Text("重新整理"),
+                  child: Text(S.current.refresh),
                 ),
               ];
             },
@@ -216,11 +216,11 @@ class _CourseTableScreen extends State<CourseTableScreen> {
                       // 關閉框線
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(10),
-                      hintText: "請輸入學號",
+                      hintText: S.current.pleaseEnterStudentId,
                     ),
                     onEditingComplete: () {
                       if (_studentIdControl.text.isEmpty) {
-                        MyToast.show("請輸入學號");
+                        MyToast.show(S.current.pleaseEnterStudentId);
                       } else {
                         _getCourseTable(studentId: _studentIdControl.text);
                       }
@@ -378,23 +378,16 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           title: Text(course.name),
           content: Container(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Row(
-                  children: <Widget>[Text("課號:"), Text(course.id)],
-                ),
-                Row(
-                  children: <Widget>[
-                    Text("時間:"),
-                    Text(courseTableControl.getTimeString(section))
-                  ],
-                ),
-                Row(
-                  children: <Widget>[Text("地點:"), Text(classroomName)],
-                ),
-                Row(
-                  children: <Widget>[Text("授課老師:"), Text(teacherName)],
-                )
+                Text(sprintf("%s : %s", [S.current.courseId, course.id])),
+                Text(sprintf("%s : %s", [
+                  S.current.time,
+                  courseTableControl.getTimeString(section)
+                ])),
+                Text(sprintf("%s : %s", [S.current.location, classroomName])),
+                Text(sprintf("%s : %s", [S.current.instructor, teacherName])),
               ],
             ),
           ),
@@ -403,20 +396,19 @@ class _CourseTableScreen extends State<CourseTableScreen> {
               onPressed: () {
                 _showCourseDetail(courseInfo);
               },
-              child: new Text("詳細內容"),
+              child: new Text(S.current.details),
             ),
           ],
         );
       },
     );
-
   }
 
   void _showCourseDetail(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
     if (course.id.isEmpty) {
-      MyToast.show(course.name + "不支持");
+      MyToast.show(course.name + S.current.noSupport );
     } else {
       Navigator.of(context, rootNavigator: true)
           .push(

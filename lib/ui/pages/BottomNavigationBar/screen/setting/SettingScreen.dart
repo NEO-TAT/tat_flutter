@@ -9,8 +9,10 @@ import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewPluginScreen.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
 
 import '../../../../../src/store/Model.dart';
@@ -25,16 +27,19 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreen extends State<SettingScreen> {
   final List<Map> listViewData = [
-    {"icon": Icons.settings, "title": "設定", "onPress": onListViewPress.Setting},
+    {"icon": Icons.settings, "title": S.current.setting, "onPress": onListViewPress.Setting},
     {
       "icon": MyIcon.arrows_cw,
-      "title": "更改密碼",
+      "title": S.current.changePassword,
       "onPress": onListViewPress.ChangePassword
     },
-    {"icon": MyIcon.logout, "title": "登出", "onPress": onListViewPress.Logout},
-    {"icon": Icons.report, "title": "意見反饋", "onPress": onListViewPress.Report},
-    {"icon": Icons.info, "title": "關於", "onPress": onListViewPress.About}
+    {"icon": MyIcon.logout, "title": S.current.logout , "onPress": onListViewPress.Logout},
+    {"icon": Icons.report, "title": S.current.feedback , "onPress": onListViewPress.Report},
+    {"icon": Icons.info, "title": S.current.about, "onPress": onListViewPress.About}
   ];
+
+  String formUrl =
+      "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
 
   @override
   void initState() {
@@ -42,7 +47,6 @@ class _SettingScreen extends State<SettingScreen> {
   }
 
   void _onListViewPress(onListViewPress value) {
-    MyToast.show( value.toString() );
     switch (value) {
       case onListViewPress.Logout:
         Model.instance.logout();
@@ -50,12 +54,30 @@ class _SettingScreen extends State<SettingScreen> {
         break;
       case onListViewPress.About:
         EasyDialog(
-            contentPadding : EdgeInsets.all(10),
-            title: Text("這是一個關於北科課程的APP" , ),
-            description: Text("Power by morris13579")).show(context);
+          contentPadding: EdgeInsets.all(10),
+          title: Text(
+            S.current.aboutDialogString,
+          ),
+          description: Text(""),
+          contentList: [
+            Text(
+              "Power by morris13579",
+              textAlign: TextAlign.end,
+            ),
+          ],
+        ).show(context);
         return;
         break;
+      case onListViewPress.Report:
+        Navigator.of(context).push(
+          PageTransition(
+            type: PageTransitionType.downToUp,
+            child: WebViewPluginScreen(S.current.feedback , formUrl),
+          ),
+        );
+        break;
       default:
+        MyToast.show(S.current.noFunction);
         break;
     }
   }
@@ -75,7 +97,7 @@ class _SettingScreen extends State<SettingScreen> {
               : _buildSetting(listViewData[index - 1]);
           return GestureDetector(
               behavior: HitTestBehavior.opaque, //讓透明部分有反應
-              child: WidgetANimator(widget),
+              child: WidgetAnimator(widget),
               onTap: () {
                 if (index != 0)
                   _onListViewPress(listViewData[index - 1]['onPress']);

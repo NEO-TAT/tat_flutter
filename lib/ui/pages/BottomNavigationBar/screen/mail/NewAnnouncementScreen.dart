@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
@@ -11,12 +10,10 @@ import 'package:flutter_app/src/taskcontrol/task/ISchoolDeleteNewAnnouncementTas
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementPageTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
-import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/page/AnnouncementDetailPage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -94,7 +91,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
   void _onLoading() async {
     if (!needRefresh) {
       needRefresh = true;
-      MyToast.show("再拉一次更新");
+      MyToast.show(S.current.pullAgainToUpdate);
       Future.delayed(Duration(seconds: 2), () {
         needRefresh = false;
       });
@@ -110,13 +107,13 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
         await TaskHandler.instance.startTaskQueue(context);
         _loadAnnouncement();
       } else {
-        MyToast.show("已經到底了");
+        MyToast.show(S.current.noMoreData);
       }
     }
     _refreshController.loadComplete();
   }
 
-  _onPopupMenuSelect(int value) async{
+  _onPopupMenuSelect(int value) async {
     switch (value) {
       case 1:
         await Model.instance.clearNewAnnouncement();
@@ -127,13 +124,12 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Email'),
+        title: Text(S.current.titleEmail),
         actions: [
           PopupMenuButton<int>(
             // overflow menu
@@ -144,7 +140,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
               return [
                 PopupMenuItem(
                   value: 1,
-                  child: Text("清除並重新整理"),
+                  child: Text(S.current.clearAndRefresh),
                 ),
               ];
             },
@@ -204,11 +200,11 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
                 ),
                 secondaryActions: <Widget>[
                   new IconSlideAction(
-                    caption: 'Delete',
+                    caption: S.current.delete,
                     color: Colors.red,
                     icon: Icons.delete,
                     onTap: () {
-                      _deleteMessage( index );
+                      _deleteMessage(index);
                     },
                   ),
                 ],
@@ -220,30 +216,31 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
     );
   }
 
-  void _deleteMessage( int index ){
-    NewAnnouncementJson newAnnouncement =  items[index];
+  void _deleteMessage(int index) {
+    NewAnnouncementJson newAnnouncement = items[index];
     ErrorDialogParameter parameter = ErrorDialogParameter(
         context: context,
         dialogType: DialogType.INFO,
-        title: "警告",
-        desc: "確定要刪除訊息嗎",
-        btnOkText: "確定",
+        title: S.current.warning,
+        desc: S.current.areYouSureDeleteMessage,
+        btnOkText: S.current.sure,
         btnCancelText: S.current.cancel,
-        btnOkOnPress: () async{
-          TaskHandler.instance.addTask( ISchoolDeleteNewAnnouncementTask(context , newAnnouncement.messageId ) );
+        btnOkOnPress: () async {
+          TaskHandler.instance.addTask(ISchoolDeleteNewAnnouncementTask(
+              context, newAnnouncement.messageId));
           await TaskHandler.instance.startTaskQueue(context);
-          bool isDelete = Model.instance.tempData[ISchoolDeleteNewAnnouncementTask.isDeleteKey];
-          if( isDelete ){
-            Model.instance.newAnnouncementList.newAnnouncementList.removeAt(index);
-            Model.instance.save( Model.newAnnouncementJsonKey );
+          bool isDelete = Model
+              .instance.tempData[ISchoolDeleteNewAnnouncementTask.isDeleteKey];
+          if (isDelete) {
+            Model.instance.newAnnouncementList.newAnnouncementList
+                .removeAt(index);
+            Model.instance.save(Model.newAnnouncementJsonKey);
             items.removeAt(index);
             setState(() {});
           }
         });
     ErrorDialog(parameter).show();
-
   }
-
 
   Widget _listItem(NewAnnouncementJson data) {
     Color color = (!data.isRead) ? Colors.black87 : Colors.black54;

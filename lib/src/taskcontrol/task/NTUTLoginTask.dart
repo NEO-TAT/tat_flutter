@@ -22,7 +22,7 @@ class NTUTLoginTask extends TaskModel {
     UserDataJson userData = Model.instance.userData ;
     String account = userData.account;
     String password = userData.password;
-    MyProgressDialog.showProgressDialog(context, S.current.loggingNTUT);
+    MyProgressDialog.showProgressDialog(context, S.current.loginNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
     if (value != NTUTConnectorStatus.LoginSuccess) {
@@ -44,7 +44,7 @@ class NTUTLoginTask extends TaskModel {
       case NTUTConnectorStatus.PasswordExpiredWarning:
         parameter.dialogType = DialogType.INFO;
         parameter.desc = S.current.passwordExpiredWarning;
-        parameter.btnOkText = S.current.updatePassword;
+        parameter.btnOkText = S.current.update;
         break;
       case NTUTConnectorStatus.AccountLockWarning:
         parameter.dialogType = DialogType.INFO;
@@ -52,8 +52,8 @@ class NTUTLoginTask extends TaskModel {
         break;
       case NTUTConnectorStatus.AccountPasswordIncorrect:
         parameter.dialogType = DialogType.INFO;
-        parameter.desc = S.current.accountPasswordFail;
-        parameter.btnOkText = S.current.resetAccountPassword;
+        parameter.desc = S.current.accountPasswordError;
+        parameter.btnOkText = S.current.setting;
         parameter.btnOkOnPress =  () {
           Navigator.of(context).push(CustomRoute(LoginPage()));
         };

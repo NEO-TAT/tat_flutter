@@ -6,6 +6,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -94,7 +95,7 @@ class _CourseFileScreen extends State<CourseFileScreen>
         body: (courseFileList.length > 0)
             ? _buildFileList()
             : Center(
-                child: Text("無任何檔案"),
+                child: Text(S.current.noAnyFile),
               ),
         floatingActionButton: (selectList.inSelectMode)
             ? FloatingActionButton(
@@ -108,8 +109,8 @@ class _CourseFileScreen extends State<CourseFileScreen>
             : null);
   }
 
-  Future<void> _floatingDownloadPress() async{
-    MyToast.show("下載準備開始");
+  Future<void> _floatingDownloadPress() async {
+    MyToast.show(S.current.downloadWillStart);
     for (int i = 0; i < courseFileList.length; i++) {
       if (selectList.getItemSelect(i)) {
         await _downloadOneFile(i, false);
@@ -223,13 +224,13 @@ class _CourseFileScreen extends State<CourseFileScreen>
 
   Future<void> _downloadOneFile(int index, [showToast = true]) async {
     if (showToast) {
-      MyToast.show("下載準備開始");
+      MyToast.show(S.current.downloadWillStart);
     }
     CourseFileJson courseFile = courseFileList[index];
     FileType fileType = courseFile.fileType[0];
     String dirName = widget.courseInfo.main.course.name;
     String url = fileType.fileUrl;
-    await FileDownload.download(context, url, dirName , courseFile.name);
+    await FileDownload.download(context, url, dirName, courseFile.name);
   }
 
   @override

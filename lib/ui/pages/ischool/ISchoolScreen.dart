@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
@@ -29,11 +30,11 @@ class _ISchoolScreen extends State<ISchoolScreen>
     super.initState();
     tabPageList = TabPageList();
     tabPageList
-        .add(TabPage("課程", Icons.info, CourseInfoScreen(widget.courseInfo)));
+        .add(TabPage( S.current.course, Icons.info, CourseInfoScreen(widget.courseInfo)));
     tabPageList.add(TabPage(
-        "公告", Icons.announcement, CourseAnnouncementScreen(widget.courseInfo)));
+        S.current.announcement, Icons.announcement, CourseAnnouncementScreen(widget.courseInfo)));
     tabPageList.add(TabPage(
-        "檔案", Icons.file_download, CourseFileScreen(widget.courseInfo)));
+        S.current.file, Icons.file_download, CourseFileScreen(widget.courseInfo)));
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
   }

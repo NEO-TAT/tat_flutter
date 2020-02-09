@@ -62,9 +62,9 @@ wait() {
   return duration;
 }
 
-class WidgetANimator extends StatelessWidget {
+class WidgetAnimator extends StatelessWidget {
   final Widget child;
-  WidgetANimator(this.child);
+  WidgetAnimator(this.child);
   @override
   Widget build(BuildContext context) {
     return Animator(child, wait());
