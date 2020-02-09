@@ -44,7 +44,7 @@ class S implements WidgetsLocalizations {
   String get accountPasswordError => "Account password incorrect";
   String get alertError => "An error occurred";
   String get announcement => "Announcement";
-  String get app_name => "北科課程助手";
+  String get app_name => "NTUT Course Assistant";
   String get areYouSureDeleteMessage => "Are you sure you want to delete the message?";
   String get areYouSureToDownload => "Are you sure you want to download the file";
   String get authCodeFail => "Verification code error";
