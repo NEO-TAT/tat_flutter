@@ -132,12 +132,12 @@ class RankItemJson {
 
 class ScoreJson {
   String name;
-  double score;
+  String score;
   double credit; //學分
 
   ScoreJson({this.name, this.score, this.credit}) {
     name = JsonInit.stringInit(name);
-    score = score ?? 0;
+    score = JsonInit.stringInit(score);
     credit = credit ?? 0;
   }
 

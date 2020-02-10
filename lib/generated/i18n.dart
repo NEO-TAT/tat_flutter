@@ -50,7 +50,7 @@ class S implements WidgetsLocalizations {
   String get authCodeFail => "Verification code error";
   String get cancel => "cancel";
   String get category => "Category";
-  String get changePassword => "change the password";
+  String get changePassword => "Change the password";
   String get checkLogin => "Check login...";
   String get classroom => "Classroom";
   String get classroomUse => "classroomUse";
@@ -120,7 +120,7 @@ class S implements WidgetsLocalizations {
   String get refresh => "refresh";
   String get restart => "restart";
   String get scoreSearch => "Score query";
-  String get setting => "setting";
+  String get setting => "Setting";
   String get startClass => "Start class";
   String get studentList => "Student list";
   String get sure => "sure";
@@ -198,6 +198,8 @@ class $zh extends S {
   String get networkError => "網路發生錯誤";
   @override
   String get titleElse => "Other";
+  @override
+  String get numberOfWithdraw => "撤選人數";
   @override
   String get announcement => "公告";
   @override

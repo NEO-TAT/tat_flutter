@@ -2,11 +2,13 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/lang/lang.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/calendar/CalendarScreen.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/NewAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/OtherScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/course/CourseTableScreen.dart';
@@ -21,7 +23,6 @@ class BottomNavigationWidget extends StatefulWidget {
   State<StatefulWidget> createState() => BottomNavigationWidgetState();
 }
 
-
 class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   final _bottomNavigationColor = Colors.blue;
   final pageController = PageController();
@@ -33,19 +34,25 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   void initState() {
     super.initState();
     Model.instance.init().then((value) {
-      bottomPageList.add(BottomPage(CourseTableScreen()      ));
-      bottomPageList.add(BottomPage(NewAnnouncementScreen() , useNavigatorKey : true ));
-      bottomPageList.add(BottomPage(OtherScreen()            ));
-      bottomPageList.add(BottomPage(SettingScreen()          ));
-      setState(() {
-      });
+      bottomPageList.add(BottomPage(CourseTableScreen()));
+      bottomPageList
+          .add(BottomPage(NewAnnouncementScreen(), useNavigatorKey: true));
+      bottomPageList.add(BottomPage(CalendarScreen()));
+      bottomPageList.add(BottomPage(OtherScreen()));
+      bottomPageList.add(BottomPage(SettingScreen(pageController)));
+      _setLang();
     });
     _addTask();
   }
 
-  void _addTask() async{
-    TaskHandler.instance.addTask( CheckCookiesTask(context));
+  void _addTask() async {
     await FlutterDownloader.initialize();
+  }
+
+  void _setLang() async {
+    Locale myLocale = Localizations.localeOf(context);
+    Lang.load(myLocale);
+    setState(() {});
   }
 
   @override
@@ -55,19 +62,19 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     );
   }
 
-  Widget willPop(){
+  Widget willPop() {
     return WillPopScope(
-      onWillPop: () async{
+      onWillPop: () async {
         var currentState = bottomPageList.getKey(_currentIndex).currentState;
-        bool pop = (currentState == null)?true:!currentState.canPop();
+        bool pop = (currentState == null) ? true : !currentState.canPop();
         //Log.d(pop.toString());
-        if( pop ){
+        if (pop) {
           _closeAppTime++;
-          MyToast.show( S.current.closeOnce );
-          Future.delayed(Duration(seconds: 2)).then( (_){
+          MyToast.show(S.current.closeOnce);
+          Future.delayed(Duration(seconds: 2)).then((_) {
             _closeAppTime = 0;
           });
-        }else{
+        } else {
           bottomPageList.getKey(_currentIndex).currentState.pop();
           _closeAppTime = 0;
         }
@@ -81,14 +88,15 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     );
   }
 
-  Widget getIndexStack(){  //第一次會全部載入
+  Widget getIndexStack() {
+    //第一次會全部載入
     return IndexedStack(
       index: _currentIndex,
       children: bottomPageList.pageList,
     );
   }
 
-  Widget getPageView(){
+  Widget getPageView() {
     return PageView(
       controller: pageController,
       onPageChanged: onPageChanged,
@@ -106,8 +114,6 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       _currentIndex = index;
     });
   }
-
-
 
   Widget bottomNavigationBar() {
     return BottomNavigationBar(
@@ -128,6 +134,15 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
             ),
             title: Text(
               'Email',
+              style: TextStyle(color: _bottomNavigationColor),
+            )),
+        BottomNavigationBarItem(
+            icon: Icon(
+              Icons.calendar_today,
+              color: _bottomNavigationColor,
+            ),
+            title: Text(
+              'Calendar',
               style: TextStyle(color: _bottomNavigationColor),
             )),
         BottomNavigationBarItem(
@@ -156,6 +171,4 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       type: BottomNavigationBarType.shifting,
     );
   }
-
-
 }

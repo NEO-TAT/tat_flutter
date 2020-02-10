@@ -78,16 +78,17 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
     courseData.add(_buildCourseInfo(sprintf(
         "%s: %s", [S.current.startClass, courseMainInfo.getOpenClassName()])));
     courseData.add(_buildMultiButtonInfo(
-      sprintf("%s: ", [S.current.classroom, courseMainInfo.getTeacherName()]),
+      sprintf(
+          "%s: ", [S.current.classroom]),
       S.current.classroomUse,
       courseMainInfo.getClassroomNameList(),
       courseMainInfo.getClassroomHrefList(),
     ));
 
-    courseData.add(_buildCourseInfo(
-        sprintf("%s: %s", [ S.current.numberOfStudent , courseExtraInfo.course.selectNumber])));
-    courseData.add(_buildCourseInfo(
-        sprintf("%s: %s", [S.current.numberOfWithdraw , courseExtraInfo.course.withdrawNumber])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s",
+        [S.current.numberOfStudent, courseExtraInfo.course.selectNumber])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s",
+        [S.current.numberOfWithdraw, courseExtraInfo.course.withdrawNumber])));
 
     listItem.removeRange(0, listItem.length);
     listItem.add(_buildInfoTitle(S.current.courseData));
@@ -235,12 +236,14 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
             text,
             style: textStyle,
           ),
-          RaisedButton(
-            onPressed: () {
-              _launchWebView(buttonText, urlList[i]);
-            },
-            child: Text(buttonText),
-          )
+          urlList[i].isNotEmpty
+              ? RaisedButton(
+                  onPressed: () {
+                    _launchWebView(buttonText, urlList[i]);
+                  },
+                  child: Text(buttonText),
+                )
+              : Container()
         ],
       ));
     }

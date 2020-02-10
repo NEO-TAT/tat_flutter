@@ -21,7 +21,14 @@ class CourseTableTask extends TaskModel{
   @override
   Future<TaskStatus> taskStart() async{
     MyProgressDialog.showProgressDialog(context, S.current.getCourse );
-    List<CourseMainInfoJson> courseMainInfoList = await CourseConnector.getCourseMainInfoList(studentId , semester );
+    List<CourseMainInfoJson> courseMainInfoList;
+    Log.d( Model.instance.setting.other.lang ) ;
+    if( Model.instance.setting.other.lang.contains("zh")){  //根據語言選擇課表
+      courseMainInfoList = await CourseConnector.getTWCourseMainInfoList(studentId , semester );
+    }else{
+      courseMainInfoList = await CourseConnector.getENCourseMainInfoList(studentId , semester );
+    }
+
     MyProgressDialog.hideProgressDialog();
     if( courseMainInfoList != null  ) {
       CourseTableJson courseTable = CourseTableJson();

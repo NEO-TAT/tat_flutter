@@ -16,7 +16,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="ntutcoursehelper"
+        android:label="NTUTCourseHelper"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

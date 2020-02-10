@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sprintf/sprintf.dart';
 
 enum LogMode{
@@ -49,7 +50,7 @@ class Log{
 
   static void _printWrapped(String text) {
     final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-    pattern.allMatches(text).forEach((match) => print(match.group(0)));
+    pattern.allMatches(text).forEach((match) => debugPrint(match.group(0)));
   }
 
   static String _getFileLogError(){

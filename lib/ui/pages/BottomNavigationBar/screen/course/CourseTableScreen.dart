@@ -27,6 +27,7 @@ class CourseTableScreen extends StatefulWidget {
 class _CourseTableScreen extends State<CourseTableScreen> {
   final TextEditingController _studentIdControl = TextEditingController();
   final FocusNode _studentFocus = new FocusNode();
+  GlobalKey _key = GlobalKey();
   bool isLoading = true;
   CourseTableJson courseTableData;
   static double dayHeight = 25;
@@ -46,8 +47,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         }
       },
     );
-    if (userData.account.isEmpty || userData.password.isEmpty) {
-      Future.delayed(Duration(seconds: 1)).then((_) {
+    Future.delayed(Duration(milliseconds: 200)).then((_) {
+      if (userData.account.isEmpty || userData.password.isEmpty) {
         Navigator.of(context)
             .push(
           PageTransition(
@@ -60,10 +61,10 @@ class _CourseTableScreen extends State<CourseTableScreen> {
             _loadSetting();
           }
         }); //尚未登入
-      });
-    } else {
-      _loadSetting();
-    }
+      } else {
+        _loadSetting();
+      }
+    });
   }
 
   @override
@@ -73,6 +74,10 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   }
 
   void _loadSetting() {
+    //Log.d(MediaQuery.of(context).size.height.toString());
+    RenderObject renderObject = _key.currentContext.findRenderObject();
+    courseHeight =
+        (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight ) / 9;  //計算高度
     CourseTableJson courseTable = Model.instance.setting.course.info;
     if (courseTable.isEmpty) {
       _getCourseTable();
@@ -202,6 +207,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         ],
       ),
       body: Column(
+        key: _key,
         children: <Widget>[
           Container(
             height: studentIdHeight,
@@ -408,7 +414,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
     if (course.id.isEmpty) {
-      MyToast.show(course.name + S.current.noSupport );
+      MyToast.show(course.name + S.current.noSupport);
     } else {
       Navigator.of(context, rootNavigator: true)
           .push(

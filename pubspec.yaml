@@ -72,6 +72,9 @@ dependencies:
   auto_size_text: ^2.1.0
   native_color: ^1.2.0+1
   easy_dialog: ^1.0.5
+  table_calendar: ^2.2.2
+  flutter_range_slider: ^1.4.0
+  step_slider: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:

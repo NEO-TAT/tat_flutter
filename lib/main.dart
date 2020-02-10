@@ -53,20 +53,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/*
-MaterialApp(
-      localizationsDelegates: [
-        S.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-
-
-      //localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
-      title: 'Navigation Basics',
-      home: Scaffold(
-        body: BottomNavigationWidget(),
-      ),
-    );
- */

@@ -105,7 +105,7 @@
   "classroom" : "教室",
   "classroomUse" : "教室使用",
   "numberOfStudent" : "修課人數",
-  "candidates" : "撤選人數",
+  "numberOfWithdraw" : "撤選人數",
   "courseData" :"課程資料" ,
   "studentList" : "學生清單",
   "___________________FileStore___________________": "註解",

@@ -10,6 +10,7 @@ import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewPluginScreen.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
@@ -21,6 +22,8 @@ import '../../../../../src/store/json/UserDataJson.dart';
 enum onListViewPress { Setting, Logout, Report, About, ChangePassword }
 
 class SettingScreen extends StatefulWidget {
+  final PageController pageController;
+  SettingScreen(this.pageController);
   @override
   _SettingScreen createState() => _SettingScreen();
 }
@@ -49,8 +52,11 @@ class _SettingScreen extends State<SettingScreen> {
   void _onListViewPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.Logout:
-        Model.instance.logout();
-        Navigator.of(context).push(CustomRoute(LoginPage()));
+        Model.instance.logout().then( (_){
+          Navigator.of(context).push(CustomRoute(LoginPage())).then( (_){
+            widget.pageController.jumpToPage(0);  //跳轉到第一頁
+          });
+        });
         break;
       case onListViewPress.About:
         EasyDialog(
@@ -67,6 +73,14 @@ class _SettingScreen extends State<SettingScreen> {
           ],
         ).show(context);
         return;
+        break;
+      case onListViewPress.Setting:
+        Navigator.of(context).push(
+          PageTransition(
+            type: PageTransitionType.downToUp,
+            child: SettingPage( widget.pageController ),
+          ),
+        );
         break;
       case onListViewPress.Report:
         Navigator.of(context).push(
@@ -118,18 +132,19 @@ class _SettingScreen extends State<SettingScreen> {
     UserInfoJson userInfo = Model.instance.userData.info;
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
-    givenName = givenName ?? S.current.pleaseLogin;
-    userMail = userMail ?? "";
+    givenName = (givenName.isEmpty) ? S.current.pleaseLogin : givenName;
+    userMail = (userMail.isEmpty) ? "" : userMail;
+    Widget userImage = NTUTConnector.getUserImage();
     return Container(
       //color: Colors.yellow,
-      margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      height: 80,
+      margin: EdgeInsets.only(top: 20.0, left: 20 , right: 20.0, bottom: 20.0),
       constraints: BoxConstraints(maxHeight: 60),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          CircleAvatar(
-            radius: 30.0,
-            backgroundImage: NTUTConnector.getUserImage(),
+          Container(
+            child: userImage,
           ),
           SizedBox(
             width: 10.0,

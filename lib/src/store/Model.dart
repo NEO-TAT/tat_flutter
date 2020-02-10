@@ -5,6 +5,8 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
+import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +34,7 @@ class Model {
   List<SemesterJson> courseSemesterList;
   SettingJson setting;
   Map<String,dynamic> tempData;
+
 
   String getCourseNameByCourseId( String courseId){
     String name;
@@ -68,9 +71,8 @@ class Model {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
     tempData = Map();
-
     //_clearSetting( userDataJsonKey );
-    //_clearSetting( courseTableJsonKey );
+    _clearSetting( courseTableJsonKey );
     //_clearSetting( newAnnouncementJsonKey );
     //_clearSetting( settingJsonKey );
     //DioConnector.instance.deleteCookies();
@@ -93,17 +95,12 @@ class Model {
     readJson = await _readString( newAnnouncementJsonKey );
     newAnnouncementList = ( readJson != null ) ? NewAnnouncementJsonList.fromJson( json.decode(readJson) ) : NewAnnouncementJsonList();
 
-
     readJson = await _readString( settingJsonKey );
     setting = ( readJson != null ) ? SettingJson.fromJson( json.decode(readJson) ) : SettingJson();
 
-    //Log.d( userData.toString() );
-    //Log.d( courseTableList.toString() );
-    //Log.d( newAnnouncementList.toString() );
-    //Log.d( setting.toString() );
 
+    TaskHandler.instance.addTask( CheckCookiesTask(null));
 
-    //Log.d( courseTableList.toString() );
   }
 
 
@@ -112,6 +109,8 @@ class Model {
     for( String key in clearKey){
       _clearSetting(key);
     }
+    DioConnector.instance.deleteCookies();
+    await init();
   }
 
   Future<void> save(String key) async {
@@ -129,8 +128,16 @@ class Model {
         await _writeString(key, json.encode( saveObj[index] ) );
       }
     }
-
   }
+
+
+  Future<void> clear(String key) async {
+    List<String> saveKey = [userDataJsonKey ,courseTableJsonKey , courseSemesterJsonKey,newAnnouncementJsonKey , settingJsonKey ];
+    if( saveKey.contains(key) ){
+      await _clearSetting(key);
+    }
+  }
+
 
   void addCourseTable(CourseTableJson addCourseTable) {
     if( addCourseTable.studentId != userData.account ){  //只儲存自己的課表

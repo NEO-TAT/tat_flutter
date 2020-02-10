@@ -104,7 +104,7 @@ class ScoreConnector {
           ScoreJson score = ScoreJson();
           score.name = scoreNode.getElementsByTagName("th")[2].text.replaceAll("\n", "");
           score.credit =  double.parse(scoreNode.getElementsByTagName("th")[5].text);
-          score.score = double.parse(scoreNode.getElementsByTagName("th")[6].text);
+          score.score = scoreNode.getElementsByTagName("th")[6].text.replaceAll("\n", "");
           courseScore.courseScoreList.add(score);
         }
 

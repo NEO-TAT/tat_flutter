@@ -11,7 +11,10 @@ class CourseTableControl {
   bool isHideSunday = false;
   bool isHideUnKnown = false;
   bool isHideN = false;
-  bool isHideABCD = false;
+  bool isHideA = false;
+  bool isHideB = false;
+  bool isHideC = false;
+  bool isHideD = false;
   CourseTableJson courseTable;
   List<String> dayStringList = [
     S.current.Monday,
@@ -67,13 +70,10 @@ class CourseTableControl {
     isHideSunday = !courseTable.isDayInCourseTable(Day.Saturday);
     isHideUnKnown = !courseTable.isDayInCourseTable(Day.UnKnown);
     isHideN = !courseTable.isSectionNumberInCourseTable(SectionNumber.T_N);
-    isHideABCD = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_A));
-    isHideABCD &=
-        (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_B));
-    isHideABCD &=
-        (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_C));
-    isHideABCD &=
-        (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_D));
+    isHideA = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_A));
+    isHideB = isHideA | (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_B));
+    isHideC = isHideB | (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_C));
+    isHideD = isHideC | (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_D));
     _initColorList();
   }
 
@@ -124,7 +124,10 @@ class CourseTableControl {
     List<int> intList = List();
     for (int i = 0; i < sectionLength; i++) {
       if (isHideN && i == 4) continue;
-      if (isHideABCD && (i == 10 || i == 11 || i == 12 || i == 13)) continue;
+      if (isHideA && i == 10) continue;
+      if (isHideB && i == 11) continue;
+      if (isHideC && i == 12) continue;
+      if (isHideD && i == 13) continue;
       intList.add(i);
     }
     return intList;

@@ -55,7 +55,9 @@ class NTUTLoginTask extends TaskModel {
         parameter.desc = S.current.accountPasswordError;
         parameter.btnOkText = S.current.setting;
         parameter.btnOkOnPress =  () {
-          Navigator.of(context).push(CustomRoute(LoginPage()));
+          Navigator.of(context).push(CustomRoute(LoginPage())).then( (_){
+            reStartTask();
+          });
         };
         break;
       case NTUTConnectorStatus.ConnectTimeOutError:
