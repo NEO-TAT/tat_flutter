@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/lang/lang.dart';
 import 'package:step_slider/step_slider.dart';
 
@@ -36,11 +37,11 @@ class _SettingPage extends State<SettingPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "語言切換",
+                      S.current.languageSwitch ,
                       style: TextStyle(fontSize: 24),
                     ),
                     Text(
-                      "將自動重啟並套用語言",
+                      S.current.willRestart,
                       style: TextStyle(fontSize: 16, color: Color(0xFF808080)),
                     ),
                   ],

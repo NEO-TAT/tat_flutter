@@ -37,7 +37,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       bottomPageList.add(BottomPage(CourseTableScreen()));
       bottomPageList
           .add(BottomPage(NewAnnouncementScreen(), useNavigatorKey: true));
-      bottomPageList.add(BottomPage(CalendarScreen()));
+      //bottomPageList.add(BottomPage(CalendarScreen()));
       bottomPageList.add(BottomPage(OtherScreen()));
       bottomPageList.add(BottomPage(SettingScreen(pageController)));
       _setLang();
@@ -136,6 +136,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
               'Email',
               style: TextStyle(color: _bottomNavigationColor),
             )),
+        /*
         BottomNavigationBarItem(
             icon: Icon(
               Icons.calendar_today,
@@ -145,6 +146,8 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
               'Calendar',
               style: TextStyle(color: _bottomNavigationColor),
             )),
+
+         */
         BottomNavigationBarItem(
             icon: Icon(
               Icons.pages,

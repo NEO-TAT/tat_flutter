@@ -39,6 +39,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   @override
   void initState() {
     super.initState();
+    _studentIdControl.text = " ";
     UserDataJson userData = Model.instance.userData;
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {

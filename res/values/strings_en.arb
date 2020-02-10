@@ -108,6 +108,8 @@
   "numberOfWithdraw" : "Number of withdraw",
   "courseData" :"Course Information" ,
   "studentList" : "Student list",
+  "languageSwitch" : "Language switch",
+  "willRestart" : "Will restart automatically",
   "___________________FileStore___________________": "註解",
   "noPermission": "Permission denied"
 }

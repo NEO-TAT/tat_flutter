@@ -92,6 +92,7 @@ class S implements WidgetsLocalizations {
   String get getScoreRank => "Getting grade...";
   String get getScoreRankError => "Getting grade error";
   String get instructor => "Instructor";
+  String get languageSwitch => "Language switch";
   String get location => "Location";
   String get login => "Login";
   String get loginCourse => "Login Course System...";
@@ -132,6 +133,7 @@ class S implements WidgetsLocalizations {
   String get unknownError => "An unknown error occurred";
   String get update => "update";
   String get warning => "warning";
+  String get willRestart => "Will restart automatically";
 }
 
 class $en extends S {
@@ -221,6 +223,8 @@ class $zh extends S {
   @override
   String get courseName => "課程名稱";
   @override
+  String get willRestart => "將自動重啟並套用語言";
+  @override
   String get ___________________OtherUi___________________ => "註解";
   @override
   String get getScoreRankError => "取得成績錯誤";
@@ -266,6 +270,8 @@ class $zh extends S {
   String get app_name => "北科課程助手";
   @override
   String get UnKnown => "";
+  @override
+  String get languageSwitch => "語言切換";
   @override
   String get authCodeFail => "驗證碼錯誤";
   @override
