@@ -1,3 +1,11 @@
+//
+//  NTUTConnector.dart
+//  北科課程助手
+//
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -81,7 +89,7 @@ class NTUTConnector {
     }
   }
 
-  static Future<String> getCalendar(DateTime startTime , DateTime endTime ) async{
+  static Future<String> getCalendar(DateTime startTime , DateTime endTime ) async{  //暫無用到 取得學校行事曆
     ConnectorParameter parameter;
     try {
       Map<String, String> data = {
@@ -124,6 +132,10 @@ class NTUTConnector {
 
   static bool get isLogin {
     return _isLogin;
+  }
+
+  static void loginFalse(){
+    _isLogin = false;
   }
 
   static Future<bool> checkLogin() async {

@@ -1,3 +1,12 @@
+//
+//  ScoreConnector.dart
+//  北科課程助手
+//
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
+
+
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -63,7 +72,7 @@ class ScoreConnector {
     }
   }
 
-  static Future<List<CourseScoreJson>> getScoreRankList() async {
+  static Future<List<CourseScoreJson>> getScoreRankList() async {  //取得排名與成績
     ConnectorParameter parameter;
     String result;
     Document tagNode;

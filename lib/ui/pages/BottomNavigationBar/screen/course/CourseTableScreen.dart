@@ -1,7 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';

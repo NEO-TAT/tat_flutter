@@ -1,11 +1,8 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';

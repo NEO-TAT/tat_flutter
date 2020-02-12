@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
-import 'package:provider/provider.dart';
 
 import '../../../src/store/Model.dart';
 import '../../../src/store/json/UserDataJson.dart';

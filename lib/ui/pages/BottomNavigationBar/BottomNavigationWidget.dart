@@ -1,19 +1,13 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/lang/lang.dart';
+import 'package:flutter_app/src/lang/Lang.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/calendar/CalendarScreen.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/NewAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/OtherScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/course/CourseTableScreen.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/WebViewPluginScreen.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/internet/WebViewScreen.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/screen/setting/SettingScreen.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'BottomPage.dart';
@@ -33,7 +27,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   @override
   void initState() {
     super.initState();
-    Model.instance.init().then((value) {
+    Model.instance.init().then((value) {  //載入儲存資料
       bottomPageList.add(BottomPage(CourseTableScreen()));
       bottomPageList
           .add(BottomPage(NewAnnouncementScreen(), useNavigatorKey: true));
@@ -42,10 +36,15 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       bottomPageList.add(BottomPage(SettingScreen(pageController)));
       _setLang();
     });
+    _flutterDownloaderInit();
     _addTask();
   }
 
-  void _addTask() async {
+  void _addTask() {
+    TaskHandler.instance.addTask( CheckCookiesTask(null));  //第一次登入要檢查
+  }
+
+  void _flutterDownloaderInit() async {
     await FlutterDownloader.initialize();
   }
 

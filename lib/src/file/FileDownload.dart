@@ -1,5 +1,12 @@
+//
+//  FileDownload.dart
+//  北科課程助手
+//  下載檔案用使用flutter_downloader
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 

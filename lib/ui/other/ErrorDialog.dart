@@ -1,3 +1,10 @@
+//  ErrorDialog.dart
+//  北科課程助手
+//  用於顯示錯誤視窗
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';

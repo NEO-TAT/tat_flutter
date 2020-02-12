@@ -1,5 +1,12 @@
-import 'dart:async';
+//  ListViewAnimator.dart
+//  北科課程助手
+//  用於顯示動畫
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
 
+
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
 class Animator extends StatefulWidget {

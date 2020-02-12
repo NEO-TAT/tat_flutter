@@ -1,18 +1,18 @@
+//  Model.dart
+//  北科課程助手
+//  用於儲存資料與得取資料
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sprintf/sprintf.dart';
 import 'json/CourseClassJson.dart';
-import 'json/CourseTableJson.dart';
 import 'json/CourseTableJson.dart';
 import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
@@ -72,7 +72,7 @@ class Model {
     await DioConnector.instance.init();
     tempData = Map();
     //_clearSetting( userDataJsonKey );
-    _clearSetting( courseTableJsonKey );
+    //_clearSetting( courseTableJsonKey );
     //_clearSetting( newAnnouncementJsonKey );
     //_clearSetting( settingJsonKey );
     //DioConnector.instance.deleteCookies();
@@ -97,9 +97,6 @@ class Model {
 
     readJson = await _readString( settingJsonKey );
     setting = ( readJson != null ) ? SettingJson.fromJson( json.decode(readJson) ) : SettingJson();
-
-
-    TaskHandler.instance.addTask( CheckCookiesTask(null));
 
   }
 

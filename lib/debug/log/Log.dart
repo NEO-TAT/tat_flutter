@@ -1,3 +1,11 @@
+//
+//  Log.dart
+//  北科課程助手
+//
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
+
 import 'package:flutter/cupertino.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -8,16 +16,16 @@ enum LogMode{
 
 class Log{
   static String _lastLog = "";
-  static void e( String data ) {
+  static void e( String data ) {    //用於顯示已用try catch的處理error
     myLog( LogMode.LogError , data );
   }
 
-  static void error( String data ) {
+  static void error( String data ) {  //用於顯示無try catch的error
     myLog( LogMode.LogError , data );
   }
 
 
-  static void d(String data ) {
+  static void d(String data ) {  //用於debug的Log
     myLog( LogMode.LogDebug , data );
   }
 

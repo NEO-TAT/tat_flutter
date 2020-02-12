@@ -1,5 +1,12 @@
-import 'dart:io';
+//
+//  FileStore.dart
+//  北科課程助手
+//  文件儲存位置
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
 
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';

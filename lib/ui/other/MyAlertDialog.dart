@@ -1,11 +1,14 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+//  MyAlertDialog.dart
+//  北科課程助手
+//  暫無用到
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
-import 'package:path/path.dart';
-
-import 'CustomRoute.dart';
 
 class MyAlertDialog {
   static void showAlertDialog(BuildContext context, String message) {

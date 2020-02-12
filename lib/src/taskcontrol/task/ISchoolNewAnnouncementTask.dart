@@ -1,12 +1,8 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 

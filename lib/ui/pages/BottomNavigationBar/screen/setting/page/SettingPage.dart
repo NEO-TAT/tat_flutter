@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/lang/lang.dart';
+import 'package:flutter_app/src/lang/Lang.dart';
 import 'package:step_slider/step_slider.dart';
 
 class SettingPage extends StatefulWidget {

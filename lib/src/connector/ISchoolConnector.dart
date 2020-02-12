@@ -1,3 +1,11 @@
+//
+//  ISchoolConnector.dart
+//  北科課程助手
+//
+//  Created by morris13579 on 2020/02/12.
+//  Copyright © 2020 morris13579 All rights reserved.
+//
+
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
@@ -91,7 +99,7 @@ class ISchoolConnector {
       Response response = await Connector.getDataByGetResponse(parameter);
       bool isDelete = false;
       String location = response.redirects[0].location.toString();
-      if( location.contains( "messagebox.php" ) ){
+      if( location.contains( "messagebox.php" ) ){  //確定刪除成功
         isDelete = true;
       }
       return isDelete;
@@ -351,6 +359,10 @@ class ISchoolConnector {
 
   static bool get isLogin {
     return _isLogin;
+  }
+
+  static void loginFalse(){
+    _isLogin = false;
   }
 
   static Future<bool> checkLogin() async {
