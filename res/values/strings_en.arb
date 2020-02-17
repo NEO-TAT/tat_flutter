@@ -111,5 +111,12 @@
   "languageSwitch" : "Language switch",
   "willRestart" : "Will restart automatically",
   "___________________FileStore___________________": "註解",
-  "noPermission": "Permission denied"
+  "noPermission": "Permission denied",
+  "___________________AboutPage___________________": "註解",
+  "findNewVersion": "Find new version",
+  "checkVersion": "Check Version",
+  "checkingVersion" : "Checking Version...",
+  "Contribution" : "Contribution",
+  "versionInfo" : "Version Info",
+  "isNewVersion" : "Already the latest version"
 }

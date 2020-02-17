@@ -111,5 +111,12 @@
   "languageSwitch" : "語言切換",
   "willRestart" : "將自動重啟並套用語言",
   "___________________FileStore___________________": "註解",
-  "noPermission": "沒有權限"
+  "noPermission": "沒有權限",
+  "___________________AboutPage___________________": "註解",
+  "findNewVersion": "發現新版本",
+  "checkVersion": "檢查新版本",
+  "checkingVersion" : "檢查中...",
+  "Contribution" : "貢獻",
+  "versionInfo" : "版本資訊",
+  "isNewVersion" : "已經是最新版本了"
 }

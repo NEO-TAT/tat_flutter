@@ -85,13 +85,13 @@ const _$SectionNumberEnumMap = {
 };
 
 const _$DayEnumMap = {
-  Day.Sunday: 'Sunday',
   Day.Monday: 'Monday',
   Day.Tuesday: 'Tuesday',
   Day.Wednesday: 'Wednesday',
   Day.Thursday: 'Thursday',
   Day.Friday: 'Friday',
   Day.Saturday: 'Saturday',
+  Day.Sunday: 'Sunday',
   Day.UnKnown: 'UnKnown',
 };
 

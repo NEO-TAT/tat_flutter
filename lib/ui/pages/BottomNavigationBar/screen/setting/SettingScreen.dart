@@ -10,6 +10,7 @@ import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewPluginScreen.dart';
+import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,7 +20,7 @@ import 'package:random_color/random_color.dart';
 import '../../../../../src/store/Model.dart';
 import '../../../../../src/store/json/UserDataJson.dart';
 
-enum onListViewPress { Setting, Logout, Report, About, ChangePassword }
+enum onListViewPress { Setting, Logout, Report, About, ChangePassword  }
 
 class SettingScreen extends StatefulWidget {
   final PageController pageController;
@@ -59,20 +60,12 @@ class _SettingScreen extends State<SettingScreen> {
         });
         break;
       case onListViewPress.About:
-        EasyDialog(
-          contentPadding: EdgeInsets.all(10),
-          title: Text(
-            S.current.aboutDialogString,
+        Navigator.of(context).push(
+          PageTransition(
+            type: PageTransitionType.downToUp,
+            child: AboutPage(),
           ),
-          description: Text(""),
-          contentList: [
-            Text(
-              "Power by morris13579",
-              textAlign: TextAlign.end,
-            ),
-          ],
-        ).show(context);
-        return;
+        );
         break;
       case onListViewPress.Setting:
         Navigator.of(context).push(
@@ -100,7 +93,7 @@ class _SettingScreen extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting'),
+        title: Text(S.current.setting),
       ),
       body: ListView.separated(
         itemCount: listViewData.length + 1,

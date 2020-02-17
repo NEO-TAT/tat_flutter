@@ -24,7 +24,7 @@ class _SettingPage extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting'),
+        title: Text(S.current.setting),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
