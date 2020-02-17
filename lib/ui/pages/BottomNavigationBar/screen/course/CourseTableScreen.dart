@@ -109,18 +109,18 @@ class _CourseTableScreen extends State<CourseTableScreen> {
     }
 
     CourseTableJson courseTable;
-    if (!refresh) {
+    if (!refresh) {  //是否要去找暫存的
       courseTable =
           Model.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
     }
-    if (courseTable == null) {
+    if (courseTable == null) {  //代表沒有暫存的需要爬蟲
       TaskHandler.instance
           .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
       courseTable = Model.instance.tempData[CourseTableTask.courseTableTempKey];
-      Model.instance.setting.course.info = courseTable; //儲存課表
-      Model.instance.save(Model.settingJsonKey);
     }
+    Model.instance.setting.course.info = courseTable; //儲存課表
+    Model.instance.save(Model.settingJsonKey);
     _showCourseTable(courseTable);
   }
 

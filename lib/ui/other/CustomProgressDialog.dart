@@ -91,6 +91,7 @@ class StyleProgressDialog {
   Future<void> dismissProgressDialog(BuildContext context) async {
     _timer?.cancel();
     await lock.synchronized(() async {
+      if( isDismissed == null ) return;  //修正返回後等待窗消失問題
       if (isDismissed) {
         return;
       }

@@ -21,6 +21,7 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  String get Contribution => "Contribution";
   String get Friday => "FRI";
   String get Monday => "MON";
   String get Saturday => "SAT";
@@ -29,6 +30,7 @@ class S implements WidgetsLocalizations {
   String get Tuesday => "TUE";
   String get UnKnown => "";
   String get Wednesday => "WED";
+  String get ___________________AboutPage___________________ => "註解";
   String get ___________________FileStore___________________ => "註解";
   String get ___________________OtherUi___________________ => "註解";
   String get ___________________courseUi___________________ => "註解";
@@ -52,6 +54,8 @@ class S implements WidgetsLocalizations {
   String get category => "Category";
   String get changePassword => "Change the password";
   String get checkLogin => "Check login...";
+  String get checkVersion => "Check Version";
+  String get checkingVersion => "Checking Version...";
   String get classroom => "Classroom";
   String get classroomUse => "classroomUse";
   String get clearAndRefresh => "Clear and refresh";
@@ -73,6 +77,7 @@ class S implements WidgetsLocalizations {
   String get file => "File";
   String get fileAttachmentDetected => "File attachment detected";
   String get fileViewer => "fileViewer";
+  String get findNewVersion => "Find new version";
   String get getCourse => "Get schedule...";
   String get getCourseDetail => "Reading course materials...";
   String get getCourseDetailError => "Course data reading error";
@@ -92,6 +97,7 @@ class S implements WidgetsLocalizations {
   String get getScoreRank => "Getting grade...";
   String get getScoreRankError => "Getting grade error";
   String get instructor => "Instructor";
+  String get isNewVersion => "Already the latest version";
   String get languageSwitch => "Language switch";
   String get location => "Location";
   String get login => "Login";
@@ -132,6 +138,7 @@ class S implements WidgetsLocalizations {
   String get titleEmail => "Email";
   String get unknownError => "An unknown error occurred";
   String get update => "update";
+  String get versionInfo => "Version Info";
   String get warning => "warning";
   String get willRestart => "Will restart automatically";
 }
@@ -219,6 +226,8 @@ class $zh extends S {
   @override
   String get downloadFile => "下載檔案";
   @override
+  String get isNewVersion => "已經是最新版本了";
+  @override
   String get ___________________task___________________ => "註解";
   @override
   String get courseName => "課程名稱";
@@ -266,6 +275,8 @@ class $zh extends S {
   String get refresh => "重新整理";
   @override
   String get deleteMessage => "刪除訊息中...";
+  @override
+  String get ___________________AboutPage___________________ => "註解";
   @override
   String get app_name => "北科課程助手";
   @override
@@ -323,9 +334,15 @@ class $zh extends S {
   @override
   String get closeOnce => "再按一次關閉";
   @override
+  String get checkingVersion => "檢查中...";
+  @override
   String get getCourseSemester => "取得學期清單中...";
   @override
+  String get versionInfo => "版本資訊";
+  @override
   String get titleCourse => "課表查詢";
+  @override
+  String get findNewVersion => "發現新版本";
   @override
   String get instructor => "授課老師";
   @override
@@ -357,6 +374,8 @@ class $zh extends S {
   @override
   String get aboutDialogString => "這是一個關於北科大課程的APP";
   @override
+  String get checkVersion => "檢查新版本";
+  @override
   String get loginISchoolError => "登入北科I學園錯誤";
   @override
   String get changePassword => "更改密碼";
@@ -372,6 +391,8 @@ class $zh extends S {
   String get account => "帳號";
   @override
   String get titleEmail => "Email";
+  @override
+  String get Contribution => "貢獻";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {

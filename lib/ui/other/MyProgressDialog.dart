@@ -14,10 +14,11 @@ class MyProgressDialog {
     _context = context;
     _progressDialog.showProgressDialog(
         context,
-        dismissAfter: Duration(seconds: 20 ),
+        //dismissAfter: Duration(seconds: 20 ),
+        dismissAfter: null,  //不設置自動關閉時間
         textToBeDisplayed:message,
         onDismiss:(){
-
+          _progressDialog.dismissProgressDialog(_context);
         }
         );
   }
