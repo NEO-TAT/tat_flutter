@@ -304,16 +304,12 @@ class Model {
   }
 
   Future<void> logout() async {
-    List<String> clearKey = [
-      userDataJsonKey,
-      courseTableJsonKey,
-      courseSemesterJsonKey,
-      newAnnouncementJsonKey,
-      settingJsonKey
-    ];
-    for (String key in clearKey) {
-      _clearSetting(key);
-    }
+    clearUserData();
+    clearSemesterJsonList();
+    clearCourseTableList();
+    clearNewAnnouncement();
+    clearAnnouncementSetting();
+    clearCourseSetting();
     DioConnector.instance.deleteCookies();
     await init();
   }
