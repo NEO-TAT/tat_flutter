@@ -5,6 +5,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
+import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolDeleteNewAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementDetailTask.dart';
@@ -32,7 +33,7 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
   @override
   void initState() {
     super.initState();
-    items = Model.instance.newAnnouncementList.newAnnouncementList;
+    items = Model.instance.getNewAnnouncementList();
     if (items.length == 0) {
       _getAnnouncement();
     } else {
@@ -44,8 +45,8 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
     //第一次
     TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, 1));
     await TaskHandler.instance.startTaskQueue(context);
-    Model.instance.setting.announcement.page = 1;
-    Model.instance.save(Model.settingJsonKey);
+    Model.instance.getAnnouncementSetting().page = 1;
+    Model.instance.saveAnnouncementSetting();
     _loadAnnouncement();
   }
 
@@ -67,13 +68,14 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
 
   void _loadAnnouncement() async {
     //取得已經儲存的公告
-    items = Model.instance.newAnnouncementList.newAnnouncementList;
+    items = Model.instance.getNewAnnouncementList();
     setState(() {});
   }
 
   Future<void> _loadAnnouncementMaxPage() async {
-    Log.d(Model.instance.setting.announcement.maxPage.toString());
-    if (Model.instance.setting.announcement.maxPage == 0) {
+    AnnouncementSettingJson announcementSetting = Model.instance.getAnnouncementSetting();
+    Log.d( announcementSetting.maxPage.toString());
+    if ( announcementSetting.maxPage == 0) {
       //第一次要取得頁數
       TaskHandler.instance.addTask(ISchoolNewAnnouncementPageTask(context));
       await TaskHandler.instance.startTaskQueue(context);
@@ -97,12 +99,14 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
       });
     } else {
       await _loadAnnouncementMaxPage();
-      Model.instance.setting.announcement.page++;
-      int page = Model.instance.setting.announcement.page;
+      AnnouncementSettingJson announcementSetting = Model.instance.getAnnouncementSetting();
+      announcementSetting.page++;
+      int page = announcementSetting.page;
       Log.d(items.length.toString());
-      int maxPage = Model.instance.setting.announcement.maxPage;
+      int maxPage = announcementSetting.maxPage;
       if (page <= maxPage) {
-        Model.instance.save(Model.settingJsonKey);
+        Model.instance.setAnnouncementSetting(announcementSetting);
+        Model.instance.saveAnnouncementSetting();
         TaskHandler.instance.addTask(ISchoolNewAnnouncementTask(context, page));
         await TaskHandler.instance.startTaskQueue(context);
         _loadAnnouncement();
@@ -230,11 +234,10 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
               context, newAnnouncement.messageId));
           await TaskHandler.instance.startTaskQueue(context);
           bool isDelete = Model
-              .instance.tempData[ISchoolDeleteNewAnnouncementTask.isDeleteKey];
+              .instance.getTempData(ISchoolDeleteNewAnnouncementTask.isDeleteKey);
           if (isDelete) {
-            Model.instance.newAnnouncementList.newAnnouncementList
-                .removeAt(index);
-            Model.instance.save(Model.newAnnouncementJsonKey);
+            Model.instance.getNewAnnouncementList().removeAt(index);
+            Model.instance.saveNewAnnouncement();
             items.removeAt(index);
             setState(() {});
           }

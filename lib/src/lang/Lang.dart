@@ -13,18 +13,21 @@ import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 
+enum LangEnum{ en , zh }
+
 class Lang {
   static Future<void> load([Locale myLocale]) async {
-    if (Model.instance.setting.other.lang.isEmpty && myLocale != null) {
+    OtherSettingJson otherSetting = OtherSettingJson();
+    otherSetting = Model.instance.getOtherSetting();
+    if (  otherSetting.lang.isEmpty && myLocale != null  ) {
       if (myLocale.toString().contains("zh")) {
-        Model.instance.setting.other.lang = "zh";
+        otherSetting.lang = "zh";
       } else {
-        Model.instance.setting.other.lang = "en";
+        otherSetting.lang = "en";
       }
-      await Model.instance.save(Model.settingJsonKey);
     }
     Locale locale;
-    switch (Model.instance.setting.other.lang) {
+    switch (otherSetting.lang) {
       case "zh":
         locale = Locale("zh", "");
         break;
@@ -36,33 +39,38 @@ class Lang {
         break;
     }
     S.delegate.load(locale);
+
+    Model.instance.setOtherSetting(otherSetting);
+    await Model.instance.saveOtherSetting();
+
   }
 
   static Future<void> setLang(String lang) async {
-    if (Model.instance.setting.other.lang.contains(lang)) {
+    OtherSettingJson otherSetting = OtherSettingJson();
+    otherSetting = Model.instance.getOtherSetting();
+    if ( otherSetting.lang.contains(lang)) {
       return;
     } else {
-      await Model.instance.clear( Model.courseTableJsonKey );
-      Model.instance.setting.course = CourseSettingJson();
-      await Model.instance.save( Model.settingJsonKey );
-      await Model.instance.init();
+      await Model.instance.clearCourseTableList();
+      await Model.instance.clearCourseSetting();
       switch (lang) {
         case "zh":
-          Model.instance.setting.other.lang = "zh";
+          otherSetting.lang = "zh";
           break;
         default:
-          Model.instance.setting.other.lang = "en";
+          otherSetting.lang = "en";
           break;
       }
-      await Model.instance.save(Model.settingJsonKey);
-      Log.d( Model.instance.setting.other.lang );
+      Model.instance.setOtherSetting(otherSetting);
+      await Model.instance.saveOtherSetting();
       await load();
     }
   }
 
-
-  static double getLangIndex(){
-    return Model.instance.setting.other.lang.contains("zh") ? 1:0;
+  static LangEnum getLangIndex(){
+    OtherSettingJson otherSetting = OtherSettingJson();
+    otherSetting = Model.instance.getOtherSetting();
+    return otherSetting.lang.contains("zh") ? LangEnum.zh : LangEnum.en;
   }
 
 }

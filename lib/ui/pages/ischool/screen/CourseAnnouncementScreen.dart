@@ -2,21 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolCourseAnnouncementTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CourseAnnouncementScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
-  CourseAnnouncementScreen( this.courseInfo );
+  final String studentId;
+  CourseAnnouncementScreen( this.studentId , this.courseInfo );
 
   @override
   _CourseAnnouncementScreen createState( ) => _CourseAnnouncementScreen();
@@ -34,9 +36,12 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
 
   void _addTask() async {
     String courseId = widget.courseInfo.main.course.id;
+    if( widget.studentId != ISchoolConnector.loginStudentId ){
+      TaskHandler.instance.addTask(ISchoolLoginTask(context, studentId: widget.studentId));
+    }
     TaskHandler.instance.addTask( ISchoolCourseAnnouncementTask(context , courseId));
     await TaskHandler.instance.startTaskQueue(context);
-    courseAnnouncementList = Model.instance.tempData[ ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey];
+    courseAnnouncementList = Model.instance.getTempData( ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey );
     setState(() {
 
     });

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/lang/Lang.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
@@ -21,8 +22,7 @@ class CourseTableTask extends TaskModel{
   Future<TaskStatus> taskStart() async{
     MyProgressDialog.showProgressDialog(context, S.current.getCourse );
     List<CourseMainInfoJson> courseMainInfoList;
-    Log.d( Model.instance.setting.other.lang ) ;
-    if( Model.instance.setting.other.lang.contains("zh")){  //根據語言選擇課表
+    if( Lang.getLangIndex() == LangEnum.zh ){  //根據語言選擇課表
       courseMainInfoList = await CourseConnector.getTWCourseMainInfoList(studentId , semester );
     }else{
       courseMainInfoList = await CourseConnector.getENCourseMainInfoList(studentId , semester );
@@ -49,11 +49,11 @@ class CourseTableTask extends TaskModel{
               Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
         }
       }
-      if( studentId == Model.instance.userData.account ){  //只儲存自己的課表
+      if( studentId == Model.instance.getAccount() ){  //只儲存自己的課表
         Model.instance.addCourseTable( courseTable );
-        await Model.instance.save( Model.courseTableJsonKey );
+        await Model.instance.saveCourseTableList();
       }
-      Model.instance.tempData[courseTableTempKey] = courseTable;
+      Model.instance.setTempData(courseTableTempKey, courseTable);
       return TaskStatus.TaskSuccess;
     }else {
       _handleError();

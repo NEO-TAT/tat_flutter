@@ -1,8 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:community_material_icon/community_material_icon.dart';
-import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
@@ -13,7 +9,6 @@ import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebView
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
 
@@ -122,7 +117,7 @@ class _SettingScreen extends State<SettingScreen> {
   }
 
   Container _buildHeader() {
-    UserInfoJson userInfo = Model.instance.userData.info;
+    UserInfoJson userInfo = Model.instance.getUserInfo();
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
     givenName = (givenName.isEmpty) ? S.current.pleaseLogin : givenName;

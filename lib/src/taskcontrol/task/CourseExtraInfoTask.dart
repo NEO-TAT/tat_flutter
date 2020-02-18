@@ -20,7 +20,7 @@ class CourseExtraInfoTask extends TaskModel{
     CourseExtraInfoJson courseInfo = await CourseConnector.getCourseExtraInfo(id);
     MyProgressDialog.hideProgressDialog();
     if( courseInfo != null ) {
-      Model.instance.tempData[tempDataKey] = courseInfo;
+      Model.instance.setTempData(tempDataKey, courseInfo);
       return TaskStatus.TaskSuccess;
     }else {
       _handleError();

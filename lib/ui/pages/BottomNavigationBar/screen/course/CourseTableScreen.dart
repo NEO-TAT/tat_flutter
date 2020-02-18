@@ -6,6 +6,7 @@ import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseTableTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseSemesterTask.dart';
+import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolScreen.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
@@ -38,7 +39,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   void initState() {
     super.initState();
     _studentIdControl.text = " ";
-    UserDataJson userData = Model.instance.userData;
+    UserDataJson userData = Model.instance.getUserData();
     KeyboardVisibilityNotification().addNewListener(
       onChange: (bool visible) {
         if (!visible) {
@@ -62,6 +63,15 @@ class _CourseTableScreen extends State<CourseTableScreen> {
         }); //尚未登入
       } else {
         _loadSetting();
+        _checkAppVersion();
+      }
+    });
+  }
+
+  void _checkAppVersion() {
+    AppUpdate.checkUpdate().then((value) {
+      if (value != null) {
+        AppUpdate.showUpdateDialog(context, value);
       }
     });
   }
@@ -75,9 +85,11 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   void _loadSetting() {
     //Log.d(MediaQuery.of(context).size.height.toString());
     RenderObject renderObject = _key.currentContext.findRenderObject();
-    courseHeight =
-        (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight ) / 9;  //計算高度
-    CourseTableJson courseTable = Model.instance.setting.course.info;
+    courseHeight = (renderObject.semanticBounds.size.height -
+            studentIdHeight -
+            dayHeight) /
+        9; //計算高度
+    CourseTableJson courseTable = Model.instance.getCourseSetting().info;
     if (courseTable.isEmpty) {
       _getCourseTable();
     } else {
@@ -95,32 +107,34 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       String studentId,
       bool refresh: false}) async {
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
-    UserDataJson userData = Model.instance.userData;
+    UserDataJson userData = Model.instance.getUserData();
     studentId = studentId ?? userData.account;
     if (courseTableData?.studentId != studentId) {
-      Model.instance.courseSemesterList = List(); //需重設因為更換了studentId
+      Model.instance.clearSemesterJsonList(); //需重設因為更換了studentId
     }
     SemesterJson semesterJson;
     if (semesterSetting == null) {
       await _getSemesterList(studentId);
-      semesterJson = Model.instance.courseSemesterList[0];
+      semesterJson = Model.instance.setSemesterJsonItem(0);
     } else {
       semesterJson = semesterSetting;
     }
 
     CourseTableJson courseTable;
-    if (!refresh) {  //是否要去找暫存的
+    if (!refresh) {
+      //是否要去找暫存的
       courseTable =
           Model.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
     }
-    if (courseTable == null) {  //代表沒有暫存的需要爬蟲
+    if (courseTable == null) {
+      //代表沒有暫存的需要爬蟲
       TaskHandler.instance
           .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
-      courseTable = Model.instance.tempData[CourseTableTask.courseTableTempKey];
+      courseTable = Model.instance.getTempData(CourseTableTask.courseTableTempKey);
     }
-    Model.instance.setting.course.info = courseTable; //儲存課表
-    Model.instance.save(Model.settingJsonKey);
+    Model.instance.getCourseSetting().info = courseTable; //儲存課表
+    Model.instance.saveCourseSetting();
     _showCourseTable(courseTable);
   }
 
@@ -139,12 +153,12 @@ class _CourseTableScreen extends State<CourseTableScreen> {
 
   void _showSemesterList() async {
     //顯示選擇學期
-    if (Model.instance.courseSemesterList.length == 0) {
+    if (Model.instance.getSemesterList().length == 0) {
       TaskHandler.instance
           .addTask(CourseSemesterTask(context, _studentIdControl.text));
       await TaskHandler.instance.startTaskQueue(context);
     }
-    List<SemesterJson> semesterList = Model.instance.courseSemesterList;
+    List<SemesterJson> semesterList = Model.instance.getSemesterList();
     showDialog(
       useRootNavigator: false,
       context: context,
@@ -412,6 +426,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
   void _showCourseDetail(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
+    String studentId = _studentIdControl.text;
     if (course.id.isEmpty) {
       MyToast.show(course.name + S.current.noSupport);
     } else {
@@ -419,14 +434,14 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           .push(
         PageTransition(
           type: PageTransitionType.leftToRight,
-          child: ISchoolScreen(courseInfo),
+          child: ISchoolScreen(studentId,  courseInfo),
         ),
       )
           .then(
         (value) {
           if (value != null) {
             SemesterJson semesterSetting =
-                Model.instance.setting.course.info.courseSemester;
+                Model.instance.getCourseSetting().info.courseSemester;
             _getCourseTable(semesterSetting: semesterSetting, studentId: value);
           }
         },

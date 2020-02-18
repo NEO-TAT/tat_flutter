@@ -1,31 +1,25 @@
-import 'dart:io';
-import 'dart:isolate';
-import 'dart:ui';
-
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
-import 'package:flutter_app/src/permission/Permission.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ISchoolCourseFileTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CourseFileScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
-
-  CourseFileScreen(this.courseInfo);
+  final String studentId;
+  CourseFileScreen( this.studentId , this.courseInfo);
 
   @override
   _CourseFileScreen createState() => _CourseFileScreen();
@@ -41,7 +35,7 @@ class _CourseFileScreen extends State<CourseFileScreen>
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
     Future.delayed(Duration.zero, () {
-      _flutterDownloaderInit();
+      _addTask();
       FileStore.findLocalPath(context);
     });
   }
@@ -62,28 +56,16 @@ class _CourseFileScreen extends State<CourseFileScreen>
     }
   }
 
-  void _flutterDownloaderInit() async {
-    FlutterDownloader.registerCallback(downloadCallback);
-    _addTask();
-  }
-
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    if (status == DownloadTaskStatus.complete) {
-      Log.d("id : $id is complete");
-    } else if (status == DownloadTaskStatus.failed) {
-      Log.d("id : $id is fail");
-      //FlutterDownloader.retry(taskId: id);
-    }
-  }
-
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
+    if( widget.studentId != ISchoolConnector.loginStudentId ){
+      TaskHandler.instance.addTask(ISchoolLoginTask(context, studentId: widget.studentId));
+    }
     TaskHandler.instance.addTask(ISchoolCourseFileTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
     courseFileList =
-        Model.instance.tempData[ISchoolCourseFileTask.courseFileListTempKey];
+        Model.instance.getTempData( ISchoolCourseFileTask.courseFileListTempKey );
     selectList.addItems(courseFileList.length);
     setState(() {});
   }

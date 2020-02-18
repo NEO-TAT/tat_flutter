@@ -18,7 +18,7 @@ class ISchoolNewAnnouncementPageTask extends TaskModel{
     int value = await ISchoolConnector.getNewAnnouncementPage();
     MyProgressDialog.hideProgressDialog();
     if( value != null ){
-      Model.instance.setting.announcement.maxPage = value;
+      Model.instance.getAnnouncementSetting().maxPage = value;
       return TaskStatus.TaskSuccess;
     }else{
       _handleError();

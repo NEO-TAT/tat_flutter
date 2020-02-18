@@ -19,9 +19,8 @@ class NTUTLoginTask extends TaskModel {
 
   @override
   Future<TaskStatus> taskStart() async {
-    UserDataJson userData = Model.instance.userData ;
-    String account = userData.account;
-    String password = userData.password;
+    String account = Model.instance.getAccount();
+    String password = Model.instance.getPassword();
     MyProgressDialog.showProgressDialog(context, S.current.loginNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();

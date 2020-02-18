@@ -22,7 +22,7 @@ class CourseSemesterTask extends TaskModel {
     List<SemesterJson> value = await CourseConnector.getCourseSemester(id);
     MyProgressDialog.hideProgressDialog();
     if ( value != null ) {
-      Model.instance.courseSemesterList = value;
+      Model.instance.setSemesterJsonList(value);
       return TaskStatus.TaskSuccess;
     } else {
       _handleError();

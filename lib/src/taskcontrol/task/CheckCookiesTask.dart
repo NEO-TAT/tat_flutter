@@ -10,12 +10,13 @@ import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 class CheckCookiesTask extends TaskModel {
   static final String taskName = "CheckCookiesTask";
   String checkSystem;
+  String studentId;
   static String checkCourse = "__Course__";
   static String checkISchool = "__ISchool__";
   static String checkNTUT = "__NTUT__";
   static String checkScore = "__Score__";
 
-  CheckCookiesTask(BuildContext context, {this.checkSystem})
+  CheckCookiesTask(BuildContext context, {this.checkSystem , this.studentId})
       : super(context, taskName) {
     checkSystem = checkSystem ?? checkCourse + checkISchool + checkNTUT;
   }
@@ -48,7 +49,7 @@ class CheckCookiesTask extends TaskModel {
       isLoginCourse = await CourseConnector.checkLogin();
     }
     if (checkISchoolSystem) {
-      isLoginSchool = await ISchoolConnector.checkLogin();
+      isLoginSchool = await ISchoolConnector.checkLogin( studentId: studentId);
     }
     MyProgressDialog.hideProgressDialog();
     if (isLoginSchool && isLoginCourse) {

@@ -1,15 +1,10 @@
-import 'package:configurable_expansion_tile/configurable_expansion_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
-import 'package:flutter_html/rich_text_parser.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
 class ScoreViewerPage extends StatefulWidget {
@@ -46,7 +41,7 @@ class _ScoreViewerPage extends State<ScoreViewerPage> {
   void _addTask() async {
     TaskHandler.instance.addTask(ScoreRankTask(context));
     await TaskHandler.instance.startTaskQueue(context);
-    courseScoreList = Model.instance.tempData[ScoreRankTask.scoreRankTempKey];
+    courseScoreList = Model.instance.getTempData( ScoreRankTask.scoreRankTempKey );
     for (int i = 0; i <= courseScoreList.length; i++) {
       //增加展開控制器
       _expansionControlList.add((ExpansionTile()));

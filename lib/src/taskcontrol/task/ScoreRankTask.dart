@@ -23,7 +23,7 @@ class ScoreRankTask extends TaskModel {
       _handleError();
       return TaskStatus.TaskFail;
     } else {
-      Model.instance.tempData[scoreRankTempKey] = courseList;
+      Model.instance.setTempData(scoreRankTempKey, courseList);
       return TaskStatus.TaskSuccess;
     }
   }

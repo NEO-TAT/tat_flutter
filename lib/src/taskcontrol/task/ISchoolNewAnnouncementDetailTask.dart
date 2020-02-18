@@ -24,7 +24,7 @@ class ISchoolNewAnnouncementDetailTask extends TaskModel{
     if( value != null ){
       announcement.detail = value;
       announcement.isRead = true;
-      Model.instance.save( Model.newAnnouncementJsonKey );
+      Model.instance.saveNewAnnouncement();
       return TaskStatus.TaskSuccess;
     }else{
       _handleError();

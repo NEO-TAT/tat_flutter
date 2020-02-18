@@ -12,13 +12,13 @@ import 'CheckCookiesTask.dart';
 
 class ISchoolLoginTask extends TaskModel {
   static final String taskName = "ISchoolLoginTask" + CheckCookiesTask.checkISchool ;
-
-  ISchoolLoginTask(BuildContext context) : super(context, taskName);
+  String studentId;
+  ISchoolLoginTask(BuildContext context , {this.studentId}) : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, S.current.loginISchool);
-    ISchoolConnectorStatus value = await ISchoolConnector.login();
+    ISchoolConnectorStatus value = await ISchoolConnector.login( studentId: studentId);
     MyProgressDialog.hideProgressDialog();
     if (value == ISchoolConnectorStatus.LoginSuccess) {
       return TaskStatus.TaskSuccess;
