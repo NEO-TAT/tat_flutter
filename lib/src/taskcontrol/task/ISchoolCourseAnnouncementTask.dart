@@ -21,7 +21,7 @@ class ISchoolCourseAnnouncementTask extends TaskModel{
     List<CourseAnnouncementJson> value = await ISchoolConnector.getCourseAnnouncement( courseId );
     MyProgressDialog.hideProgressDialog();
     if( value != null ){
-      Model.instance.tempData[courseAnnouncementListTempKey] = value;
+      Model.instance.setTempData(courseAnnouncementListTempKey, value);
       return TaskStatus.TaskSuccess;
     }else{
       _handleError();

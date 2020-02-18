@@ -21,7 +21,7 @@ class ISchoolCourseFileTask extends TaskModel{
     List<CourseFileJson> value = await ISchoolConnector.getCourseFile( courseId );
     MyProgressDialog.hideProgressDialog();
     if( value != null ){
-      Model.instance.tempData[courseFileListTempKey] = value;
+      Model.instance.setTempData(courseFileListTempKey, value);
       return TaskStatus.TaskSuccess;
     }else{
       _handleError();

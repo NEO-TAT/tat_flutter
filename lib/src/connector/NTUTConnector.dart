@@ -70,8 +70,8 @@ class NTUTConnector {
         return NTUTConnectorStatus.UnknownError;
       } else {
         UserInfoJson userInfo = UserInfoJson.fromJson(json.decode(jsonResult));
-        Model.instance.userData.info = userInfo;
-        Model.instance.save(Model.userDataJsonKey);
+        Model.instance.setUserInfo( userInfo );
+        Model.instance.saveUserData();
         if (userInfo.passwordExpiredRemind == 'true') {
           return NTUTConnectorStatus.PasswordExpiredWarning;
         }
@@ -93,12 +93,14 @@ class NTUTConnector {
     ConnectorParameter parameter;
     try {
       Map<String, String> data = {
-        "stratDate": "2020/03/01",
-        "endDate": "2020/04/01",
+        "stratDate": "2020/02/01",
+        "endDate": "2020/03/01",
       };
       parameter = ConnectorParameter( _getCalendarUrl );
       parameter.data = data;
-      Response response = await Connector.getDataByGetResponse(parameter);
+      parameter.userAgent = "Direk Android App";
+      String result = await Connector.getDataByPost(parameter);
+      Log.d(result);
       return null;
     } catch (e) {
       Log.e(e.toString());
@@ -108,7 +110,7 @@ class NTUTConnector {
 
   static Widget getUserImage() {
     Widget image;
-    String userPhoto = Model.instance.userData.info.userPhoto;
+    String userPhoto = Model.instance.getUserInfo().userPhoto;
     Log.d("getUserImage");
     String url = _getPictureUrl;
     Map<String, String> data = {"realname": userPhoto};

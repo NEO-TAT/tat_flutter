@@ -29,6 +29,7 @@ enum ISchoolConnectorStatus {
 
 class ISchoolConnector {
   static bool _isLogin = true;
+  static String loginStudentId;
   static final String _getLoginISchoolUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
 
@@ -50,7 +51,7 @@ class ISchoolConnector {
 
   //https://ischool.ntut.edu.tw/learning/messaging/messagebox.php?box=inbox&SelectorReadStatus=all&page=1&cmd=exDeleteMessage&messageId=5109
 
-  static Future<ISchoolConnectorStatus> login() async {
+  static Future<ISchoolConnectorStatus> login({String studentId}) async {
     String result;
     try {
       ConnectorParameter parameter;
@@ -73,6 +74,12 @@ class ISchoolConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
+      if( studentId != null ){
+        data["login"] = studentId;
+        loginStudentId = studentId;
+      }else{
+        loginStudentId = data["login"];
+      }
       String jumpUrl =
           tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
@@ -92,7 +99,7 @@ class ISchoolConnector {
         "cmd": "exDelete",
         "messageId": messageId,
         "type": "received",
-        "userId": Model.instance.userData.account,
+        "userId": Model.instance.getAccount(),
       };
       parameter = ConnectorParameter( _iSchooldeleteMessage );
       parameter.data = data;
@@ -240,7 +247,7 @@ class ISchoolConnector {
       String detail;
       Map<String, String> data = {
         "messageId": messageId,
-        "userId": Model.instance.userData.account,
+        "userId": Model.instance.getAccount(),
         "type": "received",
       };
       parameter = ConnectorParameter(_iSchoolAnnouncementDetailUrl);
@@ -365,10 +372,16 @@ class ISchoolConnector {
     _isLogin = false;
   }
 
-  static Future<bool> checkLogin() async {
+  static Future<bool> checkLogin( {String studentId }) async {
     Log.d("ISchool CheckLogin");
     ConnectorParameter parameter;
     _isLogin = false;
+    studentId = studentId ?? Model.instance.getAccount();
+    if( studentId != null ){
+      if ( studentId != loginStudentId ){
+        return false;
+      }
+    }
     try {
       parameter = ConnectorParameter(_iSchoolUrl);
       Response response = await Connector.getDataByGetResponse(parameter);

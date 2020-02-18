@@ -1,11 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
+import 'package:flutter_app/src/file/FileStore.dart';
+import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/update/GithubAPIJson.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info/package_info.dart';
+import 'package:sprintf/sprintf.dart';
 
 class UpdateDetail {
   String newVersion;
@@ -52,4 +59,54 @@ class AppUpdate {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
   }
+
+  static void showUpdateDialog(BuildContext context , UpdateDetail value){
+    showDialog<void>(
+      useRootNavigator: false,
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        String title = sprintf("%s %s" , [S.current.findNewVersion , value.newVersion]);
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text( value.detail ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(S.current.cancel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text(S.current.update),
+              onPressed: () {
+                Navigator.of(context).pop();
+                FileStore.findLocalPath(context).then( (filePath) {
+                  FlutterDownloader.enqueue(url: value.url, savedDir: filePath).then( (id){
+                    MyDownloader.addCallBack(id, _downloadCompleteCallBack);
+                    downloadTaskId = id;
+                    //FlutterDownloader.open(taskId: id);
+                  });
+
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static String downloadTaskId ;
+  static void _downloadCompleteCallBack(){
+    FlutterDownloader.open( taskId: downloadTaskId);
+  }
+
+
 }

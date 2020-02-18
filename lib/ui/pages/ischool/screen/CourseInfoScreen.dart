@@ -16,8 +16,8 @@ import 'package:sprintf/sprintf.dart';
 
 class CourseInfoScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
-
-  CourseInfoScreen(this.courseInfo);
+  final String studentId;
+  CourseInfoScreen( this.studentId , this.courseInfo);
 
   @override
   _CourseInfoScreen createState() => _CourseInfoScreen();
@@ -60,7 +60,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
     String courseId = courseMainInfo.course.id;
     TaskHandler.instance.addTask(CourseExtraInfoTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
-    courseExtraInfo = Model.instance.tempData[CourseExtraInfoTask.tempDataKey];
+    courseExtraInfo = Model.instance.getTempData( CourseExtraInfoTask.tempDataKey );
     widget.courseInfo.extra = courseExtraInfo;
     courseData.add(_buildCourseInfo(
         sprintf("%s: %s", [S.current.courseId, courseMainInfo.course.id])));

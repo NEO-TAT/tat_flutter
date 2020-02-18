@@ -16,23 +16,21 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final FocusNode _passwordFocus = new FocusNode();
   final FocusNode _accountFocus = new FocusNode();
-  UserDataJson userData;
 
   @override
   void initState() {
     super.initState();
-    userData = Model.instance.userData;
-    _accountControl.text = userData.account;
-    _passwordControl.text = userData.password;
+    _accountControl.text = Model.instance.getAccount();
+    _passwordControl.text = Model.instance.getPassword();
   }
 
   void _loginPress(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
-      userData.account = _accountControl.text.toString();
-      userData.password = _passwordControl.text.toString();
-      await Model.instance.save(Model.userDataJsonKey);
+      Model.instance.setAccount(  _accountControl.text.toString() );
+      Model.instance.setPassword(  _passwordControl.text.toString() );
+      await Model.instance.saveUserData();
       MyToast.show(S.current.loginSave);
       Navigator.of(context).pop(true);
     }

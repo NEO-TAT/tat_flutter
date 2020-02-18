@@ -1,15 +1,10 @@
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
-import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:random_color/random_color.dart';
-import 'package:sprintf/sprintf.dart';
 
 enum onListViewPress { AppUpdate, Contribution, Version }
 
@@ -38,44 +33,6 @@ class _AboutPage extends State<AboutPage> {
     super.initState();
   }
 
-  void showUpdateDialog( UpdateDetail value){
-    showDialog<void>(
-      useRootNavigator: false,
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        String title = sprintf("%s %s" , [S.current.findNewVersion , value.newVersion]);
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text( value.detail ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(S.current.cancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text(S.current.update),
-              onPressed: () {
-                Navigator.of(context).pop();
-                FileStore.findLocalPath(context).then( (filePath) {
-                  FlutterDownloader.enqueue(url: value.url, savedDir: filePath);
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
 
   void _onListViewPress(onListViewPress value) {
     switch (value) {
@@ -83,7 +40,7 @@ class _AboutPage extends State<AboutPage> {
         MyToast.show(S.current.checkingVersion);
         AppUpdate.checkUpdate().then((value) {
           if (value != null) {
-            showUpdateDialog(value);
+            AppUpdate.showUpdateDialog(context , value);
           }else{
             MyToast.show(S.current.isNewVersion);
           }

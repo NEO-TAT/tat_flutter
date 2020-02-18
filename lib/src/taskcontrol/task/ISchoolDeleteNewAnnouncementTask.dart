@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'CheckCookiesTask.dart';
@@ -21,7 +18,7 @@ class ISchoolDeleteNewAnnouncementTask extends TaskModel{
     MyProgressDialog.showProgressDialog(context, S.current.deleteMessage );
     bool value = await ISchoolConnector.deleteNewAnnouncement( messageId );
     MyProgressDialog.hideProgressDialog();
-    Model.instance.tempData[isDeleteKey] = value;
+    Model.instance.setTempData(isDeleteKey, value);
     if( value != null ){
       if( value ){
         return TaskStatus.TaskSuccess;

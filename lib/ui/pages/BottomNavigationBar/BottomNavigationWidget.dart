@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/lang/Lang.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/NewAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/OtherScreen.dart';
@@ -40,12 +43,12 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     _addTask();
   }
 
-  void _addTask() {
+  void _addTask() async{
     TaskHandler.instance.addTask( CheckCookiesTask(null));  //第一次登入要檢查
   }
 
   void _flutterDownloaderInit() async {
-    await FlutterDownloader.initialize();
+    await MyDownloader.init();
   }
 
   void _setLang() async {

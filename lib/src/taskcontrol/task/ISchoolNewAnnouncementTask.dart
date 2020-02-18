@@ -23,9 +23,9 @@ class ISchoolNewAnnouncementTask extends TaskModel{
     MyProgressDialog.hideProgressDialog();
     if( value != null ){
       for(NewAnnouncementJson item in  value.newAnnouncementList ){
-        Model.instance.newAnnouncementList.addNewAnnouncement( item );
+        Model.instance.addNewAnnouncement( item );
       }
-      Model.instance.save( Model.newAnnouncementJsonKey );
+      Model.instance.saveNewAnnouncement();
       return TaskStatus.TaskSuccess;
     }else{
       _handleError();

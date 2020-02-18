@@ -71,7 +71,7 @@ class _SettingPage extends State<SettingPage> {
                         animCurve: Curves.fastLinearToSlowEaseIn,
                         animDuration: const Duration(milliseconds: 500),
                         steps: Set<double>()..add(0)..add(1),
-                        initialStep: Lang.getLangIndex() ,
+                        initialStep: Lang.getLangIndex().index.toDouble() ,
                         snapMode: SnapMode.value(10),
                         hardSnap: true,
                         onStepChanged: (it) {
