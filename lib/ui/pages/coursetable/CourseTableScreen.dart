@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseTableTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/CourseSemesterTask.dart';
@@ -14,8 +16,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
-import '../../../../../src/store/Model.dart';
-import '../../../../../src/store/json/UserDataJson.dart';
 import 'CourseTableControl.dart';
 
 class CourseTableScreen extends StatefulWidget {

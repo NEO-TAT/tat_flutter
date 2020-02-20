@@ -1,5 +1,5 @@
 //
-//  Permission.dart
+//  PermissionsUtil.dart
 //  北科課程助手
 //
 //  Created by morris13579 on 2020/02/12.
@@ -9,7 +9,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class Permission {
+class PermissionsUtil {
   static Future<bool> check(BuildContext context) async {
     // 先對所在平台進行判斷
     if (Theme.of(context).platform == TargetPlatform.android) {

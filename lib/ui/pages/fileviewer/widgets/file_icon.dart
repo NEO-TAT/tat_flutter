@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/video_thumbnail.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart';
+
+import 'video_thumbnail.dart';
 
 class FileIcon extends StatelessWidget {
   final FileSystemEntity file;

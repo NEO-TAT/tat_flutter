@@ -13,10 +13,11 @@ import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementPageTask.
 import 'package:flutter_app/src/taskcontrol/task/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/mail/page/AnnouncementDetailPage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'page/AnnouncementDetailPage.dart';
 
 class NewAnnouncementScreen extends StatefulWidget {
   @override

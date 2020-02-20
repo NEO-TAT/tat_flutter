@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/lang/Lang.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:step_slider/step_slider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -71,11 +71,11 @@ class _SettingPage extends State<SettingPage> {
                         animCurve: Curves.fastLinearToSlowEaseIn,
                         animDuration: const Duration(milliseconds: 500),
                         steps: Set<double>()..add(0)..add(1),
-                        initialStep: Lang.getLangIndex().index.toDouble() ,
+                        initialStep: LanguageUtil.getLangIndex().index.toDouble() ,
                         snapMode: SnapMode.value(10),
                         hardSnap: true,
                         onStepChanged: (it) {
-                          Lang.setLang( langMap[it] ).then( (_){
+                          LanguageUtil.setLang( langMap[it] ).then( (_){
                             widget.pageController.jumpToPage(0);
                             Navigator.of(context).pop();
                           });

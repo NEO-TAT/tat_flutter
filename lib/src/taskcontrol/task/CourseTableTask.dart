@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
-import 'package:flutter_app/src/lang/Lang.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
@@ -22,7 +22,7 @@ class CourseTableTask extends TaskModel{
   Future<TaskStatus> taskStart() async{
     MyProgressDialog.showProgressDialog(context, S.current.getCourse );
     List<CourseMainInfoJson> courseMainInfoList;
-    if( Lang.getLangIndex() == LangEnum.zh ){  //根據語言選擇課表
+    if( LanguageUtil.getLangIndex() == LangEnum.zh ){  //根據語言選擇課表
       courseMainInfoList = await CourseConnector.getTWCourseMainInfoList(studentId , semester );
     }else{
       courseMainInfoList = await CourseConnector.getENCourseMainInfoList(studentId , semester );

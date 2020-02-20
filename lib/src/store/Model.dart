@@ -11,7 +11,6 @@ import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/SettingPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'json/CourseClassJson.dart';
 import 'json/CourseTableJson.dart';
