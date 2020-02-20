@@ -62,50 +62,6 @@ class Constants{
     return result;
   }
 
-  static List categories = [
-    {
-      "title": "Downloads",
-      "icon": Feather.download,
-      "path": "",
-      "color": Colors.purple
-    },
-    {
-      "title": "Images",
-      "icon": Feather.image,
-      "path": "",
-      "color": Colors.blue
-    },
-    {
-      "title": "Videos",
-      "icon": Feather.video,
-      "path": "",
-      "color": Colors.red
-    },
-    {
-      "title": "Audio",
-      "icon": Feather.headphones,
-      "path": "",
-      "color": Colors.teal
-    },
-    {
-      "title": "Documents & Others",
-      "icon": Feather.file,
-      "path": "",
-      "color": Colors.pink
-    },
-    {
-      "title": "Apps",
-      "icon": Icons.android,
-      "path": "",
-      "color": Colors.green
-    },
-    {
-      "title": "Whatsapp Statuses",
-      "icon": FontAwesome.whatsapp,
-      "path": "",
-      "color": Colors.green
-    },
-  ];
 
   static List sortList = [
     "File name (A to Z)",

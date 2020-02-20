@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/internet/WebViewPluginScreen.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/AboutPage.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/setting/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+import 'package:flutter_app/ui/pages/webview/WebViewPluginScreen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
 
-import '../../../../../src/store/Model.dart';
-import '../../../../../src/store/json/UserDataJson.dart';
+import 'page/AboutPage.dart';
+import 'page/SettingPage.dart';
 
 enum onListViewPress { Setting, Logout, Report, About, ChangePassword  }
 

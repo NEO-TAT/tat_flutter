@@ -1,5 +1,5 @@
 //
-//  Lang.dart
+//  LanguageUtil.dart
 //  北科課程助手
 //  切換語言用
 //  Created by morris13579 on 2020/02/12.
@@ -15,7 +15,7 @@ import 'package:flutter_app/src/store/json/SettingJson.dart';
 
 enum LangEnum{ en , zh }
 
-class Lang {
+class LanguageUtil {
   static Future<void> load([Locale myLocale]) async {
     OtherSettingJson otherSetting = OtherSettingJson();
     otherSetting = Model.instance.getOtherSetting();

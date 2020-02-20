@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/page/ScoreViewerPage.dart';
+import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
 
-import 'FileViewer/FileViewerPage.dart';
+import 'page/ScoreViewerPage.dart';
 
 class OtherScreen extends StatefulWidget {
   @override

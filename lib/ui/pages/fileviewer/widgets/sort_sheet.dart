@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/category_provider.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/util/consts.dart';
+import 'package:flutter_app/src/providers/CategoryProvider.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 

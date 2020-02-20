@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/util/file_utils.dart';
+import 'package:flutter_app/src/util/FileUtils.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';

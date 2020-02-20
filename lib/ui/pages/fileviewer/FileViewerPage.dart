@@ -1,17 +1,17 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/category_provider.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/core_provider.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/util/file_utils.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/custom_alert.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/dir_item.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/file_item.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/path_bar.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/widgets/sort_sheet.dart';
+import 'package:flutter_app/src/providers/CategoryProvider.dart';
+import 'package:flutter_app/src/providers/CoreProvider.dart';
+import 'package:flutter_app/src/util/FileUtils.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:path/path.dart' as pathLib;
 import 'package:provider/provider.dart';
+
+import 'widgets/custom_alert.dart';
+import 'widgets/dir_item.dart';
+import 'widgets/file_item.dart';
+import 'widgets/path_bar.dart';
+import 'widgets/sort_sheet.dart';
 
 class FileViewerPage extends StatefulWidget {
   final String title;

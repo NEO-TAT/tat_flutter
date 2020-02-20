@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/app_provider.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/category_provider.dart';
-import 'package:flutter_app/ui/pages/BottomNavigationBar/screen/other/FileViewer/providers/core_provider.dart';
+import 'package:flutter_app/src/providers/AppProvider.dart';
+import 'package:flutter_app/src/providers/CategoryProvider.dart';
+import 'package:flutter_app/src/providers/CoreProvider.dart';
 import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
