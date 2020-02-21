@@ -9,20 +9,22 @@ import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 import '../../../ui/other/ErrorDialog.dart';
 
-class CourseExtraInfoTask extends TaskModel{
-  static final String taskName = "CourseExtraInfoTask" + CheckCookiesTask.checkCourse ;
+class CourseExtraInfoTask extends TaskModel {
+  static final String taskName =
+      "CourseExtraInfoTask" + CheckCookiesTask.checkCourse;
   String id;
-  CourseExtraInfoTask(BuildContext context,this.id) : super(context, taskName);
+  CourseExtraInfoTask(BuildContext context, this.id) : super(context, taskName);
   static String tempDataKey = "CourseExtraInfoJsonTampKey";
   @override
-  Future<TaskStatus> taskStart() async{
-    MyProgressDialog.showProgressDialog(context, S.current.getCourseDetail );
-    CourseExtraInfoJson courseInfo = await CourseConnector.getCourseExtraInfo(id);
+  Future<TaskStatus> taskStart() async {
+    MyProgressDialog.showProgressDialog(context, S.current.getCourseDetail);
+    CourseExtraInfoJson courseInfo =
+        await CourseConnector.getCourseExtraInfo(id);
     MyProgressDialog.hideProgressDialog();
-    if( courseInfo != null ) {
+    if (courseInfo != null) {
       Model.instance.setTempData(tempDataKey, courseInfo);
       return TaskStatus.TaskSuccess;
-    }else {
+    } else {
       _handleError();
       return TaskStatus.TaskFail;
     }
@@ -35,6 +37,4 @@ class CourseExtraInfoTask extends TaskModel{
     );
     ErrorDialog(parameter).show();
   }
-
-
 }

@@ -9,7 +9,7 @@ import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
 class ScoreRankTask extends TaskModel {
-  static final String taskName = "ScoreRankTask" + CheckCookiesTask.checkNTUT ;
+  static final String taskName = "ScoreRankTask" + CheckCookiesTask.checkNTUT;
   static String scoreRankTempKey = "ScoreRankTempKey";
   ScoreRankTask(BuildContext context) : super(context, taskName);
 
@@ -19,7 +19,7 @@ class ScoreRankTask extends TaskModel {
     ScoreConnectorStatus value = await ScoreConnector.login();
     List<CourseScoreJson> courseList = await ScoreConnector.getScoreRankList();
     MyProgressDialog.hideProgressDialog();
-    if (value != ScoreConnectorStatus.LoginSuccess || courseList == null ) {
+    if (value != ScoreConnectorStatus.LoginSuccess || courseList == null) {
       _handleError();
       return TaskStatus.TaskFail;
     } else {

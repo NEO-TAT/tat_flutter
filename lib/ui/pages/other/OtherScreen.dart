@@ -17,7 +17,11 @@ enum onListViewPress { Score, FileViewer }
 
 class _OtherScreen extends State<OtherScreen> {
   final List<Map> listViewData = [
-    {"icon": Icons.search, "title": S.current.scoreSearch , "onPress": onListViewPress.Score},
+    {
+      "icon": Icons.search,
+      "title": S.current.scoreSearch,
+      "onPress": onListViewPress.Score
+    },
     {
       "icon": Icons.file_download,
       "title": S.current.downloadFile,

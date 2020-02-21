@@ -131,7 +131,8 @@ class _CourseTableScreen extends State<CourseTableScreen> {
       TaskHandler.instance
           .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
-      courseTable = Model.instance.getTempData(CourseTableTask.courseTableTempKey);
+      courseTable =
+          Model.instance.getTempData(CourseTableTask.courseTableTempKey);
     }
     Model.instance.getCourseSetting().info = courseTable; //儲存課表
     Model.instance.saveCourseSetting();
@@ -434,7 +435,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           .push(
         PageTransition(
           type: PageTransitionType.leftToRight,
-          child: ISchoolScreen(studentId,  courseInfo),
+          child: ISchoolScreen(studentId, courseInfo),
         ),
       )
           .then(

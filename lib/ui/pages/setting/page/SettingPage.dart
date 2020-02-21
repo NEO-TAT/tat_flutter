@@ -37,7 +37,7 @@ class _SettingPage extends State<SettingPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      S.current.languageSwitch ,
+                      S.current.languageSwitch,
                       style: TextStyle(fontSize: 24),
                     ),
                     Text(
@@ -71,11 +71,12 @@ class _SettingPage extends State<SettingPage> {
                         animCurve: Curves.fastLinearToSlowEaseIn,
                         animDuration: const Duration(milliseconds: 500),
                         steps: Set<double>()..add(0)..add(1),
-                        initialStep: LanguageUtil.getLangIndex().index.toDouble() ,
+                        initialStep:
+                            LanguageUtil.getLangIndex().index.toDouble(),
                         snapMode: SnapMode.value(10),
                         hardSnap: true,
                         onStepChanged: (it) {
-                          LanguageUtil.setLang( langMap[it] ).then( (_){
+                          LanguageUtil.setLang(langMap[it]).then((_) {
                             widget.pageController.jumpToPage(0);
                             Navigator.of(context).pop();
                           });

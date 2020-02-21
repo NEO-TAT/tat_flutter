@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyToast {
-
-  static void show(String message){
+  static void show(String message) {
     Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
@@ -13,7 +12,4 @@ class MyToast {
         textColor: Colors.white,
         fontSize: 16.0);
   }
-
-
-
 }

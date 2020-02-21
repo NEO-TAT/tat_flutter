@@ -47,7 +47,7 @@ class AppUpdate {
       if (needUpdate) {
         UpdateDetail updateDetail = UpdateDetail();
         updateDetail.newVersion = githubAPIJson.tagName;
-        updateDetail.url =  githubAPIJson.assets[0].browserDownloadUrl;
+        updateDetail.url = githubAPIJson.assets[0].browserDownloadUrl;
         updateDetail.detail = githubAPIJson.body;
         return updateDetail;
       }
@@ -60,19 +60,20 @@ class AppUpdate {
     return packageInfo.version;
   }
 
-  static void showUpdateDialog(BuildContext context , UpdateDetail value){
+  static void showUpdateDialog(BuildContext context, UpdateDetail value) {
     showDialog<void>(
       useRootNavigator: false,
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        String title = sprintf("%s %s" , [S.current.findNewVersion , value.newVersion]);
+        String title =
+            sprintf("%s %s", [S.current.findNewVersion, value.newVersion]);
         return AlertDialog(
           title: Text(title),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text( value.detail ),
+                Text(value.detail),
               ],
             ),
           ),
@@ -87,13 +88,13 @@ class AppUpdate {
               child: Text(S.current.update),
               onPressed: () {
                 Navigator.of(context).pop();
-                FileStore.findLocalPath(context).then( (filePath) {
-                  FlutterDownloader.enqueue(url: value.url, savedDir: filePath).then( (id){
+                FileStore.findLocalPath(context).then((filePath) {
+                  FlutterDownloader.enqueue(url: value.url, savedDir: filePath)
+                      .then((id) {
                     MyDownloader.addCallBack(id, _downloadCompleteCallBack);
                     downloadTaskId = id;
                     //FlutterDownloader.open(taskId: id);
                   });
-
                 });
               },
             ),
@@ -103,10 +104,8 @@ class AppUpdate {
     );
   }
 
-  static String downloadTaskId ;
-  static void _downloadCompleteCallBack(){
-    FlutterDownloader.open( taskId: downloadTaskId);
+  static String downloadTaskId;
+  static void _downloadCompleteCallBack() {
+    FlutterDownloader.open(taskId: downloadTaskId);
   }
-
-
 }

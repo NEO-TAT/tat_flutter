@@ -17,8 +17,8 @@ class PermissionsUtil {
           .checkPermissionStatus(PermissionGroup.storage);
       if (permission != PermissionStatus.granted) {
         Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler()
-            .requestPermissions([PermissionGroup.storage]);
+            await PermissionHandler()
+                .requestPermissions([PermissionGroup.storage]);
         if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
           return true;
         }
