@@ -5,32 +5,24 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'CustomProgressDialog.dart';
 import 'ProgressDialog.dart';
 
-
 class MyProgressDialog {
   static StyleProgressDialog _progressDialog = StyleProgressDialog();
   static BuildContext _context;
 
-  static void showProgressDialog(BuildContext context, String message) async{
+  static void showProgressDialog(BuildContext context, String message) async {
     _context = context;
-    _progressDialog.showProgressDialog(
-        context,
+    _progressDialog.showProgressDialog(context,
         //dismissAfter: Duration(seconds: 20 ),
-        dismissAfter: null,  //不設置自動關閉時間
-        textToBeDisplayed:message,
-        onDismiss:(){
-          _progressDialog.dismissProgressDialog(_context);
-        }
-        );
+        dismissAfter: null, //不設置自動關閉時間
+        textToBeDisplayed: message, onDismiss: () {
+      _progressDialog.dismissProgressDialog(_context);
+    });
   }
 
-  static void hideProgressDialog()  {
+  static void hideProgressDialog() {
     _progressDialog.dismissProgressDialog(_context);
   }
-
 }
-
-
-
 
 /*
 class MyProgressDialog {

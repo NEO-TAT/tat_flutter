@@ -5,9 +5,8 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-
 class JsonInit {
-  static String stringInit(String value){
+  static String stringInit(String value) {
     return value ?? "";
   }
 }

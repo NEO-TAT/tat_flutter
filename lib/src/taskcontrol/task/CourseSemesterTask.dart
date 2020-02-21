@@ -10,18 +10,18 @@ import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'CheckCookiesTask.dart';
 
 class CourseSemesterTask extends TaskModel {
-  static final String taskName = "CourseSemesterTask" + CheckCookiesTask.checkCourse ;
+  static final String taskName =
+      "CourseSemesterTask" + CheckCookiesTask.checkCourse;
   String id;
 
-  CourseSemesterTask(BuildContext context, this.id)
-      : super(context, taskName);
+  CourseSemesterTask(BuildContext context, this.id) : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, S.current.getCourseSemester);
     List<SemesterJson> value = await CourseConnector.getCourseSemester(id);
     MyProgressDialog.hideProgressDialog();
-    if ( value != null ) {
+    if (value != null) {
       Model.instance.setSemesterJsonList(value);
       return TaskStatus.TaskSuccess;
     } else {

@@ -2,10 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'GithubAPIJson.g.dart';
 
-
 @JsonSerializable()
 class GithubAPIJson {
-
   @JsonKey(name: 'url')
   String url;
 
@@ -60,16 +58,33 @@ class GithubAPIJson {
   @JsonKey(name: 'body')
   String body;
 
-  GithubAPIJson(this.url,this.assetsUrl,this.uploadUrl,this.htmlUrl,this.id,this.nodeId,this.tagName,this.targetCommitish,this.name,this.draft,this.author,this.prerelease,this.createdAt,this.publishedAt,this.assets,this.tarballUrl,this.zipballUrl,this.body,);
+  GithubAPIJson(
+    this.url,
+    this.assetsUrl,
+    this.uploadUrl,
+    this.htmlUrl,
+    this.id,
+    this.nodeId,
+    this.tagName,
+    this.targetCommitish,
+    this.name,
+    this.draft,
+    this.author,
+    this.prerelease,
+    this.createdAt,
+    this.publishedAt,
+    this.assets,
+    this.tarballUrl,
+    this.zipballUrl,
+    this.body,
+  );
 
-  factory GithubAPIJson.fromJson(Map<String, dynamic> srcJson) => _$GithubAPIJsonFromJson(srcJson);
-
+  factory GithubAPIJson.fromJson(Map<String, dynamic> srcJson) =>
+      _$GithubAPIJsonFromJson(srcJson);
 }
-
 
 @JsonSerializable()
 class Author {
-
   @JsonKey(name: 'login')
   String login;
 
@@ -124,16 +139,33 @@ class Author {
   @JsonKey(name: 'site_admin')
   bool siteAdmin;
 
-  Author(this.login,this.id,this.nodeId,this.avatarUrl,this.gravatarId,this.url,this.htmlUrl,this.followersUrl,this.followingUrl,this.gistsUrl,this.starredUrl,this.subscriptionsUrl,this.organizationsUrl,this.reposUrl,this.eventsUrl,this.receivedEventsUrl,this.type,this.siteAdmin,);
+  Author(
+    this.login,
+    this.id,
+    this.nodeId,
+    this.avatarUrl,
+    this.gravatarId,
+    this.url,
+    this.htmlUrl,
+    this.followersUrl,
+    this.followingUrl,
+    this.gistsUrl,
+    this.starredUrl,
+    this.subscriptionsUrl,
+    this.organizationsUrl,
+    this.reposUrl,
+    this.eventsUrl,
+    this.receivedEventsUrl,
+    this.type,
+    this.siteAdmin,
+  );
 
-  factory Author.fromJson(Map<String, dynamic> srcJson) => _$AuthorFromJson(srcJson);
-
+  factory Author.fromJson(Map<String, dynamic> srcJson) =>
+      _$AuthorFromJson(srcJson);
 }
-
 
 @JsonSerializable()
 class Assets {
-
   @JsonKey(name: 'url')
   String url;
 
@@ -170,16 +202,27 @@ class Assets {
   @JsonKey(name: 'browser_download_url')
   String browserDownloadUrl;
 
-  Assets(this.url,this.id,this.nodeId,this.name,this.uploader,this.contentType,this.state,this.size,this.downloadCount,this.createdAt,this.updatedAt,this.browserDownloadUrl,);
+  Assets(
+    this.url,
+    this.id,
+    this.nodeId,
+    this.name,
+    this.uploader,
+    this.contentType,
+    this.state,
+    this.size,
+    this.downloadCount,
+    this.createdAt,
+    this.updatedAt,
+    this.browserDownloadUrl,
+  );
 
-  factory Assets.fromJson(Map<String, dynamic> srcJson) => _$AssetsFromJson(srcJson);
-
+  factory Assets.fromJson(Map<String, dynamic> srcJson) =>
+      _$AssetsFromJson(srcJson);
 }
 
-
 @JsonSerializable()
-class Uploader{
-
+class Uploader {
   @JsonKey(name: 'login')
   String login;
 
@@ -234,8 +277,27 @@ class Uploader{
   @JsonKey(name: 'site_admin')
   bool siteAdmin;
 
-  Uploader(this.login,this.id,this.nodeId,this.avatarUrl,this.gravatarId,this.url,this.htmlUrl,this.followersUrl,this.followingUrl,this.gistsUrl,this.starredUrl,this.subscriptionsUrl,this.organizationsUrl,this.reposUrl,this.eventsUrl,this.receivedEventsUrl,this.type,this.siteAdmin,);
+  Uploader(
+    this.login,
+    this.id,
+    this.nodeId,
+    this.avatarUrl,
+    this.gravatarId,
+    this.url,
+    this.htmlUrl,
+    this.followersUrl,
+    this.followingUrl,
+    this.gistsUrl,
+    this.starredUrl,
+    this.subscriptionsUrl,
+    this.organizationsUrl,
+    this.reposUrl,
+    this.eventsUrl,
+    this.receivedEventsUrl,
+    this.type,
+    this.siteAdmin,
+  );
 
-  factory Uploader.fromJson(Map<String, dynamic> srcJson) => _$UploaderFromJson(srcJson);
-
+  factory Uploader.fromJson(Map<String, dynamic> srcJson) =>
+      _$UploaderFromJson(srcJson);
 }

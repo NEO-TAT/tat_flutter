@@ -70,7 +70,7 @@ class NTUTConnector {
         return NTUTConnectorStatus.UnknownError;
       } else {
         UserInfoJson userInfo = UserInfoJson.fromJson(json.decode(jsonResult));
-        Model.instance.setUserInfo( userInfo );
+        Model.instance.setUserInfo(userInfo);
         Model.instance.saveUserData();
         if (userInfo.passwordExpiredRemind == 'true') {
           return NTUTConnectorStatus.PasswordExpiredWarning;
@@ -89,14 +89,16 @@ class NTUTConnector {
     }
   }
 
-  static Future<String> getCalendar(DateTime startTime , DateTime endTime ) async{  //暫無用到 取得學校行事曆
+  static Future<String> getCalendar(
+      DateTime startTime, DateTime endTime) async {
+    //暫無用到 取得學校行事曆
     ConnectorParameter parameter;
     try {
       Map<String, String> data = {
         "stratDate": "2020/02/01",
         "endDate": "2020/03/01",
       };
-      parameter = ConnectorParameter( _getCalendarUrl );
+      parameter = ConnectorParameter(_getCalendarUrl);
       parameter.data = data;
       parameter.userAgent = "Direk Android App";
       String result = await Connector.getDataByPost(parameter);
@@ -136,7 +138,7 @@ class NTUTConnector {
     return _isLogin;
   }
 
-  static void loginFalse(){
+  static void loginFalse() {
     _isLogin = false;
   }
 

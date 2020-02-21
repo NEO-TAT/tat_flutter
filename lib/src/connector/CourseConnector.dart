@@ -187,7 +187,15 @@ class CourseConnector {
       Document tagNode;
       Element node;
       List<Element> courseNodes, nodesOne, nodes;
-      List<Day> dayEnum = [ Day.Sunday , Day.Monday, Day.Tuesday, Day.Wednesday, Day.Thursday, Day.Friday, Day.Saturday];
+      List<Day> dayEnum = [
+        Day.Sunday,
+        Day.Monday,
+        Day.Tuesday,
+        Day.Wednesday,
+        Day.Thursday,
+        Day.Friday,
+        Day.Saturday
+      ];
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -207,7 +215,7 @@ class CourseConnector {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
         nodesOne = courseNodes[i].getElementsByTagName("td");
-        if( nodesOne[16].text.contains("Withdraw")){
+        if (nodesOne[16].text.contains("Withdraw")) {
           continue;
         }
         //取得課號
@@ -235,7 +243,7 @@ class CourseConnector {
         int length;
         //取得老師名稱
         length = nodesOne[4].innerHtml.split("<br>").length;
-        for( String name in nodesOne[4].innerHtml.split("<br>")){
+        for (String name in nodesOne[4].innerHtml.split("<br>")) {
           TeacherJson teacher = TeacherJson();
           teacher.name = name.replaceAll("\n", "");
           courseMainInfo.teacher.add(teacher);
@@ -243,7 +251,8 @@ class CourseConnector {
 
         //取得教室名稱
         length = nodesOne[13].innerHtml.split("<br>").length;
-        for( String name in nodesOne[13].innerHtml.split("<br>").getRange(0, length-1) ){
+        for (String name
+            in nodesOne[13].innerHtml.split("<br>").getRange(0, length - 1)) {
           ClassroomJson classroom = ClassroomJson();
           classroom.name = name.replaceAll("\n", "");
           courseMainInfo.classroom.add(classroom);
@@ -268,10 +277,6 @@ class CourseConnector {
     }
   }
 
-
-
-
-
   static Future<List<CourseMainInfoJson>> getTWCourseMainInfoList(
       String studentId, SemesterJson semester) async {
     try {
@@ -279,7 +284,15 @@ class CourseConnector {
       Document tagNode;
       Element node;
       List<Element> courseNodes, nodesOne, nodes;
-      List<Day> dayEnum = [ Day.Sunday , Day.Monday, Day.Tuesday, Day.Wednesday, Day.Thursday, Day.Friday, Day.Saturday];
+      List<Day> dayEnum = [
+        Day.Sunday,
+        Day.Monday,
+        Day.Tuesday,
+        Day.Wednesday,
+        Day.Thursday,
+        Day.Friday,
+        Day.Saturday
+      ];
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -299,7 +312,7 @@ class CourseConnector {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
         nodesOne = courseNodes[i].getElementsByTagName("td");
-        if( nodesOne[16].text.contains("撤選")){
+        if (nodesOne[16].text.contains("撤選")) {
           continue;
         }
         //取得課號
@@ -320,9 +333,10 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost + nodesOne[19]
-              .getElementsByTagName("a")[0]
-              .attributes["href"]; //教學進度大綱
+          courseMain.scheduleHref = _courseCNHost +
+              nodesOne[19]
+                  .getElementsByTagName("a")[0]
+                  .attributes["href"]; //教學進度大綱
         }
 
         //時間
@@ -374,7 +388,7 @@ class CourseConnector {
     return _isLogin;
   }
 
-  static void loginFalse(){
+  static void loginFalse() {
     _isLogin = false;
   }
 
