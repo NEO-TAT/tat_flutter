@@ -28,6 +28,7 @@ class ISchoolPlusConnector {
   static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
   static final String _iSchoolPlusLearnIndexUrl =
       _iSchoolPlusUrl + "learn/index.php";
+  static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
 
   static Future<ISchoolPlusConnectorStatus> login(
       String account, String password) async {
@@ -77,7 +78,6 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter(_iSchoolPlusLearnIndexUrl);
 
       result = await RequestsConnector.getDataByGet(parameter);
-      Log.d( result );
 
       if( result.contains("Guest")){ //代表登入失敗
         return ISchoolPlusConnectorStatus.LoginFail;
@@ -87,6 +87,36 @@ class ISchoolPlusConnector {
     } catch (e) {
       Log.e(e.toString());
       return ISchoolPlusConnectorStatus.LoginFail;
+    }
+  }
+
+
+  static bool get isLogin {
+    return _isLogin;
+  }
+
+  static void loginFalse() {
+    _isLogin = false;
+  }
+
+  static Future<bool> checkLogin() async {
+    Log.d("ISchoolPlus CheckLogin");
+    ConnectorParameter parameter;
+    _isLogin = false;
+    try {
+      parameter = ConnectorParameter(_iSchoolPlusLearnIndexUrl);
+      String result = await RequestsConnector.getDataByGet(parameter);
+      if( result.contains("Guest")){ //代表登入失敗
+        return false;
+      } else {
+        Log.d("ISchoolPlus Is Readly Login");
+        _isLogin = true;
+        return true;
+      }
+    } catch (e) {
+      //throw e;
+      Log.e(e.toString());
+      return false;
     }
   }
 
