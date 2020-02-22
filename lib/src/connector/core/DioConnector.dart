@@ -6,6 +6,7 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:big5/big5.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -46,6 +47,12 @@ class DioConnector {
   static String _big5Decoder (List<int> responseBytes, RequestOptions options,
       ResponseBody responseBody) {
     String result =  big5.decode(responseBytes);
+    return result;
+  }
+
+  static String _utf8Decoder (List<int> responseBytes, RequestOptions options,
+      ResponseBody responseBody) {
+    String result =  Utf8Codec().decode(responseBytes);
     return result;
   }
 
@@ -160,7 +167,7 @@ class DioConnector {
     }else if ( charsetName == 'big5'){
       dio.options.responseDecoder = _big5Decoder;
     }else{
-      dio.options.responseDecoder = null;
+      dio.options.responseDecoder = _utf8Decoder;
     }
   }
 

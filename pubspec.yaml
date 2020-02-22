@@ -19,6 +19,10 @@ dependencies:
   flutter_i18n: ^0.8.3   #多國語言
   logger: ^0.8.3         #顯示Log
   sprintf: ^4.0.2
+  crypto: ^2.1.3         #MD5加密
+  tripledes: ^2.1.0       #des加密
+  #flutter_des: ^1.1.0            無法使用
+  #encrypt: ^4.0.0
   #----------store data----------#
   shared_preferences: ^0.5.6
   sqflite: ^1.2.0
@@ -28,7 +32,7 @@ dependencies:
   cookie_jar: ^1.0.1  #可儲存式cookies
   http: ^0.12.0+4  #網路get post API (無使用)
   html: ^0.14.0+3  #html解析器
-  #requests: ^3.0.3
+  requests: ^3.0.4
   #----------WebView----------#
   webview_flutter: 0.3.19+5
   flutter_webview_plugin: ^0.3.10+1
