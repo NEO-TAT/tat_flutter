@@ -25,7 +25,11 @@ class _AboutPage extends State<AboutPage> {
       "title": S.current.Contribution,
       "onPress": onListViewPress.Contribution
     },
-    {"icon": Icons.info, "title": S.current.versionInfo, "onPress": onListViewPress.Version},
+    {
+      "icon": Icons.info,
+      "title": S.current.versionInfo,
+      "onPress": onListViewPress.Version
+    },
   ];
 
   @override
@@ -33,15 +37,14 @@ class _AboutPage extends State<AboutPage> {
     super.initState();
   }
 
-
   void _onListViewPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.AppUpdate:
         MyToast.show(S.current.checkingVersion);
         AppUpdate.checkUpdate().then((value) {
           if (value != null) {
-            AppUpdate.showUpdateDialog(context , value);
-          }else{
+            AppUpdate.showUpdateDialog(context, value);
+          } else {
             MyToast.show(S.current.isNewVersion);
           }
         });

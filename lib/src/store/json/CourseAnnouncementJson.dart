@@ -5,9 +5,8 @@ import 'package:flutter_app/src/store/JsonInit.dart';
 class CourseAnnouncementJson {
   String title;
   String detail;
-  CourseAnnouncementJson( {this.title , this.detail} ){
+  CourseAnnouncementJson({this.title, this.detail}) {
     title = JsonInit.stringInit(title);
-    detail =  JsonInit.stringInit(detail);
+    detail = JsonInit.stringInit(detail);
   }
-
 }

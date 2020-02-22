@@ -74,9 +74,10 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
   }
 
   Future<void> _loadAnnouncementMaxPage() async {
-    AnnouncementSettingJson announcementSetting = Model.instance.getAnnouncementSetting();
-    Log.d( announcementSetting.maxPage.toString());
-    if ( announcementSetting.maxPage == 0) {
+    AnnouncementSettingJson announcementSetting =
+        Model.instance.getAnnouncementSetting();
+    Log.d(announcementSetting.maxPage.toString());
+    if (announcementSetting.maxPage == 0) {
       //第一次要取得頁數
       TaskHandler.instance.addTask(ISchoolNewAnnouncementPageTask(context));
       await TaskHandler.instance.startTaskQueue(context);
@@ -100,7 +101,8 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
       });
     } else {
       await _loadAnnouncementMaxPage();
-      AnnouncementSettingJson announcementSetting = Model.instance.getAnnouncementSetting();
+      AnnouncementSettingJson announcementSetting =
+          Model.instance.getAnnouncementSetting();
       announcementSetting.page++;
       int page = announcementSetting.page;
       Log.d(items.length.toString());
@@ -234,8 +236,8 @@ class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
           TaskHandler.instance.addTask(ISchoolDeleteNewAnnouncementTask(
               context, newAnnouncement.messageId));
           await TaskHandler.instance.startTaskQueue(context);
-          bool isDelete = Model
-              .instance.getTempData(ISchoolDeleteNewAnnouncementTask.isDeleteKey);
+          bool isDelete = Model.instance
+              .getTempData(ISchoolDeleteNewAnnouncementTask.isDeleteKey);
           if (isDelete) {
             Model.instance.getNewAnnouncementList().removeAt(index);
             Model.instance.saveNewAnnouncement();

@@ -12,7 +12,7 @@ import 'package:flutter_app/ui/pages/ischool/screen/CourseInfoScreen.dart';
 class ISchoolScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  ISchoolScreen(this.studentId , this.courseInfo);
+  ISchoolScreen(this.studentId, this.courseInfo);
 
   @override
   _ISchoolScreen createState() => _ISchoolScreen();
@@ -29,12 +29,12 @@ class _ISchoolScreen extends State<ISchoolScreen>
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList
-        .add(TabPage( S.current.course, Icons.info, CourseInfoScreen(widget.studentId , widget.courseInfo)));
-    tabPageList.add(TabPage(
-        S.current.announcement, Icons.announcement, CourseAnnouncementScreen(widget.studentId  , widget.courseInfo)));
-    tabPageList.add(TabPage(
-        S.current.file, Icons.file_download, CourseFileScreen( widget.studentId  , widget.courseInfo)));
+    tabPageList.add(TabPage(S.current.course, Icons.info,
+        CourseInfoScreen(widget.studentId, widget.courseInfo)));
+    tabPageList.add(TabPage(S.current.announcement, Icons.announcement,
+        CourseAnnouncementScreen(widget.studentId, widget.courseInfo)));
+    tabPageList.add(TabPage(S.current.file, Icons.file_download,
+        CourseFileScreen(widget.studentId, widget.courseInfo)));
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
   }
@@ -44,7 +44,7 @@ class _ISchoolScreen extends State<ISchoolScreen>
     return WillPopScope(
       onWillPop: () async {
         var currentState = tabPageList.getKey(_currentIndex).currentState;
-        bool pop = (currentState == null)?true:currentState.canPop();
+        bool pop = (currentState == null) ? true : currentState.canPop();
         return pop;
       },
       child: MaterialApp(
@@ -59,7 +59,6 @@ class _ISchoolScreen extends State<ISchoolScreen>
     return DefaultTabController(
       length: tabPageList.length,
       child: Scaffold(
-
         appBar: AppBar(
           leading: BackButton(
             onPressed: () => Navigator.of(context).pop(),

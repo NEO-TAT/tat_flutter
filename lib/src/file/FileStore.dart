@@ -18,7 +18,7 @@ class FileStore {
   static Future<String> findLocalPath(BuildContext context) async {
     bool checkPermission = await PermissionsUtil.check(context);
     if (!checkPermission) {
-      MyToast.show( S.current.noPermission );
+      MyToast.show(S.current.noPermission);
       return "";
     }
     final directory = Theme.of(context).platform == TargetPlatform.android
@@ -37,5 +37,4 @@ class FileStore {
     }
     return savedDir.path;
   }
-
 }

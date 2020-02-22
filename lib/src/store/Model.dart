@@ -37,16 +37,16 @@ class Model {
   Map<String, dynamic> _tempData;
 
   //--------------------UserDataJson--------------------//
-  Future<void> saveUserData() async{
+  Future<void> saveUserData() async {
     await _save(userDataJsonKey);
   }
 
-  Future<void> clearUserData() async{
+  Future<void> clearUserData() async {
     _userData = UserDataJson();
     await saveUserData();
   }
 
-  Future<void> loadUserData() async{
+  Future<void> loadUserData() async {
     String readJson;
     readJson = await _readString(userDataJsonKey);
     _userData = (readJson != null)
@@ -54,31 +54,31 @@ class Model {
         : UserDataJson();
   }
 
-  void setAccount(String account){
+  void setAccount(String account) {
     _userData.account = account;
   }
 
-  String getAccount(){
+  String getAccount() {
     return _userData.account;
   }
 
-  void setPassword(String password){
+  void setPassword(String password) {
     _userData.password = password;
   }
 
-  String getPassword(){
+  String getPassword() {
     return _userData.password;
   }
 
-  void setUserInfo(UserInfoJson value){
+  void setUserInfo(UserInfoJson value) {
     _userData.info = value;
   }
 
-  UserInfoJson getUserInfo(){
+  UserInfoJson getUserInfo() {
     return _userData.info;
   }
 
-  UserDataJson getUserData(){
+  UserDataJson getUserData() {
     return _userData;
   }
 
@@ -130,7 +130,8 @@ class Model {
     }
   }
 
-  String getCourseNameByCourseId(String courseId) {   //利用課程id取得課程資訊
+  String getCourseNameByCourseId(String courseId) {
+    //利用課程id取得課程資訊
     String name;
     for (CourseTableJson courseDetail in _courseTableList) {
       name = courseDetail.getCourseNameByCourseId(courseId);
@@ -192,7 +193,7 @@ class Model {
   }
 
   //--------------------CourseSettingJson--------------------//
-  Future<void> saveCourseSetting() async{
+  Future<void> saveCourseSetting() async {
     await saveSetting();
   }
 
@@ -201,16 +202,16 @@ class Model {
     await saveCourseSetting();
   }
 
-  void setCourseSetting(CourseSettingJson value){
+  void setCourseSetting(CourseSettingJson value) {
     _setting.course = value;
   }
 
-  CourseSettingJson getCourseSetting(){
+  CourseSettingJson getCourseSetting() {
     return _setting.course;
   }
 
   //--------------------OtherSettingJson--------------------//
-  Future<void> saveOtherSetting() async{
+  Future<void> saveOtherSetting() async {
     await saveSetting();
   }
 
@@ -219,16 +220,16 @@ class Model {
     await saveOtherSetting();
   }
 
-  void setOtherSetting(OtherSettingJson value){
+  void setOtherSetting(OtherSettingJson value) {
     _setting.other = value;
   }
 
-  OtherSettingJson getOtherSetting(){
+  OtherSettingJson getOtherSetting() {
     return _setting.other;
   }
 
   //--------------------AnnouncementSettingJson--------------------//
-  Future<void> saveAnnouncementSetting() async{
+  Future<void> saveAnnouncementSetting() async {
     await saveSetting();
   }
 
@@ -237,14 +238,13 @@ class Model {
     await saveAnnouncementSetting();
   }
 
-  void setAnnouncementSetting(AnnouncementSettingJson value){
+  void setAnnouncementSetting(AnnouncementSettingJson value) {
     _setting.announcement = value;
   }
 
-  AnnouncementSettingJson getAnnouncementSetting(){
+  AnnouncementSettingJson getAnnouncementSetting() {
     return _setting.announcement;
   }
-
 
   //--------------------List<SemesterJson>--------------------//
   Future<void> clearSemesterJsonList() async {
@@ -255,15 +255,13 @@ class Model {
     _courseSemesterList = value;
   }
 
-  SemesterJson setSemesterJsonItem(int index){
+  SemesterJson setSemesterJsonItem(int index) {
     return _courseSemesterList[index];
   }
 
-  List<SemesterJson> getSemesterList(){
+  List<SemesterJson> getSemesterList() {
     return _courseSemesterList;
   }
-
-
 
   List<String> getSemesterListString() {
     List<String> stringList = List();
@@ -274,7 +272,6 @@ class Model {
     }
     return stringList;
   }
-
 
   //--------------------TempData--------------------//
   void setTempData(String key, dynamic value) {
@@ -289,7 +286,6 @@ class Model {
     }
     return value;
   }
-
 
   Future<void> init() async {
     pref = await SharedPreferences.getInstance();
@@ -343,9 +339,8 @@ class Model {
   }
 
   Future<void> _clear(String key) async {
-      await _clearSetting(key);
+    await _clearSetting(key);
   }
-
 
   //基本讀寫
 

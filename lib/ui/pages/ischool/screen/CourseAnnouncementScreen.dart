@@ -18,13 +18,14 @@ import 'package:url_launcher/url_launcher.dart';
 class CourseAnnouncementScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseAnnouncementScreen( this.studentId , this.courseInfo );
+  CourseAnnouncementScreen(this.studentId, this.courseInfo);
 
   @override
-  _CourseAnnouncementScreen createState( ) => _CourseAnnouncementScreen();
+  _CourseAnnouncementScreen createState() => _CourseAnnouncementScreen();
 }
 
-class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with AutomaticKeepAliveClientMixin {
+class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen>
+    with AutomaticKeepAliveClientMixin {
   List<CourseAnnouncementJson> courseAnnouncementList = List();
   @override
   void initState() {
@@ -36,58 +37,56 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
 
   void _addTask() async {
     String courseId = widget.courseInfo.main.course.id;
-    if( widget.studentId != ISchoolConnector.loginStudentId ){
-      TaskHandler.instance.addTask(ISchoolLoginTask(context, studentId: widget.studentId));
+    if (widget.studentId != ISchoolConnector.loginStudentId) {
+      TaskHandler.instance
+          .addTask(ISchoolLoginTask(context, studentId: widget.studentId));
     }
-    TaskHandler.instance.addTask( ISchoolCourseAnnouncementTask(context , courseId));
+    TaskHandler.instance
+        .addTask(ISchoolCourseAnnouncementTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
-    courseAnnouncementList = Model.instance.getTempData( ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey );
-    setState(() {
-
-    });
+    courseAnnouncementList = Model.instance.getTempData(
+        ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey);
+    setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);  //如果使用AutomaticKeepAliveClientMixin需要呼叫
-    return  Scaffold(
+    super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
+    return Scaffold(
       body: (courseAnnouncementList.length > 0)
           ? _buildCourseAnnouncementList()
           : Center(
-        child: Text(S.current.noAnyAnnouncement),
-      ),
+              child: Text(S.current.noAnyAnnouncement),
+            ),
     );
   }
 
-
-
-  Widget _buildCourseAnnouncementList(){
+  Widget _buildCourseAnnouncementList() {
     return Container(
         child: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView.separated(
-                itemCount: courseAnnouncementList.length,
-                itemBuilder: (context, index) {
-                  return _buildHtmlWidgetCourseAnnouncement(courseAnnouncementList[index]);
-                },
-                separatorBuilder: (context, index) {
-                  // 顯示格線
-                  return Container(
-                    color: Colors.black12,
-                    height: 1,
-                  );
-                },
-              ),
-            ),
-          ],
-        )
-    );
+      children: <Widget>[
+        Expanded(
+          child: ListView.separated(
+            itemCount: courseAnnouncementList.length,
+            itemBuilder: (context, index) {
+              return _buildHtmlWidgetCourseAnnouncement(
+                  courseAnnouncementList[index]);
+            },
+            separatorBuilder: (context, index) {
+              // 顯示格線
+              return Container(
+                color: Colors.black12,
+                height: 1,
+              );
+            },
+          ),
+        ),
+      ],
+    ));
   }
 
-
-  Widget _buildHtmlWidgetCourseAnnouncement( CourseAnnouncementJson courseAnnouncement){
+  Widget _buildHtmlWidgetCourseAnnouncement(
+      CourseAnnouncementJson courseAnnouncement) {
     return HtmlWidget(
       courseAnnouncement.detail,
       onTapUrl: (url) {
@@ -96,16 +95,17 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
     );
   }
 
-  void onUrlTap(String url){
-    Log.d( url );
-    if( Uri.parse(url).host.contains("ischool") ){
+  void onUrlTap(String url) {
+    Log.d(url);
+    if (Uri.parse(url).host.contains("ischool")) {
       MyToast.show(S.current.pleaseMoveToFilePage);
-    }else{
-      _launchURL( url );
+    } else {
+      _launchURL(url);
     }
   }
 
-  Widget _buildHtmlCourseAnnouncement( CourseAnnouncementJson courseAnnouncement){
+  Widget _buildHtmlCourseAnnouncement(
+      CourseAnnouncementJson courseAnnouncement) {
     return Html(
       data: courseAnnouncement.detail,
       //useRichText: false,
@@ -116,8 +116,6 @@ class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen> with Aut
       },
     );
   }
-
-
 
   _launchURL(String url) async {
     if (await canLaunch(url)) {

@@ -14,7 +14,7 @@ class S implements WidgetsLocalizations {
   static S current;
 
   static const GeneratedLocalizationsDelegate delegate =
-    GeneratedLocalizationsDelegate();
+      GeneratedLocalizationsDelegate();
 
   static S of(BuildContext context) => Localizations.of<S>(context, S);
 
@@ -39,7 +39,8 @@ class S implements WidgetsLocalizations {
   String get ___________________settingUi___________________ => "註解";
   String get ___________________task___________________ => "註解";
   String get about => "About";
-  String get aboutDialogString => "This is an app about National Taipei University of Technology";
+  String get aboutDialogString =>
+      "This is an app about National Taipei University of Technology";
   String get account => "account";
   String get accountLock => "Account is locked";
   String get accountNull => "Please enter your account";
@@ -47,8 +48,10 @@ class S implements WidgetsLocalizations {
   String get alertError => "An error occurred";
   String get announcement => "Announcement";
   String get app_name => "NTUT Course Assistant";
-  String get areYouSureDeleteMessage => "Are you sure you want to delete the message?";
-  String get areYouSureToDownload => "Are you sure you want to download the file";
+  String get areYouSureDeleteMessage =>
+      "Are you sure you want to delete the message?";
+  String get areYouSureToDownload =>
+      "Are you sure you want to download the file";
   String get authCodeFail => "Verification code error";
   String get cancel => "cancel";
   String get category => "Category";
@@ -85,15 +88,19 @@ class S implements WidgetsLocalizations {
   String get getCourseSemester => "Get semester list...";
   String get getCourseSemesterError => "Getting semester list error";
   String get getISchoolCourseAnnouncement => "Get course announcement...";
-  String get getISchoolCourseAnnouncementError => "Get course announcement error";
+  String get getISchoolCourseAnnouncementError =>
+      "Get course announcement error";
   String get getISchoolCourseFile => "Get course files";
   String get getISchoolCourseFileError => "Get course files error";
   String get getISchoolNewAnnouncement => "Get the latest announcement...";
-  String get getISchoolNewAnnouncementDetail => "Get announcement information...";
-  String get getISchoolNewAnnouncementDetailError => "Getting announcement information error";
+  String get getISchoolNewAnnouncementDetail =>
+      "Get announcement information...";
+  String get getISchoolNewAnnouncementDetailError =>
+      "Getting announcement information error";
   String get getISchoolNewAnnouncementError => "Get latest announcement error";
   String get getISchoolNewAnnouncementPage => "Get announcement pages...";
-  String get getISchoolNewAnnouncementPageError => "Error getting page number of announcement";
+  String get getISchoolNewAnnouncementPageError =>
+      "Error getting page number of announcement";
   String get getScoreRank => "Getting grade...";
   String get getScoreRankError => "Getting grade error";
   String get instructor => "Instructor";
@@ -118,7 +125,8 @@ class S implements WidgetsLocalizations {
   String get numberOfStudent => "Number of students";
   String get numberOfWithdraw => "Number of withdraw";
   String get password => "password";
-  String get passwordExpiredWarning => "Password is about to expire, please update password as soon as possible";
+  String get passwordExpiredWarning =>
+      "Password is about to expire, please update password as soon as possible";
   String get passwordNull => "Please enter the password";
   String get pleaseEnterStudentId => "Please enter student number";
   String get pleaseLogin => "Please Login";
@@ -405,7 +413,8 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
     ];
   }
 
-  LocaleListResolutionCallback listResolution({Locale fallback, bool withCountry = true}) {
+  LocaleListResolutionCallback listResolution(
+      {Locale fallback, bool withCountry = true}) {
     return (List<Locale> locales, Iterable<Locale> supported) {
       if (locales == null || locales.isEmpty) {
         return fallback ?? supported.first;
@@ -415,7 +424,8 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
     };
   }
 
-  LocaleResolutionCallback resolution({Locale fallback, bool withCountry = true}) {
+  LocaleResolutionCallback resolution(
+      {Locale fallback, bool withCountry = true}) {
     return (Locale locale, Iterable<Locale> supported) {
       return _resolve(locale, fallback, supported, withCountry);
     };
@@ -433,7 +443,7 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
           S.current = const $zh();
           return SynchronousFuture<S>(S.current);
         default:
-          // NO-OP.
+        // NO-OP.
       }
     }
     S.current = const S();
@@ -449,7 +459,8 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
   ///
   /// Internal method to resolve a locale from a list of locales.
   ///
-  Locale _resolve(Locale locale, Locale fallback, Iterable<Locale> supported, bool withCountry) {
+  Locale _resolve(Locale locale, Locale fallback, Iterable<Locale> supported,
+      bool withCountry) {
     if (locale == null || !_isSupported(locale, withCountry)) {
       return fallback ?? supported.first;
     }
@@ -482,7 +493,9 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
         }
 
         // If no country requirement is requested, check if this locale has no country.
-        if (true != withCountry && (supportedLocale.countryCode == null || supportedLocale.countryCode.isEmpty)) {
+        if (true != withCountry &&
+            (supportedLocale.countryCode == null ||
+                supportedLocale.countryCode.isEmpty)) {
           return true;
         }
       }
@@ -492,7 +505,7 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {
 }
 
 String getLang(Locale l) => l == null
-  ? null
-  : l.countryCode != null && l.countryCode.isEmpty
-    ? l.languageCode
-    : l.toString();
+    ? null
+    : l.countryCode != null && l.countryCode.isEmpty
+        ? l.languageCode
+        : l.toString();

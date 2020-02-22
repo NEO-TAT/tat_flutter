@@ -28,8 +28,8 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
-      Model.instance.setAccount(  _accountControl.text.toString() );
-      Model.instance.setPassword(  _passwordControl.text.toString() );
+      Model.instance.setAccount(_accountControl.text.toString());
+      Model.instance.setPassword(_passwordControl.text.toString());
       await Model.instance.saveUserData();
       MyToast.show(S.current.loginSave);
       Navigator.of(context).pop(true);
