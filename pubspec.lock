@@ -421,7 +421,7 @@ packages:
     source: hosted
     version: "0.2.0"
   hex:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: hex
       url: "https://pub.dartlang.org"
@@ -714,13 +714,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  requests:
-    dependency: "direct main"
-    description:
-      name: requests
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.4"
   shared_preferences:
     dependency: "direct main"
     description:

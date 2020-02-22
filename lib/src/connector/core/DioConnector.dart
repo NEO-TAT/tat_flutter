@@ -37,7 +37,7 @@ class DioConnector {
       },
       responseDecoder: null);
   Dio dio = Dio(dioOptions);
-  PersistCookieJar cookieJar;
+  PersistCookieJar _cookieJar;
   static final Exception connectorError =
       Exception("Connector statusCode is not 200");
 
@@ -62,15 +62,15 @@ class DioConnector {
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
-      cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
-      dio.interceptors.add(CookieManager(cookieJar));
+      _cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
+      dio.interceptors.add(CookieManager(_cookieJar));
     } catch (e) {
       Log.e(e.toString());
     }
   }
 
   void deleteCookies() {
-    cookieJar.deleteAll();
+    _cookieJar.deleteAll();
   }
 
   Future<String> getDataByPost(ConnectorParameter parameter) async {
@@ -192,6 +192,6 @@ class DioConnector {
   }
 
   PersistCookieJar get cookiesManager {
-    return cookieJar;
+    return _cookieJar;
   }
 }
