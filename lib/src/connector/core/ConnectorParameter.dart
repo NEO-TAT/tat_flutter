@@ -12,7 +12,7 @@ const String presetUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_3 like M
 
 class ConnectorParameter {
   String url;
-  Map<String, String> data;
+  dynamic data;
   String charsetName = presetCharsetName; //設定編碼預設utf-8 可以設定big5
   String userAgent = presetUserAgent;
   ConnectorParameter(this.url);

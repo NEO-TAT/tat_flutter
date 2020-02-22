@@ -1,13 +1,13 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
-import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
+import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:tripledes/tripledes.dart';
 import 'core/ConnectorParameter.dart';
 
@@ -29,6 +29,8 @@ class ISchoolPlusConnector {
   static final String _iSchoolPlusLearnIndexUrl =
       _iSchoolPlusUrl + "learn/index.php";
   static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
+  static final String _getCourseName =
+      _iSchoolPlusUrl + "learn/mooc_sysbar.php";
 
   static Future<ISchoolPlusConnectorStatus> login(
       String account, String password) async {
@@ -79,7 +81,8 @@ class ISchoolPlusConnector {
 
       result = await RequestsConnector.getDataByGet(parameter);
 
-      if( result.contains("Guest")){ //代表登入失敗
+      if (result.contains("Guest")) {
+        //代表登入失敗
         return ISchoolPlusConnectorStatus.LoginFail;
       }
       _isLogin = true;
@@ -90,6 +93,61 @@ class ISchoolPlusConnector {
     }
   }
 
+  static Future<List<CourseFileJson>> getCourseFile(String courseId) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> courseFileNodes, nodes, itemNodes;
+    try {
+      List<CourseFileJson> courseFileList = List();
+      _selectCourse(courseId);
+
+      return courseFileList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+  static Future<void> _selectCourse(String courseId) async {
+    ConnectorParameter parameter;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    String result;
+    try {
+      parameter = ConnectorParameter(_getCourseName);
+      result = await RequestsConnector.getDataByGet(parameter);
+
+      tagNode = parse(result);
+      node = tagNode.getElementById("selcourse");
+      nodes = node.getElementsByTagName("option");
+      String courseValue;
+      for (int i = 1; i < nodes.length; i++) {
+        node = nodes[i];
+        String name = node.text.split("_").last;
+        if( name == courseId){
+          courseValue = node.attributes["value"];
+          break;
+        }
+      }
+      Log.d( courseValue );
+      String xml = "<manifest><ticket/><course_id>$courseValue</course_id><env/></manifest>";
+      parameter = ConnectorParameter( "https://istudy.ntut.edu.tw/learn/goto_course.php" );
+      parameter.data = xml;
+      await Connector.getDataByPost(parameter);  //因為RequestsConnector無法傳送XML但是 DioConnector無法解析 Content-Type: text/html;;charset=UTF-8
+
+
+
+      parameter = ConnectorParameter( "https://istudy.ntut.edu.tw/learn/path/launch.php" );
+      result = await RequestsConnector.getDataByGet(parameter);
+      Log.d( result );
+
+    } catch (e) {
+      throw e;
+    }
+  }
 
   static bool get isLogin {
     return _isLogin;
@@ -106,7 +164,8 @@ class ISchoolPlusConnector {
     try {
       parameter = ConnectorParameter(_iSchoolPlusLearnIndexUrl);
       String result = await RequestsConnector.getDataByGet(parameter);
-      if( result.contains("Guest")){ //代表登入失敗
+      if (result.contains("Guest")) {
+        //代表登入失敗
         return false;
       } else {
         Log.d("ISchoolPlus Is Readly Login");
@@ -119,11 +178,4 @@ class ISchoolPlusConnector {
       return false;
     }
   }
-
-
-
-
-
-
-
 }

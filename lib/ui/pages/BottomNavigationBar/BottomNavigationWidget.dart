@@ -51,6 +51,8 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
     String account = Model.instance.getAccount();
     String password = Model.instance.getPassword();
     await ISchoolPlusConnector.login(account ,password );
+    await ISchoolPlusConnector.getCourseFile("231938");
+
   }
 
   void _flutterDownloaderInit() async {
