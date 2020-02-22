@@ -15,7 +15,7 @@ import 'package:random_color/random_color.dart';
 import 'page/AboutPage.dart';
 import 'page/SettingPage.dart';
 
-enum onListViewPress { Setting, Logout, Report, About, ChangePassword  }
+enum onListViewPress { Setting, Logout, Report, About, ChangePassword }
 
 class SettingScreen extends StatefulWidget {
   final PageController pageController;
@@ -26,15 +26,31 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreen extends State<SettingScreen> {
   final List<Map> listViewData = [
-    {"icon": Icons.settings, "title": S.current.setting, "onPress": onListViewPress.Setting},
+    {
+      "icon": Icons.settings,
+      "title": S.current.setting,
+      "onPress": onListViewPress.Setting
+    },
     {
       "icon": MyIcon.arrows_cw,
       "title": S.current.changePassword,
       "onPress": onListViewPress.ChangePassword
     },
-    {"icon": MyIcon.logout, "title": S.current.logout , "onPress": onListViewPress.Logout},
-    {"icon": Icons.report, "title": S.current.feedback , "onPress": onListViewPress.Report},
-    {"icon": Icons.info, "title": S.current.about, "onPress": onListViewPress.About}
+    {
+      "icon": MyIcon.logout,
+      "title": S.current.logout,
+      "onPress": onListViewPress.Logout
+    },
+    {
+      "icon": Icons.report,
+      "title": S.current.feedback,
+      "onPress": onListViewPress.Report
+    },
+    {
+      "icon": Icons.info,
+      "title": S.current.about,
+      "onPress": onListViewPress.About
+    }
   ];
 
   String formUrl =
@@ -48,9 +64,9 @@ class _SettingScreen extends State<SettingScreen> {
   void _onListViewPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.Logout:
-        Model.instance.logout().then( (_){
-          Navigator.of(context).push(CustomRoute(LoginPage())).then( (_){
-            widget.pageController.jumpToPage(0);  //跳轉到第一頁
+        Model.instance.logout().then((_) {
+          Navigator.of(context).push(CustomRoute(LoginPage())).then((_) {
+            widget.pageController.jumpToPage(0); //跳轉到第一頁
           });
         });
         break;
@@ -66,7 +82,7 @@ class _SettingScreen extends State<SettingScreen> {
         Navigator.of(context).push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: SettingPage( widget.pageController ),
+            child: SettingPage(widget.pageController),
           ),
         );
         break;
@@ -74,7 +90,7 @@ class _SettingScreen extends State<SettingScreen> {
         Navigator.of(context).push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: WebViewPluginScreen(S.current.feedback , formUrl),
+            child: WebViewPluginScreen(S.current.feedback, formUrl),
           ),
         );
         break;
@@ -126,7 +142,7 @@ class _SettingScreen extends State<SettingScreen> {
     return Container(
       //color: Colors.yellow,
       height: 80,
-      margin: EdgeInsets.only(top: 20.0, left: 20 , right: 20.0, bottom: 20.0),
+      margin: EdgeInsets.only(top: 20.0, left: 20, right: 20.0, bottom: 20.0),
       constraints: BoxConstraints(maxHeight: 60),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

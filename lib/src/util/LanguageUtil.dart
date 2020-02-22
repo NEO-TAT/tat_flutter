@@ -13,13 +13,13 @@ import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 
-enum LangEnum{ en , zh }
+enum LangEnum { en, zh }
 
 class LanguageUtil {
   static Future<void> load([Locale myLocale]) async {
     OtherSettingJson otherSetting = OtherSettingJson();
     otherSetting = Model.instance.getOtherSetting();
-    if (  otherSetting.lang.isEmpty && myLocale != null  ) {
+    if (otherSetting.lang.isEmpty && myLocale != null) {
       if (myLocale.toString().contains("zh")) {
         otherSetting.lang = "zh";
       } else {
@@ -42,13 +42,12 @@ class LanguageUtil {
 
     Model.instance.setOtherSetting(otherSetting);
     await Model.instance.saveOtherSetting();
-
   }
 
   static Future<void> setLang(String lang) async {
     OtherSettingJson otherSetting = OtherSettingJson();
     otherSetting = Model.instance.getOtherSetting();
-    if ( otherSetting.lang.contains(lang)) {
+    if (otherSetting.lang.contains(lang)) {
       return;
     } else {
       await Model.instance.clearCourseTableList();
@@ -67,10 +66,9 @@ class LanguageUtil {
     }
   }
 
-  static LangEnum getLangIndex(){
+  static LangEnum getLangIndex() {
     OtherSettingJson otherSetting = OtherSettingJson();
     otherSetting = Model.instance.getOtherSetting();
     return otherSetting.lang.contains("zh") ? LangEnum.zh : LangEnum.en;
   }
-
 }

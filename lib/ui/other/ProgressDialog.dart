@@ -12,7 +12,7 @@ ProgressDialogType _progressDialogType;
 bool _barrierDismissible = true, _showLogs = false;
 
 TextStyle _progressTextStyle = TextStyle(
-    color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+        color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
     _messageStyle = TextStyle(
         color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600);
 
@@ -28,7 +28,10 @@ class ProgressDialog {
   _Body _dialog;
   bool useRootNavigator;
   ProgressDialog(BuildContext context,
-      {ProgressDialogType type, bool isDismissible, bool showLogs,this.useRootNavigator = false}) {
+      {ProgressDialogType type,
+      bool isDismissible,
+      bool showLogs,
+      this.useRootNavigator = false}) {
     _context = context;
     _progressDialogType = type ?? ProgressDialogType.Normal;
     _barrierDismissible = isDismissible ?? true;
@@ -37,15 +40,15 @@ class ProgressDialog {
 
   void style(
       {double progress,
-        double maxProgress,
-        String message,
-        Widget progressWidget,
-        Color backgroundColor,
-        TextStyle progressTextStyle,
-        TextStyle messageTextStyle,
-        double elevation,
-        double borderRadius,
-        Curve insetAnimCurve}) {
+      double maxProgress,
+      String message,
+      Widget progressWidget,
+      Color backgroundColor,
+      TextStyle progressTextStyle,
+      TextStyle messageTextStyle,
+      double elevation,
+      double borderRadius,
+      Curve insetAnimCurve}) {
     if (_isShowing) return;
     if (_progressDialogType == ProgressDialogType.Download) {
       _progress = progress ?? _progress;
@@ -64,11 +67,11 @@ class ProgressDialog {
 
   void update(
       {double progress,
-        double maxProgress,
-        String message,
-        Widget progressWidget,
-        TextStyle progressTextStyle,
-        TextStyle messageTextStyle}) {
+      double maxProgress,
+      String message,
+      Widget progressWidget,
+      TextStyle progressTextStyle,
+      TextStyle messageTextStyle}) {
     if (_progressDialogType == ProgressDialogType.Download) {
       _progress = progress ?? _progress;
     }
@@ -90,8 +93,10 @@ class ProgressDialog {
     if (_isShowing) {
       try {
         _isShowing = false;
-        if (Navigator.of(_dismissingContext , rootNavigator: useRootNavigator).canPop()) {
-          Navigator.of(_dismissingContext , rootNavigator: useRootNavigator).pop();
+        if (Navigator.of(_dismissingContext, rootNavigator: useRootNavigator)
+            .canPop()) {
+          Navigator.of(_dismissingContext, rootNavigator: useRootNavigator)
+              .pop();
           if (_showLogs) debugPrint('ProgressDialog dismissed');
         } else {
           if (_showLogs) debugPrint('Cant pop ProgressDialog');
@@ -106,7 +111,7 @@ class ProgressDialog {
     if (_isShowing) {
       try {
         _isShowing = false;
-        Navigator.of(_dismissingContext , rootNavigator: useRootNavigator).pop();
+        Navigator.of(_dismissingContext, rootNavigator: useRootNavigator).pop();
         if (_showLogs) debugPrint('ProgressDialog dismissed');
         return Future.value(true);
       } catch (_) {
@@ -141,7 +146,7 @@ class ProgressDialog {
                 elevation: _dialogElevation,
                 shape: RoundedRectangleBorder(
                     borderRadius:
-                    BorderRadius.all(Radius.circular(_borderRadius))),
+                        BorderRadius.all(Radius.circular(_borderRadius))),
                 child: _dialog),
           );
         },
@@ -193,21 +198,21 @@ class _BodyState extends State<_Body> {
         Expanded(
           child: _progressDialogType == ProgressDialogType.Normal
               ? Text(_dialogMessage,
-              textAlign: TextAlign.justify, style: _messageStyle)
+                  textAlign: TextAlign.justify, style: _messageStyle)
               : Stack(
-            children: <Widget>[
-              Positioned(
-                child: Text(_dialogMessage, style: _messageStyle),
-                top: 30.0,
-              ),
-              Positioned(
-                child: Text("$_progress/$_maxProgress",
-                    style: _progressTextStyle),
-                bottom: 10.0,
-                right: 10.0,
-              ),
-            ],
-          ),
+                  children: <Widget>[
+                    Positioned(
+                      child: Text(_dialogMessage, style: _messageStyle),
+                      top: 30.0,
+                    ),
+                    Positioned(
+                      child: Text("$_progress/$_maxProgress",
+                          style: _progressTextStyle),
+                      bottom: 10.0,
+                      right: 10.0,
+                    ),
+                  ],
+                ),
         ),
         const SizedBox(width: 10.0)
       ]),

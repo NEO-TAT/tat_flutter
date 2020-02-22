@@ -18,7 +18,7 @@ class MyDownloader {
         String id = data[0];
         DownloadTaskStatus status = data[1];
         int progress = data[2];
-        _downloadListen(id , status , progress);
+        _downloadListen(id, status, progress);
       });
       FlutterDownloader.registerCallback(downloadCallback);
       isInit = true;
@@ -28,8 +28,8 @@ class MyDownloader {
   static _downloadListen(String id, DownloadTaskStatus status, int progress) {
     if (status == DownloadTaskStatus.complete) {
       Log.d("$id complete");
-      List<String> keyList  = _callBackMap.keys.toList();
-      for (int i = 0 ; i < keyList.length ; i++) {
+      List<String> keyList = _callBackMap.keys.toList();
+      for (int i = 0; i < keyList.length; i++) {
         String mapId = keyList[i];
         if (mapId == id) {
           Log.d("$id find callback");

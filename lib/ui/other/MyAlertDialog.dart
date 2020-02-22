@@ -45,7 +45,6 @@ class MyAlertDialog {
     );
 
     showDialog(context: context, builder: (_) => dialog);
-
   }
 
   static Widget _simpleAlertDialog(BuildContext context, String message) {
@@ -97,13 +96,12 @@ class MyAlertDialog {
         textAlign: TextAlign.center,
       ),
       buttonOkText:
-      Text("ok", style: TextStyle(fontSize: 18.0, color: Colors.white)),
+          Text("ok", style: TextStyle(fontSize: 18.0, color: Colors.white)),
       buttonCancelText:
-      Text("clear", style: TextStyle(fontSize: 18.0, color: Colors.white)),
+          Text("clear", style: TextStyle(fontSize: 18.0, color: Colors.white)),
       onOkButtonPressed: () {
         Navigator.of(context).pop();
       },
     );
   }
-
 }

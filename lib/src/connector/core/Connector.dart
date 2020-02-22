@@ -16,79 +16,81 @@ import 'ConnectorParameter.dart';
 import 'DioConnector.dart';
 
 class Connector {
-
-  static Future<String> getDataByPost( ConnectorParameter parameter  ) async {
-    try{
-      String result = await DioConnector.instance.getDataByPost( parameter );
+  static Future<String> getDataByPost(ConnectorParameter parameter) async {
+    try {
+      String result = await DioConnector.instance.getDataByPost(parameter);
       return result;
-    } catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  static Future<String> getDataByGet( ConnectorParameter parameter ) async{
-    try{
-      String result = await DioConnector.instance.getDataByGet( parameter );
+  static Future<String> getDataByGet(ConnectorParameter parameter) async {
+    try {
+      String result = await DioConnector.instance.getDataByGet(parameter);
       return result;
-    } catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  static Future<Response> getDataByGetResponse( ConnectorParameter parameter ) async{
+  static Future<Response> getDataByGetResponse(
+      ConnectorParameter parameter) async {
     Response result;
-    try{
-      result = await DioConnector.instance.getDataByGetResponse( parameter  );
+    try {
+      result = await DioConnector.instance.getDataByGetResponse(parameter);
       return result;
-    } catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-
-  static Future<Response> getDataByPostResponse( ConnectorParameter parameter ) async {
+  static Future<Response> getDataByPostResponse(
+      ConnectorParameter parameter) async {
     Response result;
-    try{
-      result = await DioConnector.instance.getDataByPostResponse( parameter );
+    try {
+      result = await DioConnector.instance.getDataByPostResponse(parameter);
       return result;
-    } catch(e){
+    } catch (e) {
       throw e;
     }
   }
 
-  static Map<String,String> getLoginHeaders(String url){
-    try{
+  static Map<String, String> getLoginHeaders(String url) {
+    try {
       PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
-      Map<String,String> headers = DioConnector.instance.headers;
-      headers["Cookie"] = cookieJar.loadForRequest( Uri.parse(url) ).toString().replaceAll("[", "").replaceAll("]", "");
+      Map<String, String> headers = DioConnector.instance.headers;
+      headers["Cookie"] = cookieJar
+          .loadForRequest(Uri.parse(url))
+          .toString()
+          .replaceAll("[", "")
+          .replaceAll("]", "");
       headers.remove("content-type");
-      Log.d( headers.toString() );
+      Log.d(headers.toString());
       return headers;
-    } catch(e){
+    } catch (e) {
       Log.d(e.toString());
       return Map();
     }
   }
 
-
-  static Future<String> getFileName(String url) async{
-    try{
+  static Future<String> getFileName(String url) async {
+    try {
       ConnectorParameter parameter = ConnectorParameter(url);
-      Map<String, List<String>> headers = await DioConnector.instance.getHeadersByGet(parameter);
-      List<String> name = headers[ "content-disposition"];
-      Log.d( name[0]);
+      Map<String, List<String>> headers =
+          await DioConnector.instance.getHeadersByGet(parameter);
+      List<String> name = headers["content-disposition"];
+      Log.d(name[0]);
       return name[0].split('"')[1];
-    } catch(e){
+    } catch (e) {
       Log.d(e.toString());
       return null;
     }
   }
 
-  static void printHeader(Map<String ,String> headers){
-    for(String key in headers.keys){
-      Log.d( sprintf("%s : %s" , [ key , headers[key] ] ) );
+  static void printHeader(Map<String, String> headers) {
+    for (String key in headers.keys) {
+      Log.d(sprintf("%s : %s", [key, headers[key]]));
     }
   }
-
-
 }

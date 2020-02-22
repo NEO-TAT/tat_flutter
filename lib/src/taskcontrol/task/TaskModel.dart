@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 
-enum TaskStatus { TaskSuccess , TaskFail}
+enum TaskStatus { TaskSuccess, TaskFail }
 
 abstract class TaskModel {
   String _taskName;
   BuildContext _context;
-  TaskModel(BuildContext context , String name){
+  TaskModel(BuildContext context, String name) {
     _taskName = name;
     _context = context;
   }
-  String get getTaskName{
+  String get getTaskName {
     return _taskName;
   }
 
@@ -22,15 +22,13 @@ abstract class TaskModel {
     return _context;
   }
 
-
   void reStartTask() {
     TaskHandler.instance.continueTask();
   }
 
-  void giveUpTask(){
+  void giveUpTask() {
     TaskHandler.instance.giveUpTask();
   }
-
 
   Future<TaskStatus> taskStart();
   //Future<List<TaskModel>> taskErrorList();

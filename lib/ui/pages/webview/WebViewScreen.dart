@@ -4,20 +4,20 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-
 class WebViewScreen extends StatefulWidget {
   final String url;
   final String title;
-  WebViewScreen(this.title , this.url);
+  WebViewScreen(this.title, this.url);
 
   @override
-  _WebViewScreen createState( ) => _WebViewScreen();
+  _WebViewScreen createState() => _WebViewScreen();
 }
 
-class _WebViewScreen extends State<WebViewScreen> with AutomaticKeepAliveClientMixin {
+class _WebViewScreen extends State<WebViewScreen>
+    with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String initUrl;
-  WebViewController _controller ;
+  WebViewController _controller;
   // 標記是否是加載中
   bool loading = true;
   bool isLoadingCallbackPage = false;
@@ -28,24 +28,20 @@ class _WebViewScreen extends State<WebViewScreen> with AutomaticKeepAliveClientM
     initUrl = widget.url;
   }
 
-  void _handleUrlChanged(String url) async {
-  }
+  void _handleUrlChanged(String url) async {}
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);  //如果使用AutomaticKeepAliveClientMixin需要呼叫
+    super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
     return Scaffold(
       key: scaffoldKey,
-      appBar: AppBar(
-          title: Text(widget.title)
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: WebView(
-
         userAgent: presetUserAgent,
-        javascriptMode : JavascriptMode.unrestricted,
-        onWebViewCreated : (WebViewController controller) {
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (WebViewController controller) {
           _controller = controller;
-          _controller.loadUrl( initUrl );
+          _controller.loadUrl(initUrl);
         },
         navigationDelegate: (NavigationRequest request) {
           if (request.url.startsWith('js://webview')) {
@@ -56,8 +52,8 @@ class _WebViewScreen extends State<WebViewScreen> with AutomaticKeepAliveClientM
           print('allowing navigation to $request');
           return NavigationDecision.navigate;
         },
-        onPageFinished: (url ){
-          _handleUrlChanged( url );
+        onPageFinished: (url) {
+          _handleUrlChanged(url);
         },
       ),
     );
