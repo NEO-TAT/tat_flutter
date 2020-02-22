@@ -19,7 +19,7 @@ import 'package:flutter_app/ui/other/MyToast.dart';
 class CourseFileScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseFileScreen( this.studentId , this.courseInfo);
+  CourseFileScreen(this.studentId, this.courseInfo);
 
   @override
   _CourseFileScreen createState() => _CourseFileScreen();
@@ -59,13 +59,14 @@ class _CourseFileScreen extends State<CourseFileScreen>
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
-    if( widget.studentId != ISchoolConnector.loginStudentId ){
-      TaskHandler.instance.addTask(ISchoolLoginTask(context, studentId: widget.studentId));
+    if (widget.studentId != ISchoolConnector.loginStudentId) {
+      TaskHandler.instance
+          .addTask(ISchoolLoginTask(context, studentId: widget.studentId));
     }
     TaskHandler.instance.addTask(ISchoolCourseFileTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
     courseFileList =
-        Model.instance.getTempData( ISchoolCourseFileTask.courseFileListTempKey );
+        Model.instance.getTempData(ISchoolCourseFileTask.courseFileListTempKey);
     selectList.addItems(courseFileList.length);
     setState(() {});
   }

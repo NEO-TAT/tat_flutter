@@ -74,10 +74,10 @@ class ISchoolConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
-      if( studentId != null ){
+      if (studentId != null) {
         data["login"] = studentId;
         loginStudentId = studentId;
-      }else{
+      } else {
         loginStudentId = data["login"];
       }
       String jumpUrl =
@@ -92,6 +92,7 @@ class ISchoolConnector {
       return ISchoolConnectorStatus.LoginFail;
     }
   }
+
   static Future<bool> deleteNewAnnouncement(String messageId) async {
     ConnectorParameter parameter;
     try {
@@ -101,12 +102,13 @@ class ISchoolConnector {
         "type": "received",
         "userId": Model.instance.getAccount(),
       };
-      parameter = ConnectorParameter( _iSchooldeleteMessage );
+      parameter = ConnectorParameter(_iSchooldeleteMessage);
       parameter.data = data;
       Response response = await Connector.getDataByGetResponse(parameter);
       bool isDelete = false;
       String location = response.redirects[0].location.toString();
-      if( location.contains( "messagebox.php" ) ){  //確定刪除成功
+      if (location.contains("messagebox.php")) {
+        //確定刪除成功
         isDelete = true;
       }
       return isDelete;
@@ -115,8 +117,6 @@ class ISchoolConnector {
       return null;
     }
   }
-
-
 
   static Future<int> getNewAnnouncementPage() async {
     ConnectorParameter parameter;
@@ -368,17 +368,17 @@ class ISchoolConnector {
     return _isLogin;
   }
 
-  static void loginFalse(){
+  static void loginFalse() {
     _isLogin = false;
   }
 
-  static Future<bool> checkLogin( {String studentId }) async {
+  static Future<bool> checkLogin({String studentId}) async {
     Log.d("ISchool CheckLogin");
     ConnectorParameter parameter;
     _isLogin = false;
     studentId = studentId ?? Model.instance.getAccount();
-    if( studentId != null ){
-      if ( studentId != loginStudentId ){
+    if (studentId != null) {
+      if (studentId != loginStudentId) {
         return false;
       }
     }

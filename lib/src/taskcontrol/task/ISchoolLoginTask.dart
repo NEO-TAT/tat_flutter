@@ -11,14 +11,17 @@ import '../../../ui/other/ErrorDialog.dart';
 import 'CheckCookiesTask.dart';
 
 class ISchoolLoginTask extends TaskModel {
-  static final String taskName = "ISchoolLoginTask" + CheckCookiesTask.checkISchool ;
+  static final String taskName =
+      "ISchoolLoginTask" + CheckCookiesTask.checkISchool;
   String studentId;
-  ISchoolLoginTask(BuildContext context , {this.studentId}) : super(context, taskName);
+  ISchoolLoginTask(BuildContext context, {this.studentId})
+      : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, S.current.loginISchool);
-    ISchoolConnectorStatus value = await ISchoolConnector.login( studentId: studentId);
+    ISchoolConnectorStatus value =
+        await ISchoolConnector.login(studentId: studentId);
     MyProgressDialog.hideProgressDialog();
     if (value == ISchoolConnectorStatus.LoginSuccess) {
       return TaskStatus.TaskSuccess;
@@ -34,6 +37,5 @@ class ISchoolLoginTask extends TaskModel {
       desc: S.current.loginISchoolError,
     );
     ErrorDialog(parameter).show();
-
   }
 }

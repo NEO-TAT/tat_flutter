@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-class Constants{
-
+class Constants {
   //App related strings
   static String appName = "FileX";
-
 
   //Colors for theme
   static Color lightPrimary = Color(0xfff3f4f9);
@@ -18,7 +16,7 @@ class Constants{
   static ThemeData lightTheme = ThemeData(
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
-    accentColor:  lightAccent,
+    accentColor: lightAccent,
     cursorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
@@ -52,7 +50,6 @@ class Constants{
     ),
   );
 
-
   static List<T> map<T>(List list, Function handler) {
     List<T> result = [];
     for (var i = 0; i < list.length; i++) {
@@ -61,7 +58,6 @@ class Constants{
 
     return result;
   }
-
 
   static List sortList = [
     "File name (A to Z)",
