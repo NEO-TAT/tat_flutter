@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -36,6 +37,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       bottomPageList.add(BottomPage(OtherScreen()));
       bottomPageList.add(BottomPage(SettingScreen(pageController)));
       _setLang();
+      _test();
     });
     _flutterDownloaderInit();
     _addTask();
@@ -43,6 +45,12 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
 
   void _addTask() async {
     TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
+  }
+
+  void _test() async{
+    String account = Model.instance.getAccount();
+    String password = Model.instance.getPassword();
+    await ISchoolPlusConnector.login(account ,password );
   }
 
   void _flutterDownloaderInit() async {
