@@ -135,11 +135,11 @@ class DioConnector {
     Response response;
     try {
       String url = parameter.url;
-      Map<String, String> data = parameter.data;
+      Map<String, String> data = (parameter.data is Map)?parameter.data : Map();
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
       Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
-      response = await dio.post(url, data: data);
+      response = await dio.post(url, data: parameter.data);
       return response;
     } catch (e) {
       throw e;
