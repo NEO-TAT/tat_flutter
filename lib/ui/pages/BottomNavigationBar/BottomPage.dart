@@ -5,21 +5,19 @@ class BottomPage {
   GlobalKey<NavigatorState> navigatorKey;
   Widget page;
 
-  BottomPage(Widget initPage , { useNavigatorKey : false }) {
+  BottomPage(Widget initPage, {useNavigatorKey: false}) {
     navigatorKey = GlobalKey();
-    page = useNavigatorKey ? _buildNavigator(initPage) : initPage ;
+    page = useNavigatorKey ? _buildNavigator(initPage) : initPage;
   }
 
   Widget _buildNavigator(Widget initPage) {
     return Navigator(
         key: navigatorKey,
         onGenerateRoute: (routeSettings) {
-          return MaterialPageRoute(
-              builder: (context) => initPage);
+          return MaterialPageRoute(builder: (context) => initPage);
         });
   }
 }
-
 
 class BottomPageList {
   List<BottomPage> bottomPageList;
@@ -28,24 +26,23 @@ class BottomPageList {
     bottomPageList = List();
   }
 
-
   void add(BottomPage page) {
-    bottomPageList.add( page );
+    bottomPageList.add(page);
   }
 
-  List<Widget> get pageList{
+  List<Widget> get pageList {
     List<Widget> pages = List();
-    for(BottomPage bottomPage in bottomPageList){
-      pages.add( bottomPage.page );
+    for (BottomPage bottomPage in bottomPageList) {
+      pages.add(bottomPage.page);
     }
     return pages;
   }
 
-  Widget getPage(int index){
+  Widget getPage(int index) {
     return bottomPageList[index].page;
   }
 
-  GlobalKey<NavigatorState> getKey(int index){
+  GlobalKey<NavigatorState> getKey(int index) {
     return bottomPageList[index].navigatorKey;
   }
 }

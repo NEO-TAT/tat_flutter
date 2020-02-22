@@ -6,7 +6,6 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -72,12 +71,13 @@ class ScoreConnector {
     }
   }
 
-  static Future<List<CourseScoreJson>> getScoreRankList() async {  //取得排名與成績
+  static Future<List<CourseScoreJson>> getScoreRankList() async {
+    //取得排名與成績
     ConnectorParameter parameter;
     String result;
     Document tagNode;
     Element tableNode, h3Node, scoreNode;
-    List<Element> tableNodes, h3Nodes, scoreNodes , rankNodes;
+    List<Element> tableNodes, h3Nodes, scoreNodes, rankNodes;
     List<CourseScoreJson> courseScoreList = List();
     try {
       Map<String, String> data = {"format": "-2"};
@@ -111,62 +111,103 @@ class ScoreConnector {
         for (int j = 1; j < scoreNodes.length - 6; j++) {
           scoreNode = scoreNodes[j];
           ScoreJson score = ScoreJson();
-          score.name = scoreNode.getElementsByTagName("th")[2].text.replaceAll("\n", "");
-          score.credit =  double.parse(scoreNode.getElementsByTagName("th")[5].text);
-          score.score = scoreNode.getElementsByTagName("th")[6].text.replaceAll("\n", "");
+          score.name =
+              scoreNode.getElementsByTagName("th")[2].text.replaceAll("\n", "");
+          score.credit =
+              double.parse(scoreNode.getElementsByTagName("th")[5].text);
+          score.score =
+              scoreNode.getElementsByTagName("th")[6].text.replaceAll("\n", "");
           courseScore.courseScoreList.add(score);
         }
 
-        courseScore.averageScore     = double.parse ( scoreNodes[ scoreNodes.length - 4].getElementsByTagName("td")[0].text ) ;
-        courseScore.performanceScore = double.parse ( scoreNodes[ scoreNodes.length - 3].getElementsByTagName("td")[0].text ) ;
-        courseScore.totalCredit      = double.parse ( scoreNodes[ scoreNodes.length - 2].getElementsByTagName("td")[0].text ) ;
-        courseScore.takeCredit       = double.parse ( scoreNodes[ scoreNodes.length - 1].getElementsByTagName("td")[0].text ) ;
-
+        courseScore.averageScore = double.parse(
+            scoreNodes[scoreNodes.length - 4]
+                .getElementsByTagName("td")[0]
+                .text);
+        courseScore.performanceScore = double.parse(
+            scoreNodes[scoreNodes.length - 3]
+                .getElementsByTagName("td")[0]
+                .text);
+        courseScore.totalCredit = double.parse(scoreNodes[scoreNodes.length - 2]
+            .getElementsByTagName("td")[0]
+            .text);
+        courseScore.takeCredit = double.parse(scoreNodes[scoreNodes.length - 1]
+            .getElementsByTagName("td")[0]
+            .text);
 
         courseScoreList.add(courseScore);
       }
 
-      parameter = ConnectorParameter( _scoreRankUrl );
+      parameter = ConnectorParameter(_scoreRankUrl);
       parameter.data = data;
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      rankNodes = tagNode.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-      rankNodes = rankNodes.getRange( 2,rankNodes.length ).toList().reversed.toList();
-      for( int i = 0 ; i < (rankNodes.length / 3).floor() ; i++ ){
-
+      rankNodes =
+          tagNode.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+      rankNodes =
+          rankNodes.getRange(2, rankNodes.length).toList().reversed.toList();
+      for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
         SemesterJson semester = SemesterJson();
-        semester.year     = rankNodes[i*3 + 2].getElementsByTagName("td")[0].text.split(" ")[0];
-        semester.semester = rankNodes[i*3 + 2].getElementsByTagName("td")[0].text.split(" ").reversed.toList()[0];
+        semester.year = rankNodes[i * 3 + 2]
+            .getElementsByTagName("td")[0]
+            .text
+            .split(" ")[0];
+        semester.semester = rankNodes[i * 3 + 2]
+            .getElementsByTagName("td")[0]
+            .text
+            .split(" ")
+            .reversed
+            .toList()[0];
 
         //取得學期成績排名
         RankJson rankNow = RankJson();
-        RankItemJson rankItemCourse  = RankItemJson();
-        RankItemJson rankItemDepartment  = RankItemJson();
+        RankItemJson rankItemCourse = RankItemJson();
+        RankItemJson rankItemDepartment = RankItemJson();
         rankNow.course = rankItemCourse;
         rankNow.department = rankItemDepartment;
-        rankItemCourse.rank       = double.parse( rankNodes[i*3 + 2].getElementsByTagName("td")[2].text );
-        rankItemCourse.total      = double.parse( rankNodes[i*3 + 2].getElementsByTagName("td")[3].text );
-        rankItemCourse.percentage = double.parse( rankNodes[i*3 + 2].getElementsByTagName("td")[4].text.replaceAll("%", "") );
-        rankItemDepartment.rank       = double.parse( rankNodes[i*3].getElementsByTagName("td")[1].text );
-        rankItemDepartment.total      = double.parse( rankNodes[i*3].getElementsByTagName("td")[2].text );
-        rankItemDepartment.percentage = double.parse( rankNodes[i*3].getElementsByTagName("td")[3].text.replaceAll("%", "") );
+        rankItemCourse.rank = double.parse(
+            rankNodes[i * 3 + 2].getElementsByTagName("td")[2].text);
+        rankItemCourse.total = double.parse(
+            rankNodes[i * 3 + 2].getElementsByTagName("td")[3].text);
+        rankItemCourse.percentage = double.parse(rankNodes[i * 3 + 2]
+            .getElementsByTagName("td")[4]
+            .text
+            .replaceAll("%", ""));
+        rankItemDepartment.rank =
+            double.parse(rankNodes[i * 3].getElementsByTagName("td")[1].text);
+        rankItemDepartment.total =
+            double.parse(rankNodes[i * 3].getElementsByTagName("td")[2].text);
+        rankItemDepartment.percentage = double.parse(rankNodes[i * 3]
+            .getElementsByTagName("td")[3]
+            .text
+            .replaceAll("%", ""));
 
         //取得歷年成績排名
         RankJson rankHistory = RankJson();
-        rankItemCourse  = RankItemJson();
-        rankItemDepartment  = RankItemJson();
+        rankItemCourse = RankItemJson();
+        rankItemDepartment = RankItemJson();
         rankHistory.course = rankItemCourse;
         rankHistory.department = rankItemDepartment;
-        rankItemCourse.rank       = double.parse( rankNodes[i*3 + 2].getElementsByTagName("td")[5].text );
-        rankItemCourse.total      = double.parse( rankNodes[i*3 + 2].getElementsByTagName("td")[6].text );
-        rankItemCourse.percentage = double.parse( rankNodes[i*3 + 2].getElementsByTagName("td")[7].text.replaceAll("%", "") );
-        rankItemDepartment.rank       = double.parse( rankNodes[i*3].getElementsByTagName("td")[4].text );
-        rankItemDepartment.total      = double.parse( rankNodes[i*3].getElementsByTagName("td")[5].text );
-        rankItemDepartment.percentage = double.parse( rankNodes[i*3].getElementsByTagName("td")[6].text.replaceAll("%", "") );
+        rankItemCourse.rank = double.parse(
+            rankNodes[i * 3 + 2].getElementsByTagName("td")[5].text);
+        rankItemCourse.total = double.parse(
+            rankNodes[i * 3 + 2].getElementsByTagName("td")[6].text);
+        rankItemCourse.percentage = double.parse(rankNodes[i * 3 + 2]
+            .getElementsByTagName("td")[7]
+            .text
+            .replaceAll("%", ""));
+        rankItemDepartment.rank =
+            double.parse(rankNodes[i * 3].getElementsByTagName("td")[4].text);
+        rankItemDepartment.total =
+            double.parse(rankNodes[i * 3].getElementsByTagName("td")[5].text);
+        rankItemDepartment.percentage = double.parse(rankNodes[i * 3]
+            .getElementsByTagName("td")[6]
+            .text
+            .replaceAll("%", ""));
 
-        for( CourseScoreJson score in courseScoreList){
-          if( score.semester == semester){
+        for (CourseScoreJson score in courseScoreList) {
+          if (score.semester == semester) {
             score.now = rankNow;
             score.history = rankHistory;
             break;

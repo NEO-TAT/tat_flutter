@@ -13,7 +13,7 @@ import '../../store/json/UserDataJson.dart';
 import '../../../ui/other/ErrorDialog.dart';
 
 class NTUTLoginTask extends TaskModel {
-  static final String taskName = "NTUTLoginTask" + CheckCookiesTask.checkNTUT ;
+  static final String taskName = "NTUTLoginTask" + CheckCookiesTask.checkNTUT;
 
   NTUTLoginTask(BuildContext context) : super(context, taskName);
 
@@ -33,7 +33,6 @@ class NTUTLoginTask extends TaskModel {
   }
 
   void _handleError(NTUTConnectorStatus value) {
-
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
       desc: "",
@@ -53,8 +52,8 @@ class NTUTLoginTask extends TaskModel {
         parameter.dialogType = DialogType.INFO;
         parameter.desc = S.current.accountPasswordError;
         parameter.btnOkText = S.current.setting;
-        parameter.btnOkOnPress =  () {
-          Navigator.of(context).push(CustomRoute(LoginPage())).then( (_){
+        parameter.btnOkOnPress = () {
+          Navigator.of(context).push(CustomRoute(LoginPage())).then((_) {
             reStartTask();
           });
         };
@@ -74,8 +73,5 @@ class NTUTLoginTask extends TaskModel {
     }
 
     ErrorDialog(parameter).show();
-
-
-
   }
 }

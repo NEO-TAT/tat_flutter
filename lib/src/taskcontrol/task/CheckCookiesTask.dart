@@ -16,7 +16,7 @@ class CheckCookiesTask extends TaskModel {
   static String checkNTUT = "__NTUT__";
   static String checkScore = "__Score__";
 
-  CheckCookiesTask(BuildContext context, {this.checkSystem , this.studentId})
+  CheckCookiesTask(BuildContext context, {this.checkSystem, this.studentId})
       : super(context, taskName) {
     checkSystem = checkSystem ?? checkCourse + checkISchool + checkNTUT;
   }
@@ -35,10 +35,10 @@ class CheckCookiesTask extends TaskModel {
       NTUTConnector.loginFalse();
       isLoginNTUT = await NTUTConnector.checkLogin();
     }
-    if(checkCourseSystem){
+    if (checkCourseSystem) {
       CourseConnector.loginFalse();
     }
-    if(checkISchoolSystem){
+    if (checkISchoolSystem) {
       ISchoolConnector.loginFalse();
     }
     if (!isLoginNTUT) {
@@ -49,7 +49,7 @@ class CheckCookiesTask extends TaskModel {
       isLoginCourse = await CourseConnector.checkLogin();
     }
     if (checkISchoolSystem) {
-      isLoginSchool = await ISchoolConnector.checkLogin( studentId: studentId);
+      isLoginSchool = await ISchoolConnector.checkLogin(studentId: studentId);
     }
     MyProgressDialog.hideProgressDialog();
     if (isLoginSchool && isLoginCourse) {

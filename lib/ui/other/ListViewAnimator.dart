@@ -5,7 +5,6 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
@@ -36,7 +35,7 @@ class _AnimatorState extends State<Animator>
   void dispose() {
     timer.cancel();
     animationController.dispose();
-    super.dispose();  //需要先dispose上面兩個才不會出錯
+    super.dispose(); //需要先dispose上面兩個才不會出錯
   }
 
   @override

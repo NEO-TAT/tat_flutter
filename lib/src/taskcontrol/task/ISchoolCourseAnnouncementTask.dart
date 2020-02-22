@@ -9,34 +9,35 @@ import '../../../ui/other/ErrorDialog.dart';
 import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
-class ISchoolCourseAnnouncementTask extends TaskModel{
-  static final String taskName = "ISchoolCourseAnnouncementTask" + CheckCookiesTask.checkISchool ;
+class ISchoolCourseAnnouncementTask extends TaskModel {
+  static final String taskName =
+      "ISchoolCourseAnnouncementTask" + CheckCookiesTask.checkISchool;
   final String courseId;
   static String courseAnnouncementListTempKey = "CourseAnnouncementListTempKey";
-  ISchoolCourseAnnouncementTask(BuildContext context,this.courseId) : super(context , taskName);
+  ISchoolCourseAnnouncementTask(BuildContext context, this.courseId)
+      : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.getISchoolCourseAnnouncement );
-    List<CourseAnnouncementJson> value = await ISchoolConnector.getCourseAnnouncement( courseId );
+    MyProgressDialog.showProgressDialog(
+        context, S.current.getISchoolCourseAnnouncement);
+    List<CourseAnnouncementJson> value =
+        await ISchoolConnector.getCourseAnnouncement(courseId);
     MyProgressDialog.hideProgressDialog();
-    if( value != null ){
+    if (value != null) {
       Model.instance.setTempData(courseAnnouncementListTempKey, value);
       return TaskStatus.TaskSuccess;
-    }else{
+    } else {
       _handleError();
       return TaskStatus.TaskFail;
     }
   }
 
-
-  void _handleError(){
+  void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
       desc: S.current.getISchoolCourseAnnouncementError,
     );
     ErrorDialog(parameter).show();
-
   }
-
 }

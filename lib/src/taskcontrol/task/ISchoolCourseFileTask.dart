@@ -9,34 +9,34 @@ import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'CheckCookiesTask.dart';
 import 'TaskModel.dart';
 
-class ISchoolCourseFileTask extends TaskModel{
-  static final String taskName = "ISchoolCourseFileTask" + CheckCookiesTask.checkISchool ;
+class ISchoolCourseFileTask extends TaskModel {
+  static final String taskName =
+      "ISchoolCourseFileTask" + CheckCookiesTask.checkISchool;
   final String courseId;
   static String courseFileListTempKey = "courseFileListTempKey";
-  ISchoolCourseFileTask(BuildContext context,this.courseId) : super(context , taskName);
+  ISchoolCourseFileTask(BuildContext context, this.courseId)
+      : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.getISchoolCourseFile );
-    List<CourseFileJson> value = await ISchoolConnector.getCourseFile( courseId );
+    MyProgressDialog.showProgressDialog(
+        context, S.current.getISchoolCourseFile);
+    List<CourseFileJson> value = await ISchoolConnector.getCourseFile(courseId);
     MyProgressDialog.hideProgressDialog();
-    if( value != null ){
+    if (value != null) {
       Model.instance.setTempData(courseFileListTempKey, value);
       return TaskStatus.TaskSuccess;
-    }else{
+    } else {
       _handleError();
       return TaskStatus.TaskFail;
     }
   }
 
-
-  void _handleError(){
+  void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
       desc: S.current.getISchoolCourseFileError,
     );
     ErrorDialog(parameter).show();
-
   }
-
 }

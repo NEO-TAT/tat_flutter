@@ -6,14 +6,14 @@ import 'CourseClassJson.dart';
 part 'SettingJson.g.dart';
 
 @JsonSerializable()
-class SettingJson{
+class SettingJson {
   CourseSettingJson course;
   OtherSettingJson other;
   AnnouncementSettingJson announcement;
-  SettingJson( { this.course , this.other , this.announcement }) {
-    course       =  course       ?? CourseSettingJson();
-    other        =  other        ?? OtherSettingJson();
-    announcement =  announcement ?? AnnouncementSettingJson();
+  SettingJson({this.course, this.other, this.announcement}) {
+    course = course ?? CourseSettingJson();
+    other = other ?? OtherSettingJson();
+    announcement = announcement ?? AnnouncementSettingJson();
   }
 
   bool get isEmpty {
@@ -24,22 +24,22 @@ class SettingJson{
   String toString() {
     return sprintf(
         "---------course--------        \n%s \n" +
-        "---------other--------         \n%s \n" +
-        "---------announcement--------  \n%s \n" ,
-        [course.toString() , other.toString() , announcement.toString() ] );
+            "---------other--------         \n%s \n" +
+            "---------announcement--------  \n%s \n",
+        [course.toString(), other.toString(), announcement.toString()]);
   }
 
-  factory SettingJson.fromJson(Map<String, dynamic> json) => _$SettingJsonFromJson(json);
+  factory SettingJson.fromJson(Map<String, dynamic> json) =>
+      _$SettingJsonFromJson(json);
   Map<String, dynamic> toJson() => _$SettingJsonToJson(this);
-
 }
 
 @JsonSerializable()
-class CourseSettingJson{
+class CourseSettingJson {
   CourseTableJson info;
 
-  CourseSettingJson( { this.info }) {
-    info  = info  ?? CourseTableJson();
+  CourseSettingJson({this.info}) {
+    info = info ?? CourseTableJson();
   }
 
   bool get isEmpty {
@@ -49,23 +49,21 @@ class CourseSettingJson{
   @override
   String toString() {
     return sprintf(
-        "---------courseInfo--------       :\n%s \n" ,
-        [ info.toString() ] );
+        "---------courseInfo--------       :\n%s \n", [info.toString()]);
   }
 
-  factory CourseSettingJson.fromJson(Map<String, dynamic> json) => _$CourseSettingJsonFromJson(json);
+  factory CourseSettingJson.fromJson(Map<String, dynamic> json) =>
+      _$CourseSettingJsonFromJson(json);
   Map<String, dynamic> toJson() => _$CourseSettingJsonToJson(this);
-
 }
 
-
 @JsonSerializable()
-class AnnouncementSettingJson{
+class AnnouncementSettingJson {
   int page;
   int maxPage;
-  AnnouncementSettingJson( { this.page , this.maxPage } ) {
-    page    = page     ?? 0;
-    maxPage = maxPage  ?? 0;
+  AnnouncementSettingJson({this.page, this.maxPage}) {
+    page = page ?? 0;
+    maxPage = maxPage ?? 0;
   }
 
   bool get isEmpty {
@@ -74,23 +72,20 @@ class AnnouncementSettingJson{
 
   @override
   String toString() {
-    return sprintf(
-        "page      :%s \n " +
-        "maxPage   :%s \n " ,
-        [page.toString() , maxPage.toString() ] );
+    return sprintf("page      :%s \n " + "maxPage   :%s \n ",
+        [page.toString(), maxPage.toString()]);
   }
 
-
-  factory AnnouncementSettingJson.fromJson(Map<String, dynamic> json) => _$AnnouncementSettingJsonFromJson(json);
+  factory AnnouncementSettingJson.fromJson(Map<String, dynamic> json) =>
+      _$AnnouncementSettingJsonFromJson(json);
   Map<String, dynamic> toJson() => _$AnnouncementSettingJsonToJson(this);
 }
 
-
 @JsonSerializable()
-class OtherSettingJson{
+class OtherSettingJson {
   String lang;
 
-  OtherSettingJson( { this.lang }) {
+  OtherSettingJson({this.lang}) {
     lang = JsonInit.stringInit(lang);
   }
 
@@ -100,13 +95,10 @@ class OtherSettingJson{
 
   @override
   String toString() {
-    return sprintf(
-        "lang      :%s \n " ,
-        [ lang ] );
+    return sprintf("lang      :%s \n ", [lang]);
   }
 
-  factory OtherSettingJson.fromJson(Map<String, dynamic> json) => _$OtherSettingJsonFromJson(json);
+  factory OtherSettingJson.fromJson(Map<String, dynamic> json) =>
+      _$OtherSettingJsonFromJson(json);
   Map<String, dynamic> toJson() => _$OtherSettingJsonToJson(this);
-
-
 }
