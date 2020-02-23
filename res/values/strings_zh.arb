@@ -15,6 +15,8 @@
   "restart": "重試",
   "alertError": "發生錯誤",
   "downloadError" : "下載發生錯誤",
+  "isALink" : "發現外部連結",
+  "AreYouSureToOpen" :"確定要打開嗎" ,
   "___________________task___________________": "註解",
   "loginNTUT": "登入校園入口網站中...",
   "accountPasswordError": "帳號密碼錯誤",

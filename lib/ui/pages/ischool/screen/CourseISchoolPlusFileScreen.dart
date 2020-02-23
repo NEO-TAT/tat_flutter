@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,10 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.d
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CourseISchoolPlusFileScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -211,19 +214,39 @@ class _CourseFileScreen extends State<CourseISchoolPlusFileScreen>
   }
 
   Future<void> _downloadOneFile(int index, [showToast = true]) async {
-    if (showToast) {
-      MyToast.show(S.current.downloadWillStart);
-    }
     CourseFileJson courseFile = courseFileList[index];
     FileType fileType = courseFile.fileType[0];
     String dirName = widget.courseInfo.main.course.name;
     String url = fileType.href;
+    if (showToast) {
+      MyToast.show(S.current.downloadWillStart);
+    }
     url = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
     if ( url == null ){
       MyToast.show( sprintf("%s%s" , [courseFile.name , S.current.downloadError]));
     }
+    if( !Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw") ){ //代表可能是一個連結
+      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter( context: context , desc:S.current.isALink );
+      errorDialogParameter.title = S.current.AreYouSureToOpen;
+      errorDialogParameter.dialogType = DialogType.INFO;
+      errorDialogParameter.btnOkText = S.current.sure;
+      errorDialogParameter.btnOkOnPress = (){
+        _launchURL( url );
+      };
+      ErrorDialog(errorDialogParameter).show();
+      return;
+    }
     await FileDownload.download(context, url, dirName, courseFile.name);
   }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 
   @override
   bool get wantKeepAlive => true;

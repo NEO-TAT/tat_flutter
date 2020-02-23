@@ -221,12 +221,22 @@ class ISchoolPlusConnector {
         response = value.rawResponse;
       });
       result = big5.decode(response.bodyBytes); //使用bi5編碼
-
+      RegExp exp;
+      RegExpMatch matches;
       if (response.statusCode == HttpStatus.ok) {
+        /*  //不知原因工作不正常
         RegExp exp = new RegExp("\"(?<url>https?:\/\/[\w|\:|\/|\.|\+|\s|\?|%|#|&|=]+)\""); //檢測http或https開頭網址
         RegExpMatch matches = exp.firstMatch(result);
         Log.d( matches.toString() );
         bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : true;
+         */
+        exp = new RegExp("\"(?<url>http.+)\"");  //檢測網址
+        matches = exp.firstMatch(result);
+        //Log.d( matches.toString() );
+        //Log.d( matches.group(1));
+        //Log.d( result);
+        //bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : matches.group(1).toLowerCase().contains(RegExp("https"))? true:false;
+        bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : matches.group(1).toLowerCase().contains("http")? true:false;
         if (pass) {  //已經是完整連結
           return matches.group(1);
         } else {
