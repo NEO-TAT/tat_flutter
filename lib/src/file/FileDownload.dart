@@ -18,11 +18,20 @@ class FileDownload {
     String path = await FileStore.getDownloadDir(context, dirName);
 
     String realFileName;
-    if (name.isNotEmpty) {
+    String fileExtension;
+    if (name.isNotEmpty && !name.contains(".")) {  //代表名字已經包含副檔名
       //代表沒有名字直接使用FlutterDownload自動取名
       realFileName = await Connector.getFileName(url);
       if (realFileName != null) {
-        String fileExtension = realFileName.split(".").reversed.toList()[0];
+        //代表可以從網路取得副檔名
+        fileExtension = realFileName.split(".").reversed.toList()[0];
+        realFileName = name + "." + fileExtension;
+      } else {
+        String maybeName = url.split("/").toList().last;
+        if( maybeName.contains(".")){
+          fileExtension = maybeName.split(".").toList().last;
+          realFileName = name + "." + fileExtension;
+        }
         realFileName = name + "." + fileExtension;
       }
     }

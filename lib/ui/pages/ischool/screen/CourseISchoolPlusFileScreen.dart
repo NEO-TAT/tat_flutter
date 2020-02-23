@@ -170,7 +170,7 @@ class _CourseFileScreen extends State<CourseISchoolPlusFileScreen>
       color: Colors.grey,
     ),
     Icon(
-      Icons.attach_file,
+      MyIcon.doc_inv,
       color: Colors.blueGrey,
     )
   ];
@@ -215,7 +215,7 @@ class _CourseFileScreen extends State<CourseISchoolPlusFileScreen>
     CourseFileJson courseFile = courseFileList[index];
     FileType fileType = courseFile.fileType[0];
     String dirName = widget.courseInfo.main.course.name;
-    String url = fileType.fileUrl;
+    String url = fileType.href;
     await FileDownload.download(context, url, dirName, courseFile.name);
   }
 
