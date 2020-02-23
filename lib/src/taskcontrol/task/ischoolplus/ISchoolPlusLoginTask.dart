@@ -1,29 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-class ISchoolCourseFileTask extends TaskModel {
+
+class ISchoolPlusLoginTask extends TaskModel {
   static final String taskName =
-      "ISchoolCourseFileTask" + CheckCookiesTask.checkISchool;
-  final String courseId;
-  static String courseFileListTempKey = "ISchoolCourseFileTempKey";
-  ISchoolCourseFileTask(BuildContext context, this.courseId)
+      "ISchoolPlusLoginTask" + CheckCookiesTask.checkPlusISchool;
+  ISchoolPlusLoginTask(BuildContext context)
       : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(
-        context, S.current.getISchoolCourseFile);
-    List<CourseFileJson> value = await ISchoolConnector.getCourseFile(courseId);
+    MyProgressDialog.showProgressDialog(context, S.current.loginISchoolPlus);
+    String studentId = Model.instance.getAccount();
+    String password = Model.instance.getPassword();
+    ISchoolPlusConnectorStatus value =
+    await ISchoolPlusConnector.login(studentId , password);
     MyProgressDialog.hideProgressDialog();
-    if (value != null) {
-      Model.instance.setTempData(courseFileListTempKey, value);
+    if (value == ISchoolPlusConnectorStatus.LoginSuccess) {
       return TaskStatus.TaskSuccess;
     } else {
       _handleError();
@@ -34,7 +33,7 @@ class ISchoolCourseFileTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getISchoolCourseFileError,
+      desc: S.current.loginISchoolPlusError,
     );
     ErrorDialog(parameter).show();
   }

@@ -37,7 +37,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       bottomPageList.add(BottomPage(OtherScreen()));
       bottomPageList.add(BottomPage(SettingScreen(pageController)));
       _setLang();
-      _test();
+      //_test();
     });
     _flutterDownloaderInit();
     _addTask();

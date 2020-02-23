@@ -102,10 +102,12 @@ class DioConnector {
 
   Future<Map<String, List<String>>> getHeadersByGet(
       ConnectorParameter parameter) async {
-    Response response;
+    Response<ResponseBody> response;
     try {
-      Log.d(parameter.url);
-      response = await dio.get(parameter.url);
+      Log.d( "getHeaderByGet " + parameter.url  );
+      response = await dio.get<ResponseBody>(parameter.url ,
+        options: Options(responseType: ResponseType.stream), // set responseType to `stream`
+      );  //使速度更快
       if (response.statusCode == HttpStatus.ok) {
         return response.headers.map;
       } else {

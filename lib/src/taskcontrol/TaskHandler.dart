@@ -9,10 +9,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 
@@ -85,7 +87,8 @@ class TaskHandler {
 
     if (task is ISchoolLoginTask ||
         task is CourseLoginTask ||
-        task is NTUTLoginTask) {
+        task is NTUTLoginTask ||
+        task is ISchoolPlusLoginTask) {
       _addFirstTask(task);
     } else if (task is CheckCookiesTask) {
       List<TaskModel> taskList = List();
@@ -97,6 +100,9 @@ class TaskHandler {
       }
       if (!ISchoolConnector.isLogin) {
         taskList.add(ISchoolLoginTask(task.context));
+      }
+      if (!ISchoolPlusConnector.isLogin) {
+        taskList.add(ISchoolPlusLoginTask(task.context));
       }
       _addFirstTaskList(taskList);
       continueTask();

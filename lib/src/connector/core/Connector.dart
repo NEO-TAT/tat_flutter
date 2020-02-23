@@ -6,6 +6,7 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -79,9 +80,13 @@ class Connector {
       ConnectorParameter parameter = ConnectorParameter(url);
       Map<String, List<String>> headers =
           await DioConnector.instance.getHeadersByGet(parameter);
+      Log.d( headers.toString() );
       List<String> name = headers["content-disposition"];
-      Log.d(name[0]);
-      return name[0].split('"')[1];
+      RegExp exp = RegExp( "['|\"](?<name>.+)['|\"]" );
+      RegExpMatch matches = exp.firstMatch(name[0]);
+      String fileName = matches.group(1);
+      Log.d( "getFileName $fileName");
+      return fileName;
     } catch (e) {
       Log.d(e.toString());
       return null;
