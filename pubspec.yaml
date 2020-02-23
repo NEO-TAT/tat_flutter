@@ -33,6 +33,7 @@ dependencies:
   cookie_jar: ^1.0.1  #可儲存式cookies
   http: ^0.12.0+4  #網路get post API (無使用)
   html: ^0.14.0+3  #html解析器
+  xml: ^3.5.0      #xml解析器
   #requests: ^3.0.4
   #----------WebView----------#
   webview_flutter: 0.3.19+5
