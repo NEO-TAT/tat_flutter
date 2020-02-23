@@ -180,6 +180,10 @@ class ISchoolPlusConnector {
             .replaceAll(RegExp("[\s|\n| ]"), "");
         FileType fileType = FileType();
         downloadPost['href'] = href;
+        fileType.postData = Map.of(downloadPost); //紀錄  需要使用Map.of不一個改全部都改
+        fileType.type = CourseFileType.Unknown;
+        //以下這段會花費大量時間，改成點擊下載在取得
+        /*
         fileType.href = await getRealFileUrl(downloadPost);
         if ( fileType.href == null ){
           continue;
@@ -191,6 +195,7 @@ class ISchoolPlusConnector {
         }else{
           fileType.type = CourseFileType.Unknown;
         }
+         */
         courseFile.fileType = [fileType];
         courseFileList.add(courseFile);
       }

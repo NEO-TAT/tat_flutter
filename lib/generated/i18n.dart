@@ -71,6 +71,7 @@ class S implements WidgetsLocalizations {
   String get deleteMessageError => "Delete error";
   String get details => "Details";
   String get download => "download";
+  String get downloadError => " Download Error";
   String get downloadFile => "Download file";
   String get downloadWillStart => "Download ready to start";
   String get feedback => "Feedback";
@@ -201,6 +202,8 @@ class $zh extends S {
   String get getISchoolNewAnnouncementDetail => "取得公告資訊...";
   @override
   String get areYouSureDeleteMessage => "確定要刪除訊息嗎";
+  @override
+  String get downloadError => "下載發生錯誤";
   @override
   String get ___________________courseUi___________________ => "註解";
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:sprintf/sprintf.dart';
 
 class CourseISchoolPlusFileScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -216,6 +218,10 @@ class _CourseFileScreen extends State<CourseISchoolPlusFileScreen>
     FileType fileType = courseFile.fileType[0];
     String dirName = widget.courseInfo.main.course.name;
     String url = fileType.href;
+    url = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
+    if ( url == null ){
+      MyToast.show( sprintf("%s%s" , [courseFile.name , S.current.downloadError]));
+    }
     await FileDownload.download(context, url, dirName, courseFile.name);
   }
 

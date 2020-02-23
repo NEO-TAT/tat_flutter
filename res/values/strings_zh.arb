@@ -14,6 +14,7 @@
   "setting": "設定",
   "restart": "重試",
   "alertError": "發生錯誤",
+  "downloadError" : "下載發生錯誤",
   "___________________task___________________": "註解",
   "loginNTUT": "登入校園入口網站中...",
   "accountPasswordError": "帳號密碼錯誤",
