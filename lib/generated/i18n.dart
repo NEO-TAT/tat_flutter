@@ -21,6 +21,7 @@ class S implements WidgetsLocalizations {
   @override
   TextDirection get textDirection => TextDirection.ltr;
 
+  String get AreYouSureToOpen => "Are you sure to open?";
   String get Contribution => "Contribution";
   String get Friday => "FRI";
   String get Monday => "MON";
@@ -100,6 +101,7 @@ class S implements WidgetsLocalizations {
   String get getScoreRank => "Getting grade...";
   String get getScoreRankError => "Getting grade error";
   String get instructor => "Instructor";
+  String get isALink => "is a Link";
   String get isNewVersion => "Already the latest version";
   String get languageSwitch => "Language switch";
   String get location => "Location";
@@ -331,6 +333,8 @@ class $zh extends S {
   @override
   String get loginISchoolPlusError => "登入北科I Plus學園錯誤";
   @override
+  String get isALink => "發現外部連結";
+  @override
   String get download => "下載";
   @override
   String get scoreSearch => "分數查詢";
@@ -350,6 +354,8 @@ class $zh extends S {
   String get closeOnce => "再按一次關閉";
   @override
   String get checkingVersion => "檢查中...";
+  @override
+  String get AreYouSureToOpen => "確定要打開嗎";
   @override
   String get getCourseSemester => "取得學期清單中...";
   @override
