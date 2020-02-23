@@ -94,6 +94,8 @@ class S implements WidgetsLocalizations {
   String get getISchoolNewAnnouncementError => "Get latest announcement error";
   String get getISchoolNewAnnouncementPage => "Get announcement pages...";
   String get getISchoolNewAnnouncementPageError => "Error getting page number of announcement";
+  String get getISchoolPlusCourseFile => "Get course files";
+  String get getISchoolPlusCourseFileError => "Get course files error";
   String get getScoreRank => "Getting grade...";
   String get getScoreRankError => "Getting grade error";
   String get instructor => "Instructor";
@@ -105,6 +107,8 @@ class S implements WidgetsLocalizations {
   String get loginCourseError => "Login Course System Error";
   String get loginISchool => "Login to ISchool...";
   String get loginISchoolError => "Login to ISchool Error";
+  String get loginISchoolPlus => "Login to ISchool Plus...";
+  String get loginISchoolPlusError => "Login to ISchool Plus Error";
   String get loginNTUT => "Login to the NTUT...";
   String get loginSave => "Account password has been saved";
   String get logout => "Sign out";
@@ -164,6 +168,8 @@ class $zh extends S {
   @override
   String get clearAndRefresh => "清除並重新整理";
   @override
+  String get loginISchoolPlus => "登入北科I Plus學園中...";
+  @override
   String get noPermission => "沒有權限";
   @override
   String get passwordNull => "請輸入密碼";
@@ -205,6 +211,8 @@ class $zh extends S {
   String get getISchoolNewAnnouncementPageError => "取得公告頁數錯誤";
   @override
   String get networkError => "網路發生錯誤";
+  @override
+  String get getISchoolPlusCourseFile => "取得課程檔案";
   @override
   String get titleElse => "Other";
   @override
@@ -312,9 +320,13 @@ class $zh extends S {
   @override
   String get loginCourseError => "登入課程系統錯誤";
   @override
+  String get getISchoolPlusCourseFileError => "取得課程檔案錯誤";
+  @override
   String get deleteMessageError => "刪除錯誤";
   @override
   String get getCourseDetailError => "課程資料讀取錯誤";
+  @override
+  String get loginISchoolPlusError => "登入北科I Plus學園錯誤";
   @override
   String get download => "下載";
   @override

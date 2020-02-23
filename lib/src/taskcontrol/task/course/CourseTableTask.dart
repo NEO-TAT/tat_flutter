@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import '../../../../ui/other/ErrorDialog.dart';
-import '../CheckCookiesTask.dart';
-import '../TaskModel.dart';
 
 class CourseTableTask extends TaskModel {
   static final String taskName =

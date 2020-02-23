@@ -6,7 +6,8 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseAnnouncementScreen.dart';
-import 'package:flutter_app/ui/pages/ischool/screen/CourseFileScreen.dart';
+import 'package:flutter_app/ui/pages/ischool/screen/CourseISchoolFileScreen.dart';
+import 'package:flutter_app/ui/pages/ischool/screen/CourseISchoolPlusFileScreen.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseInfoScreen.dart';
 
 class ISchoolScreen extends StatefulWidget {
@@ -34,7 +35,9 @@ class _ISchoolScreen extends State<ISchoolScreen>
     tabPageList.add(TabPage(S.current.announcement, Icons.announcement,
         CourseAnnouncementScreen(widget.studentId, widget.courseInfo)));
     tabPageList.add(TabPage(S.current.file, Icons.file_download,
-        CourseFileScreen(widget.studentId, widget.courseInfo)));
+        CourseISchoolFileScreen(widget.studentId, widget.courseInfo)));
+    tabPageList.add(TabPage(S.current.file, Icons.file_download,
+        CourseISchoolPlusFileScreen(widget.studentId, widget.courseInfo)));
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
@@ -8,19 +8,19 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-class ISchoolCourseFileTask extends TaskModel {
+class ISchoolPlusCourseFileTask extends TaskModel {
   static final String taskName =
-      "ISchoolCourseFileTask" + CheckCookiesTask.checkISchool;
+      "ISchoolPlusCourseFileTask" + CheckCookiesTask.checkPlusISchool;
   final String courseId;
-  static String courseFileListTempKey = "ISchoolCourseFileTempKey";
-  ISchoolCourseFileTask(BuildContext context, this.courseId)
+  static String courseFileListTempKey = "ISchoolPlusCourseFileTempKey";
+  ISchoolPlusCourseFileTask(BuildContext context, this.courseId)
       : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(
-        context, S.current.getISchoolCourseFile);
-    List<CourseFileJson> value = await ISchoolConnector.getCourseFile(courseId);
+        context, S.current.getISchoolPlusCourseFile);
+    List<CourseFileJson> value = await ISchoolPlusConnector.getCourseFile(courseId);
     MyProgressDialog.hideProgressDialog();
     if (value != null) {
       Model.instance.setTempData(courseFileListTempKey, value);
@@ -34,7 +34,7 @@ class ISchoolCourseFileTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getISchoolCourseFileError,
+      desc: S.current.getISchoolPlusCourseFileError,
     );
     ErrorDialog(parameter).show();
   }

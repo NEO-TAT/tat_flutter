@@ -1,7 +1,6 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
@@ -10,22 +9,21 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
-class CourseFileScreen extends StatefulWidget {
+class CourseISchoolFileScreen extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseFileScreen(this.studentId, this.courseInfo);
+  CourseISchoolFileScreen(this.studentId, this.courseInfo);
 
   @override
   _CourseFileScreen createState() => _CourseFileScreen();
 }
 
-class _CourseFileScreen extends State<CourseFileScreen>
+class _CourseFileScreen extends State<CourseISchoolFileScreen>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();
@@ -169,6 +167,10 @@ class _CourseFileScreen extends State<CourseFileScreen>
       MyIcon.link,
       color: Colors.grey,
     ),
+    Icon(
+      Icons.attach_file,
+      color: Colors.blueGrey,
+    )
   ];
 
   Widget _buildCourseFile(int index, CourseFileJson courseFile) {
