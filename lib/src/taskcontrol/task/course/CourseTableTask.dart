@@ -8,9 +8,9 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import '../../../ui/other/ErrorDialog.dart';
-import 'CheckCookiesTask.dart';
-import 'TaskModel.dart';
+import '../../../../ui/other/ErrorDialog.dart';
+import '../CheckCookiesTask.dart';
+import '../TaskModel.dart';
 
 class CourseTableTask extends TaskModel {
   static final String taskName =

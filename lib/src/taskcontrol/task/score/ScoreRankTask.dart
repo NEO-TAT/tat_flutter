@@ -5,8 +5,8 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'CheckCookiesTask.dart';
-import 'TaskModel.dart';
+import '../CheckCookiesTask.dart';
+import '../TaskModel.dart';
 
 class ScoreRankTask extends TaskModel {
   static final String taskName = "ScoreRankTask" + CheckCookiesTask.checkNTUT;

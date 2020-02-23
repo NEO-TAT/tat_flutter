@@ -11,8 +11,8 @@ import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ISchoolCourseFileTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 

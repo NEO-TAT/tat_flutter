@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-
-import 'CheckCookiesTask.dart';
-import 'TaskModel.dart';
 
 class ISchoolNewAnnouncementPageTask extends TaskModel {
   static final String taskName =

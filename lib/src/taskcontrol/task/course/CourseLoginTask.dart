@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-
-import '../../../ui/other/ErrorDialog.dart';
-import 'CheckCookiesTask.dart';
-import 'TaskModel.dart';
 
 class CourseLoginTask extends TaskModel {
   static final String taskName =

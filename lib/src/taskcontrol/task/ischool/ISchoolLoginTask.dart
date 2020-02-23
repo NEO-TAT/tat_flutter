@@ -7,8 +7,8 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-import '../../../ui/other/ErrorDialog.dart';
-import 'CheckCookiesTask.dart';
+import '../../../../ui/other/ErrorDialog.dart';
+import '../CheckCookiesTask.dart';
 
 class ISchoolLoginTask extends TaskModel {
   static final String taskName =
