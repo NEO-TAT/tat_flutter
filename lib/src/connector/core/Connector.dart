@@ -76,15 +76,22 @@ class Connector {
   }
 
   static Future<String> getFileName(String url) async {
+    String fileName;
     try {
       ConnectorParameter parameter = ConnectorParameter(url);
       Map<String, List<String>> headers =
           await DioConnector.instance.getHeadersByGet(parameter);
-      Log.d( headers.toString() );
-      List<String> name = headers["content-disposition"];
-      RegExp exp = RegExp( "['|\"](?<name>.+)['|\"]" );
-      RegExpMatch matches = exp.firstMatch(name[0]);
-      String fileName = matches.group(1);
+      if ( headers.containsKey("content-disposition")){  //代表有名字
+        List<String> name = headers["content-disposition"];
+        RegExp exp = RegExp( "['|\"](?<name>.+)['|\"]" );
+        RegExpMatch matches = exp.firstMatch(name[0]);
+        fileName = matches.group(1);
+      }else if( headers.containsKey("content-type")){
+        List<String> name = headers["content-type"];
+        if( name[0].toLowerCase().contains("pdf") ){ //是application/pdf
+          fileName = '.pdf';
+        }
+      }
       Log.d( "getFileName $fileName");
       return fileName;
     } catch (e) {

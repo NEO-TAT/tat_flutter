@@ -100,10 +100,10 @@ class ISchoolPlusConnector {
     ConnectorParameter parameter;
     String result;
     html.Document tagNode;
-    html.Element node;
+    html.Element node, itemNode, resourceNode;
     RegExp exp;
     RegExpMatch matches;
-    List<html.Element> resourceNodes, nodes, itemNodes;
+    List<html.Element> nodes, itemNodes, resourceNodes;
     try {
       List<CourseFileJson> courseFileList = List();
       await _selectCourse(courseId);
@@ -154,24 +154,46 @@ class ISchoolPlusConnector {
       tagNode = html.parse(result);
       itemNodes = tagNode.getElementsByTagName("item");
       resourceNodes = tagNode.getElementsByTagName("resource");
-
       for (int i = 0; i < itemNodes.length; i++) {
-        String base = resourceNodes[i].attributes["xml:base"];
+        itemNode = itemNodes[i];
+        String iref;
+        if (!itemNode.attributes.containsKey("identifierref")) {
+          //代表是目錄不是一個檔案
+          continue;
+        }
+        iref = itemNode.attributes["identifierref"];
+        for (int i = 0; i < resourceNodes.length; i++) {
+          resourceNode = resourceNodes[i];
+          if (resourceNode.attributes["identifier"] == iref) {
+            break;
+          }
+        }
+        String base = resourceNode.attributes["xml:base"];
         String href = ((base != null) ? base : '') +
             '@' +
-            resourceNodes[i].attributes["href"];
+            resourceNode.attributes["href"];
 
         CourseFileJson courseFile = CourseFileJson();
-        courseFile.name = itemNodes[i].text.split("\t")[0].replaceAll(RegExp("[\s|\n| ]"), "");
+        courseFile.name = itemNodes[i]
+            .text
+            .split("\t")[0]
+            .replaceAll(RegExp("[\s|\n| ]"), "");
         FileType fileType = FileType();
         downloadPost['href'] = href;
-        fileType.href = await _getRealFileUrl(downloadPost);
-        if ( fileType.href.toLowerCase().contains(".pdf")){
+        fileType.href = await getRealFileUrl(downloadPost);
+        if ( fileType.href == null ){
+          continue;
+        }
+        if (courseFile.name.toLowerCase().contains(".pdf")) {  //是PDF
           fileType.type = CourseFileType.PDF;
+        }else if( !Uri.parse(fileType.href).host.toLowerCase().contains("ntut.edu.tw") ){  //代表是外部連接
+          fileType.type = CourseFileType.Link;
+        }else{
+          fileType.type = CourseFileType.Unknown;
         }
         courseFile.fileType = [fileType];
-        courseFileList.add( courseFile );
-    }
+        courseFileList.add(courseFile);
+      }
 
       return courseFileList;
     } catch (e) {
@@ -180,10 +202,11 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<String> _getRealFileUrl(
+  static Future<String> getRealFileUrl(
       Map<String, String> postParameter) async {
     ConnectorParameter parameter;
     String url;
+    String result;
     try {
       parameter = ConnectorParameter(
           _iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
@@ -192,32 +215,33 @@ class ISchoolPlusConnector {
       await RequestsConnector.getDataByPostResponse(parameter).then((value) {
         response = value.rawResponse;
       });
-      String result = big5.decode(response.bodyBytes); //使用bi5編碼
+      result = big5.decode(response.bodyBytes); //使用bi5編碼
 
       if (response.statusCode == HttpStatus.ok) {
-        RegExp exp = new RegExp("\"(?<url>/.+)\""); //找出開頭為 /  的 url
+        RegExp exp = new RegExp("\"(?<url>https?:\/\/[\w|\:|\/|\.|\+|\s|\?|%|#|&|=]+)\""); //檢測http或https開頭網址
         RegExpMatch matches = exp.firstMatch(result);
-        bool pass = (matches == null)
-            ? false
-            : (matches.groupCount == null) ? false : true;
-        if (pass) {
-          return _iSchoolPlusUrl + matches.group(1);
+        Log.d( matches.toString() );
+        bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : true;
+        if (pass) {  //已經是完整連結
+          return matches.group(1);
         } else {
-          //是PDF預覽網址
-          exp = new RegExp("\"(?<url>.+)\"");
+          exp = new RegExp("\"(?<url>\/.+)\"");  //檢測/ 開頭網址
           matches = exp.firstMatch(result);
-          if (matches.group(1).toLowerCase().contains("http")) {
-            //已經是網址
-            return matches.group(1);
+          bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : true;
+          if ( pass ){
+            return _iSchoolPlusUrl + matches.group(1);   //一般下載連結
+          } else{
+            exp = new RegExp("\"(?<url>.+)\"");  //檢測網址位置
+            matches = exp.firstMatch(result);
+            url = _iSchoolPlusUrl + "/learn/path/" + matches.group(1);   //是PDF預覽畫面
+            parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
+            result = await RequestsConnector.getDataByGet(parameter);
+            exp = new RegExp("DEFAULT_URL.+'(?<url>.+)'");  //取的PDF真實下載位置
+            matches = exp.firstMatch(result);
+            return _iSchoolPlusUrl + "/learn/path/" + matches.group(1);
           }
-          url = _iSchoolPlusUrl + "/learn/path/" + matches.group(1);
-          parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
-          result = await RequestsConnector.getDataByGet(parameter);
-          exp = new RegExp("DEFAULT_URL.+'(?<url>.+)'");
-          matches = exp.firstMatch(result);
-          return _iSchoolPlusUrl + "/learn/path/" + matches.group(1);
         }
-      } else if (response.isRedirect || result.isEmpty ) {
+      } else if (response.isRedirect || result.isEmpty) {
         //發生跳轉 出現檔案下載頁面
         url = response.headers[HttpHeaders.locationHeader];
         url = _iSchoolPlusUrl + "/learn/path/" + url;
@@ -226,6 +250,7 @@ class ISchoolPlusConnector {
       }
     } catch (e) {
       //如果真實網址解析錯誤
+      Log.e( result );
       Log.e(e.toString());
       return null;
     }
