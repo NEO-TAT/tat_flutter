@@ -8,7 +8,7 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/CourseExtraInfoTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/course/CourseExtraInfoTask.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';

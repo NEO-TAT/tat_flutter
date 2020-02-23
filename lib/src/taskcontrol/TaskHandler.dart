@@ -11,9 +11,9 @@ import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/CourseLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ISchoolLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/NTUTLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/course/CourseLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 
 class TaskHandler {

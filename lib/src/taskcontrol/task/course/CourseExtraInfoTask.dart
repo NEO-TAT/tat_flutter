@@ -7,7 +7,7 @@ import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-import '../../../ui/other/ErrorDialog.dart';
+import '../../../../ui/other/ErrorDialog.dart';
 
 class CourseExtraInfoTask extends TaskModel {
   static final String taskName =

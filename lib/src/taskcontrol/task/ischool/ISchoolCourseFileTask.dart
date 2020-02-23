@@ -2,32 +2,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'CheckCookiesTask.dart';
-import 'TaskModel.dart';
 
-class ISchoolDeleteNewAnnouncementTask extends TaskModel {
+import '../CheckCookiesTask.dart';
+import '../TaskModel.dart';
+
+class ISchoolCourseFileTask extends TaskModel {
   static final String taskName =
-      "ISchoolDeleteNewAnnouncementTask" + CheckCookiesTask.checkISchool;
-  final String messageId;
-  static final String isDeleteKey = "isDeleteKey";
-  ISchoolDeleteNewAnnouncementTask(BuildContext context, this.messageId)
+      "ISchoolCourseFileTask" + CheckCookiesTask.checkISchool;
+  final String courseId;
+  static String courseFileListTempKey = "courseFileListTempKey";
+  ISchoolCourseFileTask(BuildContext context, this.courseId)
       : super(context, taskName);
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.deleteMessage);
-    bool value = await ISchoolConnector.deleteNewAnnouncement(messageId);
+    MyProgressDialog.showProgressDialog(
+        context, S.current.getISchoolCourseFile);
+    List<CourseFileJson> value = await ISchoolConnector.getCourseFile(courseId);
     MyProgressDialog.hideProgressDialog();
-    Model.instance.setTempData(isDeleteKey, value);
     if (value != null) {
-      if (value) {
-        return TaskStatus.TaskSuccess;
-      } else {
-        _handleError();
-        return TaskStatus.TaskFail;
-      }
+      Model.instance.setTempData(courseFileListTempKey, value);
+      return TaskStatus.TaskSuccess;
     } else {
       _handleError();
       return TaskStatus.TaskFail;
@@ -37,7 +35,7 @@ class ISchoolDeleteNewAnnouncementTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.deleteMessageError,
+      desc: S.current.getISchoolCourseFileError,
     );
     ErrorDialog(parameter).show();
   }

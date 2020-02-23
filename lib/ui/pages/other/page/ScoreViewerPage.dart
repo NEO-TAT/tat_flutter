@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/ScoreRankTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sprintf/sprintf.dart';

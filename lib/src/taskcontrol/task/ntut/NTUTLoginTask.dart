@@ -8,9 +8,9 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-import '../../store/Model.dart';
-import '../../store/json/UserDataJson.dart';
-import '../../../ui/other/ErrorDialog.dart';
+import '../../../store/Model.dart';
+import '../../../store/json/UserDataJson.dart';
+import '../../../../ui/other/ErrorDialog.dart';
 
 class NTUTLoginTask extends TaskModel {
   static final String taskName = "NTUTLoginTask" + CheckCookiesTask.checkNTUT;
