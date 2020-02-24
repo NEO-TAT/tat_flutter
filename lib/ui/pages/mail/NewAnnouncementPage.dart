@@ -19,12 +19,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'page/AnnouncementDetailPage.dart';
 
-class NewAnnouncementScreen extends StatefulWidget {
+class NewAnnouncementPage extends StatefulWidget {
   @override
-  _NewAnnouncementScreen createState() => _NewAnnouncementScreen();
+  _NewAnnouncementPageState createState() => _NewAnnouncementPageState();
 }
 
-class _NewAnnouncementScreen extends State<NewAnnouncementScreen>
+class _NewAnnouncementPageState extends State<NewAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);

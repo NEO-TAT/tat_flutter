@@ -10,10 +10,10 @@ enum onListViewPress { AppUpdate, Contribution, Version }
 
 class AboutPage extends StatefulWidget {
   @override
-  _AboutPage createState() => _AboutPage();
+  _AboutPageState createState() => _AboutPageState();
 }
 
-class _AboutPage extends State<AboutPage> {
+class _AboutPageState extends State<AboutPage> {
   final List<Map> listViewData = [
     {
       "icon": Icons.update,

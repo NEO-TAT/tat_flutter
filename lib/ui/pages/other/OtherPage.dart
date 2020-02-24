@@ -8,14 +8,14 @@ import 'package:random_color/random_color.dart';
 
 import 'page/ScoreViewerPage.dart';
 
-class OtherScreen extends StatefulWidget {
+class OtherPage extends StatefulWidget {
   @override
-  _OtherScreen createState() => _OtherScreen();
+  _OtherPageState createState() => _OtherPageState();
 }
 
 enum onListViewPress { Score, FileViewer }
 
-class _OtherScreen extends State<OtherScreen> {
+class _OtherPageState extends State<OtherPage> {
   final List<Map> listViewData = [
     {
       "icon": Icons.search,

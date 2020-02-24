@@ -4,16 +4,16 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewScreen extends StatefulWidget {
+class WebViewPage extends StatefulWidget {
   final String url;
   final String title;
-  WebViewScreen(this.title, this.url);
+  WebViewPage(this.title, this.url);
 
   @override
-  _WebViewScreen createState() => _WebViewScreen();
+  _WebViewPageState createState() => _WebViewPageState();
 }
 
-class _WebViewScreen extends State<WebViewScreen>
+class _WebViewPageState extends State<WebViewPage>
     with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String initUrl;

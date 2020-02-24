@@ -15,16 +15,16 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CourseAnnouncementScreen extends StatefulWidget {
+class CourseAnnouncementPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseAnnouncementScreen(this.studentId, this.courseInfo);
+  CourseAnnouncementPage(this.studentId, this.courseInfo);
 
   @override
-  _CourseAnnouncementScreen createState() => _CourseAnnouncementScreen();
+  _CourseAnnouncementPageState createState() => _CourseAnnouncementPageState();
 }
 
-class _CourseAnnouncementScreen extends State<CourseAnnouncementScreen>
+class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
   List<CourseAnnouncementJson> courseAnnouncementList = List();
   @override
