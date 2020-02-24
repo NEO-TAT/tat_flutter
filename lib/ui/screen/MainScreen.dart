@@ -11,6 +11,8 @@ import 'package:flutter_app/ui/pages/mail/NewAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
 import 'package:flutter_app/ui/pages/setting/SettingPage.dart';
 
+import '../../debug/log/Log.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MainScreenState();
@@ -58,10 +60,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: MaterialApp(
-        home: Scaffold(
+    return MaterialApp(
+      home: WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
           backgroundColor: Colors.white,
           resizeToAvoidBottomPadding: false,
           body: _buildPageView(),
@@ -73,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Future<bool> _onWillPop() async {
     var canPop = Navigator.of(context).canPop();
-    //Log.d(pop.toString());
+    //Log.d(canPop.toString());
     if (canPop) {
       Navigator.of(context).pop();
       _closeAppCount = 0;
