@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/providers/CoreProvider.dart';
@@ -45,6 +46,14 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       //localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
+      theme: ThemeData(
+        accentColor: AppColors.mainColor,
+        cursorColor: AppColors.mainColor,
+        indicatorColor: AppColors.mainColor,
+        cupertinoOverrideTheme: CupertinoThemeData(
+          primaryColor: AppColors.mainColor,
+        ),
+      ),
       title: 'Navigation Basics',
       home: MainScreen(),
     );
