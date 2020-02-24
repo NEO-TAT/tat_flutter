@@ -14,27 +14,15 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
-<<<<<<< HEAD:lib/ui/pages/ischool/screen/CourseISchoolFileScreen.dart
-class CourseISchoolFileScreen extends StatefulWidget {
+class CourseISchoolFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseISchoolFileScreen(this.studentId, this.courseInfo);
-=======
-class CourseFilePage extends StatefulWidget {
-  final CourseInfoJson courseInfo;
-  final String studentId;
-  CourseFilePage(this.studentId, this.courseInfo);
->>>>>>> Different the naming of screen and page.:lib/ui/pages/ischool/screen/CourseFilePage.dart
-
+  CourseISchoolFilePage(this.studentId, this.courseInfo);
   @override
-  _CourseFilePageState createState() => _CourseFilePageState();
+  _CourseISchoolFilePage createState() => _CourseISchoolFilePage();
 }
 
-<<<<<<< HEAD:lib/ui/pages/ischool/screen/CourseISchoolFileScreen.dart
-class _CourseFileScreen extends State<CourseISchoolFileScreen>
-=======
-class _CourseFilePageState extends State<CourseFilePage>
->>>>>>> Different the naming of screen and page.:lib/ui/pages/ischool/screen/CourseFilePage.dart
+class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();

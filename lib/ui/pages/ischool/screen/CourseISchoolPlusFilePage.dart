@@ -1,40 +1,34 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:sprintf/sprintf.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-<<<<<<< HEAD:lib/ui/pages/ischool/screen/CourseISchoolFileScreen.dart
-class CourseISchoolFileScreen extends StatefulWidget {
+class CourseISchoolPlusFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseISchoolFileScreen(this.studentId, this.courseInfo);
-=======
-class CourseFilePage extends StatefulWidget {
-  final CourseInfoJson courseInfo;
-  final String studentId;
-  CourseFilePage(this.studentId, this.courseInfo);
->>>>>>> Different the naming of screen and page.:lib/ui/pages/ischool/screen/CourseFilePage.dart
+
+  CourseISchoolPlusFilePage(this.studentId, this.courseInfo);
 
   @override
-  _CourseFilePageState createState() => _CourseFilePageState();
+  _CourseISchoolPlusFilePage createState() => _CourseISchoolPlusFilePage();
 }
 
-<<<<<<< HEAD:lib/ui/pages/ischool/screen/CourseISchoolFileScreen.dart
-class _CourseFileScreen extends State<CourseISchoolFileScreen>
-=======
-class _CourseFilePageState extends State<CourseFilePage>
->>>>>>> Different the naming of screen and page.:lib/ui/pages/ischool/screen/CourseFilePage.dart
+class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();
@@ -68,14 +62,12 @@ class _CourseFilePageState extends State<CourseFilePage>
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
-    if (widget.studentId != ISchoolConnector.loginStudentId) {
-      TaskHandler.instance
-          .addTask(ISchoolLoginTask(context, studentId: widget.studentId));
-    }
-    TaskHandler.instance.addTask(ISchoolCourseFileTask(context, courseId));
+    TaskHandler.instance.addTask(CheckCookiesTask(context,
+        checkSystem: CheckCookiesTask.checkPlusISchool));
+    TaskHandler.instance.addTask(ISchoolPlusCourseFileTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
     courseFileList =
-        Model.instance.getTempData(ISchoolCourseFileTask.courseFileListTempKey);
+        Model.instance.getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
     selectList.addItems(courseFileList.length);
     setState(() {});
   }
@@ -179,7 +171,7 @@ class _CourseFilePageState extends State<CourseFilePage>
       color: Colors.grey,
     ),
     Icon(
-      Icons.attach_file,
+      MyIcon.doc_inv,
       color: Colors.blueGrey,
     )
   ];
@@ -211,7 +203,6 @@ class _CourseFilePageState extends State<CourseFilePage>
           Expanded(
             child: Text(courseFile.name),
           ),
-          Text(courseFile.timeString),
         ],
       ),
     );
@@ -219,15 +210,39 @@ class _CourseFilePageState extends State<CourseFilePage>
   }
 
   Future<void> _downloadOneFile(int index, [showToast = true]) async {
-    if (showToast) {
-      MyToast.show(S.current.downloadWillStart);
-    }
     CourseFileJson courseFile = courseFileList[index];
     FileType fileType = courseFile.fileType[0];
     String dirName = widget.courseInfo.main.course.name;
-    String url = fileType.fileUrl;
+    String url = fileType.href;
+    if (showToast) {
+      MyToast.show(S.current.downloadWillStart);
+    }
+    url = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
+    if ( url == null ){
+      MyToast.show( sprintf("%s%s" , [courseFile.name , S.current.downloadError]));
+    }
+    if( !Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw") ){ //代表可能是一個連結
+      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter( context: context , desc:S.current.isALink );
+      errorDialogParameter.title = S.current.AreYouSureToOpen;
+      errorDialogParameter.dialogType = DialogType.INFO;
+      errorDialogParameter.btnOkText = S.current.sure;
+      errorDialogParameter.btnOkOnPress = (){
+        _launchURL( url );
+      };
+      ErrorDialog(errorDialogParameter).show();
+      return;
+    }
     await FileDownload.download(context, url, dirName, courseFile.name);
   }
+
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 
   @override
   bool get wantKeepAlive => true;

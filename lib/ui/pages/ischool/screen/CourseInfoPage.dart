@@ -8,16 +8,12 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-<<<<<<< HEAD:lib/ui/pages/ischool/screen/CourseInfoScreen.dart
-import 'package:flutter_app/src/taskcontrol/task/course/CourseExtraInfoTask.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginScreen.dart';
-=======
-import 'package:flutter_app/src/taskcontrol/task/CourseExtraInfoTask.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
->>>>>>> Different the naming of screen and page.:lib/ui/pages/ischool/screen/CourseInfoPage.dart
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
+
+import '../../../../src/taskcontrol/task/course/CourseExtraInfoTask.dart';
+import '../../webview/WebViewPluginPage.dart';
 
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;

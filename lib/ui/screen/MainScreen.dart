@@ -60,11 +60,13 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomPadding: false,
-        body: _buildPageView(),
-        bottomNavigationBar: _buildBottomNavigationBar(),
+      child: MaterialApp(
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          resizeToAvoidBottomPadding: false,
+          body: _buildPageView(),
+          bottomNavigationBar: _buildBottomNavigationBar(),
+        ),
       ),
     );
   }
