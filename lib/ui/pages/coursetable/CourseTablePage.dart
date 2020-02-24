@@ -10,7 +10,7 @@ import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart'
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/ischool/ISchoolScreen.dart';
+import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
@@ -18,12 +18,12 @@ import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseTableControl.dart';
 
-class CourseTableScreen extends StatefulWidget {
+class CourseTablePage extends StatefulWidget {
   @override
-  _CourseTableScreen createState() => _CourseTableScreen();
+  _CourseTablePageState createState() => _CourseTablePageState();
 }
 
-class _CourseTableScreen extends State<CourseTableScreen> {
+class _CourseTablePageState extends State<CourseTablePage> {
   final TextEditingController _studentIdControl = TextEditingController();
   final FocusNode _studentFocus = new FocusNode();
   GlobalKey _key = GlobalKey();
@@ -435,7 +435,7 @@ class _CourseTableScreen extends State<CourseTableScreen> {
           .push(
         PageTransition(
           type: PageTransitionType.leftToRight,
-          child: ISchoolScreen(studentId, courseInfo),
+          child: ISchoolPage(studentId, courseInfo)
         ),
       )
           .then(

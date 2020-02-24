@@ -8,28 +8,29 @@ import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginScreen.dart';
+import 'package:flutter_app/ui/pages/setting/page/LanguagePage.dart';
+import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
 
 import 'page/AboutPage.dart';
-import 'page/SettingPage.dart';
 
-enum onListViewPress { Setting, Logout, Report, About, ChangePassword }
+enum onListViewPress { Language, Logout, Report, About, ChangePassword }
 
-class SettingScreen extends StatefulWidget {
+class SettingPage extends StatefulWidget {
   final PageController pageController;
-  SettingScreen(this.pageController);
+  SettingPage(this.pageController);
+
   @override
-  _SettingScreen createState() => _SettingScreen();
+  _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingScreen extends State<SettingScreen> {
+class _SettingPageState extends State<SettingPage> {
   final List<Map> listViewData = [
     {
-      "icon": Icons.settings,
+      "icon": Icons.language,
       "title": S.current.setting,
-      "onPress": onListViewPress.Setting
+      "onPress": onListViewPress.Language
     },
     {
       "icon": MyIcon.arrows_cw,
@@ -78,11 +79,11 @@ class _SettingScreen extends State<SettingScreen> {
           ),
         );
         break;
-      case onListViewPress.Setting:
+      case onListViewPress.Language:
         Navigator.of(context).push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: SettingPage(widget.pageController),
+            child: LanguagePage(widget.pageController),
           ),
         );
         break;
@@ -90,7 +91,7 @@ class _SettingScreen extends State<SettingScreen> {
         Navigator.of(context).push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: WebViewPluginScreen(S.current.feedback, formUrl),
+            child: WebViewPluginPage(S.current.feedback, formUrl),
           ),
         );
         break;

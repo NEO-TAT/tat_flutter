@@ -5,21 +5,27 @@ import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
+<<<<<<< HEAD:lib/ui/pages/ischool/ISchoolScreen.dart
 import 'package:flutter_app/ui/pages/ischool/screen/CourseAnnouncementScreen.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseISchoolFileScreen.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseISchoolPlusFileScreen.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseInfoScreen.dart';
+=======
+import 'package:flutter_app/ui/pages/ischool/screen/CourseAnnouncementPage.dart';
+import 'package:flutter_app/ui/pages/ischool/screen/CourseFilePage.dart';
+import 'package:flutter_app/ui/pages/ischool/screen/CourseInfoPage.dart';
+>>>>>>> Different the naming of screen and page.:lib/ui/pages/ischool/ISchoolPage.dart
 
-class ISchoolScreen extends StatefulWidget {
+class ISchoolPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  ISchoolScreen(this.studentId, this.courseInfo);
+  ISchoolPage(this.studentId, this.courseInfo);
 
   @override
-  _ISchoolScreen createState() => _ISchoolScreen();
+  _ISchoolPageState createState() => _ISchoolPageState();
 }
 
-class _ISchoolScreen extends State<ISchoolScreen>
+class _ISchoolPageState extends State<ISchoolPage>
     with SingleTickerProviderStateMixin {
   TabPageList tabPageList;
   TabController _tabController;
@@ -31,13 +37,17 @@ class _ISchoolScreen extends State<ISchoolScreen>
     super.initState();
     tabPageList = TabPageList();
     tabPageList.add(TabPage(S.current.course, Icons.info,
-        CourseInfoScreen(widget.studentId, widget.courseInfo)));
+        CourseInfoPage(widget.studentId, widget.courseInfo)));
     tabPageList.add(TabPage(S.current.announcement, Icons.announcement,
-        CourseAnnouncementScreen(widget.studentId, widget.courseInfo)));
+        CourseAnnouncementPage(widget.studentId, widget.courseInfo)));
     tabPageList.add(TabPage(S.current.file, Icons.file_download,
+<<<<<<< HEAD:lib/ui/pages/ischool/ISchoolScreen.dart
         CourseISchoolFileScreen(widget.studentId, widget.courseInfo)));
     tabPageList.add(TabPage(S.current.file, Icons.file_download,
         CourseISchoolPlusFileScreen(widget.studentId, widget.courseInfo)));
+=======
+        CourseFilePage(widget.studentId, widget.courseInfo)));
+>>>>>>> Different the naming of screen and page.:lib/ui/pages/ischool/ISchoolPage.dart
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
   }

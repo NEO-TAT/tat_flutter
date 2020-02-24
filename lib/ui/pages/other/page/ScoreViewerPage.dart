@@ -9,7 +9,7 @@ import 'package:sprintf/sprintf.dart';
 
 class ScoreViewerPage extends StatefulWidget {
   @override
-  _ScoreViewerPage createState() => _ScoreViewerPage();
+  _ScoreViewerPageState createState() => _ScoreViewerPageState();
 }
 
 class ExpansionTile {
@@ -25,7 +25,7 @@ class ExpansionTile {
   }
 }
 
-class _ScoreViewerPage extends State<ScoreViewerPage> {
+class _ScoreViewerPageState extends State<ScoreViewerPage> {
   bool isLoading = true;
   List<CourseScoreJson> courseScoreList;
   ScrollController _scrollController = ScrollController();
