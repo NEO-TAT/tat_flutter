@@ -64,189 +64,188 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              ClipPath(
-                clipper: WaveClipper1(),
-                child: Container(
-                  width: double.infinity,
-                  height: 350,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.blue,
-                        Colors.lightBlue,
-                      ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                ClipPath(
+                  clipper: WaveClipper1(),
+                  child: Container(
+                    width: double.infinity,
+                    height: 350,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.blue,
+                          Colors.lightBlue,
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              ClipPath(
-                clipper: WaveClipper2(),
-                child: Container(
-                  child: Column(),
-                  width: double.infinity,
-                  height: 350,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0x442196f3),
-                        Color(0x4403a9f4),
-                      ],
+                ClipPath(
+                  clipper: WaveClipper2(),
+                  child: Container(
+                    child: Column(),
+                    width: double.infinity,
+                    height: 350,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0x442196f3),
+                          Color(0x4403a9f4),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              ClipPath(
-                clipper: WaveClipper3(),
-                child: Container(
-                  child: Column(),
-                  width: double.infinity,
-                  height: 350,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Color(0x222196f3), Color(0x2203a9f4)]),
+                ClipPath(
+                  clipper: WaveClipper3(),
+                  child: Container(
+                    child: Column(),
+                    width: double.infinity,
+                    height: 350,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Color(0x222196f3), Color(0x2203a9f4)]),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                height: 320,
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.account_circle,
-                  color: Colors.white,
-                  size: 120,
+                Container(
+                  height: 320,
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                    size: 120,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.all(Radius.circular(32)),
-                    child: TextFormField(
-                      controller: _accountControl,
-                      cursorColor: Colors.blue[800],
-                      textInputAction: TextInputAction.done,
-                      focusNode: _accountFocus,
-                      onEditingComplete: () {
-                        _accountFocus.unfocus();
-                        FocusScope.of(context).requestFocus(_passwordFocus);
-                      },
-                      validator: (value) => _validatorAccount(value),
-                      decoration: InputDecoration(
-                        hintText: S.current.account,
-                        errorStyle: TextStyle(
-                          height: 0,
-                          fontSize: 0,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.account_circle,
-                          color: Colors.grey,
-                        ),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  if (_accountErrorMessage.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Text(
-                        _accountErrorMessage,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.red,
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.all(32),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Material(
+                      elevation: 2,
+                      borderRadius: BorderRadius.all(Radius.circular(32)),
+                      child: TextFormField(
+                        controller: _accountControl,
+                        cursorColor: Colors.blue[800],
+                        textInputAction: TextInputAction.done,
+                        focusNode: _accountFocus,
+                        onEditingComplete: () {
+                          _accountFocus.unfocus();
+                          FocusScope.of(context).requestFocus(_passwordFocus);
+                        },
+                        validator: (value) => _validatorAccount(value),
+                        decoration: InputDecoration(
+                          hintText: S.current.account,
+                          errorStyle: TextStyle(
+                            height: 0,
+                            fontSize: 0,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.account_circle,
+                            color: Colors.grey,
+                          ),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.all(Radius.circular(32)),
-                    child: TextFormField(
-                      controller: _passwordControl,
-                      cursorColor: Colors.blue[800],
-                      obscureText: true,
-                      focusNode: _passwordFocus,
-                      onEditingComplete: () {
-                        _passwordFocus.unfocus();
-                      },
-                      validator: (value) => _validatorPassword(value),
-                      decoration: InputDecoration(
-                        hintText: S.current.password,
-                        errorStyle: TextStyle(
-                          height: 0,
-                          fontSize: 0,
+                    SizedBox(
+                      height: 4,
+                    ),
+                    if (_accountErrorMessage.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Text(
+                          _accountErrorMessage,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                          ),
                         ),
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Colors.grey,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 13,
+                      ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Material(
+                      elevation: 2,
+                      borderRadius: BorderRadius.all(Radius.circular(32)),
+                      child: TextFormField(
+                        controller: _passwordControl,
+                        cursorColor: Colors.blue[800],
+                        obscureText: true,
+                        focusNode: _passwordFocus,
+                        onEditingComplete: () {
+                          _passwordFocus.unfocus();
+                        },
+                        validator: (value) => _validatorPassword(value),
+                        decoration: InputDecoration(
+                          hintText: S.current.password,
+                          errorStyle: TextStyle(
+                            height: 0,
+                            fontSize: 0,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.grey,
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 13,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  if (_passwordErrorMessage.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Text(
-                        _passwordErrorMessage,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.red,
+                    SizedBox(
+                      height: 4,
+                    ),
+                    if (_passwordErrorMessage.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Text(
+                          _passwordErrorMessage,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                          ),
                         ),
                       ),
+                    SizedBox(
+                      height: 25,
                     ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: FlatButton(
-                      child: Text(
-                        S.current.login,
-                        style: TextStyle(
-                          fontSize: 16,
+                    Align(
+                      alignment: Alignment.center,
+                      child: FlatButton(
+                        child: Text(
+                          S.current.login,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
                         ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(32.0),
+                        ),
+                        color: AppColors.mainColor,
+                        textColor: AppColors.lightFontColor,
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        onPressed: () => _loginPress(context),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(32.0),
-                      ),
-                      color: AppColors.mainColor,
-                      textColor: AppColors.lightFontColor,
-                      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                      onPressed: () => _loginPress(context),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
