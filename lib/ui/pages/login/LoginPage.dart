@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                   clipper: WaveClipper1(),
                   child: Container(
                     width: double.infinity,
-                    height: 350,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     child: Column(),
                     width: double.infinity,
-                    height: 350,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     child: Column(),
                     width: double.infinity,
-                    height: 350,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                           colors: [Color(0x222196f3), Color(0x2203a9f4)]),
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Container(
-                  height: 320,
+                  height: MediaQuery.of(context).size.height * 0.36,
                   alignment: Alignment.center,
                   child: Icon(
                     Icons.account_circle,
