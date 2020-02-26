@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/login/LoginPage.dart';
 import 'package:flutter_app/ui/pages/setting/page/LanguagePage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
@@ -15,7 +17,7 @@ import 'package:random_color/random_color.dart';
 
 import 'page/AboutPage.dart';
 
-enum onListViewPress { Language, Logout, Report, About, ChangePassword }
+enum onListViewPress { Language, FileViewer, Logout, Report, About, ChangePassword }
 
 class SettingPage extends StatefulWidget {
   final PageController pageController;
@@ -29,26 +31,31 @@ class _SettingPageState extends State<SettingPage> {
   final List<Map> listViewData = [
     {
       "icon": Icons.language,
+      "color": Colors.orange,
       "title": S.current.setting,
       "onPress": onListViewPress.Language
     },
     {
       "icon": MyIcon.arrows_cw,
+      "color": Colors.lightGreen,
       "title": S.current.changePassword,
       "onPress": onListViewPress.ChangePassword
     },
     {
       "icon": MyIcon.logout,
+      "color": Colors.teal[400],
       "title": S.current.logout,
       "onPress": onListViewPress.Logout
     },
     {
       "icon": Icons.report,
+      "color": Colors.cyan,
       "title": S.current.feedback,
       "onPress": onListViewPress.Report
     },
     {
       "icon": Icons.info,
+      "color": Colors.lightBlue,
       "title": S.current.about,
       "onPress": onListViewPress.About
     }
@@ -69,6 +76,19 @@ class _SettingPageState extends State<SettingPage> {
           Navigator.of(context).push(CustomRoute(LoginPage())).then((_) {
             widget.pageController.jumpToPage(0); //跳轉到第一頁
           });
+        });
+        break;
+      case onListViewPress.FileViewer:
+        FileStore.findLocalPath(context).then((filePath) {
+          Navigator.of(context).push(
+            PageTransition(
+              type: PageTransitionType.leftToRight,
+              child: FileViewerPage(
+                title: S.current.fileViewer,
+                path: filePath,
+              ),
+            ),
+          );
         });
         break;
       case onListViewPress.About:
@@ -187,8 +207,7 @@ class _SettingPageState extends State<SettingPage> {
         children: <Widget>[
           Icon(
             data['icon'],
-            color: RandomColor()
-                .randomColor(colorSaturation: ColorSaturation.highSaturation),
+            color: data['color'],
           ),
           SizedBox(
             width: 20.0,
