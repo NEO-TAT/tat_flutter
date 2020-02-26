@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarScreen extends StatefulWidget {
+class CalendarPage extends StatefulWidget {
   @override
-  _CalendarScreen createState() => _CalendarScreen();
+  _CalendarPageState createState() => _CalendarPageState();
 }
 
 // Example holidays
@@ -16,7 +16,7 @@ final Map<DateTime, List> _holidays = {
   DateTime(2019, 4, 22): ['Easter Monday'],
 };
 
-class _CalendarScreen extends State<CalendarScreen>
+class _CalendarPageState extends State<CalendarPage>
     with TickerProviderStateMixin {
   Map<DateTime, List> _events;
   List _selectedEvents;

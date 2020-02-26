@@ -8,22 +8,23 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/course/CourseExtraInfoTask.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 
-class CourseInfoScreen extends StatefulWidget {
+import '../../../../src/taskcontrol/task/course/CourseExtraInfoTask.dart';
+import '../../webview/WebViewPluginPage.dart';
+
+class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseInfoScreen(this.studentId, this.courseInfo);
+  CourseInfoPage(this.studentId, this.courseInfo);
 
   @override
-  _CourseInfoScreen createState() => _CourseInfoScreen();
+  _CourseInfoPageState createState() => _CourseInfoPageState();
 }
 
-class _CourseInfoScreen extends State<CourseInfoScreen>
+class _CourseInfoPageState extends State<CourseInfoPage>
     with AutomaticKeepAliveClientMixin {
   CourseMainInfoJson courseMainInfo;
   CourseExtraInfoJson courseExtraInfo;
@@ -171,7 +172,7 @@ class _CourseInfoScreen extends State<CourseInfoScreen>
         .push(
       PageTransition(
         type: PageTransitionType.downToUp,
-        child: WebViewPluginScreen(title, url),
+        child: WebViewPluginPage(title, url),
       ),
     )
         .then((_) {

@@ -18,10 +18,10 @@ class AnnouncementDetailPage extends StatefulWidget {
   AnnouncementDetailPage(this.data);
 
   @override
-  _AnnouncementDetailPage createState() => _AnnouncementDetailPage();
+  _AnnouncementDetailPageState createState() => _AnnouncementDetailPageState();
 }
 
-class _AnnouncementDetailPage extends State<AnnouncementDetailPage> {
+class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

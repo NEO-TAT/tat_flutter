@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyToast {
@@ -8,7 +9,7 @@ class MyToast {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.red,
+        backgroundColor: AppColors.mainColor,
         textColor: Colors.white,
         fontSize: 16.0);
   }

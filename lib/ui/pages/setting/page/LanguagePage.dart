@@ -1,24 +1,27 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:step_slider/step_slider.dart';
 
-class SettingPage extends StatefulWidget {
+class LanguagePage extends StatefulWidget {
   final PageController pageController;
 
-  SettingPage(this.pageController);
+  LanguagePage(this.pageController);
 
   @override
-  _SettingPage createState() => _SettingPage();
+  _LanguagePageState createState() => _LanguagePageState();
 }
 
-class _SettingPage extends State<SettingPage> {
+class _LanguagePageState extends State<LanguagePage> {
   Map<double, String> langMap = {0: "en", 1: "zh"};
+
 
   @override
   void initState() {
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {

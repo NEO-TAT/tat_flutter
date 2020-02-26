@@ -3,9 +3,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/i18n.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
-import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -13,8 +11,6 @@ import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
@@ -22,17 +18,17 @@ import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CourseISchoolPlusFileScreen extends StatefulWidget {
+class CourseISchoolPlusFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  CourseISchoolPlusFileScreen(this.studentId, this.courseInfo);
+  CourseISchoolPlusFilePage(this.studentId, this.courseInfo);
 
   @override
-  _CourseFileScreen createState() => _CourseFileScreen();
+  _CourseISchoolPlusFilePage createState() => _CourseISchoolPlusFilePage();
 }
 
-class _CourseFileScreen extends State<CourseISchoolPlusFileScreen>
+class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();

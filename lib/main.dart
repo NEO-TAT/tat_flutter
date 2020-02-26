@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/providers/CoreProvider.dart';
-import 'package:flutter_app/ui/pages/bottomnavigationbar/BottomNavigationWidget.dart';
+import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
@@ -45,10 +47,16 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       //localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
-      title: 'Navigation Basics',
-      home: Scaffold(
-        body: BottomNavigationWidget(),
+      theme: ThemeData(
+        accentColor: AppColors.mainColor,
+        cursorColor: AppColors.mainColor,
+        indicatorColor: AppColors.mainColor,
+        cupertinoOverrideTheme: CupertinoThemeData(
+          primaryColor: AppColors.mainColor,
+        ),
       ),
+      title: 'Navigation Basics',
+      home: MainScreen(),
     );
   }
 }
