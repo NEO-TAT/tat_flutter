@@ -263,7 +263,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
                 Icon(
                   Icons.account_circle,
                   size: 55.0,
-                  color: Colors.red,
+                  color: Colors.deepOrangeAccent,
                 ),
                 Expanded(
                   child: Padding(
