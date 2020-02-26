@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
 import '../../../src/store/Model.dart';
-import '../../../src/store/json/UserDataJson.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,6 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final FocusNode _passwordFocus = new FocusNode();
   final FocusNode _accountFocus = new FocusNode();
+  String _accountErrorMessage = '';
+  String _passwordErrorMessage = '';
 
   @override
   void initState() {
@@ -37,38 +40,64 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   String _validatorAccount(String value) {
-    if (value.isEmpty) {
-      return S.current.accountNull;
+    if (value.isNotEmpty) {
+      _accountErrorMessage = '';
+    } else {
+      setState(() {
+        _accountErrorMessage = S.current.accountNull;
+      });
     }
-    return null;
+    return _accountErrorMessage.isNotEmpty ? _accountErrorMessage : null;
   }
 
   String _validatorPassword(String value) {
-    if (value.isEmpty) {
-      return S.current.passwordNull;
+    if (value.isNotEmpty) {
+      _passwordErrorMessage = '';
+    } else {
+      setState(() {
+        _passwordErrorMessage = S.current.passwordNull;
+      });
     }
-    return null;
+    return _passwordErrorMessage.isNotEmpty ? _passwordErrorMessage : null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.white,
-        body: ListView(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Stack(
               children: <Widget>[
+                ClipPath(
+                  clipper: WaveClipper1(),
+                  child: Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.blue,
+                          Colors.lightBlue,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 ClipPath(
                   clipper: WaveClipper2(),
                   child: Container(
                     child: Column(),
                     width: double.infinity,
-                    height: 300,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                          colors: [Color(0x22ff3a5a), Color(0x22fe494d)]),
+                        colors: [
+                          Color(0x442196f3),
+                          Color(0x4403a9f4),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -77,73 +106,37 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     child: Column(),
                     width: double.infinity,
-                    height: 300,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [
-                          Color(0x44ff3a5a),
-                          Color(0x44fe494d),
-                        ],
-                      ),
+                          colors: [Color(0x222196f3), Color(0x2203a9f4)]),
                     ),
                   ),
                 ),
-                ClipPath(
-                  clipper: WaveClipper1(),
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Icon(
-                          Icons.account_circle,
-                          color: Colors.white,
-                          size: 60,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Account",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 30),
-                        ),
-                      ],
-                    ),
-                    width: double.infinity,
-                    height: 300,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xffff3a5a),
-                          Color(0xfffe494d),
-                        ],
-                      ),
-                    ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.36,
+                  alignment: Alignment.center,
+                  child: Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                    size: 120,
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 30,
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Material(
-                      elevation: 2.0,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(30),
-                      ),
+            Padding(
+              padding: EdgeInsets.all(32),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Material(
+                      elevation: 2,
+                      borderRadius: BorderRadius.all(Radius.circular(32)),
                       child: TextFormField(
                         controller: _accountControl,
-                        cursorColor: Colors.deepOrange,
+                        cursorColor: Colors.blue[800],
                         textInputAction: TextInputAction.done,
                         focusNode: _accountFocus,
                         onEditingComplete: () {
@@ -153,34 +146,41 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (value) => _validatorAccount(value),
                         decoration: InputDecoration(
                           hintText: S.current.account,
-                          prefixIcon: Material(
-                            elevation: 0,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30),
-                            ),
-                            child: Icon(
-                              Icons.account_circle,
-                              color: Colors.red,
-                            ),
+                          errorStyle: TextStyle(
+                            height: 0,
+                            fontSize: 0,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.account_circle,
+                            color: Colors.grey,
                           ),
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 25, vertical: 13),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Material(
-                      elevation: 2.0,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    if (_accountErrorMessage.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Text(
+                          _accountErrorMessage,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Material(
+                      elevation: 2,
+                      borderRadius: BorderRadius.all(Radius.circular(32)),
                       child: TextFormField(
                         controller: _passwordControl,
-                        cursorColor: Colors.deepOrange,
+                        cursorColor: Colors.blue[800],
                         obscureText: true,
                         focusNode: _passwordFocus,
                         onEditingComplete: () {
@@ -189,13 +189,13 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (value) => _validatorPassword(value),
                         decoration: InputDecoration(
                           hintText: S.current.password,
-                          prefixIcon: Material(
-                            elevation: 0,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            child: Icon(
-                              Icons.lock,
-                              color: Colors.red,
-                            ),
+                          errorStyle: TextStyle(
+                            height: 0,
+                            fontSize: 0,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.lock,
+                            color: Colors.grey,
                           ),
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.symmetric(
@@ -205,29 +205,43 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(100)),
-                          color: Color(0xffff3a5a)),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    if (_passwordErrorMessage.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Text(
+                          _passwordErrorMessage,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                    SizedBox(
+                      height: 25,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
                       child: FlatButton(
                         child: Text(
                           S.current.login,
                           style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18),
+                            fontSize: 16,
+                          ),
                         ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(32.0),
+                        ),
+                        color: AppColors.mainColor,
+                        textColor: AppColors.lightFontColor,
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         onPressed: () => _loginPress(context),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -264,7 +278,7 @@ class WaveClipper1 extends CustomClipper<Path> {
   }
 }
 
-class WaveClipper3 extends CustomClipper<Path> {
+class WaveClipper2 extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
@@ -291,7 +305,7 @@ class WaveClipper3 extends CustomClipper<Path> {
   }
 }
 
-class WaveClipper2 extends CustomClipper<Path> {
+class WaveClipper3 extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();

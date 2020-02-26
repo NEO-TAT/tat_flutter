@@ -14,16 +14,15 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
-class CourseISchoolFileScreen extends StatefulWidget {
+class CourseISchoolFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  CourseISchoolFileScreen(this.studentId, this.courseInfo);
-
+  CourseISchoolFilePage(this.studentId, this.courseInfo);
   @override
-  _CourseFileScreen createState() => _CourseFileScreen();
+  _CourseISchoolFilePage createState() => _CourseISchoolFilePage();
 }
 
-class _CourseFileScreen extends State<CourseISchoolFileScreen>
+class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();

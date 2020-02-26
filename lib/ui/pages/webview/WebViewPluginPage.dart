@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-class WebViewPluginScreen extends StatefulWidget {
+class WebViewPluginPage extends StatefulWidget {
   final String url;
   final String title;
 
-  WebViewPluginScreen(this.title, this.url);
+  WebViewPluginPage(this.title, this.url);
 
   @override
-  _WebViewPluginScreen createState() => _WebViewPluginScreen();
+  _WebViewPluginPageState createState() => _WebViewPluginPageState();
 }
 
-class _WebViewPluginScreen extends State<WebViewPluginScreen>
+class _WebViewPluginPageState extends State<WebViewPluginPage>
     with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String initUrl;
