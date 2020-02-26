@@ -53,7 +53,6 @@ class CustomProgressDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DialogTheme dialogTheme = DialogTheme.of(context);
     return AnimatedPadding(
       padding: MediaQuery.of(context).viewInsets +
           const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
@@ -72,8 +71,8 @@ class CustomProgressDialog extends StatelessWidget {
               elevation: 24.0,
               color: _getColor(context),
               type: MaterialType.card,
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
               child: child,
-              shape: shape ?? dialogTheme.shape ?? _defaultDialogShape,
             ),
           ),
         ),
@@ -112,12 +111,13 @@ class StyleProgressDialog {
         pageBuilder: (context, animation1, animation2) {
           return CustomProgressDialog(
             child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: const BorderRadius.all(Radius.circular(5))),
-                padding: const EdgeInsets.all(20),
-                child:
-                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: const BorderRadius.all(Radius.circular(5))),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
                   Platform.isIOS
                       ? CupertinoActivityIndicator(
                           radius: 15,
@@ -133,8 +133,11 @@ class StyleProgressDialog {
                             textToBeDisplayed,
                             style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center,
-                          ))
-                ])),
+                          ),
+                        ),
+                ],
+              ),
+            ),
           );
         },
         barrierDismissible: false,
