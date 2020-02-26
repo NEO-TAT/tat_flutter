@@ -8,7 +8,7 @@ import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/mail/NewAnnouncementPage.dart';
-import 'package:flutter_app/ui/pages/other/OtherPage.dart';
+import 'package:flutter_app/ui/pages/score/ScorePage.dart';
 import 'package:flutter_app/ui/pages/setting/SettingPage.dart';
 
 import '../../debug/log/Log.dart';
@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(CourseTablePage());
       _pageList.add(NewAnnouncementPage());
       //bottomPageList.add(BottomPage(CalendarScreen()));
-      _pageList.add(OtherPage());
+      _pageList.add(ScoreViewerPage());
       _pageList.add(SettingPage(_pageController));
       _setLang();
     });
@@ -112,10 +112,10 @@ class _MainScreenState extends State<MainScreen> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.search,
+            Icons.schedule,
           ),
           title: Text(
-            'Search',
+            'Course',
           ),
         ),
         BottomNavigationBarItem(
@@ -140,18 +140,18 @@ class _MainScreenState extends State<MainScreen> {
          */
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.pages,
+            Icons.school,
           ),
           title: Text(
-            'Other',
+            'Credit',
           ),
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.settings,
+            Icons.menu,
           ),
           title: Text(
-            'Setting',
+            'Other',
           ),
         ),
       ],
