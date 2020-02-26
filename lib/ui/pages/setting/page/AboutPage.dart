@@ -17,17 +17,32 @@ class _AboutPageState extends State<AboutPage> {
   final List<Map> listViewData = [
     {
       "icon": Icons.update,
+<<<<<<< HEAD
       "title": R.current.checkVersion,
+=======
+      "color": Colors.orange,
+      "title": S.current.checkVersion,
+>>>>>>> Move the file viewer page to setting page
       "onPress": onListViewPress.AppUpdate
     },
     {
       "icon": Icons.face,
+<<<<<<< HEAD
       "title": R.current.Contribution,
+=======
+      "color": Colors.lightGreen,
+      "title": S.current.Contribution,
+>>>>>>> Move the file viewer page to setting page
       "onPress": onListViewPress.Contribution
     },
     {
       "icon": Icons.info,
+<<<<<<< HEAD
       "title": R.current.versionInfo,
+=======
+      "color": Colors.blue,
+      "title": S.current.versionInfo,
+>>>>>>> Move the file viewer page to setting page
       "onPress": onListViewPress.Version
     },
   ];
@@ -114,8 +129,7 @@ class _AboutPageState extends State<AboutPage> {
         children: <Widget>[
           Icon(
             data['icon'],
-            color: RandomColor()
-                .randomColor(colorSaturation: ColorSaturation.highSaturation),
+            color: data['color'],
           ),
           SizedBox(
             width: 20.0,

@@ -77,13 +77,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: <Widget>[
-            (isLoading)
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Expanded(
-                    child: getAnimationList(),
-                  ),
+            if (!isLoading)
+              Expanded(
+                child: getAnimationList(),
+              ),
           ],
         ),
       ),

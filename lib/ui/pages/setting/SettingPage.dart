@@ -36,6 +36,12 @@ class _SettingPageState extends State<SettingPage> {
       "onPress": onListViewPress.Language
     },
     {
+      "icon": Icons.file_download,
+      "color": Colors.yellow[700],
+      "title": R.current.downloadFile,
+      "onPress": onListViewPress.FileViewer
+    },
+    {
       "icon": MyIcon.arrows_cw,
       "color": Colors.lightGreen,
       "title": R.current.changePassword,
