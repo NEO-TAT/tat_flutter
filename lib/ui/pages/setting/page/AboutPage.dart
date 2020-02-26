@@ -17,16 +17,19 @@ class _AboutPageState extends State<AboutPage> {
   final List<Map> listViewData = [
     {
       "icon": Icons.update,
+      "color": Colors.orange,
       "title": S.current.checkVersion,
       "onPress": onListViewPress.AppUpdate
     },
     {
       "icon": Icons.face,
+      "color": Colors.lightGreen,
       "title": S.current.Contribution,
       "onPress": onListViewPress.Contribution
     },
     {
       "icon": Icons.info,
+      "color": Colors.blue,
       "title": S.current.versionInfo,
       "onPress": onListViewPress.Version
     },
@@ -114,8 +117,7 @@ class _AboutPageState extends State<AboutPage> {
         children: <Widget>[
           Icon(
             data['icon'],
-            color: RandomColor()
-                .randomColor(colorSaturation: ColorSaturation.highSaturation),
+            color: data['color'],
           ),
           SizedBox(
             width: 20.0,
