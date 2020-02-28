@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
@@ -19,12 +19,12 @@ class _OtherPageState extends State<OtherPage> {
   final List<Map> listViewData = [
     {
       "icon": Icons.search,
-      "title": S.current.scoreSearch,
+      "title": R.current.scoreSearch,
       "onPress": onListViewPress.Score
     },
     {
       "icon": Icons.file_download,
-      "title": S.current.downloadFile,
+      "title": R.current.downloadFile,
       "onPress": onListViewPress.FileViewer
     },
   ];
@@ -43,7 +43,7 @@ class _OtherPageState extends State<OtherPage> {
             PageTransition(
               type: PageTransitionType.leftToRight,
               child: FileViewerPage(
-                title: S.current.fileViewer,
+                title: R.current.fileViewer,
                 path: filePath,
               ),
             ),
@@ -67,7 +67,7 @@ class _OtherPageState extends State<OtherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.titleElse),
+        title: Text(R.current.titleElse),
       ),
       body: ListView.separated(
         itemCount: listViewData.length,

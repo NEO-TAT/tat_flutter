@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -202,7 +202,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text(S.current.titleCourse),
+        title: Text(R.current.titleCourse),
         actions: [
           PopupMenuButton<int>(
             // overflow menu
@@ -213,7 +213,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               return [
                 PopupMenuItem(
                   value: 1,
-                  child: Text(S.current.refresh),
+                  child: Text(R.current.refresh),
                 ),
               ];
             },
@@ -236,11 +236,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       // 關閉框線
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(10),
-                      hintText: S.current.pleaseEnterStudentId,
+                      hintText: R.current.pleaseEnterStudentId,
                     ),
                     onEditingComplete: () {
                       if (_studentIdControl.text.isEmpty) {
-                        MyToast.show(S.current.pleaseEnterStudentId);
+                        MyToast.show(R.current.pleaseEnterStudentId);
                       } else {
                         _getCourseTable(studentId: _studentIdControl.text);
                       }
@@ -401,13 +401,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(sprintf("%s : %s", [S.current.courseId, course.id])),
+                Text(sprintf("%s : %s", [R.current.courseId, course.id])),
                 Text(sprintf("%s : %s", [
-                  S.current.time,
+                  R.current.time,
                   courseTableControl.getTimeString(section)
                 ])),
-                Text(sprintf("%s : %s", [S.current.location, classroomName])),
-                Text(sprintf("%s : %s", [S.current.instructor, teacherName])),
+                Text(sprintf("%s : %s", [R.current.location, classroomName])),
+                Text(sprintf("%s : %s", [R.current.instructor, teacherName])),
               ],
             ),
           ),
@@ -416,7 +416,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               onPressed: () {
                 _showCourseDetail(courseInfo);
               },
-              child: new Text(S.current.details),
+              child: new Text(R.current.details),
             ),
           ],
         );
@@ -429,7 +429,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     Navigator.of(context).pop();
     String studentId = _studentIdControl.text;
     if (course.id.isEmpty) {
-      MyToast.show(course.name + S.current.noSupport);
+      MyToast.show(course.name + R.current.noSupport);
     } else {
       Navigator.of(context, rootNavigator: true)
           .push(

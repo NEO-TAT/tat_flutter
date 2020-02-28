@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
@@ -13,7 +13,7 @@ class CourseLoginTask extends TaskModel {
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.loginCourse);
+    MyProgressDialog.showProgressDialog(context, R.current.loginCourse);
     CourseConnectorStatus value = await CourseConnector.login();
     MyProgressDialog.hideProgressDialog();
     if (value == CourseConnectorStatus.LoginSuccess) {
@@ -27,7 +27,7 @@ class CourseLoginTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getCourseDetailError,
+      desc: R.current.getCourseDetailError,
     );
     ErrorDialog(parameter).show();
   }

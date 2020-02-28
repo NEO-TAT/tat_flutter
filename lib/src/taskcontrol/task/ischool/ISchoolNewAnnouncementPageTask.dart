@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
@@ -16,7 +16,7 @@ class ISchoolNewAnnouncementPageTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(
-        context, S.current.getISchoolNewAnnouncementPage);
+        context, R.current.getISchoolNewAnnouncementPage);
     int value = await ISchoolConnector.getNewAnnouncementPage();
     MyProgressDialog.hideProgressDialog();
     if (value != null) {
@@ -31,7 +31,7 @@ class ISchoolNewAnnouncementPageTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getISchoolNewAnnouncementPageError,
+      desc: R.current.getISchoolNewAnnouncementPageError,
     );
     ErrorDialog(parameter).show();
   }

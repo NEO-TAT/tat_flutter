@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
@@ -16,7 +16,7 @@ class ISchoolLoginTask extends TaskModel {
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.loginISchool);
+    MyProgressDialog.showProgressDialog(context, R.current.loginISchool);
     ISchoolConnectorStatus value =
         await ISchoolConnector.login(studentId: studentId);
     MyProgressDialog.hideProgressDialog();
@@ -31,7 +31,7 @@ class ISchoolLoginTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.loginISchoolError,
+      desc: R.current.loginISchoolError,
     );
     ErrorDialog(parameter).show();
   }

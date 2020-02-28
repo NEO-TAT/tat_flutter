@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       Model.instance.setAccount(_accountControl.text.toString());
       Model.instance.setPassword(_passwordControl.text.toString());
       await Model.instance.saveUserData();
-      MyToast.show(S.current.loginSave);
+      MyToast.show(R.current.loginSave);
       Navigator.of(context).pop(true);
     }
   }
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
       _accountErrorMessage = '';
     } else {
       setState(() {
-        _accountErrorMessage = S.current.accountNull;
+        _accountErrorMessage = R.current.accountNull;
       });
     }
     return _accountErrorMessage.isNotEmpty ? _accountErrorMessage : null;
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
       _passwordErrorMessage = '';
     } else {
       setState(() {
-        _passwordErrorMessage = S.current.passwordNull;
+        _passwordErrorMessage = R.current.passwordNull;
       });
     }
     return _passwordErrorMessage.isNotEmpty ? _passwordErrorMessage : null;
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         validator: (value) => _validatorAccount(value),
                         decoration: InputDecoration(
-                          hintText: S.current.account,
+                          hintText: R.current.account,
                           errorStyle: TextStyle(
                             height: 0,
                             fontSize: 0,
@@ -188,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         validator: (value) => _validatorPassword(value),
                         decoration: InputDecoration(
-                          hintText: S.current.password,
+                          hintText: R.current.password,
                           errorStyle: TextStyle(
                             height: 0,
                             fontSize: 0,
@@ -226,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.center,
                       child: FlatButton(
                         child: Text(
-                          S.current.login,
+                          R.current.login,
                           style: TextStyle(
                             fontSize: 16,
                           ),

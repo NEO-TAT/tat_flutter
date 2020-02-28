@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -65,36 +65,36 @@ class _CourseInfoPageState extends State<CourseInfoPage>
         Model.instance.getTempData(CourseExtraInfoTask.tempDataKey);
     widget.courseInfo.extra = courseExtraInfo;
     courseData.add(_buildCourseInfo(
-        sprintf("%s: %s", [S.current.courseId, courseMainInfo.course.id])));
+        sprintf("%s: %s", [R.current.courseId, courseMainInfo.course.id])));
     courseData.add(_buildCourseInfo(
-        sprintf("%s: %s", [S.current.courseName, courseMainInfo.course.name])));
+        sprintf("%s: %s", [R.current.courseName, courseMainInfo.course.name])));
     courseData.add(_buildCourseInfo(sprintf(
-        "%s: %s    ", [S.current.credit, courseMainInfo.course.credits])));
+        "%s: %s    ", [R.current.credit, courseMainInfo.course.credits])));
     courseData.add(_buildCourseInfo(sprintf(
-        "%s: %s    ", [S.current.category, courseExtraInfo.course.category])));
+        "%s: %s    ", [R.current.category, courseExtraInfo.course.category])));
     courseData.add(_buildCourseInfoWithButton(
         sprintf(
-            "%s: %s", [S.current.instructor, courseMainInfo.getTeacherName()]),
-        S.current.syllabus,
+            "%s: %s", [R.current.instructor, courseMainInfo.getTeacherName()]),
+        R.current.syllabus,
         courseMainInfo.course.scheduleHref));
     courseData.add(_buildCourseInfo(sprintf(
-        "%s: %s", [S.current.startClass, courseMainInfo.getOpenClassName()])));
+        "%s: %s", [R.current.startClass, courseMainInfo.getOpenClassName()])));
     courseData.add(_buildMultiButtonInfo(
-      sprintf("%s: ", [S.current.classroom]),
-      S.current.classroomUse,
+      sprintf("%s: ", [R.current.classroom]),
+      R.current.classroomUse,
       courseMainInfo.getClassroomNameList(),
       courseMainInfo.getClassroomHrefList(),
     ));
 
     courseData.add(_buildCourseInfo(sprintf("%s: %s",
-        [S.current.numberOfStudent, courseExtraInfo.course.selectNumber])));
+        [R.current.numberOfStudent, courseExtraInfo.course.selectNumber])));
     courseData.add(_buildCourseInfo(sprintf("%s: %s",
-        [S.current.numberOfWithdraw, courseExtraInfo.course.withdrawNumber])));
+        [R.current.numberOfWithdraw, courseExtraInfo.course.withdrawNumber])));
 
     listItem.removeRange(0, listItem.length);
-    listItem.add(_buildInfoTitle(S.current.courseData));
+    listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
-    listItem.add(_buildInfoTitle(S.current.studentList));
+    listItem.add(_buildInfoTitle(R.current.studentList));
     for (int i = 0; i < courseExtraInfo.classmate.length; i++) {
       listItem
           .add(_buildClassmateInfo(i, widget.courseInfo.extra.classmate[i]));

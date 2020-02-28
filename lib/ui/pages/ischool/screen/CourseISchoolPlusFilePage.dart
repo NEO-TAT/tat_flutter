@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -79,7 +79,7 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
         body: (courseFileList.length > 0)
             ? _buildFileList()
             : Center(
-                child: Text(S.current.noAnyFile),
+                child: Text(R.current.noAnyFile),
               ),
         floatingActionButton: (selectList.inSelectMode)
             ? FloatingActionButton(
@@ -94,7 +94,7 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
   }
 
   Future<void> _floatingDownloadPress() async {
-    MyToast.show(S.current.downloadWillStart);
+    MyToast.show(R.current.downloadWillStart);
     for (int i = 0; i < courseFileList.length; i++) {
       if (selectList.getItemSelect(i)) {
         await _downloadOneFile(i, false);
@@ -215,17 +215,17 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     String dirName = widget.courseInfo.main.course.name;
     String url = fileType.href;
     if (showToast) {
-      MyToast.show(S.current.downloadWillStart);
+      MyToast.show(R.current.downloadWillStart);
     }
     url = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
     if ( url == null ){
-      MyToast.show( sprintf("%s%s" , [courseFile.name , S.current.downloadError]));
+      MyToast.show( sprintf("%s%s" , [courseFile.name , R.current.downloadError]));
     }
     if( !Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw") ){ //代表可能是一個連結
-      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter( context: context , desc:S.current.isALink );
-      errorDialogParameter.title = S.current.AreYouSureToOpen;
+      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter( context: context , desc:R.current.isALink );
+      errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
-      errorDialogParameter.btnOkText = S.current.sure;
+      errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = (){
         _launchURL( url );
       };

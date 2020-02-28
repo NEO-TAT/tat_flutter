@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
@@ -22,7 +21,7 @@ class CourseTableTask extends TaskModel {
   static String courseTableTempKey = "CourseTableTempKey";
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.getCourse);
+    MyProgressDialog.showProgressDialog(context, R.current.getCourse);
     List<CourseMainInfoJson> courseMainInfoList;
     if (LanguageUtil.getLangIndex() == LangEnum.zh) {
       //根據語言選擇課表
@@ -70,7 +69,7 @@ class CourseTableTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getCourseSemesterError,
+      desc: R.current.getCourseSemesterError,
     );
     ErrorDialog(parameter).show();
   }

@@ -8,8 +8,7 @@
 
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 
@@ -38,7 +37,7 @@ class LanguageUtil {
         locale = Locale("en", "");
         break;
     }
-    S.delegate.load(locale);
+    R.load(locale);
 
     Model.instance.setOtherSetting(otherSetting);
     await Model.instance.saveOtherSetting();
