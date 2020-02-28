@@ -35,7 +35,7 @@ class ISchoolPlusConnector {
   static final String _getCourseName =
       _iSchoolPlusUrl + "learn/mooc_sysbar.php";
 
-  static Future<ISchoolPlusConnectorStatus> login(
+  static Future<ISchoolPlusConnectorStatus> oldLogin(
       String account, String password) async {
     String result;
     try {
@@ -88,6 +88,44 @@ class ISchoolPlusConnector {
         //代表登入失敗
         return ISchoolPlusConnectorStatus.LoginFail;
       }
+      _isLogin = true;
+      return ISchoolPlusConnectorStatus.LoginSuccess;
+    } catch (e) {
+      Log.e(e.toString());
+      return ISchoolPlusConnectorStatus.LoginFail;
+    }
+  }
+
+  static Future<ISchoolPlusConnectorStatus> login(
+      String account) async {
+    String result;
+    try {
+      ConnectorParameter parameter;
+      html.Document tagNode;
+      List<html.Element> nodes;
+      html.Element node;
+      Map<String, String> data = {
+        "apUrl" : "https://istudy.ntut.edu.tw/login.php" ,
+        "apOu" : "ischool_plus_" ,
+        "sso" : "true" ,
+        "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
+      };
+      parameter = ConnectorParameter("https://nportal.ntut.edu.tw/ssoIndex.do");
+      parameter.data = data;
+      result = await Connector.getDataByGet(parameter);
+      tagNode = html.parse(result);
+      nodes = tagNode.getElementsByTagName("input");
+      data = Map();
+      for (html.Element node in nodes) {
+        String name = node.attributes['name'];
+        String value = node.attributes['value'];
+        data[name] = value;
+      }
+      String jumpUrl =
+      tagNode.getElementsByTagName("form")[0].attributes["action"];
+      parameter = ConnectorParameter(jumpUrl);
+      parameter.data = data;
+      await Connector.getDataByPostResponse(parameter);
       _isLogin = true;
       return ISchoolPlusConnectorStatus.LoginSuccess;
     } catch (e) {

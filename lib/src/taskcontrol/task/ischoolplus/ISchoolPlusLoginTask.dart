@@ -20,7 +20,7 @@ class ISchoolPlusLoginTask extends TaskModel {
     String studentId = Model.instance.getAccount();
     String password = Model.instance.getPassword();
     ISchoolPlusConnectorStatus value =
-    await ISchoolPlusConnector.login(studentId , password);
+    await ISchoolPlusConnector.login(studentId);
     MyProgressDialog.hideProgressDialog();
     if (value == ISchoolPlusConnectorStatus.LoginSuccess) {
       return TaskStatus.TaskSuccess;
