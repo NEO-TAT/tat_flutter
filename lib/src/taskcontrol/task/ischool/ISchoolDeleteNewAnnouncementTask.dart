@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
@@ -17,7 +17,7 @@ class ISchoolDeleteNewAnnouncementTask extends TaskModel {
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.deleteMessage);
+    MyProgressDialog.showProgressDialog(context, R.current.deleteMessage);
     bool value = await ISchoolConnector.deleteNewAnnouncement(messageId);
     MyProgressDialog.hideProgressDialog();
     Model.instance.setTempData(isDeleteKey, value);
@@ -37,7 +37,7 @@ class ISchoolDeleteNewAnnouncementTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.deleteMessageError,
+      desc: R.current.deleteMessageError,
     );
     ErrorDialog(parameter).show();
   }

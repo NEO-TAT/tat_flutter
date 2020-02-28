@@ -10,7 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'debug/log/Log.dart';
-import 'generated/i18n.dart';
+import 'generated/l10n.dart';
 
 Future<Null> main() async {
   FlutterError.onError = (FlutterErrorDetails details) async {

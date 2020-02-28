@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ScoreConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
@@ -15,7 +15,7 @@ class ScoreRankTask extends TaskModel {
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.getScoreRank);
+    MyProgressDialog.showProgressDialog(context, R.current.getScoreRank);
     ScoreConnectorStatus value = await ScoreConnector.login();
     List<CourseScoreJson> courseList = await ScoreConnector.getScoreRankList();
     MyProgressDialog.hideProgressDialog();
@@ -31,7 +31,7 @@ class ScoreRankTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getScoreRankError,
+      desc: R.current.getScoreRankError,
     );
     ErrorDialog(parameter).show();
   }

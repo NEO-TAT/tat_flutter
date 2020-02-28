@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
@@ -26,7 +26,7 @@ class CheckCookiesTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     Log.d(checkSystem);
-    MyProgressDialog.showProgressDialog(context, S.current.checkLogin);
+    MyProgressDialog.showProgressDialog(context, R.current.checkLogin);
     bool isLoginCourse = true;
     bool isLoginISchool = true;
     bool isLoginNTUT = true;

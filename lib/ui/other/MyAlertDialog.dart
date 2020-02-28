@@ -7,7 +7,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 
 class MyAlertDialog {
@@ -54,7 +54,7 @@ class MyAlertDialog {
         SizedBox(
           width: 16,
         ),
-        Text(S.current.warning),
+        Text(R.current.warning),
       ]),
       content: Text(message),
       actions: <Widget>[
@@ -73,7 +73,7 @@ class MyAlertDialog {
       flarePath: 'assets/gif/error.gif',
       flareAnimation: 'loading',
       title: Text(
-        S.of(context).alertError,
+        R.current.alertError,
         style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600),
       ),
       description: Text(
@@ -88,7 +88,7 @@ class MyAlertDialog {
   static Widget _style2AlertDialog(BuildContext context, String message) {
     return NetworkGiffyDialog(
       image: Image.asset("assets/gif/error.gif"),
-      title: Text(S.of(context).alertError,
+      title: Text(R.current.alertError,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w600)),
       description: Text(

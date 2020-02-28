@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
@@ -17,7 +17,7 @@ class CourseExtraInfoTask extends TaskModel {
   static String tempDataKey = "CourseExtraInfoJsonTampKey";
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, S.current.getCourseDetail);
+    MyProgressDialog.showProgressDialog(context, R.current.getCourseDetail);
     CourseExtraInfoJson courseInfo =
         await CourseConnector.getCourseExtraInfo(id);
     MyProgressDialog.hideProgressDialog();
@@ -33,7 +33,7 @@ class CourseExtraInfoTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getCourseDetailError,
+      desc: R.current.getCourseDetailError,
     );
     ErrorDialog(parameter).show();
   }

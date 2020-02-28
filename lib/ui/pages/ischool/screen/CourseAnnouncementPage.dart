@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseAnnouncementTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -56,7 +55,7 @@ class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
       body: (courseAnnouncementList.length > 0)
           ? _buildCourseAnnouncementList()
           : Center(
-              child: Text(S.current.noAnyAnnouncement),
+              child: Text(R.current.noAnyAnnouncement),
             ),
     );
   }
@@ -98,7 +97,7 @@ class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
   void onUrlTap(String url) {
     Log.d(url);
     if (Uri.parse(url).host.contains("ischool")) {
-      MyToast.show(S.current.pleaseMoveToFilePage);
+      MyToast.show(R.current.pleaseMoveToFilePage);
     } else {
       _launchURL(url);
     }

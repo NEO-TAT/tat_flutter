@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
@@ -29,13 +29,13 @@ class _ISchoolPageState extends State<ISchoolPage>
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(S.current.course, Icons.info,
+    tabPageList.add(TabPage(R.current.course, Icons.info,
         CourseInfoPage(widget.studentId, widget.courseInfo)));
-    tabPageList.add(TabPage(S.current.announcement, Icons.announcement,
+    tabPageList.add(TabPage(R.current.announcement, Icons.announcement,
         CourseAnnouncementPage(widget.studentId, widget.courseInfo)));
-    tabPageList.add(TabPage(S.current.file, Icons.file_download,
+    tabPageList.add(TabPage(R.current.file, Icons.file_download,
         CourseISchoolFilePage(widget.studentId, widget.courseInfo)));
-    tabPageList.add(TabPage(S.current.file, Icons.file_download,
+    tabPageList.add(TabPage(R.current.file, Icons.file_download,
         CourseISchoolPlusFilePage(widget.studentId, widget.courseInfo)));
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
