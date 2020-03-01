@@ -122,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noMoreData" : MessageLookupByLibrary.simpleMessage("No more data"),
     "noPermission" : MessageLookupByLibrary.simpleMessage("Permission denied"),
     "noSupport" : MessageLookupByLibrary.simpleMessage(" not support"),
+    "notSupport" : MessageLookupByLibrary.simpleMessage("not Support"),
     "numberOfStudent" : MessageLookupByLibrary.simpleMessage("Number of students"),
     "numberOfWithdraw" : MessageLookupByLibrary.simpleMessage("Number of withdraw"),
     "password" : MessageLookupByLibrary.simpleMessage("password"),

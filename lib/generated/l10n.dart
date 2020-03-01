@@ -1091,6 +1091,15 @@ class S {
     );
   }
 
+  String get notSupport {
+    return Intl.message(
+      'not Support',
+      name: 'notSupport',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',
