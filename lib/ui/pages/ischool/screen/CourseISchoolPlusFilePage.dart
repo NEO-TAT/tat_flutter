@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -32,13 +32,17 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();
+  bool isSupport;
 
   @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
+    isSupport = Model.instance.getAccount() == widget.studentId;
     Future.delayed(Duration.zero, () {
-      _addTask();
+      if (isSupport) {
+        _addTask();
+      }
       FileStore.findLocalPath(context);
     });
   }
@@ -66,8 +70,8 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
         checkSystem: CheckCookiesTask.checkPlusISchool));
     TaskHandler.instance.addTask(ISchoolPlusCourseFileTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
-    courseFileList =
-        Model.instance.getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
+    courseFileList = Model.instance
+        .getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
     selectList.addItems(courseFileList.length);
     setState(() {});
   }
@@ -78,15 +82,19 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     return Scaffold(
         body: (courseFileList.length > 0)
             ? _buildFileList()
-            : Center(
-                child: Text(S.current.noAnyFile),
-              ),
+            : (isSupport)
+                ? Center(
+                    child: Text(R.current.noAnyFile),
+                  )
+                : Center(
+                    child: Text(R.current.notSupport),
+                  ),
         floatingActionButton: (selectList.inSelectMode)
             ? FloatingActionButton(
                 // FloatingActionButton: 浮動按鈕
                 onPressed: _floatingDownloadPress,
                 // 按下觸發的方式名稱: void _incrementCounter()
-                tooltip: '下載',
+                tooltip: R.current.download,
                 // 按住按鈕時出現的提示字
                 child: Icon(Icons.file_download),
               )
@@ -94,7 +102,7 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
   }
 
   Future<void> _floatingDownloadPress() async {
-    MyToast.show(S.current.downloadWillStart);
+    MyToast.show(R.current.downloadWillStart);
     for (int i = 0; i < courseFileList.length; i++) {
       if (selectList.getItemSelect(i)) {
         await _downloadOneFile(i, false);
@@ -215,19 +223,21 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     String dirName = widget.courseInfo.main.course.name;
     String url = fileType.href;
     if (showToast) {
-      MyToast.show(S.current.downloadWillStart);
+      MyToast.show(R.current.downloadWillStart);
     }
     url = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
-    if ( url == null ){
-      MyToast.show( sprintf("%s%s" , [courseFile.name , S.current.downloadError]));
+    if (url == null) {
+      MyToast.show(sprintf("%s%s", [courseFile.name, R.current.downloadError]));
     }
-    if( !Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw") ){ //代表可能是一個連結
-      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter( context: context , desc:S.current.isALink );
-      errorDialogParameter.title = S.current.AreYouSureToOpen;
+    if (!Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw")) {
+      //代表可能是一個連結
+      ErrorDialogParameter errorDialogParameter =
+          ErrorDialogParameter(context: context, desc: R.current.isALink);
+      errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
-      errorDialogParameter.btnOkText = S.current.sure;
-      errorDialogParameter.btnOkOnPress = (){
-        _launchURL( url );
+      errorDialogParameter.btnOkText = R.current.sure;
+      errorDialogParameter.btnOkOnPress = () {
+        _launchURL(url);
       };
       ErrorDialog(errorDialogParameter).show();
       return;
@@ -242,7 +252,6 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
       throw 'Could not launch $url';
     }
   }
-
 
   @override
   bool get wantKeepAlive => true;

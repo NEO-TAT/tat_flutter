@@ -1,6 +1,6 @@
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -18,19 +18,19 @@ class _AboutPageState extends State<AboutPage> {
     {
       "icon": Icons.update,
       "color": Colors.orange,
-      "title": S.current.checkVersion,
+      "title": R.current.checkVersion,
       "onPress": onListViewPress.AppUpdate
     },
     {
       "icon": Icons.face,
       "color": Colors.lightGreen,
-      "title": S.current.Contribution,
+      "title": R.current.Contribution,
       "onPress": onListViewPress.Contribution
     },
     {
       "icon": Icons.info,
       "color": Colors.blue,
-      "title": S.current.versionInfo,
+      "title": R.current.versionInfo,
       "onPress": onListViewPress.Version
     },
   ];
@@ -43,12 +43,12 @@ class _AboutPageState extends State<AboutPage> {
   void _onListViewPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.AppUpdate:
-        MyToast.show(S.current.checkingVersion);
+        MyToast.show(R.current.checkingVersion);
         AppUpdate.checkUpdate().then((value) {
           if (value != null) {
             AppUpdate.showUpdateDialog(context, value);
           } else {
-            MyToast.show(S.current.isNewVersion);
+            MyToast.show(R.current.isNewVersion);
           }
         });
         break;
@@ -56,7 +56,7 @@ class _AboutPageState extends State<AboutPage> {
         EasyDialog(
           contentPadding: EdgeInsets.all(10),
           title: Text(
-            S.current.aboutDialogString,
+            R.current.aboutDialogString,
           ),
           description: Text(""),
           contentList: [
@@ -73,7 +73,7 @@ class _AboutPageState extends State<AboutPage> {
         });
         break;
       default:
-        MyToast.show(S.current.noFunction);
+        MyToast.show(R.current.noFunction);
         break;
     }
   }
@@ -82,7 +82,7 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.about),
+        title: Text(R.current.about),
       ),
       body: ListView.separated(
         itemCount: listViewData.length,

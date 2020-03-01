@@ -1,6 +1,6 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:step_slider/step_slider.dart';
 
@@ -16,18 +16,16 @@ class LanguagePage extends StatefulWidget {
 class _LanguagePageState extends State<LanguagePage> {
   Map<double, String> langMap = {0: "en", 1: "zh"};
 
-
   @override
   void initState() {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.setting),
+        title: Text(R.current.setting),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -40,11 +38,11 @@ class _LanguagePageState extends State<LanguagePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      S.current.languageSwitch,
+                      R.current.languageSwitch,
                       style: TextStyle(fontSize: 24),
                     ),
                     Text(
-                      S.current.willRestart,
+                      R.current.willRestart,
                       style: TextStyle(fontSize: 16, color: Color(0xFF808080)),
                     ),
                   ],

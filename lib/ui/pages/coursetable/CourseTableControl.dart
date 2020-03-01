@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:native_color/native_color.dart';
 
@@ -17,14 +17,14 @@ class CourseTableControl {
   bool isHideD = false;
   CourseTableJson courseTable;
   List<String> dayStringList = [
-    S.current.Monday,
-    S.current.Tuesday,
-    S.current.Wednesday,
-    S.current.Thursday,
-    S.current.Friday,
-    S.current.Saturday,
-    S.current.Sunday,
-    S.current.UnKnown
+    R.current.Monday,
+    R.current.Tuesday,
+    R.current.Wednesday,
+    R.current.Thursday,
+    R.current.Friday,
+    R.current.Saturday,
+    R.current.Sunday,
+    R.current.UnKnown
   ];
   List<String> timeList = [
     "08:10 - 09:00",

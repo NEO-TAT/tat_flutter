@@ -104,3 +104,5 @@ flutter:
     - family: MyIcon
       fonts:
         - asset: assets/fonts/MyIcon.ttf
+flutter_intl:
+  enabled: true

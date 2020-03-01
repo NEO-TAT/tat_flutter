@@ -9,7 +9,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/util/PermissionsUtil.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,7 +18,7 @@ class FileStore {
   static Future<String> findLocalPath(BuildContext context) async {
     bool checkPermission = await PermissionsUtil.check(context);
     if (!checkPermission) {
-      MyToast.show(S.current.noPermission);
+      MyToast.show(R.current.noPermission);
       return "";
     }
     final directory = Theme.of(context).platform == TargetPlatform.android

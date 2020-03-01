@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
@@ -19,7 +19,7 @@ class ISchoolPlusCourseFileTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(
-        context, S.current.getISchoolPlusCourseFile);
+        context, R.current.getISchoolPlusCourseFile);
     List<CourseFileJson> value = await ISchoolPlusConnector.getCourseFile(courseId);
     MyProgressDialog.hideProgressDialog();
     if (value != null) {
@@ -34,7 +34,7 @@ class ISchoolPlusCourseFileTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getISchoolPlusCourseFileError,
+      desc: R.current.getISchoolPlusCourseFileError,
     );
     ErrorDialog(parameter).show();
   }

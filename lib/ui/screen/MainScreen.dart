@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-
+    R.set(context);
     //載入儲存資料
     Model.instance.init().then((value) {
       // 需重新初始化 list，PageController 才會清除 cache
@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
       _closeAppCount = 0;
     } else {
       _closeAppCount++;
-      MyToast.show(S.current.closeOnce);
+      MyToast.show(R.current.closeOnce);
       Future.delayed(Duration(seconds: 2)).then((_) {
         _closeAppCount = 0;
       });

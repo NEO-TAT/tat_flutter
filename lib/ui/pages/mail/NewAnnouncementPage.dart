@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
@@ -95,7 +95,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
   void _onLoading() async {
     if (!needRefresh) {
       needRefresh = true;
-      MyToast.show(S.current.pullAgainToUpdate);
+      MyToast.show(R.current.pullAgainToUpdate);
       Future.delayed(Duration(seconds: 2), () {
         needRefresh = false;
       });
@@ -114,7 +114,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
         await TaskHandler.instance.startTaskQueue(context);
         _loadAnnouncement();
       } else {
-        MyToast.show(S.current.noMoreData);
+        MyToast.show(R.current.noMoreData);
       }
     }
     _refreshController.loadComplete();
@@ -136,7 +136,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.titleEmail),
+        title: Text(R.current.titleEmail),
         actions: [
           PopupMenuButton<int>(
             // overflow menu
@@ -147,7 +147,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
               return [
                 PopupMenuItem(
                   value: 1,
-                  child: Text(S.current.clearAndRefresh),
+                  child: Text(R.current.clearAndRefresh),
                 ),
               ];
             },
@@ -207,7 +207,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
                 ),
                 secondaryActions: <Widget>[
                   new IconSlideAction(
-                    caption: S.current.delete,
+                    caption: R.current.delete,
                     color: Colors.red,
                     icon: Icons.delete,
                     onTap: () {
@@ -228,10 +228,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
     ErrorDialogParameter parameter = ErrorDialogParameter(
         context: context,
         dialogType: DialogType.INFO,
-        title: S.current.warning,
-        desc: S.current.areYouSureDeleteMessage,
-        btnOkText: S.current.sure,
-        btnCancelText: S.current.cancel,
+        title: R.current.warning,
+        desc: R.current.areYouSureDeleteMessage,
+        btnOkText: R.current.sure,
+        btnCancelText: R.current.cancel,
         btnOkOnPress: () async {
           TaskHandler.instance.addTask(ISchoolDeleteNewAnnouncementTask(
               context, newAnnouncement.messageId));

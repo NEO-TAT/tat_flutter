@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -67,7 +66,7 @@ class AppUpdate {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         String title =
-            sprintf("%s %s", [S.current.findNewVersion, value.newVersion]);
+            sprintf("%s %s", [R.current.findNewVersion, value.newVersion]);
         return AlertDialog(
           title: Text(title),
           content: SingleChildScrollView(
@@ -79,13 +78,13 @@ class AppUpdate {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text(S.current.cancel),
+              child: Text(R.current.cancel),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             FlatButton(
-              child: Text(S.current.update),
+              child: Text(R.current.update),
               onPressed: () {
                 Navigator.of(context).pop();
                 FileStore.findLocalPath(context).then((filePath) {

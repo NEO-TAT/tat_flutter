@@ -1,7 +1,7 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -75,7 +75,7 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
         body: (courseFileList.length > 0)
             ? _buildFileList()
             : Center(
-                child: Text(S.current.noAnyFile),
+                child: Text(R.current.noAnyFile),
               ),
         floatingActionButton: (selectList.inSelectMode)
             ? FloatingActionButton(
@@ -90,7 +90,7 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
   }
 
   Future<void> _floatingDownloadPress() async {
-    MyToast.show(S.current.downloadWillStart);
+    MyToast.show(R.current.downloadWillStart);
     for (int i = 0; i < courseFileList.length; i++) {
       if (selectList.getItemSelect(i)) {
         await _downloadOneFile(i, false);
@@ -208,7 +208,7 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
 
   Future<void> _downloadOneFile(int index, [showToast = true]) async {
     if (showToast) {
-      MyToast.show(S.current.downloadWillStart);
+      MyToast.show(R.current.downloadWillStart);
     }
     CourseFileJson courseFile = courseFileList[index];
     FileType fileType = courseFile.fileType[0];

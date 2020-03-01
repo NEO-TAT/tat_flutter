@@ -7,7 +7,7 @@
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 
 class ErrorDialogParameter {
@@ -30,9 +30,9 @@ class ErrorDialogParameter {
       this.dialogType,
       this.btnCancelOnPress,
       this.btnOkOnPress}) {
-    title = title ?? S.current.alertError;
-    btnOkText = btnOkText ?? S.current.restart;
-    btnCancelText = btnCancelText ?? S.current.cancel;
+    title = title ?? R.current.alertError;
+    btnOkText = btnOkText ?? R.current.restart;
+    btnCancelText = btnCancelText ?? R.current.cancel;
     animType = animType ?? AnimType.BOTTOMSLIDE;
     dialogType = dialogType ?? DialogType.ERROR;
     btnCancelOnPress = btnCancelOnPress ??

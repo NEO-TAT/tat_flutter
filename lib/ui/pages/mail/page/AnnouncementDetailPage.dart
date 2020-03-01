@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
@@ -107,12 +107,12 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
       ErrorDialogParameter parameter = ErrorDialogParameter(
           context: context,
           dialogType: DialogType.INFO,
-          title: S.current.fileAttachmentDetected,
-          desc: S.current.areYouSureToDownload,
-          btnOkText: S.current.download,
-          btnCancelText: S.current.cancel,
+          title: R.current.fileAttachmentDetected,
+          desc: R.current.areYouSureToDownload,
+          btnOkText: R.current.download,
+          btnCancelText: R.current.cancel,
           btnOkOnPress: () {
-            MyToast.show(S.current.downloadWillStart);
+            MyToast.show(R.current.downloadWillStart);
             FileDownload.download(context, url, widget.data.courseName);
           });
       ErrorDialog(parameter).show();

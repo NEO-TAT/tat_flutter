@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
@@ -22,7 +22,7 @@ class ISchoolNewAnnouncementDetailTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(
-        context, S.current.getISchoolNewAnnouncementDetail);
+        context, R.current.getISchoolNewAnnouncementDetail);
     String value =
         await ISchoolConnector.getNewAnnouncementDetail(announcement.messageId);
     MyProgressDialog.hideProgressDialog();
@@ -40,7 +40,7 @@ class ISchoolNewAnnouncementDetailTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: S.current.getISchoolNewAnnouncementDetailError,
+      desc: R.current.getISchoolNewAnnouncementDetailError,
     );
     ErrorDialog(parameter).show();
   }

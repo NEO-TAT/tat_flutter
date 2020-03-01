@@ -1,7 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
@@ -21,7 +21,7 @@ class NTUTLoginTask extends TaskModel {
   Future<TaskStatus> taskStart() async {
     String account = Model.instance.getAccount();
     String password = Model.instance.getPassword();
-    MyProgressDialog.showProgressDialog(context, S.current.loginNTUT);
+    MyProgressDialog.showProgressDialog(context, R.current.loginNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
     if (value != NTUTConnectorStatus.LoginSuccess) {
@@ -41,17 +41,17 @@ class NTUTLoginTask extends TaskModel {
     switch (value) {
       case NTUTConnectorStatus.PasswordExpiredWarning:
         parameter.dialogType = DialogType.INFO;
-        parameter.desc = S.current.passwordExpiredWarning;
-        parameter.btnOkText = S.current.update;
+        parameter.desc = R.current.passwordExpiredWarning;
+        parameter.btnOkText = R.current.update;
         break;
       case NTUTConnectorStatus.AccountLockWarning:
         parameter.dialogType = DialogType.INFO;
-        parameter.desc = S.current.accountLock;
+        parameter.desc = R.current.accountLock;
         break;
       case NTUTConnectorStatus.AccountPasswordIncorrect:
         parameter.dialogType = DialogType.INFO;
-        parameter.desc = S.current.accountPasswordError;
-        parameter.btnOkText = S.current.setting;
+        parameter.desc = R.current.accountPasswordError;
+        parameter.btnOkText = R.current.setting;
         parameter.btnOkOnPress = () {
           Navigator.of(context).push(CustomRoute(LoginPage())).then((_) {
             reStartTask();
@@ -59,16 +59,16 @@ class NTUTLoginTask extends TaskModel {
         };
         break;
       case NTUTConnectorStatus.ConnectTimeOutError:
-        parameter.desc = S.current.connectTimeOut;
+        parameter.desc = R.current.connectTimeOut;
         break;
       case NTUTConnectorStatus.AuthCodeFailError:
-        parameter.desc = S.current.authCodeFail;
+        parameter.desc = R.current.authCodeFail;
         break;
       case NTUTConnectorStatus.NetworkError:
-        parameter.desc = S.current.networkError;
+        parameter.desc = R.current.networkError;
         break;
       default:
-        parameter.desc = S.current.unknownError;
+        parameter.desc = R.current.unknownError;
         break;
     }
 

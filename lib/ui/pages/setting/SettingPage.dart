@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/i18n.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -32,37 +32,37 @@ class _SettingPageState extends State<SettingPage> {
     {
       "icon": Icons.language,
       "color": Colors.orange,
-      "title": S.current.setting,
+      "title": R.current.setting,
       "onPress": onListViewPress.Language
     },
     {
       "icon": Icons.file_download,
       "color": Colors.yellow[700],
-      "title": S.current.downloadFile,
+      "title": R.current.downloadFile,
       "onPress": onListViewPress.FileViewer
     },
     {
       "icon": MyIcon.arrows_cw,
       "color": Colors.lightGreen,
-      "title": S.current.changePassword,
+      "title": R.current.changePassword,
       "onPress": onListViewPress.ChangePassword
     },
     {
       "icon": MyIcon.logout,
       "color": Colors.teal[400],
-      "title": S.current.logout,
+      "title": R.current.logout,
       "onPress": onListViewPress.Logout
     },
     {
       "icon": Icons.report,
       "color": Colors.cyan,
-      "title": S.current.feedback,
+      "title": R.current.feedback,
       "onPress": onListViewPress.Report
     },
     {
       "icon": Icons.info,
       "color": Colors.lightBlue,
-      "title": S.current.about,
+      "title": R.current.about,
       "onPress": onListViewPress.About
     }
   ];
@@ -90,7 +90,7 @@ class _SettingPageState extends State<SettingPage> {
             PageTransition(
               type: PageTransitionType.leftToRight,
               child: FileViewerPage(
-                title: S.current.fileViewer,
+                title: R.current.fileViewer,
                 path: filePath,
               ),
             ),
@@ -117,12 +117,12 @@ class _SettingPageState extends State<SettingPage> {
         Navigator.of(context).push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: WebViewPluginPage(S.current.feedback, formUrl),
+            child: WebViewPluginPage(R.current.feedback, formUrl),
           ),
         );
         break;
       default:
-        MyToast.show(S.current.noFunction);
+        MyToast.show(R.current.noFunction);
         break;
     }
   }
@@ -131,7 +131,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.current.setting),
+        title: Text(R.current.setting),
       ),
       body: ListView.separated(
         itemCount: listViewData.length + 1,
@@ -163,7 +163,7 @@ class _SettingPageState extends State<SettingPage> {
     UserInfoJson userInfo = Model.instance.getUserInfo();
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
-    givenName = (givenName.isEmpty) ? S.current.pleaseLogin : givenName;
+    givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
     userMail = (userMail.isEmpty) ? "" : userMail;
     Widget userImage = NTUTConnector.getUserImage();
     return Container(
