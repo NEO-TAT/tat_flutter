@@ -117,6 +117,7 @@
   "studentList" : "學生清單",
   "languageSwitch" : "語言切換",
   "willRestart" : "將自動重啟並套用語言",
+  "notSupport" :  "不支持查詢非自己課程的檔案",
   "___________________FileStore___________________": "註解",
   "noPermission": "沒有權限",
   "___________________AboutPage___________________": "註解",

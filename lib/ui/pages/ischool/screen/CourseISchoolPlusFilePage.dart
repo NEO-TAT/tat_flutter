@@ -32,13 +32,17 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();
+  bool isSupport;
 
   @override
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
+    isSupport = Model.instance.getAccount() == widget.studentId;
     Future.delayed(Duration.zero, () {
-      _addTask();
+      if (isSupport) {
+        _addTask();
+      }
       FileStore.findLocalPath(context);
     });
   }
@@ -66,8 +70,8 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
         checkSystem: CheckCookiesTask.checkPlusISchool));
     TaskHandler.instance.addTask(ISchoolPlusCourseFileTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
-    courseFileList =
-        Model.instance.getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
+    courseFileList = Model.instance
+        .getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
     selectList.addItems(courseFileList.length);
     setState(() {});
   }
@@ -78,15 +82,19 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
     return Scaffold(
         body: (courseFileList.length > 0)
             ? _buildFileList()
-            : Center(
-                child: Text(R.current.noAnyFile),
-              ),
+            : (isSupport)
+                ? Center(
+                    child: Text(R.current.noAnyFile),
+                  )
+                : Center(
+                    child: Text(R.current.notSupport),
+                  ),
         floatingActionButton: (selectList.inSelectMode)
             ? FloatingActionButton(
                 // FloatingActionButton: 浮動按鈕
                 onPressed: _floatingDownloadPress,
                 // 按下觸發的方式名稱: void _incrementCounter()
-                tooltip: '下載',
+                tooltip: R.current.download,
                 // 按住按鈕時出現的提示字
                 child: Icon(Icons.file_download),
               )
@@ -218,16 +226,18 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
       MyToast.show(R.current.downloadWillStart);
     }
     url = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
-    if ( url == null ){
-      MyToast.show( sprintf("%s%s" , [courseFile.name , R.current.downloadError]));
+    if (url == null) {
+      MyToast.show(sprintf("%s%s", [courseFile.name, R.current.downloadError]));
     }
-    if( !Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw") ){ //代表可能是一個連結
-      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter( context: context , desc:R.current.isALink );
+    if (!Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw")) {
+      //代表可能是一個連結
+      ErrorDialogParameter errorDialogParameter =
+          ErrorDialogParameter(context: context, desc: R.current.isALink);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
-      errorDialogParameter.btnOkOnPress = (){
-        _launchURL( url );
+      errorDialogParameter.btnOkOnPress = () {
+        _launchURL(url);
       };
       ErrorDialog(errorDialogParameter).show();
       return;
@@ -242,7 +252,6 @@ class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
       throw 'Could not launch $url';
     }
   }
-
 
   @override
   bool get wantKeepAlive => true;
