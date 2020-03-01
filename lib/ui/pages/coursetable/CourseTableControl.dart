@@ -118,7 +118,7 @@ class CourseTableControl {
     final colors = AppColors.courseTableColors.toList()..shuffle();
 
     for (int i = 0; i < colorCount; i++) {
-      colorMap[courseInfoList[i]] = colors[i];
+      colorMap[courseInfoList[i]] = colors[i % colors.length];
     }
   }
 
