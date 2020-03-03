@@ -136,7 +136,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(R.current.titleEmail),
+        title: Text(R.current.titleNotification),
         actions: [
           PopupMenuButton<int>(
             // overflow menu

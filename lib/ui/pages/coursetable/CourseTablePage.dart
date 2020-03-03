@@ -384,7 +384,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-//顯示課程對話框
+  //顯示課程對話框
   void showCourseDetailDialog(int section, CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();

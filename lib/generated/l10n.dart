@@ -616,7 +616,7 @@ class S {
 
   String get titleCourse {
     return Intl.message(
-      'Schedule',
+      'Course',
       name: 'titleCourse',
       desc: '',
       args: [],
@@ -722,10 +722,10 @@ class S {
     );
   }
 
-  String get titleEmail {
+  String get titleNotification {
     return Intl.message(
-      'Email',
-      name: 'titleEmail',
+      'Notification',
+      name: 'titleNotification',
       desc: '',
       args: [],
     );
@@ -785,6 +785,24 @@ class S {
     );
   }
 
+  String get ___________________CreditUI___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________CreditUI___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get titleCredit {
+    return Intl.message(
+      'Credit',
+      name: 'titleCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________OtherUi___________________ {
     return Intl.message(
       '註解',
@@ -814,26 +832,26 @@ class S {
 
   String get fileViewer {
     return Intl.message(
-      'fileViewer',
+      'Downloads',
       name: 'fileViewer',
       desc: '',
       args: [],
     );
   }
 
-  String get titleElse {
+  String get languageSetting {
     return Intl.message(
-      'Other',
-      name: 'titleElse',
+      'Language',
+      name: 'languageSetting',
       desc: '',
       args: [],
     );
   }
 
-  String get ___________________settingUi___________________ {
+  String get titleOther {
     return Intl.message(
-      '註解',
-      name: '___________________settingUi___________________',
+      'Other',
+      name: 'titleOther',
       desc: '',
       args: [],
     );
@@ -1187,7 +1205,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale('en', ''), Locale('zh', ''),
+      Locale('zh', ''), Locale('en', ''),
     ];
   }
 
