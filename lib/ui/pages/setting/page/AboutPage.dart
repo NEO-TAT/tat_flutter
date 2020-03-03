@@ -18,15 +18,18 @@ class _AboutPageState extends State<AboutPage> {
     {
       "icon": Icons.update,
       "title": R.current.checkVersion,
+      "color": Colors.orange,
       "onPress": onListViewPress.AppUpdate
     },
     {
       "icon": Icons.face,
       "title": R.current.Contribution,
+      "color": Colors.lightGreen,
       "onPress": onListViewPress.Contribution
     },
     {
       "icon": Icons.info,
+      "color": Colors.blue,
       "title": R.current.versionInfo,
       "onPress": onListViewPress.Version
     },
@@ -114,8 +117,7 @@ class _AboutPageState extends State<AboutPage> {
         children: <Widget>[
           Icon(
             data['icon'],
-            color: RandomColor()
-                .randomColor(colorSaturation: ColorSaturation.highSaturation),
+            color: data['color'],
           ),
           SizedBox(
             width: 20.0,
