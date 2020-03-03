@@ -173,6 +173,12 @@ class DioConnector {
     }
   }
 
+
+
+  Future<void> download(String url , String savePath) async{
+    await dio.downloadUri(Uri.parse(url), savePath);
+  }
+
   Map<String, String> get headers {
     return _headers;
   }

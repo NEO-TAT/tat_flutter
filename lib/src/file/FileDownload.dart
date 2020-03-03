@@ -8,6 +8,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 import 'FileStore.dart';
@@ -36,6 +37,8 @@ class FileDownload {
       }
     }
 
+    await DioConnector.instance.download(url  , path + "/" + realFileName);
+    /*
     await FlutterDownloader.enqueue(
       url: url,
       savedDir: path,
@@ -46,5 +49,7 @@ class FileDownload {
       openFileFromNotification: true,
       // click on notification to open downloaded file (for Android)
     );
+
+     */
   }
 }
