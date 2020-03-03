@@ -11,9 +11,9 @@ import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
-import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+import 'package:flutter_app/ui/screen/LoginScreen.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseTableControl.dart';
@@ -53,7 +53,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
             .push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: LoginPage(),
+            child: LoginScreen(),
           ),
         )
             .then((value) {
