@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ntutcoursehelper">
+    package="club.ntut.npc.tat">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
-        android:name="club.ntut.npc.tat"
+        android:name="io.flutter.app.FlutterApplication"
         android:label="TAT"
         android:icon="@mipmap/ic_launcher">
         <activity
