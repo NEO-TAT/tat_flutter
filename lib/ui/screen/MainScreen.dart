@@ -115,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
             Icons.schedule,
           ),
           title: Text(
-            'Course',
+            R.current.titleCourse,
           ),
         ),
         BottomNavigationBarItem(
@@ -123,27 +123,15 @@ class _MainScreenState extends State<MainScreen> {
             Icons.email,
           ),
           title: Text(
-            'Email',
+            R.current.titleNotification,
           ),
         ),
-        /*
-        BottomNavigationBarItem(
-            icon: Icon(
-              Icons.calendar_today,
-              color: _bottomNavigationColor,
-            ),
-            title: Text(
-              'Calendar',
-              style: TextStyle(color: _bottomNavigationColor),
-            )),
-
-         */
         BottomNavigationBarItem(
           icon: Icon(
             Icons.school,
           ),
           title: Text(
-            'Credit',
+            R.current.credit,
           ),
         ),
         BottomNavigationBarItem(
@@ -151,7 +139,7 @@ class _MainScreenState extends State<MainScreen> {
             Icons.menu,
           ),
           title: Text(
-            'Other',
+            R.current.titleOther,
           ),
         ),
       ],

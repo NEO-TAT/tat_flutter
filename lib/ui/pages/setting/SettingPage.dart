@@ -32,7 +32,7 @@ class _SettingPageState extends State<SettingPage> {
     {
       "icon": Icons.language,
       "color": Colors.orange,
-      "title": R.current.setting,
+      "title": R.current.languageSetting,
       "onPress": onListViewPress.Language
     },
     {
