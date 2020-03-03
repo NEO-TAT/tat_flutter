@@ -9,7 +9,7 @@ import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
-import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_app/ui/pages/setting/page/LanguagePage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:page_transition/page_transition.dart';
@@ -79,7 +79,7 @@ class _SettingPageState extends State<SettingPage> {
     switch (value) {
       case onListViewPress.Logout:
         Model.instance.logout().then((_) {
-          Navigator.of(context).push(CustomRoute(LoginPage())).then((_) {
+          Navigator.of(context).push(CustomRoute(LoginScreen())).then((_) {
             widget.pageController.jumpToPage(0); //跳轉到第一頁
           });
         });

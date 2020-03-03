@@ -4,14 +4,14 @@ import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
-import '../../../src/store/Model.dart';
+import '../../src/store/Model.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _accountControl = new TextEditingController();
   final TextEditingController _passwordControl = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -68,62 +68,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Stack(
-              children: <Widget>[
-                ClipPath(
-                  clipper: WaveClipper1(),
-                  child: Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.blue,
-                          Colors.lightBlue,
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                ClipPath(
-                  clipper: WaveClipper2(),
-                  child: Container(
-                    child: Column(),
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0x442196f3),
-                          Color(0x4403a9f4),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                ClipPath(
-                  clipper: WaveClipper3(),
-                  child: Container(
-                    child: Column(),
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0x222196f3), Color(0x2203a9f4)]),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.36,
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.account_circle,
-                    color: Colors.white,
-                    size: 120,
-                  ),
-                ),
-              ],
-            ),
+            _buildTopDecoration(),
             Padding(
               padding: EdgeInsets.all(32),
               child: Form(
@@ -247,6 +192,65 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildTopDecoration () {
+    return Stack(
+      children: <Widget>[
+        ClipPath(
+          clipper: WaveClipper1(),
+          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.4,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue,
+                  Colors.lightBlue,
+                ],
+              ),
+            ),
+          ),
+        ),
+        ClipPath(
+          clipper: WaveClipper2(),
+          child: Container(
+            child: Column(),
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.4,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0x442196f3),
+                  Color(0x4403a9f4),
+                ],
+              ),
+            ),
+          ),
+        ),
+        ClipPath(
+          clipper: WaveClipper3(),
+          child: Container(
+            child: Column(),
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.4,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Color(0x222196f3), Color(0x2203a9f4)]),
+            ),
+          ),
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height * 0.36,
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.account_circle,
+            color: Colors.white,
+            size: 120,
+          ),
+        ),
+      ],
     );
   }
 }
