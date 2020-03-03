@@ -204,19 +204,20 @@ class _CourseTablePageState extends State<CourseTablePage> {
       appBar: AppBar(
         title: Text(R.current.titleCourse),
         actions: [
-          PopupMenuButton<int>(
-            // overflow menu
-            onSelected: (value) {
-              _onPopupMenuSelect(value);
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: 1,
-                  child: Text(R.current.refresh),
-                ),
-              ];
-            },
+          Padding(
+            padding: EdgeInsets.only(
+              right: 20,
+            ),
+            child: GestureDetector(
+              onTap: () {
+                _getCourseTable(
+                  semesterSetting: courseTableData?.courseSemester,
+                  studentId: _studentIdControl.text,
+                  refresh: true,
+                );
+              },
+              child: Icon(Icons.refresh),
+            ),
           ),
         ],
       ),
@@ -434,9 +435,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
       Navigator.of(context, rootNavigator: true)
           .push(
         PageTransition(
-          type: PageTransitionType.leftToRight,
-          child: ISchoolPage(studentId, courseInfo)
-        ),
+            type: PageTransitionType.leftToRight,
+            child: ISchoolPage(studentId, courseInfo)),
       )
           .then(
         (value) {
