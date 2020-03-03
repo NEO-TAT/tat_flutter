@@ -1,4 +1,4 @@
-package com.example.ntutcoursehelper
+package club.ntut.npc.tat
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
