@@ -18,17 +18,17 @@ import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CourseISchoolPlusFilePage extends StatefulWidget {
+class IPlusFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  CourseISchoolPlusFilePage(this.studentId, this.courseInfo);
+  IPlusFilePage(this.studentId, this.courseInfo);
 
   @override
-  _CourseISchoolPlusFilePage createState() => _CourseISchoolPlusFilePage();
+  _IPlusFilePage createState() => _IPlusFilePage();
 }
 
-class _CourseISchoolPlusFilePage extends State<CourseISchoolPlusFilePage>
+class _IPlusFilePage extends State<IPlusFilePage>
     with AutomaticKeepAliveClientMixin {
   List<CourseFileJson> courseFileList = List();
   SelectList selectList = SelectList();

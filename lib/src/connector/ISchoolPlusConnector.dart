@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
+import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
@@ -309,6 +310,67 @@ class ISchoolPlusConnector {
     }
     return null;
   }
+
+  static Future<void> getCourseAnnouncement(String courseId) async{
+    String result;
+    try {
+      _selectCourse(courseId);
+      ConnectorParameter parameter;
+      html.Document tagNode;
+      List<html.Element> nodes;
+      html.Element node;
+      Map<String, String> data = {
+        "cid" : "" ,
+        "bid" : "" ,
+        "nid" : "" ,
+      };
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/m_node_list.php");
+      parameter.data = data;
+      result = await RequestsConnector.getDataByPost(parameter);
+      tagNode = html.parse(result);
+      node = tagNode.getElementById("formSearch");
+      nodes = node.getElementsByTagName("input");
+      String selectPage = tagNode.getElementById("selectPage").attributes['value'];
+      String inputPerPage = tagNode.getElementById("inputPerPage").attributes['value'];
+      data = {
+        "token" : "" ,
+        "bid" : "" ,
+        "curtab" : "" ,
+        "action" : "getNews" ,
+        "tpc" : "1" ,
+        "selectPage" : selectPage ,
+        "inputPerPage" : inputPerPage
+      };
+      for( html.Element node in nodes){
+        String name = node.attributes['name'];
+        if( data.containsKey( name )  ){
+          data[name] = node.attributes['value'];
+        }
+      }
+      Log.d( data.toString() );
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/mooc/controllers/forum_ajax.php");
+      parameter.data = data;
+      result = await RequestsConnector.getDataByPost(parameter);
+      //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
+      Map<String,dynamic> jsonData = Map();
+      jsonData = json.decode(result)['data'];
+      for( String keyName in json.decode(result)['data'].keys.toList() ){
+        ISchoolPlusAnnouncementJson courseInfo = ISchoolPlusAnnouncementJson.fromJson( jsonData[keyName] );
+        Log.d( courseInfo.subject );
+      }
+
+      return ISchoolPlusConnectorStatus.LoginSuccess;
+    } catch (e) {
+      Log.e(e.toString());
+      return ISchoolPlusConnectorStatus.LoginFail;
+    }
+  }
+
+
+
+
+
+
 
   static Future<void> _selectCourse(String courseId) async {
     ConnectorParameter parameter;

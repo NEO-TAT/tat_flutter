@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
+import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
@@ -39,9 +42,17 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(OtherPage());
       _pageList.add(SettingPage(_pageController));
       _setLang();
+      _addTest();
     });
     _flutterDownloaderInit();
     _addTask();
+  }
+  
+  
+  void _addTest() async {
+    TaskHandler.instance.addTask( ISchoolPlusLoginTask(context ));
+    await TaskHandler.instance.startTaskQueue(context);
+    await ISchoolPlusConnector.getCourseAnnouncement("273179");
   }
 
   void _addTask() async {
