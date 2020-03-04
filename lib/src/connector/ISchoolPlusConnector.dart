@@ -315,7 +315,7 @@ class ISchoolPlusConnector {
   static Future<List<ISchoolPlusAnnouncementJson>> getCourseAnnouncement(String courseId) async{
     String result;
     try {
-      _selectCourse(courseId);
+      await _selectCourse(courseId);
       ConnectorParameter parameter;
       html.Document tagNode;
       List<html.Element> nodes;
