@@ -20,7 +20,7 @@ class ISchoolPlusCourseAnnouncementTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(
-        context, R.current.getISchoolNewAnnouncementPage);
+        context, R.current.getISchoolPlusCourseAnnouncement);
     List<ISchoolPlusAnnouncementJson> value = await ISchoolPlusConnector.getCourseAnnouncement(courseId);
     MyProgressDialog.hideProgressDialog();
     if (value != null) {
@@ -35,7 +35,7 @@ class ISchoolPlusCourseAnnouncementTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: R.current.getISchoolNewAnnouncementPageError,
+      desc: R.current.getISchoolPlusCourseAnnouncementError,
     );
     ErrorDialog(parameter).show();
   }

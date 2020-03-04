@@ -497,10 +497,10 @@ class S {
     );
   }
 
-  String get getISchoolPlusAnnouncement {
+  String get getISchoolPlusCourseAnnouncement {
     return Intl.message(
       'Get course announcement...',
-      name: 'getISchoolPlusAnnouncement',
+      name: 'getISchoolPlusCourseAnnouncement',
       desc: '',
       args: [],
     );
@@ -510,6 +510,24 @@ class S {
     return Intl.message(
       'Get course announcement error',
       name: 'getISchoolPlusCourseAnnouncementError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getISchoolPlusCourseAnnouncementDetail {
+    return Intl.message(
+      'Get course announcement detail...',
+      name: 'getISchoolPlusCourseAnnouncementDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getISchoolPlusCourseAnnouncementDetailError {
+    return Intl.message(
+      'Get course announcement detail error',
+      name: 'getISchoolPlusCourseAnnouncementDetailError',
       desc: '',
       args: [],
     );

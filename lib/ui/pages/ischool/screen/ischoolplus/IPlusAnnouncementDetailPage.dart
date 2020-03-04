@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -22,6 +23,24 @@ class IPlusAnnouncementDetailPage extends StatefulWidget {
 }
 
 class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent) {
+    Navigator.of(context).pop();
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
