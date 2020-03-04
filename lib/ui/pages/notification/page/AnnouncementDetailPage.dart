@@ -29,66 +29,59 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
         title: Text(widget.data.courseName),
       ),
       body: SingleChildScrollView(
-        child: _showAnnouncementDetail(),
+        padding: EdgeInsets.all(0),
+        child: _buildAnnouncementDetail(),
       ),
     );
   }
 
-  Widget _showAnnouncementDetail() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                    color: Colors.white,
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                widget.data.title,
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text("from:"),
-                            Text(widget.data.sender),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Text(widget.data.timeString),
-                          ],
-                        ),
-                      ],
-                    )),
-              ),
+  Widget _buildAnnouncementDetail() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black54,
+              )
             ],
           ),
-          Container(
-            color: Colors.black,
-            padding: EdgeInsets.only(top: 1),
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  widget.data.title,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(widget.data.sender),
+                    Text(widget.data.timeString),
+                  ],
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _showHtmlWidget(),
-              ),
-            ],
-          )
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          child: _showHtmlWidget(),
+        ),
+      ],
     );
   }
 

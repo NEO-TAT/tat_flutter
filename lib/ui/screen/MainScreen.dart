@@ -7,7 +7,7 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
-import 'package:flutter_app/ui/pages/mail/NewAnnouncementPage.dart';
+import 'package:flutter_app/ui/pages/notification/NotificationPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
 import 'package:flutter_app/ui/pages/score/ScorePage.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -34,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
       _pageList = List();
 
       _pageList.add(CourseTablePage());
-      _pageList.add(NewAnnouncementPage());
+      _pageList.add(NotificationPage());
       //bottomPageList.add(BottomPage(CalendarScreen()));
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
