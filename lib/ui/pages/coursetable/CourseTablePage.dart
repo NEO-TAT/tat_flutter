@@ -361,7 +361,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     padding: EdgeInsets.all(0),
                     child: AutoSizeText(
                       courseInfo.main.course.name,
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
                       minFontSize: 10,
                       maxLines: 3,
                       textAlign: TextAlign.center,
