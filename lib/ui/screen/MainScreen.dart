@@ -61,6 +61,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'GenSenMaruGothicTW',
+      ),
       home: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(

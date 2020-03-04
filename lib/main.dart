@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: S.delegate.supportedLocales,
       //localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
       theme: ThemeData(
+        fontFamily: 'GenSenMaruGothicTW',
         accentColor: AppColors.mainColor,
         cursorColor: AppColors.mainColor,
         indicatorColor: AppColors.mainColor,
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
           primaryColor: AppColors.mainColor,
         ),
       ),
-      title: 'Navigation Basics',
+      title: 'TAT',
       home: MainScreen(),
     );
   }
