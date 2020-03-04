@@ -149,7 +149,8 @@ class ISchoolPlusConnector {
 
       parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/launch.php");
       result = await RequestsConnector.getDataByGet(parameter);
-      exp = new RegExp(r"cid=(?<cid>\w+,)");
+      Log.d( result );
+      exp = new RegExp(r"cid=(?<cid>[\w|-]+,)");
       matches = exp.firstMatch(result);
       String cid = matches.group(1);
       parameter =
@@ -311,7 +312,7 @@ class ISchoolPlusConnector {
     return null;
   }
 
-  static Future<void> getCourseAnnouncement(String courseId) async{
+  static Future<List<ISchoolPlusAnnouncementJson>> getCourseAnnouncement(String courseId) async{
     String result;
     try {
       _selectCourse(courseId);
@@ -324,6 +325,8 @@ class ISchoolPlusConnector {
         "bid" : "" ,
         "nid" : "" ,
       };
+      List<ISchoolPlusAnnouncementJson> announcementList = List();
+
       parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/m_node_list.php");
       parameter.data = data;
       result = await RequestsConnector.getDataByPost(parameter);
@@ -356,13 +359,12 @@ class ISchoolPlusConnector {
       jsonData = json.decode(result)['data'];
       for( String keyName in json.decode(result)['data'].keys.toList() ){
         ISchoolPlusAnnouncementJson courseInfo = ISchoolPlusAnnouncementJson.fromJson( jsonData[keyName] );
-        Log.d( courseInfo.subject );
+        announcementList.add( courseInfo );
       }
-
-      return ISchoolPlusConnectorStatus.LoginSuccess;
+      return announcementList;
     } catch (e) {
       Log.e(e.toString());
-      return ISchoolPlusConnectorStatus.LoginFail;
+      return null;
     }
   }
 
@@ -422,6 +424,7 @@ class ISchoolPlusConnector {
     try {
       parameter = ConnectorParameter(_checkLoginUrl);
       String result = await RequestsConnector.getDataByGet(parameter);
+      Log.d( result );
       if (result.contains("Guest")) {
         //代表登入失敗
         return false;
