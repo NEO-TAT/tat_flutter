@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -216,7 +217,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   refresh: true,
                 );
               },
-              child: Icon(Icons.refresh),
+              child: Icon(EvaIcons.refreshOutline),
             ),
           ),
         ],

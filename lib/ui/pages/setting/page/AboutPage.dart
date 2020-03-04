@@ -1,4 +1,5 @@
 import 'package:easy_dialog/easy_dialog.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
@@ -16,19 +17,19 @@ class AboutPage extends StatefulWidget {
 class _AboutPageState extends State<AboutPage> {
   final List<Map> listViewData = [
     {
-      "icon": Icons.update,
+      "icon": EvaIcons.refreshOutline,
       "title": R.current.checkVersion,
       "color": Colors.orange,
       "onPress": onListViewPress.AppUpdate
     },
     {
-      "icon": Icons.face,
+      "icon": EvaIcons.awardOutline,
       "title": R.current.Contribution,
       "color": Colors.lightGreen,
       "onPress": onListViewPress.Contribution
     },
     {
-      "icon": Icons.info,
+      "icon": EvaIcons.infoOutline,
       "color": Colors.blue,
       "title": R.current.versionInfo,
       "onPress": onListViewPress.Version
