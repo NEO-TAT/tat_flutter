@@ -18,7 +18,7 @@ import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
 
 //flutter packages pub run build_runner build 創建Json
-
+//flutter packages pub run build_runner build --delete-conflicting-outputs
 class Model {
   Model._privateConstructor();
 
