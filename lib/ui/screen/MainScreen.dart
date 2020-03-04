@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
+import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
@@ -45,6 +46,7 @@ class _MainScreenState extends State<MainScreen> {
       //_addTest();
     });
     _flutterDownloaderInit();
+    _notificationsInit();
     _addTask();
   }
   
@@ -61,6 +63,10 @@ class _MainScreenState extends State<MainScreen> {
 
   void _flutterDownloaderInit() async {
     await MyDownloader.init();
+  }
+
+  void _notificationsInit() async{
+    await Notifications.instance.init();
   }
 
   void _setLang() async {
