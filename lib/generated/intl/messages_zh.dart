@@ -96,6 +96,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "getISchoolNewAnnouncementError" : MessageLookupByLibrary.simpleMessage("取得最新公告錯誤"),
     "getISchoolNewAnnouncementPage" : MessageLookupByLibrary.simpleMessage("取得公告頁數..."),
     "getISchoolNewAnnouncementPageError" : MessageLookupByLibrary.simpleMessage("取得公告頁數錯誤"),
+    "getISchoolPlusAnnouncement" : MessageLookupByLibrary.simpleMessage("取得課程公告..."),
+    "getISchoolPlusCourseAnnouncementError" : MessageLookupByLibrary.simpleMessage("取得課程公告錯誤"),
     "getISchoolPlusCourseFile" : MessageLookupByLibrary.simpleMessage("取得課程檔案"),
     "getISchoolPlusCourseFileError" : MessageLookupByLibrary.simpleMessage("取得課程檔案錯誤"),
     "getScoreRank" : MessageLookupByLibrary.simpleMessage("取得成績中..."),

@@ -497,6 +497,24 @@ class S {
     );
   }
 
+  String get getISchoolPlusAnnouncement {
+    return Intl.message(
+      'Get course announcement...',
+      name: 'getISchoolPlusAnnouncement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getISchoolPlusCourseAnnouncementError {
+    return Intl.message(
+      'Get course announcement error',
+      name: 'getISchoolPlusCourseAnnouncementError',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get getScoreRank {
     return Intl.message(
       'Getting grade...',

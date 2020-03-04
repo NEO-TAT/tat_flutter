@@ -51,6 +51,8 @@
   "getISchoolCourseFileError": "Get course files error",
   "getISchoolPlusCourseFile": "Get course files",
   "getISchoolPlusCourseFileError": "Get course files error",
+  "getISchoolPlusAnnouncement" : "Get course announcement...",
+  "getISchoolPlusCourseAnnouncementError" : "Get course announcement error",
   "getScoreRank": "Getting grade...",
   "getScoreRankError": "Getting grade error",
   "deleteMessage": "Deleting message...",

@@ -51,6 +51,8 @@
   "getISchoolCourseFileError": "取得課程檔案錯誤",
   "getISchoolPlusCourseFile": "取得課程檔案",
   "getISchoolPlusCourseFileError": "取得課程檔案錯誤",
+  "getISchoolPlusAnnouncement" : "取得課程公告...",
+  "getISchoolPlusCourseAnnouncementError" : "取得課程公告錯誤",
   "getScoreRank": "取得成績中...",
   "getScoreRankError": "取得成績錯誤",
   "deleteMessage": "刪除訊息中...",

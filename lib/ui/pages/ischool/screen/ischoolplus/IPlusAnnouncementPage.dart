@@ -22,8 +22,6 @@ class IPlusAnnouncementPage extends StatefulWidget {
 
 class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
   List<ISchoolPlusAnnouncementJson> items;
   bool needRefresh = false;
 
@@ -40,49 +38,47 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     TaskHandler.instance.addTask(ISchoolPlusCourseAnnouncementTask(context, courseId ));
     await TaskHandler.instance.startTaskQueue(context);
     items = Model.instance.getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
+    setState(() {
+
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: ListView.builder(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(0.0),
-        scrollDirection: Axis.vertical,
-        primary: true,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque, //讓透明部分有反應
-            onTap: () {
-            },
-            child: Slidable(
-              delegate: SlidableDrawerDelegate(),
-              actionExtentRatio: 0.25,
-              child: _listItem(
-                items[index],
-              ),
-              secondaryActions: <Widget>[
-                new IconSlideAction(
-                  caption: R.current.delete,
-                  color: Colors.red,
-                  icon: Icons.delete,
-                  onTap: () {
+      body: (items.length > 0)
+        ? _buildMailList()
+        : Center(
+      child: Text(R.current.noAnyAnnouncement),
+    ),
+    );
+  }
 
-                  },
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+  Widget _buildMailList(){
+    return ListView.builder(
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(0.0),
+      scrollDirection: Axis.vertical,
+      primary: true,
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque, //讓透明部分有反應
+          onTap: () {
+          },
+          child: _listItem(
+            items[index],
+          ),
+        );
+      },
     );
   }
 
   Widget _listItem(ISchoolPlusAnnouncementJson data) {
-    Color color = (data.readflag == 1) ? Colors.black87 : Colors.black54;
-    FontWeight fontWeight = (data.readflag == 1) ? FontWeight.bold : FontWeight.w400;
+    Color color = (data.readflag != 1) ? Colors.black87 : Colors.black54;
+    FontWeight fontWeight = (data.readflag != 1) ? FontWeight.bold : FontWeight.w400;
     return Container(
       child: Column(
         children: <Widget>[
