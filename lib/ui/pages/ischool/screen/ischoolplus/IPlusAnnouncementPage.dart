@@ -6,9 +6,13 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementTask.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'IPlusAnnouncementDetailPage.dart';
 
 
 class IPlusAnnouncementPage extends StatefulWidget {
@@ -42,7 +46,14 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
 
     });
   }
-
+  void _getAnnouncementDetail(ISchoolPlusAnnouncementJson value) async{
+    TaskHandler.instance.addTask( ISchoolPlusCourseAnnouncementDetailTask(context,value));
+    await TaskHandler.instance.startTaskQueue(context);
+    String html = Model.instance.getTempData(ISchoolPlusCourseAnnouncementDetailTask.announcementListTempKey);
+    Navigator.of(context).push(PageTransition(
+        type: PageTransitionType.leftToRight,
+        child: IPlusAnnouncementDetailPage(html)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +78,8 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
         return GestureDetector(
           behavior: HitTestBehavior.opaque, //讓透明部分有反應
           onTap: () {
+            ISchoolPlusAnnouncementJson value = items[index];
+            _getAnnouncementDetail( value );
           },
           child: _listItem(
             items[index],
