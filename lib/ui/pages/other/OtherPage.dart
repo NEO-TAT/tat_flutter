@@ -5,30 +5,28 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
-import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
+import 'package:flutter_app/ui/pages/other/page/LanguagePage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
-import 'package:flutter_app/ui/pages/setting/page/LanguagePage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:random_color/random_color.dart';
 
 import 'page/AboutPage.dart';
 
 enum onListViewPress { Language, FileViewer, Logout, Report, About, ChangePassword }
 
-class SettingPage extends StatefulWidget {
+class OtherPage extends StatefulWidget {
   final PageController pageController;
-  SettingPage(this.pageController);
+  OtherPage(this.pageController);
 
   @override
-  _SettingPageState createState() => _SettingPageState();
+  _OtherPageState createState() => _OtherPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _OtherPageState extends State<OtherPage> {
   final List<Map> listViewData = [
     {
       "icon": EvaIcons.globeOutline,
