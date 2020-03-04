@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -10,8 +11,8 @@ import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/mail/NewAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/score/ScorePage.dart';
 import 'package:flutter_app/ui/pages/setting/SettingPage.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
-import '../../debug/log/Log.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -115,7 +116,7 @@ class _MainScreenState extends State<MainScreen> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.schedule,
+            EvaIcons.clockOutline,
           ),
           title: Text(
             R.current.titleCourse,
@@ -123,7 +124,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.email,
+            EvaIcons.emailOutline,
           ),
           title: Text(
             R.current.titleNotification,
@@ -131,7 +132,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.school,
+            EvaIcons.bookOpenOutline,
           ),
           title: Text(
             R.current.credit,
@@ -139,7 +140,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.menu,
+            EvaIcons.menu,
           ),
           title: Text(
             R.current.titleOther,

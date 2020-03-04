@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
@@ -30,37 +31,37 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   final List<Map> listViewData = [
     {
-      "icon": Icons.language,
+      "icon": EvaIcons.globeOutline,
       "color": Colors.orange,
       "title": R.current.languageSetting,
       "onPress": onListViewPress.Language
     },
     {
-      "icon": Icons.file_download,
+      "icon": EvaIcons.downloadOutline,
       "color": Colors.yellow[700],
       "title": R.current.downloadFile,
       "onPress": onListViewPress.FileViewer
     },
     {
-      "icon": MyIcon.arrows_cw,
+      "icon": EvaIcons.syncOutline,
       "color": Colors.lightGreen,
       "title": R.current.changePassword,
       "onPress": onListViewPress.ChangePassword
     },
     {
-      "icon": MyIcon.logout,
+      "icon": EvaIcons.undoOutline,
       "color": Colors.teal[400],
       "title": R.current.logout,
       "onPress": onListViewPress.Logout
     },
     {
-      "icon": Icons.report,
+      "icon": EvaIcons.messageSquareOutline,
       "color": Colors.cyan,
       "title": R.current.feedback,
       "onPress": onListViewPress.Report
     },
     {
-      "icon": Icons.info,
+      "icon": EvaIcons.infoOutline,
       "color": Colors.lightBlue,
       "title": R.current.about,
       "onPress": onListViewPress.About
