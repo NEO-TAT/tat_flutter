@@ -19,12 +19,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'page/AnnouncementDetailPage.dart';
 
-class NewAnnouncementPage extends StatefulWidget {
+class NotificationPage extends StatefulWidget {
   @override
-  _NewAnnouncementPageState createState() => _NewAnnouncementPageState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _NewAnnouncementPageState extends State<NewAnnouncementPage>
+class _NotificationPageState extends State<NotificationPage>
     with AutomaticKeepAliveClientMixin {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -184,7 +184,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
         onLoading: _onLoading,
         child: ListView.builder(
           shrinkWrap: true,
-          padding: const EdgeInsets.all(0.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           scrollDirection: Axis.vertical,
           primary: true,
           itemCount: items.length,
@@ -202,7 +202,7 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
               child: Slidable(
                 delegate: SlidableDrawerDelegate(),
                 actionExtentRatio: 0.25,
-                child: _listItem(
+                child: _buildListItem(
                   items[index],
                 ),
                 secondaryActions: <Widget>[
@@ -248,15 +248,13 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
     ErrorDialog(parameter).show();
   }
 
-  Widget _listItem(NewAnnouncementJson data) {
+  Widget _buildListItem(NewAnnouncementJson data) {
     Color color = (!data.isRead) ? Colors.black87 : Colors.black54;
-    FontWeight fontWeight = (!data.isRead) ? FontWeight.bold : FontWeight.w400;
     return Container(
       child: Column(
         children: <Widget>[
           Padding(
-            padding:
-                EdgeInsets.only(left: 14.0, right: 14.0, top: 5.0, bottom: 5.0),
+            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -267,53 +265,39 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Expanded(
-                              child: Text(
-                                data.title,
-                                overflow: TextOverflow.visible,
-                                style: TextStyle(
-                                    fontWeight: fontWeight,
-                                    color: color,
-                                    fontSize: 17.0),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          data.title,
+                          overflow: TextOverflow.visible,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: color,
+                              fontSize: 18),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              data.courseName,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontWeight: fontWeight,
-                                  color: color,
-                                  fontSize: 15.5),
-                            ),
-                          ],
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          data.courseName,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: color, fontSize: 16),
+                        ),
+                        SizedBox(
+                          height: 4,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
                               data.sender,
-                              style: TextStyle(
-                                  fontWeight: fontWeight,
-                                  color: color,
-                                  fontSize: 15.5),
+                              style: TextStyle(color: color, fontSize: 15.5),
                             ),
                             Text(
                               data.timeString,
-                              style: TextStyle(
-                                  fontWeight: fontWeight,
-                                  color: color,
-                                  fontSize: 13.5),
+                              style: TextStyle(color: color, fontSize: 13.5),
                             ),
                           ],
                         )
@@ -324,7 +308,10 @@ class _NewAnnouncementPageState extends State<NewAnnouncementPage>
               ],
             ),
           ),
-          Divider(),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Divider(),
+          ),
         ],
       ),
     );
