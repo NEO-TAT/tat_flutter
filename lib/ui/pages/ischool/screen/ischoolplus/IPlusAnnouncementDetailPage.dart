@@ -103,7 +103,10 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
     List<String> keyMap = widget.data['file'].keys.toList();
     Map fileMap = widget.data["file"];
     if (keyMap.length == 0) {
-      return null;
+      return Container(
+        color: Colors.black12,
+        height: 1,
+      );
     } else {
       return Container(
         child: Column(
