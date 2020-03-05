@@ -10,12 +10,13 @@ import '../CheckCookiesTask.dart';
 import '../TaskModel.dart';
 
 class ISchoolNewAnnouncementDetailTask extends TaskModel {
-  static final String taskName =
-      "ISchoolNewAnnouncementDetailTask" + CheckCookiesTask.checkISchool;
+  static final String taskName = "ISchoolNewAnnouncementDetailTask";
+  static final List<String> require = [CheckCookiesTask.checkISchool];
   static NewAnnouncementJson announcement;
+
   ISchoolNewAnnouncementDetailTask(
       BuildContext context, NewAnnouncementJson value)
-      : super(context, taskName) {
+      : super(context, taskName, require) {
     announcement = value;
   }
 

@@ -191,6 +191,33 @@ class S {
     );
   }
 
+  String get downloading {
+    return Intl.message(
+      'Download...',
+      name: 'downloading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get downloadComplete {
+    return Intl.message(
+      'Download complete',
+      name: 'downloadComplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get prepareDownload {
+    return Intl.message(
+      'Prepare download...',
+      name: 'prepareDownload',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________task___________________ {
     return Intl.message(
       '註解',

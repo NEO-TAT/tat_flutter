@@ -12,13 +12,15 @@ import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 
 class CourseTableTask extends TaskModel {
-  static final String taskName =
-      "CourseTableTask" + CheckCookiesTask.checkCourse;
+  static final String taskName = "CourseTableTask";
+  static final List<String> require = [CheckCookiesTask.checkCourse];
   String studentId;
   SemesterJson semester;
+
   CourseTableTask(BuildContext context, this.studentId, this.semester)
-      : super(context, taskName);
+      : super(context, taskName, require);
   static String courseTableTempKey = "CourseTableTempKey";
+
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, R.current.getCourse);

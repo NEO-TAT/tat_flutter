@@ -7,9 +7,10 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 class CourseLoginTask extends TaskModel {
-  static final String taskName =
-      "CourseLoginTask" + CheckCookiesTask.checkCourse;
-  CourseLoginTask(BuildContext context) : super(context, taskName);
+  static final String taskName = "CourseLoginTask";
+  static final List<String> require = [CheckCookiesTask.checkCourse];
+
+  CourseLoginTask(BuildContext context) : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {
@@ -27,7 +28,7 @@ class CourseLoginTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: R.current.getCourseDetailError,
+      desc: R.current.loginCourseError,
     );
     ErrorDialog(parameter).show();
   }

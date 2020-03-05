@@ -8,13 +8,13 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-
 class CourseSemesterTask extends TaskModel {
-  static final String taskName =
-      "CourseSemesterTask" + CheckCookiesTask.checkCourse;
+  static final String taskName = "CourseSemesterTask";
+  static final List<String> require = [CheckCookiesTask.checkCourse];
   String id;
 
-  CourseSemesterTask(BuildContext context, this.id) : super(context, taskName);
+  CourseSemesterTask(BuildContext context, this.id)
+      : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {

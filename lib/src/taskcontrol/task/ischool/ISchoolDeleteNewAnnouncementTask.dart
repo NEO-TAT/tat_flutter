@@ -8,12 +8,13 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 class ISchoolDeleteNewAnnouncementTask extends TaskModel {
-  static final String taskName =
-      "ISchoolDeleteNewAnnouncementTask" + CheckCookiesTask.checkISchool;
+  static final String taskName = "ISchoolDeleteNewAnnouncementTask";
+  static final List<String> require = [CheckCookiesTask.checkISchool];
   final String messageId;
   static final String isDeleteKey = "isDeleteKey";
+
   ISchoolDeleteNewAnnouncementTask(BuildContext context, this.messageId)
-      : super(context, taskName);
+      : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {

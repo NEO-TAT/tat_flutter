@@ -31,13 +31,13 @@ enum NTUTConnectorStatus {
 }
 
 class NTUTConnector {
-  static bool _isLogin = true;
-  static final String _Host = "https://nportal.ntut.edu.tw/";
-  static final String _loginUrl = _Host + "login.do";
-  static final String _indexUrl = _Host + "index.do";
-  static final String _getPictureUrl = _Host + "photoView.do";
-  static final String _checkLoginUrl = _Host + "myPortal.do";
-  static final String _getCalendarUrl = _Host + "calModeApp.do";
+  static bool _isLogin = false;
+  static final String _host = "https://nportal.ntut.edu.tw/";
+  static final String _loginUrl = _host + "login.do";
+  static final String _indexUrl = _host + "index.do";
+  static final String _getPictureUrl = _host + "photoView.do";
+  static final String _checkLoginUrl = _host + "myPortal.do";
+  static final String _getCalendarUrl = _host + "calModeApp.do";
 
   static Future<NTUTConnectorStatus> login(
       String account, String password) async {

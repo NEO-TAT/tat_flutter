@@ -7,12 +7,12 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-
 class ISchoolPlusLoginTask extends TaskModel {
-  static final String taskName =
-      "ISchoolPlusLoginTask" + CheckCookiesTask.checkPlusISchool;
+  static final String taskName = "ISchoolPlusLoginTask";
+  static final List<String> require = [CheckCookiesTask.checkPlusISchool];
+
   ISchoolPlusLoginTask(BuildContext context)
-      : super(context, taskName);
+      : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {
@@ -20,7 +20,7 @@ class ISchoolPlusLoginTask extends TaskModel {
     String studentId = Model.instance.getAccount();
     String password = Model.instance.getPassword();
     ISchoolPlusConnectorStatus value =
-    await ISchoolPlusConnector.login(studentId);
+        await ISchoolPlusConnector.login(studentId);
     MyProgressDialog.hideProgressDialog();
     if (value == ISchoolPlusConnectorStatus.LoginSuccess) {
       return TaskStatus.TaskSuccess;
