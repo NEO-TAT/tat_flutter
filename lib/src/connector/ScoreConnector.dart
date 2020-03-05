@@ -111,6 +111,8 @@ class ScoreConnector {
         for (int j = 1; j < scoreNodes.length - 6; j++) {
           scoreNode = scoreNodes[j];
           ScoreJson score = ScoreJson();
+          score.courseId =
+              scoreNode.getElementsByTagName("th")[0].text.replaceAll("\n", "");
           score.name =
               scoreNode.getElementsByTagName("th")[2].text.replaceAll("\n", "");
           score.credit =

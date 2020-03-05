@@ -3,6 +3,7 @@ import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
+import 'package:flutter_app/ui/pages/other/page/CreditViewerPage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
 
@@ -13,7 +14,7 @@ class OtherPage extends StatefulWidget {
   _OtherPageState createState() => _OtherPageState();
 }
 
-enum onListViewPress { Score, FileViewer }
+enum onListViewPress { Score,  CreditViewer ,FileViewer }
 
 class _OtherPageState extends State<OtherPage> {
   final List<Map> listViewData = [
@@ -21,6 +22,11 @@ class _OtherPageState extends State<OtherPage> {
       "icon": Icons.search,
       "title": R.current.scoreSearch,
       "onPress": onListViewPress.Score
+    },
+    {
+      "icon": Icons.search,
+      "title": R.current.creditViewer,
+      "onPress": onListViewPress.CreditViewer
     },
     {
       "icon": Icons.file_download,
@@ -49,6 +55,14 @@ class _OtherPageState extends State<OtherPage> {
             ),
           );
         });
+        break;
+      case onListViewPress.CreditViewer:
+        Navigator.of(context).push(
+          PageTransition(
+            type: PageTransitionType.leftToRight,
+            child: CreditViewerPage(),
+          ),
+        );
         break;
       case onListViewPress.Score:
         Navigator.of(context).push(
