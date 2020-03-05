@@ -13,9 +13,10 @@ import '../../../store/json/UserDataJson.dart';
 import '../../../../ui/other/ErrorDialog.dart';
 
 class NTUTLoginTask extends TaskModel {
-  static final String taskName = "NTUTLoginTask" + CheckCookiesTask.checkNTUT;
+  static final String taskName = "NTUTLoginTask";
+  static final List<String> require = [CheckCookiesTask.checkNTUT];
 
-  NTUTLoginTask(BuildContext context) : super(context, taskName);
+  NTUTLoginTask(BuildContext context) : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {

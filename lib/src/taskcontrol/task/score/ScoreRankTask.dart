@@ -9,9 +9,11 @@ import '../CheckCookiesTask.dart';
 import '../TaskModel.dart';
 
 class ScoreRankTask extends TaskModel {
-  static final String taskName = "ScoreRankTask" + CheckCookiesTask.checkNTUT;
+  static final String taskName = "ScoreRankTask";
+  static final List<String> require = [CheckCookiesTask.checkNTUT];
   static String scoreRankTempKey = "ScoreRankTempKey";
-  ScoreRankTask(BuildContext context) : super(context, taskName);
+
+  ScoreRankTask(BuildContext context) : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {

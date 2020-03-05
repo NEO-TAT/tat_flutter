@@ -24,7 +24,7 @@ enum ScoreConnectorStatus {
 }
 
 class ScoreConnector {
-  static bool _isLogin = true;
+  static bool _isLogin = false;
 
   static final String _getLoginScoreUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";

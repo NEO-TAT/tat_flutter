@@ -24,7 +24,7 @@ enum ISchoolPlusConnectorStatus {
 }
 
 class ISchoolPlusConnector {
-  static bool _isLogin = true;
+  static bool _isLogin = false;
 
   static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
   static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";

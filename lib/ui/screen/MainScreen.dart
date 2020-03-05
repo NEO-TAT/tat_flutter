@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _addTask() async {
-    TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
+    //TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
   }
 
   void _flutterDownloaderInit() async {

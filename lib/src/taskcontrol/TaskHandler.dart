@@ -11,22 +11,36 @@ import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
+import 'package:path/path.dart';
 
 class TaskHandler {
   TaskHandler._privateConstructor();
 
   static final TaskHandler instance = TaskHandler._privateConstructor();
   static final List<TaskModel> _taskQueue = List();
+  static String alreadyCheckSystem = "";
   bool taskContinue;
   BuildContext startTaskContext;
 
   void addTask(TaskModel task) {
+    String needLoginSystem = "";
+    for (String require in task.requireSystem) {
+      if (!alreadyCheckSystem.contains(require)) {
+        alreadyCheckSystem += require;
+        needLoginSystem += require;
+      }
+    }
+    if (needLoginSystem.isNotEmpty) {
+      _taskQueue
+          .add(CheckCookiesTask(task.context, checkSystem: needLoginSystem));
+    }
     _taskQueue.add(task);
   }
 
@@ -84,31 +98,21 @@ class TaskHandler {
 
   void _handleErrorTask(TaskModel task) async {
     Log.d("Task fail " + task.getTaskName);
-
-    if (task is ISchoolLoginTask ||
-        task is CourseLoginTask ||
-        task is NTUTLoginTask ||
-        task is ISchoolPlusLoginTask) {
+    if (task is NTUTLoginTask) {
       _addFirstTask(task);
+    } else if (task is ISchoolLoginTask ||
+        task is CourseLoginTask ||
+        task is ISchoolPlusLoginTask) {
+      _addFirstTaskList([NTUTLoginTask(task.context), task]);
     } else if (task is CheckCookiesTask) {
-      List<TaskModel> taskList = List();
-      if (!NTUTConnector.isLogin) {
-        taskList.add(NTUTLoginTask(task.context));
-      }
-      if (!CourseConnector.isLogin) {
-        taskList.add(CourseLoginTask(task.context));
-      }
-      if (!ISchoolConnector.isLogin) {
-        taskList.add(ISchoolLoginTask(task.context));
-      }
-      if (!ISchoolPlusConnector.isLogin) {
-        taskList.add(ISchoolPlusLoginTask(task.context));
-      }
-      _addFirstTaskList(taskList);
+      String needLoginSystem =
+          Model.instance.getTempData(CheckCookiesTask.needLoginKey);
+      addLoginTask(task.context, needLoginSystem); //加入需要登入的任務
       continueTask();
     } else {
       _addFirstTaskList([
-        CheckCookiesTask(task.context, checkSystem: task.getTaskName),
+        CheckCookiesTask(task.context,
+            checkSystem: task.requireSystem.toString()),
         task
       ]);
     }
@@ -116,5 +120,22 @@ class TaskHandler {
 
   void _handleSuccessTask(TaskModel task) {
     Log.d("Task Success " + task.getTaskName);
+  }
+
+  void addLoginTask(BuildContext context, String needLoginSystem) {
+    List<TaskModel> taskList = List();
+    Log.d("needLoginSystem : $needLoginSystem");
+    Map<String, TaskModel> loginMap = {
+      CheckCookiesTask.checkNTUT: NTUTLoginTask(context),
+      CheckCookiesTask.checkCourse: CourseLoginTask(context),
+      CheckCookiesTask.checkISchool: ISchoolLoginTask(context),
+      CheckCookiesTask.checkPlusISchool: ISchoolPlusLoginTask(context),
+    };
+    for (String key in loginMap.keys.toList()) {
+      if (needLoginSystem.contains(key)) {
+        taskList.add(loginMap[key]);
+      }
+    }
+    _addFirstTaskList(taskList);
   }
 }

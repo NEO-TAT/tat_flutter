@@ -66,8 +66,6 @@ class _IPlusFilePage extends State<IPlusFilePage>
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
-    TaskHandler.instance.addTask(CheckCookiesTask(context,
-        checkSystem: CheckCookiesTask.checkPlusISchool));
     TaskHandler.instance.addTask(ISchoolPlusCourseFileTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
     courseFileList = Model.instance

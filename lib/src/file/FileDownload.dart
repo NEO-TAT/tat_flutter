@@ -9,6 +9,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
@@ -26,7 +27,7 @@ class FileDownload {
     String fileExtension;
     ReceivedNotification value = ReceivedNotification(
         title: name,
-        body: "下載準備中",
+        body: R.current.prepareDownload,
         payload: 'download'); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
@@ -58,7 +59,7 @@ class FileDownload {
         await Notifications.instance
             .showProgressNotification(value, 100, (count * 100 / total).round());  //顯示下載進度
       }else{
-        value.body = "下載中...";
+        value.body = R.current.downloading;
         await Notifications.instance
             .showIndeterminateProgressNotification(value);  //顯示下載進度
       }
@@ -68,7 +69,7 @@ class FileDownload {
         progressCallback: onReceiveProgress, cancelToken: cancelToken);
     await Future.delayed(Duration(milliseconds: 100));
     Notifications.instance.cancelNotification(value.id);
-    value.body = '下載完成';
+    value.body = R.current.downloadComplete;
     value.id = Notifications.instance.notificationId;  //取得新的id
     value.payload = "file:" + path + '/' + realFileName;
     await Notifications.instance

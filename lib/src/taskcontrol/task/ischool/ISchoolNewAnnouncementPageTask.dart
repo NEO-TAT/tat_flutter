@@ -8,10 +8,11 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 class ISchoolNewAnnouncementPageTask extends TaskModel {
-  static final String taskName =
-      "ISchoolNewAnnouncementPageTask" + CheckCookiesTask.checkISchool;
+  static final String taskName = "ISchoolNewAnnouncementPageTask";
+  static final List<String> require = [CheckCookiesTask.checkISchool];
+
   ISchoolNewAnnouncementPageTask(BuildContext context)
-      : super(context, taskName);
+      : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {

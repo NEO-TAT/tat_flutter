@@ -67,7 +67,7 @@ class Connector {
           .replaceAll("[", "")
           .replaceAll("]", "");
       headers.remove("content-type");
-      Log.d(headers.toString());
+      //Log.d(headers.toString());
       return headers;
     } catch (e) {
       Log.d(e.toString());

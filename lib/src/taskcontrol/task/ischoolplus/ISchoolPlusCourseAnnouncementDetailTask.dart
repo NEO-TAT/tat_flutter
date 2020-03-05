@@ -10,12 +10,14 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 class ISchoolPlusCourseAnnouncementDetailTask extends TaskModel {
-  static final String taskName =
-      "ISchoolPlusCourseFileTask" + CheckCookiesTask.checkPlusISchool;
+  static final String taskName = "ISchoolPlusCourseFileTask";
+  static final List<String> require = [CheckCookiesTask.checkPlusISchool];
   final ISchoolPlusAnnouncementJson data;
-  static String announcementListTempKey = "ISchoolPlusCourseAnnouncementDetailTempKey";
+  static String announcementListTempKey =
+      "ISchoolPlusCourseAnnouncementDetailTempKey";
+
   ISchoolPlusCourseAnnouncementDetailTask(BuildContext context, this.data)
-      : super(context, taskName);
+      : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {
