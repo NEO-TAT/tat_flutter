@@ -42,6 +42,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     TaskHandler.instance.addTask(ISchoolPlusCourseAnnouncementTask(context, courseId ));
     await TaskHandler.instance.startTaskQueue(context);
     items = Model.instance.getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
+    items = items ?? List();
     setState(() {
 
     });

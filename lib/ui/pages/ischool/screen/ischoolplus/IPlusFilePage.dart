@@ -72,6 +72,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     await TaskHandler.instance.startTaskQueue(context);
     courseFileList = Model.instance
         .getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
+    courseFileList = courseFileList ?? List();
     selectList.addItems(courseFileList.length);
     setState(() {});
   }
