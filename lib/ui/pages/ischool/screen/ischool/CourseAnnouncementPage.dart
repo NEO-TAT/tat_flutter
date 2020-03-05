@@ -45,6 +45,7 @@ class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
     await TaskHandler.instance.startTaskQueue(context);
     courseAnnouncementList = Model.instance.getTempData(
         ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey);
+    courseAnnouncementList = courseAnnouncementList ?? List();
     setState(() {});
   }
 
