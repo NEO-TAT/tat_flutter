@@ -45,11 +45,7 @@ class Notifications {
         initializationSettingsAndroid, initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
-      if (payload != null) {  //如果有padload就執行動作
-        if( payload.contains("file:")){
-          String path = payload.split(":").last;
-          OpenFile.open(path);
-        }
+      if (payload != null) { 
       }
       selectNotificationSubject.add(payload);
     });
@@ -78,7 +74,12 @@ class Notifications {
 
   void _configureSelectNotificationSubject() {
     //當通知窗被按下
-    selectNotificationSubject.stream.listen((String payload) async {});
+    selectNotificationSubject.stream.listen((String payload) async {
+      if( payload.contains("file:")){
+        String path = payload.split(":").last;
+        OpenFile.open(path);
+      }
+    });
   }
 
   Future<void> showProgressNotification(
