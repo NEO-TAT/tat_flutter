@@ -20,7 +20,7 @@ class CheckCookiesTask extends TaskModel {
 
   CheckCookiesTask(BuildContext context, {this.checkSystem, this.studentId})
       : super(context, taskName) {
-    checkSystem = checkSystem ?? checkCourse + checkISchool + checkNTUT;
+    checkSystem = checkSystem ?? checkNTUT;
   }
 
   @override

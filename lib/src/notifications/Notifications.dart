@@ -6,10 +6,15 @@ import 'package:rxdart/rxdart.dart';
 
 class Notifications {
   Notifications._privateConstructor();
+  static int idCount = 0;
   static final Notifications instance = Notifications._privateConstructor();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final BehaviorSubject<ReceivedNotification>didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
-  final BehaviorSubject<String> selectNotificationSubject = BehaviorSubject<String>();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  final BehaviorSubject<ReceivedNotification>
+      didReceiveLocalNotificationSubject =
+      BehaviorSubject<ReceivedNotification>();
+  final BehaviorSubject<String> selectNotificationSubject =
+      BehaviorSubject<String>();
   final String downloadChannelId = "Download";
   final String downloadChannelName = "Download";
   final String downloadChannelDescription = "Show Download Progress";
@@ -72,12 +77,11 @@ class Notifications {
     selectNotificationSubject.stream.listen((String payload) async {});
   }
 
-  Future<int> showProgressNotification(ReceivedNotification value,int maxProgress , int nowProgress) async {  //顯示下載進度
-    value.id = value.id ?? DateTime.now().millisecondsSinceEpoch;
+  Future<void> showProgressNotification(
+      ReceivedNotification value, int maxProgress, int nowProgress) async {
+    //顯示下載進度
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'progress channel',
-        'progress channel',
-        'progress channel description',
+        'progress channel', 'progress channel', 'progress channel description',
         channelShowBadge: false,
         importance: Importance.Max,
         priority: Priority.High,
@@ -89,15 +93,13 @@ class Notifications {
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        value.id,
-        value.title,
-        value.body,
-        platformChannelSpecifics,
-        payload: value.payload );
-    return value.id;
+        value.id, value.title, value.body, platformChannelSpecifics,
+        payload: value.payload);
   }
 
-  Future<void> showIndeterminateProgressNotification(ReceivedNotification value) async { //顯示未知下載進度
+  Future<void> showIndeterminateProgressNotification(
+      ReceivedNotification value) async {
+    //顯示未知下載進度
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         downloadChannelId, downloadChannelName, downloadChannelDescription,
         channelShowBadge: false,
@@ -109,13 +111,29 @@ class Notifications {
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    value.id = value.id ?? DateTime.now().millisecondsSinceEpoch;
     await flutterLocalNotificationsPlugin.show(
-        value.id,
-        value.title,
-        value.body,
-        platformChannelSpecifics,
+        value.id, value.title, value.body, platformChannelSpecifics,
         payload: value.payload);
+  }
+
+  Future<void> showNotification(ReceivedNotification value) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        downloadChannelId, downloadChannelName, downloadChannelDescription,
+        importance: Importance.Max, priority: Priority.High, onlyAlertOnce: true, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        value.id , value.title , value.body, platformChannelSpecifics,
+        payload: value.payload);
+  }
+
+  Future<void> cancelNotification(int id) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
+  }
+
+  int get notificationId{
+    return idCount++;
   }
 
 }
@@ -127,8 +145,10 @@ class ReceivedNotification {
   String payload;
 
   ReceivedNotification(
-      {@required this.id,
+      {this.id,
       @required this.title,
       @required this.body,
-      @required this.payload});
+      @required this.payload}){
+    id = Notifications.instance.notificationId;
+  }
 }

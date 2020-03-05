@@ -148,7 +148,6 @@ class ISchoolPlusConnector {
 
       parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/launch.php");
       result = await RequestsConnector.getDataByGet(parameter);
-      Log.d(result);
       exp = new RegExp(r"cid=(?<cid>[\w|-]+,)");
       matches = exp.firstMatch(result);
       String cid = matches.group(1);
@@ -465,7 +464,6 @@ class ISchoolPlusConnector {
     try {
       parameter = ConnectorParameter(_checkLoginUrl);
       String result = await RequestsConnector.getDataByGet(parameter);
-      Log.d(result);
       if (result.contains("Guest")) {
         //代表登入失敗
         return false;

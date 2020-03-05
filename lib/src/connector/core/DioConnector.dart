@@ -175,8 +175,8 @@ class DioConnector {
 
 
 
-  Future<void> download(String url , String savePath) async{
-    await dio.downloadUri(Uri.parse(url), savePath);
+  Future<void> download(String url , String savePath , { ProgressCallback progressCallback , CancelToken cancelToken} ) async{
+    await dio.downloadUri(Uri.parse(url), savePath , onReceiveProgress:progressCallback , cancelToken : cancelToken);
   }
 
   Map<String, String> get headers {
