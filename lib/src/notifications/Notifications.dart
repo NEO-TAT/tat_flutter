@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 class Notifications {
   Notifications._privateConstructor();
+
   static int idCount = 0;
   static final Notifications instance = Notifications._privateConstructor();
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -45,8 +46,7 @@ class Notifications {
         initializationSettingsAndroid, initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
-      if (payload != null) { 
-      }
+      if (payload != null) {}
       selectNotificationSubject.add(payload);
     });
 
@@ -75,7 +75,7 @@ class Notifications {
   void _configureSelectNotificationSubject() {
     //當通知窗被按下
     selectNotificationSubject.stream.listen((String payload) async {
-      if( payload.contains("file:")){
+      if (payload.contains("file:")) {
         String path = payload.split(":").last;
         OpenFile.open(path);
       }
@@ -86,14 +86,15 @@ class Notifications {
       ReceivedNotification value, int maxProgress, int nowProgress) async {
     //顯示下載進度
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'progress channel', 'progress channel', 'progress channel description',
+        downloadChannelId, downloadChannelName, downloadChannelDescription,
         channelShowBadge: false,
         importance: Importance.Max,
         priority: Priority.High,
         onlyAlertOnce: true,
         showProgress: true,
         maxProgress: maxProgress,
-        progress: nowProgress);
+        progress: nowProgress,
+        playSound: false);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
@@ -112,7 +113,8 @@ class Notifications {
         priority: Priority.High,
         onlyAlertOnce: true,
         showProgress: true,
-        indeterminate: true);
+        indeterminate: true,
+        playSound: false);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
@@ -124,12 +126,16 @@ class Notifications {
   Future<void> showNotification(ReceivedNotification value) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         downloadChannelId, downloadChannelName, downloadChannelDescription,
-        importance: Importance.Max, priority: Priority.High, onlyAlertOnce: true, ticker: 'ticker');
+        importance: Importance.Max,
+        priority: Priority.High,
+        onlyAlertOnce: true,
+        ticker: 'ticker',
+        playSound: false);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
-        value.id , value.title , value.body, platformChannelSpecifics,
+        value.id, value.title, value.body, platformChannelSpecifics,
         payload: value.payload);
   }
 
@@ -137,10 +143,9 @@ class Notifications {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
-  int get notificationId{
+  int get notificationId {
     return idCount++;
   }
-
 }
 
 class ReceivedNotification {
@@ -153,7 +158,7 @@ class ReceivedNotification {
       {this.id,
       @required this.title,
       @required this.body,
-      @required this.payload}){
+      @required this.payload}) {
     id = Notifications.instance.notificationId;
   }
 }
