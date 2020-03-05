@@ -369,13 +369,16 @@ class ISchoolPlusConnector {
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
       jsonData = json.decode(result)['data'];
-      for (String keyName in json.decode(result)['data'].keys.toList()) {
-        ISchoolPlusAnnouncementJson courseInfo =
-            ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
-        courseInfo.token = data['token'];
-        courseInfo.bid = keyName.split("|").first;
-        courseInfo.nid = keyName.split("|").last;
-        announcementList.add(courseInfo);
+      int totalRows = int.parse( json.decode(result)['total_rows'] );
+      if( totalRows > 0 ){
+        for (String keyName in json.decode(result)['data'].keys.toList()) {
+          ISchoolPlusAnnouncementJson courseInfo =
+          ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
+          courseInfo.token = data['token'];
+          courseInfo.bid = keyName.split("|").first;
+          courseInfo.nid = keyName.split("|").last;
+          announcementList.add(courseInfo);
+        }
       }
       return announcementList;
     } catch (e) {
