@@ -55,19 +55,19 @@ class _CreditViewerPage extends State<CreditViewerPage> {
       CourseScoreJson course = courseScoreList[i];
       for (int j = 0; j < course.courseScoreList.length; j++) {
         String courseId = course.courseScoreList[j].courseId;
-        TaskHandler.instance.addTask(TaskModelFunction(
-            context, [CheckCookiesTask.checkCourse], () async {
+        TaskHandler.instance.addTask(TaskModelFunction(context,
+            require: [CheckCookiesTask.checkCourse], taskFunction: () async {
           CourseExtraInfoJson courseInfo =
               await CourseConnector.getCourseExtraInfo(courseId);
           courseDetail[courseId] = courseInfo;
           return courseInfo == null ? false : true;
-        }, () {
+        }, errorFunction: () {
           ErrorDialogParameter parameter = ErrorDialogParameter(
             context: context,
             desc: R.current.getCourseDetailError,
           );
           ErrorDialog(parameter).show();
-        }));
+        }, successFunction: () async {}));
       }
       //增加展開控制器
       _expansionControlList.add((ExpansionTile()));
@@ -145,7 +145,6 @@ class _CreditViewerPage extends State<CreditViewerPage> {
       ),
     );
   }
-
 
   Widget _buildOneSemesterItem(int index, CourseScoreJson courseScore) {
     List<ScoreJson> scoreList = courseScore.courseScoreList;
@@ -237,7 +236,7 @@ class _CreditViewerPage extends State<CreditViewerPage> {
             width: width * 0.45,
             child: Text(
               score.name,
-              overflow : TextOverflow.ellipsis,
+              overflow: TextOverflow.ellipsis,
               style: textStyle,
             ),
           ),
