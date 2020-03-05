@@ -107,7 +107,7 @@ class TaskHandler {
     } else if (task is CheckCookiesTask) {
       String needLoginSystem =
           Model.instance.getTempData(CheckCookiesTask.needLoginKey);
-      addLoginTask(task.context, needLoginSystem); //加入需要登入的任務
+      _addLoginTask(task.context, needLoginSystem); //加入需要登入的任務
       continueTask();
     } else {
       _addFirstTaskList([
@@ -122,7 +122,7 @@ class TaskHandler {
     Log.d("Task Success " + task.getTaskName);
   }
 
-  void addLoginTask(BuildContext context, String needLoginSystem) {
+  void _addLoginTask(BuildContext context, String needLoginSystem) {
     List<TaskModel> taskList = List();
     Log.d("needLoginSystem : $needLoginSystem");
     Map<String, TaskModel> loginMap = {

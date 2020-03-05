@@ -875,6 +875,15 @@ class S {
     );
   }
 
+  String get creditViewer {
+    return Intl.message(
+      'creditViewer',
+      name: 'creditViewer',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get fileViewer {
     return Intl.message(
       'fileViewer',

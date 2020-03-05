@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "courseId" : MessageLookupByLibrary.simpleMessage("課號"),
     "courseName" : MessageLookupByLibrary.simpleMessage("課程名稱"),
     "credit" : MessageLookupByLibrary.simpleMessage("學分"),
+    "creditViewer" : MessageLookupByLibrary.simpleMessage("學分查詢"),
     "delete" : MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteMessage" : MessageLookupByLibrary.simpleMessage("刪除訊息中..."),
     "deleteMessageError" : MessageLookupByLibrary.simpleMessage("刪除錯誤"),
