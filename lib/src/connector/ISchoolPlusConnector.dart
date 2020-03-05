@@ -384,7 +384,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<String> getCourseAnnouncementDetail(
+  static Future<Map> getCourseAnnouncementDetail(
       ISchoolPlusAnnouncementJson value) async {
     String result;
     try {
@@ -407,7 +407,31 @@ class ISchoolPlusConnector {
           "https://istudy.ntut.edu.tw/forum/m_node_chain.php");
       parameter.data = data;
       result = await RequestsConnector.getDataByPost(parameter);
-      return result;
+      tagNode = html.parse(result);
+      node = tagNode.getElementsByClassName("main node-info").first;
+      Map detail = Map();
+
+      String title = node.attributes["data-title"];
+      node = tagNode.getElementsByClassName("author-name").first;
+      String sender = node.text;
+      node = tagNode.getElementsByClassName("post-time").first;
+      String postTime = node.text;
+      node = tagNode.getElementsByClassName("bottom-tmp").first;
+      node = node.getElementsByClassName("content").first;
+      String body = node.innerHtml;
+      node = tagNode.getElementsByClassName("bottom-tmp").first;
+      node = node.getElementsByClassName("file").first;
+      nodes = node.getElementsByTagName("a");
+      Map<String,String> fileMap = Map();  // name , url
+      for(html.Element node in nodes){
+        fileMap[node.text] = _iSchoolPlusUrl + node.attributes["href"];
+      }
+      detail["title"] = title;
+      detail["sender"] = sender;
+      detail["postTime"] = postTime;
+      detail["body"] = body;
+      detail["file"] = fileMap;
+      return detail;
     } catch (e) {
       Log.e(e.toString());
       return null;

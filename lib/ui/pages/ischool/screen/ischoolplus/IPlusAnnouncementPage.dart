@@ -50,10 +50,10 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   void _getAnnouncementDetail(ISchoolPlusAnnouncementJson value) async{
     TaskHandler.instance.addTask( ISchoolPlusCourseAnnouncementDetailTask(context,value));
     await TaskHandler.instance.startTaskQueue(context);
-    String html = Model.instance.getTempData(ISchoolPlusCourseAnnouncementDetailTask.announcementListTempKey);
+    Map detail = Model.instance.getTempData(ISchoolPlusCourseAnnouncementDetailTask.announcementListTempKey);
     Navigator.of(context).push(PageTransition(
         type: PageTransitionType.leftToRight,
-        child: IPlusAnnouncementDetailPage(html)));
+        child: IPlusAnnouncementDetailPage(widget.courseInfo , detail)));
   }
 
   @override

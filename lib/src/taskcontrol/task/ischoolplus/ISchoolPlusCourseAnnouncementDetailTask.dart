@@ -23,7 +23,7 @@ class ISchoolPlusCourseAnnouncementDetailTask extends TaskModel {
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(
         context, R.current.getISchoolPlusCourseAnnouncementDetail);
-    String value = await ISchoolPlusConnector.getCourseAnnouncementDetail(data);
+    Map value = await ISchoolPlusConnector.getCourseAnnouncementDetail(data);
     MyProgressDialog.hideProgressDialog();
     if (value != null) {
       Model.instance.setTempData(announcementListTempKey, value);
