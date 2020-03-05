@@ -37,7 +37,7 @@ class _ISchoolPageState extends State<ISchoolPage>
     tabPageList.add(TabPage(R.current.file, Icons.file_download,
         CourseISchoolFilePage(widget.studentId, widget.courseInfo)));
     tabPageList.add(TabPage(R.current.announcement + 'Plus', Icons.announcement,
-        IPlusAnnouncementPage(widget.studentId, widget.courseInfo) , useNavigatorKey : true ));
+        IPlusAnnouncementPage(widget.studentId, widget.courseInfo) ));
     tabPageList.add(TabPage(R.current.file + 'Plus' , Icons.file_download,
         IPlusFilePage(widget.studentId, widget.courseInfo)));
 

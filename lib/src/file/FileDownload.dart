@@ -50,6 +50,7 @@ class FileDownload {
         realFileName = name + "." + fileExtension;
       }
     }
+    realFileName = realFileName ?? name;
 
     onReceiveProgress = (int count, int total) async {
       //Log.d(sprintf("%d %d", [count, total]));
@@ -64,7 +65,6 @@ class FileDownload {
             .showIndeterminateProgressNotification(value);  //顯示下載進度
       }
     };
-
     await DioConnector.instance.download(url, path + "/" + realFileName,
         progressCallback: onReceiveProgress, cancelToken: cancelToken);
     await Future.delayed(Duration(milliseconds: 100));
