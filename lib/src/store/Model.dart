@@ -306,7 +306,7 @@ class Model {
     clearNewAnnouncement();
     clearAnnouncementSetting();
     clearCourseSetting();
-    DioConnector.instance.deleteCookies();
+    //DioConnector.instance.deleteCookies();
     await init();
   }
 
