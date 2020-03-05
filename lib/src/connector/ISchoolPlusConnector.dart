@@ -420,12 +420,20 @@ class ISchoolPlusConnector {
       node = node.getElementsByClassName("content").first;
       String body = node.innerHtml;
       node = tagNode.getElementsByClassName("bottom-tmp").first;
-      node = node.getElementsByClassName("file").first;
-      nodes = node.getElementsByTagName("a");
-      Map<String,String> fileMap = Map();  // name , url
-      for(html.Element node in nodes){
-        fileMap[node.text] = _iSchoolPlusUrl + node.attributes["href"];
+      nodes = node.getElementsByClassName("file");
+      Map<String, String> fileMap = Map(); // name , url
+      if( nodes.length >= 1){
+        node = nodes.first;
+        nodes = node.getElementsByTagName("a");
+        for (html.Element node in nodes) {
+          fileMap[node.text] = _iSchoolPlusUrl + node.attributes["href"];
+        }
       }
+
+
+
+
+
       detail["title"] = title;
       detail["sender"] = sender;
       detail["postTime"] = postTime;
