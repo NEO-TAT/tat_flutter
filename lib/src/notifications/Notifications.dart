@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:open_file/open_file.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Notifications {
@@ -44,8 +45,11 @@ class Notifications {
         initializationSettingsAndroid, initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
-      if (payload != null) {
-        debugPrint('notification payload: ' + payload);
+      if (payload != null) {  //如果有padload就執行動作
+        if( payload.contains("file:")){
+          String path = payload.split(":").last;
+          OpenFile.open(path);
+        }
       }
       selectNotificationSubject.add(payload);
     });

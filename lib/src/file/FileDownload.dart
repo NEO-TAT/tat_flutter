@@ -70,7 +70,7 @@ class FileDownload {
     Notifications.instance.cancelNotification(value.id);
     value.body = '下載完成';
     value.id = Notifications.instance.notificationId;  //取得新的id
-    value.payload = "file:" + path;
+    value.payload = "file:" + path + '/' + realFileName;
     await Notifications.instance
         .showNotification(value);  //顯示下載完成
 
