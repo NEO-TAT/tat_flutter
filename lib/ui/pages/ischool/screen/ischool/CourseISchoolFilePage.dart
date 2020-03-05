@@ -9,6 +9,7 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
@@ -17,7 +18,9 @@ import 'package:flutter_app/ui/other/MyToast.dart';
 class CourseISchoolFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
+
   CourseISchoolFilePage(this.studentId, this.courseInfo);
+
   @override
   _CourseISchoolFilePage createState() => _CourseISchoolFilePage();
 }
@@ -57,8 +60,9 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
     if (widget.studentId != ISchoolConnector.loginStudentId) {
-      TaskHandler.instance
-          .addTask(ISchoolLoginTask(context, studentId: widget.studentId));
+      TaskHandler.instance.addTask(CheckCookiesTask(context,
+          checkSystem: CheckCookiesTask.checkISchool,
+          studentId: widget.studentId));
     }
     TaskHandler.instance.addTask(ISchoolCourseFileTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
