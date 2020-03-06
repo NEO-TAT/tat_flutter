@@ -51,7 +51,7 @@ class FileDownload {
       }
     }
     realFileName = realFileName ?? name;
-
+    value.title = realFileName;
     onReceiveProgress = (int count, int total) async {
       //Log.d(sprintf("%d %d", [count, total]));
       value.body = FileUtils.formatBytes( count , 2);
@@ -60,7 +60,6 @@ class FileDownload {
         await Notifications.instance
             .showProgressNotification(value, 100, (count * 100 / total).round());  //顯示下載進度
       }else{
-        value.body = R.current.downloading;
         await Notifications.instance
             .showIndeterminateProgressNotification(value);  //顯示下載進度
       }
@@ -90,4 +89,6 @@ class FileDownload {
 
      */
   }
+
+
 }
