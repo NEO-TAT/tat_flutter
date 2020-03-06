@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -35,9 +36,12 @@ class ExpansionTile {
 class _CreditViewerPage extends State<CreditViewerPage> {
   bool isLoading = true;
   List<CourseScoreJson> courseScoreList;
+  final List<String> creditType = ["○" , "△" , "☆" , "●" , "▲" , "★"];
   ScrollController _scrollController = ScrollController();
   List<ExpansionTile> _expansionControlList = List();
   Map<String, CourseExtraInfoJson> courseDetail = Map();
+  Map<String , int> creditMap = Map();  //紀錄學分
+  Map<String , int> totalCreditMap = Map(); //紀錄加總學分
   double deviceHeight;
 
   @override
@@ -55,24 +59,47 @@ class _CreditViewerPage extends State<CreditViewerPage> {
       CourseScoreJson course = courseScoreList[i];
       for (int j = 0; j < course.courseScoreList.length; j++) {
         String courseId = course.courseScoreList[j].courseId;
-        TaskHandler.instance.addTask(TaskModelFunction(context,
-            require: [CheckCookiesTask.checkCourse], taskFunction: () async {
-          CourseExtraInfoJson courseInfo =
-              await CourseConnector.getCourseExtraInfo(courseId);
-          courseDetail[courseId] = courseInfo;
-          return courseInfo == null ? false : true;
-        }, errorFunction: () {
-          ErrorDialogParameter parameter = ErrorDialogParameter(
-            context: context,
-            desc: R.current.getCourseDetailError,
-          );
-          ErrorDialog(parameter).show();
-        }, successFunction: () async {}));
+        creditMap[courseId] = course.courseScoreList[j].credit.toInt();  //紀錄課程學分
+        TaskHandler.instance.addTask(TaskModelFunction(
+          context,
+          require: [CheckCookiesTask.checkCourse],
+          taskFunction: () async {
+            CourseExtraInfoJson courseInfo =
+                await CourseConnector.getCourseExtraInfo(courseId);
+            courseDetail[courseId] = courseInfo;
+            return courseInfo == null ? false : true;
+          },
+          errorFunction: () {
+            ErrorDialogParameter parameter = ErrorDialogParameter(
+              context: context,
+              desc: R.current.getCourseDetailError,
+            );
+            ErrorDialog(parameter).show();
+          },
+          successFunction: () async {},
+        ));
       }
       //增加展開控制器
       _expansionControlList.add((ExpansionTile()));
     }
     await TaskHandler.instance.startTaskQueue(context);
+    for(String courseId in courseDetail.keys.toList()){
+      /*
+      ○	必	部訂共同必修
+      △	必	校訂共同必修
+      ☆	選	共同選修
+      ●	必	部訂專業必修
+      ▲	必	校訂專業必修
+      ★	選	專業選修
+       */
+      String type = courseDetail[courseId].course.category;
+      if(totalCreditMap.containsKey(type) ){
+        totalCreditMap[type] += creditMap[courseId];
+      }else{
+        totalCreditMap[type] = creditMap[courseId];
+      }
+    }
+    Log.d( totalCreditMap.toString() );
     deviceHeight = MediaQuery.of(context).size.height;
     setState(() {
       isLoading = false;
