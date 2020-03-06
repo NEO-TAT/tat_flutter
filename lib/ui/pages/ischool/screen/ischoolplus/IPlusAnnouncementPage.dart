@@ -14,12 +14,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'IPlusAnnouncementDetailPage.dart';
 
-
 class IPlusAnnouncementPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
   IPlusAnnouncementPage(this.studentId, this.courseInfo);
+
   @override
   _IPlusAnnouncementPage createState() => _IPlusAnnouncementPage();
 }
@@ -28,32 +28,39 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
   List<ISchoolPlusAnnouncementJson> items;
   bool needRefresh = false;
+  bool isSupport;
 
   @override
   void initState() {
     super.initState();
+    isSupport = Model.instance.getAccount() == widget.studentId;
     items = List();
-    _addTask();
+    if (isSupport) {
+      _addTask();
+    }
   }
 
   void _addTask() async {
     //第一次
     String courseId = widget.courseInfo.main.course.id;
-    TaskHandler.instance.addTask(ISchoolPlusCourseAnnouncementTask(context, courseId ));
+    TaskHandler.instance
+        .addTask(ISchoolPlusCourseAnnouncementTask(context, courseId));
     await TaskHandler.instance.startTaskQueue(context);
-    items = Model.instance.getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
+    items = Model.instance
+        .getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
     items = items ?? List();
-    setState(() {
-
-    });
+    setState(() {});
   }
-  void _getAnnouncementDetail(ISchoolPlusAnnouncementJson value) async{
-    TaskHandler.instance.addTask( ISchoolPlusCourseAnnouncementDetailTask(context,value));
+
+  void _getAnnouncementDetail(ISchoolPlusAnnouncementJson value) async {
+    TaskHandler.instance
+        .addTask(ISchoolPlusCourseAnnouncementDetailTask(context, value));
     await TaskHandler.instance.startTaskQueue(context);
-    Map detail = Model.instance.getTempData(ISchoolPlusCourseAnnouncementDetailTask.announcementListTempKey);
+    Map detail = Model.instance.getTempData(
+        ISchoolPlusCourseAnnouncementDetailTask.announcementListTempKey);
     Navigator.of(context).push(PageTransition(
         type: PageTransitionType.leftToRight,
-        child: IPlusAnnouncementDetailPage(widget.courseInfo , detail)));
+        child: IPlusAnnouncementDetailPage(widget.courseInfo, detail)));
   }
 
   @override
@@ -61,14 +68,18 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     super.build(context);
     return Scaffold(
       body: (items.length > 0)
-        ? _buildMailList()
-        : Center(
-      child: Text(R.current.noAnyAnnouncement),
-    ),
+          ? _buildMailList()
+          : isSupport
+              ? Center(
+                  child: Text(R.current.noAnyAnnouncement),
+                )
+              : Center(
+                  child: Text(R.current.notSupport),
+                ),
     );
   }
 
-  Widget _buildMailList(){
+  Widget _buildMailList() {
     return ListView.builder(
       shrinkWrap: true,
       padding: const EdgeInsets.all(0.0),
@@ -80,7 +91,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
           behavior: HitTestBehavior.opaque, //讓透明部分有反應
           onTap: () {
             ISchoolPlusAnnouncementJson value = items[index];
-            _getAnnouncementDetail( value );
+            _getAnnouncementDetail(value);
           },
           child: _listItem(
             items[index],
@@ -92,13 +103,14 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
 
   Widget _listItem(ISchoolPlusAnnouncementJson data) {
     Color color = (data.readflag != 1) ? Colors.black87 : Colors.black54;
-    FontWeight fontWeight = (data.readflag != 1) ? FontWeight.bold : FontWeight.w400;
+    FontWeight fontWeight =
+        (data.readflag != 1) ? FontWeight.bold : FontWeight.w400;
     return Container(
       child: Column(
         children: <Widget>[
           Padding(
             padding:
-            EdgeInsets.only(left: 14.0, right: 14.0, top: 5.0, bottom: 5.0),
+                EdgeInsets.only(left: 14.0, right: 14.0, top: 5.0, bottom: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[

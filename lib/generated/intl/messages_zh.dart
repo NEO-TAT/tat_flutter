@@ -129,7 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noMoreData" : MessageLookupByLibrary.simpleMessage("已經到底了"),
     "noPermission" : MessageLookupByLibrary.simpleMessage("沒有權限"),
     "noSupport" : MessageLookupByLibrary.simpleMessage("不支持"),
-    "notSupport" : MessageLookupByLibrary.simpleMessage("不支持查詢非自己課程的檔案"),
+    "notSupport" : MessageLookupByLibrary.simpleMessage("不支持查詢非自己課程"),
     "numberOfStudent" : MessageLookupByLibrary.simpleMessage("修課人數"),
     "numberOfWithdraw" : MessageLookupByLibrary.simpleMessage("撤選人數"),
     "password" : MessageLookupByLibrary.simpleMessage("密碼"),
