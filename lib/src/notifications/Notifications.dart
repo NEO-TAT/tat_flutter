@@ -150,15 +150,28 @@ class Notifications {
 
 class ReceivedNotification {
   int id;
-  String title;
+  String _showTitle;
   String body;
   String payload;
-
+  final _titleLong = 26;
   ReceivedNotification(
       {this.id,
-      @required this.title,
+      @required String title,
       @required this.body,
       @required this.payload}) {
     id = Notifications.instance.notificationId;
+    this.title = title;
   }
+
+  String get title{
+    return _showTitle;
+  }
+  set title(String value){
+    String newTitle = value.substring(0,_titleLong) + "...";
+    if( value.contains(".") ){
+      newTitle += value.split(".").last;
+    }
+    _showTitle = (value.length <= _titleLong) ? value : newTitle;
+  }
+
 }
