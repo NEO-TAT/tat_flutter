@@ -10,22 +10,21 @@ import '../TaskModel.dart';
 
 class ScoreRankTask extends TaskModel {
   static final String taskName = "ScoreRankTask";
-  static final List<String> require = [CheckCookiesTask.checkNTUT];
-  static String scoreRankTempKey = "ScoreRankTempKey";
+  static final List<String> require = [CheckCookiesTask.checkScore];
+  static String tempDataKey = "ScoreRankTempKey";
 
   ScoreRankTask(BuildContext context) : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, R.current.getScoreRank);
-    ScoreConnectorStatus value = await ScoreConnector.login();
     List<CourseScoreJson> courseList = await ScoreConnector.getScoreRankList();
     MyProgressDialog.hideProgressDialog();
-    if (value != ScoreConnectorStatus.LoginSuccess || courseList == null) {
+    if (courseList == null) {
       _handleError();
       return TaskStatus.TaskFail;
     } else {
-      Model.instance.setTempData(scoreRankTempKey, courseList);
+      Model.instance.setTempData(tempDataKey, courseList);
       return TaskStatus.TaskSuccess;
     }
   }

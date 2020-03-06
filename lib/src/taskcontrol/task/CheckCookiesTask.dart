@@ -4,7 +4,9 @@ import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
+import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/connector/ScoreConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
@@ -13,12 +15,14 @@ class CheckCookiesTask extends TaskModel {
   static final String taskName = "CheckCookiesTask";
   String checkSystem;
   String studentId;
+  static String checkNTUT = "__NTUT__";
+  static String checkNTUTApp = "__NTUTApp__";
+  // subSystem
   static String checkCourse = "__Course__";
   static String checkISchool = "__ISchool__";
   static String checkPlusISchool = "__ISchoolPlus__";
-  static String checkNTUT = "__NTUT__";
   static String checkScore = "__Score__";
-  static String needLoginKey = "CheckCookiesTempKey";
+  static String tempDataKey = "CheckCookiesTempKey";
   CheckCookiesTask(BuildContext context, {this.checkSystem, this.studentId})
       : super(context, taskName,[]) {
     checkSystem = checkSystem ?? checkNTUT;
@@ -31,7 +35,7 @@ class CheckCookiesTask extends TaskModel {
     String loginSystem = "";
     Map<String, Function> checkMap = {
       checkScore: () async {
-        return await NTUTConnector.checkLogin();
+        return await ScoreConnector.checkLogin();
       },
       checkCourse: () async {
         return await CourseConnector.checkLogin();
@@ -57,11 +61,17 @@ class CheckCookiesTask extends TaskModel {
         loginSystem += checkNTUT;
       }
     }
+    if( checkSystem.contains(checkNTUTApp) ){  //代表有任務錯誤
+      bool pass = await NTUTAppConnector.checkLogin();
+      if( !pass ){
+        loginSystem += checkNTUT;
+      }
+    }
     Log.d( "loginSystem: $loginSystem" );
     if( loginSystem.isEmpty ){
       return TaskStatus.TaskSuccess;
     }else{
-      Model.instance.setTempData(needLoginKey, loginSystem);
+      Model.instance.setTempData(tempDataKey, loginSystem);
       return TaskStatus.TaskFail;
     }
   }

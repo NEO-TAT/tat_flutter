@@ -19,7 +19,7 @@ class CourseTableTask extends TaskModel {
 
   CourseTableTask(BuildContext context, this.studentId, this.semester)
       : super(context, taskName, require);
-  static String courseTableTempKey = "CourseTableTempKey";
+  static String tempDataKey = "CourseTableTempKey";
 
   @override
   Future<TaskStatus> taskStart() async {
@@ -60,7 +60,7 @@ class CourseTableTask extends TaskModel {
         Model.instance.addCourseTable(courseTable);
         await Model.instance.saveCourseTableList();
       }
-      Model.instance.setTempData(courseTableTempKey, courseTable);
+      Model.instance.setTempData(tempDataKey, courseTable);
       return TaskStatus.TaskSuccess;
     } else {
       _handleError();
