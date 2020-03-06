@@ -18,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 class CourseAnnouncementPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
+
   CourseAnnouncementPage(this.studentId, this.courseInfo);
 
   @override
@@ -27,6 +28,7 @@ class CourseAnnouncementPage extends StatefulWidget {
 class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
   List<CourseAnnouncementJson> courseAnnouncementList = List();
+
   @override
   void initState() {
     super.initState();
@@ -38,12 +40,14 @@ class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
   void _addTask() async {
     String courseId = widget.courseInfo.main.course.id;
     if (widget.studentId != ISchoolConnector.loginStudentId) {
-      TaskHandler.instance.addTask(CheckCookiesTask(context,
-          checkSystem: CheckCookiesTask.checkISchool,
-          studentId: widget.studentId));
+      TaskHandler.instance.addTask(
+          ISchoolLoginTask(context,
+              studentId: widget.studentId),
+          onLoginCheck: false);
     }
-    TaskHandler.instance
-        .addTask(ISchoolCourseAnnouncementTask(context, courseId));
+    TaskHandler.instance.addTask(
+        ISchoolCourseAnnouncementTask(context, courseId),
+        onLoginCheck: false);
     await TaskHandler.instance.startTaskQueue(context);
     courseAnnouncementList = Model.instance.getTempData(
         ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey);

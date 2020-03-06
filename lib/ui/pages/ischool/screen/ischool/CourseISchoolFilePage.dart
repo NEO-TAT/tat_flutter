@@ -60,11 +60,12 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
     if (widget.studentId != ISchoolConnector.loginStudentId) {
-      TaskHandler.instance.addTask(CheckCookiesTask(context,
-          checkSystem: CheckCookiesTask.checkISchool,
-          studentId: widget.studentId));
+      TaskHandler.instance.addTask(
+          ISchoolLoginTask(context, studentId: widget.studentId),
+          onLoginCheck: false);
     }
-    TaskHandler.instance.addTask(ISchoolCourseFileTask(context, courseId));
+    TaskHandler.instance
+        .addTask(ISchoolCourseFileTask(context, courseId), onLoginCheck: false);
     await TaskHandler.instance.startTaskQueue(context);
     courseFileList =
         Model.instance.getTempData(ISchoolCourseFileTask.courseFileListTempKey);

@@ -29,17 +29,19 @@ class TaskHandler {
   bool taskContinue;
   BuildContext startTaskContext;
 
-  void addTask(TaskModel task) {
-    String needLoginSystem = "";
-    for (String require in task.requireSystem) {
-      if (!alreadyCheckSystem.contains(require)) {
-        alreadyCheckSystem += require;
-        needLoginSystem += require;
+  void addTask(TaskModel task, {bool onLoginCheck: true}) {
+    if (onLoginCheck) {
+      String needLoginSystem = "";
+      for (String require in task.requireSystem) {
+        if (!alreadyCheckSystem.contains(require)) {
+          alreadyCheckSystem += require;
+          needLoginSystem += require;
+        }
       }
-    }
-    if (needLoginSystem.isNotEmpty) {
-      _taskQueue
-          .add(CheckCookiesTask(task.context, checkSystem: needLoginSystem));
+      if (needLoginSystem.isNotEmpty) {
+        _taskQueue
+            .add(CheckCookiesTask(task.context, checkSystem: needLoginSystem));
+      }
     }
     _taskQueue.add(task);
   }
