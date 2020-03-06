@@ -50,7 +50,7 @@ class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
         onLoginCheck: false);
     await TaskHandler.instance.startTaskQueue(context);
     courseAnnouncementList = Model.instance.getTempData(
-        ISchoolCourseAnnouncementTask.courseAnnouncementListTempKey);
+        ISchoolCourseAnnouncementTask.tempDataKey);
     courseAnnouncementList = courseAnnouncementList ?? List();
     setState(() {});
   }

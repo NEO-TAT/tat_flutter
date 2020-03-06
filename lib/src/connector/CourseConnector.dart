@@ -13,6 +13,7 @@ import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:quiver/time.dart';
 import 'core/Connector.dart';
 import 'core/ConnectorParameter.dart';
 
@@ -265,7 +266,6 @@ class CourseConnector {
           classInfo.href = _courseCNHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
-
         courseMainInfoList.add(courseMainInfo);
       }
 
@@ -379,6 +379,43 @@ class CourseConnector {
       return courseMainInfoList;
     } catch (e) {
       //throw e;
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+  static Future<Map> getGraduation(String year, String department) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    try {
+      parameter =
+          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter.charsetName = "big5";
+      parameter.data = {"format": "-3", "year": year, "matric": "7"};
+      result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      node =  tagNode.getElementsByTagName("tbody").first;
+      nodes = node.getElementsByTagName("tr");
+      String href;
+      for( int i = 1; i<nodes.length ; i++){
+        node = nodes[i];
+        node = node.getElementsByTagName("a").first;
+        Log.d( node.innerHtml );
+        if( node.text.contains(department)){
+          href = node.attributes["href"];
+          break;
+        }
+      }
+      href = "https://aps.ntut.edu.tw/course/tw/" + href;
+      parameter = ConnectorParameter(href);
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByGet(parameter);
+      
+      return null;
+    } catch (e) {
       Log.e(e.toString());
       return null;
     }

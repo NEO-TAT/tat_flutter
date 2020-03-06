@@ -43,7 +43,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
     TaskHandler.instance.addTask(ScoreRankTask(context));
     await TaskHandler.instance.startTaskQueue(context);
     courseScoreList =
-        Model.instance.getTempData(ScoreRankTask.scoreRankTempKey);
+        Model.instance.getTempData(ScoreRankTask.tempDataKey);
     for (int i = 0; i <= courseScoreList.length; i++) {
       //增加展開控制器
       _expansionControlList.add((ExpansionTile()));

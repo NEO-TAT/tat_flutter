@@ -18,6 +18,7 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
+import 'package:flutter_app/src/taskcontrol/task/score/ScoreLoginTask.dart';
 import 'package:path/path.dart';
 
 class TaskHandler {
@@ -104,11 +105,12 @@ class TaskHandler {
       _addFirstTask(task);
     } else if (task is ISchoolLoginTask ||
         task is CourseLoginTask ||
-        task is ISchoolPlusLoginTask) {
+        task is ISchoolPlusLoginTask ||
+        task is ScoreLoginTask) {
       _addFirstTaskList([NTUTLoginTask(task.context), task]);
     } else if (task is CheckCookiesTask) {
       String needLoginSystem =
-          Model.instance.getTempData(CheckCookiesTask.needLoginKey);
+          Model.instance.getTempData(CheckCookiesTask.tempDataKey);
       _addLoginTask(task.context, needLoginSystem); //加入需要登入的任務
       continueTask();
     } else {
@@ -130,6 +132,7 @@ class TaskHandler {
     Map<String, TaskModel> loginMap = {
       CheckCookiesTask.checkNTUT: NTUTLoginTask(context),
       CheckCookiesTask.checkCourse: CourseLoginTask(context),
+      CheckCookiesTask.checkScore: ScoreLoginTask(context),
       CheckCookiesTask.checkISchool: ISchoolLoginTask(context),
       CheckCookiesTask.checkPlusISchool: ISchoolPlusLoginTask(context),
     };

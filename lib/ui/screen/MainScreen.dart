@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
+import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
@@ -52,9 +53,8 @@ class _MainScreenState extends State<MainScreen> {
   
   
   void _addTest() async {
-    TaskHandler.instance.addTask( ISchoolPlusLoginTask(context ));
-    await TaskHandler.instance.startTaskQueue(context);
-    await ISchoolPlusConnector.getCourseAnnouncement("273179");
+    await NTUTAppConnector.login(Model.instance.getAccount() , Model.instance.getPassword());
+    await NTUTAppConnector.getCredit();
   }
 
   void _addTask() async {

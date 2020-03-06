@@ -68,7 +68,7 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
         .addTask(ISchoolCourseFileTask(context, courseId), onLoginCheck: false);
     await TaskHandler.instance.startTaskQueue(context);
     courseFileList =
-        Model.instance.getTempData(ISchoolCourseFileTask.courseFileListTempKey);
+        Model.instance.getTempData(ISchoolCourseFileTask.tempDataKey);
     courseFileList = courseFileList ?? List();
     selectList.addItems(courseFileList.length);
     setState(() {});

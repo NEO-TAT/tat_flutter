@@ -335,6 +335,24 @@ class S {
     );
   }
 
+  String get loginScore {
+    return Intl.message(
+      'Login to Score...',
+      name: 'loginScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loginScoreError {
+    return Intl.message(
+      'Login to Score Error',
+      name: 'loginScoreError',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get loginISchoolPlusError {
     return Intl.message(
       'Login to ISchool Plus Error',
@@ -877,8 +895,17 @@ class S {
 
   String get creditViewer {
     return Intl.message(
-      'creditViewer',
+      'Credit Viewer',
       name: 'creditViewer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creditSearch {
+    return Intl.message(
+      'Credit Search...',
+      name: 'creditSearch',
       desc: '',
       args: [],
     );
