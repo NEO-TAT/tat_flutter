@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
@@ -44,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(OtherPage());
       _pageList.add(SettingPage(_pageController));
       _setLang();
-      //_addTest();
+      _addTest();
     });
     _flutterDownloaderInit();
     _notificationsInit();
@@ -53,8 +54,8 @@ class _MainScreenState extends State<MainScreen> {
   
   
   void _addTest() async {
-    await NTUTAppConnector.login(Model.instance.getAccount() , Model.instance.getPassword());
-    await NTUTAppConnector.getCredit();
+    await NTUTConnector.login(Model.instance.getAccount() , Model.instance.getPassword());
+    await NTUTConnector.getCalendar(DateTime.now() , DateTime.now());
   }
 
   void _addTask() async {

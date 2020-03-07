@@ -58,12 +58,18 @@ ISchoolPlusAnnouncementJson _$ISchoolPlusAnnouncementJsonFromJson(
     json['s'] as String,
     json['readflag'] as int,
     json['postRoles'] as String,
-  );
+  )
+    ..token = json['token'] as String
+    ..bid = json['bid'] as String
+    ..nid = json['nid'] as String;
 }
 
 Map<String, dynamic> _$ISchoolPlusAnnouncementJsonToJson(
         ISchoolPlusAnnouncementJson instance) =>
     <String, dynamic>{
+      'token': instance.token,
+      'bid': instance.bid,
+      'nid': instance.nid,
       'boardid': instance.boardid,
       'encbid': instance.encbid,
       'node': instance.node,

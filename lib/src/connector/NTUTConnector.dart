@@ -13,6 +13,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import '../store/Model.dart';
 import '../store/json/UserDataJson.dart';
@@ -89,21 +90,21 @@ class NTUTConnector {
     }
   }
 
-  static Future<String> getCalendar(
+  static Future<List<NTUTCalendarJson>> getCalendar(
       DateTime startTime, DateTime endTime) async {
     //暫無用到 取得學校行事曆
     ConnectorParameter parameter;
     try {
       Map<String, String> data = {
-        "stratDate": "2020/02/01",
+        "startDate": "2020/02/01",
         "endDate": "2020/03/01",
       };
       parameter = ConnectorParameter(_getCalendarUrl);
       parameter.data = data;
-      parameter.userAgent = "Direk Android App";
-      String result = await Connector.getDataByPost(parameter);
-      Log.d(result);
-      return null;
+      String result = await Connector.getDataByGet(parameter);
+      List<NTUTCalendarJson> calendarList = getNTUTCalendarJsonList( json.decode(result));
+      Log.d( calendarList.toString() );
+      return calendarList;
     } catch (e) {
       Log.e(e.toString());
       return null;
