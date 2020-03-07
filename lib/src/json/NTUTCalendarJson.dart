@@ -2,17 +2,19 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'NTUTCalendarJson.g.dart';
 
-List<NTUTCalendarJson> getNTUTCalendarJsonList(List<dynamic> list){
+List<NTUTCalendarJson> getNTUTCalendarJsonList(List<dynamic> list) {
   List<NTUTCalendarJson> result = [];
-  list.forEach((item){
-    result.add(NTUTCalendarJson.fromJson(item));
+  list.forEach((item) {
+    NTUTCalendarJson value = NTUTCalendarJson.fromJson(item);
+    if (value.calTitle.isNotEmpty) {
+      result.add(value);
+    }
   });
   return result;
 }
 
 @JsonSerializable()
-class NTUTCalendarJson{
-
+class NTUTCalendarJson {
   @JsonKey(name: 'id')
   int id;
 
@@ -67,8 +69,36 @@ class NTUTCalendarJson{
   @JsonKey(name: 'calAlertList')
   List<dynamic> calAlertList;
 
-  NTUTCalendarJson(this.id,this.calStart,this.calEnd,this.allDay,this.calTitle,this.calPlace,this.calContent,this.calColor,this.ownerId,this.ownerName,this.creatorId,this.creatorName,this.modifierId,this.modifierName,this.modifyDate,this.hasBeenDeleted,this.calInviteeList,this.calAlertList,);
+  NTUTCalendarJson(
+    this.id,
+    this.calStart,
+    this.calEnd,
+    this.allDay,
+    this.calTitle,
+    this.calPlace,
+    this.calContent,
+    this.calColor,
+    this.ownerId,
+    this.ownerName,
+    this.creatorId,
+    this.creatorName,
+    this.modifierId,
+    this.modifierName,
+    this.modifyDate,
+    this.hasBeenDeleted,
+    this.calInviteeList,
+    this.calAlertList,
+  );
 
-  factory NTUTCalendarJson.fromJson(Map<String, dynamic> srcJson) => _$NTUTCalendarJsonFromJson(srcJson);
+  factory NTUTCalendarJson.fromJson(Map<String, dynamic> srcJson) =>
+      _$NTUTCalendarJsonFromJson(srcJson);
 
+  @override
+  String toString() {
+    return calTitle;
+  }
+
+  DateTime get startTime {
+    return DateTime.fromMillisecondsSinceEpoch(calStart);
+  }
 }
