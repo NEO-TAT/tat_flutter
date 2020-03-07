@@ -215,7 +215,7 @@ class ISchoolPlusConnector {
         courseFile.name = itemNodes[i]
             .text
             .split("\t")[0]
-            .replaceAll(RegExp("[\s|\n| ]"), "");
+            .replaceAll(RegExp(r"[\s|\n| ]"), "");
         FileType fileType = FileType();
         downloadPost['href'] = href;
         fileType.postData = Map.of(downloadPost); //紀錄  需要使用Map.of不一個改全部都改
@@ -262,7 +262,7 @@ class ISchoolPlusConnector {
       RegExp exp;
       RegExpMatch matches;
       if (response.statusCode == HttpStatus.ok) {
-        /*  //不知原因工作不正常
+        /*  //如果需要使用\w \\w
         RegExp exp = new RegExp("\"(?<url>https?:\/\/[\w|\:|\/|\.|\+|\s|\?|%|#|&|=]+)\""); //檢測http或https開頭網址
         RegExpMatch matches = exp.firstMatch(result);
         Log.d( matches.toString() );
