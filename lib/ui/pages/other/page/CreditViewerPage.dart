@@ -39,6 +39,7 @@ class _CreditViewerPage extends State<CreditViewerPage> {
   Map courseDataSemester = Map(); //紀錄全部課程按照學期
   Map totalCreditMap = Map(); //紀錄課程學分
   Map generalLessonMap = Map(); //紀錄博雅課程
+  Map graduationMap = Map(); //紀錄畢業
   final List<String> generalLessonType = [
     "文化向度",
     "歷史向度",
@@ -67,14 +68,17 @@ class _CreditViewerPage extends State<CreditViewerPage> {
       require: [CheckCookiesTask.checkScore],
       taskFunction: () async {
         MyProgressDialog.showProgressDialog(context, R.current.creditSearch);
+        //查詢已修課程
         NTUTAppConnectorStatus status = await NTUTAppConnector.login(
             Model.instance.getAccount(), Model.instance.getPassword());
         if (status != NTUTAppConnectorStatus.LoginSuccess) {
           return false;
         }
         courseDataSemester = await NTUTAppConnector.getCredit();
+        //查詢畢業標準
         String department = courseDataSemester.remove("department");
-        await CourseConnector.getGraduation(Model.instance.getAccount().substring(0,3) , department);
+        graduationMap = await CourseConnector.getGraduation(
+            Model.instance.getAccount().substring(0, 3), department);
         MyProgressDialog.hideProgressDialog();
         return true;
       },
@@ -91,11 +95,17 @@ class _CreditViewerPage extends State<CreditViewerPage> {
 
     generalLessonMap["core"] = 0; //博雅核心
     generalLessonMap["select"] = 0; //博雅選修
-    for(String type in creditType){
+    for (String type in creditType) {
       courseDataByType[type] = List();
       totalCreditMap[type] = 0;
       totalCreditMap[type + "_need"] = 0;
+      if (graduationMap.containsKey(type)) {
+        totalCreditMap[type + "_need"] = graduationMap[type];
+      }
     }
+    totalCreditMap["lowCredit"] = 0;
+    totalCreditMap["lowCredit_need"] = graduationMap["lowCredit"];
+    totalCreditMap["otherDepartmentCredit"] = 0;
     for (String semester in courseDataSemester.keys.toList()) {
       List courseList = courseDataSemester[semester];
       for (int i = 0; i < courseList.length; i++) {
@@ -107,12 +117,13 @@ class _CreditViewerPage extends State<CreditViewerPage> {
         } else {
           totalCreditMap[key] = courseItem["credit"];
         }
+        totalCreditMap["lowCredit"] += courseItem["credit"];
         //計算課程按造分類
         String category = courseItem["category"];
         courseDataByType[category].add(courseItem);
-        //計算博雅
         if (courseItem.containsKey("extra")) {
           String type = courseItem["extra"];
+          //計算博雅
           if (generalLessonType.contains(type)) {
             if (generalLessonMap.containsKey(type)) {
               generalLessonMap[type].add(courseItem);
@@ -120,11 +131,17 @@ class _CreditViewerPage extends State<CreditViewerPage> {
               generalLessonMap[type] = [courseItem];
             }
             if (courseItem.containsKey("core")) {
+              //博雅核心課程
               generalLessonMap["core"] += courseItem['credit'];
             } else {
+              //博雅選修課程
               generalLessonMap["select"] += courseItem['credit'];
             }
+          } else {
+            totalCreditMap["otherDepartmentCredit"] += courseItem['credit'];
           }
+          //計算外系課程
+
         }
       }
     }
@@ -174,7 +191,7 @@ class _CreditViewerPage extends State<CreditViewerPage> {
           if (index == 0) {
             buildWidget = _buildSummaryItem();
           } else if (index == 1) {
-            buildWidget = _buildBoyaItem(); //博雅
+            buildWidget = _buildGeneralLessonItem(); //博雅
           } else {
             String semester = courseDataSemester.keys.toList()[index - 2];
             List courseList = courseDataSemester[semester];
@@ -203,14 +220,31 @@ class _CreditViewerPage extends State<CreditViewerPage> {
   }
 
   Widget _buildSummaryItem() {
-    Widget widget = _buildTile("摘要");
+    Widget widget = _buildTile(sprintf("學分總覽 %d/%d",
+        [totalCreditMap["lowCredit"], totalCreditMap["lowCredit_need"]]));
     List<Widget> widgetList = List();
-    widgetList.add( _buildType("○部訂共同必修" , totalCreditMap["○"] , totalCreditMap["○_need"]) );
-    widgetList.add( _buildType("△校訂共同必修" , totalCreditMap["△"] , totalCreditMap["△_need"] ) );
-    widgetList.add( _buildType("☆共同選修" , totalCreditMap["☆"] , totalCreditMap["☆_need"]) );
-    widgetList.add( _buildType("●部訂專業必修" , totalCreditMap["●"] , totalCreditMap["●_need"]) );
-    widgetList.add( _buildType("▲校訂專業必修" , totalCreditMap["▲"] , totalCreditMap["▲_need"]) );
-    widgetList.add( _buildType("★專業選修" , totalCreditMap["★"] , totalCreditMap["★_need"]) );
+    widgetList.add(_buildType("○", "部訂共同必修"));
+    widgetList.add(_buildType("△", "校訂共同必修"));
+    widgetList.add(_buildType("☆", "共同選修"));
+    widgetList.add(_buildType("●", "部訂專業必修"));
+    widgetList.add(_buildType("▲", "校訂專業必修"));
+    widgetList.add(_buildType("★", "專業選修"));
+    widgetList.add(
+      Container(
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text("外系學分:"),
+            ),
+            Text( totalCreditMap["otherDepartmentCredit"].toString() )
+          ],
+        ),
+      ),
+    );
+    /*
+    widgetList.add(
+        _buildType("外系學分", totalCreditMap["otherDepartmentCredit"], 0 ));
+     */
     return Container(
       child: AppExpansionTile(
         title: widget,
@@ -219,38 +253,69 @@ class _CreditViewerPage extends State<CreditViewerPage> {
     );
   }
 
-  Widget _buildType(String title , int take, int total){
-    return Padding(
-      padding: EdgeInsets.only( top:5 , bottom: 5,left:10 , right:10 ),
-      child: Row(
-        children: <Widget>[
-          Text(sprintf("%s : %d/%d" , [title , take , total]))
-        ],
+  Widget _buildType(String type, String title) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque, //讓透明部分有反應
+      child: Container(
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(sprintf("%s%s :", [
+                type,
+                title,
+              ])),
+            ),
+            Text(sprintf("%d/%d",
+                [totalCreditMap[type], totalCreditMap[type + "_need"]]))
+          ],
+        ),
       ),
+      onTap: () {
+        Log.d( courseDataByType[type].toString() );
+      },
     );
   }
 
-  Widget _buildBoyaItem() {
-    Widget widget = _buildTile("博雅");
+  Widget _buildGeneralLessonItem() {
+    Widget titleWidget = _buildTile(sprintf("博雅總覽 實得核心:%d 實得選修:%d",
+        [generalLessonMap["core"], generalLessonMap["select"]]));
+    List<Widget> widgetList = List();
+    for (String type in generalLessonMap.keys.toList()) {
+      if (type == "core" || type == "select") continue;
+      List courseList = generalLessonMap[type];
+      Log.d(courseList.toString());
+      for (Map courseItem in courseList) {
+        Widget courseItemWidget;
+        courseItemWidget = Container(
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(courseItem['name']),
+              ),
+              Text(type)
+            ],
+          ),
+        );
+        widgetList.add(courseItemWidget);
+      }
+    }
+
     return Container(
       child: AppExpansionTile(
-        title: widget,
-        children: [Text("apple")],
+        title: titleWidget,
+        children: widgetList,
       ),
     );
   }
 
   Widget _buildOneSemesterItem(String semester, List courseList) {
-    GlobalKey _myKey = new GlobalKey();
     String semesterString = semester;
     List<Widget> widgetList = List();
-
     for (Map courseItem in courseList) {
       widgetList.add(_buildCourseItem(courseItem));
     }
     Widget widget = _buildTile(semesterString);
     return Container(
-      key: _myKey,
       child: AppExpansionTile(
         title: widget,
         children: widgetList,

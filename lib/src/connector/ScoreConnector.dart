@@ -242,7 +242,7 @@ class ScoreConnector {
       for( int i = 0 ; i < nodes.length ; i++){
         node = nodes[i];
         if ( node.innerHtml.contains("＊")){
-          String name = node.getElementsByTagName("td")[7].text.replaceAll("\n", "").replaceAll(" ", "");
+          String name = node.getElementsByTagName("td")[7].text.replaceAll(RegExp(r"[\s|\n| ]"), "");
           coreGeneralLessonList.add(name);
         }
       }

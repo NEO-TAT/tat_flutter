@@ -390,6 +390,9 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
+    RegExp exp;
+    RegExpMatch matches;
+    Map graduationMap = Map();
     try {
       parameter =
           ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
@@ -403,7 +406,6 @@ class CourseConnector {
       for( int i = 1; i<nodes.length ; i++){
         node = nodes[i];
         node = node.getElementsByTagName("a").first;
-        Log.d( node.innerHtml );
         if( node.text.contains(department)){
           href = node.attributes["href"];
           break;
@@ -413,8 +415,31 @@ class CourseConnector {
       parameter = ConnectorParameter(href);
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
-      
-      return null;
+
+
+      exp = RegExp(r"最低畢業學分：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["lowCredit"] = int.parse(matches.group(1));
+
+      exp = RegExp(r"共同必修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["△"] = int.parse(matches.group(1));
+
+      exp = RegExp(r"專業必修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["▲"] = int.parse(matches.group(1));
+
+      exp = RegExp(r"專業選修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["★"] = int.parse(matches.group(1));
+
+      /*
+      exp = RegExp("通識博雅課程應修滿(\d+)學分");
+      matches = exp.firstMatch(result);
+      exp = RegExp("跨系所專業選修(\d+)學分為畢業學分");
+      matches = exp.firstMatch(result);
+      */
+      return graduationMap;
     } catch (e) {
       Log.e(e.toString());
       return null;
