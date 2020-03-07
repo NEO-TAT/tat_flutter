@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(OtherPage());
       _pageList.add(SettingPage(_pageController));
       _setLang();
-      _addTest();
+      //_addTest();
     });
     _flutterDownloaderInit();
     _notificationsInit();
