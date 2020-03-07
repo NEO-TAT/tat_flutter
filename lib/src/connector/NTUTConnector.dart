@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:intl/intl.dart';
 import '../store/Model.dart';
 import '../store/json/UserDataJson.dart';
 import 'core/Connector.dart';
@@ -94,10 +95,13 @@ class NTUTConnector {
       DateTime startTime, DateTime endTime) async {
     //暫無用到 取得學校行事曆
     ConnectorParameter parameter;
+    var formatter = DateFormat("yyyy/MM/dd");
+    String startDate = formatter.format(startTime);
+    String endDate = formatter.format(endTime);
     try {
       Map<String, String> data = {
-        "startDate": "2020/02/01",
-        "endDate": "2020/03/01",
+        "startDate": startDate,
+        "endDate": endDate,
       };
       parameter = ConnectorParameter(_getCalendarUrl);
       parameter.data = data;

@@ -12,6 +12,7 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/mail/NewAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
@@ -41,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
 
       _pageList.add(CourseTablePage());
       _pageList.add(NewAnnouncementPage());
-      //bottomPageList.add(BottomPage(CalendarScreen()));
+      _pageList.add(CalendarPage());
       _pageList.add(OtherPage());
       _pageList.add(SettingPage(_pageController));
       _setLang();
@@ -144,18 +145,14 @@ class _MainScreenState extends State<MainScreen> {
             'Email',
           ),
         ),
-        /*
+
         BottomNavigationBarItem(
             icon: Icon(
               Icons.calendar_today,
-              color: _bottomNavigationColor,
             ),
             title: Text(
               'Calendar',
-              style: TextStyle(color: _bottomNavigationColor),
             )),
-
-         */
         BottomNavigationBarItem(
           icon: Icon(
             Icons.pages,
