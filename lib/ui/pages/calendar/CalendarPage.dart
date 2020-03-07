@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/R.dart';
-import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -18,11 +18,14 @@ class CalendarPage extends StatefulWidget {
 
 // Example holidays
 final Map<DateTime, List> _holidays = {
+  /*
   DateTime(2019, 1, 1): ['New Year\'s Day'],
   DateTime(2019, 1, 6): ['Epiphany'],
   DateTime(2019, 2, 14): ['Valentine\'s Day'],
   DateTime(2019, 4, 21): ['Easter Sunday'],
   DateTime(2019, 4, 22): ['Easter Monday'],
+
+   */
 };
 
 class _CalendarPageState extends State<CalendarPage>
@@ -58,45 +61,46 @@ class _CalendarPageState extends State<CalendarPage>
     DateTime startTime = DateTime( time.year , time.month , 1);
     DateTime endTime = DateTime( time.year , time.month+1 , 1);
     List<NTUTCalendarJson> eventNTUTs;
+    _events = Map();
     TaskHandler.instance.addTask(TaskModelFunction(
       context,
       require: [CheckCookiesTask.checkNTUT],
       taskFunction: () async {
-        MyProgressDialog.showProgressDialog(context, "取得中...");
+        MyProgressDialog.showProgressDialog(context, R.current.getCalendar);
         //查詢已修課程
         eventNTUTs = await NTUTConnector.getCalendar( startTime , endTime );
         MyProgressDialog.hideProgressDialog();
-        return true;
+        if( eventNTUTs != null ){
+          return true;
+        }else{
+          return false;
+        }
       },
       errorFunction: () {
         ErrorDialogParameter parameter = ErrorDialogParameter(
           context: context,
-          desc: R.current.getCourseDetailError,
+          desc: R.current.getCalendarError,
         );
         ErrorDialog(parameter).show();
       },
-      successFunction: () async {},
+      successFunction: () async {
+        _events = Map();
+        for(int i=0;i<eventNTUTs.length;i++){
+          NTUTCalendarJson eventNTUT = eventNTUTs[i];
+          if( _events.containsKey(eventNTUT.startTime) ){
+            _events[ eventNTUT.startTime ].add(eventNTUT.calTitle);
+          }else{
+            _events[ eventNTUT.startTime ] = [eventNTUT.calTitle];
+          }
+        }
+
+      },
     ));
     await TaskHandler.instance.startTaskQueue(context);
-    _events = Map();
-    for(int i=0;i<eventNTUTs.length;i++){
-      NTUTCalendarJson eventNTUT = eventNTUTs[i];
-      if( _events.containsKey(eventNTUT.startTime) ){
-        _events[ eventNTUT.startTime ].add(eventNTUT.calTitle);
-      }else{
-        _events[ eventNTUT.startTime ] = [eventNTUT.calTitle];
-      }
-    }
     setState(() {
-
+      _selectedEvents = [];
     });
-
   }
-
-
-
-
-
 
   @override
   void dispose() {
@@ -122,7 +126,7 @@ class _CalendarPageState extends State<CalendarPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("行事曆"),
+        title: Text(R.current.calendar),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -143,6 +147,7 @@ class _CalendarPageState extends State<CalendarPage>
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar() {
     return TableCalendar(
+      locale: (LanguageUtil.getLangIndex() == LangEnum.zh) ? "zh_CN" : "en_US",
       calendarController: _calendarController,
       events: _events,
       holidays: _holidays,
@@ -166,6 +171,7 @@ class _CalendarPageState extends State<CalendarPage>
     );
   }
 
+  /*
   // More advanced TableCalendar configuration (using Builders & Styles)
   Widget _buildTableCalendarWithBuilders() {
     return TableCalendar(
@@ -281,6 +287,8 @@ class _CalendarPageState extends State<CalendarPage>
       ),
     );
   }
+
+   */
 
   Widget _buildHolidaysMarker() {
     return Icon(

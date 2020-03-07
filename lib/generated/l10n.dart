@@ -155,6 +155,15 @@ class S {
     );
   }
 
+  String get calendar {
+    return Intl.message(
+      'Calendar',
+      name: 'calendar',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get alertError {
     return Intl.message(
       'An error occurred',
@@ -591,6 +600,24 @@ class S {
     return Intl.message(
       'Getting grade error',
       name: 'getScoreRankError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getCalendar {
+    return Intl.message(
+      'Getting Calendar',
+      name: 'getCalendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getCalendarError {
+    return Intl.message(
+      'Getting Calendar Error',
+      name: 'getCalendarError',
       desc: '',
       args: [],
     );
