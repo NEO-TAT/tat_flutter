@@ -73,14 +73,14 @@ class ScoreConnector {
     }
   }
 
-  static Future<List<CourseScore>> getScoreRankList() async {
+  static Future<List<CourseScoreJson>> getScoreRankList() async {
     //取得排名與成績
     ConnectorParameter parameter;
     String result;
     Document tagNode;
     Element tableNode, h3Node, scoreNode;
     List<Element> tableNodes, h3Nodes, scoreNodes, rankNodes;
-    List<CourseScore> courseScoreList = List();
+    List<CourseScoreJson> courseScoreList = List();
     try {
       Map<String, String> data = {"format": "-2"};
       parameter = ConnectorParameter(_scoreAllScoreUrl);
@@ -102,7 +102,7 @@ class ScoreConnector {
         tableNode = tableNodes[i];
         h3Node = h3Nodes[i];
 
-        CourseScore courseScore = CourseScore();
+        CourseScoreJson courseScore = CourseScoreJson();
 
         SemesterJson semester = SemesterJson();
         semester.year = h3Node.text.split(" ")[0];
@@ -112,7 +112,7 @@ class ScoreConnector {
         scoreNodes = tableNode.getElementsByTagName("tr");
         for (int j = 1; j < scoreNodes.length - 6; j++) {
           scoreNode = scoreNodes[j];
-          Score score = Score();
+          ScoreJson score = ScoreJson();
           score.courseId =
               scoreNode.getElementsByTagName("th")[0].text.replaceAll("\n", "");
           score.name =
@@ -210,7 +210,7 @@ class ScoreConnector {
             .text
             .replaceAll("%", ""));
 
-        for (CourseScore score in courseScoreList) {
+        for (CourseScoreJson score in courseScoreList) {
           if (score.semester == semester) {
             score.now = rankNow;
             score.history = rankHistory;
