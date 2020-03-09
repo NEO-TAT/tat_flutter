@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -16,20 +17,34 @@ class ScoreViewerPage extends StatefulWidget {
 class _ScoreViewerPageState extends State<ScoreViewerPage>
     with SingleTickerProviderStateMixin {
   bool isLoading = true;
-  List<CourseScore> courseScoreList = List();
+  List<CourseScoreJson> courseScoreList = List();
   ScrollController _scrollController = ScrollController();
   int _currentTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _addTask();
+    courseScoreList = Model.instance.getCourseScoreList();
+    if( courseScoreList.length == 0){
+      _addTask();
+    }else{
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _addTask() async {
+    courseScoreList = List();
+    setState(() {
+      isLoading = true;
+    });
     TaskHandler.instance.addTask(ScoreRankTask(context));
     await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = Model.instance.getTempData(ScoreRankTask.tempDataKey);
+    if( courseScoreList != null ){
+      await Model.instance.setCourseScoreList(courseScoreList);
+    }
     courseScoreList = courseScoreList ?? List();
     setState(() {
       isLoading = false;
@@ -49,6 +64,19 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       child: Scaffold(
         appBar: AppBar(
           title: Text('成績查詢'),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(
+                right: 20,
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  _addTask();
+                },
+                child: Icon(EvaIcons.refreshOutline),
+              ),
+            ),
+          ],
           bottom: _buildTabBar(),
         ),
         body: SingleChildScrollView(
@@ -99,7 +127,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   Widget _buildSemesterScores() {
     if (_currentTabIndex != null) {
-      CourseScore courseScore = courseScoreList[_currentTabIndex];
+      CourseScoreJson courseScore = courseScoreList[_currentTabIndex];
 
       return Container(
         padding: EdgeInsets.all(24.0),
@@ -128,16 +156,16 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     return Container();
   }
 
-  List<Widget> _buildCourseScores(CourseScore courseScore) {
-    List<Score> scoreList = courseScore.courseScoreList;
+  List<Widget> _buildCourseScores(CourseScoreJson courseScore) {
+    List<ScoreJson> scoreList = courseScore.courseScoreList;
 
     return [
       _buildTitle('各科成績'),
-      for (Score score in scoreList) _buildScoreItem(score),
+      for (ScoreJson score in scoreList) _buildScoreItem(score),
     ];
   }
 
-  Widget _buildScoreItem(Score score) {
+  Widget _buildScoreItem(ScoreJson score) {
     return Column(
       children: <Widget>[
         Row(
@@ -160,7 +188,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     );
   }
 
-  List<Widget> _buildSemesterScore(CourseScore courseScore) {
+  List<Widget> _buildSemesterScore(CourseScoreJson courseScore) {
     return [
       _buildTitle('學期成績'),
       Row(
@@ -206,7 +234,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     ];
   }
 
-  List<Widget> _buildRanks(CourseScore courseScore) {
+  List<Widget> _buildRanks(CourseScoreJson courseScore) {
     return (courseScore.isRankEmpty)
         ? [
             Container(
