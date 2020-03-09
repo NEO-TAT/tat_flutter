@@ -7,7 +7,7 @@ import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseFileJson.dart';
+import 'package:flutter_app/src/store/object/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
