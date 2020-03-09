@@ -8,7 +8,7 @@ import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
 import 'package:flutter_app/src/connector/requests/requests.dart' as requests;
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
-import 'package:flutter_app/src/store/json/CourseFileJson.dart';
+import 'package:flutter_app/src/store/object/CourseFileJson.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 import 'package:dio/dio.dart' as dio;
