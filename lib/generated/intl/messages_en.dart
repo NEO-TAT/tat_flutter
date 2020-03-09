@@ -90,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "fileAttachmentDetected" : MessageLookupByLibrary.simpleMessage("File attachment detected"),
     "fileViewer" : MessageLookupByLibrary.simpleMessage("Downloads"),
     "findNewVersion" : MessageLookupByLibrary.simpleMessage("Find new version"),
+    "focusLogin" : MessageLookupByLibrary.simpleMessage("focusLogin"),
+    "focusLoginResult" : MessageLookupByLibrary.simpleMessage(""),
     "getCalendar" : MessageLookupByLibrary.simpleMessage("Getting Calendar"),
     "getCalendarError" : MessageLookupByLibrary.simpleMessage("Getting Calendar Error"),
     "getCourse" : MessageLookupByLibrary.simpleMessage("Get schedule..."),

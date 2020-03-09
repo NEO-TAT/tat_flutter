@@ -9,7 +9,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
@@ -33,7 +33,10 @@ class FileDownload {
     ProgressCallback onReceiveProgress; //下載進度回調
 
     await Notifications.instance.showIndeterminateProgressNotification(value);
-    if (name.isNotEmpty && !name.contains(".")) {
+    if( name.isEmpty ){
+      realFileName = await Connector.getFileName(url);
+    }
+    else if (!name.contains(".")) {
       //代表名字已經包含副檔名
       //代表沒有名字直接使用FlutterDownload自動取名
       realFileName = await Connector.getFileName(url);

@@ -1,6 +1,7 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:step_slider/step_slider.dart';
 
@@ -15,10 +16,12 @@ class LanguagePage extends StatefulWidget {
 
 class _LanguagePageState extends State<LanguagePage> {
   Map<double, String> langMap = {0: "en", 1: "zh"};
+  bool focusLogin;
 
   @override
   void initState() {
     super.initState();
+    focusLogin = Model.instance.focusLogin;
   }
 
   @override
@@ -89,6 +92,34 @@ class _LanguagePageState extends State<LanguagePage> {
                 ),
               ],
             ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        R.current.focusLogin,
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      Text(
+                        R.current.focusLoginResult,
+                        style: TextStyle(fontSize: 16, color: Color(0xFF808080)),
+                      ),
+                    ],
+                  ),
+                ),
+                Checkbox(
+                  value: focusLogin,
+                  onChanged: (bool value) {
+                    setState(() {
+                      focusLogin = value;
+                      Model.instance.setFocusLogin(value);
+                    });
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),

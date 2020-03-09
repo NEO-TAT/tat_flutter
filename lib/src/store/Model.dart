@@ -11,6 +11,7 @@ import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'json/CourseClassJson.dart';
 import 'json/CourseTableJson.dart';
@@ -29,6 +30,7 @@ class Model {
   static String courseSemesterJsonKey = "CourseSemesterListJson";
   static String newAnnouncementJsonKey = "newAnnouncementJson";
   static String settingJsonKey = "SettingJsonKey";
+  static bool _focusLogin;
   UserDataJson _userData;
   NewAnnouncementJsonList _newAnnouncementList;
   List<CourseTableJson> _courseTableList;
@@ -296,8 +298,27 @@ class Model {
     await loadNewAnnouncement();
     await loadCourseTableList();
     await loadSetting();
-    DioConnector.instance.deleteCookies();
+    await readFocusLogin();
+    String version = await AppUpdate.getAppVersion();
+    _writeString("version", version);
+
+    //DioConnector.instance.deleteCookies();
   }
+
+  bool get focusLogin{
+    return _focusLogin;
+  }
+
+  Future<void> setFocusLogin(bool value) async{
+    _focusLogin = value;
+    await pref.setBool("FocusLogin", value);
+  }
+
+  Future<void> readFocusLogin() async{
+    _focusLogin = pref.getBool("FocusLogin");
+    _focusLogin = _focusLogin ?? false;
+  }
+
 
   Future<void> logout() async {
     clearUserData();
