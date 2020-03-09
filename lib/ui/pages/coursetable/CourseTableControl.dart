@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:native_color/native_color.dart';
 
 class CourseTableControl {
   bool isHideSaturday = false;
@@ -114,11 +114,11 @@ class CourseTableControl {
     List<String> courseInfoList = courseTable.getCourseIdList();
     int colorCount = courseInfoList.length;
     colorCount = (colorCount == 0) ? 1 : colorCount;
-    int delta = (360 / colorCount).floor();
-    int offset = (Random().nextDouble() * 360).floor();
+
+    final colors = AppColors.courseTableColors.toList()..shuffle();
+
     for (int i = 0; i < colorCount; i++) {
-      Color color = HslColor((offset + (delta * i) % 360).toDouble(), 100, 80);
-      colorMap[courseInfoList[i]] = color;
+      colorMap[courseInfoList[i]] = colors[i % colors.length];
     }
   }
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 
 import 'CustomProgressDialog.dart';
-import 'ProgressDialog.dart';
 
 class MyProgressDialog {
   static StyleProgressDialog _progressDialog = StyleProgressDialog();
