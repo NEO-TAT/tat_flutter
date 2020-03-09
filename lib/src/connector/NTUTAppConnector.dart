@@ -68,8 +68,9 @@ class NTUTAppConnector {
       listNodes = tagNode.getElementsByClassName("list");
       blockTitleNodes = tagNode.getElementsByClassName("block-title");
       listNodes.removeAt(0);
-      List<String> coreCourse = await ScoreConnector.getCoreGeneralLesson();  //去得博雅核心課程
-
+      List<String> coreCourse =
+          await ScoreConnector.getCoreGeneralLesson(); //去得博雅核心課程
+      coreCourse = coreCourse ?? List();
       for (int i = 0; i < blockTitleNodes.length; i++) {
         List<Map> courseList = List();
         listNode = listNodes[i];
@@ -85,13 +86,21 @@ class NTUTAppConnector {
           node = node.getElementsByClassName("item-title").first;
           nodes = node.getElementsByTagName("div");
           courseMap["name"] = nodes[0].text;
-          if(coreCourse.contains(courseMap["name"])  ){
-            courseMap['core'] = 1;
+          if (coreCourse.contains(courseMap["name"])) {
+            courseMap['core'] = 1; //代表為博雅核心
           }
           courseMap["credit"] =
               int.parse(nodes[1].text.split("，").first.split("：").last);
-          courseMap["score"] =
-              int.parse(nodes[1].text.split("，").last.split("：").last);
+          try {
+            courseMap["score"] =
+                int.parse(nodes[1].text
+                    .split("，")
+                    .last
+                    .split("：")
+                    .last);
+          }catch(e){
+            continue;
+          }
           if (nodes.length >= 3) {
             courseMap["extra"] = nodes[2].text;
           }
