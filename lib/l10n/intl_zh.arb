@@ -140,5 +140,16 @@
   "checkingVersion" : "檢查中...",
   "Contribution" : "貢獻",
   "versionInfo" : "版本資訊",
-  "isNewVersion" : "已經是最新版本了"
+  "isNewVersion" : "已經是最新版本了",
+  "___________________CreditUi___________________": "註解",
+  "culturalDimension": "文化向度",
+  "historicalDimension": "歷史向度",
+  "philosophicalDimension": "哲學向度",
+  "ruleDimension": "法治向度",
+  "socialDimension": "社會向度",
+  "naturalDimension": "自然向度",
+  "sociologicalDimension": "社哲向度",
+  "creativeDirection": "創創向度",
+  "aestheticDimension": "美學向度",
+  "culturalHistoricalDimension": "文史向度"
 }
