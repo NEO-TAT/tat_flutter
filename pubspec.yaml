@@ -84,6 +84,7 @@ dependencies:
   awesome_dialog: ^0.1.1  #顯示Error時用到
   flutter_slidable: ^0.4.7  #email使用可左右滑抽屜
   configurable_expansion_tile: ^1.0.0  #可展開式item (成績查詢)
+  progress_dialog: ^1.2.1
   #direct_select_flutter: ^1.0.5
   #gzx_dropdown_menu: ^1.0.3
 
