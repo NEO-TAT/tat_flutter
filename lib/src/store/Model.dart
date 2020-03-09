@@ -293,6 +293,21 @@ class Model {
     _courseSemesterList = List();
   }
 
+  Future<void> saveSemesterJsonList() async {
+    _save(courseSemesterJsonKey);
+  }
+
+  Future<void> loadSemesterJsonList() async {
+    List<String> readJsonList = List();
+    readJsonList = await _readStringList(courseSemesterJsonKey);
+    _courseSemesterList = List();
+    if (readJsonList != null) {
+      for (String readJson in readJsonList) {
+        _courseSemesterList.add(SemesterJson.fromJson(json.decode(readJson)));
+      }
+    }
+  }
+
   void setSemesterJsonList(List<SemesterJson> value) {
     _courseSemesterList = value;
   }
@@ -339,6 +354,7 @@ class Model {
     await loadCourseTableList();
     await loadSetting();
     await loadCourseScoreCredit();
+    await loadSemesterJsonList();
     String version = await AppUpdate.getAppVersion();
     _writeString("version", version);
 
@@ -356,6 +372,7 @@ class Model {
     DioConnector.instance.deleteCookies();
     DefaultCacheManager manager = new DefaultCacheManager();
     await manager.emptyCache(); //clears all data in cache.
+    TaskHandler.alreadyCheckSystem = "";  //全部登入重新檢查
     await init();
   }
 
