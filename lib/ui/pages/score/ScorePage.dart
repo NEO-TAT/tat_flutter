@@ -31,8 +31,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   bool isLoading = true;
   List<CourseScore> courseScoreList = List();
   ScrollController _scrollController = ScrollController();
-  List<ExpansionTile> _expansionControlList = List();
-  double deviceHeight;
   int _currentTabIndex = 0;
 
   @override
@@ -44,13 +42,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   void _addTask() async {
     TaskHandler.instance.addTask(ScoreRankTask(context));
     await TaskHandler.instance.startTaskQueue(context);
-    courseScoreList =
-        Model.instance.getTempData(ScoreRankTask.tempDataKey);
-    for (int i = 0; i <= courseScoreList.length; i++) {
-      //增加展開控制器
-      _expansionControlList.add((ExpansionTile()));
-    }
-    deviceHeight = MediaQuery.of(context).size.height;
+    courseScoreList = Model.instance.getTempData(ScoreRankTask.tempDataKey);
+    courseScoreList = courseScoreList ?? List();
     setState(() {
       isLoading = false;
     });
