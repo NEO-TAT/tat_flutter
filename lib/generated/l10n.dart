@@ -794,10 +794,10 @@ class S {
     );
   }
 
-  String get titleCredit {
+  String get titleScore {
     return Intl.message(
-      'Credit',
-      name: 'titleCredit',
+      'Score',
+      name: 'titleScore',
       desc: '',
       args: [],
     );
