@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
+import 'package:flutter_app/src/store/object/CourseAnnouncementJson.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 import '../../../../ui/other/ErrorDialog.dart';

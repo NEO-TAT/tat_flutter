@@ -4,7 +4,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseAnnouncementJson.dart';
+import 'package:flutter_app/src/store/object/CourseAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
