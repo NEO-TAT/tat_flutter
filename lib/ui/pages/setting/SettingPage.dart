@@ -66,9 +66,8 @@ class _SettingPageState extends State<SettingPage> {
     switch (value) {
       case onListViewPress.Logout:
         Model.instance.logout().then((_) {
-          Navigator.of(context).push(CustomRoute(LoginPage())).then((_) {
-            widget.pageController.jumpToPage(0); //跳轉到第一頁
-          });
+          widget.pageController.jumpToPage(0);  //跳回課表頁面
+          //Navigator.of(context).push(CustomRoute(LoginPage()));
         });
         break;
       case onListViewPress.About:
