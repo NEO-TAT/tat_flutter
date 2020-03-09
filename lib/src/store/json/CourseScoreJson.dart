@@ -2,17 +2,17 @@ import 'package:flutter_app/src/store/JsonInit.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:sprintf/sprintf.dart';
 
-class CourseScoreJson {
+class CourseScore {
   SemesterJson semester;
   RankJson now;
   RankJson history;
-  List<ScoreJson> courseScoreList;
+  List<Score> courseScoreList;
   double averageScore; //總平均
   double performanceScore; //操行成績
   double totalCredit; //修習總學分數
   double takeCredit; //實得學分數
 
-  CourseScoreJson(
+  CourseScore(
       {this.semester,
       this.now,
       this.averageScore,
@@ -49,7 +49,7 @@ class CourseScoreJson {
 
   String getTotalCreditString() {
     double total = 0;
-    for (ScoreJson score in courseScoreList) {
+    for (Score score in courseScoreList) {
       total += score.credit;
     }
     return (totalCredit != 0) ? totalCredit.toString() : total.toString();
@@ -130,13 +130,13 @@ class RankItemJson {
   }
 }
 
-class ScoreJson {
+class Score {
   String courseId;
   String name;
   String score;
   double credit; //學分
 
-  ScoreJson({this.courseId,this.name, this.score, this.credit}) {
+  Score({this.courseId, this.name, this.score, this.credit}) {
     courseId = JsonInit.stringInit(courseId);
     name = JsonInit.stringInit(name);
     score = JsonInit.stringInit(score);

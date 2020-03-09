@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -11,9 +12,9 @@ import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
-import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+import 'package:flutter_app/ui/screen/LoginScreen.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseTableControl.dart';
@@ -53,7 +54,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
             .push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: LoginPage(),
+            child: LoginScreen(),
           ),
         )
             .then((value) {
@@ -204,19 +205,20 @@ class _CourseTablePageState extends State<CourseTablePage> {
       appBar: AppBar(
         title: Text(R.current.titleCourse),
         actions: [
-          PopupMenuButton<int>(
-            // overflow menu
-            onSelected: (value) {
-              _onPopupMenuSelect(value);
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: 1,
-                  child: Text(R.current.refresh),
-                ),
-              ];
-            },
+          Padding(
+            padding: EdgeInsets.only(
+              right: 20,
+            ),
+            child: GestureDetector(
+              onTap: () {
+                _getCourseTable(
+                  semesterSetting: courseTableData?.courseSemester,
+                  studentId: _studentIdControl.text,
+                  refresh: true,
+                );
+              },
+              child: Icon(EvaIcons.refreshOutline),
+            ),
           ),
         ],
       ),
@@ -360,7 +362,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     padding: EdgeInsets.all(0),
                     child: AutoSizeText(
                       courseInfo.main.course.name,
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
                       minFontSize: 10,
                       maxLines: 3,
                       textAlign: TextAlign.center,
@@ -384,7 +389,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-//顯示課程對話框
+  //顯示課程對話框
   void showCourseDetailDialog(int section, CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
@@ -434,9 +439,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
       Navigator.of(context, rootNavigator: true)
           .push(
         PageTransition(
-          type: PageTransitionType.leftToRight,
-          child: ISchoolPage(studentId, courseInfo)
-        ),
+            type: PageTransitionType.leftToRight,
+            child: ISchoolPage(studentId, courseInfo)),
       )
           .then(
         (value) {

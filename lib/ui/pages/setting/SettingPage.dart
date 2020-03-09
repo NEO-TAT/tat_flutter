@@ -7,13 +7,12 @@ import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/login/LoginPage.dart';
-import 'package:flutter_app/ui/pages/setting/page/LanguagePage.dart';
+import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
+import 'package:flutter_app/ui/pages/other/page/LanguagePage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
+import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:random_color/random_color.dart';
-
-import 'page/AboutPage.dart';
 
 enum onListViewPress { Language, Logout, Report, About, ChangePassword }
 

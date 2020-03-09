@@ -7,7 +7,7 @@ import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'package:flutter_app/ui/pages/login/LoginPage.dart';
+import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import '../../../store/Model.dart';
 import '../../../store/json/UserDataJson.dart';
 import '../../../../ui/other/ErrorDialog.dart';
@@ -54,7 +54,7 @@ class NTUTLoginTask extends TaskModel {
         parameter.desc = R.current.accountPasswordError;
         parameter.btnOkText = R.current.setting;
         parameter.btnOkOnPress = () {
-          Navigator.of(context).push(CustomRoute(LoginPage())).then((_) {
+          Navigator.of(context).push(CustomRoute(LoginScreen())).then((_) {
             reStartTask();
           });
         };
