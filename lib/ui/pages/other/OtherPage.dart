@@ -12,11 +12,19 @@ import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/LanguagePage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'page/AboutPage.dart';
 
-enum onListViewPress { Language, FileViewer, Logout, Report, About, ChangePassword }
+enum onListViewPress {
+  Language,
+  FileViewer,
+  Logout,
+  Report,
+  About,
+  ChangePassword
+}
 
 class OtherPage extends StatefulWidget {
   final PageController pageController;
@@ -27,7 +35,7 @@ class OtherPage extends StatefulWidget {
 }
 
 class _OtherPageState extends State<OtherPage> {
-  final List<Map> listViewData = [
+  final List<Map> optionList = [
     {
       "icon": EvaIcons.globeOutline,
       "color": Colors.orange,
@@ -37,15 +45,15 @@ class _OtherPageState extends State<OtherPage> {
     {
       "icon": EvaIcons.downloadOutline,
       "color": Colors.yellow[700],
-      "title": R.current.downloadFile,
+      "title": R.current.fileViewer,
       "onPress": onListViewPress.FileViewer
     },
-    {
-      "icon": EvaIcons.syncOutline,
-      "color": Colors.lightGreen,
-      "title": R.current.changePassword,
-      "onPress": onListViewPress.ChangePassword
-    },
+//    {
+//      "icon": EvaIcons.syncOutline,
+//      "color": Colors.lightGreen,
+//      "title": R.current.changePassword,
+//      "onPress": onListViewPress.ChangePassword
+//    },
     {
       "icon": EvaIcons.undoOutline,
       "color": Colors.teal[400],
@@ -130,35 +138,31 @@ class _OtherPageState extends State<OtherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(R.current.setting),
+        title: Text(R.current.titleOther),
       ),
-      body: ListView.separated(
-        itemCount: listViewData.length + 1,
-        itemBuilder: (context, index) {
-          Widget widget;
-          widget = (index == 0)
-              ? _buildHeader()
-              : _buildSetting(listViewData[index - 1]);
-          return GestureDetector(
-              behavior: HitTestBehavior.opaque, //讓透明部分有反應
-              child: WidgetAnimator(widget),
-              onTap: () {
-                if (index != 0)
-                  _onListViewPress(listViewData[index - 1]['onPress']);
-              });
-        },
-        separatorBuilder: (context, index) {
-          // 顯示格線
-          return Container(
-            color: Colors.black12,
-            height: 1,
-          );
-        },
+      body: AnimationLimiter(
+        child: Container(
+          child: Column(
+            children: AnimationConfiguration.toStaggeredList(
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: widget,
+                ),
+              ),
+              children: <Widget>[
+                _buildHeader(),
+                SizedBox(height: 16,),
+                for (Map option in optionList) _buildSetting(option),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Container _buildHeader() {
+  Widget _buildHeader() {
     UserInfoJson userInfo = Model.instance.getUserInfo();
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
@@ -166,10 +170,9 @@ class _OtherPageState extends State<OtherPage> {
     userMail = (userMail.isEmpty) ? "" : userMail;
     Widget userImage = NTUTConnector.getUserImage();
     return Container(
-      //color: Colors.yellow,
-      height: 80,
-      margin: EdgeInsets.only(top: 20.0, left: 20, right: 20.0, bottom: 20.0),
-      constraints: BoxConstraints(maxHeight: 60),
+      color: Colors.white,
+      padding:
+          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -177,51 +180,54 @@ class _OtherPageState extends State<OtherPage> {
             child: userImage,
           ),
           SizedBox(
-            width: 10.0,
+            width: 16.0,
           ),
           Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  givenName,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                givenName,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Text(
+                userMail,
+                style: TextStyle(
+                  fontSize: 16,
                 ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Text(
-                  userMail,
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ])
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Container _buildSetting(Map data) {
-    return Container(
-      //color: Colors.yellow,
-      padding:
-          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Icon(
-            data['icon'],
-            color: data['color'],
-          ),
-          SizedBox(
-            width: 20.0,
-          ),
-          Text(
-            data['title'],
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
+  Widget _buildSetting(Map data) {
+    return InkWell(
+      child: Container(
+        color: Colors.white,
+        padding:
+        EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(
+              data['icon'],
+              color: data['color'],
+            ),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              data['title'],
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
       ),
     );
   }
