@@ -6,21 +6,35 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
+import 'package:flutter_app/src/notifications/Notifications.dart';
+import 'package:flutter_app/src/util/FileUtils.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:sprintf/sprintf.dart';
 
 import 'FileStore.dart';
 
 class FileDownload {
   static Future<void> download(BuildContext context, String url, dirName,
       [String name = ""]) async {
-    String path = await FileStore.getDownloadDir(context, dirName);
-
+    String path = await FileStore.getDownloadDir(context, dirName); //取得下載路徑
     String realFileName;
     String fileExtension;
-    if (name.isNotEmpty && !name.contains(".")) {  //代表名字已經包含副檔名
+    ReceivedNotification value = ReceivedNotification(
+        title: name,
+        body: R.current.prepareDownload,
+        payload: 'download'); //通知窗訊息
+    CancelToken cancelToken; //取消下載用
+    ProgressCallback onReceiveProgress; //下載進度回調
+
+    await Notifications.instance.showIndeterminateProgressNotification(value);
+    if (name.isNotEmpty && !name.contains(".")) {
+      //代表名字已經包含副檔名
       //代表沒有名字直接使用FlutterDownload自動取名
       realFileName = await Connector.getFileName(url);
       if (realFileName != null) {
@@ -29,15 +43,38 @@ class FileDownload {
         realFileName = name + "." + fileExtension;
       } else {
         String maybeName = url.split("/").toList().last;
-        if( maybeName.contains(".")){
+        if (maybeName.contains(".")) {
           fileExtension = maybeName.split(".").toList().last;
           realFileName = name + "." + fileExtension;
         }
         realFileName = name + "." + fileExtension;
       }
     }
+    realFileName = realFileName ?? name;
+    value.title = realFileName;
+    onReceiveProgress = (int count, int total) async {
+      //Log.d(sprintf("%d %d", [count, total]));
+      value.body = FileUtils.formatBytes( count , 2);
+      await Future.delayed(Duration(milliseconds: 10));
+      if( count < total ){
+        await Notifications.instance
+            .showProgressNotification(value, 100, (count * 100 / total).round());  //顯示下載進度
+      }else{
+        await Notifications.instance
+            .showIndeterminateProgressNotification(value);  //顯示下載進度
+      }
+    };
+    await DioConnector.instance.download(url, path + "/" + realFileName,
+        progressCallback: onReceiveProgress, cancelToken: cancelToken);
+    await Future.delayed(Duration(milliseconds: 100));
+    Notifications.instance.cancelNotification(value.id);
+    value.body = R.current.downloadComplete;
+    value.id = Notifications.instance.notificationId;  //取得新的id
+    value.payload = "file:" + path + '/' + realFileName;
+    await Notifications.instance
+        .showNotification(value);  //顯示下載完成
 
-    await DioConnector.instance.download(url  , path + "/" + realFileName);
+
     /*
     await FlutterDownloader.enqueue(
       url: url,
@@ -52,4 +89,6 @@ class FileDownload {
 
      */
   }
+
+
 }

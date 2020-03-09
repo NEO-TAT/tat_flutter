@@ -6,13 +6,13 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-
 class ISchoolLoginTask extends TaskModel {
-  static final String taskName =
-      "ISchoolLoginTask" + CheckCookiesTask.checkISchool;
+  static final String taskName = "ISchoolLoginTask";
+  static final List<String> require = [CheckCookiesTask.checkISchool];
   String studentId;
+
   ISchoolLoginTask(BuildContext context, {this.studentId})
-      : super(context, taskName);
+      : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {

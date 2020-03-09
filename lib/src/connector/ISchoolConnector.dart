@@ -28,7 +28,7 @@ enum ISchoolConnectorStatus {
 }
 
 class ISchoolConnector {
-  static bool _isLogin = true;
+  static bool _isLogin = false;
   static String loginStudentId;
   static final String _getLoginISchoolUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";

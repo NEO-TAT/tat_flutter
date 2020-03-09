@@ -6,16 +6,15 @@ import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
-import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
+import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/LanguagePage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_app/ui/pages/other/page/CreditViewerPage.dart';
 import 'package:page_transition/page_transition.dart';
-
-import 'page/AboutPage.dart';
 
 enum onListViewPress {
   Language,
@@ -152,7 +151,9 @@ class _OtherPageState extends State<OtherPage> {
               ),
               children: <Widget>[
                 _buildHeader(),
-                SizedBox(height: 16,),
+                SizedBox(
+                  height: 16,
+                ),
                 for (Map option in optionList) _buildSetting(option),
               ],
             ),
@@ -207,26 +208,31 @@ class _OtherPageState extends State<OtherPage> {
   }
 
   Widget _buildSetting(Map data) {
-    return InkWell(
-      child: Container(
-        color: Colors.white,
-        padding:
-        EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Icon(
-              data['icon'],
-              color: data['color'],
-            ),
-            SizedBox(
-              width: 20.0,
-            ),
-            Text(
-              data['title'],
-              style: TextStyle(fontSize: 18),
-            ),
-          ],
+    return Material(
+      color: Colors.white,
+      child: InkWell(
+        onTap: () {
+          _onListViewPress(data['onPress']);
+        },
+        child: Container(
+          padding:
+          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Icon(
+                data['icon'],
+                color: data['color'],
+              ),
+              SizedBox(
+                width: 20.0,
+              ),
+              Text(
+                data['title'],
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
         ),
       ),
     );

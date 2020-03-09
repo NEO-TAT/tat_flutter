@@ -18,7 +18,7 @@ import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
 
 //flutter packages pub run build_runner build 創建Json
-
+//flutter packages pub run build_runner build --delete-conflicting-outputs
 class Model {
   Model._privateConstructor();
 
@@ -296,6 +296,7 @@ class Model {
     await loadNewAnnouncement();
     await loadCourseTableList();
     await loadSetting();
+    DioConnector.instance.deleteCookies();
   }
 
   Future<void> logout() async {
@@ -305,7 +306,7 @@ class Model {
     clearNewAnnouncement();
     clearAnnouncementSetting();
     clearCourseSetting();
-    DioConnector.instance.deleteCookies();
+    //DioConnector.instance.deleteCookies();
     await init();
   }
 

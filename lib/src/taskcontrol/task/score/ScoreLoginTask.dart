@@ -1,31 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/generated/R.dart';
 import 'package:flutter_app/src/connector/ScoreConnector.dart';
-import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
+import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+
 import '../CheckCookiesTask.dart';
-import '../TaskModel.dart';
 
-class ScoreRankTask extends TaskModel {
-  static final String taskName = "ScoreRankTask";
-  static final List<String> require = [CheckCookiesTask.checkScore];
-  static String tempDataKey = "ScoreRankTempKey";
+class ScoreLoginTask extends TaskModel{
+  static final String taskName = "ScoreLoginTask";
+  static final List<String> require = [CheckCookiesTask.checkNTUT];
 
-  ScoreRankTask(BuildContext context) : super(context, taskName, require);
+  ScoreLoginTask(BuildContext context) : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {
-    MyProgressDialog.showProgressDialog(context, R.current.getScoreRank);
+    MyProgressDialog.showProgressDialog(context, R.current.loginScore);
     ScoreConnectorStatus value = await ScoreConnector.login();
-    List<CourseScore> courseList = await ScoreConnector.getScoreRankList();
     MyProgressDialog.hideProgressDialog();
-    if (courseList == null) {
+    if (value != ScoreConnectorStatus.LoginSuccess) {
       _handleError();
       return TaskStatus.TaskFail;
     } else {
-      Model.instance.setTempData(tempDataKey, courseList);
       return TaskStatus.TaskSuccess;
     }
   }
@@ -33,7 +29,7 @@ class ScoreRankTask extends TaskModel {
   void _handleError() {
     ErrorDialogParameter parameter = ErrorDialogParameter(
       context: context,
-      desc: R.current.getScoreRankError,
+      desc: R.current.loginScoreError,
     );
     ErrorDialog(parameter).show();
   }

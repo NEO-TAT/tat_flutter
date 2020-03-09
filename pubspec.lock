@@ -342,6 +342,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.4"
+  flutter_local_notifications:
+    dependency: "direct main"
+    description:
+      name: flutter_local_notifications
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0+4"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -735,6 +749,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  rxdart:
+    dependency: "direct main"
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.23.1"
   shared_preferences:
     dependency: "direct main"
     description:
