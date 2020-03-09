@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
@@ -25,12 +26,14 @@ class ExpansionTile {
   }
 }
 
-class _ScoreViewerPageState extends State<ScoreViewerPage> {
+class _ScoreViewerPageState extends State<ScoreViewerPage>
+    with SingleTickerProviderStateMixin {
   bool isLoading = true;
-  List<CourseScoreJson> courseScoreList;
+  List<CourseScore> courseScoreList = List();
   ScrollController _scrollController = ScrollController();
   List<ExpansionTile> _expansionControlList = List();
   double deviceHeight;
+  int _currentTabIndex = 0;
 
   @override
   void initState() {
@@ -59,209 +62,187 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
     super.dispose();
   }
 
-  Future<void> _buildComplete(double height, int index) async {
-    if (isLoading) return;
-    await Future.delayed(Duration(milliseconds: 400));
-    double office = height * index + 10;
-    _scrollController.animateTo(office,
-        duration: Duration(seconds: 1), curve: Curves.ease);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('成績查詢'),
-      ),
-      body: Container(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(
-          children: <Widget>[
-            if (!isLoading)
-              Expanded(
-                child: getAnimationList(),
-              ),
-          ],
+    return DefaultTabController(
+      length: courseScoreList.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('成績查詢'),
+          bottom: _buildTabBar(),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              if (!isLoading) _buildSemesterScores(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget getAnimationList() {
-    int length = courseScoreList.length;
-    return AnimationLimiter(
-      child: ListView.builder(
-        controller: _scrollController,
-        shrinkWrap: true,
-        itemCount: length,
-        itemBuilder: (BuildContext context, int index) {
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    child: _buildOneSemesterItem(index, courseScoreList[index]),
-                  ),
-                  onTap: () {},
+  Widget _buildTabBar() {
+    return TabBar(
+      labelColor: AppColors.mainColor,
+      unselectedLabelColor: Colors.white,
+      indicatorSize: TabBarIndicatorSize.label,
+//      labelPadding: EdgeInsets.symmetric(horizontal: 8),
+      indicator: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+        color: Colors.white,
+      ),
+      isScrollable: true,
+      tabs: courseScoreList
+          .map(
+            (courseScore) => Padding(
+              padding: EdgeInsets.only(
+                left: 12,
+                right: 12,
+              ),
+              child: Tab(
+                text:
+                    "${courseScore.semester.year}-${courseScore.semester.semester}",
+              ),
+            ),
+          )
+          .toList(),
+      onTap: (int index) {
+        _currentTabIndex = index;
+        setState(() {});
+      },
+    );
+  }
+
+  Widget _buildSemesterScores() {
+    if (_currentTabIndex != null) {
+      CourseScore courseScore = courseScoreList[_currentTabIndex];
+
+      return Container(
+        padding: EdgeInsets.all(24.0),
+        child: AnimationLimiter(
+          child: Column(
+            children: AnimationConfiguration.toStaggeredList(
+              childAnimationBuilder: (widget) => SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: widget,
                 ),
               ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildOneSemesterItem(int index, CourseScoreJson courseScore) {
-    List<ScoreJson> scoreList = courseScore.courseScoreList;
-    GlobalKey _myKey = new GlobalKey();
-    String semesterString =
-        courseScore.semester.year + "-" + courseScore.semester.semester;
-    List<Widget> widgetList = List();
-
-    for (ScoreJson score in scoreList) {
-      widgetList.add(_buildScoreItem(score));
-    }
-    widgetList.add(_buildSpiltLine());
-    widgetList.add(_buildAverageScoreItem(courseScore));
-    widgetList.add(_buildSpiltLine());
-    widgetList.add(_buildRank(courseScore));
-
-    Widget widget = Container(
-      padding: EdgeInsets.only(top: 10, bottom: 10),
-      child: new Material(
-        //INK可以實現裝飾容器
-        child: new Ink(
-          //用ink圓角矩形
-          // color: Colors.red,
-          decoration: new BoxDecoration(
-            //背景
-            color: Colors.white,
-            //設置四周圓角 角度
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
-            //設置四周邊框
-            border: new Border.all(width: 1, color: Colors.red),
-          ),
-          child: new InkWell(
-            //圓角設置,給水波紋也設置同樣的圓角
-            //如果這裡不設置就會出現矩形的水波紋效果
-            borderRadius: new BorderRadius.circular(25.0),
-            child: Container(
-              //設置 child 居中
-              alignment: Alignment(0, 0),
-              height: 50,
-              width: 300,
-              child: Text(semesterString),
+              children: <Widget>[
+                ..._buildCourseScores(courseScore),
+                SizedBox(height: 16),
+                ..._buildSemesterScore(courseScore),
+                SizedBox(height: 16),
+                ..._buildRanks(courseScore),
+                SizedBox(height: 16),
+              ],
             ),
           ),
         ),
-      ),
-    );
-    return Container(
-      key: _myKey,
-      child: AppExpansionTile(
-        key: _expansionControlList[index].key,
-        title: widget,
-        children: widgetList,
-        onExpansionChanged: (value) {
-          _expansionControlList[index].isExpansion = value;
-          if (value) {
-            RenderObject renderObject =
-                _myKey.currentContext.findRenderObject(); //找尋物件大小
-            double height = renderObject.semanticBounds.size.height;
-            for (int i = 0; i < courseScoreList.length; i++) {
-              // 關閉其他視窗
-              if (i != index) {
-                _expansionControlList[i].key.currentState.collapse();
-              }
-            }
-            _buildComplete(height, index);
-          }
-        },
-      ),
-    );
+      );
+    }
+    return Container();
   }
 
-  Widget _buildSpiltLine() {
-    return Container(
-      color: Colors.black12,
-      height: 1,
-    );
+  List<Widget> _buildCourseScores(CourseScore courseScore) {
+    List<Score> scoreList = courseScore.courseScoreList;
+
+    return [
+      _buildTitle('各科成績'),
+      for (Score score in scoreList) _buildScoreItem(score),
+    ];
   }
 
-  Widget _buildScoreItem(ScoreJson score) {
-    TextStyle textStyle = TextStyle(fontSize: 16);
-    return Container(
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(
+  Widget _buildScoreItem(Score score) {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
               score.name,
-              style: textStyle,
+              style: TextStyle(fontSize: 16.0),
+            ),
+            Text(
+              score.score.toString(),
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 8.0,
+        ),
+      ],
+    );
+  }
+
+  List<Widget> _buildSemesterScore(CourseScore courseScore) {
+    return [
+      _buildTitle('學期成績'),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            sprintf("總平均: %s", [courseScore.getAverageScoreString()]),
+            style: TextStyle(
+              fontSize: 16.0,
             ),
           ),
           Text(
-            score.score.toString(),
-            style: textStyle,
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAverageScoreItem(CourseScoreJson courseScore) {
-    TextStyle textStyle = TextStyle(fontSize: 16);
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(sprintf("總平均: %s", [courseScore.getAverageScoreString()]),
-                  style: textStyle),
-              Text(
-                  sprintf(
-                      "操行成績: %s", [courseScore.getPerformanceScoreString()]),
-                  style: textStyle),
-            ],
+            sprintf("操行成績: %s", [courseScore.getPerformanceScoreString()]),
+            style: TextStyle(
+              fontSize: 16.0,
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(sprintf("修習學分: %s", [courseScore.getTotalCreditString()]),
-                  style: textStyle),
-              Text(sprintf("實得學分: %s", [courseScore.getTotalCreditString()]),
-                  style: textStyle),
-            ],
-          )
         ],
       ),
-    );
+      SizedBox(
+        height: 8,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            sprintf("修習學分: %s", [courseScore.getTotalCreditString()]),
+            style: TextStyle(
+              fontSize: 16.0,
+            ),
+          ),
+          Text(
+            sprintf("實得學分: %s", [courseScore.getTotalCreditString()]),
+            style: TextStyle(
+              fontSize: 16.0,
+            ),
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 8,
+      ),
+    ];
   }
 
-  Widget _buildRank(CourseScoreJson courseScore) {
-    TextStyle textStyle = TextStyle(fontSize: 24);
-    RankJson rankHistory = courseScore.history;
-    RankJson rankNow = courseScore.now;
-    return Container(
-      child: Column(
-          children: (courseScore.isRankEmpty)
-              ? [
-                  Container(
-                    child: Text("暫無排名資訊", style: textStyle),
-                  )
-                ]
-              : [
-                  _buildRankItems(rankNow, "學期排名"),
-                  _buildSpiltLine(),
-                  _buildRankItems(rankHistory, "歷屆排名"),
-                ]),
-    );
+  List<Widget> _buildRanks(CourseScore courseScore) {
+    return (courseScore.isRankEmpty)
+        ? [
+            Container(
+              child: Text(
+                "暫無排名資訊",
+                style: TextStyle(fontSize: 24),
+              ),
+            )
+          ]
+        : [
+            _buildRankItems(courseScore.now, "學期排名"),
+            SizedBox(
+              height: 16,
+            ),
+            _buildRankItems(courseScore.history, "歷屆排名"),
+          ];
   }
 
   Widget _buildRankItems(RankJson rank, String title) {
@@ -269,12 +250,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
     TextStyle textStyle = TextStyle(fontSize: fontSize);
     return Column(
       children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
-        ),
+        _buildTitle(title),
         _buildRankPart(rank.course, textStyle),
-        _buildRankPart(rank.department, textStyle)
+        _buildRankPart(rank.department, textStyle),
+        SizedBox(
+          height: 8,
+        ),
       ],
     );
   }
@@ -296,6 +277,19 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
               textAlign: TextAlign.center, style: textStyle),
         ),
       ],
+    );
+  }
+
+  Widget _buildTitle(String text) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }
