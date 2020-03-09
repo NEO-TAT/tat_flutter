@@ -46,16 +46,6 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      //localeResolutionCallback: S.delegate.resolution(fallback: const  Locale('en' , "") ),
-      theme: ThemeData(
-        fontFamily: 'GenSenMaruGothicTW',
-        accentColor: AppColors.mainColor,
-        cursorColor: AppColors.mainColor,
-        indicatorColor: AppColors.mainColor,
-        cupertinoOverrideTheme: CupertinoThemeData(
-          primaryColor: AppColors.mainColor,
-        ),
-      ),
       title: 'TAT',
       home: MainScreen(),
     );

@@ -134,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
             EvaIcons.bookOpenOutline,
           ),
           title: Text(
-            R.current.credit,
+            R.current.titleScore,
           ),
         ),
         BottomNavigationBarItem(
