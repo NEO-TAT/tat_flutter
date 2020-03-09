@@ -122,7 +122,7 @@ CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     score: json['score'] as String,
     credit: (json['credit'] as num)?.toDouble(),
-    courseType: json['courseType'] as String,
+    category: json['courseType'] as String,
     isOtherDepartment: json['isOtherDepartment'] as bool,
     isWithdraw: json['isWithdraw'] as bool,
   );
@@ -136,5 +136,5 @@ Map<String, dynamic> _$CourseInfoJsonToJson(CourseInfoJson instance) =>
       'credit': instance.credit,
       'isWithdraw': instance.isWithdraw,
       'isOtherDepartment': instance.isOtherDepartment,
-      'courseType': instance.courseType,
+      'courseType': instance.category,
     };

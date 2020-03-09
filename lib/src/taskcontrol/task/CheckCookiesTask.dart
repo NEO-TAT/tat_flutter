@@ -72,6 +72,7 @@ class CheckCookiesTask extends TaskModel {
         loginSystem += checkNTUT;
       }
     }
+    MyProgressDialog.hideProgressDialog();
     Log.d( "loginSystem: $loginSystem" );
     if( loginSystem.isEmpty ){
       return TaskStatus.TaskSuccess;
