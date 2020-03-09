@@ -32,7 +32,7 @@ class TaskHandler {
 
   void addTask(TaskModel task, {bool onLoginCheck: true}) {
     if (onLoginCheck) {
-      if( Model.instance.focusLogin ){  //直接重新登入不檢查
+      if( Model.instance.getOtherSetting().focusLogin ){  //直接重新登入不檢查
         _taskQueue
             .add(
             CheckCookiesTask(task.context, checkSystem: task.requireSystem.toString()));

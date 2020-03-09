@@ -84,9 +84,11 @@ class AnnouncementSettingJson {
 @JsonSerializable()
 class OtherSettingJson {
   String lang;
+  bool focusLogin;
 
-  OtherSettingJson({this.lang}) {
+  OtherSettingJson({this.lang , this.focusLogin}) {
     lang = JsonInit.stringInit(lang);
+    focusLogin = focusLogin??false;
   }
 
   bool get isEmpty {

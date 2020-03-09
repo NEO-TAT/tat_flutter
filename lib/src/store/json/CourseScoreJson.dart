@@ -4,19 +4,68 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 part 'CourseScoreJson.g.dart';
 
+const List<String> constCourseType = [
+  "○", //	  必	部訂共同必修
+  "△", //	必	校訂共同必修
+  "☆", //	選	共同選修
+  "●", //	  必	部訂專業必修
+  "▲", //	  必	校訂專業必修
+  "★"]; //	選	專業選修
 
 @JsonSerializable()
-class CourseScoreJson {
+class CourseScoreCreditJson{
+  GraduationInformationJson graduationInformation;
+  List<SemesterCourseScoreJson> semesterCourseScoreList;
+  CourseScoreCreditJson({ this.graduationInformation , this.semesterCourseScoreList }){
+    graduationInformation = graduationInformation??GraduationInformationJson();
+    semesterCourseScoreList = semesterCourseScoreList ?? List();
+  }
+
+
+  factory CourseScoreCreditJson.fromJson(Map<String, dynamic> json) =>
+      _$CourseScoreCreditJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseScoreCreditJsonToJson(this);
+}
+
+
+
+@JsonSerializable()
+class GraduationInformationJson {
+  int lowCredit; //最低畢業門檻
+  int outerDepartmentMacCredit; //外系最多承認學分
+  Map<String,int> courseTypeMinCredit;
+
+  GraduationInformationJson({this.lowCredit , this.courseTypeMinCredit , this.outerDepartmentMacCredit }){
+    lowCredit = lowCredit ?? 0;
+    outerDepartmentMacCredit = outerDepartmentMacCredit ?? 0;
+    if( courseTypeMinCredit == null ){
+      courseTypeMinCredit = Map();
+      for( String type in constCourseType ){
+        courseTypeMinCredit[type] = 0;
+      }
+    }
+  }
+
+  factory GraduationInformationJson.fromJson(Map<String, dynamic> json) =>
+      _$GraduationInformationJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$GraduationInformationJsonToJson(this);
+
+}
+
+
+
+@JsonSerializable()
+class SemesterCourseScoreJson {
   SemesterJson semester;
   RankJson now;
   RankJson history;
-  List<ScoreJson> courseScoreList;
+  List<CourseInfoJson> courseScoreList;
   double averageScore; //總平均
   double performanceScore; //操行成績
   double totalCredit; //修習總學分數
   double takeCredit; //實得學分數
 
-  CourseScoreJson(
+  SemesterCourseScoreJson(
       {this.semester,
       this.now,
       this.averageScore,
@@ -53,7 +102,7 @@ class CourseScoreJson {
 
   String getTotalCreditString() {
     double total = 0;
-    for (ScoreJson score in courseScoreList) {
+    for (CourseInfoJson score in courseScoreList) {
       total += score.credit;
     }
     return (totalCredit != 0) ? totalCredit.toString() : total.toString();
@@ -82,9 +131,9 @@ class CourseScoreJson {
         ]);
   }
 
-  factory CourseScoreJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseScoreJsonFromJson(json);
-  Map<String, dynamic> toJson() => _$CourseScoreJsonToJson(this);
+  factory SemesterCourseScoreJson.fromJson(Map<String, dynamic> json) =>
+      _$SemesterCourseScoreJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$SemesterCourseScoreJsonToJson(this);
 
 }
 
@@ -152,17 +201,23 @@ class RankItemJson {
 }
 
 @JsonSerializable()
-class ScoreJson {
+class CourseInfoJson {
   String courseId;
   String name;
   String score;
   double credit; //學分
+  bool isWithdraw;  //是否撤選
+  bool isOtherDepartment;  //是否為外系
+  String courseType;
 
-  ScoreJson({this.courseId, this.name, this.score, this.credit}) {
+  CourseInfoJson({this.courseId, this.name, this.score, this.credit,this.courseType,this.isOtherDepartment,this.isWithdraw}) {
     courseId = JsonInit.stringInit(courseId);
     name = JsonInit.stringInit(name);
     score = JsonInit.stringInit(score);
+    courseType = JsonInit.stringInit(courseType);
     credit = credit ?? 0;
+    isWithdraw = isWithdraw ?? false;
+    isOtherDepartment = isOtherDepartment ?? false;
   }
 
   @override
@@ -178,9 +233,9 @@ class ScoreJson {
         ]);
   }
 
-  factory ScoreJson.fromJson(Map<String, dynamic> json) =>
-      _$ScoreJsonFromJson(json);
-  Map<String, dynamic> toJson() => _$ScoreJsonToJson(this);
+  factory CourseInfoJson.fromJson(Map<String, dynamic> json) =>
+      _$CourseInfoJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseInfoJsonToJson(this);
 
 
 }

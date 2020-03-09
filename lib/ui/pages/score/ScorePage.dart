@@ -17,14 +17,14 @@ class ScoreViewerPage extends StatefulWidget {
 class _ScoreViewerPageState extends State<ScoreViewerPage>
     with SingleTickerProviderStateMixin {
   bool isLoading = true;
-  List<CourseScoreJson> courseScoreList = List();
+  List<SemesterCourseScoreJson> courseScoreList = List();
   ScrollController _scrollController = ScrollController();
   int _currentTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    courseScoreList = Model.instance.getCourseScoreList();
+    courseScoreList = Model.instance.getSemesterCourseScore();
     if( courseScoreList.length == 0){
       _addTask();
     }else{
@@ -43,7 +43,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = Model.instance.getTempData(ScoreRankTask.tempDataKey);
     if( courseScoreList != null ){
-      await Model.instance.setCourseScoreList(courseScoreList);
+      await Model.instance.setSemesterCourseScore(courseScoreList);
     }
     courseScoreList = courseScoreList ?? List();
     setState(() {
@@ -127,7 +127,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   Widget _buildSemesterScores() {
     if (_currentTabIndex != null) {
-      CourseScoreJson courseScore = courseScoreList[_currentTabIndex];
+      SemesterCourseScoreJson courseScore = courseScoreList[_currentTabIndex];
 
       return Container(
         padding: EdgeInsets.all(24.0),
@@ -156,16 +156,16 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     return Container();
   }
 
-  List<Widget> _buildCourseScores(CourseScoreJson courseScore) {
-    List<ScoreJson> scoreList = courseScore.courseScoreList;
+  List<Widget> _buildCourseScores(SemesterCourseScoreJson courseScore) {
+    List<CourseInfoJson> scoreList = courseScore.courseScoreList;
 
     return [
       _buildTitle('各科成績'),
-      for (ScoreJson score in scoreList) _buildScoreItem(score),
+      for (CourseInfoJson score in scoreList) _buildScoreItem(score),
     ];
   }
 
-  Widget _buildScoreItem(ScoreJson score) {
+  Widget _buildScoreItem(CourseInfoJson score) {
     return Column(
       children: <Widget>[
         Row(
@@ -188,7 +188,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     );
   }
 
-  List<Widget> _buildSemesterScore(CourseScoreJson courseScore) {
+  List<Widget> _buildSemesterScore(SemesterCourseScoreJson courseScore) {
     return [
       _buildTitle('學期成績'),
       Row(
@@ -234,7 +234,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     ];
   }
 
-  List<Widget> _buildRanks(CourseScoreJson courseScore) {
+  List<Widget> _buildRanks(SemesterCourseScoreJson courseScore) {
     return (courseScore.isRankEmpty)
         ? [
             Container(
