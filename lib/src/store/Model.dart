@@ -296,7 +296,7 @@ class Model {
     await loadNewAnnouncement();
     await loadCourseTableList();
     await loadSetting();
-    DioConnector.instance.deleteCookies();
+    //DioConnector.instance.deleteCookies();
   }
 
   Future<void> logout() async {
