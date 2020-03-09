@@ -155,6 +155,15 @@ class S {
     );
   }
 
+  String get calendar {
+    return Intl.message(
+      'Calendar',
+      name: 'calendar',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get alertError {
     return Intl.message(
       'An error occurred',
@@ -186,6 +195,33 @@ class S {
     return Intl.message(
       'Are you sure to open?',
       name: 'AreYouSureToOpen',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get downloading {
+    return Intl.message(
+      'Download...',
+      name: 'downloading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get downloadComplete {
+    return Intl.message(
+      'Download complete',
+      name: 'downloadComplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get prepareDownload {
+    return Intl.message(
+      'Prepare download...',
+      name: 'prepareDownload',
       desc: '',
       args: [],
     );
@@ -303,6 +339,24 @@ class S {
     return Intl.message(
       'Login to ISchool Plus...',
       name: 'loginISchoolPlus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loginScore {
+    return Intl.message(
+      'Login to Score...',
+      name: 'loginScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loginScoreError {
+    return Intl.message(
+      'Login to Score Error',
+      name: 'loginScoreError',
       desc: '',
       args: [],
     );
@@ -497,6 +551,42 @@ class S {
     );
   }
 
+  String get getISchoolPlusCourseAnnouncement {
+    return Intl.message(
+      'Get course announcement...',
+      name: 'getISchoolPlusCourseAnnouncement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getISchoolPlusCourseAnnouncementError {
+    return Intl.message(
+      'Get course announcement error',
+      name: 'getISchoolPlusCourseAnnouncementError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getISchoolPlusCourseAnnouncementDetail {
+    return Intl.message(
+      'Get course announcement detail...',
+      name: 'getISchoolPlusCourseAnnouncementDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getISchoolPlusCourseAnnouncementDetailError {
+    return Intl.message(
+      'Get course announcement detail error',
+      name: 'getISchoolPlusCourseAnnouncementDetailError',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get getScoreRank {
     return Intl.message(
       'Getting grade...',
@@ -510,6 +600,24 @@ class S {
     return Intl.message(
       'Getting grade error',
       name: 'getScoreRankError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getCalendar {
+    return Intl.message(
+      'Getting Calendar',
+      name: 'getCalendar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get getCalendarError {
+    return Intl.message(
+      'Getting Calendar Error',
+      name: 'getCalendarError',
       desc: '',
       args: [],
     );
@@ -857,6 +965,24 @@ class S {
     );
   }
 
+  String get creditViewer {
+    return Intl.message(
+      'Credit Viewer',
+      name: 'creditViewer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creditSearch {
+    return Intl.message(
+      'Credit Search...',
+      name: 'creditSearch',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get pleaseLogin {
     return Intl.message(
       'Please Login',
@@ -1194,6 +1320,105 @@ class S {
     return Intl.message(
       'Already the latest version',
       name: 'isNewVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ___________________CreditUi___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________CreditUi___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get culturalDimension {
+    return Intl.message(
+      'Cultural dimension',
+      name: 'culturalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get historicalDimension {
+    return Intl.message(
+      'Historical dimension',
+      name: 'historicalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get philosophicalDimension {
+    return Intl.message(
+      'Philosophical dimension',
+      name: 'philosophicalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ruleDimension {
+    return Intl.message(
+      'Rule of law',
+      name: 'ruleDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get socialDimension {
+    return Intl.message(
+      'Social dimension',
+      name: 'socialDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get naturalDimension {
+    return Intl.message(
+      'Natural dimension',
+      name: 'naturalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get sociologicalDimension {
+    return Intl.message(
+      'Sociological Dimension',
+      name: 'sociologicalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creativeDirection {
+    return Intl.message(
+      'Creative direction',
+      name: 'creativeDirection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get aestheticDimension {
+    return Intl.message(
+      'Aesthetic dimension',
+      name: 'aestheticDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get culturalHistoricalDimension {
+    return Intl.message(
+      'Cultural and Historical dimension',
+      name: 'culturalHistoricalDimension',
       desc: '',
       args: [],
     );

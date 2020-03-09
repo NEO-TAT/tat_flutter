@@ -24,7 +24,7 @@ enum ScoreConnectorStatus {
 }
 
 class ScoreConnector {
-  static bool _isLogin = true;
+  static bool _isLogin = false;
 
   static final String _getLoginScoreUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
@@ -34,6 +34,8 @@ class ScoreConnector {
       "https://aps-course.ntut.edu.tw/StuQuery/QryRank.jsp";
   static final String _scoreAllScoreUrl =
       "https://aps-course.ntut.edu.tw//StuQuery/QryScore.jsp";
+  static final String _generalLessonAllScoreUrl =
+      "https://aps-course.ntut.edu.tw/StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
     String result;
@@ -111,6 +113,8 @@ class ScoreConnector {
         for (int j = 1; j < scoreNodes.length - 6; j++) {
           scoreNode = scoreNodes[j];
           Score score = Score();
+          score.courseId =
+              scoreNode.getElementsByTagName("th")[0].text.replaceAll("\n", "");
           score.name =
               scoreNode.getElementsByTagName("th")[2].text.replaceAll("\n", "");
           score.credit =
@@ -221,6 +225,35 @@ class ScoreConnector {
     }
   }
 
+  static Future<List<String>> getCoreGeneralLesson() async{
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    List<String> coreGeneralLessonList = List();
+    try {
+      parameter = ConnectorParameter(_generalLessonAllScoreUrl);
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("tbody").first;
+      nodes = node.getElementsByTagName("tr");
+      for( int i = 0 ; i < nodes.length ; i++){
+        node = nodes[i];
+        if ( node.innerHtml.contains("＊")){
+          String name = node.getElementsByTagName("td")[7].text.replaceAll(RegExp(r"[\s|\n| ]"), "");
+          coreGeneralLessonList.add(name);
+        }
+      }
+      return coreGeneralLessonList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+
+  }
+
   static bool get isLogin {
     return _isLogin;
   }
@@ -231,6 +264,7 @@ class ScoreConnector {
     _isLogin = false;
     try {
       parameter = ConnectorParameter(_scoreUrl);
+      parameter.charsetName = 'big5';
       Response response = await Connector.getDataByGetResponse(parameter);
       if (response.statusCode != 200) {
         return false;

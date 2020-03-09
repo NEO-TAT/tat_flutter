@@ -13,7 +13,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:intl/intl.dart';
 import '../store/Model.dart';
 import '../store/json/UserDataJson.dart';
 import 'core/Connector.dart';
@@ -31,13 +33,13 @@ enum NTUTConnectorStatus {
 }
 
 class NTUTConnector {
-  static bool _isLogin = true;
-  static final String _Host = "https://nportal.ntut.edu.tw/";
-  static final String _loginUrl = _Host + "login.do";
-  static final String _indexUrl = _Host + "index.do";
-  static final String _getPictureUrl = _Host + "photoView.do";
-  static final String _checkLoginUrl = _Host + "myPortal.do";
-  static final String _getCalendarUrl = _Host + "calModeApp.do";
+  static bool _isLogin = false;
+  static final String _host = "https://nportal.ntut.edu.tw/";
+  static final String _loginUrl = _host + "login.do";
+  static final String _indexUrl = _host + "index.do";
+  static final String _getPictureUrl = _host + "photoView.do";
+  static final String _checkLoginUrl = _host + "myPortal.do";
+  static final String _getCalendarUrl = _host + "calModeApp.do";
 
   static Future<NTUTConnectorStatus> login(
       String account, String password) async {
@@ -89,21 +91,23 @@ class NTUTConnector {
     }
   }
 
-  static Future<String> getCalendar(
+  static Future<List<NTUTCalendarJson>> getCalendar(
       DateTime startTime, DateTime endTime) async {
     //暫無用到 取得學校行事曆
     ConnectorParameter parameter;
+    var formatter = DateFormat("yyyy/MM/dd");
+    String startDate = formatter.format(startTime);
+    String endDate = formatter.format(endTime);
     try {
       Map<String, String> data = {
-        "stratDate": "2020/02/01",
-        "endDate": "2020/03/01",
+        "startDate": startDate,
+        "endDate": endDate,
       };
       parameter = ConnectorParameter(_getCalendarUrl);
       parameter.data = data;
-      parameter.userAgent = "Direk Android App";
-      String result = await Connector.getDataByPost(parameter);
-      Log.d(result);
-      return null;
+      String result = await Connector.getDataByGet(parameter);
+      List<NTUTCalendarJson> calendarList = getNTUTCalendarJsonList( json.decode(result));
+      return calendarList;
     } catch (e) {
       Log.e(e.toString());
       return null;

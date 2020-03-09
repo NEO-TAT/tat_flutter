@@ -114,9 +114,10 @@ class CourseTableJson {
           break;
         }
       }
-    } else if (courseInfoMap[day].containsKey(sectionNumber)) {
+    }/* else if (courseInfoMap[day].containsKey(sectionNumber)) {
       throw Exception("衝堂");
-    } else {
+    } */
+    else {
       courseInfoMap[day][sectionNumber] = courseInfo;
     }
   }
@@ -124,9 +125,6 @@ class CourseTableJson {
   bool setCourseDetailByTimeString(
       Day day, String sectionNumber, CourseInfoJson courseInfo) {
     bool add = false;
-    if (courseInfoMap[day].containsKey(sectionNumber)) {
-      throw Exception("衝堂");
-    }
     for (SectionNumber value in SectionNumber.values) {
       String time = value.toString().split("_")[1];
       if (sectionNumber.contains(time)) {

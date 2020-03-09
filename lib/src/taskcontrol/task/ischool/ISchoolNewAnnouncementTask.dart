@@ -8,14 +8,16 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
-
 class ISchoolNewAnnouncementTask extends TaskModel {
-  static final String taskName = "ISchoolNewAnnouncementTask" +
-      CheckCookiesTask.checkISchool +
-      CheckCookiesTask.checkCourse;
+  static final String taskName = "ISchoolNewAnnouncementTask";
+  static final List<String> require = [
+    CheckCookiesTask.checkISchool,
+    CheckCookiesTask.checkCourse
+  ];
   static int page;
+
   ISchoolNewAnnouncementTask(BuildContext context, int inPage)
-      : super(context, taskName) {
+      : super(context, taskName, require) {
     page = inPage;
   }
 

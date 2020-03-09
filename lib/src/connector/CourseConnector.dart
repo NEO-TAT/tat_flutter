@@ -13,6 +13,7 @@ import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:quiver/time.dart';
 import 'core/Connector.dart';
 import 'core/ConnectorParameter.dart';
 
@@ -25,7 +26,7 @@ enum CourseConnectorStatus {
 }
 
 class CourseConnector {
-  static bool _isLogin = true;
+  static bool _isLogin = false;
   static final String _getLoginCourseUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
   static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
@@ -265,7 +266,6 @@ class CourseConnector {
           classInfo.href = _courseCNHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
-
         courseMainInfoList.add(courseMainInfo);
       }
 
@@ -379,6 +379,68 @@ class CourseConnector {
       return courseMainInfoList;
     } catch (e) {
       //throw e;
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+  static Future<Map> getGraduation(String year, String department) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    RegExp exp;
+    RegExpMatch matches;
+    Map graduationMap = Map();
+    try {
+      parameter =
+          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter.charsetName = "big5";
+      parameter.data = {"format": "-3", "year": year, "matric": "7"};
+      result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      node =  tagNode.getElementsByTagName("tbody").first;
+      nodes = node.getElementsByTagName("tr");
+      String href;
+      for( int i = 1; i<nodes.length ; i++){
+        node = nodes[i];
+        node = node.getElementsByTagName("a").first;
+        if( node.text.contains(department)){
+          href = node.attributes["href"];
+          break;
+        }
+      }
+      href = "https://aps.ntut.edu.tw/course/tw/" + href;
+      parameter = ConnectorParameter(href);
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByGet(parameter);
+
+
+      exp = RegExp(r"最低畢業學分：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["lowCredit"] = int.parse(matches.group(1));
+
+      exp = RegExp(r"共同必修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["△"] = int.parse(matches.group(1));
+
+      exp = RegExp(r"專業必修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["▲"] = int.parse(matches.group(1));
+
+      exp = RegExp(r"專業選修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      graduationMap["★"] = int.parse(matches.group(1));
+
+      /*
+      exp = RegExp("通識博雅課程應修滿(\d+)學分");
+      matches = exp.firstMatch(result);
+      exp = RegExp("跨系所專業選修(\d+)學分為畢業學分");
+      matches = exp.firstMatch(result);
+      */
+      return graduationMap;
+    } catch (e) {
       Log.e(e.toString());
       return null;
     }

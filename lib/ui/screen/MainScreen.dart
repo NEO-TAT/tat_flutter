@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
+import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/notification/NotificationPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
@@ -37,21 +38,33 @@ class _MainScreenState extends State<MainScreen> {
 
       _pageList.add(CourseTablePage());
       _pageList.add(NotificationPage());
-      //bottomPageList.add(BottomPage(CalendarScreen()));
+      _pageList.add(CalendarPage());
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
       _setLang();
+      //_addTest();
     });
     _flutterDownloaderInit();
+    _notificationsInit();
     _addTask();
+  }
+  
+  
+  void _addTest() async {
+    await NTUTConnector.login(Model.instance.getAccount() , Model.instance.getPassword());
+    await NTUTConnector.getCalendar(DateTime.now() , DateTime.now());
   }
 
   void _addTask() async {
-    TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
+    //TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
   }
 
   void _flutterDownloaderInit() async {
     await MyDownloader.init();
+  }
+
+  void _notificationsInit() async{
+    await Notifications.instance.init();
   }
 
   void _setLang() async {
@@ -137,6 +150,13 @@ class _MainScreenState extends State<MainScreen> {
             R.current.titleNotification,
           ),
         ),
+        BottomNavigationBarItem(
+            icon: Icon(
+              EvaIcons.calendarOutline,
+            ),
+            title: Text(
+              R.current.calendar,
+            )),
         BottomNavigationBarItem(
           icon: Icon(
             EvaIcons.bookOpenOutline,

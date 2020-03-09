@@ -133,7 +133,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
           .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
       courseTable =
-          Model.instance.getTempData(CourseTableTask.courseTableTempKey);
+          Model.instance.getTempData(CourseTableTask.tempDataKey);
     }
     Model.instance.getCourseSetting().info = courseTable; //儲存課表
     Model.instance.saveCourseSetting();
