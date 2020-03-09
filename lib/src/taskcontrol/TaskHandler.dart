@@ -32,16 +32,23 @@ class TaskHandler {
 
   void addTask(TaskModel task, {bool onLoginCheck: true}) {
     if (onLoginCheck) {
-      String needLoginSystem = "";
-      for (String require in task.requireSystem) {
-        if (!alreadyCheckSystem.contains(require)) {
-          alreadyCheckSystem += require;
-          needLoginSystem += require;
-        }
-      }
-      if (needLoginSystem.isNotEmpty) {
+      if( Model.instance.focusLogin ){  //直接重新登入不檢查
         _taskQueue
-            .add(CheckCookiesTask(task.context, checkSystem: needLoginSystem));
+            .add(
+            CheckCookiesTask(task.context, checkSystem: task.requireSystem.toString()));
+      }else {
+        String needLoginSystem = "";
+        for (String require in task.requireSystem) {
+          if (!alreadyCheckSystem.contains(require)) {
+            alreadyCheckSystem += require;
+            needLoginSystem += require;
+          }
+        }
+        if (needLoginSystem.isNotEmpty) {
+          _taskQueue
+              .add(
+              CheckCookiesTask(task.context, checkSystem: needLoginSystem));
+        }
       }
     }
     _taskQueue.add(task);

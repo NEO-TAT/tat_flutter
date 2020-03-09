@@ -132,6 +132,8 @@
   "languageSwitch": "Language switch",
   "willRestart": "Will restart automatically",
   "notSupport": "not Support",
+  "focusLogin" : "focusLogin",
+  "focusLoginResult" : "",
   "___________________FileStore___________________": "註解",
   "noPermission": "Permission denied",
   "___________________AboutPage___________________": "註解",
