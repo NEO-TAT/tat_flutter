@@ -21,7 +21,7 @@ class _LanguagePageState extends State<LanguagePage> {
   @override
   void initState() {
     super.initState();
-    focusLogin = Model.instance.focusLogin;
+    focusLogin = Model.instance.getOtherSetting().focusLogin;
   }
 
   @override
@@ -114,7 +114,8 @@ class _LanguagePageState extends State<LanguagePage> {
                   onChanged: (bool value) {
                     setState(() {
                       focusLogin = value;
-                      Model.instance.setFocusLogin(value);
+                      Model.instance.getOtherSetting().focusLogin = value;
+                      Model.instance.saveOtherSetting();
                     });
                   },
                 ),
