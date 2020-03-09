@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:big5/big5.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
+import 'package:flutter_app/src/connector/requests/requests.dart' as requests;
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/json/CourseFileJson.dart';
 import 'package:html/dom.dart' as html;
@@ -495,11 +497,18 @@ class ISchoolPlusConnector {
   static Future<bool> checkLogin() async {
     Log.d("ISchoolPlus CheckLogin");
     ConnectorParameter parameter;
+    http.Response response;
     _isLogin = false;
     try {
       parameter = ConnectorParameter(_checkLoginUrl);
-      String result = await RequestsConnector.getDataByGet(parameter);
-      if (result.contains("Guest")) {
+      await RequestsConnector.getDataByPostResponse(parameter).then((value) {
+        response = value.rawResponse;
+      });
+      /*
+      requests.Response result =  await RequestsConnector.getDataByPostResponse(parameter);
+      Log.d( result.rawResponse.statusCode.toString() );
+       */
+      if (response.statusCode != HttpStatus.ok) {
         //代表登入失敗
         return false;
       } else {

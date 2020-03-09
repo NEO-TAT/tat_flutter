@@ -1306,6 +1306,105 @@ class S {
       args: [],
     );
   }
+
+  String get ___________________CreditUi___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________CreditUi___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get culturalDimension {
+    return Intl.message(
+      'Cultural dimension',
+      name: 'culturalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get historicalDimension {
+    return Intl.message(
+      'Historical dimension',
+      name: 'historicalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get philosophicalDimension {
+    return Intl.message(
+      'Philosophical dimension',
+      name: 'philosophicalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ruleDimension {
+    return Intl.message(
+      'Rule of law',
+      name: 'ruleDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get socialDimension {
+    return Intl.message(
+      'Social dimension',
+      name: 'socialDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get naturalDimension {
+    return Intl.message(
+      'Natural dimension',
+      name: 'naturalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get sociologicalDimension {
+    return Intl.message(
+      'Sociological Dimension',
+      name: 'sociologicalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creativeDirection {
+    return Intl.message(
+      'Creative direction',
+      name: 'creativeDirection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get aestheticDimension {
+    return Intl.message(
+      'Aesthetic dimension',
+      name: 'aestheticDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get culturalHistoricalDimension {
+    return Intl.message(
+      'Cultural and Historical dimension',
+      name: 'culturalHistoricalDimension',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
