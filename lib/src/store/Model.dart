@@ -305,6 +305,9 @@ class Model {
     //DioConnector.instance.deleteCookies();
   }
 
+  bool get focusLogin{
+    return _focusLogin;
+  }
 
   Future<void> setFocusLogin(bool value) async{
     _focusLogin = value;

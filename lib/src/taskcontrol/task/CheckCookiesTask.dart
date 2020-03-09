@@ -31,6 +31,11 @@ class CheckCookiesTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     Log.d(checkSystem);
+    if( Model.instance.focusLogin ){  //直接重新登入不檢查
+      checkSystem += checkNTUT;
+      Model.instance.setTempData(tempDataKey, checkSystem);
+      return TaskStatus.TaskFail;
+    }
     MyProgressDialog.showProgressDialog(context, R.current.checkLogin);
     String loginSystem = "";
     Map<String, Function> checkMap = {

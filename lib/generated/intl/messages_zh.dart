@@ -90,6 +90,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "fileAttachmentDetected" : MessageLookupByLibrary.simpleMessage("偵測到檔案附件"),
     "fileViewer" : MessageLookupByLibrary.simpleMessage("檔案管理"),
     "findNewVersion" : MessageLookupByLibrary.simpleMessage("發現新版本"),
+    "focusLogin" : MessageLookupByLibrary.simpleMessage("強制登入"),
+    "focusLoginResult" : MessageLookupByLibrary.simpleMessage("勾選可以解決資料取得一直錯誤，但是會讓取得資料速度變慢"),
     "getCalendar" : MessageLookupByLibrary.simpleMessage("取得行事曆中..."),
     "getCalendarError" : MessageLookupByLibrary.simpleMessage("取得行事曆中"),
     "getCourse" : MessageLookupByLibrary.simpleMessage("取得課表..."),
