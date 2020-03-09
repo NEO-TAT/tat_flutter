@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -63,6 +65,12 @@ class _MainScreenState extends State<MainScreen> {
     return MaterialApp(
       theme: ThemeData(
         fontFamily: 'GenSenMaruGothicTW',
+        accentColor: AppColors.mainColor,
+        cursorColor: AppColors.mainColor,
+        indicatorColor: AppColors.mainColor,
+        cupertinoOverrideTheme: CupertinoThemeData(
+          primaryColor: AppColors.mainColor,
+        ),
       ),
       home: WillPopScope(
         onWillPop: _onWillPop,
