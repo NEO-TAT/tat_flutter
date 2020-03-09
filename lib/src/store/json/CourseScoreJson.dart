@@ -1,18 +1,22 @@
 import 'package:flutter_app/src/store/JsonInit.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
+part 'CourseScoreJson.g.dart';
 
-class CourseScore {
+
+@JsonSerializable()
+class CourseScoreJson {
   SemesterJson semester;
   RankJson now;
   RankJson history;
-  List<Score> courseScoreList;
+  List<ScoreJson> courseScoreList;
   double averageScore; //總平均
   double performanceScore; //操行成績
   double totalCredit; //修習總學分數
   double takeCredit; //實得學分數
 
-  CourseScore(
+  CourseScoreJson(
       {this.semester,
       this.now,
       this.averageScore,
@@ -49,7 +53,7 @@ class CourseScore {
 
   String getTotalCreditString() {
     double total = 0;
-    for (Score score in courseScoreList) {
+    for (ScoreJson score in courseScoreList) {
       total += score.credit;
     }
     return (totalCredit != 0) ? totalCredit.toString() : total.toString();
@@ -77,8 +81,14 @@ class CourseScore {
           takeCredit.toString()
         ]);
   }
+
+  factory CourseScoreJson.fromJson(Map<String, dynamic> json) =>
+      _$CourseScoreJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseScoreJsonToJson(this);
+
 }
 
+@JsonSerializable()
 class RankJson {
   RankItemJson course;
   RankItemJson department;
@@ -99,8 +109,14 @@ class RankJson {
             "---------department--------          \n%s \n",
         [course.toString(), department.toString()]);
   }
+
+  factory RankJson.fromJson(Map<String, dynamic> json) =>
+      _$RankJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$RankJsonToJson(this);
+
 }
 
+@JsonSerializable()
 class RankItemJson {
   double rank;
   double total;
@@ -128,15 +144,21 @@ class RankItemJson {
           total.toString(),
         ]);
   }
+
+  factory RankItemJson.fromJson(Map<String, dynamic> json) =>
+      _$RankItemJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$RankItemJsonToJson(this);
+
 }
 
-class Score {
+@JsonSerializable()
+class ScoreJson {
   String courseId;
   String name;
   String score;
   double credit; //學分
 
-  Score({this.courseId, this.name, this.score, this.credit}) {
+  ScoreJson({this.courseId, this.name, this.score, this.credit}) {
     courseId = JsonInit.stringInit(courseId);
     name = JsonInit.stringInit(name);
     score = JsonInit.stringInit(score);
@@ -155,4 +177,10 @@ class Score {
           credit.toString(),
         ]);
   }
+
+  factory ScoreJson.fromJson(Map<String, dynamic> json) =>
+      _$ScoreJsonFromJson(json);
+  Map<String, dynamic> toJson() => _$ScoreJsonToJson(this);
+
+
 }

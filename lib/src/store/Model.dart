@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
+import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
@@ -28,8 +29,11 @@ class Model {
   static final Model instance = Model._privateConstructor();
   SharedPreferences pref;
   static String userDataJsonKey = "UserDataJsonKey";
+  //----------List----------//
   static String courseTableJsonKey = "CourseTableJsonListKey";
   static String courseSemesterJsonKey = "CourseSemesterListJson";
+  static String scoreJsonKey = "ScoreJsonListKey";
+  //----------Object----------//
   static String newAnnouncementJsonKey = "newAnnouncementJson";
   static String settingJsonKey = "SettingJsonKey";
   static bool _focusLogin;
@@ -37,6 +41,7 @@ class Model {
   NewAnnouncementJsonList _newAnnouncementList;
   List<CourseTableJson> _courseTableList;
   List<SemesterJson> _courseSemesterList;
+  List<CourseScoreJson> _courseScoreList;
   SettingJson _setting;
   Map<String, dynamic> _tempData;
 
@@ -196,6 +201,39 @@ class Model {
         : SettingJson();
   }
 
+
+
+  //--------------------List<CourseScoreJson>--------------------//
+  Future<void> saveCourseScoreList() async {
+    await _save(scoreJsonKey);
+  }
+
+  List<CourseScoreJson> getCourseScoreList() {
+    return _courseScoreList;
+  }
+
+  Future<void> clearCourseScoreList() async {
+    _courseScoreList = List();
+    await saveCourseScoreList();
+  }
+
+  Future<void> setCourseScoreList( List<CourseScoreJson> value) async {
+    _courseScoreList = value;
+    await saveCourseScoreList();
+  }
+
+
+  Future<void> loadCourseScoreList() async {
+    List<String> readJsonList = List();
+    readJsonList = await _readStringList(scoreJsonKey);
+    _courseScoreList = List();
+    if (readJsonList != null) {
+      for (String readJson in readJsonList) {
+        _courseScoreList.add(CourseScoreJson.fromJson(json.decode(readJson)));
+      }
+    }
+  }
+
   //--------------------CourseSettingJson--------------------//
   Future<void> saveCourseSetting() async {
     await saveSetting();
@@ -300,7 +338,8 @@ class Model {
     await loadNewAnnouncement();
     await loadCourseTableList();
     await loadSetting();
-    await readFocusLogin();
+    await loadFocusLogin();
+    await loadCourseScoreList();
     String version = await AppUpdate.getAppVersion();
     _writeString("version", version);
 
@@ -316,7 +355,7 @@ class Model {
     await pref.setBool("FocusLogin", value);
   }
 
-  Future<void> readFocusLogin() async{
+  Future<void> loadFocusLogin() async{
     _focusLogin = pref.getBool("FocusLogin");
     _focusLogin = _focusLogin ?? false;
   }
@@ -326,6 +365,7 @@ class Model {
     await clearUserData();
     await clearSemesterJsonList();
     await clearCourseTableList();
+    await clearCourseScoreList();
     await clearNewAnnouncement();
     await clearAnnouncementSetting();
     await clearCourseSetting();
@@ -341,14 +381,16 @@ class Model {
       courseTableJsonKey,
       courseSemesterJsonKey,
       newAnnouncementJsonKey,
-      settingJsonKey
+      settingJsonKey,
+      scoreJsonKey
     ];
     List saveObj = [
       _userData,
       _courseTableList,
       _courseSemesterList,
       _newAnnouncementList,
-      _setting
+      _setting,
+      _courseScoreList
     ];
     if (saveKey.contains(key)) {
       int index = saveKey.indexOf(key);
