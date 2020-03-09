@@ -161,6 +161,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       await TaskHandler.instance.startTaskQueue(context);
     }
     List<SemesterJson> semesterList = Model.instance.getSemesterList();
+    Model.instance.saveSemesterJsonList();
     showDialog(
       useRootNavigator: false,
       context: context,
