@@ -724,7 +724,7 @@ class S {
 
   String get titleCourse {
     return Intl.message(
-      'Schedule',
+      'Course',
       name: 'titleCourse',
       desc: '',
       args: [],
@@ -830,10 +830,10 @@ class S {
     );
   }
 
-  String get titleEmail {
+  String get titleNotification {
     return Intl.message(
-      'Email',
-      name: 'titleEmail',
+      'Notification',
+      name: 'titleNotification',
       desc: '',
       args: [],
     );
@@ -893,6 +893,24 @@ class S {
     );
   }
 
+  String get ___________________CreditUI___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________CreditUI___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get titleScore {
+    return Intl.message(
+      'Score',
+      name: 'titleScore',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________OtherUi___________________ {
     return Intl.message(
       '註解',
@@ -920,6 +938,33 @@ class S {
     );
   }
 
+  String get fileViewer {
+    return Intl.message(
+      'Downloads',
+      name: 'fileViewer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get languageSetting {
+    return Intl.message(
+      'Language',
+      name: 'languageSetting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get titleOther {
+    return Intl.message(
+      'Other',
+      name: 'titleOther',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get creditViewer {
     return Intl.message(
       'Credit Viewer',
@@ -933,33 +978,6 @@ class S {
     return Intl.message(
       'Credit Search...',
       name: 'creditSearch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get fileViewer {
-    return Intl.message(
-      'fileViewer',
-      name: 'fileViewer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get titleElse {
-    return Intl.message(
-      'Other',
-      name: 'titleElse',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get ___________________settingUi___________________ {
-    return Intl.message(
-      '註解',
-      name: '___________________settingUi___________________',
       desc: '',
       args: [],
     );
@@ -1430,7 +1448,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale('en', ''), Locale('zh', ''),
+      Locale('zh', ''), Locale('en', ''),
     ];
   }
 

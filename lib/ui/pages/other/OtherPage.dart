@@ -1,48 +1,94 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
-import 'package:flutter_app/ui/other/ListViewAnimator.dart';
+import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:flutter_app/ui/other/CustomRoute.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
-import 'package:flutter_app/ui/pages/other/page/CreditViewerPage.dart';
+import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
+import 'package:flutter_app/ui/pages/other/page/LanguagePage.dart';
+import 'package:flutter_app/ui/screen/LoginScreen.dart';
+import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:random_color/random_color.dart';
 
-import 'page/ScoreViewerPage.dart';
+enum onListViewPress {
+  Language,
+  FileViewer,
+  Logout,
+  Report,
+  About,
+  ChangePassword
+}
 
 class OtherPage extends StatefulWidget {
+  final PageController pageController;
+  OtherPage(this.pageController);
+
   @override
   _OtherPageState createState() => _OtherPageState();
 }
 
-enum onListViewPress { Score,  CreditViewer ,FileViewer }
-
 class _OtherPageState extends State<OtherPage> {
-  final List<Map> listViewData = [
+  final List<Map> optionList = [
     {
-      "icon": Icons.search,
-      "title": R.current.scoreSearch,
-      "onPress": onListViewPress.Score
+      "icon": EvaIcons.globeOutline,
+      "color": Colors.orange,
+      "title": R.current.languageSetting,
+      "onPress": onListViewPress.Language
     },
     {
-      "icon": Icons.search,
-      "title": R.current.creditViewer,
-      "onPress": onListViewPress.CreditViewer
-    },
-    {
-      "icon": Icons.file_download,
-      "title": R.current.downloadFile,
+      "icon": EvaIcons.downloadOutline,
+      "color": Colors.yellow[700],
+      "title": R.current.fileViewer,
       "onPress": onListViewPress.FileViewer
     },
+//    {
+//      "icon": EvaIcons.syncOutline,
+//      "color": Colors.lightGreen,
+//      "title": R.current.changePassword,
+//      "onPress": onListViewPress.ChangePassword
+//    },
+    {
+      "icon": EvaIcons.undoOutline,
+      "color": Colors.teal[400],
+      "title": R.current.logout,
+      "onPress": onListViewPress.Logout
+    },
+    {
+      "icon": EvaIcons.messageSquareOutline,
+      "color": Colors.cyan,
+      "title": R.current.feedback,
+      "onPress": onListViewPress.Report
+    },
+    {
+      "icon": EvaIcons.infoOutline,
+      "color": Colors.lightBlue,
+      "title": R.current.about,
+      "onPress": onListViewPress.About
+    }
   ];
+
+  String formUrl =
+      "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {});
   }
 
   void _onListViewPress(onListViewPress value) {
     switch (value) {
+      case onListViewPress.Logout:
+        Model.instance.logout().then((_) {
+          Navigator.of(context).push(CustomRoute(LoginScreen())).then((_) {
+            widget.pageController.jumpToPage(0); //跳轉到第一頁
+          });
+        });
+        break;
       case onListViewPress.FileViewer:
         FileStore.findLocalPath(context).then((filePath) {
           Navigator.of(context).push(
@@ -56,23 +102,32 @@ class _OtherPageState extends State<OtherPage> {
           );
         });
         break;
-      case onListViewPress.CreditViewer:
+      case onListViewPress.About:
         Navigator.of(context).push(
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            child: CreditViewerPage(),
+            type: PageTransitionType.downToUp,
+            child: AboutPage(),
           ),
         );
         break;
-      case onListViewPress.Score:
+      case onListViewPress.Language:
         Navigator.of(context).push(
           PageTransition(
-            type: PageTransitionType.leftToRight,
-            child: ScoreViewerPage(),
+            type: PageTransitionType.downToUp,
+            child: LanguagePage(widget.pageController),
+          ),
+        );
+        break;
+      case onListViewPress.Report:
+        Navigator.of(context).push(
+          PageTransition(
+            type: PageTransitionType.downToUp,
+            child: WebViewPluginPage(R.current.feedback, formUrl),
           ),
         );
         break;
       default:
+        MyToast.show(R.current.noFunction);
         break;
     }
   }
@@ -81,52 +136,103 @@ class _OtherPageState extends State<OtherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(R.current.titleElse),
+        title: Text(R.current.titleOther),
       ),
-      body: ListView.separated(
-        itemCount: listViewData.length,
-        itemBuilder: (context, index) {
-          Widget widget;
-          widget = _buildOther(listViewData[index]);
-          return GestureDetector(
-              behavior: HitTestBehavior.opaque, //讓透明部分有反應
-              child: WidgetAnimator(widget),
-              onTap: () {
-                _onListViewPress(listViewData[index]['onPress']);
-              });
-        },
-        separatorBuilder: (context, index) {
-          // 顯示格線
-          return Container(
-            color: Colors.black12,
-            height: 1,
-          );
-        },
+      body: AnimationLimiter(
+        child: Container(
+          child: Column(
+            children: AnimationConfiguration.toStaggeredList(
+              childAnimationBuilder: (widget) => SlideAnimation(
+                horizontalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: widget,
+                ),
+              ),
+              children: <Widget>[
+                _buildHeader(),
+                SizedBox(
+                  height: 16,
+                ),
+                for (Map option in optionList) _buildSetting(option),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  Container _buildOther(Map data) {
+  Widget _buildHeader() {
+    UserInfoJson userInfo = Model.instance.getUserInfo();
+    String givenName = userInfo.givenName;
+    String userMail = userInfo.userMail;
+    givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
+    userMail = (userMail.isEmpty) ? "" : userMail;
+    Widget userImage = NTUTConnector.getUserImage();
     return Container(
-      //color: Colors.yellow,
+      color: Colors.white,
       padding:
-          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Icon(
-            data['icon'],
-            color: RandomColor()
-                .randomColor(colorSaturation: ColorSaturation.highSaturation),
+          Container(
+            child: userImage,
           ),
           SizedBox(
-            width: 20.0,
+            width: 16.0,
           ),
-          Text(
-            data['title'],
-            style: TextStyle(fontSize: 18),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                givenName,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Text(
+                userMail,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildSetting(Map data) {
+    return Material(
+      color: Colors.white,
+      child: InkWell(
+        onTap: () {
+          _onListViewPress(data['onPress']);
+        },
+        child: Container(
+          padding:
+          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Icon(
+                data['icon'],
+                color: data['color'],
+              ),
+              SizedBox(
+                width: 20.0,
+              ),
+              Text(
+                data['title'],
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

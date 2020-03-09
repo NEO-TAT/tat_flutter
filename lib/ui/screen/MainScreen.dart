@@ -1,24 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
-import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
-import 'package:flutter_app/ui/pages/mail/NewAnnouncementPage.dart';
+import 'package:flutter_app/ui/pages/notification/NotificationPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
-import 'package:flutter_app/ui/pages/setting/SettingPage.dart';
+import 'package:flutter_app/ui/pages/score/ScorePage.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
-import '../../debug/log/Log.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -41,10 +37,10 @@ class _MainScreenState extends State<MainScreen> {
       _pageList = List();
 
       _pageList.add(CourseTablePage());
-      _pageList.add(NewAnnouncementPage());
+      _pageList.add(NotificationPage());
       _pageList.add(CalendarPage());
-      _pageList.add(OtherPage());
-      _pageList.add(SettingPage(_pageController));
+      _pageList.add(ScoreViewerPage());
+      _pageList.add(OtherPage(_pageController));
       _setLang();
       //_addTest();
     });
@@ -80,6 +76,15 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'GenSenMaruGothicTW',
+        accentColor: AppColors.mainColor,
+        cursorColor: AppColors.mainColor,
+        indicatorColor: AppColors.mainColor,
+        cupertinoOverrideTheme: CupertinoThemeData(
+          primaryColor: AppColors.mainColor,
+        ),
+      ),
       home: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
@@ -131,42 +136,41 @@ class _MainScreenState extends State<MainScreen> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.search,
+            EvaIcons.clockOutline,
           ),
           title: Text(
-            'Search',
+            R.current.titleCourse,
           ),
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.email,
+            EvaIcons.emailOutline,
           ),
           title: Text(
-            'Email',
+            R.current.titleNotification,
           ),
         ),
-
         BottomNavigationBarItem(
             icon: Icon(
-              Icons.calendar_today,
+              EvaIcons.calendarOutline,
             ),
             title: Text(
-              'Calendar',
+              R.current.calendar,
             )),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.pages,
+            EvaIcons.bookOpenOutline,
           ),
           title: Text(
-            'Other',
+            R.current.titleScore,
           ),
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.settings,
+            EvaIcons.menu,
           ),
           title: Text(
-            'Setting',
+            R.current.titleOther,
           ),
         ),
       ],

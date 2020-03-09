@@ -28,7 +28,7 @@ class ExpansionTile {
 
 class _ScoreViewerPageState extends State<ScoreViewerPage> {
   bool isLoading = true;
-  List<CourseScoreJson> courseScoreList;
+  List<CourseScore> courseScoreList;
   ScrollController _scrollController = ScrollController();
   List<ExpansionTile> _expansionControlList = List();
   double deviceHeight;
@@ -121,14 +121,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
     );
   }
 
-  Widget _buildOneSemesterItem(int index, CourseScoreJson courseScore) {
-    List<ScoreJson> scoreList = courseScore.courseScoreList;
+  Widget _buildOneSemesterItem(int index, CourseScore courseScore) {
+    List<Score> scoreList = courseScore.courseScoreList;
     GlobalKey _myKey = new GlobalKey();
     String semesterString =
         courseScore.semester.year + "-" + courseScore.semester.semester;
     List<Widget> widgetList = List();
 
-    for (ScoreJson score in scoreList) {
+    for (Score score in scoreList) {
       widgetList.add(_buildScoreItem(score));
     }
     widgetList.add(_buildSpiltLine());
@@ -198,7 +198,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
     );
   }
 
-  Widget _buildScoreItem(ScoreJson score) {
+  Widget _buildScoreItem(Score score) {
     TextStyle textStyle = TextStyle(fontSize: 16);
     return Container(
       child: Row(
@@ -218,7 +218,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
     );
   }
 
-  Widget _buildAverageScoreItem(CourseScoreJson courseScore) {
+  Widget _buildAverageScoreItem(CourseScore courseScore) {
     TextStyle textStyle = TextStyle(fontSize: 16);
     return Container(
       child: Column(
@@ -248,7 +248,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> {
     );
   }
 
-  Widget _buildRank(CourseScoreJson courseScore) {
+  Widget _buildRank(CourseScore courseScore) {
     TextStyle textStyle = TextStyle(fontSize: 24);
     RankJson rankHistory = courseScore.history;
     RankJson rankNow = courseScore.now;
