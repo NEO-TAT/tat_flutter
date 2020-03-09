@@ -17,7 +17,7 @@ class ScoreRankTask extends TaskModel {
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, R.current.getScoreRank);
     ScoreConnectorStatus value = await ScoreConnector.login();
-    List<CourseScoreJson> courseList = await ScoreConnector.getScoreRankList();
+    List<CourseScore> courseList = await ScoreConnector.getScoreRankList();
     MyProgressDialog.hideProgressDialog();
     if (value != ScoreConnectorStatus.LoginSuccess || courseList == null) {
       _handleError();
