@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
