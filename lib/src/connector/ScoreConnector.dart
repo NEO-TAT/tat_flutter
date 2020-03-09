@@ -114,13 +114,13 @@ class ScoreConnector {
           scoreNode = scoreNodes[j];
           CourseInfoJson score = CourseInfoJson();
           score.courseId =
-              scoreNode.getElementsByTagName("th")[0].text.replaceAll("\n", "");
+              scoreNode.getElementsByTagName("th")[0].text.replaceAll(RegExp(r"[\s| ]"), "");
           score.name =
-              scoreNode.getElementsByTagName("th")[2].text.replaceAll("\n", "");
+              scoreNode.getElementsByTagName("th")[2].text.replaceAll(RegExp(r"[\s| ]"), "");
           score.credit =
               double.parse(scoreNode.getElementsByTagName("th")[5].text);
           score.score =
-              scoreNode.getElementsByTagName("th")[6].text.replaceAll("\n", "");
+              scoreNode.getElementsByTagName("th")[6].text.replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);
         }
 

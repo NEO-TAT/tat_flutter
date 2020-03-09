@@ -211,6 +211,14 @@ class Model {
     return _courseScoreList.semesterCourseScoreList;
   }
 
+  GraduationInformationJson getGraduationInformation(){
+    return _courseScoreList.graduationInformation;
+  }
+
+  CourseScoreCreditJson getCourseScoreCredit() {
+    return _courseScoreList;
+  }
+
   Future<void> clearCourseScoreCredit() async {
     _courseScoreList = CourseScoreCreditJson();
     await saveCourseScoreCredit();
