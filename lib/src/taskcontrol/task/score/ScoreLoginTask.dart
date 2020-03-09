@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ScoreConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';

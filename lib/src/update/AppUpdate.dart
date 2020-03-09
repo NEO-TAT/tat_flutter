@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
