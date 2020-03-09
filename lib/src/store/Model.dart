@@ -32,16 +32,15 @@ class Model {
   //----------List----------//
   static String courseTableJsonKey = "CourseTableJsonListKey";
   static String courseSemesterJsonKey = "CourseSemesterListJson";
-  static String scoreJsonKey = "ScoreJsonListKey";
   //----------Object----------//
+  static String scoreCreditJsonKey = "ScoreCreditJsonKey";
   static String newAnnouncementJsonKey = "newAnnouncementJson";
   static String settingJsonKey = "SettingJsonKey";
-  static bool _focusLogin;
   UserDataJson _userData;
   NewAnnouncementJsonList _newAnnouncementList;
   List<CourseTableJson> _courseTableList;
   List<SemesterJson> _courseSemesterList;
-  List<CourseScoreJson> _courseScoreList;
+  CourseScoreCreditJson _courseScoreList;
   SettingJson _setting;
   Map<String, dynamic> _tempData;
 
@@ -203,35 +202,36 @@ class Model {
 
 
 
-  //--------------------List<CourseScoreJson>--------------------//
-  Future<void> saveCourseScoreList() async {
-    await _save(scoreJsonKey);
+  //--------------------CourseScoreCreditJson--------------------//
+  Future<void> saveCourseScoreCredit() async {
+    await _save(scoreCreditJsonKey);
   }
 
-  List<CourseScoreJson> getCourseScoreList() {
-    return _courseScoreList;
+  List<SemesterCourseScoreJson> getSemesterCourseScore() {
+    return _courseScoreList.semesterCourseScoreList;
   }
 
-  Future<void> clearCourseScoreList() async {
-    _courseScoreList = List();
-    await saveCourseScoreList();
+  Future<void> clearCourseScoreCredit() async {
+    _courseScoreList = CourseScoreCreditJson();
+    await saveCourseScoreCredit();
   }
 
-  Future<void> setCourseScoreList( List<CourseScoreJson> value) async {
+  Future<void> setCourseScoreCredit( CourseScoreCreditJson value) async {
     _courseScoreList = value;
-    await saveCourseScoreList();
+    await saveCourseScoreCredit();
   }
 
+  Future<void> setSemesterCourseScore( List<SemesterCourseScoreJson> value) async {
+    _courseScoreList.semesterCourseScoreList = value;
+    await saveCourseScoreCredit();
+  }
 
-  Future<void> loadCourseScoreList() async {
-    List<String> readJsonList = List();
-    readJsonList = await _readStringList(scoreJsonKey);
-    _courseScoreList = List();
-    if (readJsonList != null) {
-      for (String readJson in readJsonList) {
-        _courseScoreList.add(CourseScoreJson.fromJson(json.decode(readJson)));
-      }
-    }
+  Future<void> loadCourseScoreCredit() async {
+    String readJson;
+    readJson = await _readString(scoreCreditJsonKey);
+    _courseScoreList = (readJson != null)
+        ? CourseScoreCreditJson.fromJson(json.decode(readJson))
+        : CourseScoreCreditJson();
   }
 
   //--------------------CourseSettingJson--------------------//
@@ -338,34 +338,18 @@ class Model {
     await loadNewAnnouncement();
     await loadCourseTableList();
     await loadSetting();
-    await loadFocusLogin();
-    await loadCourseScoreList();
+    await loadCourseScoreCredit();
     String version = await AppUpdate.getAppVersion();
     _writeString("version", version);
 
     //DioConnector.instance.deleteCookies();
   }
 
-  bool get focusLogin{
-    return _focusLogin;
-  }
-
-  Future<void> setFocusLogin(bool value) async{
-    _focusLogin = value;
-    await pref.setBool("FocusLogin", value);
-  }
-
-  Future<void> loadFocusLogin() async{
-    _focusLogin = pref.getBool("FocusLogin");
-    _focusLogin = _focusLogin ?? false;
-  }
-
-
   Future<void> logout() async {
     await clearUserData();
     await clearSemesterJsonList();
     await clearCourseTableList();
-    await clearCourseScoreList();
+    await clearCourseScoreCredit();
     await clearNewAnnouncement();
     await clearAnnouncementSetting();
     await clearCourseSetting();
@@ -382,7 +366,7 @@ class Model {
       courseSemesterJsonKey,
       newAnnouncementJsonKey,
       settingJsonKey,
-      scoreJsonKey
+      scoreCreditJsonKey
     ];
     List saveObj = [
       _userData,

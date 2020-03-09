@@ -31,7 +31,7 @@ class CheckCookiesTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     Log.d(checkSystem);
-    if( Model.instance.focusLogin ){  //直接重新登入不檢查
+    if( Model.instance.getOtherSetting().focusLogin ){  //直接重新登入不檢查
       checkSystem += checkNTUT;
       Model.instance.setTempData(tempDataKey, checkSystem);
       return TaskStatus.TaskFail;
