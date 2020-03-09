@@ -33,7 +33,10 @@ class FileDownload {
     ProgressCallback onReceiveProgress; //下載進度回調
 
     await Notifications.instance.showIndeterminateProgressNotification(value);
-    if (name.isNotEmpty && !name.contains(".")) {
+    if( name.isEmpty ){
+      realFileName = await Connector.getFileName(url);
+    }
+    else if (!name.contains(".")) {
       //代表名字已經包含副檔名
       //代表沒有名字直接使用FlutterDownload自動取名
       realFileName = await Connector.getFileName(url);
