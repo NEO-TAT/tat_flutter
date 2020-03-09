@@ -13,19 +13,6 @@ class ScoreViewerPage extends StatefulWidget {
   _ScoreViewerPageState createState() => _ScoreViewerPageState();
 }
 
-class ExpansionTile {
-  double expansionHeight; //隱藏時高度
-  double height; //關閉時高度
-  int index;
-  bool isExpansion;
-  GlobalKey<AppExpansionTileState> key;
-
-  ExpansionTile() {
-    key = GlobalKey();
-    isExpansion = false;
-  }
-}
-
 class _ScoreViewerPageState extends State<ScoreViewerPage>
     with SingleTickerProviderStateMixin {
   bool isLoading = true;
