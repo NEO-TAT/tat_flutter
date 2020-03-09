@@ -80,9 +80,11 @@ class _CreditViewerPage extends State<CreditViewerPage> {
         graduationMap = await CourseConnector.getGraduation(
             Model.instance.getAccount().substring(0, 3), department);
         MyProgressDialog.hideProgressDialog();
+        calculationCredit();  //計算學分
         return true;
       },
       errorFunction: () {
+        MyProgressDialog.hideProgressDialog();
         ErrorDialogParameter parameter = ErrorDialogParameter(
           context: context,
           desc: R.current.getCourseDetailError,
@@ -92,7 +94,15 @@ class _CreditViewerPage extends State<CreditViewerPage> {
       successFunction: () async {},
     ));
     await TaskHandler.instance.startTaskQueue(context);
+    Log.d(courseDataSemester.toString());
 
+    courseDataLength = courseDataSemester.keys.toList().length;
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void calculationCredit() {
     generalLessonMap["core"] = 0; //博雅核心
     generalLessonMap["select"] = 0; //博雅選修
     for (String type in creditType) {
@@ -110,14 +120,24 @@ class _CreditViewerPage extends State<CreditViewerPage> {
       List courseList = courseDataSemester[semester];
       for (int i = 0; i < courseList.length; i++) {
         Map courseItem = courseList[i];
+        //不需要計算的跳過
+        if( courseItem["score"] <60 ){  //不及格
+          continue;
+        }
+        if( courseItem.containsKey("extra") ){
+          if( courseItem["extra"].contains( "撤選") ||  courseItem["extra"].contains( "未及格")){
+            continue;
+          }
+        }
         //計算總學分
         String key = courseItem["category"];
+        int credit = courseItem["credit"];
         if (totalCreditMap.containsKey(key)) {
-          totalCreditMap[key] += courseItem["credit"];
+          totalCreditMap[key] += credit;
         } else {
-          totalCreditMap[key] = courseItem["credit"];
+          totalCreditMap[key] = credit;
         }
-        totalCreditMap["lowCredit"] += courseItem["credit"];
+        totalCreditMap["lowCredit"] += credit;
         //計算課程按造分類
         String category = courseItem["category"];
         courseDataByType[category].add(courseItem);
@@ -132,23 +152,18 @@ class _CreditViewerPage extends State<CreditViewerPage> {
             }
             if (courseItem.containsKey("core")) {
               //博雅核心課程
-              generalLessonMap["core"] += courseItem['credit'];
+              generalLessonMap["core"] += credit;
             } else {
               //博雅選修課程
-              generalLessonMap["select"] += courseItem['credit'];
+              generalLessonMap["select"] += credit;
             }
           } else {
-            totalCreditMap["otherDepartmentCredit"] += courseItem['credit'];
+            totalCreditMap["otherDepartmentCredit"] += credit;
           }
           //計算外系課程
-
         }
       }
     }
-    courseDataLength = courseDataSemester.keys.toList().length;
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -236,7 +251,7 @@ class _CreditViewerPage extends State<CreditViewerPage> {
             Expanded(
               child: Text("外系學分:"),
             ),
-            Text( totalCreditMap["otherDepartmentCredit"].toString() )
+            Text(totalCreditMap["otherDepartmentCredit"].toString())
           ],
         ),
       ),
@@ -271,7 +286,7 @@ class _CreditViewerPage extends State<CreditViewerPage> {
         ),
       ),
       onTap: () {
-        Log.d( courseDataByType[type].toString() );
+        Log.d(courseDataByType[type].toString());
       },
     );
   }

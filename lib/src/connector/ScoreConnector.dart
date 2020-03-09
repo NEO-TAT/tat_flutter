@@ -239,10 +239,16 @@ class ScoreConnector {
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("tbody").first;
       nodes = node.getElementsByTagName("tr");
-      for( int i = 0 ; i < nodes.length ; i++){
+      for( int i = 2 ; i < nodes.length ; i++){
         node = nodes[i];
         if ( node.innerHtml.contains("＊")){
-          String name = node.getElementsByTagName("td")[7].text.replaceAll(RegExp(r"[\s|\n| ]"), "");
+          String name;
+          if( node.getElementsByTagName("td")[0].attributes.containsKey("rowspan")){
+            name = node.getElementsByTagName("td")[7].text;
+          }else{
+            name = node.getElementsByTagName("td")[3].text;
+          }
+          name = name.replaceAll(RegExp(r"[\s|\n| ]"), "");
           coreGeneralLessonList.add(name);
         }
       }
