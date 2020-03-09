@@ -1,7 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';

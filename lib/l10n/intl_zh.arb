@@ -134,6 +134,8 @@
   "languageSwitch" : "語言切換",
   "willRestart" : "將自動重啟並套用語言",
   "notSupport" :  "不支持查詢非自己課程",
+  "focusLogin" : "強制登入",
+  "focusLoginResult" : "勾選可以解決資料取得一直錯誤，但是會讓取得資料速度變慢",
   "___________________FileStore___________________": "註解",
   "noPermission": "沒有權限",
   "___________________AboutPage___________________": "註解",

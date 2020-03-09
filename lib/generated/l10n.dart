@@ -1244,6 +1244,24 @@ class S {
     );
   }
 
+  String get focusLogin {
+    return Intl.message(
+      'focusLogin',
+      name: 'focusLogin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get focusLoginResult {
+    return Intl.message(
+      '',
+      name: 'focusLoginResult',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',

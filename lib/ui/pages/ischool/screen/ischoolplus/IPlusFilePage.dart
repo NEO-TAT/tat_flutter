@@ -2,7 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';

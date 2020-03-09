@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
@@ -31,6 +31,11 @@ class CheckCookiesTask extends TaskModel {
   @override
   Future<TaskStatus> taskStart() async {
     Log.d(checkSystem);
+    if( Model.instance.focusLogin ){  //直接重新登入不檢查
+      checkSystem += checkNTUT;
+      Model.instance.setTempData(tempDataKey, checkSystem);
+      return TaskStatus.TaskFail;
+    }
     MyProgressDialog.showProgressDialog(context, R.current.checkLogin);
     String loginSystem = "";
     Map<String, Function> checkMap = {

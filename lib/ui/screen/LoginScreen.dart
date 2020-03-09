@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/generated/R.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
