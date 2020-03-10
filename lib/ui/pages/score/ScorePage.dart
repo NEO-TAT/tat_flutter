@@ -13,7 +13,10 @@ import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_app/ui/other/DynamicDialog.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/pages/score/GraduationPicker.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -62,32 +65,25 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   void _addSearchCourseTypeTask() async {
-    double progress = 0;
-    List<String> yearList = await CourseConnector.getYearList();
-    Log.d( yearList.toString() );
+    TaskHandler.instance.addTask(CheckCookiesTask(context,checkSystem: CheckCookiesTask.checkCourse));
+    await TaskHandler.instance.startTaskQueue(context);
+    GraduationPicker picker = GraduationPicker(context);
+    picker.show();
+
     TaskHandler.instance.addTask(TaskModelFunction(context,
         require: [CheckCookiesTask.checkCourse], taskFunction: () async {
-      DynamicDialog dialog  = DynamicDialog(context);
-      dialog.update(nowProgress:0 , message:"進度");
-      dialog.show();
       List<CourseInfoJson> courseInfoList =
           courseScoreCredit.getCourseInfoList();
       int total = courseScoreCredit.getCourseInfoList().length;
       for (int i = 0; i < total; i++) {
         CourseInfoJson courseInfo = courseInfoList[i];
         String courseId = courseInfo.courseId;
-        CourseExtraInfoJson courseExtraInfo =
-            await CourseConnector.getCourseExtraInfo(courseId);
-        if (courseExtraInfo == null) {
-          return false;
-        }
-        courseScoreCredit.getCourseByCourseId(courseId);
-        courseInfo.category = courseExtraInfo.course.category;
-        Log.d(courseInfo.category);
-        progress = i / total;
-        dialog.update(nowProgress:progress , message:"進度" , progressString:"$i/$total");
+        CourseConnector.getCourseExtraInfo(courseId).then( (courseExtraInfo) {
+          courseScoreCredit.getCourseByCourseId(courseId);
+          courseInfo.category = courseExtraInfo.course.category;
+          Log.d(courseInfo.category);
+        });
       }
-      dialog.dismiss();
       return true;
     }, errorFunction: () async {
       ErrorDialogParameter parameter = ErrorDialogParameter(
