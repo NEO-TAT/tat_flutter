@@ -64,7 +64,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         }); //尚未登入
       } else {
         _loadSetting();
-        _checkAppVersion();
+//        _checkAppVersion();
       }
     });
   }
