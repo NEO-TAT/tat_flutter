@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
@@ -26,6 +28,8 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   int _closeAppCount = 0;
   List<Widget> _pageList = List<Widget>();
+  FirebaseAnalytics analytics = FirebaseAnalytics();
+
 
   @override
   void initState() {
@@ -85,6 +89,9 @@ class _MainScreenState extends State<MainScreen> {
           primaryColor: AppColors.mainColor,
         ),
       ),
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
       home: WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
