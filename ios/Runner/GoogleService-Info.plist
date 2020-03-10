@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>415183436199-res205scjllrgkmt3acsm4feea7p6ojs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.415183436199-res205scjllrgkmt3acsm4feea7p6ojs</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>415183436199-0see1465jui108g6dih3s3hp873bmif4.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBf9Isg0TsB5f2dHv7SsiEQL7ngecySKgc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>415183436199</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>club.ntut.npc.tat</string>
+	<key>PROJECT_ID</key>
+	<string>npc-tat</string>
+	<key>STORAGE_BUCKET</key>
+	<string>npc-tat.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:415183436199:ios:094ed36b6de8d635c41e82</string>
+	<key>DATABASE_URL</key>
+	<string>https://npc-tat.firebaseio.com</string>
+</dict>
+</plist>
