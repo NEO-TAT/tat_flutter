@@ -1,11 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart';
-
-import 'video_thumbnail.dart';
 
 class FileIcon extends StatelessWidget {
   final FileSystemEntity file;
@@ -53,7 +50,7 @@ class FileIcon extends StatelessWidget {
             );
           }
           break;
-
+/*
         case "video":
           {
 //            return Image.file(
@@ -70,6 +67,7 @@ class FileIcon extends StatelessWidget {
             );
           }
           break;
+ */
 
         case "audio":
           {
