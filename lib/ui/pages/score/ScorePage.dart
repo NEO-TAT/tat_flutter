@@ -66,6 +66,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     TaskHandler.instance.addTask(TaskModelFunction(context,
         require: [CheckCookiesTask.checkCourse], taskFunction: () async {
       DynamicDialog dialog  = DynamicDialog(context);
+      dialog.update(nowProgress:0 , message:"進度");
       dialog.show();
       List<CourseInfoJson> courseInfoList =
           courseScoreCredit.getCourseInfoList();
