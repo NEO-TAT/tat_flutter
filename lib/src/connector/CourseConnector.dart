@@ -400,13 +400,13 @@ class CourseConnector {
       parameter.data = {"format": "-3", "year": year, "matric": "7"};
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      node =  tagNode.getElementsByTagName("tbody").first;
+      node = tagNode.getElementsByTagName("tbody").first;
       nodes = node.getElementsByTagName("tr");
       String href;
-      for( int i = 1; i<nodes.length ; i++){
+      for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         node = node.getElementsByTagName("a").first;
-        if( node.text.contains(department)){
+        if (node.text.contains(department)) {
           href = node.attributes["href"];
           break;
         }
@@ -415,7 +415,6 @@ class CourseConnector {
       parameter = ConnectorParameter(href);
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
-
 
       exp = RegExp(r"最低畢業學分：(\d+)學分");
       matches = exp.firstMatch(result);
@@ -440,6 +439,90 @@ class CourseConnector {
       matches = exp.firstMatch(result);
       */
       return graduationMap;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+  static Future<List<String>> getYearList() async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    List<String> resultList = List();
+    try {
+      parameter =
+          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter.data = {"format": "-1"};
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      nodes = tagNode.getElementsByTagName("a");
+      for (int i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+        resultList.add(node.text);
+      }
+      return resultList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+  static Future<List<Map>> getDivisionList(String year) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    List<Map> resultList = List();
+    try {
+      parameter =
+          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter.data = {"format": "-2" , "year": year};
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      nodes = tagNode.getElementsByTagName("a");
+      for (int i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+        Map<String , String> code = Uri.parse(node.attributes["href"]).queryParameters;
+        resultList.add( {"name" : node.text , "code" :code });
+      }
+      return resultList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+
+  static Future<List<Map>> getDepartmentList(Map code) async{
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    List<Map> resultList = List();
+    try {
+      parameter =
+          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter.data = code;
+      Log.d( code.toString() );
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table").first;
+      nodes = node.getElementsByTagName("a");
+      for (int i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+        Map<String , String> code = Uri.parse(node.attributes["href"]).queryParameters;
+        Log.d( code.toString() );
+        resultList.add( {"name" : node.text.replaceAll(RegExp("[ |\s]"), "") , "code" :code });
+      }
+      return resultList;
     } catch (e) {
       Log.e(e.toString());
       return null;

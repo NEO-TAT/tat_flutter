@@ -21,6 +21,51 @@ class CourseScoreCreditJson{
     semesterCourseScoreList = semesterCourseScoreList ?? List();
   }
 
+  SemesterCourseScoreJson getCourseBySemester( SemesterJson semesterJson){
+    for(SemesterCourseScoreJson i in semesterCourseScoreList){
+      if( i.semester == semesterJson ){
+        return i;
+      }
+    }
+    return null;
+  }
+
+  List<CourseInfoJson> getCourseInfoList(){
+    List<CourseInfoJson> courseInfoList = List();
+    for(SemesterCourseScoreJson i in semesterCourseScoreList){
+      courseInfoList.addAll(i.courseScoreList);
+    }
+    return courseInfoList;
+  }
+
+  CourseInfoJson getCourseByCourseId(String courseId){
+    for(SemesterCourseScoreJson i in semesterCourseScoreList){
+      for(CourseInfoJson j in i.courseScoreList) {
+        if( courseId == j.courseId ){
+          return j;
+        }
+      }
+    }
+    return null;
+  }
+
+  List<String> getCourseIdList(){
+    List<String> courseIdList = List();
+    for(SemesterCourseScoreJson i in semesterCourseScoreList){
+      for(CourseInfoJson j in i.courseScoreList) {
+        courseIdList.add(j.courseId);
+      }
+    }
+    return courseIdList;
+  }
+
+  List<SemesterJson> getSemesterList(){
+    List<SemesterJson> value;
+    for(SemesterCourseScoreJson i in semesterCourseScoreList){
+      value.add(i.semester);
+    }
+    return value;
+  }
 
   factory CourseScoreCreditJson.fromJson(Map<String, dynamic> json) =>
       _$CourseScoreCreditJsonFromJson(json);
@@ -208,13 +253,13 @@ class CourseInfoJson {
   double credit; //學分
   bool isWithdraw;  //是否撤選
   bool isOtherDepartment;  //是否為外系
-  String courseType;
+  String category;
 
-  CourseInfoJson({this.courseId, this.name, this.score, this.credit,this.courseType,this.isOtherDepartment,this.isWithdraw}) {
+  CourseInfoJson({this.courseId, this.name, this.score, this.credit,this.category,this.isOtherDepartment,this.isWithdraw}) {
     courseId = JsonInit.stringInit(courseId);
     name = JsonInit.stringInit(name);
     score = JsonInit.stringInit(score);
-    courseType = JsonInit.stringInit(courseType);
+    category = JsonInit.stringInit(category);
     credit = credit ?? 0;
     isWithdraw = isWithdraw ?? false;
     isOtherDepartment = isOtherDepartment ?? false;

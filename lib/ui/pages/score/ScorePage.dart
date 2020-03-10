@@ -1,12 +1,23 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
+import 'package:flutter_app/ui/other/DynamicDialog.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/pages/score/GraduationPicker.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:sprintf/sprintf.dart';
 
 class ScoreViewerPage extends StatefulWidget {
@@ -18,23 +29,25 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     with SingleTickerProviderStateMixin {
   bool isLoading = true;
   List<SemesterCourseScoreJson> courseScoreList = List();
+  CourseScoreCreditJson courseScoreCredit;
   ScrollController _scrollController = ScrollController();
   int _currentTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    courseScoreCredit = Model.instance.getCourseScoreCredit();
     courseScoreList = Model.instance.getSemesterCourseScore();
-    if( courseScoreList.length == 0){
-      _addTask();
-    }else{
+    if (courseScoreList.length == 0) {
+      _addScoreRankTask();
+    } else {
       setState(() {
         isLoading = false;
       });
     }
   }
 
-  void _addTask() async {
+  void _addScoreRankTask() async {
     courseScoreList = List();
     setState(() {
       isLoading = true;
@@ -42,13 +55,45 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     TaskHandler.instance.addTask(ScoreRankTask(context));
     await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = Model.instance.getTempData(ScoreRankTask.tempDataKey);
-    if( courseScoreList != null ){
+    if (courseScoreList != null) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
     }
     courseScoreList = courseScoreList ?? List();
     setState(() {
       isLoading = false;
     });
+  }
+
+  void _addSearchCourseTypeTask() async {
+    TaskHandler.instance.addTask(CheckCookiesTask(context,checkSystem: CheckCookiesTask.checkCourse));
+    await TaskHandler.instance.startTaskQueue(context);
+    GraduationPicker picker = GraduationPicker(context);
+    picker.show();
+
+    TaskHandler.instance.addTask(TaskModelFunction(context,
+        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
+      List<CourseInfoJson> courseInfoList =
+          courseScoreCredit.getCourseInfoList();
+      int total = courseScoreCredit.getCourseInfoList().length;
+      for (int i = 0; i < total; i++) {
+        CourseInfoJson courseInfo = courseInfoList[i];
+        String courseId = courseInfo.courseId;
+        CourseConnector.getCourseExtraInfo(courseId).then( (courseExtraInfo) {
+          courseScoreCredit.getCourseByCourseId(courseId);
+          courseInfo.category = courseExtraInfo.course.category;
+          Log.d(courseInfo.category);
+        });
+      }
+      return true;
+    }, errorFunction: () async {
+      ErrorDialogParameter parameter = ErrorDialogParameter(
+        context: context,
+        desc: "錯誤",
+      );
+      ErrorDialog(parameter).show();
+    }, successFunction: () async {}));
+    await TaskHandler.instance.startTaskQueue(context);
+    setState(() {});
   }
 
   @override
@@ -65,13 +110,25 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         appBar: AppBar(
           title: Text('成績查詢'),
           actions: [
+            if (courseScoreList.length > 0)
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 20,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    _addSearchCourseTypeTask();
+                  },
+                  child: Icon(EvaIcons.searchOutline),
+                ),
+              ),
             Padding(
               padding: EdgeInsets.only(
                 right: 20,
               ),
               child: GestureDetector(
                 onTap: () {
-                  _addTask();
+                  _addScoreRankTask();
                 },
                 child: Icon(EvaIcons.refreshOutline),
               ),
@@ -126,9 +183,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildSemesterScores() {
-    if (_currentTabIndex != null) {
+    if (_currentTabIndex != null && courseScoreList.length > 0) {
       SemesterCourseScoreJson courseScore = courseScoreList[_currentTabIndex];
-
       return Container(
         padding: EdgeInsets.all(24.0),
         child: AnimationLimiter(
@@ -158,7 +214,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   List<Widget> _buildCourseScores(SemesterCourseScoreJson courseScore) {
     List<CourseInfoJson> scoreList = courseScore.courseScoreList;
-
     return [
       _buildTitle('各科成績'),
       for (CourseInfoJson score in scoreList) _buildScoreItem(score),
@@ -171,13 +226,21 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              score.name,
-              style: TextStyle(fontSize: 16.0),
+            Expanded(
+              child: Text(
+                score.name,
+                style: TextStyle(fontSize: 16.0),
+              ),
             ),
-            Text(
-              score.score.toString(),
-              style: TextStyle(fontSize: 16.0),
+            if (score.category.isNotEmpty)
+              Text(
+                score.category,
+                style: TextStyle(fontSize: 16.0),
+              ),
+            Container(
+              width: 40,
+              child: Text(score.score,
+                  style: TextStyle(fontSize: 16.0), textAlign: TextAlign.end),
             ),
           ],
         ),
