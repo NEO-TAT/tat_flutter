@@ -460,9 +460,67 @@ class CourseConnector {
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       nodes = tagNode.getElementsByTagName("a");
-      for (int i = 0; i < nodes.length - 1; i++) {
+      for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         resultList.add(node.text);
+      }
+      return resultList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+  static Future<List<Map>> getDivisionList(String year) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    List<Map> resultList = List();
+    try {
+      parameter =
+          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter.data = {"format": "-2" , "year": year};
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      nodes = tagNode.getElementsByTagName("a");
+      for (int i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+        Map<String , String> code = Uri.parse(node.attributes["href"]).queryParameters;
+        resultList.add( {"name" : node.text , "code" :code });
+      }
+      return resultList;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
+
+  static Future<List<Map>> getDepartmentList(Map code) async{
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    List<Element> nodes;
+    List<Map> resultList = List();
+    try {
+      parameter =
+          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter.data = code;
+      Log.d( code.toString() );
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table").first;
+      nodes = node.getElementsByTagName("a");
+      for (int i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+        Map<String , String> code = Uri.parse(node.attributes["href"]).queryParameters;
+        Log.d( code.toString() );
+        resultList.add( {"name" : node.text.replaceAll(RegExp("[ |\s]"), "") , "code" :code });
       }
       return resultList;
     } catch (e) {
