@@ -14,7 +14,6 @@ import 'package:html/parser.dart' as html;
 import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
-import 'package:tripledes/tripledes.dart';
 import 'core/ConnectorParameter.dart';
 
 enum ISchoolPlusConnectorStatus {
@@ -38,6 +37,7 @@ class ISchoolPlusConnector {
   static final String _getCourseName =
       _iSchoolPlusUrl + "learn/mooc_sysbar.php";
 
+  /*
   static Future<ISchoolPlusConnectorStatus> oldLogin(
       String account, String password) async {
     String result;
@@ -98,6 +98,8 @@ class ISchoolPlusConnector {
       return ISchoolPlusConnectorStatus.LoginFail;
     }
   }
+
+   */
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
