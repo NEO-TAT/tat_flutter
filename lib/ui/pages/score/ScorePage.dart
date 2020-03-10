@@ -63,6 +63,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   void _addSearchCourseTypeTask() async {
     double progress = 0;
+    List<String> yearList = await CourseConnector.getYearList();
+    Log.d( yearList.toString() );
     TaskHandler.instance.addTask(TaskModelFunction(context,
         require: [CheckCookiesTask.checkCourse], taskFunction: () async {
       DynamicDialog dialog  = DynamicDialog(context);
@@ -83,7 +85,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         courseInfo.category = courseExtraInfo.course.category;
         Log.d(courseInfo.category);
         progress = i / total;
-        dialog.update(nowProgress:progress , message:"進度");
+        dialog.update(nowProgress:progress , message:"進度" , progressString:"$i/$total");
       }
       dialog.dismiss();
       return true;
