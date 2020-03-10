@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "415183436199",
+    "firebase_url": "https://npc-tat.firebaseio.com",
+    "project_id": "npc-tat",
+    "storage_bucket": "npc-tat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415183436199:android:402fa5128144c4a5c41e82",
+        "android_client_info": {
+          "package_name": "club.ntut.npc.tat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415183436199-0see1465jui108g6dih3s3hp873bmif4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "club.ntut.npc.tat",
+            "certificate_hash": "2c5a27ae9c1e71ff24f432ed59071fe45eb098de"
+          }
+        },
+        {
+          "client_id": "415183436199-fb41rdmn274jpmd1499hdcj3uorcnevk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxSnl1ZyvKAOQL3lJcm4onPfYEsVxtgLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415183436199-fb41rdmn274jpmd1499hdcj3uorcnevk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

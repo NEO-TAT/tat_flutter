@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
@@ -11,11 +13,18 @@ import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 Future<Null> main() async {
-  FlutterError.onError = (FlutterErrorDetails details) async {
-    Log.error(details.toString());
-  };
+  // Set `enableInDevMode` to true to see reports while in debug mode
+  // This is only to be used for confirming that reports are being
+  // submitted as expected. It is not intended to be used for everyday
+  // development.
+  Crashlytics.instance.enableInDevMode = true;
+
+  // Pass all uncaught errors from the framework to Crashlytics.
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+
   //runApp( MyApp() );
   runZoned(() {
     runApp(
@@ -28,10 +37,7 @@ Future<Null> main() async {
         child: MyApp(),
       ),
     );
-  }, onError: (Object obj, StackTrace stack) {
-    String log = Log.buildLog(stack.toString());
-    Log.error(sprintf("ErrorType : %s , %s", [obj.toString(), log]));
-  });
+  }, onError: Crashlytics.instance.recordError);
 }
 
 class MyApp extends StatelessWidget {
