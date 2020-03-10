@@ -1,7 +1,7 @@
 name: flutter_app
 description: A new Flutter application.
 
-version: 1.0.6
+version: 1.1.0
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -19,16 +19,16 @@ dependencies:
   flutter_i18n: ^0.8.3   #多國語言
   logger: ^0.8.3         #顯示Log
   sprintf: ^4.0.2
-  crypto: ^2.1.3         #MD5加密
-  tripledes: ^2.1.0       #des加密
-  hex: ^0.1.2
   flutter_local_notifications: ^1.2.0+4  #通知欄
-  rxdart: ^0.23.1
+  hex: ^0.1.2
+  rxdart: ^0.23.1 #通知欄有使用到
+  #crypto: ^2.1.3         #MD5加密
+  #tripledes: ^2.1.0       #des加密
   #flutter_des: ^1.1.0            無法使用
   #encrypt: ^4.0.0
   #----------store data----------#
   shared_preferences: ^0.5.6
-  sqflite: ^1.2.0
+  #sqflite: ^1.2.0
   flutter_cache_manager: ^1.1.3
   #----------internet----------#
   dio: ^3.0.8      #網路get post API
@@ -36,7 +36,7 @@ dependencies:
   cookie_jar: ^1.0.1  #可儲存式cookies
   http: ^0.12.0+4  #網路get post API (無使用)
   html: ^0.14.0+3  #html解析器
-  xml: ^3.5.0      #xml解析器
+  #xml: ^3.5.0      #xml解析器
   #requests: ^3.0.4
   #----------WebView----------#
   webview_flutter: 0.3.19+5
@@ -51,13 +51,13 @@ dependencies:
   json_annotation: ^3.0.1
   #----------other----------#
   back_button_interceptor: ^4.2.3     #攔截返回鍵訊息
-  random_color: ^1.0.3  #t產生隨機顏色
-  native_color: ^1.2.0+1 #用於產生HslColor
   big5: ^0.0.4     #big5 decode encode
   quiver: ^2.0.5   #hashcode
   intl: ^0.16.0    #DateTime to String
   flutter_keyboard_visibility: ^0.7.0  #檢測手機鍵盤狀態
-  package_info: ^0.4.0+13
+  package_info: ^0.4.0+13  #檢測app版本用於檢查更新
+  #random_color: ^1.0.3  #t產生隨機顏色
+  #native_color: ^1.2.0+1 #用於產生HslColor
   #----------html viewer----------#
   flutter_html: ^0.11.1
   flutter_widget_from_html_core: ^0.3.2+1
@@ -65,22 +65,19 @@ dependencies:
   page_transition: ^1.1.5                #頁面切換動畫
   flutter_staggered_animations: ^0.1.2   #listView or gridView動畫
   #----------download----------#
-  flutter_downloader: ^1.4.1
+  flutter_downloader: ^1.4.1  #下載app更新
   open_file: ^3.0.1
   permission_handler: ^4.2.0+hotfix.3
   mime_type: ^0.2.5
-  video_player: ^0.10.2+5
+  #video_player: ^0.10.2+5
   #----------Widget----------#
-  flutter_selectable_text: ^0.3.1        #提供可以複製的TEXT
   pull_to_refresh: ^1.5.8  #提供ListView可下拉式更新並且可動態加載
   cached_network_image: ^2.0.0  #用url顯示圖片
   auto_size_text: ^2.1.0  #課表顯示有用到
   easy_dialog: ^1.0.5     #about用到
-  table_calendar: ^2.2.2    #暫無用到 (顯示日曆)
-  flutter_range_slider: ^1.4.0  #無用到
+  table_calendar: ^2.2.2    #顯示行事曆
   step_slider: ^1.0.0+1     #語言切換用
   fluttertoast: ^3.1.3      #Toast
-  giffy_dialog: ^1.6.1
   awesome_dialog: ^0.1.1  #顯示Error時用到
   flutter_slidable: ^0.4.7  #email使用可左右滑抽屜
   #configurable_expansion_tile: ^1.0.0  #可展開式item (成績查詢)

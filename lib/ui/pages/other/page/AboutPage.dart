@@ -5,7 +5,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:random_color/random_color.dart';
 
 enum onListViewPress { AppUpdate, Contribution, Version }
 
