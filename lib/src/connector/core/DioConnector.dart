@@ -17,6 +17,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'ConnectorParameter.dart';
 
+typedef SavePathCallback = String Function(Headers responseHeaders);
+
+
 class DioConnector {
   static String _refererUrl = "https://nportal.ntut.edu.tw";
   static Map<String, String> _headers = {
@@ -174,9 +177,10 @@ class DioConnector {
   }
 
 
-
-  Future<void> download(String url , String savePath , { ProgressCallback progressCallback , CancelToken cancelToken} ) async{
-    await dio.downloadUri(Uri.parse(url), savePath , onReceiveProgress:progressCallback , cancelToken : cancelToken);
+  Future<void> download(String url , SavePathCallback savePath , { ProgressCallback progressCallback , CancelToken cancelToken} ) async{
+    await dio.downloadUri(Uri.parse(url), savePath , onReceiveProgress:progressCallback , cancelToken : cancelToken).catchError((onError){
+      Log.e( onError.toString() );
+    });
   }
 
   Map<String, String> get headers {
