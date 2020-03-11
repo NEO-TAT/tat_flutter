@@ -92,6 +92,10 @@ class Connector {
           fileName = '.pdf';
         }
       }
+      if( headers.containsKey("content-length")){
+        String size = headers["content-length"][0];
+        Log.d( "file size = $size");
+      }
       Log.d( "getFileName $fileName");
       return fileName;
     } catch (e) {
