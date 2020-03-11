@@ -87,8 +87,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
       primary: true,
       itemCount: items.length,
       itemBuilder: (context, index) {
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque, //讓透明部分有反應
+        return InkWell(
           onTap: () {
             ISchoolPlusAnnouncementJson value = items[index];
             _getAnnouncementDetail(value);
