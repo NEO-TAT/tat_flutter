@@ -9,6 +9,7 @@ import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
 import 'package:flutter_app/src/connector/requests/requests.dart' as requests;
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/object/CourseFileJson.dart';
+import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 import 'package:dio/dio.dart' as dio;
@@ -372,6 +373,7 @@ class ISchoolPlusConnector {
       result = await RequestsConnector.getDataByPost(parameter);
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
+      result = HtmlUtils.clean(result);
       jsonData = json.decode(result)['data'];
       int totalRows = int.parse( json.decode(result)['total_rows'] );
       if( totalRows > 0 ){
