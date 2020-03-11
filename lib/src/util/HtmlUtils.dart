@@ -25,7 +25,7 @@ class HtmlUtils {
   ⊕		 				&oplus;		³	註解3符號、立方		&sup3;		ω	Omega符號				&omega;
   ∇		倒三角型符號	&nabla;		↵	ENTER符號			&crarr;		Ω	Omega符號、歐姆符號		&Omega;
    */
-  String clean(String html){
+  static String clean(String html){
     String result;
     html = html.replaceAll("&amp;", "&");
     html = html.replaceAll("&nbsp;", " ");
