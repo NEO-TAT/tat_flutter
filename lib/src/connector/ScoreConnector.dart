@@ -177,7 +177,7 @@ class ScoreConnector {
         rankItemCourse.percentage = double.parse(rankNodes[i * 3 + 2]
             .getElementsByTagName("td")[4]
             .text
-            .replaceAll("%", ""));
+            .replaceAll(RegExp(r"[%|\s]"), ""));
         rankItemDepartment.rank =
             double.parse(rankNodes[i * 3].getElementsByTagName("td")[1].text);
         rankItemDepartment.total =
@@ -185,7 +185,7 @@ class ScoreConnector {
         rankItemDepartment.percentage = double.parse(rankNodes[i * 3]
             .getElementsByTagName("td")[3]
             .text
-            .replaceAll("%", ""));
+            .replaceAll(RegExp(r"[%|\s]"), ""));
 
         //取得歷年成績排名
         RankJson rankHistory = RankJson();
