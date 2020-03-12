@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -317,7 +318,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildRankItems(RankJson rank, String title) {
-    double fontSize = 16;
+    double fontSize = 14;
     TextStyle textStyle = TextStyle(fontSize: fontSize);
     return Column(
       children: <Widget>[
@@ -336,16 +337,31 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Expanded(
-          child: Text(sprintf("班級排名: %s", [rankItem.rank.toString()]),
-              textAlign: TextAlign.center, style: textStyle),
+          child: AutoSizeText(
+            sprintf("百分比: %s %", [rankItem.rank.toString()] ),
+            style: textStyle,
+            minFontSize: 10,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+          ),
         ),
         Expanded(
-          child: Text(sprintf("總共人數: %s", [rankItem.total.toString()]),
-              textAlign: TextAlign.center, style: textStyle),
+          child: AutoSizeText(
+            sprintf("百分比: %s %", [rankItem.total.toString()] ),
+            style: textStyle,
+            minFontSize: 10,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+          ),
         ),
         Expanded(
-          child: Text(sprintf("百分比: %s %", [rankItem.percentage.toString()]),
-              textAlign: TextAlign.center, style: textStyle),
+          child: AutoSizeText(
+            sprintf("百分比: %s %", [rankItem.percentage.toString()] ),
+            style: textStyle,
+            minFontSize: 10,
+            maxLines: 1,
+            textAlign: TextAlign.center,
+          ),
         ),
       ],
     );
