@@ -574,7 +574,7 @@ class CourseConnector {
       resultMap["lowCredit"] = int.parse(matches.group(1));
       exp = RegExp(r"共同必修：(\d+)學分");
       matches = exp.firstMatch(result);
-      resultMap["○"] = int.parse(matches.group(1));
+      resultMap["△"] = int.parse(matches.group(1));
       exp = RegExp(r"專業必修：(\d+)學分");
       matches = exp.firstMatch(result);
       resultMap["▲"] = int.parse(matches.group(1));
