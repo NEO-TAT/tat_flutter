@@ -210,6 +210,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     return Container(
       width: width,
       color: Colors.white,
+      padding: EdgeInsets.all(10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -218,7 +219,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
               Text(
                 "畢業學分標準設定",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )
+              ),
             ],
           ),
           Column(
@@ -230,7 +231,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
                 children: <Widget>[
                   Expanded(
                     child: DropdownButton(
-                      isExpanded: true,  //裡面元素是否要Expanded
+                      isExpanded: true, //裡面元素是否要Expanded
                       value: _selectedYear,
                       items: buildYearList(),
                       onChanged: (value) {
@@ -271,6 +272,23 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
                   ),
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  FlatButton(
+                    child: Text("取消"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: Text("儲存"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              )
             ],
           )
         ],
