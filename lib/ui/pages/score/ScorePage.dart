@@ -88,11 +88,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       for (int i = 0; i < total; i++) {
         CourseInfoJson courseInfo = courseInfoList[i];
         String courseId = courseInfo.courseId;
-        CourseConnector.getCourseExtraInfo(courseId).then((courseExtraInfo) {
-          courseScoreCredit.getCourseByCourseId(courseId);
-          courseInfo.category = courseExtraInfo.course.category;
-          //Log.d(courseInfo.category);
-        });
+        if (courseInfo.category.isEmpty) {  //沒有類別才尋找
+          CourseConnector.getCourseExtraInfo(courseId).then((courseExtraInfo) {
+            courseScoreCredit.getCourseByCourseId(courseId);
+            courseInfo.category = courseExtraInfo.course.category;
+            //Log.d(courseInfo.category);
+          });
+        }
       }
       return true;
     }, errorFunction: () async {
@@ -223,8 +225,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     List<Widget> widgetList = List();
     GraduationInformationJson graduationInformation =
         courseScoreCredit.graduationInformation;
-    Widget widget = _buildTile(sprintf("學分總覽 %d/%d",
-        [ courseScoreCredit.getTotalCourseCredit() , graduationInformation.lowCredit ]));
+    Widget widget = _buildTile(sprintf("學分總覽 %d/%d", [
+      courseScoreCredit.getTotalCourseCredit(),
+      graduationInformation.lowCredit
+    ]));
     widgetList.add(_buildType("○", "部訂共同必修"));
     widgetList.add(_buildType("△", "校訂共同必修"));
     widgetList.add(_buildType("☆", "共同選修"));
