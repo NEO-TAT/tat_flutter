@@ -167,8 +167,8 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
         break;
       }
     }
+    await _getCreditInfo();
     setState(() {});
-    _getCreditInfo();
   }
 
   _showSelectList(List<String> listItems) async {
@@ -268,7 +268,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getCreditInfo() async {
-    MyProgressDialog.showProgressDialog(context, "查詢中...");
+    MyProgressDialog.showProgressDialog(context, "查詢中學分資訊...");
     Map code = _selectedDepartment["code"];
     try {
       Map creditInfo = await CourseConnector.getCreditInfo(code);
@@ -287,7 +287,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     } catch (e) {
       Log.e(e.toString());
     }
-    MyProgressDialog.hideProgressDialog();
+    await MyProgressDialog.hideProgressDialog();
   }
 
   @override
