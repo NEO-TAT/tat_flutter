@@ -31,9 +31,10 @@ class CourseConnector {
       "https://nportal.ntut.edu.tw/ssoIndex.do";
   static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
   static final String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
-  static final String _postCourseCNUrl = _courseCNHost + "/Select.jsp";
-  static final String _postCourseENUrl = _courseENHost + "/Select.jsp";
-  static final String _checkLoginUrl = _courseCNHost + "/Select.jsp";
+  static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";
+  static final String _postCourseENUrl = _courseENHost + "Select.jsp";
+  static final String _checkLoginUrl = _courseCNHost + "Select.jsp";
+  static final String _creditUrl = _courseCNHost + "Cprog.jsp";
 
   static Future<CourseConnectorStatus> login() async {
     String result;
@@ -471,6 +472,11 @@ class CourseConnector {
     }
   }
 
+  /*
+  Map Key
+  name 名稱
+  code 參數
+  */
   static Future<List<Map>> getDivisionList(String year) async {
     ConnectorParameter parameter;
     String result;
@@ -480,7 +486,7 @@ class CourseConnector {
     List<Map> resultList = List();
     try {
       parameter =
-          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+          ConnectorParameter(_creditUrl);
       parameter.data = {"format": "-2" , "year": year};
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
@@ -498,7 +504,11 @@ class CourseConnector {
     }
   }
 
-
+  /*
+  Map Key
+  name 名稱
+  code 參數
+  */
   static Future<List<Map>> getDepartmentList(Map code) async{
     ConnectorParameter parameter;
     String result;
@@ -508,9 +518,9 @@ class CourseConnector {
     List<Map> resultList = List();
     try {
       parameter =
-          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+          ConnectorParameter(_creditUrl);
       parameter.data = code;
-      Log.d( code.toString() );
+      //Log.d( code.toString() );
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
@@ -519,8 +529,8 @@ class CourseConnector {
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         Map<String , String> code = Uri.parse(node.attributes["href"]).queryParameters;
-        Log.d( code.toString() );
-        resultList.add( {"name" : node.text.replaceAll(RegExp("[ |\s]"), "") , "code" :code });
+        String name = node.text.replaceAll(RegExp("[ |\s]"), "");
+        resultList.add( {"name" : name , "code" :code });
       }
       return resultList;
     } catch (e) {
@@ -528,6 +538,44 @@ class CourseConnector {
       return null;
     }
   }
+
+  /*
+  Map Key
+  minGraduationCredits
+  */
+  static Future<Map> getCreditInfo(Map code) async{
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element node;
+    RegExp exp;
+    RegExpMatch matches;
+    Map resultMap = Map();
+    try {
+      parameter =
+          ConnectorParameter(_creditUrl);
+      parameter.data = code;
+      //Log.d( code.toString() );
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table")[1];
+      result = node.text;
+      exp = RegExp(r"最低畢業學分：(\d+)學分");
+      matches = exp.firstMatch(result);
+      exp = RegExp(r"共同必修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      exp = RegExp(r"專業必修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      exp = RegExp(r"專業選修：(\d+)學分");
+      matches = exp.firstMatch(result);
+      return resultMap;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
 
   static bool get isLogin {
     return _isLogin;

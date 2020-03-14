@@ -65,28 +65,32 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     });
   }
 
+  void _onSelectFinish(GraduationInformationJson value){
+    Log.d(value.toString());
+    if( value != null){
+      courseScoreCredit.graduationInformation = value;
+    }
+  }
+
   void _addSearchCourseTypeTask() async {
     TaskHandler.instance.addTask(TaskModelFunction(context,
         require: [CheckCookiesTask.checkCourse, CheckCookiesTask.checkNTUTApp],
         taskFunction: () async {
       GraduationPicker picker = GraduationPicker(context);
-      picker.show();
+      picker.show( _onSelectFinish );
 
       List<CourseInfoJson> courseInfoList =
           courseScoreCredit.getCourseInfoList();
       int total = courseScoreCredit.getCourseInfoList().length;
-      /*
       for (int i = 0; i < total; i++) {
         CourseInfoJson courseInfo = courseInfoList[i];
         String courseId = courseInfo.courseId;
         CourseConnector.getCourseExtraInfo(courseId).then( (courseExtraInfo) {
           courseScoreCredit.getCourseByCourseId(courseId);
           courseInfo.category = courseExtraInfo.course.category;
-          Log.d(courseInfo.category);
+          //Log.d(courseInfo.category);
         });
       }
-
-       */
       return true;
     }, errorFunction: () async {
       ErrorDialogParameter parameter = ErrorDialogParameter(

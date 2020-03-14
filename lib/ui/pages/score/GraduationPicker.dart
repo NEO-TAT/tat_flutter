@@ -4,6 +4,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
@@ -51,11 +52,11 @@ class GraduationPicker {
     }
   }
 
-  Future<bool> show() async {
+  Future<bool> show(Function(GraduationInformationJson) finishCallBack) async {
     if (!_isShowing) {
       try {
         _dialog = GraduationPickerWidget();
-        showDialog<dynamic>(
+        showDialog<GraduationInformationJson>(
           context: _context,
           barrierDismissible: false,
           builder: (BuildContext context) {
@@ -69,7 +70,9 @@ class GraduationPicker {
                   child: _dialog),
             );
           },
-        );
+        ).then( (value){
+          finishCallBack(value);
+        });
         // Delaying the function for 200 milliseconds
         // [Default transitionDuration of DialogRoute]
         await Future.delayed(Duration(milliseconds: 200));
@@ -90,6 +93,7 @@ class GraduationPickerWidget extends StatefulWidget {
 }
 
 class _GraduationPickerWidget extends State<GraduationPickerWidget> {
+  GraduationInformationJson graduationInformation = GraduationInformationJson();
   List<String> yearList = List();
   List<Map> divisionList = List();
   List<Map> departmentList = List();
@@ -102,6 +106,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   @override
   void initState() {
     super.initState();
+    graduationInformation = Model.instance.getCourseScoreCredit().graduationInformation;
     Future.delayed(Duration.zero).then((_) {
       _addPresetTask();
     });
@@ -111,8 +116,6 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     TaskHandler.instance.addTask(TaskModelFunction(context,
         require: [], taskFunction: () async {
       MyProgressDialog.showProgressDialog(context, "查詢中...");
-      await NTUTAppConnector.login(
-          Model.instance.getAccount(), Model.instance.getPassword());
       _presetDepartment = await NTUTAppConnector.getDepartment();
       MyProgressDialog.hideProgressDialog();
       if (_presetDepartment == null)
@@ -132,33 +135,38 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     }
     await _getYearList();
     //利用學號預設學年度
-    String year = Model.instance.getAccount().substring(0, 3);
+    if( graduationInformation.selectYear.isEmpty ){
+      graduationInformation.selectYear = Model.instance.getAccount().substring(0, 3);
+    }
     for (String v in yearList) {
-      if (v.contains(year)) {
+      if (v.contains(graduationInformation.selectYear)) {
         _selectedYear = v;
         break;
       }
     }
     await _getDivisionList();
     //利用北科行動助理預設學制與系所
-    String presetDivision = _presetDepartment["division"];
-    presetDivision = presetDivision ?? "";
+    if( graduationInformation.selectDivision.isEmpty ){
+      graduationInformation.selectDivision = _presetDepartment["division"];
+    }
     for (Map v in divisionList) {
-      if (v["name"].contains(presetDivision)) {
+      if (v["name"].contains(graduationInformation.selectDivision)) {
         _selectedDivision = v;
         break;
       }
     }
     await _getDepartmentList();
-    String presetDepartment = _presetDepartment["department"];
-    presetDepartment = presetDepartment ?? "";
+    if( graduationInformation.selectDepartment.isEmpty ){
+      graduationInformation.selectDepartment = _presetDepartment["department"];
+    }
     for (Map v in departmentList) {
-      if (v["name"].contains(presetDepartment)) {
+      if (v["name"].contains(graduationInformation.selectDepartment)) {
         _selectedDepartment = v;
         break;
       }
     }
     setState(() {});
+    _getCreditInfo();
   }
 
   _showSelectList(List<String> listItems) async {
@@ -257,6 +265,12 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     setState(() {});
   }
 
+  Future<void> _getCreditInfo() async{
+    Map code = _selectedDepartment["code"];
+    CourseConnector.getCreditInfo(code);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -334,13 +348,13 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
                   FlatButton(
                     child: Text("取消"),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      _cancel();
                     },
                   ),
                   FlatButton(
                     child: Text("儲存"),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      _save();
                     },
                   )
                 ],
@@ -351,4 +365,24 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
       ),
     );
   }
+
+
+  void _save(){
+    graduationInformation.lowCredit = 102;
+    graduationInformation.selectYear = _selectedYear;
+    graduationInformation.selectDivision = _selectedDivision["name"];
+    graduationInformation.selectDepartment = _selectedDepartment["name"];
+    _returnValue();
+  }
+
+  void _cancel(){
+    _returnValue();
+  }
+
+  void _returnValue(){
+    Navigator.of(context).pop(graduationInformation);
+  }
+
+
+
 }

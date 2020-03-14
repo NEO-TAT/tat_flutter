@@ -35,19 +35,19 @@ class ISchoolConnector {
 
   static final String _iSchoolUrl = "https://ischool.ntut.edu.tw/";
   static final String _postLoginISchoolUrl =
-      _iSchoolUrl + "/learning/auth/login.php";
+      _iSchoolUrl + "learning/auth/login.php";
   static final String _iSchoolFileUrl =
-      _iSchoolUrl + "/learning/document/document.php";
+      _iSchoolUrl + "learning/document/document.php";
   static final String _iSchoolCourseAnnouncementUrl =
-      _iSchoolUrl + "/learning/announcements/announcements.php";
+      _iSchoolUrl + "learning/announcements/announcements.php";
   static final String _iSchoolNewAnnouncementUrl =
-      _iSchoolUrl + "/learning/messaging/messagebox.php";
+      _iSchoolUrl + "learning/messaging/messagebox.php";
   static final String _iSchoolAnnouncementDetailUrl =
-      _iSchoolUrl + "/learning/messaging/readmessage.php";
+      _iSchoolUrl + "learning/messaging/readmessage.php";
   static final String _iSchoolDownloadUrl =
-      _iSchoolUrl + "/learning/backends/download.php";
+      _iSchoolUrl + "learning/backends/download.php";
   static final String _iSchooldeleteMessage =
-      _iSchoolUrl + "/learning/messaging/readmessage.php";
+      _iSchoolUrl + "learning/messaging/readmessage.php";
 
   //https://ischool.ntut.edu.tw/learning/messaging/messagebox.php?box=inbox&SelectorReadStatus=all&page=1&cmd=exDeleteMessage&messageId=5109
 

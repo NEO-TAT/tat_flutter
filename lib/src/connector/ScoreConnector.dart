@@ -25,17 +25,17 @@ enum ScoreConnectorStatus {
 
 class ScoreConnector {
   static bool _isLogin = false;
-
+  static final String _scoreHost = "https://aps-course.ntut.edu.tw/";
   static final String _getLoginScoreUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
   static final String _scoreUrl =
-      "https://aps-course.ntut.edu.tw/StuQuery/StudentQuery.jsp";
+      _scoreHost + "StuQuery/StudentQuery.jsp";
   static final String _scoreRankUrl =
-      "https://aps-course.ntut.edu.tw/StuQuery/QryRank.jsp";
+      _scoreHost + "StuQuery/QryRank.jsp";
   static final String _scoreAllScoreUrl =
-      "https://aps-course.ntut.edu.tw//StuQuery/QryScore.jsp";
+      _scoreHost + "StuQuery/QryScore.jsp";
   static final String _generalLessonAllScoreUrl =
-      "https://aps-course.ntut.edu.tw/StuQuery/QryLAECourse.jsp";
+      _scoreHost + "StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
     String result;
