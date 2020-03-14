@@ -12,3 +12,8 @@
 ## 環境安裝問題
 ### 缺少 google-services.json
 可以到 [TAT 的雲端](https://drive.google.com/drive/folders/1uGzZfcNeYGytfZp8z7QPqSftCaQH1jfK?usp=sharing)上下載 Firebase 相關檔案，並根據裡面的文件進行設定。
+
+## 貢獻者
+- [morris13579](https://github.com/morris13579)
+- [yaoandy107](https://github.com/yaoandy107)
+- [DevilTea](https://github.com/DevilTea)
