@@ -6,21 +6,14 @@
   <img width="180" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/>
 </a>
 
-
-目前完成功能
-1. 查詢學校課表
-2. 查詢課程公告
-3. 下載課程講義
-4. 查詢學校成績
-5. 查看下載檔案
-
 ## 功能
 1. 查詢北科學生課表
 2. 查詢北科當學年行事曆
 3. 查詢北科 i 學園公告
+4. 下載北科 i 學園檔案
 5. 查詢北科學生成績與學分資訊
-8. 支援中文、英文顯示
-10. 推播
+6. 支援中文、英文顯示
+7. 消息推播
 
 ## 環境安裝問題
 ### 缺少 google-services.json
