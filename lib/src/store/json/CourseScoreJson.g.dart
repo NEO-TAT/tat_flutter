@@ -37,12 +37,18 @@ GraduationInformationJson _$GraduationInformationJsonFromJson(
       (k, e) => MapEntry(k, e as int),
     ),
     outerDepartmentMacCredit: json['outerDepartmentMacCredit'] as int,
+    selectYear: json['selectYear'] as String,
+    selectDivision: json['selectDivision'] as String,
+    selectDepartment: json['selectDepartment'] as String,
   );
 }
 
 Map<String, dynamic> _$GraduationInformationJsonToJson(
         GraduationInformationJson instance) =>
     <String, dynamic>{
+      'selectYear': instance.selectYear,
+      'selectDivision': instance.selectDivision,
+      'selectDepartment': instance.selectDepartment,
       'lowCredit': instance.lowCredit,
       'outerDepartmentMacCredit': instance.outerDepartmentMacCredit,
       'courseTypeMinCredit': instance.courseTypeMinCredit,
@@ -122,7 +128,7 @@ CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     score: json['score'] as String,
     credit: (json['credit'] as num)?.toDouble(),
-    category: json['courseType'] as String,
+    category: json['category'] as String,
     isOtherDepartment: json['isOtherDepartment'] as bool,
     isWithdraw: json['isWithdraw'] as bool,
   );
@@ -136,5 +142,5 @@ Map<String, dynamic> _$CourseInfoJsonToJson(CourseInfoJson instance) =>
       'credit': instance.credit,
       'isWithdraw': instance.isWithdraw,
       'isOtherDepartment': instance.isOtherDepartment,
-      'courseType': instance.category,
+      'category': instance.category,
     };
