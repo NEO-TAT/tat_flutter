@@ -18,8 +18,8 @@ class MyProgressDialog {
     });
   }
 
-  static void hideProgressDialog() {
-    _progressDialog.dismissProgressDialog(_context);
+  static Future<void> hideProgressDialog() async{
+    await _progressDialog.dismissProgressDialog(_context);
   }
 }
 

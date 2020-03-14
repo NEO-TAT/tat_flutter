@@ -41,6 +41,37 @@ class NTUTAppConnector {
     }
   }
 
+  static Future<Map<String,String>> getDepartment() async{
+    ConnectorParameter parameter;
+    String code;
+    String result;
+    Document tagNode;
+    Map<String,String> departmentData = Map();
+    List<Element> nodes;
+    try {
+      parameter = ConnectorParameter(_countCreditUrl);
+      result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      nodes = tagNode.getElementsByTagName("option");
+      //系所
+      for (Element node in nodes) {
+        if (node.attributes.containsKey("selected")) {
+          code = node.attributes["value"];
+          departmentData["department"] = node.text;
+          departmentData["code"] = code;
+        }
+      }
+      nodes = tagNode.getElementsByTagName("li");
+      departmentData["division"] = nodes[4].getElementsByClassName("item-after").first.text; // 學制
+      Log.d( departmentData.toString() );
+      _isLogin = true;
+      return departmentData;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
   static Future<Map> getCredit() async {
     ConnectorParameter parameter;
     String code;
