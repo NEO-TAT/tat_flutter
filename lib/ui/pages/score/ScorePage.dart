@@ -66,16 +66,16 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   void _addSearchCourseTypeTask() async {
-    TaskHandler.instance.addTask(CheckCookiesTask(context,checkSystem: CheckCookiesTask.checkCourse));
-    await TaskHandler.instance.startTaskQueue(context);
-    GraduationPicker picker = GraduationPicker(context);
-    picker.show();
-
     TaskHandler.instance.addTask(TaskModelFunction(context,
-        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
+        require: [CheckCookiesTask.checkCourse, CheckCookiesTask.checkNTUTApp],
+        taskFunction: () async {
+      GraduationPicker picker = GraduationPicker(context);
+      picker.show();
+
       List<CourseInfoJson> courseInfoList =
           courseScoreCredit.getCourseInfoList();
       int total = courseScoreCredit.getCourseInfoList().length;
+      /*
       for (int i = 0; i < total; i++) {
         CourseInfoJson courseInfo = courseInfoList[i];
         String courseId = courseInfo.courseId;
@@ -85,6 +85,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           Log.d(courseInfo.category);
         });
       }
+
+       */
       return true;
     }, errorFunction: () async {
       ErrorDialogParameter parameter = ErrorDialogParameter(
@@ -338,7 +340,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       children: <Widget>[
         Expanded(
           child: AutoSizeText(
-            sprintf("百分比: %s %", [rankItem.rank.toString()] ),
+            sprintf("百分比: %s %", [rankItem.rank.toString()]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,
@@ -347,7 +349,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ),
         Expanded(
           child: AutoSizeText(
-            sprintf("百分比: %s %", [rankItem.total.toString()] ),
+            sprintf("百分比: %s %", [rankItem.total.toString()]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,
@@ -356,7 +358,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ),
         Expanded(
           child: AutoSizeText(
-            sprintf("百分比: %s %", [rankItem.percentage.toString()] ),
+            sprintf("百分比: %s %", [rankItem.percentage.toString()]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,
