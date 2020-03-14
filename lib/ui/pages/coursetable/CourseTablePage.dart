@@ -116,7 +116,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     SemesterJson semesterJson;
     if (semesterSetting == null) {
       await _getSemesterList(studentId);
-      semesterJson = Model.instance.setSemesterJsonItem(0);
+      semesterJson = Model.instance.getSemesterJsonItem(0);
     } else {
       semesterJson = semesterSetting;
     }
