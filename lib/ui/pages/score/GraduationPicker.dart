@@ -70,7 +70,7 @@ class GraduationPicker {
                   child: _dialog),
             );
           },
-        ).then( (value){
+        ).then((value) {
           finishCallBack(value);
         });
         // Delaying the function for 200 milliseconds
@@ -106,15 +106,16 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   @override
   void initState() {
     super.initState();
-    graduationInformation = Model.instance.getCourseScoreCredit().graduationInformation;
+    graduationInformation =
+        Model.instance.getCourseScoreCredit().graduationInformation;
     Future.delayed(Duration.zero).then((_) {
       _addPresetTask();
     });
   }
 
   Future<void> _addPresetTask() async {
-    TaskHandler.instance.addTask(TaskModelFunction(context,
-        require: [], taskFunction: () async {
+    TaskHandler.instance.addTask(
+        TaskModelFunction(context, require: [], taskFunction: () async {
       MyProgressDialog.showProgressDialog(context, "查詢中...");
       _presetDepartment = await NTUTAppConnector.getDepartment();
       MyProgressDialog.hideProgressDialog();
@@ -135,8 +136,9 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     }
     await _getYearList();
     //利用學號預設學年度
-    if( graduationInformation.selectYear.isEmpty ){
-      graduationInformation.selectYear = Model.instance.getAccount().substring(0, 3);
+    if (graduationInformation.selectYear.isEmpty) {
+      graduationInformation.selectYear =
+          Model.instance.getAccount().substring(0, 3);
     }
     for (String v in yearList) {
       if (v.contains(graduationInformation.selectYear)) {
@@ -146,7 +148,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     }
     await _getDivisionList();
     //利用北科行動助理預設學制與系所
-    if( graduationInformation.selectDivision.isEmpty ){
+    if (graduationInformation.selectDivision.isEmpty) {
       graduationInformation.selectDivision = _presetDepartment["division"];
     }
     for (Map v in divisionList) {
@@ -156,7 +158,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
       }
     }
     await _getDepartmentList();
-    if( graduationInformation.selectDepartment.isEmpty ){
+    if (graduationInformation.selectDepartment.isEmpty) {
       graduationInformation.selectDepartment = _presetDepartment["department"];
     }
     for (Map v in departmentList) {
@@ -265,11 +267,28 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     setState(() {});
   }
 
-  Future<void> _getCreditInfo() async{
+  Future<void> _getCreditInfo() async {
+    MyProgressDialog.showProgressDialog(context, "查詢中...");
     Map code = _selectedDepartment["code"];
-    CourseConnector.getCreditInfo(code);
+    try {
+      Map creditInfo = await CourseConnector.getCreditInfo(code);
+      if (creditInfo != null) {
+        graduationInformation.lowCredit = creditInfo["lowCredit"];
+        creditInfo.remove("lowCredit");
+        graduationInformation.selectYear = _selectedYear;
+        graduationInformation.selectDivision = _selectedDivision["name"];
+        graduationInformation.selectDepartment = _selectedDepartment["name"];
+        for (String key in creditInfo.keys.toList()) {
+          if (graduationInformation.courseTypeMinCredit.containsKey(key)) {
+            graduationInformation.courseTypeMinCredit[key] = creditInfo[key];
+          }
+        }
+      }
+    } catch (e) {
+      Log.e(e.toString());
+    }
+    MyProgressDialog.hideProgressDialog();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -337,6 +356,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
                         setState(() {
                           _selectedDepartment = value;
                         });
+                        _getCreditInfo();
                       },
                     ),
                   ),
@@ -366,23 +386,16 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     );
   }
 
-
-  void _save(){
-    graduationInformation.lowCredit = 102;
-    graduationInformation.selectYear = _selectedYear;
-    graduationInformation.selectDivision = _selectedDivision["name"];
-    graduationInformation.selectDepartment = _selectedDepartment["name"];
+  void _save() {
     _returnValue();
   }
 
-  void _cancel(){
+  void _cancel() {
+    graduationInformation = GraduationInformationJson();
     _returnValue();
   }
 
-  void _returnValue(){
+  void _returnValue() {
     Navigator.of(context).pop(graduationInformation);
   }
-
-
-
 }

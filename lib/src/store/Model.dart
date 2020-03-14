@@ -230,6 +230,7 @@ class Model {
   }
 
   Future<void> setSemesterCourseScore( List<SemesterCourseScoreJson> value) async {
+    _courseScoreList.graduationInformation = GraduationInformationJson();
     _courseScoreList.semesterCourseScoreList = value;
     await saveCourseScoreCredit();
   }

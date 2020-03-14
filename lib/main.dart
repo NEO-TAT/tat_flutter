@@ -37,7 +37,12 @@ Future<Null> main() async {
         child: MyApp(),
       ),
     );
-  }, onError: Crashlytics.instance.recordError);
+  }, onError: (dynamic exception, StackTrace stack,
+      {dynamic context}) {
+    Log.error( exception.toString() );
+    Crashlytics.instance.recordError( exception, stack,
+        context: context);
+  });
 }
 
 class MyApp extends StatelessWidget {
