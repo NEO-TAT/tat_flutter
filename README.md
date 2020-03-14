@@ -17,3 +17,6 @@
 - [morris13579](https://github.com/morris13579)
 - [yaoandy107](https://github.com/yaoandy107)
 - [DevilTea](https://github.com/DevilTea)
+
+## 授權
+這項專案使用 GPLv3 授權 - 詳情請參閱 LICENSE
