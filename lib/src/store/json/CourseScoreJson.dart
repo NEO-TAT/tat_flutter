@@ -11,8 +11,8 @@ const List<String> constCourseType = [
   "☆", //	選	共同選修
   "●", //	  必	部訂專業必修
   "▲", //	  必	校訂專業必修
-  "★"
-]; //	選	專業選修
+  "★" //	  選	專業選修
+];
 
 @JsonSerializable()
 class CourseScoreCreditJson {
@@ -72,6 +72,28 @@ class CourseScoreCreditJson {
     return value;
   }
 
+  int getCreditByType(String type) {
+    int credit = 0;
+    for (SemesterCourseScoreJson i in semesterCourseScoreList) {
+      for (CourseInfoJson j in i.courseScoreList) {
+        if( j.category.contains(type)){
+          credit += j.credit.toInt();
+        }
+      }
+    }
+    return credit;
+  }
+
+  int getTotalCourseCredit() {
+    int credit = 0;
+    for (SemesterCourseScoreJson i in semesterCourseScoreList) {
+      for (CourseInfoJson j in i.courseScoreList) {
+        credit += j.credit.toInt();
+      }
+    }
+    return credit;
+  }
+
   factory CourseScoreCreditJson.fromJson(Map<String, dynamic> json) =>
       _$CourseScoreCreditJsonFromJson(json);
 
@@ -108,7 +130,7 @@ class GraduationInformationJson {
   }
 
   bool get isSelect {
-    return selectYear.isEmpty & selectDivision.isEmpty & selectDepartment.isEmpty;
+    return !(selectYear.isEmpty & selectDivision.isEmpty & selectDepartment.isEmpty);
   }
 
   factory GraduationInformationJson.fromJson(Map<String, dynamic> json) =>

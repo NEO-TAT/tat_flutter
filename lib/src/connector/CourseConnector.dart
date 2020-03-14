@@ -561,14 +561,26 @@ class CourseConnector {
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table")[1];
       result = node.text;
+      /*
+"○", //	  必	部訂共同必修
+"△", //	必	校訂共同必修
+"☆", //	選	共同選修
+"●", //	  必	部訂專業必修
+"▲", //	  必	校訂專業必修
+"★" //	  選	專業選修
+      */
       exp = RegExp(r"最低畢業學分：(\d+)學分");
       matches = exp.firstMatch(result);
+      resultMap["lowCredit"] = int.parse(matches.group(1));
       exp = RegExp(r"共同必修：(\d+)學分");
       matches = exp.firstMatch(result);
+      resultMap["○"] = int.parse(matches.group(1));
       exp = RegExp(r"專業必修：(\d+)學分");
       matches = exp.firstMatch(result);
+      resultMap["▲"] = int.parse(matches.group(1));
       exp = RegExp(r"專業選修：(\d+)學分");
       matches = exp.firstMatch(result);
+      resultMap["★"] = int.parse(matches.group(1));
       return resultMap;
     } catch (e) {
       Log.e(e.toString());
