@@ -122,10 +122,13 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Widget buildText(String title) {
-    return RichText(
-      overflow: TextOverflow.ellipsis,
-      strutStyle: StrutStyle(fontSize: 12.0),
-      text: TextSpan(style: TextStyle(color: Colors.black), text: title),
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+          child: Text(title, overflow: TextOverflow.ellipsis),
+        ),
+      ],
     );
   }
 
@@ -222,40 +225,49 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment : CrossAxisAlignment.start ,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  DropdownButton(
-                    value: _selectedYear,
-                    items: buildYearList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedYear = value;
-                      });
-                    },
+                  Expanded(
+                    child: DropdownButton(
+                      isExpanded: true,  //裡面元素是否要Expanded
+                      value: _selectedYear,
+                      items: buildYearList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedYear = value;
+                        });
+                      },
+                    ),
                   ),
-                  DropdownButton(
-                    value: _selectedDivision,
-                    items: buildDivisionList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedDivision = value;
-                      });
-                    },
+                  Expanded(
+                    child: DropdownButton(
+                      isExpanded: true,
+                      value: _selectedDivision,
+                      items: buildDivisionList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDivision = value;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  DropdownButton(
-                    value: _selectedDepartment,
-                    items: buildDepartmentList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedDepartment = value;
-                      });
-                    },
+                  Expanded(
+                    child: DropdownButton(
+                      isExpanded: true,
+                      value: _selectedDepartment,
+                      items: buildDepartmentList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDepartment = value;
+                        });
+                      },
+                    ),
                   ),
                 ],
               ),
