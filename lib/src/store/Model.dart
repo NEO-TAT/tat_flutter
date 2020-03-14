@@ -320,8 +320,12 @@ class Model {
     _courseSemesterList = value;
   }
 
-  SemesterJson setSemesterJsonItem(int index) {
-    return _courseSemesterList[index];
+  SemesterJson getSemesterJsonItem(int index) {
+    if( _courseSemesterList.length >= index ){
+      return _courseSemesterList[index];
+    }else{
+      return null;
+    }
   }
 
   List<SemesterJson> getSemesterList() {
