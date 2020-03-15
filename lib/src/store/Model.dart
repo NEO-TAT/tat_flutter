@@ -384,7 +384,6 @@ class Model {
     await clearAnnouncementSetting();
     await clearCourseSetting();
     DioConnector.instance.deleteCookies();
-
     await cacheManager.emptyCache(); //clears all data in cache.
     TaskHandler.alreadyCheckSystem = "";  //全部登入重新檢查
     await init();
