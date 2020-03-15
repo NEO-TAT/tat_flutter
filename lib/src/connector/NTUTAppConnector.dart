@@ -159,6 +159,7 @@ class NTUTAppConnector {
     Log.d("NTUTApp CheckLogin");
     ConnectorParameter parameter;
     _isLogin = false;
+    return false;
     Log.d("NTUT Is Readly Login");
     _isLogin = true;
     return true;

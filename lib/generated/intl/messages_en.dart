@@ -133,6 +133,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginISchoolPlus" : MessageLookupByLibrary.simpleMessage("Login to ISchool Plus..."),
     "loginISchoolPlusError" : MessageLookupByLibrary.simpleMessage("Login to ISchool Plus Error"),
     "loginNTUT" : MessageLookupByLibrary.simpleMessage("Login to the NTUT..."),
+    "loginNTUTApp" : MessageLookupByLibrary.simpleMessage("Login to the NTUTApp..."),
+    "loginNTUTAppError" : MessageLookupByLibrary.simpleMessage("Login to the NTUTApp Error"),
     "loginSave" : MessageLookupByLibrary.simpleMessage("Account password has been saved"),
     "loginScore" : MessageLookupByLibrary.simpleMessage("Login to Score..."),
     "loginScoreError" : MessageLookupByLibrary.simpleMessage("Login to Score Error"),

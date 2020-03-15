@@ -67,6 +67,8 @@
   "getCalendarError": "取得行事曆錯誤",
   "deleteMessage": "刪除訊息中...",
   "deleteMessageError": "刪除錯誤",
+  "loginNTUTApp": "登入北科助理...",
+  "loginNTUTAppError": "登入北科助理錯誤",
   "___________________courseUi___________________": "註解",
   "Monday": "一",
   "Tuesday": "二",

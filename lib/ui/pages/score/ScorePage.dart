@@ -88,7 +88,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       for (int i = 0; i < total; i++) {
         CourseInfoJson courseInfo = courseInfoList[i];
         String courseId = courseInfo.courseId;
-        if (courseInfo.category.isEmpty) {  //沒有類別才尋找
+        if (courseInfo.category.isEmpty) {
+          //沒有類別才尋找
           CourseConnector.getCourseExtraInfo(courseId).then((courseExtraInfo) {
             courseScoreCredit.getCourseByCourseId(courseId);
             courseInfo.category = courseExtraInfo.course.category;
@@ -239,6 +240,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       child: AppExpansionTile(
         title: widget,
         children: widgetList,
+        initiallyExpanded: true,
       ),
     );
   }

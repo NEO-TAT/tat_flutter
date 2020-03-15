@@ -641,6 +641,24 @@ class S {
     );
   }
 
+  String get loginNTUTApp {
+    return Intl.message(
+      'Login to the NTUTApp...',
+      name: 'loginNTUTApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loginNTUTAppError {
+    return Intl.message(
+      'Login to the NTUTApp Error',
+      name: 'loginNTUTAppError',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________courseUi___________________ {
     return Intl.message(
       '註解',
@@ -1448,7 +1466,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale('zh', ''), Locale('en', ''),
+      Locale('en', ''), Locale('zh', ''),
     ];
   }
 
