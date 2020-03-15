@@ -43,6 +43,7 @@ class Model {
   CourseScoreCreditJson _courseScoreList;
   SettingJson _setting;
   Map<String, dynamic> _tempData;
+  DefaultCacheManager cacheManager = new DefaultCacheManager();
 
   //--------------------UserDataJson--------------------//
   Future<void> saveUserData() async {
@@ -383,8 +384,8 @@ class Model {
     await clearAnnouncementSetting();
     await clearCourseSetting();
     DioConnector.instance.deleteCookies();
-    DefaultCacheManager manager = new DefaultCacheManager();
-    await manager.emptyCache(); //clears all data in cache.
+
+    await cacheManager.emptyCache(); //clears all data in cache.
     TaskHandler.alreadyCheckSystem = "";  //全部登入重新檢查
     await init();
   }
