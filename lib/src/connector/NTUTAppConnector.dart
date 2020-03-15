@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -157,11 +158,27 @@ class NTUTAppConnector {
 
   static Future<bool> checkLogin() async {
     Log.d("NTUTApp CheckLogin");
-    ConnectorParameter parameter;
     _isLogin = false;
-    return false;
-    Log.d("NTUT Is Readly Login");
-    _isLogin = true;
-    return true;
+    String result;
+    try{
+      ConnectorParameter parameter = ConnectorParameter(_loginUrl);
+      parameter.data = {
+        "checkLogin": "true",
+        "login": "true"
+      };
+      result = await Connector.getDataByPost(parameter);
+      Map jsonDecode = json.decode(result);
+      if( jsonDecode.containsKey("status") ){
+        if( jsonDecode["status"].contains("logout") ){
+          return false;
+        }
+      }
+      Log.d("NTUTApp Is Readly Login");
+      _isLogin = true;
+      return true;
+    }catch(e){
+      Log.e(e.toString());
+      return false;
+    }
   }
 }
