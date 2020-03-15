@@ -69,7 +69,7 @@ class CheckCookiesTask extends TaskModel {
     if( checkSystem.contains(checkNTUTApp) ){  //代表有任務錯誤
       bool pass = await NTUTAppConnector.checkLogin();
       if( !pass ){
-        loginSystem += checkNTUT;
+        loginSystem += checkNTUTApp;
       }
     }
     MyProgressDialog.hideProgressDialog();

@@ -133,6 +133,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginISchoolPlus" : MessageLookupByLibrary.simpleMessage("登入北科I Plus學園中..."),
     "loginISchoolPlusError" : MessageLookupByLibrary.simpleMessage("登入北科I Plus學園錯誤"),
     "loginNTUT" : MessageLookupByLibrary.simpleMessage("登入校園入口網站中..."),
+    "loginNTUTApp" : MessageLookupByLibrary.simpleMessage("登入北科助理..."),
+    "loginNTUTAppError" : MessageLookupByLibrary.simpleMessage("登入北科助理錯誤"),
     "loginSave" : MessageLookupByLibrary.simpleMessage("帳號密碼已儲存"),
     "loginScore" : MessageLookupByLibrary.simpleMessage("登入成績查詢系統..."),
     "loginScoreError" : MessageLookupByLibrary.simpleMessage("登入成績查詢系統錯誤"),
