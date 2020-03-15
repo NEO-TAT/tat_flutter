@@ -86,9 +86,7 @@ class _OtherPageState extends State<OtherPage> {
     switch (value) {
       case onListViewPress.Logout:
         Model.instance.logout().then((_) {
-          Navigator.of(context).push(CustomRoute(LoginScreen())).then((_) {
-            widget.pageController.jumpToPage(0); //跳轉到第一頁
-          });
+          widget.pageController.jumpToPage(0);
         });
         break;
       case onListViewPress.FileViewer:
@@ -171,7 +169,6 @@ class _OtherPageState extends State<OtherPage> {
     givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
     userMail = (userMail.isEmpty) ? "" : userMail;
     Map userImageInfo = NTUTConnector.getUserImage();
-    Model.instance.cacheManager.emptyCache();  //清除圖片暫存
     Widget userImage = CachedNetworkImage(
       cacheManager: Model.instance.cacheManager,
       imageUrl: userImageInfo["url"],
@@ -194,7 +191,12 @@ class _OtherPageState extends State<OtherPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            child: userImage,
+            child: InkWell(
+              child:userImage ,
+              onTap: (){
+                Model.instance.cacheManager.emptyCache();  //清除圖片暫存
+              },
+            ),
           ),
           SizedBox(
             width: 16.0,
