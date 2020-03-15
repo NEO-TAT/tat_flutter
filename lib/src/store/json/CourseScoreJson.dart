@@ -95,7 +95,7 @@ class CourseScoreCreditJson {
       String semester = sprintf("%s-%s" , [i.semester.year , i.semester.semester ]) ;
       result[semester] = List();
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.category.contains(type)){
+        if( j.category.contains(type) && j.isPass){
           result[semester].add(j);
         }
       }
