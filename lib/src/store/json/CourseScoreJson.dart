@@ -84,6 +84,43 @@ class CourseScoreCreditJson {
     return credit;
   }
 
+
+  /*
+  key
+  Map<Semester , List<CourseInfoJson> >
+  */
+  Map<String,List<CourseInfoJson>> getCourseByType(String type) {
+    Map<String,List<CourseInfoJson>> result = Map();
+    for (SemesterCourseScoreJson i in semesterCourseScoreList) {
+      String semester = sprintf("%s-%s" , [i.semester.year , i.semester.semester ]) ;
+      result[semester] = List();
+      for (CourseInfoJson j in i.courseScoreList) {
+        if( j.category.contains(type)){
+          result[semester].add(j);
+        }
+      }
+    }
+    return result;
+  }
+
+  /*
+  key
+  Map<Semester , List<CourseInfoJson> >
+  */
+  Map<String,List<CourseInfoJson>> getGeneralLesson() {
+    Map<String,List<CourseInfoJson>> result = Map();
+    for (SemesterCourseScoreJson i in semesterCourseScoreList) {
+      String semester = sprintf("%s-%s" , [i.semester.year , i.semester.semester ]) ;
+      result[semester] = List();
+      for (CourseInfoJson j in i.courseScoreList) {
+        if( j.isGeneralLesson ){
+          result[semester].add(j);
+        }
+      }
+    }
+    return result;
+  }
+
   int getTotalCourseCredit() {
     int credit = 0;
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
@@ -311,8 +348,7 @@ class CourseInfoJson {
   String name;
   String score;
   double credit; //學分
-  bool isWithdraw; //是否撤選
-  bool isOtherDepartment; //是否為外系
+  String openClass;
   String category;
 
   CourseInfoJson(
@@ -321,15 +357,34 @@ class CourseInfoJson {
       this.score,
       this.credit,
       this.category,
-      this.isOtherDepartment,
-      this.isWithdraw}) {
+      this.openClass}) {
     courseId = JsonInit.stringInit(courseId);
     name = JsonInit.stringInit(name);
     score = JsonInit.stringInit(score);
     category = JsonInit.stringInit(category);
+    openClass = JsonInit.stringInit(openClass);
     credit = credit ?? 0;
-    isWithdraw = isWithdraw ?? false;
-    isOtherDepartment = isOtherDepartment ?? false;
+  }
+
+  bool get isPass{ //是否拿到學分
+    try{
+      int s = int.parse(score);
+      return (s>=60)?true:false;
+    }catch(e){
+      return true;
+    }
+  }
+
+  bool get isOtherDepartment{  //是否是跨系選修
+    return false;
+  }
+
+  bool get isGeneralLesson{  //是否是博雅課程
+    return openClass.contains("博雅");
+  }
+
+  bool get isCoreGeneralLesson{  //是否是博雅核心課程
+    return openClass.contains("核心");
   }
 
   @override

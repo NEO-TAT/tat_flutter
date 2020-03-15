@@ -65,6 +65,7 @@ class CourseMainJson {
 
   factory CourseMainJson.fromJson(Map<String, dynamic> json) =>
       _$CourseMainJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$CourseMainJsonToJson(this);
 }
 
@@ -75,6 +76,7 @@ class CourseExtraJson {
   String category; //類別 (必修...)
   String selectNumber; //選課人數
   String withdrawNumber; //徹選人數
+  String openClass; //開課班級(計算學分用)
 
   CourseExtraJson(
       {this.name, this.category, this.selectNumber, this.withdrawNumber}) {
@@ -83,6 +85,7 @@ class CourseExtraJson {
     category = JsonInit.stringInit(category);
     selectNumber = JsonInit.stringInit(selectNumber);
     withdrawNumber = JsonInit.stringInit(withdrawNumber);
+    openClass = JsonInit.stringInit(openClass);
   }
 
   bool get isEmpty {
@@ -90,7 +93,8 @@ class CourseExtraJson {
         name.isEmpty &&
         category.isEmpty &&
         selectNumber.isEmpty &&
-        withdrawNumber.isEmpty;
+        withdrawNumber.isEmpty &&
+        openClass.isEmpty;
   }
 
   @override
@@ -100,12 +104,14 @@ class CourseExtraJson {
             "name           :%s \n" +
             "category       :%s \n" +
             "selectNumber   :%s \n" +
-            "withdrawNumber :%s \n",
-        [id, name, category, selectNumber, withdrawNumber]);
+            "withdrawNumber :%s \n" +
+            "openClass :%s \n",
+        [id, name, category, selectNumber, withdrawNumber, openClass]);
   }
 
   factory CourseExtraJson.fromJson(Map<String, dynamic> json) =>
       _$CourseExtraJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$CourseExtraJsonToJson(this);
 }
 
@@ -130,6 +136,7 @@ class ClassJson {
 
   factory ClassJson.fromJson(Map<String, dynamic> json) =>
       _$ClassJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$ClassJsonToJson(this);
 }
 
@@ -157,6 +164,7 @@ class ClassroomJson {
 
   factory ClassroomJson.fromJson(Map<String, dynamic> json) =>
       _$ClassroomJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$ClassroomJsonToJson(this);
 }
 
@@ -181,6 +189,7 @@ class TeacherJson {
 
   factory TeacherJson.fromJson(Map<String, dynamic> json) =>
       _$TeacherJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$TeacherJsonToJson(this);
 }
 
@@ -188,6 +197,7 @@ class TeacherJson {
 class SemesterJson {
   String year;
   String semester;
+
   SemesterJson({this.year, this.semester}) {
     year = JsonInit.stringInit(year);
     semester = JsonInit.stringInit(semester);
@@ -195,6 +205,7 @@ class SemesterJson {
 
   factory SemesterJson.fromJson(Map<String, dynamic> json) =>
       _$SemesterJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$SemesterJsonToJson(this);
 
   bool get isEmpty {
@@ -269,5 +280,6 @@ class ClassmateJson {
 
   factory ClassmateJson.fromJson(Map<String, dynamic> json) =>
       _$ClassmateJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$ClassmateJsonToJson(this);
 }

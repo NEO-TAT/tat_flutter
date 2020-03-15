@@ -104,6 +104,7 @@ class CourseConnector {
 
       courseExtra.name = nodes[3].getElementsByTagName("a")[0].text;
       courseExtra.category = nodes[7].text; // 取得類別
+      courseExtra.openClass = nodes[9].text;
       courseExtra.selectNumber = nodes[11].text;
       courseExtra.withdrawNumber = nodes[12].text;
       courseExtra.id = courseId;

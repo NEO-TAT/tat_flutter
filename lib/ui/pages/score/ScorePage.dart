@@ -77,9 +77,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   void _addSearchCourseTypeTask() async {
     TaskHandler.instance.addTask(TaskModelFunction(context,
-        require: [CheckCookiesTask.checkCourse ],
-        taskFunction: () async {
-
+        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
       List<CourseInfoJson> courseInfoList =
           courseScoreCredit.getCourseInfoList();
       int total = courseScoreCredit.getCourseInfoList().length;
@@ -91,7 +89,9 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           CourseConnector.getCourseExtraInfo(courseId).then((courseExtraInfo) {
             courseScoreCredit.getCourseByCourseId(courseId);
             courseInfo.category = courseExtraInfo.course.category;
-            //Log.d(courseInfo.category);
+            courseInfo.openClass =
+                courseExtraInfo.course.openClass.replaceAll("\n", " ");
+            Log.d(courseInfo.openClass);
           });
         }
       }
@@ -187,8 +187,15 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     tabLabelList = List();
     tabChildList = List();
     if (courseScoreCredit.graduationInformation.isSelect) {
-      tabLabelList.add(_buildTabLabel("學分總攬"));
-      tabChildList.add(_buildSummary());
+      tabLabelList.add(_buildTabLabel("學分總覽"));
+      tabChildList.add(Container(
+        child: Column(
+          children: <Widget>[
+            _buildSummary(),
+            _buildGeneralLessonItem(),
+          ],
+        ),
+      ));
     }
     for (int i = 0; i < courseScoreList.length; i++) {
       SemesterCourseScoreJson courseScore = courseScoreList[i];
@@ -278,14 +285,52 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     );
   }
 
+  Widget _buildGeneralLessonItem() {
+    Map<String, List<CourseInfoJson>> generalLesson =
+        courseScoreCredit.getGeneralLesson();
+    List<Widget> widgetList = List();
+    int selectCredit = 0;
+    int coreCredit = 0;
+    for (String key in generalLesson.keys) {
+      for (CourseInfoJson course in generalLesson[key]) {
+        if (course.isCoreGeneralLesson) {
+          coreCredit += course.credit.toInt();
+        } else {
+          selectCredit += course.credit.toInt();
+        }
+        Widget courseItemWidget;
+        courseItemWidget = Container(
+          padding : EdgeInsets.all(5),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Text(course.name),
+              ),
+              Text(course.openClass)
+            ],
+          ),
+        );
+        widgetList.add(courseItemWidget);
+      }
+    }
+    Widget titleWidget =
+        _buildTile(sprintf("博雅總覽 實得核心:%d 實得選修:%d", [coreCredit, selectCredit]));
+    return Container(
+      child: AppExpansionTile(
+        title: titleWidget,
+        children: widgetList,
+        initiallyExpanded: true,
+      ),
+    );
+  }
+
   Widget _buildType(String type, String title) {
     int nowCredit = courseScoreCredit.getCreditByType(type);
     int minCredit =
         courseScoreCredit.graduationInformation.courseTypeMinCredit[type];
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque, //讓透明部分有反應
+    return InkWell(
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(5),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -298,7 +343,18 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           ],
         ),
       ),
-      onTap: () {},
+      onTap: () {
+        Map<String, List<CourseInfoJson>> result =
+            courseScoreCredit.getCourseByType(type);
+        String pr = "";
+        for (String key in result.keys.toList()) {
+          pr += "\n$key";
+          for (CourseInfoJson course in result[key]) {
+            pr += (course.name + " ");
+          }
+        }
+        Log.d(pr);
+      },
     );
   }
 
