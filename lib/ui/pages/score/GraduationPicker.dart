@@ -8,7 +8,6 @@ import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 class GraduationPicker {
@@ -114,19 +113,21 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _addPresetTask() async {
-    TaskHandler.instance.addTask(
-        TaskModelFunction(context, require: [], taskFunction: () async {
-      MyProgressDialog.showProgressDialog(context, "查詢中...");
-      _presetDepartment = await NTUTAppConnector.getDepartment();
-      MyProgressDialog.hideProgressDialog();
-      if (_presetDepartment == null)
-        return false;
-      else
-        return true;
-    }, errorFunction: () {
-      TaskHandler.instance.giveUpTask();
-    }, successFunction: () {}));
-    await TaskHandler.instance.startTaskQueue(context);
+    if( !graduationInformation.isSelect ) {  //如果沒有設定過才執行
+      TaskHandler.instance.addTask(TaskModelFunction(context,
+          require: [CheckCookiesTask.checkNTUTApp], taskFunction: () async {
+            MyProgressDialog.showProgressDialog(context, "查詢中...");
+            _presetDepartment = await NTUTAppConnector.getDepartment();
+            MyProgressDialog.hideProgressDialog();
+            if (_presetDepartment == null)
+              return false;
+            else
+              return true;
+          }, errorFunction: () {
+            TaskHandler.instance.giveUpTask();
+          }, successFunction: () {}));
+      await TaskHandler.instance.startTaskQueue(context);
+    }
     _addSelectTask();
   }
 
@@ -273,6 +274,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     try {
       Map creditInfo = await CourseConnector.getCreditInfo(code);
       if (creditInfo != null) {
+        graduationInformation = GraduationInformationJson();
         graduationInformation.lowCredit = creditInfo["lowCredit"];
         creditInfo.remove("lowCredit");
         graduationInformation.selectYear = _selectedYear;
@@ -391,7 +393,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   void _cancel() {
-    graduationInformation = GraduationInformationJson();
+    graduationInformation = Model.instance.getGraduationInformation();
     _returnValue();
   }
 

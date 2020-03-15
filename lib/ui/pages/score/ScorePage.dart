@@ -77,10 +77,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   void _addSearchCourseTypeTask() async {
     TaskHandler.instance.addTask(TaskModelFunction(context,
-        require: [CheckCookiesTask.checkCourse, CheckCookiesTask.checkNTUTApp],
+        require: [CheckCookiesTask.checkCourse ],
         taskFunction: () async {
-      GraduationPicker picker = GraduationPicker(context);
-      picker.show(_onSelectFinish);
 
       List<CourseInfoJson> courseInfoList =
           courseScoreCredit.getCourseInfoList();
@@ -106,6 +104,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       ErrorDialog(parameter).show();
     }, successFunction: () async {}));
     await TaskHandler.instance.startTaskQueue(context);
+    GraduationPicker picker = GraduationPicker(context);
+    picker.show(_onSelectFinish);
     _buildTabBar();
   }
 
