@@ -76,7 +76,7 @@ class CourseScoreCreditJson {
     int credit = 0;
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.category.contains(type)){
+        if( j.category.contains(type) && j.isPass){
           credit += j.credit.toInt();
         }
       }
@@ -95,7 +95,7 @@ class CourseScoreCreditJson {
       String semester = sprintf("%s-%s" , [i.semester.year , i.semester.semester ]) ;
       result[semester] = List();
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.category.contains(type)){
+        if( j.category.contains(type) && j.isPass){
           result[semester].add(j);
         }
       }
@@ -113,7 +113,7 @@ class CourseScoreCreditJson {
       String semester = sprintf("%s-%s" , [i.semester.year , i.semester.semester ]) ;
       result[semester] = List();
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.isGeneralLesson ){
+        if( j.isGeneralLesson && j.isPass ){
           result[semester].add(j);
         }
       }
@@ -125,7 +125,9 @@ class CourseScoreCreditJson {
     int credit = 0;
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       for (CourseInfoJson j in i.courseScoreList) {
-        credit += j.credit.toInt();
+        if( j.isPass ){
+          credit += j.credit.toInt();
+        }
       }
     }
     return credit;
@@ -371,7 +373,7 @@ class CourseInfoJson {
       int s = int.parse(score);
       return (s>=60)?true:false;
     }catch(e){
-      return true;
+      return false;
     }
   }
 
