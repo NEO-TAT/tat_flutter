@@ -47,7 +47,7 @@ class Model {
 
   //--------------------UserDataJson--------------------//
   Future<void> saveUserData() async {
-    await _save(userDataJsonKey);
+    await _save(userDataJsonKey,_userData);
   }
 
   Future<void> clearUserData() async {
@@ -93,7 +93,7 @@ class Model {
 
   //--------------------NewAnnouncementJsonList--------------------//
   Future<void> saveNewAnnouncement() async {
-    _save(newAnnouncementJsonKey);
+    _save(newAnnouncementJsonKey,_newAnnouncementList);
   }
 
   Future<void> clearNewAnnouncement() async {
@@ -120,7 +120,7 @@ class Model {
 
   //--------------------List<CourseTableJson>--------------------//
   Future<void> saveCourseTableList() async {
-    await _save(courseTableJsonKey);
+    await _save(courseTableJsonKey,_courseTableList);
   }
 
   Future<void> clearCourseTableList() async {
@@ -185,7 +185,7 @@ class Model {
 
   //--------------------SettingJson--------------------//
   Future<void> saveSetting() async {
-    await _save(settingJsonKey);
+    await _save(settingJsonKey,_setting);
   }
 
   Future<void> clearSetting() async {
@@ -205,7 +205,7 @@ class Model {
 
   //--------------------CourseScoreCreditJson--------------------//
   Future<void> saveCourseScoreCredit() async {
-    await _save(scoreCreditJsonKey);
+    await _save(scoreCreditJsonKey,_courseScoreList);
   }
 
   List<SemesterCourseScoreJson> getSemesterCourseScore() {
@@ -304,7 +304,7 @@ class Model {
   }
 
   Future<void> saveSemesterJsonList() async {
-    _save(courseSemesterJsonKey);
+    _save(courseSemesterJsonKey,_courseSemesterList);
   }
 
   Future<void> loadSemesterJsonList() async {
@@ -389,35 +389,24 @@ class Model {
     await init();
   }
 
-  Future<void> _save(String key) async {
-    List<String> saveKey = [
-      userDataJsonKey,
-      courseTableJsonKey,
-      courseSemesterJsonKey,
-      newAnnouncementJsonKey,
-      settingJsonKey,
-      scoreCreditJsonKey
-    ];
-    List saveObj = [
-      _userData,
-      _courseTableList,
-      _courseSemesterList,
-      _newAnnouncementList,
-      _setting,
-      _courseScoreList
-    ];
-    if (saveKey.contains(key)) {
-      int index = saveKey.indexOf(key);
-      if (key.contains("List")) {
-        List<String> jsonList = List();
-        for (dynamic obj in saveObj[index]) {
-          jsonList.add(json.encode(obj));
-        }
-        await _writeStringList(key, jsonList);
-      } else {
-        await _writeString(key, json.encode(saveObj[index]));
-      }
+  Future<void> _save(String key,dynamic saveObj) async {
+    try{
+      _saveJsonList(key,saveObj);
+    }catch(e){
+      _saveJson(key,saveObj);
     }
+  }
+
+  Future<void> _saveJson(String key,dynamic saveObj)async{
+    await _writeString(key, json.encode(saveObj));
+  }
+
+  Future<void> _saveJsonList(String key,dynamic saveObj)async{
+    List<String> jsonList = List();
+    for (dynamic obj in saveObj) {
+      jsonList.add(json.encode(obj));
+    }
+    await _writeStringList(key, jsonList);
   }
 
   Future<void> _clear(String key) async {
