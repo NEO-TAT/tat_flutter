@@ -391,9 +391,9 @@ class Model {
 
   Future<void> _save(String key,dynamic saveObj) async {
     try{
-      _saveJsonList(key,saveObj);
+      await _saveJsonList(key,saveObj);
     }catch(e){
-      _saveJson(key,saveObj);
+      await _saveJson(key,saveObj);
     }
   }
 
