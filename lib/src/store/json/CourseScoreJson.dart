@@ -169,13 +169,13 @@ class GraduationInformationJson {
   String selectDivision;
   String selectDepartment;
   int lowCredit; //最低畢業門檻
-  int outerDepartmentMacCredit; //外系最多承認學分
+  int outerDepartmentMaxCredit; //外系最多承認學分
   Map<String, int> courseTypeMinCredit;
 
   GraduationInformationJson(
       {this.lowCredit,
       this.courseTypeMinCredit,
-      this.outerDepartmentMacCredit,
+      this.outerDepartmentMaxCredit,
       this.selectYear,
       this.selectDivision,
       this.selectDepartment}) {
@@ -183,7 +183,7 @@ class GraduationInformationJson {
     selectDivision = JsonInit.stringInit(selectDivision);
     selectDepartment = JsonInit.stringInit(selectDepartment);
     lowCredit = lowCredit ?? 0;
-    outerDepartmentMacCredit = outerDepartmentMacCredit ?? 0;
+    outerDepartmentMaxCredit = outerDepartmentMaxCredit ?? 0;
     if (courseTypeMinCredit == null) {
       courseTypeMinCredit = Map();
       for (String type in constCourseType) {
@@ -215,7 +215,7 @@ class GraduationInformationJson {
           selectDivision,
           selectDepartment,
           lowCredit.toString(),
-          outerDepartmentMacCredit.toString(),
+          outerDepartmentMaxCredit.toString(),
           courseTypeMinCredit.toString()
         ]);
   }

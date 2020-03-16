@@ -9,6 +9,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:html/dom.dart';
@@ -418,19 +419,19 @@ class CourseConnector {
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
 
-      exp = RegExp(r"最低畢業學分：(\d+)學分");
+      exp = RegExp(r"最低畢業學分：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["lowCredit"] = int.parse(matches.group(1));
 
-      exp = RegExp(r"共同必修：(\d+)學分");
+      exp = RegExp(r"共同必修：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["△"] = int.parse(matches.group(1));
 
-      exp = RegExp(r"專業必修：(\d+)學分");
+      exp = RegExp(r"專業必修：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["▲"] = int.parse(matches.group(1));
 
-      exp = RegExp(r"專業選修：(\d+)學分");
+      exp = RegExp(r"專業選修：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["★"] = int.parse(matches.group(1));
 
@@ -544,14 +545,13 @@ class CourseConnector {
   Map Key
   minGraduationCredits
   */
-  static Future<Map> getCreditInfo(Map code) async{
+  static Future<GraduationInformationJson> getCreditInfo(Map code,String select) async{
     ConnectorParameter parameter;
     String result;
     Document tagNode;
-    Element node;
-    RegExp exp;
-    RegExpMatch matches;
-    Map resultMap = Map();
+    Element anode , trNode , node , tdNode;
+    List<Element> aNodes , trNodes , tdNodes ;
+    GraduationInformationJson graduationInformation = GraduationInformationJson();
     try {
       parameter =
           ConnectorParameter(_creditUrl);
@@ -560,29 +560,56 @@ class CourseConnector {
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
-      node = tagNode.getElementsByTagName("table")[1];
-      result = node.text;
-      /*
-"○", //	  必	部訂共同必修
-"△", //	必	校訂共同必修
-"☆", //	選	共同選修
-"●", //	  必	部訂專業必修
-"▲", //	  必	校訂專業必修
-"★" //	  選	專業選修
-      */
-      exp = RegExp(r"最低畢業學分：(\d+)學分");
-      matches = exp.firstMatch(result);
-      resultMap["lowCredit"] = int.parse(matches.group(1));
-      exp = RegExp(r"共同必修：(\d+)學分");
-      matches = exp.firstMatch(result);
-      resultMap["△"] = int.parse(matches.group(1));
-      exp = RegExp(r"專業必修：(\d+)學分");
-      matches = exp.firstMatch(result);
-      resultMap["▲"] = int.parse(matches.group(1));
-      exp = RegExp(r"專業選修：(\d+)學分");
-      matches = exp.firstMatch(result);
-      resultMap["★"] = int.parse(matches.group(1));
-      return resultMap;
+      node = tagNode.getElementsByTagName("table").first;
+      aNodes = node.getElementsByTagName("a");
+      trNodes = node.getElementsByTagName("tr");
+      for (int i = 0; i < aNodes.length; i++) {
+        anode = aNodes[i];
+        trNode = trNodes[i];
+        String name = anode.text.replaceAll(RegExp("[ |\s]"), "");
+        if( name.contains(select) ){
+          tdNodes = trNode.getElementsByTagName("td");
+          for( int j=1; j < tdNodes.length ; j++ ){
+            tdNode = tdNodes[j];
+            /*
+              "○", //	  必	部訂共同必修
+              "△", //	必	校訂共同必修
+              "☆", //	選	共同選修
+              "●", //	  必	部訂專業必修
+              "▲", //	  必	校訂專業必修
+              "★" //	  選	專業選修
+             */
+            String creditString = tdNode.text.replaceAll(RegExp(r"[\s|\n]"), "");
+            switch(j-1){
+              case 0 :
+                graduationInformation.courseTypeMinCredit["○"] = int.parse(creditString);
+                break;
+              case 1:
+                graduationInformation.courseTypeMinCredit["△"] = int.parse(creditString);
+                break;
+              case 2:
+                graduationInformation.courseTypeMinCredit["☆"] = int.parse(creditString);
+                break;
+              case 3:
+                graduationInformation.courseTypeMinCredit["●"] = int.parse(creditString);
+                break;
+              case 4:
+                graduationInformation.courseTypeMinCredit["▲"] = int.parse(creditString);
+                break;
+              case 5:
+                graduationInformation.courseTypeMinCredit["★"] = int.parse(creditString);
+                break;
+              case 6:
+                graduationInformation.outerDepartmentMaxCredit = int.parse(creditString);
+                break;
+              case 7:
+                graduationInformation.lowCredit = int.parse(creditString);
+                break;
+            }
+          }
+        }
+      }
+      return graduationInformation;
     } catch (e) {
       Log.e(e.toString());
       return null;

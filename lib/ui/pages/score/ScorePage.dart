@@ -13,6 +13,7 @@ import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/score/GraduationPicker.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sprintf/sprintf.dart';
@@ -317,6 +318,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             pr += (course.name + " ");
           }
         }
+        pr = pr.substring(1,pr.length);
+        MyToast.show(pr);
         Log.d(pr);
       },
     );
@@ -368,6 +371,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   Widget _buildOtherDepartmentItem() {
     String department =
         Model.instance.getGraduationInformation().selectDepartment;
+    int otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
     department = department.substring(0, 2);
     Log.d(department);
     Map<String, List<CourseInfoJson>> generalLesson =
@@ -384,7 +388,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       }
     }
     Widget titleWidget =
-        _buildTile(sprintf("外系學分:%d", [otherDepartmentCredit]));
+        _buildTile(sprintf("外系學分: %d/%d", [otherDepartmentCredit ,otherDepartmentMaxCredit ]));
     return Container(
       child: AppExpansionTile(
         title: titleWidget,

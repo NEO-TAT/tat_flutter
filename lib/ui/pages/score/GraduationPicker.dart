@@ -113,19 +113,20 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _addPresetTask() async {
-    if( !graduationInformation.isSelect ) {  //如果沒有設定過才執行
+    if (!graduationInformation.isSelect) {
+      //如果沒有設定過才執行
       TaskHandler.instance.addTask(TaskModelFunction(context,
           require: [CheckCookiesTask.checkNTUTApp], taskFunction: () async {
-            MyProgressDialog.showProgressDialog(context, "查詢中...");
-            _presetDepartment = await NTUTAppConnector.getDepartment();
-            MyProgressDialog.hideProgressDialog();
-            if (_presetDepartment == null)
-              return false;
-            else
-              return true;
-          }, errorFunction: () {
-            TaskHandler.instance.giveUpTask();
-          }, successFunction: () {}));
+        MyProgressDialog.showProgressDialog(context, "查詢中...");
+        _presetDepartment = await NTUTAppConnector.getDepartment();
+        MyProgressDialog.hideProgressDialog();
+        if (_presetDepartment == null)
+          return false;
+        else
+          return true;
+      }, errorFunction: () {
+        TaskHandler.instance.giveUpTask();
+      }, successFunction: () {}));
       await TaskHandler.instance.startTaskQueue(context);
     }
     _addSelectTask();
@@ -270,21 +271,14 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
 
   Future<void> _getCreditInfo() async {
     MyProgressDialog.showProgressDialog(context, "查詢中學分資訊...");
-    Map code = _selectedDepartment["code"];
+    Map code = _selectedDivision["code"];
     try {
-      Map creditInfo = await CourseConnector.getCreditInfo(code);
-      if (creditInfo != null) {
-        graduationInformation = GraduationInformationJson();
-        graduationInformation.lowCredit = creditInfo["lowCredit"];
-        creditInfo.remove("lowCredit");
+      graduationInformation = await CourseConnector.getCreditInfo(
+          code, _selectedDepartment["name"]);
+      if(graduationInformation != null){
         graduationInformation.selectYear = _selectedYear;
         graduationInformation.selectDivision = _selectedDivision["name"];
         graduationInformation.selectDepartment = _selectedDepartment["name"];
-        for (String key in creditInfo.keys.toList()) {
-          if (graduationInformation.courseTypeMinCredit.containsKey(key)) {
-            graduationInformation.courseTypeMinCredit[key] = creditInfo[key];
-          }
-        }
       }
     } catch (e) {
       Log.e(e.toString());
