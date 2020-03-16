@@ -65,8 +65,8 @@ class CourseTableControl {
 
   void set(CourseTableJson value) {
     courseTable = value;
-    isHideSaturday = !courseTable.isDayInCourseTable(Day.Sunday);
-    isHideSunday = !courseTable.isDayInCourseTable(Day.Saturday);
+    isHideSaturday = !courseTable.isDayInCourseTable(Day.Saturday);
+    isHideSunday = !courseTable.isDayInCourseTable(Day.Sunday);
     isHideUnKnown = !courseTable.isDayInCourseTable(Day.UnKnown);
     isHideN = !courseTable.isSectionNumberInCourseTable(SectionNumber.T_N);
     isHideA = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_A));
