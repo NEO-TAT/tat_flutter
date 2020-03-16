@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
@@ -193,6 +194,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           children: <Widget>[
             _buildSummary(),
             _buildGeneralLessonItem(),
+            _buildOtherDepartmentItem(),
+            _buildWarning(),
           ],
         ),
       ));
@@ -225,29 +228,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       ),
       child: Tab(
         text: title,
-      ),
-    );
-  }
-
-  Widget _buildSummary() {
-    List<Widget> widgetList = List();
-    GraduationInformationJson graduationInformation =
-        courseScoreCredit.graduationInformation;
-    Widget widget = _buildTile(sprintf("學分總覽 %d/%d", [
-      courseScoreCredit.getTotalCourseCredit(),
-      graduationInformation.lowCredit
-    ]));
-    widgetList.add(_buildType("○", "部訂共同必修"));
-    widgetList.add(_buildType("△", "校訂共同必修"));
-    widgetList.add(_buildType("☆", "共同選修"));
-    widgetList.add(_buildType("●", "部訂專業必修"));
-    widgetList.add(_buildType("▲", "校訂專業必修"));
-    widgetList.add(_buildType("★", "專業選修"));
-    return Container(
-      child: AppExpansionTile(
-        title: widget,
-        children: widgetList,
-        initiallyExpanded: true,
       ),
     );
   }
@@ -285,39 +265,23 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     );
   }
 
-  Widget _buildGeneralLessonItem() {
-    Map<String, List<CourseInfoJson>> generalLesson =
-        courseScoreCredit.getGeneralLesson();
+  Widget _buildSummary() {
     List<Widget> widgetList = List();
-    int selectCredit = 0;
-    int coreCredit = 0;
-    for (String key in generalLesson.keys) {
-      for (CourseInfoJson course in generalLesson[key]) {
-        if (course.isCoreGeneralLesson) {
-          coreCredit += course.credit.toInt();
-        } else {
-          selectCredit += course.credit.toInt();
-        }
-        Widget courseItemWidget;
-        courseItemWidget = Container(
-          padding : EdgeInsets.all(5),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(course.name),
-              ),
-              Text(course.openClass)
-            ],
-          ),
-        );
-        widgetList.add(courseItemWidget);
-      }
-    }
-    Widget titleWidget =
-        _buildTile(sprintf("博雅總覽 實得核心:%d 實得選修:%d", [coreCredit, selectCredit]));
+    GraduationInformationJson graduationInformation =
+        courseScoreCredit.graduationInformation;
+    Widget widget = _buildTile(sprintf("學分總覽 %d/%d", [
+      courseScoreCredit.getTotalCourseCredit(),
+      graduationInformation.lowCredit
+    ]));
+    widgetList.add(_buildType("○", "部訂共同必修"));
+    widgetList.add(_buildType("△", "校訂共同必修"));
+    widgetList.add(_buildType("☆", "共同選修"));
+    widgetList.add(_buildType("●", "部訂專業必修"));
+    widgetList.add(_buildType("▲", "校訂專業必修"));
+    widgetList.add(_buildType("★", "專業選修"));
     return Container(
       child: AppExpansionTile(
-        title: titleWidget,
+        title: widget,
         children: widgetList,
         initiallyExpanded: true,
       ),
@@ -355,6 +319,95 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         }
         Log.d(pr);
       },
+    );
+  }
+
+  Widget _buildOneLineCourse(String name, String openClass) {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(name),
+          ),
+          Text(openClass)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGeneralLessonItem() {
+    Map<String, List<CourseInfoJson>> generalLesson =
+        courseScoreCredit.getGeneralLesson();
+    List<Widget> widgetList = List();
+    int selectCredit = 0;
+    int coreCredit = 0;
+    for (String key in generalLesson.keys) {
+      for (CourseInfoJson course in generalLesson[key]) {
+        if (course.isCoreGeneralLesson) {
+          coreCredit += course.credit.toInt();
+        } else {
+          selectCredit += course.credit.toInt();
+        }
+        Widget courseItemWidget;
+        courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
+        widgetList.add(courseItemWidget);
+      }
+    }
+    Widget titleWidget =
+        _buildTile(sprintf("博雅總覽 實得核心:%d 實得選修:%d", [coreCredit, selectCredit]));
+    return Container(
+      child: AppExpansionTile(
+        title: titleWidget,
+        children: widgetList,
+        initiallyExpanded: true,
+      ),
+    );
+  }
+
+  Widget _buildOtherDepartmentItem() {
+    String department =
+        Model.instance.getGraduationInformation().selectDepartment;
+    department = department.substring(0, 2);
+    Log.d(department);
+    Map<String, List<CourseInfoJson>> generalLesson =
+        courseScoreCredit.getOtherDepartmentCourse(department);
+    List<Widget> widgetList = List();
+    int otherDepartmentCredit = 0;
+    for (String key in generalLesson.keys) {
+      for (CourseInfoJson course in generalLesson[key]) {
+        otherDepartmentCredit += course.credit.toInt();
+        Widget courseItemWidget;
+        courseItemWidget = courseItemWidget =
+            _buildOneLineCourse(course.name, course.openClass);
+        widgetList.add(courseItemWidget);
+      }
+    }
+    Widget titleWidget =
+        _buildTile(sprintf("外系學分:%d", [otherDepartmentCredit]));
+    return Container(
+      child: AppExpansionTile(
+        title: titleWidget,
+        children: widgetList,
+        initiallyExpanded: true,
+      ),
+    );
+  }
+
+  Widget _buildWarning() {
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              "此計算僅供參考，實際請以學校為主",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
