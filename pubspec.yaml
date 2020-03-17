@@ -54,7 +54,7 @@ dependencies:
   big5: ^0.0.4     #big5 decode encode
   quiver: ^2.0.5   #hashcode
   intl: ^0.16.0    #DateTime to String
-  flutter_keyboard_visibility: ^0.7.0  #檢測手機鍵盤狀態
+  #keyboard_visibility: ^0.5.6  #檢測手機鍵盤狀態
   package_info: ^0.4.0+13  #檢測app版本用於檢查更新
   #random_color: ^1.0.3  #t產生隨機顏色
   #native_color: ^1.2.0+1 #用於產生HslColor

@@ -14,7 +14,6 @@ import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
@@ -27,7 +26,6 @@ class CourseTablePage extends StatefulWidget {
 
 class _CourseTablePageState extends State<CourseTablePage> {
   final TextEditingController _studentIdControl = TextEditingController();
-  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   final FocusNode _studentFocus = new FocusNode();
   GlobalKey _key = GlobalKey();
   bool isLoading = true;
@@ -43,16 +41,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
     super.initState();
     _studentIdControl.text = " ";
     UserDataJson userData = Model.instance.getUserData();
-    _keyboardVisibility.addNewListener(onChange: (bool visible) {
-      Log.d(visible.toString());
-      if (!visible) {
-        _studentFocus.unfocus();
-      }
-    }, onShow: () {
-      Log.d("onShow");
-    }, onHide: () {
-      Log.d("onShow");
-    });
     Future.delayed(Duration(milliseconds: 200)).then((_) {
       if (userData.account.isEmpty || userData.password.isEmpty) {
         Navigator.of(context)
@@ -84,7 +72,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   @override
   void dispose() {
-    _keyboardVisibility.dispose();
     _studentFocus.dispose();
     super.dispose();
   }
@@ -160,6 +147,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   void _showSemesterList() async {
     //顯示選擇學期
+    _unFocusStudentInput();
     if (Model.instance.getSemesterList().length == 0) {
       TaskHandler.instance
           .addTask(CourseSemesterTask(context, _studentIdControl.text));
@@ -397,6 +385,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   //顯示課程對話框
   void showCourseDetailDialog(int section, CourseInfoJson courseInfo) {
+    _unFocusStudentInput();
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
@@ -460,10 +449,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
+  void _unFocusStudentInput(){
+    FocusScope.of(context).requestFocus(FocusNode());  //失焦使鍵盤關閉
+    _studentFocus.unfocus();
+  }
+
   void _showCourseTable(CourseTableJson courseTable) async {
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
-    _studentFocus.unfocus();
+    _unFocusStudentInput();
     setState(() {
       isLoading = true;
     });
