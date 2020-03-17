@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -26,6 +27,7 @@ class CourseTablePage extends StatefulWidget {
 
 class _CourseTablePageState extends State<CourseTablePage> {
   final TextEditingController _studentIdControl = TextEditingController();
+  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   final FocusNode _studentFocus = new FocusNode();
   GlobalKey _key = GlobalKey();
   bool isLoading = true;
@@ -41,13 +43,16 @@ class _CourseTablePageState extends State<CourseTablePage> {
     super.initState();
     _studentIdControl.text = " ";
     UserDataJson userData = Model.instance.getUserData();
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        if (!visible) {
-          _studentFocus.unfocus();
-        }
-      },
-    );
+    _keyboardVisibility.addNewListener(onChange: (bool visible) {
+      Log.d(visible.toString());
+      if (!visible) {
+        _studentFocus.unfocus();
+      }
+    }, onShow: () {
+      Log.d("onShow");
+    }, onHide: () {
+      Log.d("onShow");
+    });
     Future.delayed(Duration(milliseconds: 200)).then((_) {
       if (userData.account.isEmpty || userData.password.isEmpty) {
         Navigator.of(context)
@@ -79,7 +84,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   @override
   void dispose() {
-    KeyboardVisibilityNotification().dispose();
+    _keyboardVisibility.dispose();
+    _studentFocus.dispose();
     super.dispose();
   }
 
@@ -132,8 +138,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       TaskHandler.instance
           .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
-      courseTable =
-          Model.instance.getTempData(CourseTableTask.tempDataKey);
+      courseTable = Model.instance.getTempData(CourseTableTask.tempDataKey);
     }
     Model.instance.getCourseSetting().info = courseTable; //儲存課表
     Model.instance.saveCourseSetting();
@@ -458,6 +463,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showCourseTable(CourseTableJson courseTable) async {
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
+    _studentFocus.unfocus();
     setState(() {
       isLoading = true;
     });
