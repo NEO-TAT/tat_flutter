@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
@@ -41,13 +41,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
     super.initState();
     _studentIdControl.text = " ";
     UserDataJson userData = Model.instance.getUserData();
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        if (!visible) {
-          _studentFocus.unfocus();
-        }
-      },
-    );
     Future.delayed(Duration(milliseconds: 200)).then((_) {
       if (userData.account.isEmpty || userData.password.isEmpty) {
         Navigator.of(context)
@@ -79,7 +72,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   @override
   void dispose() {
-    KeyboardVisibilityNotification().dispose();
+    _studentFocus.dispose();
     super.dispose();
   }
 
@@ -116,7 +109,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     SemesterJson semesterJson;
     if (semesterSetting == null) {
       await _getSemesterList(studentId);
-      semesterJson = Model.instance.setSemesterJsonItem(0);
+      semesterJson = Model.instance.getSemesterJsonItem(0);
     } else {
       semesterJson = semesterSetting;
     }
@@ -132,8 +125,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       TaskHandler.instance
           .addTask(CourseTableTask(context, studentId, semesterJson));
       await TaskHandler.instance.startTaskQueue(context);
-      courseTable =
-          Model.instance.getTempData(CourseTableTask.tempDataKey);
+      courseTable = Model.instance.getTempData(CourseTableTask.tempDataKey);
     }
     Model.instance.getCourseSetting().info = courseTable; //儲存課表
     Model.instance.saveCourseSetting();
@@ -155,6 +147,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   void _showSemesterList() async {
     //顯示選擇學期
+    _unFocusStudentInput();
     if (Model.instance.getSemesterList().length == 0) {
       TaskHandler.instance
           .addTask(CourseSemesterTask(context, _studentIdControl.text));
@@ -392,6 +385,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   //顯示課程對話框
   void showCourseDetailDialog(int section, CourseInfoJson courseInfo) {
+    _unFocusStudentInput();
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
@@ -455,9 +449,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
+  void _unFocusStudentInput(){
+    FocusScope.of(context).requestFocus(FocusNode());  //失焦使鍵盤關閉
+    _studentFocus.unfocus();
+  }
+
   void _showCourseTable(CourseTableJson courseTable) async {
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
+    _unFocusStudentInput();
     setState(() {
       isLoading = true;
     });

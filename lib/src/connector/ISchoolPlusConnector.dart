@@ -9,6 +9,7 @@ import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
 import 'package:flutter_app/src/connector/requests/requests.dart' as requests;
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/object/CourseFileJson.dart';
+import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 import 'package:dio/dio.dart' as dio;
@@ -300,18 +301,18 @@ class ISchoolPlusConnector {
             exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
             matches = exp.firstMatch(result);
             url =
-                _iSchoolPlusUrl + "/learn/path/" + matches.group(1); //是PDF預覽畫面
+                _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
             result = await RequestsConnector.getDataByGet(parameter);
             exp = new RegExp("DEFAULT_URL.+'(?<url>.+)'"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
-            return _iSchoolPlusUrl + "/learn/path/" + matches.group(1);
+            return _iSchoolPlusUrl + "learn/path/" + matches.group(1);
           }
         }
       } else if (response.isRedirect || result.isEmpty) {
         //發生跳轉 出現檔案下載頁面
         url = response.headers[HttpHeaders.locationHeader];
-        url = _iSchoolPlusUrl + "/learn/path/" + url;
+        url = _iSchoolPlusUrl + "learn/path/" + url;
         url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址
         return url;
       }
@@ -372,6 +373,7 @@ class ISchoolPlusConnector {
       result = await RequestsConnector.getDataByPost(parameter);
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
+      result = HtmlUtils.clean(result);
       jsonData = json.decode(result)['data'];
       int totalRows = int.parse( json.decode(result)['total_rows'] );
       if( totalRows > 0 ){
@@ -433,14 +435,14 @@ class ISchoolPlusConnector {
         node = nodes.first;
         nodes = node.getElementsByTagName("a");
         for (html.Element node in nodes) {
-          fileMap[node.text] = _iSchoolPlusUrl + node.attributes["href"];
+          String href = node.attributes["href"];
+          if( href[0] == '/' ){
+            href = href.substring(1,href.length);
+          }
+          fileMap[node.text] = _iSchoolPlusUrl + href;
         }
       }
-
-
-
-
-
+      body = HtmlUtils.addLink(body);
       detail["title"] = title;
       detail["sender"] = sender;
       detail["postTime"] = postTime;

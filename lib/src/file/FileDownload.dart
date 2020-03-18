@@ -6,6 +6,8 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -25,13 +27,13 @@ class FileDownload {
     String path = await FileStore.getDownloadDir(context, dirName); //取得下載路徑
     String realFileName;
     String fileExtension;
+    Log.d( "file download $url");
     ReceivedNotification value = ReceivedNotification(
         title: name,
         body: R.current.prepareDownload,
         payload: 'download'); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
-
     await Notifications.instance.showIndeterminateProgressNotification(value);
     if( name.isEmpty ){
       realFileName = await Connector.getFileName(url);
@@ -67,7 +69,10 @@ class FileDownload {
             .showIndeterminateProgressNotification(value);  //顯示下載進度
       }
     };
-    await DioConnector.instance.download(url, path + "/" + realFileName,
+    await DioConnector.instance.download(url, (Headers responseHeaders) {
+      //Log.d(responseHeaders.toString());
+      return path + "/" + realFileName;
+     },
         progressCallback: onReceiveProgress, cancelToken: cancelToken);
     await Future.delayed(Duration(milliseconds: 100));
     Notifications.instance.cancelNotification(value.id);

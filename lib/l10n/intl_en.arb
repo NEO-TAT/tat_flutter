@@ -67,6 +67,8 @@
   "getCalendarError": "Getting Calendar Error",
   "deleteMessage": "Deleting message...",
   "deleteMessageError": "Delete error",
+  "loginNTUTApp": "Login to the NTUTApp...",
+  "loginNTUTAppError": "Login to the NTUTApp Error",
   "___________________courseUi___________________": "註解",
   "Monday": "MON",
   "Tuesday": "TUE",

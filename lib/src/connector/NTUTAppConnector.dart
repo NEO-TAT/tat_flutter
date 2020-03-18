@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -38,6 +39,37 @@ class NTUTAppConnector {
     } catch (e) {
       Log.e(e.toString());
       return NTUTAppConnectorStatus.LoginFail;
+    }
+  }
+
+  static Future<Map<String,String>> getDepartment() async{
+    ConnectorParameter parameter;
+    String code;
+    String result;
+    Document tagNode;
+    Map<String,String> departmentData = Map();
+    List<Element> nodes;
+    try {
+      parameter = ConnectorParameter(_countCreditUrl);
+      result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      nodes = tagNode.getElementsByTagName("option");
+      //系所
+      for (Element node in nodes) {
+        if (node.attributes.containsKey("selected")) {
+          code = node.attributes["value"];
+          departmentData["department"] = node.text;
+          departmentData["code"] = code;
+        }
+      }
+      nodes = tagNode.getElementsByTagName("li");
+      departmentData["division"] = nodes[4].getElementsByClassName("item-after").first.text; // 學制
+      Log.d( departmentData.toString() );
+      _isLogin = true;
+      return departmentData;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
     }
   }
 
@@ -126,10 +158,27 @@ class NTUTAppConnector {
 
   static Future<bool> checkLogin() async {
     Log.d("NTUTApp CheckLogin");
-    ConnectorParameter parameter;
     _isLogin = false;
-    Log.d("NTUT Is Readly Login");
-    _isLogin = true;
-    return true;
+    String result;
+    try{
+      ConnectorParameter parameter = ConnectorParameter(_loginUrl);
+      parameter.data = {
+        "checkLogin": "true",
+        "login": "true"
+      };
+      result = await Connector.getDataByPost(parameter);
+      Map jsonDecode = json.decode(result);
+      if( jsonDecode.containsKey("status") ){
+        if( jsonDecode["status"].contains("logout") ){
+          return false;
+        }
+      }
+      Log.d("NTUTApp Is Readly Login");
+      _isLogin = true;
+      return true;
+    }catch(e){
+      Log.e(e.toString());
+      return false;
+    }
   }
 }

@@ -129,23 +129,24 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
               itemBuilder: (context, index) {
                 Widget fileWidget;
                 fileWidget = Container(
-                    child: Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        keyMap[index],
-                        style: TextStyle(fontSize: 15, color: Colors.blue),
-                      )
-                    ],
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          keyMap[index],
+                          style: TextStyle(fontSize: 15, color: Colors.blue),
+                        )
+                      ],
+                    ),
                   ),
-                ));
-                return GestureDetector(
-                    behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                    child: WidgetAnimator(fileWidget),
-                    onTap: () {
-                      _downloadFile(fileMap[keyMap[index]], keyMap[index]);
-                    });
+                );
+                return InkWell(
+                  child: WidgetAnimator(fileWidget),
+                  onTap: () {
+                    _downloadFile(fileMap[keyMap[index]], keyMap[index]);
+                  },
+                );
               },
               separatorBuilder: (context, index) {
                 // 顯示格線

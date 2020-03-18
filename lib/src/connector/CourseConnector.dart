@@ -9,6 +9,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:html/dom.dart';
@@ -31,9 +32,10 @@ class CourseConnector {
       "https://nportal.ntut.edu.tw/ssoIndex.do";
   static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
   static final String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
-  static final String _postCourseCNUrl = _courseCNHost + "/Select.jsp";
-  static final String _postCourseENUrl = _courseENHost + "/Select.jsp";
-  static final String _checkLoginUrl = _courseCNHost + "/Select.jsp";
+  static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";
+  static final String _postCourseENUrl = _courseENHost + "Select.jsp";
+  static final String _checkLoginUrl = _courseCNHost + "Select.jsp";
+  static final String _creditUrl = _courseCNHost + "Cprog.jsp";
 
   static Future<CourseConnectorStatus> login() async {
     String result;
@@ -103,6 +105,7 @@ class CourseConnector {
 
       courseExtra.name = nodes[3].getElementsByTagName("a")[0].text;
       courseExtra.category = nodes[7].text; // 取得類別
+      courseExtra.openClass = nodes[9].text;
       courseExtra.selectNumber = nodes[11].text;
       courseExtra.withdrawNumber = nodes[12].text;
       courseExtra.id = courseId;
@@ -416,19 +419,19 @@ class CourseConnector {
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
 
-      exp = RegExp(r"最低畢業學分：(\d+)學分");
+      exp = RegExp(r"最低畢業學分：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["lowCredit"] = int.parse(matches.group(1));
 
-      exp = RegExp(r"共同必修：(\d+)學分");
+      exp = RegExp(r"共同必修：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["△"] = int.parse(matches.group(1));
 
-      exp = RegExp(r"專業必修：(\d+)學分");
+      exp = RegExp(r"專業必修：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["▲"] = int.parse(matches.group(1));
 
-      exp = RegExp(r"專業選修：(\d+)學分");
+      exp = RegExp(r"專業選修：?(\d+)學分");
       matches = exp.firstMatch(result);
       graduationMap["★"] = int.parse(matches.group(1));
 
@@ -471,6 +474,11 @@ class CourseConnector {
     }
   }
 
+  /*
+  Map Key
+  name 名稱
+  code 參數
+  */
   static Future<List<Map>> getDivisionList(String year) async {
     ConnectorParameter parameter;
     String result;
@@ -480,7 +488,7 @@ class CourseConnector {
     List<Map> resultList = List();
     try {
       parameter =
-          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+          ConnectorParameter(_creditUrl);
       parameter.data = {"format": "-2" , "year": year};
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
@@ -498,7 +506,11 @@ class CourseConnector {
     }
   }
 
-
+  /*
+  Map Key
+  name 名稱
+  code 參數
+  */
   static Future<List<Map>> getDepartmentList(Map code) async{
     ConnectorParameter parameter;
     String result;
@@ -508,9 +520,9 @@ class CourseConnector {
     List<Map> resultList = List();
     try {
       parameter =
-          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+          ConnectorParameter(_creditUrl);
       parameter.data = code;
-      Log.d( code.toString() );
+      //Log.d( code.toString() );
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
@@ -519,8 +531,8 @@ class CourseConnector {
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         Map<String , String> code = Uri.parse(node.attributes["href"]).queryParameters;
-        Log.d( code.toString() );
-        resultList.add( {"name" : node.text.replaceAll(RegExp("[ |\s]"), "") , "code" :code });
+        String name = node.text.replaceAll(RegExp("[ |\s]"), "");
+        resultList.add( {"name" : name , "code" :code });
       }
       return resultList;
     } catch (e) {
@@ -528,6 +540,82 @@ class CourseConnector {
       return null;
     }
   }
+
+  /*
+  Map Key
+  minGraduationCredits
+  */
+  static Future<GraduationInformationJson> getCreditInfo(Map code,String select) async{
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    Element anode , trNode , node , tdNode;
+    List<Element> aNodes , trNodes , tdNodes ;
+    GraduationInformationJson graduationInformation = GraduationInformationJson();
+    try {
+      parameter =
+          ConnectorParameter(_creditUrl);
+      parameter.data = code;
+      //Log.d( code.toString() );
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table").first;
+      aNodes = node.getElementsByTagName("a");
+      trNodes = node.getElementsByTagName("tr");
+      for (int i = 0; i < aNodes.length; i++) {
+        anode = aNodes[i];
+        trNode = trNodes[i];
+        String name = anode.text.replaceAll(RegExp("[ |\s]"), "");
+        if( name.contains(select) ){
+          tdNodes = trNode.getElementsByTagName("td");
+          for( int j=1; j < tdNodes.length ; j++ ){
+            tdNode = tdNodes[j];
+            /*
+              "○", //	  必	部訂共同必修
+              "△", //	必	校訂共同必修
+              "☆", //	選	共同選修
+              "●", //	  必	部訂專業必修
+              "▲", //	  必	校訂專業必修
+              "★" //	  選	專業選修
+             */
+            String creditString = tdNode.text.replaceAll(RegExp(r"[\s|\n]"), "");
+            switch(j-1){
+              case 0 :
+                graduationInformation.courseTypeMinCredit["○"] = int.parse(creditString);
+                break;
+              case 1:
+                graduationInformation.courseTypeMinCredit["△"] = int.parse(creditString);
+                break;
+              case 2:
+                graduationInformation.courseTypeMinCredit["☆"] = int.parse(creditString);
+                break;
+              case 3:
+                graduationInformation.courseTypeMinCredit["●"] = int.parse(creditString);
+                break;
+              case 4:
+                graduationInformation.courseTypeMinCredit["▲"] = int.parse(creditString);
+                break;
+              case 5:
+                graduationInformation.courseTypeMinCredit["★"] = int.parse(creditString);
+                break;
+              case 6:
+                graduationInformation.outerDepartmentMaxCredit = int.parse(creditString);
+                break;
+              case 7:
+                graduationInformation.lowCredit = int.parse(creditString);
+                break;
+            }
+          }
+        }
+      }
+      return graduationInformation;
+    } catch (e) {
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
 
   static bool get isLogin {
     return _isLogin;

@@ -114,8 +114,13 @@ class NTUTConnector {
     }
   }
 
-  static Widget getUserImage() {
-    Widget image;
+  /*
+  Map key
+  url
+  header
+   */
+  static Map getUserImage() {
+    Map imageInfo = Map();
     String userPhoto = Model.instance.getUserInfo().userPhoto;
     Log.d("getUserImage");
     String url = _getPictureUrl;
@@ -125,17 +130,9 @@ class NTUTConnector {
           Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
     }
     Log.d(url);
-    image = CachedNetworkImage(
-      imageUrl: url,
-      httpHeaders: Connector.getLoginHeaders(url),
-      imageBuilder: (context, imageProvider) => CircleAvatar(
-        radius: 30.0,
-        backgroundImage: imageProvider,
-      ),
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(Icons.error),
-    );
-    return image;
+    imageInfo["url"] = url;
+    imageInfo["header"] = Connector.getLoginHeaders(url);
+    return imageInfo;
   }
 
   static bool get isLogin {

@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -84,9 +86,7 @@ class _OtherPageState extends State<OtherPage> {
     switch (value) {
       case onListViewPress.Logout:
         Model.instance.logout().then((_) {
-          Navigator.of(context).push(CustomRoute(LoginScreen())).then((_) {
-            widget.pageController.jumpToPage(0); //跳轉到第一頁
-          });
+          widget.pageController.jumpToPage(0);
         });
         break;
       case onListViewPress.FileViewer:
@@ -168,7 +168,21 @@ class _OtherPageState extends State<OtherPage> {
     String userMail = userInfo.userMail;
     givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
     userMail = (userMail.isEmpty) ? "" : userMail;
-    Widget userImage = NTUTConnector.getUserImage();
+    Map userImageInfo = NTUTConnector.getUserImage();
+    Widget userImage = CachedNetworkImage(
+      cacheManager: Model.instance.cacheManager,
+      imageUrl: userImageInfo["url"],
+      httpHeaders: userImageInfo["header"],
+      imageBuilder: (context, imageProvider) => CircleAvatar(
+        radius: 30.0,
+        backgroundImage: imageProvider,
+      ),
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error){
+        Log.e(error.toString());
+        return Icon(Icons.error);
+      },
+    );
     return Container(
       color: Colors.white,
       padding:
@@ -177,7 +191,12 @@ class _OtherPageState extends State<OtherPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            child: userImage,
+            child: InkWell(
+              child:userImage ,
+              onTap: (){
+                Model.instance.cacheManager.emptyCache();  //清除圖片暫存
+              },
+            ),
           ),
           SizedBox(
             width: 16.0,

@@ -18,6 +18,7 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
+import 'package:flutter_app/src/taskcontrol/task/ntutapp/NTUTAppLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreLoginTask.dart';
 import 'package:path/path.dart';
 
@@ -32,11 +33,11 @@ class TaskHandler {
 
   void addTask(TaskModel task, {bool onLoginCheck: true}) {
     if (onLoginCheck) {
-      if( Model.instance.getOtherSetting().focusLogin ){  //直接重新登入不檢查
-        _taskQueue
-            .add(
-            CheckCookiesTask(task.context, checkSystem: task.requireSystem.toString()));
-      }else {
+      if (Model.instance.getOtherSetting().focusLogin) {
+        //直接重新登入不檢查
+        _taskQueue.add(CheckCookiesTask(task.context,
+            checkSystem: task.requireSystem.toString()));
+      } else {
         String needLoginSystem = "";
         for (String require in task.requireSystem) {
           if (!alreadyCheckSystem.contains(require)) {
@@ -45,8 +46,7 @@ class TaskHandler {
           }
         }
         if (needLoginSystem.isNotEmpty) {
-          _taskQueue
-              .add(
+          _taskQueue.add(
               CheckCookiesTask(task.context, checkSystem: needLoginSystem));
         }
       }
@@ -108,7 +108,7 @@ class TaskHandler {
 
   void _handleErrorTask(TaskModel task) async {
     Log.d("Task fail " + task.getTaskName);
-    if (task is NTUTLoginTask) {
+    if (task is NTUTLoginTask || task is NTUTAppLoginTask) {
       _addFirstTask(task);
     } else if (task is ISchoolLoginTask ||
         task is CourseLoginTask ||
@@ -138,6 +138,7 @@ class TaskHandler {
     Log.d("needLoginSystem : $needLoginSystem");
     Map<String, TaskModel> loginMap = {
       CheckCookiesTask.checkNTUT: NTUTLoginTask(context),
+      CheckCookiesTask.checkNTUTApp: NTUTAppLoginTask(context),
       CheckCookiesTask.checkCourse: CourseLoginTask(context),
       CheckCookiesTask.checkScore: ScoreLoginTask(context),
       CheckCookiesTask.checkISchool: ISchoolLoginTask(context),

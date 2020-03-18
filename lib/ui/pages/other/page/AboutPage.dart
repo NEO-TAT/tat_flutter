@@ -89,8 +89,7 @@ class _AboutPageState extends State<AboutPage> {
         itemBuilder: (context, index) {
           Widget widget;
           widget = _buildAbout(listViewData[index]);
-          return GestureDetector(
-              behavior: HitTestBehavior.opaque, //讓透明部分有反應
+          return InkWell(
               child: WidgetAnimator(widget),
               onTap: () {
                 _onListViewPress(listViewData[index]['onPress']);
