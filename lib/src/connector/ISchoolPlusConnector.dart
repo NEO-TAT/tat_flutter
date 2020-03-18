@@ -442,7 +442,7 @@ class ISchoolPlusConnector {
           fileMap[node.text] = _iSchoolPlusUrl + href;
         }
       }
-
+      body = HtmlUtils.addLink(body);
       detail["title"] = title;
       detail["sender"] = sender;
       detail["postTime"] = postTime;
