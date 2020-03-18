@@ -29,10 +29,6 @@
 .pub-cache/
 .pub/
 /build/
-lib/generated/intl/messages_all.dart
-lib/generated/intl/messages_en.dart
-lib/generated/intl/messages_zh.dart
-lib/generated/l10n.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
