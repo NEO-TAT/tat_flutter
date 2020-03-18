@@ -546,7 +546,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildRankItems(RankJson rank, String title) {
-    double fontSize = 14;
+    double fontSize = 16;
     TextStyle textStyle = TextStyle(fontSize: fontSize);
     return Column(
       children: <Widget>[
@@ -566,7 +566,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       children: <Widget>[
         Expanded(
           child: AutoSizeText(
-            sprintf("百分比: %s %", [rankItem.rank.toString()]),
+            sprintf("班排: %s", [rankItem.rank.toString()]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,
@@ -575,7 +575,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ),
         Expanded(
           child: AutoSizeText(
-            sprintf("百分比: %s %", [rankItem.total.toString()]),
+            sprintf("總人數: %s", [rankItem.total.toString()]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,
