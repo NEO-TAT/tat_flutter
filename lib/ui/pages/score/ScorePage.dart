@@ -566,7 +566,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       children: <Widget>[
         Expanded(
           child: AutoSizeText(
-            sprintf("班排: %s", [rankItem.rank.toString()]),
+            sprintf("排名: %s", [rankItem.rank.toString()]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,
