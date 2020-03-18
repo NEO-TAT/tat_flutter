@@ -1,4 +1,5 @@
 # NTUT Course Helper
+[![Codemagic build status](https://api.codemagic.io/apps/5e6800d11339a90018240c67/5e71e2162c96469a4a77c67b/status_badge.svg)](https://codemagic.io/apps/5e6800d11339a90018240c67/5e71e2162c96469a4a77c67b/latest_build)
 
 這是給臺北科技大學學生專用的 Flutter App
 
