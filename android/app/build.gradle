@@ -73,7 +73,6 @@ android {
             minifyEnabled true     // 移除未使用的code, 簡化apk
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
-            signingConfig signingConfigs.debug
         }
     }
 }
