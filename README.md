@@ -3,6 +3,8 @@
 
 給臺北科技大學學生專用的 Flutter App
 
+## 下載
+
 <a href='https://play.google.com/store/apps/details?id=club.ntut.npc.tat'>
   <img width="180" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/>
 </a>
@@ -26,4 +28,4 @@
 - [DevilTea](https://github.com/DevilTea)
 
 ## 授權
-這項專案使用 GPLv3 授權 - 詳情請參閱 LICENSE
+這項專案使用 GPLv3 授權 - 詳情請參閱 [LICENSE](https://github.com/NEO-TAT/NTUTCourseHelper-Flutter/blob/dev/LICENSE)
