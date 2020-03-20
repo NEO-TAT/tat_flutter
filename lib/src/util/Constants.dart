@@ -44,7 +44,7 @@ class Constants {
         title: TextStyle(
           color: lightBG,
           fontSize: 20,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.bold,
         ),
       ),
     ),

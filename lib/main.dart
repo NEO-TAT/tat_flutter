@@ -1,19 +1,17 @@
 import 'dart:async';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/providers/CoreProvider.dart';
 import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:sprintf/sprintf.dart';
+
 import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 Future<Null> main() async {
   // Set `enableInDevMode` to true to see reports while in debug mode

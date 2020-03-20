@@ -4,13 +4,10 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementTask.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'IPlusAnnouncementDetailPage.dart';
 

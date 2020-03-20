@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -358,7 +357,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       courseInfo.main.course.name,
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w400,
                       ),
                       minFontSize: 10,
                       maxLines: 3,

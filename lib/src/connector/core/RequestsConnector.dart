@@ -6,16 +6,14 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-import 'dart:convert';
 import 'dart:io';
-import 'package:big5/big5.dart';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/connector/requests/requests.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
+
 import 'ConnectorParameter.dart';
 
 class RequestsConnector {
