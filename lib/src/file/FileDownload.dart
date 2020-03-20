@@ -30,9 +30,7 @@ class FileDownload {
     Log.d("file download $url");
     //顯示下載通知窗
     ReceivedNotification value = ReceivedNotification(
-        title: name,
-        body: R.current.prepareDownload,
-        payload: 'download'); //通知窗訊息
+        title: name, body: R.current.prepareDownload, payload: null); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
     await Notifications.instance.showIndeterminateProgressNotification(value);
@@ -42,8 +40,8 @@ class FileDownload {
     int nowSize = 0;
     onReceiveProgress = (int count, int total) async {
       value.body = FileUtils.formatBytes(count, 2);
-      if ((nowSize + 1024 * 1024) > count && nowSize != 0) {
-        //1KB顯示一次
+      if ((nowSize + 1024 * 128) > count && nowSize != 0) {
+        //128KB顯示一次
         return;
       }
       nowSize = count;
@@ -101,17 +99,22 @@ class FileDownload {
         Notifications.instance.cancelNotification(value.id);
         value.body = R.current.downloadComplete;
         value.id = Notifications.instance.notificationId; //取得新的id
-        value.payload = "file:" + path + '/' + realFileName;
+        String filePath = path + '/' + realFileName;
+        int id = value.id;
+        value.payload = sprintf(r'{ "path": "%s" , "id" : %d}', [filePath, id]);
         await Notifications.instance.showNotification(value); //顯示下載完成
       },
     ).catchError(
       (onError) async {
         //顯示下載萬完成通知窗
+        Log.d(onError.toString());
         await Future.delayed(Duration(milliseconds: 100));
         Notifications.instance.cancelNotification(value.id);
         value.body = "下載失敗";
         value.id = Notifications.instance.notificationId; //取得新的id
-        value.payload = "downloadFail";
+        int id = value.id;
+        value.payload =
+            sprintf(r'{ "info": "%s" , "id" : %d}', ["downloadFail", id]);
         await Notifications.instance.showNotification(value); //顯示下載完成
       },
     );
