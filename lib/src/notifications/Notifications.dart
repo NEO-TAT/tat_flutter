@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -20,6 +22,7 @@ class Notifications {
   final String downloadChannelId = "Download";
   final String downloadChannelName = "Download";
   final String downloadChannelDescription = "Show Download Progress";
+  List<int> idList = List(); //紀錄以點擊id
 
   Future<void> init() async {
 // needed if you intend to initialize in the `main` function
@@ -60,7 +63,7 @@ class Notifications {
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
-          alert: true,
+          alert: true ,
           badge: true,
           sound: true,
         );
@@ -75,9 +78,13 @@ class Notifications {
   void _configureSelectNotificationSubject() {
     //當通知窗被按下
     selectNotificationSubject.stream.listen((String payload) async {
-      if (payload.contains("file:")) {
-        String path = payload.split(":").last;
-        OpenFile.open(path);
+      Map parse =  json.decode(payload);
+      int id =  parse["id"];
+      if( parse.containsKey("path") && !idList.contains(id)){
+        String path = parse["path"];
+        Log.d( "open $path");
+        idList.add( parse["id"]);
+        await OpenFile.open(path);
       }
     });
   }

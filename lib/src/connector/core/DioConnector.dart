@@ -19,7 +19,6 @@ import 'ConnectorParameter.dart';
 
 typedef SavePathCallback = String Function(Headers responseHeaders);
 
-
 class DioConnector {
   static String _refererUrl = "https://nportal.ntut.edu.tw";
   static Map<String, String> _headers = {
@@ -45,6 +44,7 @@ class DioConnector {
       Exception("Connector statusCode is not 200");
 
   DioConnector._privateConstructor();
+
   static final DioConnector instance = DioConnector._privateConstructor();
 
   static String _big5Decoder(List<int> responseBytes, RequestOptions options,
@@ -53,13 +53,11 @@ class DioConnector {
     return result;
   }
 
-
-  static String _utf8Decoder (List<int> responseBytes, RequestOptions options,
+  static String _utf8Decoder(List<int> responseBytes, RequestOptions options,
       ResponseBody responseBody) {
-    String result =  Utf8Codec().decode(responseBytes);
+    String result = Utf8Codec().decode(responseBytes);
     return result;
   }
-
 
   Future<void> init() async {
     try {
@@ -107,10 +105,12 @@ class DioConnector {
       ConnectorParameter parameter) async {
     Response<ResponseBody> response;
     try {
-      Log.d( "getHeaderByGet " + parameter.url  );
-      response = await dio.get<ResponseBody>(parameter.url ,
-        options: Options(responseType: ResponseType.stream), // set responseType to `stream`
-      );  //使速度更快
+      Log.d("getHeaderByGet " + parameter.url);
+      response = await dio.get<ResponseBody>(
+        parameter.url,
+        options: Options(
+            responseType: ResponseType.stream), // set responseType to `stream`
+      ); //使速度更快
       if (response.statusCode == HttpStatus.ok) {
         return response.headers.map;
       } else {
@@ -140,7 +140,8 @@ class DioConnector {
     Response response;
     try {
       String url = parameter.url;
-      Map<String, String> data = (parameter.data is Map)?parameter.data : Map();
+      Map<String, String> data =
+          (parameter.data is Map) ? parameter.data : Map();
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
       Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
@@ -176,10 +177,16 @@ class DioConnector {
     }
   }
 
-
-  Future<void> download(String url , SavePathCallback savePath , { ProgressCallback progressCallback , CancelToken cancelToken} ) async{
-    await dio.downloadUri(Uri.parse(url), savePath , onReceiveProgress:progressCallback , cancelToken : cancelToken).catchError((onError){
-      Log.e( onError.toString() );
+  Future<void> download(String url, SavePathCallback savePath,
+      {ProgressCallback progressCallback, CancelToken cancelToken}) async {
+    await dio
+        .downloadUri(Uri.parse(url), savePath,
+            onReceiveProgress: progressCallback,
+            cancelToken: cancelToken,
+            options: Options(receiveTimeout: 0)) //設置不超時
+        .catchError((onError) {
+      Log.e(onError.toString());
+      throw onError;
     });
   }
 
