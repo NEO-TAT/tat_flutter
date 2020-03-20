@@ -78,7 +78,6 @@
 //                                    "${FileUtils.formatBytes(coreProvider.usedSpace, 1)} "
 //                                        "/ ${FileUtils.formatBytes(coreProvider.totalSpace, 1)}",
 //                                    style: TextStyle(
-//                                      fontWeight: FontWeight.w400,
 //                                      fontSize: 14.0,
 //                                      color: Colors.white,
 //                                    ),

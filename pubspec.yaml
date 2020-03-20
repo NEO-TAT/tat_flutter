@@ -93,12 +93,8 @@ flutter:
         - asset: assets/fonts/MyIcon.ttf
     - family: GenSenMaruGothicTW
       fonts:
-        - asset: fonts/GenSenMaruGothicTW-Light.ttf
-          weight: 300
         - asset: fonts/GenSenMaruGothicTW-Regular.ttf
           weight: 400
-        - asset: fonts/GenSenMaruGothicTW-Medium.ttf
-          weight: 500
         - asset: fonts/GenSenMaruGothicTW-Bold.ttf
           weight: 700
 

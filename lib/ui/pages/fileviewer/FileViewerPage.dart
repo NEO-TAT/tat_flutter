@@ -134,7 +134,6 @@ class _FileViewerPageState extends State<FileViewerPage>
                 "$path",
                 style: TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
             ],
