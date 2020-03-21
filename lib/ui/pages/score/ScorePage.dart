@@ -513,7 +513,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             ),
           ),
           Text(
-            sprintf("實得學分: %s", [courseScore.getTotalCreditString()]),
+            sprintf("實得學分: %s", [courseScore.getTakeCreditString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
