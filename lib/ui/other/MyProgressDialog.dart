@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 
 import 'CustomProgressDialog.dart';
 
@@ -48,9 +47,9 @@ class MyProgressDialog {
         progress: 0.0,
         maxProgress: 100.0,
         progressTextStyle: TextStyle(
-            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
+            color: Colors.black, fontSize: 13.0),
         messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600)
+            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.bold)
 
          */
     );

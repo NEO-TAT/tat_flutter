@@ -1,4 +1,3 @@
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/store/JsonInit.dart';
 import 'package:intl/intl.dart';
 

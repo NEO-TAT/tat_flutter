@@ -7,10 +7,6 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/CourseConnector.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
-import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseLoginTask.dart';
@@ -20,7 +16,6 @@ import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntutapp/NTUTAppLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreLoginTask.dart';
-import 'package:path/path.dart';
 
 class TaskHandler {
   TaskHandler._privateConstructor();

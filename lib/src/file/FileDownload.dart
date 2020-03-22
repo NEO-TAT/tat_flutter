@@ -6,17 +6,13 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:sprintf/sprintf.dart';
 
 import 'FileStore.dart';

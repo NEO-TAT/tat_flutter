@@ -1,20 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:big5/big5.dart';
-import 'package:crypto/crypto.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
-import 'package:flutter_app/src/connector/requests/requests.dart' as requests;
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/object/CourseFileJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
-import 'package:dio/dio.dart' as dio;
 import 'package:http/http.dart' as http;
-import 'package:xml/xml.dart' as xml;
+
 import 'core/ConnectorParameter.dart';
 
 enum ISchoolPlusConnectorStatus {

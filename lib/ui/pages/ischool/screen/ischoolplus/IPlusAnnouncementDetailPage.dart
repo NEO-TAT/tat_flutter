@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
-import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 

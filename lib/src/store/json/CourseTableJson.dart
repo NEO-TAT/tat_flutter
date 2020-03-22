@@ -1,10 +1,10 @@
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
+
 import '../JsonInit.dart';
 import 'CourseClassJson.dart';
+
 part 'CourseTableJson.g.dart';
 
 enum Day {

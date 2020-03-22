@@ -8,7 +8,6 @@ import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/json/GithubAPIJson.dart';
-import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sprintf/sprintf.dart';
