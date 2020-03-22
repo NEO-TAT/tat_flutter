@@ -58,6 +58,7 @@ class GraduationPicker {
         showDialog<GraduationInformationJson>(
           context: _context,
           barrierDismissible: false,
+          useRootNavigator: false,
           builder: (BuildContext context) {
             _dismissingContext = context;
             return WillPopScope(
