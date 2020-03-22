@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -57,17 +56,22 @@ class _CourseTablePageState extends State<CourseTablePage> {
         }); //尚未登入
       } else {
         _loadSetting();
-//        _checkAppVersion();
+        _checkAppVersion();
       }
     });
   }
 
   void _checkAppVersion() {
-    AppUpdate.checkUpdate().then((value) {
-      if (value != null) {
-        AppUpdate.showUpdateDialog(context, value);
-      }
-    });
+    if (!Model.instance.checkUpdate) {
+      AppUpdate.checkUpdate().then(
+        (value) {
+          Model.instance.checkUpdate = true;
+          if (value != null) {
+            AppUpdate.showUpdateDialog(context, value);
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -358,7 +362,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       courseInfo.main.course.name,
                       style: TextStyle(
                         fontSize: 14,
-                        fontWeight: FontWeight.w400,
                       ),
                       minFontSize: 10,
                       maxLines: 3,
@@ -449,8 +452,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  void _unFocusStudentInput(){
-    FocusScope.of(context).requestFocus(FocusNode());  //失焦使鍵盤關閉
+  void _unFocusStudentInput() {
+    FocusScope.of(context).requestFocus(FocusNode()); //失焦使鍵盤關閉
     _studentFocus.unfocus();
   }
 

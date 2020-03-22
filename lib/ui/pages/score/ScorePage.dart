@@ -33,6 +33,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   int _currentTabIndex = 0;
   List<Widget> tabLabelList = List();
   List<Widget> tabChildList = List();
+  static bool appExpansionInitiallyExpanded = false;
 
   @override
   void initState() {
@@ -188,18 +189,27 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   void _buildTabBar() {
     tabLabelList = List();
     tabChildList = List();
+
     if (courseScoreCredit.graduationInformation.isSelect) {
       tabLabelList.add(_buildTabLabel("學分總覽"));
-      tabChildList.add(Container(
-        child: Column(
-          children: <Widget>[
-            _buildSummary(),
-            _buildGeneralLessonItem(),
-            _buildOtherDepartmentItem(),
-            _buildWarning(),
-          ],
+      tabChildList.add(
+        AnimationLimiter(
+          child: Column(
+            children: AnimationConfiguration.toStaggeredList(
+              childAnimationBuilder: (widget) => SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(child: widget),
+              ),
+              children: <Widget>[
+                _buildSummary(),
+                _buildGeneralLessonItem(),
+                _buildOtherDepartmentItem(),
+                _buildWarning(),
+              ],
+            ),
+          ),
         ),
-      ));
+      );
     }
     for (int i = 0; i < courseScoreList.length; i++) {
       SemesterCourseScoreJson courseScore = courseScoreList[i];
@@ -284,7 +294,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       child: AppExpansionTile(
         title: widget,
         children: widgetList,
-        initiallyExpanded: true,
+        initiallyExpanded: appExpansionInitiallyExpanded,
       ),
     );
   }
@@ -318,7 +328,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             pr += (course.name + " ");
           }
         }
-        pr = pr.substring(1,pr.length);
+        pr = pr.substring(1, pr.length);
         MyToast.show(pr);
         Log.d(pr);
       },
@@ -363,7 +373,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       child: AppExpansionTile(
         title: titleWidget,
         children: widgetList,
-        initiallyExpanded: true,
+        initiallyExpanded: appExpansionInitiallyExpanded,
       ),
     );
   }
@@ -371,7 +381,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   Widget _buildOtherDepartmentItem() {
     String department =
         Model.instance.getGraduationInformation().selectDepartment;
-    int otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
+    int otherDepartmentMaxCredit =
+        courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
     department = department.substring(0, 2);
     Log.d(department);
     Map<String, List<CourseInfoJson>> generalLesson =
@@ -387,13 +398,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget =
-        _buildTile(sprintf("外系學分: %d/%d", [otherDepartmentCredit ,otherDepartmentMaxCredit ]));
+    Widget titleWidget = _buildTile(sprintf(
+        "外系學分: %d/%d", [otherDepartmentCredit, otherDepartmentMaxCredit]));
     return Container(
       child: AppExpansionTile(
         title: titleWidget,
         children: widgetList,
-        initiallyExpanded: true,
+        initiallyExpanded: appExpansionInitiallyExpanded,
       ),
     );
   }
@@ -513,7 +524,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             ),
           ),
           Text(
-            sprintf("實得學分: %s", [courseScore.getTotalCreditString()]),
+            sprintf("實得學分: %s", [courseScore.getTakeCreditString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),

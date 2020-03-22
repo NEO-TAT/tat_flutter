@@ -1,7 +1,6 @@
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
 import '../JsonInit.dart';
 part 'NewAnnouncementJson.g.dart';
