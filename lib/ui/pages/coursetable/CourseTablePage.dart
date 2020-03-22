@@ -56,17 +56,22 @@ class _CourseTablePageState extends State<CourseTablePage> {
         }); //尚未登入
       } else {
         _loadSetting();
-//        _checkAppVersion();
+        _checkAppVersion();
       }
     });
   }
 
   void _checkAppVersion() {
-    AppUpdate.checkUpdate().then((value) {
-      if (value != null) {
-        AppUpdate.showUpdateDialog(context, value);
-      }
-    });
+    if (!Model.instance.checkUpdate) {
+      AppUpdate.checkUpdate().then(
+        (value) {
+          Model.instance.checkUpdate = true;
+          if (value != null) {
+            AppUpdate.showUpdateDialog(context, value);
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -447,8 +452,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  void _unFocusStudentInput(){
-    FocusScope.of(context).requestFocus(FocusNode());  //失焦使鍵盤關閉
+  void _unFocusStudentInput() {
+    FocusScope.of(context).requestFocus(FocusNode()); //失焦使鍵盤關閉
     _studentFocus.unfocus();
   }
 
