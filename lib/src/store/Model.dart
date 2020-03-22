@@ -42,6 +42,7 @@ class Model {
   List<SemesterJson> _courseSemesterList;
   CourseScoreCreditJson _courseScoreList;
   SettingJson _setting;
+  bool checkUpdate = false;
   Map<String, dynamic> _tempData;
   DefaultCacheManager cacheManager = new DefaultCacheManager();
 

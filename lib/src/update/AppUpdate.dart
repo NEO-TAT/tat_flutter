@@ -11,6 +11,7 @@ import 'package:flutter_app/src/json/GithubAPIJson.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UpdateDetail {
   String newVersion;
@@ -45,7 +46,11 @@ class AppUpdate {
       if (needUpdate) {
         UpdateDetail updateDetail = UpdateDetail();
         updateDetail.newVersion = githubAPIJson.tagName;
-        updateDetail.url = githubAPIJson.assets[0].browserDownloadUrl;
+        try {
+          updateDetail.url = githubAPIJson.assets[0].browserDownloadUrl;
+        } catch (e) {
+          updateDetail.url = "";
+        }
         updateDetail.detail = githubAPIJson.body;
         return updateDetail;
       }
@@ -86,14 +91,22 @@ class AppUpdate {
               child: Text(R.current.update),
               onPressed: () {
                 Navigator.of(context).pop();
-                FileStore.findLocalPath(context).then((filePath) {
-                  FlutterDownloader.enqueue(url: value.url, savedDir: filePath)
-                      .then((id) {
-                    MyDownloader.addCallBack(id, _downloadCompleteCallBack);
-                    downloadTaskId = id;
-                    //FlutterDownloader.open(taskId: id);
-                  });
-                });
+                /*
+                FileStore.findLocalPath(context).then(
+                  (filePath) {
+                    FlutterDownloader.enqueue(
+                            url: value.url, savedDir: filePath)
+                        .then(
+                      (id) {
+                        MyDownloader.addCallBack(id, _downloadCompleteCallBack);
+                        downloadTaskId = id;
+                        //FlutterDownloader.open(taskId: id);
+                      },
+                    );
+                  },
+                );
+                 */
+                _openPlayStore();
               },
             ),
           ],
@@ -102,7 +115,16 @@ class AppUpdate {
     );
   }
 
+  static void _openPlayStore() async {
+    String packageId = "club.ntut.npc.tat";
+    String url = "https://play.google.com/store/apps/details?id=$packageId";
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
+  }
+
   static String downloadTaskId;
+
   static void _downloadCompleteCallBack() {
     FlutterDownloader.open(taskId: downloadTaskId);
   }
