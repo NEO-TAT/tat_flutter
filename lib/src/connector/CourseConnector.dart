@@ -551,7 +551,7 @@ class CourseConnector {
     String result;
     Document tagNode;
     Element anode, trNode, node, tdNode;
-    List<Element> aNodes, trNodes, tdNodes;
+    List<Element> trNodes, tdNodes;
     GraduationInformationJson graduationInformation =
         GraduationInformationJson();
     try {

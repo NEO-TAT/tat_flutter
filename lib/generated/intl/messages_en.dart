@@ -121,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "historicalDimension" : MessageLookupByLibrary.simpleMessage("Historical dimension"),
     "instructor" : MessageLookupByLibrary.simpleMessage("Instructor"),
     "isALink" : MessageLookupByLibrary.simpleMessage("is a Link"),
+    "isAVideo" : MessageLookupByLibrary.simpleMessage("Is a video"),
     "isNewVersion" : MessageLookupByLibrary.simpleMessage("Already the latest version"),
     "languageSetting" : MessageLookupByLibrary.simpleMessage("Language"),
     "languageSwitch" : MessageLookupByLibrary.simpleMessage("Language switch"),

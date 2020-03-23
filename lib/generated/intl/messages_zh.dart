@@ -121,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "historicalDimension" : MessageLookupByLibrary.simpleMessage("歷史向度"),
     "instructor" : MessageLookupByLibrary.simpleMessage("授課老師"),
     "isALink" : MessageLookupByLibrary.simpleMessage("發現外部連結"),
+    "isAVideo" : MessageLookupByLibrary.simpleMessage("上課錄影"),
     "isNewVersion" : MessageLookupByLibrary.simpleMessage("已經是最新版本了"),
     "languageSetting" : MessageLookupByLibrary.simpleMessage("語言"),
     "languageSwitch" : MessageLookupByLibrary.simpleMessage("語言切換"),

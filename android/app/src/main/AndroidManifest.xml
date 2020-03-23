@@ -18,6 +18,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="TAT"
         android:icon="@mipmap/ic_launcher">
+        tools:replace="android:label">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

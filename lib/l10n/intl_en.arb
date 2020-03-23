@@ -138,6 +138,7 @@
   "notSupport": "not Support",
   "focusLogin" : "focusLogin",
   "focusLoginResult" : "",
+  "isAVideo" : "Is a video",
   "___________________FileStore___________________": "註解",
   "noPermission": "Permission denied",
   "___________________AboutPage___________________": "註解",
