@@ -14,7 +14,7 @@ import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFi
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/viedoplayer/VideoPlayer.dart';
+import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -255,7 +255,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
             .push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: VideoPlayer(uuid),
+            child: ClassVideoPlayer(uuid),
           ),
         );
       };
