@@ -1280,6 +1280,15 @@ class S {
     );
   }
 
+  String get isAVideo {
+    return Intl.message(
+      'Is a video',
+      name: 'isAVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',
