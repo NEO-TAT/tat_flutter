@@ -297,8 +297,7 @@ class ISchoolPlusConnector {
           } else {
             exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
             matches = exp.firstMatch(result);
-            url =
-                _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
+            url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
             result = await RequestsConnector.getDataByGet(parameter);
             exp = new RegExp("DEFAULT_URL.+'(?<url>.+)'"); //取的PDF真實下載位置
@@ -372,11 +371,11 @@ class ISchoolPlusConnector {
       Map<String, dynamic> jsonData = Map();
       result = HtmlUtils.clean(result);
       jsonData = json.decode(result)['data'];
-      int totalRows = int.parse( json.decode(result)['total_rows'] );
-      if( totalRows > 0 ){
+      int totalRows = int.parse(json.decode(result)['total_rows']);
+      if (totalRows > 0) {
         for (String keyName in json.decode(result)['data'].keys.toList()) {
           ISchoolPlusAnnouncementJson courseInfo =
-          ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
+              ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
           courseInfo.token = data['token'];
           courseInfo.bid = keyName.split("|").first;
           courseInfo.nid = keyName.split("|").last;
@@ -428,13 +427,13 @@ class ISchoolPlusConnector {
       node = tagNode.getElementsByClassName("bottom-tmp").first;
       nodes = node.getElementsByClassName("file");
       Map<String, String> fileMap = Map(); // name , url
-      if( nodes.length >= 1){
+      if (nodes.length >= 1) {
         node = nodes.first;
         nodes = node.getElementsByTagName("a");
         for (html.Element node in nodes) {
           String href = node.attributes["href"];
-          if( href[0] == '/' ){
-            href = href.substring(1,href.length);
+          if (href[0] == '/') {
+            href = href.substring(1, href.length);
           }
           fileMap[node.text] = _iSchoolPlusUrl + href;
         }
@@ -499,12 +498,21 @@ class ISchoolPlusConnector {
     Log.d("ISchoolPlus CheckLogin");
     ConnectorParameter parameter;
     http.Response response;
+    String result;
     _isLogin = false;
     try {
       parameter = ConnectorParameter(_checkLoginUrl);
       await RequestsConnector.getDataByPostResponse(parameter).then((value) {
-        response = value.rawResponse;
+        try {
+          response = value.rawResponse;
+        } catch (e) {
+          result = value.content();
+        }
       });
+      if (result != null && result.toLowerCase().contains("connect lost")) {
+        return false;
+      }
+
       /*
       requests.Response result =  await RequestsConnector.getDataByPostResponse(parameter);
       Log.d( result.rawResponse.statusCode.toString() );
