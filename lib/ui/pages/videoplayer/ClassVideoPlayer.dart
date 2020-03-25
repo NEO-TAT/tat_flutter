@@ -19,7 +19,9 @@ class ClassVideoPlayer extends StatefulWidget {
 
 class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
-  IjkMediaController controller = IjkMediaController();
+  List<IjkMediaController> controllerList = List();
+  List<String> videoName = List();
+  int selectIndex = 0;
 
   @override
   void initState() {
@@ -31,7 +33,9 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
-    controller.dispose();
+    for (IjkMediaController item in controllerList) {
+      item.dispose();
+    }
     super.dispose();
   }
 
@@ -56,18 +60,54 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
         node.getElementsByTagName("presenter2_video").first.text;
     String presentationVideo =
         node.getElementsByTagName("presentation_video").first.text;
-    String presenterRTMPUrl = "rtmp://istreaming.ntut.edu.tw/lecture/" +
-        widget.uuid +
-        "/" +
-        presenterVideo;
-    String presentationRTMPUrl = "rtmp://istreaming.ntut.edu.tw/lecture/" +
-        widget.uuid +
-        "/" +
-        presentationVideo;
-    await controller.setNetworkDataSource(presenterRTMPUrl, autoPlay: true);
+
+    int number = 0;
+    for (String name in [presenterVideo, presenterVideo2, presentationVideo]) {
+      if (name != null && name.isNotEmpty) {
+        controllerList.add(IjkMediaController());
+        String url = getRTMPUrl(name);
+        controllerList[number].setNetworkDataSource(url, autoPlay: true);
+        videoName.add(name);
+        number++;
+      }
+    }
+    await _buildDialog();
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void> _buildDialog() async {
+    await showDialog(
+      useRootNavigator: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: double.minPositive,
+            child: ListView.builder(
+              itemCount: videoName.length,
+              shrinkWrap: true, //使清單最小化
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  child: FlatButton(
+                    child: Text(videoName[index]),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      selectIndex = index;
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  String getRTMPUrl(String name) {
+    return "rtmp://istreaming.ntut.edu.tw/lecture/" + widget.uuid + "/" + name;
   }
 
   @override
@@ -76,10 +116,18 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : buildIjkPlayer();
+        : buildIjkPlayer(controllerList[selectIndex]);
   }
 
-  Widget buildIjkPlayer() {
+  Widget _buildVideoPlayer() {
+    return Column(
+      children: controllerList.map((controller) {
+        return buildIjkPlayer(controller);
+      }).toList(),
+    );
+  }
+
+  Widget buildIjkPlayer(IjkMediaController controller) {
     return Container(
       // height: 400, // 这里随意
       child: IjkPlayer(
