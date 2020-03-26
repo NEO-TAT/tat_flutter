@@ -1,4 +1,3 @@
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
