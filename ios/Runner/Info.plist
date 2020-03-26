@@ -45,12 +45,10 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
 	<key>NSAllowsArbitraryLoads</key>
     <true/>
     <key>NSAllowsArbitraryLoadsInWebContent</key>
-    <true/>
-    <key>UIViewControllerBasedStatusBarAppearance</key>
     <true/>
 </dict>
 </plist>
