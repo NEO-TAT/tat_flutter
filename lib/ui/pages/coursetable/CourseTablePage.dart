@@ -2,11 +2,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
@@ -59,6 +63,63 @@ class _CourseTablePageState extends State<CourseTablePage> {
         _checkAppVersion();
       }
     });
+  }
+
+  void getCourseNotice() async {
+    bool needNTUTLogin = await NTUTConnector.checkLogin();
+    bool needISchoolPlusLogin = await ISchoolPlusConnector.checkLogin();
+    if (needNTUTLogin) {
+      await NTUTConnector.login(
+          Model.instance.getAccount(), Model.instance.getPassword());
+      await ISchoolPlusConnector.login(Model.instance.getAccount());
+    } else if (needISchoolPlusLogin) {
+      await ISchoolPlusConnector.login(Model.instance.getAccount());
+    }
+    List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
+    if (value != null) {
+      showDialog<void>(
+        useRootNavigator: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("發現新公告"),
+            content: Container(
+              width: double.minPositive,
+              child: ListView.builder(
+                itemCount: value.length,
+                shrinkWrap: true, //使清單最小化
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    child: FlatButton(
+                      child: Text(value[index]),
+                      onPressed: () {
+                        String courseName = value[index];
+                        CourseInfoJson courseInfo =
+                        courseTableData.getCourseInfoByCourseName(courseName);
+                        if (courseInfo != null) {
+                          _showCourseDetail(courseInfo);
+                        } else {
+                          MyToast.show("不支持");
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(R.current.sure),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void _checkAppVersion() {
@@ -203,11 +264,25 @@ class _CourseTablePageState extends State<CourseTablePage> {
       appBar: AppBar(
         title: Text(R.current.titleCourse),
         actions: [
+          (!isLoading)
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    right: 20,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      MyToast.show(
+                          "學分:" + courseTableData.getTotalCredit().toString());
+                    },
+                    child: Icon(EvaIcons.search),
+                  ),
+                )
+              : Container(),
           Padding(
             padding: EdgeInsets.only(
               right: 20,
             ),
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
                 _getCourseTable(
                   semesterSetting: courseTableData?.courseSemester,
@@ -458,6 +533,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _showCourseTable(CourseTableJson courseTable) async {
+    getCourseNotice(); //查詢訂閱的課程是否有公告
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
     _unFocusStudentInput();

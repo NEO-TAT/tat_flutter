@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
+import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementTask.dart';
+import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'IPlusAnnouncementDetailPage.dart';
@@ -24,8 +29,10 @@ class IPlusAnnouncementPage extends StatefulWidget {
 class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
   List<ISchoolPlusAnnouncementJson> items;
+  String courseBid;
   bool needRefresh = false;
   bool isSupport;
+  bool openNotifications = false;
 
   @override
   void initState() {
@@ -46,6 +53,10 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     items = Model.instance
         .getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
     items = items ?? List();
+    MyProgressDialog.showProgressDialog(context, "查詢訂閱...");
+    courseBid = await ISchoolPlusConnector.getBid(courseId);
+    openNotifications = await ISchoolPlusConnector.getCourseSubscribe(courseBid);
+    MyProgressDialog.hideProgressDialog();
     setState(() {});
   }
 
@@ -64,16 +75,35 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: (items.length > 0)
-          ? _buildMailList()
-          : isSupport
-              ? Center(
-                  child: Text(R.current.noAnyAnnouncement),
-                )
-              : Center(
-                  child: Text(R.current.notSupport),
-                ),
-    );
+        body: (items.length > 0)
+            ? _buildMailList()
+            : isSupport
+                ? Center(
+                    child: Text(R.current.noAnyAnnouncement),
+                  )
+                : Center(
+                    child: Text(R.current.notSupport),
+                  ),
+        floatingActionButton: FloatingActionButton(
+          // FloatingActionButton: 浮動按鈕
+          onPressed: () async {
+            MyToast.show((openNotifications) ? "關閉訂閱" : "開啟訂閱");
+            MyProgressDialog.showProgressDialog(context, null);
+            bool success = await ISchoolPlusConnector.courseSubscribe(
+                courseBid, !openNotifications);
+            MyProgressDialog.hideProgressDialog();
+            if (success) {
+              setState(() {
+                openNotifications = !openNotifications;
+              });
+            }
+          },
+          tooltip: "訂閱",
+          // 按住按鈕時出現的提示字
+          child: (openNotifications)
+              ? Icon(Icons.notifications_active)
+              : Icon(Icons.notifications_off),
+        ));
   }
 
   Widget _buildMailList() {
