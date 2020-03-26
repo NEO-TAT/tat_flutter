@@ -502,17 +502,16 @@ class ISchoolPlusConnector {
     _isLogin = false;
     try {
       parameter = ConnectorParameter(_checkLoginUrl);
-      await RequestsConnector.getDataByPostResponse(parameter).then((value) {
+      await RequestsConnector.getDataByGetResponse(parameter).then((value) {
         try {
           response = value.rawResponse;
         } catch (e) {
-          result = value.content();
         }
+        result = value.content().toLowerCase();
       });
-      if (result != null && result.toLowerCase().contains("connect lost")) {
+      if (result.contains("connect lost") || result.contains("location.href")) {
         return false;
       }
-
       /*
       requests.Response result =  await RequestsConnector.getDataByPostResponse(parameter);
       Log.d( result.rawResponse.statusCode.toString() );
