@@ -451,6 +451,32 @@ class ISchoolPlusConnector {
     }
   }
 
+  static Future<bool> courseSubscribe(String courseId , String bid,bool subscribe) async{
+    ConnectorParameter parameter;
+    html.Document tagNode;
+    String title;
+    String result;
+    try {
+      await _selectCourse(courseId);
+      parameter = ConnectorParameter( "https://istudy.ntut.edu.tw/forum/subscribe.php");
+      parameter.data = {"bid": bid};
+      int time = 0;
+      do{
+        result = await RequestsConnector.getDataByPost(parameter);
+        tagNode = html.parse(result);
+        title = tagNode.getElementsByTagName("title").first.text;
+        time++;
+      }while( title.contains("取消") != subscribe && time < 2);
+      if(time >= 2){
+        return false;
+      }else{
+        return true;
+      }
+    } catch (e) {
+      return false;
+    }
+}
+
   static Future<void> _selectCourse(String courseId) async {
     ConnectorParameter parameter;
     html.Document tagNode;
