@@ -506,6 +506,32 @@ class ISchoolPlusConnector {
     }
   }
 
+
+  static Future<List<String>> getSubscribeNotice() async {
+    ConnectorParameter parameter;
+    html.Document tagNode;
+    html.Element node;
+    List<html.Element> nodes;
+    String result;
+    List<String> courseNameList = List();
+    try {
+      parameter = ConnectorParameter(
+          "https://istudy.ntut.edu.tw/learn/my_forum.php");
+      result = await RequestsConnector.getDataByPost(parameter);
+      tagNode = html.parse(result);
+      node = tagNode.getElementsByTagName("tbody")[1];
+      nodes = node.getElementsByTagName("tr");
+      for(int i = 0 ; i < nodes.length ;i++){
+        node = nodes[i];
+        String courseName = node.getElementsByTagName("td")[1].text.split("_")[1];
+        courseNameList.add(courseName);
+      }
+      return courseNameList;
+    } catch (e) {
+      return null;
+    }
+  }
+
   static Future<bool> getCourseSubscribe(String bid) async {
     ConnectorParameter parameter;
     html.Document tagNode;
