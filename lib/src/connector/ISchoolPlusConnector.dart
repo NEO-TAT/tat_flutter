@@ -519,7 +519,12 @@ class ISchoolPlusConnector {
           "https://istudy.ntut.edu.tw/learn/my_forum.php");
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
-      node = tagNode.getElementsByTagName("tbody")[1];
+      nodes = tagNode.getElementsByTagName("tbody");
+      if( nodes.length > 1 ){
+        node = nodes[1];
+      }else{
+        return null;  //代表無公告
+      }
       nodes = node.getElementsByTagName("tr");
       for(int i = 0 ; i < nodes.length ;i++){
         node = nodes[i];
@@ -528,6 +533,7 @@ class ISchoolPlusConnector {
       }
       return courseNameList;
     } catch (e) {
+      Log.e( e.toString() );
       return null;
     }
   }

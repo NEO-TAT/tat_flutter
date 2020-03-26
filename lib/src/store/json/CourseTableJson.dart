@@ -194,6 +194,21 @@ class CourseTableJson {
     }
     return null;
   }
+
+  CourseInfoJson getCourseInfoByCourseName(String courseName) {
+    for (Day day in Day.values) {
+      for (SectionNumber number in SectionNumber.values) {
+        CourseInfoJson courseDetail = courseInfoMap[day][number];
+        if (courseDetail != null) {
+          if (courseDetail.main.course.name == courseName) {
+            return courseDetail;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
 }
 
 @JsonSerializable()
