@@ -50,5 +50,7 @@
     <true/>
     <key>NSAllowsArbitraryLoadsInWebContent</key>
     <true/>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <true/>
 </dict>
 </plist>
