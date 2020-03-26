@@ -1,3 +1,4 @@
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
@@ -55,6 +56,34 @@ class CourseTableJson {
     }
   }
 
+  int getTotalCredit() {
+    int credit = 0;
+    List<String> courseIdList = getCourseIdList();
+    for (String courseId in courseIdList) {
+      credit += getCreditByCourseId(courseId);
+    }
+    return credit;
+  }
+
+  int getCreditByCourseId(String courseId) {
+    for (Day day in Day.values) {
+      for (SectionNumber number in SectionNumber.values) {
+        CourseInfoJson courseDetail = courseInfoMap[day][number];
+        if (courseDetail != null) {
+          if (courseDetail.main.course.id == courseId) {
+            String creditString = courseDetail.main.course.credits;
+            try{
+              return double.parse(creditString).toInt();
+            }catch(e){
+              return 0;
+            }
+          }
+        }
+      }
+    }
+    return 0;
+  }
+
   bool isDayInCourseTable(Day day) {
     bool pass = false;
     for (SectionNumber number in SectionNumber.values) {
@@ -79,6 +108,7 @@ class CourseTableJson {
 
   factory CourseTableJson.fromJson(Map<String, dynamic> json) =>
       _$CourseTableJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$CourseTableJsonToJson(this);
 
   String toString() {
@@ -114,7 +144,8 @@ class CourseTableJson {
           break;
         }
       }
-    }/* else if (courseInfoMap[day].containsKey(sectionNumber)) {
+    }
+    /* else if (courseInfoMap[day].containsKey(sectionNumber)) {
       throw Exception("衝堂");
     } */
     else {
@@ -179,6 +210,7 @@ class CourseInfoJson {
   bool get isEmpty {
     return main.isEmpty && extra.isEmpty;
   }
+
 /*
   @override
   bool operator ==(dynamic  o) {
@@ -201,5 +233,6 @@ class CourseInfoJson {
 
   factory CourseInfoJson.fromJson(Map<String, dynamic> json) =>
       _$CourseInfoJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$CourseInfoJsonToJson(this);
 }

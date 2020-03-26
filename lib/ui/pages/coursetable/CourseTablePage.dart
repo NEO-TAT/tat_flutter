@@ -203,11 +203,24 @@ class _CourseTablePageState extends State<CourseTablePage> {
       appBar: AppBar(
         title: Text(R.current.titleCourse),
         actions: [
+          (!isLoading)
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    right: 20,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      MyToast.show( "學分:" + courseTableData.getTotalCredit().toString() );
+                    },
+                    child: Icon(EvaIcons.search),
+                  ),
+                )
+              : Container(),
           Padding(
             padding: EdgeInsets.only(
               right: 20,
             ),
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
                 _getCourseTable(
                   semesterSetting: courseTableData?.courseSemester,
