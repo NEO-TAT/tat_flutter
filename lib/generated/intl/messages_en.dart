@@ -143,6 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "naturalDimension" : MessageLookupByLibrary.simpleMessage("Natural dimension"),
     "networkError" : MessageLookupByLibrary.simpleMessage("Network error"),
     "noAnyAnnouncement" : MessageLookupByLibrary.simpleMessage("Without any announcement"),
+    "noAnyFavorite" : MessageLookupByLibrary.simpleMessage("no any favorite"),
     "noAnyFile" : MessageLookupByLibrary.simpleMessage("No files"),
     "noFunction" : MessageLookupByLibrary.simpleMessage("No function"),
     "noMoreData" : MessageLookupByLibrary.simpleMessage("No more data"),

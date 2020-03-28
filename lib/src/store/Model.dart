@@ -152,20 +152,25 @@ class Model {
     return null;
   }
 
-  void addCourseTable(CourseTableJson addCourseTable) {
-    if (addCourseTable.studentId != _userData.account) {
-      //只儲存自己的課表
-      Log.d("is not the same studentId");
-      return;
-    }
+  void removeCourseTable(CourseTableJson addCourseTable) {
     List<CourseTableJson> tableList = _courseTableList;
     for (int i = 0; i < tableList.length; i++) {
       CourseTableJson table = tableList[i];
-      if (table.courseSemester == addCourseTable.courseSemester) {
+      if (table.courseSemester == addCourseTable.courseSemester && table.studentId == addCourseTable.studentId) {
         tableList.removeAt(i);
       }
     }
+  }
+
+  void addCourseTable(CourseTableJson addCourseTable) {
+    List<CourseTableJson> tableList = _courseTableList;
+    removeCourseTable(addCourseTable);
     tableList.add(addCourseTable);
+    print("add");
+  }
+
+  List<CourseTableJson> getCourseTableList(){
+    return _courseTableList;
   }
 
   CourseTableJson getCourseTable(

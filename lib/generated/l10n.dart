@@ -911,6 +911,15 @@ class S {
     );
   }
 
+  String get noAnyFavorite {
+    return Intl.message(
+      'no any favorite',
+      name: 'noAnyFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________CreditUI___________________ {
     return Intl.message(
       '註解',

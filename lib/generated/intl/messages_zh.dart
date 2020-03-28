@@ -143,6 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "naturalDimension" : MessageLookupByLibrary.simpleMessage("自然向度"),
     "networkError" : MessageLookupByLibrary.simpleMessage("網路發生錯誤"),
     "noAnyAnnouncement" : MessageLookupByLibrary.simpleMessage("無任何公告"),
+    "noAnyFavorite" : MessageLookupByLibrary.simpleMessage("無加入最愛"),
     "noAnyFile" : MessageLookupByLibrary.simpleMessage("無任何檔案"),
     "noFunction" : MessageLookupByLibrary.simpleMessage("暫無功能"),
     "noMoreData" : MessageLookupByLibrary.simpleMessage("已經到底了"),
