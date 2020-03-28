@@ -418,7 +418,7 @@ class CourseInfoJson {
   }
 
   bool get isGeneralLesson{  //是否是博雅課程
-    return openClass.contains("博雅");
+    return openClass.contains("博雅") || openClass.contains("職通識課程");
   }
 
   bool get isCoreGeneralLesson{  //是否是博雅核心課程
