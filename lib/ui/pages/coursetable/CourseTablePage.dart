@@ -280,8 +280,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   child: FlatButton(
-                    child: Text(sprintf("%s %s-%s", [
+                    child: Text(sprintf("%s %s %s-%s", [
                       value[index].studentId,
+                      value[index].studentName,
                       value[index].courseSemester.year,
                       value[index].courseSemester.semester
                     ])),
@@ -622,5 +623,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
       isLoading = false;
     });
     favorite = (Model.instance.getCourseTable(courseTable.studentId, courseTable.courseSemester) != null);
+    if( favorite ){
+      Model.instance.addCourseTable(courseTableData);
+    }
   }
 }

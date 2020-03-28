@@ -42,7 +42,6 @@ class CourseMainInfoJson {
   List<TeacherJson> teacher; //開課老師
   List<ClassroomJson> classroom; //使用教室
   List<ClassJson> openClass; //開課班級
-
   CourseMainInfoJson(
       {this.course, this.teacher, this.classroom, this.openClass}) {
     course = course ?? CourseMainJson();

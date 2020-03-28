@@ -22,13 +22,16 @@ CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
                     : CourseInfoJson.fromJson(e as Map<String, dynamic>)),
           )),
     ),
-  )..studentId = json['studentId'] as String;
+    studentId: json['studentId'] as String,
+    studentName: json['studentName'] as String,
+  );
 }
 
 Map<String, dynamic> _$CourseTableJsonToJson(CourseTableJson instance) =>
     <String, dynamic>{
       'courseSemester': instance.courseSemester,
       'studentId': instance.studentId,
+      'studentName': instance.studentName,
       'courseInfoMap': instance.courseInfoMap?.map((k, e) => MapEntry(
           _$DayEnumMap[k],
           e?.map((k, e) => MapEntry(_$SectionNumberEnumMap[k], e)))),

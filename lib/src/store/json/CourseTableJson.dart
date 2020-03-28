@@ -40,10 +40,12 @@ enum SectionNumber {
 class CourseTableJson {
   SemesterJson courseSemester; //課程學期資料
   String studentId;
+  String studentName;
   Map<Day, Map<SectionNumber, CourseInfoJson>> courseInfoMap;
 
-  CourseTableJson({this.courseSemester, this.courseInfoMap}) {
+  CourseTableJson({this.courseSemester, this.courseInfoMap,this.studentId , this.studentName}) {
     studentId = JsonInit.stringInit(studentId);
+    studentName = JsonInit.stringInit(studentName);
     courseSemester = courseSemester ?? SemesterJson();
     if (courseInfoMap != null) {
       courseInfoMap = courseInfoMap;

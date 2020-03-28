@@ -8,6 +8,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
@@ -309,11 +310,19 @@ class CourseConnector {
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];
       courseNodes = node.getElementsByTagName("tr");
-
+      String studentName;
+      try {
+        studentName = RegExp(r"姓名：([\u4E00-\u9FA5]+)").firstMatch(
+            courseNodes[0].text).group(1);
+      }catch(e){
+        studentName = "";
+      }
+      Model.instance.setTempData("studentName", studentName);
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
+
         nodesOne = courseNodes[i].getElementsByTagName("td");
         if (nodesOne[16].text.contains("撤選")) {
           continue;
