@@ -324,7 +324,7 @@ class Model {
   }
 
   SemesterJson getSemesterJsonItem(int index) {
-    if( _courseSemesterList.length >= index ){
+    if( _courseSemesterList.length > index ){
       return _courseSemesterList[index];
     }else{
       return null;
