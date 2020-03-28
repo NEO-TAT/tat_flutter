@@ -69,12 +69,13 @@ class CourseTableControl {
     isHideUnKnown = !courseTable.isDayInCourseTable(Day.UnKnown);
     isHideN = !courseTable.isSectionNumberInCourseTable(SectionNumber.T_N);
     isHideA = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_A));
-    isHideB = isHideA |
-        (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_B));
-    isHideC = isHideB |
-        (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_C));
-    isHideD = isHideC |
-        (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_D));
+    isHideB = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_B));
+    isHideC = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_C));
+    isHideD = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_D));
+    print("$isHideA $isHideB $isHideC $isHideD");
+    isHideA &= (isHideB & isHideC & isHideD);
+    isHideB &= (isHideC & isHideD);
+    isHideC &= isHideD;
     _initColorList();
   }
 
