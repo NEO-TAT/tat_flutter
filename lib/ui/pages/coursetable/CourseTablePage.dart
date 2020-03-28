@@ -9,8 +9,6 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
@@ -38,6 +36,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double courseHeight = 60;
   static double sectionWidth = 20;
   CourseTableControl courseTableControl = CourseTableControl();
+  bool favorite = false;
 
   @override
   void initState() {
@@ -94,8 +93,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       child: Text(value[index]),
                       onPressed: () {
                         String courseName = value[index];
-                        CourseInfoJson courseInfo =
-                        courseTableData.getCourseInfoByCourseName(courseName);
+                        CourseInfoJson courseInfo = courseTableData
+                            .getCourseInfoByCourseName(courseName);
                         if (courseInfo != null) {
                           _showCourseDetail(courseInfo);
                         } else {
@@ -253,6 +252,53 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
+  void _setFavorite(bool like) {
+    if (like) {
+      Model.instance.addCourseTable(courseTableData);
+    } else {
+      Model.instance.removeCourseTable(courseTableData);
+    }
+    Model.instance.saveCourseTableList();
+  }
+
+  void _loadFavorite() {
+    List<CourseTableJson> value = Model.instance.getCourseTableList();
+    if( value.length == 0){
+      MyToast.show(R.current.noAnyFavorite);
+      return;
+    }
+    showDialog(
+      useRootNavigator: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: double.minPositive,
+            child: ListView.builder(
+              itemCount: value.length,
+              shrinkWrap: true, //使清單最小化
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  child: FlatButton(
+                    child: Text(sprintf("%s %s-%s", [
+                      value[index].studentId,
+                      value[index].courseSemester.year,
+                      value[index].courseSemester.semester
+                    ])),
+                    onPressed: () {
+                      _showCourseTable(value[index]);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     SemesterJson semesterSetting =
@@ -271,10 +317,40 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   ),
                   child: InkWell(
                     onTap: () {
+                      _loadFavorite();
+                    },
+                    child: Icon(Icons.arrow_drop_down),
+                  ),
+                )
+              : Container(),
+          (!isLoading)
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    right: 20,
+                  ),
+                  child: InkWell(
+                    onTap: () {
                       MyToast.show(
                           "學分:" + courseTableData.getTotalCredit().toString());
                     },
-                    child: Icon(EvaIcons.search),
+                    child: Icon(Icons.lightbulb_outline, color: Colors.yellow),
+                  ),
+                )
+              : Container(),
+          (!isLoading && Model.instance.getAccount() != courseTableData.studentId)
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    right: 20,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        favorite = !favorite;
+                      });
+                      _setFavorite(favorite);
+                    },
+                    child: Icon(Icons.favorite,
+                        color: (favorite) ? Colors.pinkAccent : Colors.white),
                   ),
                 )
               : Container(),
@@ -545,5 +621,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       isLoading = false;
     });
+    favorite = (Model.instance.getCourseTable(courseTable.studentId, courseTable.courseSemester) != null);
   }
 }
