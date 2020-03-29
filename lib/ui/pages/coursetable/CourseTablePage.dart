@@ -37,6 +37,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double sectionWidth = 20;
   CourseTableControl courseTableControl = CourseTableControl();
   bool favorite = false;
+  bool loadCourseNotice = true;
 
   @override
   void initState() {
@@ -65,13 +66,16 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void getCourseNotice() async {
-    bool needNTUTLogin = await NTUTConnector.checkLogin();
-    bool needISchoolPlusLogin = await ISchoolPlusConnector.checkLogin();
-    if (needNTUTLogin) {
-      await NTUTConnector.login(
-          Model.instance.getAccount(), Model.instance.getPassword());
-      await ISchoolPlusConnector.login(Model.instance.getAccount());
-    } else if (needISchoolPlusLogin) {
+    setState(() {
+      loadCourseNotice = true;
+    });
+    bool needNTUTLogin = !await NTUTConnector.checkLogin();
+    bool needISchoolPlusLogin = !await ISchoolPlusConnector.checkLogin();
+    if (needISchoolPlusLogin) {
+      if (needNTUTLogin) {
+        await NTUTConnector.login(
+            Model.instance.getAccount(), Model.instance.getPassword());
+      }
       await ISchoolPlusConnector.login(Model.instance.getAccount());
     }
     List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
@@ -119,6 +123,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
         },
       );
     }
+    setState(() {
+      loadCourseNotice = false;
+    });
   }
 
   void _checkAppVersion() {
@@ -263,7 +270,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   void _loadFavorite() {
     List<CourseTableJson> value = Model.instance.getCourseTableList();
-    if( value.length == 0){
+    if (value.length == 0) {
       MyToast.show(R.current.noAnyFavorite);
       return;
     }
@@ -311,6 +318,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
       appBar: AppBar(
         title: Text(R.current.titleCourse),
         actions: [
+          (!isLoading && loadCourseNotice)
+              ? Padding(
+                  padding: EdgeInsets.all(10),
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    strokeWidth: 4,
+                  ),
+                )
+              : Container(),
           (!isLoading)
               ? Padding(
                   padding: EdgeInsets.only(
@@ -338,7 +354,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   ),
                 )
               : Container(),
-          (!isLoading && Model.instance.getAccount() != courseTableData.studentId)
+          (!isLoading &&
+                  Model.instance.getAccount() != courseTableData.studentId)
               ? Padding(
                   padding: EdgeInsets.only(
                     right: 20,
@@ -622,8 +639,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       isLoading = false;
     });
-    favorite = (Model.instance.getCourseTable(courseTable.studentId, courseTable.courseSemester) != null);
-    if( favorite ){
+    favorite = (Model.instance.getCourseTable(
+            courseTable.studentId, courseTable.courseSemester) !=
+        null);
+    if (favorite) {
       Model.instance.addCourseTable(courseTableData);
     }
   }
