@@ -72,7 +72,6 @@ class CourseTableControl {
     isHideB = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_B));
     isHideC = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_C));
     isHideD = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_D));
-    print("$isHideA $isHideB $isHideC $isHideD");
     isHideA &= (isHideB & isHideC & isHideD);
     isHideB &= (isHideC & isHideD);
     isHideC &= isHideD;

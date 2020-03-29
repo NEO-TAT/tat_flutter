@@ -169,7 +169,6 @@ class Model {
     List<CourseTableJson> tableList = _courseTableList;
     removeCourseTable(addCourseTable);
     tableList.add(addCourseTable);
-    print("add");
   }
 
   List<CourseTableJson> getCourseTableList() {
