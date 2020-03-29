@@ -216,7 +216,7 @@ class CourseConnector {
       courseNodes = node.getElementsByTagName("tr");
 
       List<CourseMainInfoJson> courseMainInfoList = List();
-      for (int i = 2; i < courseNodes.length - 1; i++) {
+      for (int i = 1; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
         nodesOne = courseNodes[i].getElementsByTagName("td");
@@ -224,7 +224,7 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        courseMain.id = nodesOne[0].text.replaceAll("\n", "");
+        courseMain.id = nodesOne[0].text.replaceAll(RegExp(r"[\n| ]"), "");
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.length >= 1) {
