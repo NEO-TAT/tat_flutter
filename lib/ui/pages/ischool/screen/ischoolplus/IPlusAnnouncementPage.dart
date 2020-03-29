@@ -6,8 +6,6 @@ import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
-import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementTask.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
