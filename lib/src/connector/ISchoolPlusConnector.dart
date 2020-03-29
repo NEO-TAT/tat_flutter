@@ -324,6 +324,8 @@ class ISchoolPlusConnector {
     return null;
   }
 
+  static String bid;
+
   static Future<List<ISchoolPlusAnnouncementJson>> getCourseAnnouncement(
       String courseId) async {
     String result;
@@ -345,6 +347,10 @@ class ISchoolPlusConnector {
       parameter.data = data;
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
+      bid = tagNode
+          .getElementById("bid")
+          .attributes["value"];
+
       node = tagNode.getElementById("formSearch");
       nodes = node.getElementsByTagName("input");
       String selectPage =
@@ -561,6 +567,7 @@ class ISchoolPlusConnector {
   }
 
   static Future<String> getBid(String courseId) async {
+    /*
     ConnectorParameter parameter;
     html.Document tagNode;
     String result;
@@ -576,6 +583,8 @@ class ISchoolPlusConnector {
     } catch (e) {
       throw e;
     }
+     */
+    return bid;
   }
 
   static Future<void> _selectCourse(String courseId) async {
