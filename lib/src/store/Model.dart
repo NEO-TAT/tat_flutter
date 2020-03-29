@@ -170,6 +170,7 @@ class Model {
   }
 
   List<CourseTableJson> getCourseTableList(){
+    _courseTableList.sort((a, b) => a.studentId.compareTo(b.studentId));
     return _courseTableList;
   }
 
