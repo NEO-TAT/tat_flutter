@@ -53,7 +53,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     items = Model.instance
         .getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
     items = items ?? List();
-    MyProgressDialog.showProgressDialog(context, "查詢訂閱...");
+    MyProgressDialog.showProgressDialog(context, R.current.searchSubscribe);
     courseBid = await ISchoolPlusConnector.getBid(courseId);
     openNotifications = await ISchoolPlusConnector.getCourseSubscribe(courseBid);
     MyProgressDialog.hideProgressDialog();
@@ -87,7 +87,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
         floatingActionButton: FloatingActionButton(
           // FloatingActionButton: 浮動按鈕
           onPressed: () async {
-            MyToast.show((openNotifications) ? "關閉訂閱" : "開啟訂閱");
+            MyToast.show((openNotifications) ? R.current.closeSubscribe : R.current.openSubscribe);
             MyProgressDialog.showProgressDialog(context, null);
             bool success = await ISchoolPlusConnector.courseSubscribe(
                 courseBid, !openNotifications);

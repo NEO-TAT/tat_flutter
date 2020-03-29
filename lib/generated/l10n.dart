@@ -1289,10 +1289,37 @@ class S {
     );
   }
 
-  String get isAVideo {
+  String get isVideo {
     return Intl.message(
       'Is a video',
-      name: 'isAVideo',
+      name: 'isVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchSubscribe {
+    return Intl.message(
+      'Search subscribe...',
+      name: 'searchSubscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get openSubscribe {
+    return Intl.message(
+      'Open subscribe',
+      name: 'openSubscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get closeSubscribe {
+    return Intl.message(
+      'Close subscribe',
+      name: 'closeSubscribe',
       desc: '',
       args: [],
     );

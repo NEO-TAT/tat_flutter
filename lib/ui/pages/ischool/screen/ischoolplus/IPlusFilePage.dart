@@ -245,7 +245,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     } else if (urlParse.host.contains("istream.ntut.edu.tw") &&
         urlParse.path.contains("/lecture/player/player2.html")) {
       ErrorDialogParameter errorDialogParameter =
-      ErrorDialogParameter(context: context, desc: R.current.isAVideo);
+      ErrorDialogParameter(context: context, desc: R.current.isVideo);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
