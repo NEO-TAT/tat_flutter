@@ -186,6 +186,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       {SemesterJson semesterSetting,
       String studentId,
       bool refresh: false}) async {
+    studentId = studentId.replaceAll(" ", "");
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.getUserData();
     studentId = studentId ?? userData.account;
@@ -198,6 +199,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
       semesterJson = Model.instance.getSemesterJsonItem(0);
     } else {
       semesterJson = semesterSetting;
+    }
+    if(semesterJson == null){
+      return;
     }
 
     CourseTableJson courseTable;
@@ -686,6 +690,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _showCourseTable(CourseTableJson courseTable) async {
+    if(courseTable == null){
+      return;
+    }
     getCourseNotice(); //查詢訂閱的課程是否有公告
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
