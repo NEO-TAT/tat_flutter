@@ -5,7 +5,10 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 import java.util.Arrays;
@@ -44,6 +47,12 @@ public class CourseWidgetProvider extends AppWidgetProvider {
             //actionIntent.setPackage(context.getPackageName());//隱式意圖必須設置Package，實際測試發現，如果使用隱式意圖，在應用被殺掉時不響應廣播
             PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.course_widget_table, pIntent);
+            String path = context.getFilesDir().getPath() + "/course_weight.png";
+            Log.i(TAG, path);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            Bitmap bitmap = BitmapFactory.decodeFile( path , options);
+            remoteViews.setImageViewBitmap(R.id.course_table_image, bitmap);//时间
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
@@ -76,6 +85,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.course_widget);
         Log.i(TAG, "【onAppWidgetOptionsChanged，當 Widget 第一次被添加或者大小發生變化時調用】");
     }
 }
