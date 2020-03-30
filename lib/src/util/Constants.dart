@@ -58,6 +58,7 @@ class Constants {
 
   static ThemeData lightTheme = ThemeData(
     fontFamily: 'GenSenMaruGothicTW',
+    brightness: Brightness.light,
     backgroundColor: lightBG,
     primaryColor: AppColors.mainColor,
     accentColor: lightAccent,
