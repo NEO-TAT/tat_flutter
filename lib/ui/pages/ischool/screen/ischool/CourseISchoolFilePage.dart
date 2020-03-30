@@ -5,6 +5,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
+import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/object/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.d
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:provider/provider.dart';
 
 class CourseISchoolFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -179,11 +181,12 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
 
   Widget _buildCourseFile(int index, CourseFileJson courseFile) {
     return Container(
-        color: selectList.getItemSelect(index) ? Colors.green : Colors.white,
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: _buildFileItem(courseFile),
-        ));
+      color: selectList.getItemSelect(index) ? Colors.green : Theme.of(context).backgroundColor,
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: _buildFileItem(courseFile),
+      ),
+    );
   }
 
   List<Widget> _buildFileItem(CourseFileJson courseFile) {

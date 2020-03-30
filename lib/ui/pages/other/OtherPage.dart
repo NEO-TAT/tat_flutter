@@ -182,7 +182,6 @@ class _OtherPageState extends State<OtherPage> {
       },
     );
     return Container(
-      color: Colors.white,
       padding:
           EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
       child: Row(
@@ -225,7 +224,6 @@ class _OtherPageState extends State<OtherPage> {
 
   Widget _buildSetting(Map data) {
     return Material(
-      color: Colors.white,
       child: InkWell(
         onTap: () {
           _onListViewPress(data['onPress']);

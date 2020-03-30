@@ -1,19 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/ischool/CourseAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/ischool/CourseISchoolFilePage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/ischoolplus/IPlusAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/ischoolplus/IPlusFilePage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/CourseInfoPage.dart';
+import 'package:provider/provider.dart';
 
 class ISchoolPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
+
   ISchoolPage(this.studentId, this.courseInfo);
 
   @override
@@ -33,10 +37,12 @@ class _ISchoolPageState extends State<ISchoolPage>
     tabPageList = TabPageList();
     tabPageList.add(TabPage(R.current.course, Icons.info,
         CourseInfoPage(widget.studentId, widget.courseInfo)));
-    if ( widget.studentId == Model.instance.getAccount() ){
-      tabPageList.add(TabPage(R.current.announcement + 'Plus', Icons.announcement,
-          IPlusAnnouncementPage(widget.studentId, widget.courseInfo) ));
-      tabPageList.add(TabPage(R.current.file + 'Plus' , Icons.file_download,
+    if (widget.studentId == Model.instance.getAccount()) {
+      tabPageList.add(TabPage(
+          R.current.announcement + 'Plus',
+          Icons.announcement,
+          IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
+      tabPageList.add(TabPage(R.current.file + 'Plus', Icons.file_download,
           IPlusFilePage(widget.studentId, widget.courseInfo)));
     }
     tabPageList.add(TabPage(R.current.announcement, Icons.announcement,
@@ -49,15 +55,22 @@ class _ISchoolPageState extends State<ISchoolPage>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        var currentState = tabPageList.getKey(_currentIndex).currentState;
-        bool pop = (currentState == null) ? true : currentState.canPop();
-        return pop;
+    return Consumer<AppProvider>(
+      builder: (BuildContext context, AppProvider appProvider, Widget child) {
+        return WillPopScope(
+          onWillPop: () async {
+            var currentState = tabPageList.getKey(_currentIndex).currentState;
+            bool pop = (currentState == null) ? true : currentState.canPop();
+            return pop;
+          },
+          child: MaterialApp(
+            title: Constants.appName,
+            theme: appProvider.theme,
+            darkTheme: Constants.darkTheme,
+            home: tabPageView(),
+          ),
+        );
       },
-      child: MaterialApp(
-        home: tabPageView(),
-      ),
     );
   }
 

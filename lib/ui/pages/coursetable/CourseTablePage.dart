@@ -43,6 +43,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double studentIdHeight = 40;
   static double courseHeight = 60;
   static double sectionWidth = 20;
+  static int courseTableWithAlpha = 0xDF;
   CourseTableControl courseTableControl = CourseTableControl();
   bool favorite = false;
   bool loadCourseNotice = true;
@@ -74,7 +75,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void getCourseNotice() async {
-    if(Model.instance.checkUpdate){
+    if (Model.instance.checkUpdate) {
       setState(() {
         loadCourseNotice = false;
       });
@@ -409,6 +410,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         children: <Widget>[
           Container(
             height: studentIdHeight,
+            color: Theme.of(context).backgroundColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -544,7 +546,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     return Container(
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor.withAlpha(courseTableWithAlpha),
       height: dayHeight,
       child: Row(
         children: widgetList,
@@ -554,7 +556,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Widget _buildCourseTable(int index) {
     int section = courseTableControl.getSectionIntList[index];
-    Color color = (index % 2 == 1) ? Colors.white : Color(0xFFF8F8F8);
+    Color color;
+    color = (index % 2 == 1)
+        ? Theme.of(context).backgroundColor
+        : Theme.of(context).dividerColor;
+    color = color.withAlpha(courseTableWithAlpha);
     List<Widget> widgetList = List();
     widgetList.add(
       Container(
@@ -582,6 +588,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     child: AutoSizeText(
                       courseInfo.main.course.name,
                       style: TextStyle(
+                        color: Colors.black,
                         fontSize: 14,
                       ),
                       minFontSize: 10,
