@@ -1,9 +1,15 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -19,6 +25,8 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseTableControl.dart';
+import 'OverRepaintBoundary.dart';
+import 'dart:ui' as ui;
 
 class CourseTablePage extends StatefulWidget {
   @override
@@ -131,7 +139,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _checkAppVersion() {
     if (!Model.instance.checkUpdate) {
       AppUpdate.checkUpdate().then(
-        (value) {
+            (value) {
           Model.instance.checkUpdate = true;
           if (value != null) {
             AppUpdate.showUpdateDialog(context, value);
@@ -151,10 +159,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
     //Log.d(MediaQuery.of(context).size.height.toString());
     RenderObject renderObject = _key.currentContext.findRenderObject();
     courseHeight = (renderObject.semanticBounds.size.height -
-            studentIdHeight -
-            dayHeight) /
+        studentIdHeight -
+        dayHeight) /
         9; //計算高度
-    CourseTableJson courseTable = Model.instance.getCourseSetting().info;
+    CourseTableJson courseTable = Model.instance
+        .getCourseSetting()
+        .info;
     if (courseTable.isEmpty) {
       _getCourseTable();
     } else {
@@ -167,10 +177,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
     await TaskHandler.instance.startTaskQueue(context);
   }
 
-  void _getCourseTable(
-      {SemesterJson semesterSetting,
-      String studentId,
-      bool refresh: false}) async {
+  void _getCourseTable({SemesterJson semesterSetting,
+    String studentId,
+    bool refresh: false}) async {
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.getUserData();
     studentId = studentId ?? userData.account;
@@ -198,7 +207,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
       await TaskHandler.instance.startTaskQueue(context);
       courseTable = Model.instance.getTempData(CourseTableTask.tempDataKey);
     }
-    Model.instance.getCourseSetting().info = courseTable; //儲存課表
+    Model.instance
+        .getCourseSetting()
+        .info = courseTable; //儲存課表
     Model.instance.saveCourseSetting();
     _showCourseTable(courseTable);
   }
@@ -219,7 +230,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showSemesterList() async {
     //顯示選擇學期
     _unFocusStudentInput();
-    if (Model.instance.getSemesterList().length == 0) {
+    if (Model.instance
+        .getSemesterList()
+        .length == 0) {
       TaskHandler.instance
           .addTask(CourseSemesterTask(context, _studentIdControl.text));
       await TaskHandler.instance.startTaskQueue(context);
@@ -320,57 +333,57 @@ class _CourseTablePageState extends State<CourseTablePage> {
         actions: [
           (!isLoading && loadCourseNotice)
               ? Padding(
-                  padding: EdgeInsets.all(10),
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                    strokeWidth: 4,
-                  ),
-                )
+            padding: EdgeInsets.all(10),
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
+              strokeWidth: 4,
+            ),
+          )
               : Container(),
           (!isLoading)
               ? Padding(
-                  padding: EdgeInsets.only(
-                    right: 20,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      _loadFavorite();
-                    },
-                    child: Icon(Icons.arrow_drop_down),
-                  ),
-                )
+            padding: EdgeInsets.only(
+              right: 20,
+            ),
+            child: InkWell(
+              onTap: () {
+                _loadFavorite();
+              },
+              child: Icon(Icons.arrow_drop_down),
+            ),
+          )
               : Container(),
           (!isLoading)
               ? Padding(
-                  padding: EdgeInsets.only(
-                    right: 20,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      MyToast.show(
-                          "學分:" + courseTableData.getTotalCredit().toString());
-                    },
-                    child: Icon(Icons.lightbulb_outline, color: Colors.yellow),
-                  ),
-                )
+            padding: EdgeInsets.only(
+              right: 20,
+            ),
+            child: InkWell(
+              onTap: () {
+                MyToast.show(
+                    "學分:" + courseTableData.getTotalCredit().toString());
+              },
+              child: Icon(Icons.lightbulb_outline, color: Colors.yellow),
+            ),
+          )
               : Container(),
           (!isLoading &&
-                  Model.instance.getAccount() != courseTableData.studentId)
+              Model.instance.getAccount() != courseTableData.studentId)
               ? Padding(
-                  padding: EdgeInsets.only(
-                    right: 20,
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        favorite = !favorite;
-                      });
-                      _setFavorite(favorite);
-                    },
-                    child: Icon(Icons.favorite,
-                        color: (favorite) ? Colors.pinkAccent : Colors.white),
-                  ),
-                )
+            padding: EdgeInsets.only(
+              right: 20,
+            ),
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  favorite = !favorite;
+                });
+                _setFavorite(favorite);
+              },
+              child: Icon(Icons.favorite,
+                  color: (favorite) ? Colors.pinkAccent : Colors.white),
+            ),
+          )
               : Container(),
           Padding(
             padding: EdgeInsets.only(
@@ -442,9 +455,45 @@ class _CourseTablePageState extends State<CourseTablePage> {
             ),
           ),
           Expanded(
-            child: _buildListView(),
+            child: _buildListViewWithScreenshot(),
           ),
         ],
+      ),
+    );
+  }
+
+  final GlobalKey<OverRepaintBoundaryState> overRepaintKey = GlobalKey();
+
+  Widget _buildListViewWithScreenshot() {
+    return SingleChildScrollView(
+      child: OverRepaintBoundary(
+        key: overRepaintKey,
+        child: RepaintBoundary(
+          child: (isLoading)
+              ? Center(
+            child: CircularProgressIndicator(),
+          )
+              : Column(
+            children: List.generate(
+              1 + courseTableControl.getSectionIntList.length,
+                  (index) {
+                Widget widget;
+                widget = (index == 0)
+                    ? _buildDay()
+                    : _buildCourseTable(index - 1);
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: ScaleAnimation(
+                    child: FadeInAnimation(
+                      child: widget,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -453,27 +502,27 @@ class _CourseTablePageState extends State<CourseTablePage> {
     return Container(
       child: (isLoading)
           ? Center(
-              child: CircularProgressIndicator(),
-            )
+        child: CircularProgressIndicator(),
+      )
           : AnimationLimiter(
-              child: ListView.builder(
-                itemCount: 1 + courseTableControl.getSectionIntList.length,
-                itemBuilder: (context, index) {
-                  Widget widget;
-                  widget =
-                      (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    child: ScaleAnimation(
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
-                    ),
-                  );
-                },
+        child: ListView.builder(
+          itemCount: 1 + courseTableControl.getSectionIntList.length,
+          itemBuilder: (context, index) {
+            Widget widget;
+            widget =
+            (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: ScaleAnimation(
+                child: FadeInAnimation(
+                  child: widget,
+                ),
               ),
-            ),
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -493,6 +542,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     return Container(
+      color: Colors.white,
       height: dayHeight,
       child: Row(
         children: widgetList,
@@ -516,7 +566,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
     for (int day in courseTableControl.getDayIntList) {
       CourseInfoJson courseInfo =
-          courseTableControl.getCourseInfo(day, section);
+      courseTableControl.getCourseInfo(day, section);
       Color color = courseTableControl.getCourseInfoColor(day, section);
       courseInfo = courseInfo ?? CourseInfoJson();
       widgetList.add(
@@ -524,24 +574,24 @@ class _CourseTablePageState extends State<CourseTablePage> {
           child: (courseInfo.isEmpty)
               ? Container()
               : Container(
-                  padding: EdgeInsets.all(1),
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(0),
-                    child: AutoSizeText(
-                      courseInfo.main.course.name,
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                      minFontSize: 10,
-                      maxLines: 3,
-                      textAlign: TextAlign.center,
-                    ),
-                    onPressed: () {
-                      showCourseDetailDialog(section, courseInfo);
-                    },
-                    color: color,
-                  ),
+            padding: EdgeInsets.all(1),
+            child: RaisedButton(
+              padding: EdgeInsets.all(0),
+              child: AutoSizeText(
+                courseInfo.main.course.name,
+                style: TextStyle(
+                  fontSize: 14,
                 ),
+                minFontSize: 10,
+                maxLines: 3,
+                textAlign: TextAlign.center,
+              ),
+              onPressed: () {
+                showCourseDetailDialog(section, courseInfo);
+              },
+              color: color,
+            ),
+          ),
         ),
       );
     }
@@ -610,10 +660,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
             child: ISchoolPage(studentId, courseInfo)),
       )
           .then(
-        (value) {
+            (value) {
           if (value != null) {
             SemesterJson semesterSetting =
-                Model.instance.getCourseSetting().info.courseSemester;
+                Model.instance
+                    .getCourseSetting()
+                    .info
+                    .courseSemester;
             _getCourseTable(semesterSetting: semesterSetting, studentId: value);
           }
         },
@@ -640,10 +693,25 @@ class _CourseTablePageState extends State<CourseTablePage> {
       isLoading = false;
     });
     favorite = (Model.instance.getCourseTable(
-            courseTable.studentId, courseTable.courseSemester) !=
+        courseTable.studentId, courseTable.courseSemester) !=
         null);
     if (favorite) {
       Model.instance.addCourseTable(courseTableData);
     }
+    Future.delayed(Duration(seconds: 3)).then((_) {
+      screenshot();
+    });
+  }
+
+  Future screenshot() async {
+    String path = await FileStore.findLocalPath(context);
+    RenderRepaintBoundary boundary =
+    overRepaintKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage(pixelRatio: 2);
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    File imgFile = new File('$path/course_weight.png');
+    imgFile.writeAsBytes(pngBytes);
+    Log.d("complete");
   }
 }
