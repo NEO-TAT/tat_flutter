@@ -127,6 +127,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
 
   Widget _listItem(ISchoolPlusAnnouncementJson data) {
     Color color = (data.readflag != 1) ? Colors.black87 : Colors.black54;
+    color = null;
     FontWeight fontWeight =
         (data.readflag != 1) ? FontWeight.bold : FontWeight.w400;
     return Container(

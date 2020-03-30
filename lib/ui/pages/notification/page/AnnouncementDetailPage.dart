@@ -41,10 +41,9 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Colors.black54,
+                color: Theme.of(context).backgroundColor,
               )
             ],
           ),
@@ -88,6 +87,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
   Widget _showHtmlWidget() {
     return HtmlWidget(
       widget.data.detail,
+      hyperlinkColor: Colors.blue,
       onTapUrl: (url) {
         onUrlTap(url);
       },

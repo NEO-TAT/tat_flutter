@@ -57,15 +57,18 @@ class Constants {
 
   static ThemeData lightTheme = ThemeData(
     fontFamily: 'GenSenMaruGothicTW',
-    accentColor: AppColors.mainColor,
-    cursorColor: AppColors.mainColor,
-    indicatorColor: AppColors.mainColor,
+    backgroundColor: lightBG,
+    primaryColor: AppColors.mainColor,
+    accentColor: lightAccent,
+    cursorColor: lightAccent,
+    scaffoldBackgroundColor: lightBG,
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: AppColors.mainColor,
     ),
   );
 
   static ThemeData darkTheme = ThemeData(
+    fontFamily: 'GenSenMaruGothicTW',
     brightness: Brightness.dark,
     backgroundColor: darkBG,
     primaryColor: darkPrimary,
@@ -73,11 +76,9 @@ class Constants {
     scaffoldBackgroundColor: darkBG,
     cursorColor: darkAccent,
     cupertinoOverrideTheme: CupertinoThemeData(
-      primaryColor: AppColors.mainColor,
+      primaryColor: darkAccent,
     ),
   );
-
-
 
   static List<T> map<T>(List list, Function handler) {
     List<T> result = [];

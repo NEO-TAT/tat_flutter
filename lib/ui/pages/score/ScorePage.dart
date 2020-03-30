@@ -252,8 +252,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           //用ink圓角矩形
           // color: Colors.red,
           decoration: new BoxDecoration(
-            //背景
-            color: Colors.white,
             //設置四周圓角 角度
             borderRadius: BorderRadius.all(Radius.circular(25.0)),
             //設置四周邊框
