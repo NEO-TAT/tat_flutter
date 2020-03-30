@@ -270,7 +270,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         break;
       case 2:
         await screenshot();
-        MyToast.show("設定完成");
+        MyToast.show("設定完成，如果沒有看到小工具請重新安裝應用程式");
         break;
       default:
         break;
