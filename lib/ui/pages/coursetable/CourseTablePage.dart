@@ -23,6 +23,7 @@ import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseTableControl.dart';
 import 'OverRepaintBoundary.dart';
@@ -704,7 +705,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   Future screenshot() async {
-    String path = await FileStore.findLocalPath(context);
+    Directory directory = await getApplicationSupportDirectory();
+    String path = directory.path;
+    Log.d(path);
     RenderRepaintBoundary boundary =
     overRepaintKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage(pixelRatio: 2);
