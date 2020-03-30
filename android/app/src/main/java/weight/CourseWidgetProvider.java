@@ -28,7 +28,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
         Log.i(TAG, "【onReceive，其他所有回調方法都是由它調用的】");
         //這裡判斷是自己的action，做自己的事情，比如小工具被點擊了要幹啥
         if (ACTION_ONCLICK.equals(intent.getAction())) {
-            Toast.makeText(context, "開啟app", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "開啟app", Toast.LENGTH_LONG).show();
             Intent actIntent = new Intent(context, MainActivity.class);
             actIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             context.startActivity(actIntent);
