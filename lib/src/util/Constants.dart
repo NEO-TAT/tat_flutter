@@ -13,7 +13,7 @@ class Constants {
   static Color lightAccent = Color(0xff597ef7);
   static Color darkAccent = Color(0xff4F4F4f);
   static Color lightBG = Colors.white;
-  static Color darkBG = Color(0xEE2B2B2B);
+  static Color darkBG = Color(0xFF2B2B2B);
   static Color hyperlinkColor = Colors.blue;
 
 /*
@@ -78,7 +78,7 @@ class Constants {
     accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
     cursorColor: darkAccent,
-    dividerColor: Color(0xEE2F2F2F),
+    dividerColor: Color(0xFF2F2F2F),
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: darkAccent,
     ),

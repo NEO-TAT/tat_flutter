@@ -43,6 +43,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double studentIdHeight = 40;
   static double courseHeight = 60;
   static double sectionWidth = 20;
+  static int courseTableWithAlpha = 0xDF;
   CourseTableControl courseTableControl = CourseTableControl();
   bool favorite = false;
   bool loadCourseNotice = true;
@@ -545,7 +546,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     return Container(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).backgroundColor.withAlpha(courseTableWithAlpha),
       height: dayHeight,
       child: Row(
         children: widgetList,
@@ -559,6 +560,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     color = (index % 2 == 1)
         ? Theme.of(context).backgroundColor
         : Theme.of(context).dividerColor;
+    color = color.withAlpha(courseTableWithAlpha);
     List<Widget> widgetList = List();
     widgetList.add(
       Container(
