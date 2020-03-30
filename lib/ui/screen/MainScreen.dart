@@ -7,6 +7,8 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
+import 'package:flutter_app/src/providers/AppProvider.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -16,7 +18,7 @@ import 'package:flutter_app/ui/pages/notification/NotificationPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
 import 'package:flutter_app/ui/pages/score/ScorePage.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -29,7 +31,6 @@ class _MainScreenState extends State<MainScreen> {
   int _closeAppCount = 0;
   List<Widget> _pageList = List<Widget>();
   FirebaseAnalytics analytics = FirebaseAnalytics();
-
 
   @override
   void initState() {
@@ -52,11 +53,11 @@ class _MainScreenState extends State<MainScreen> {
     _notificationsInit();
     _addTask();
   }
-  
-  
+
   void _addTest() async {
-    await NTUTConnector.login(Model.instance.getAccount() , Model.instance.getPassword());
-    await NTUTConnector.getCalendar(DateTime.now() , DateTime.now());
+    await NTUTConnector.login(
+        Model.instance.getAccount(), Model.instance.getPassword());
+    await NTUTConnector.getCalendar(DateTime.now(), DateTime.now());
   }
 
   void _addTask() async {
@@ -67,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
     await MyDownloader.init();
   }
 
-  void _notificationsInit() async{
+  void _notificationsInit() async {
     await Notifications.instance.init();
   }
 
@@ -79,28 +80,27 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'GenSenMaruGothicTW',
-        accentColor: AppColors.mainColor,
-        cursorColor: AppColors.mainColor,
-        indicatorColor: AppColors.mainColor,
-        cupertinoOverrideTheme: CupertinoThemeData(
-          primaryColor: AppColors.mainColor,
-        ),
-      ),
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: analytics),
-      ],
-      home: WillPopScope(
-        onWillPop: _onWillPop,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          resizeToAvoidBottomPadding: false,
-          body: _buildPageView(),
-          bottomNavigationBar: _buildBottomNavigationBar(),
-        ),
-      ),
+    return Consumer<AppProvider>(
+      builder: (BuildContext context, AppProvider appProvider, Widget child) {
+        return MaterialApp(
+          navigatorKey: appProvider.navigatorKey,
+          title: Constants.appName,
+          theme: appProvider.theme,
+          darkTheme: Constants.darkTheme,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics),
+          ],
+          home: WillPopScope(
+            onWillPop: _onWillPop,
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              resizeToAvoidBottomPadding: false,
+              body: _buildPageView(),
+              bottomNavigationBar: _buildBottomNavigationBar(),
+            ),
+          ),
+        );
+      },
     );
   }
 

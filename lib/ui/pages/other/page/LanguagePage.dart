@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/providers/AppProvider.dart';
+import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:step_slider/step_slider.dart';
 
 class LanguagePage extends StatefulWidget {
@@ -119,7 +124,37 @@ class _LanguagePageState extends State<LanguagePage> {
                   },
                 ),
               ],
-            )
+            ),
+            MediaQuery.of(context).platformBrightness != Constants.darkTheme.brightness
+                ?SwitchListTile.adaptive(
+              contentPadding: EdgeInsets.all(0),
+              secondary: Icon(
+                Feather.moon,
+              ),
+              title: Text(
+                "Dark mode",
+              ),
+              value: Provider.of<AppProvider>(context).theme == Constants.lightTheme
+                  ? false
+                  : true,
+              onChanged: (v){
+                if (v) {
+                  Provider.of<AppProvider>(context, listen: false)
+                      .setTheme(Constants.darkTheme, "dark");
+                } else {
+                  Provider.of<AppProvider>(context, listen: false)
+                      .setTheme(Constants.lightTheme, "light");
+                }
+              },
+              activeColor: Theme.of(context).accentColor,
+            ):SizedBox(),
+
+            MediaQuery.of(context).platformBrightness != Constants.darkTheme.brightness
+                ?Container(
+              height: 1,
+              color: Theme.of(context).dividerColor,
+            ):SizedBox(),
+
           ],
         ),
       ),
