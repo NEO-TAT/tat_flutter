@@ -249,7 +249,7 @@ class _NotificationPageState extends State<NotificationPage>
   }
 
   Widget _buildListItem(NewAnnouncementJson data) {
-    Color color = (!data.isRead) ? Colors.black87 : Colors.black54;
+    FontWeight fontWeight = (!data.isRead) ? FontWeight.bold : FontWeight.normal ;
     return Container(
       child: Column(
         children: <Widget>[
@@ -273,9 +273,7 @@ class _NotificationPageState extends State<NotificationPage>
                           data.title,
                           overflow: TextOverflow.visible,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: color,
-                              fontSize: 18),
+                              fontWeight: fontWeight, fontSize: 18),
                         ),
                         SizedBox(
                           height: 4,
@@ -283,7 +281,8 @@ class _NotificationPageState extends State<NotificationPage>
                         Text(
                           data.courseName,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: color, fontSize: 16),
+                          style:
+                              TextStyle(fontWeight: fontWeight, fontSize: 16),
                         ),
                         SizedBox(
                           height: 4,
@@ -293,11 +292,12 @@ class _NotificationPageState extends State<NotificationPage>
                           children: <Widget>[
                             Text(
                               data.sender,
-                              style: TextStyle(color: color, fontSize: 15.5),
+                              style: TextStyle(
+                                  fontWeight: fontWeight, fontSize: 15.5),
                             ),
                             Text(
                               data.timeString,
-                              style: TextStyle(color: color, fontSize: 13.5),
+                              style: TextStyle(fontSize: 13.5),
                             ),
                           ],
                         )

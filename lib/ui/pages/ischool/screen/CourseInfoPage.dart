@@ -8,6 +8,7 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
@@ -18,6 +19,7 @@ import '../../webview/WebViewPluginPage.dart';
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
+
   CourseInfoPage(this.studentId, this.courseInfo);
 
   @override
@@ -269,7 +271,10 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   }
 
   Widget _buildClassmateInfo(int index, ClassmateJson classmate) {
-    Color color = (index % 2 == 1) ? Colors.white : Color(0xFFF8F8F8);
+    Color color;
+    color = (index % 2 == 1)
+        ? Theme.of(context).backgroundColor
+        : Theme.of(context).dividerColor;
     return Container(
       color: color,
       child: Row(

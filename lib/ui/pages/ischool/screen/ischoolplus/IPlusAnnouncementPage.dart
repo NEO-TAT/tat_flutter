@@ -53,7 +53,8 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     items = items ?? List();
     MyProgressDialog.showProgressDialog(context, R.current.searchSubscribe);
     courseBid = await ISchoolPlusConnector.getBid(courseId);
-    openNotifications = await ISchoolPlusConnector.getCourseSubscribe(courseBid);
+    openNotifications =
+        await ISchoolPlusConnector.getCourseSubscribe(courseBid);
     MyProgressDialog.hideProgressDialog();
     setState(() {});
   }
@@ -85,7 +86,9 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
         floatingActionButton: FloatingActionButton(
           // FloatingActionButton: 浮動按鈕
           onPressed: () async {
-            MyToast.show((openNotifications) ? R.current.closeSubscribe : R.current.openSubscribe);
+            MyToast.show((openNotifications)
+                ? R.current.closeSubscribe
+                : R.current.openSubscribe);
             MyProgressDialog.showProgressDialog(context, null);
             bool success = await ISchoolPlusConnector.courseSubscribe(
                 courseBid, !openNotifications);
@@ -126,10 +129,8 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   }
 
   Widget _listItem(ISchoolPlusAnnouncementJson data) {
-    Color color = (data.readflag != 1) ? Colors.black87 : Colors.black54;
-    color = null;
     FontWeight fontWeight =
-        (data.readflag != 1) ? FontWeight.bold : FontWeight.w400;
+        (data.readflag != 1) ? FontWeight.bold : FontWeight.normal;
     return Container(
       child: Column(
         children: <Widget>[
@@ -157,9 +158,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
                                 data.subject,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
-                                    fontWeight: fontWeight,
-                                    color: color,
-                                    fontSize: 17.0),
+                                    fontWeight: fontWeight, fontSize: 17.0),
                               ),
                             ),
                           ],
@@ -170,16 +169,12 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
                             Text(
                               data.realname,
                               style: TextStyle(
-                                  fontWeight: fontWeight,
-                                  color: color,
-                                  fontSize: 15.5),
+                                  fontWeight: fontWeight, fontSize: 15.5),
                             ),
                             Text(
                               data.postdate,
                               style: TextStyle(
-                                  fontWeight: fontWeight,
-                                  color: color,
-                                  fontSize: 13.5),
+                                  fontWeight: fontWeight, fontSize: 13.5),
                             ),
                           ],
                         )

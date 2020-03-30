@@ -8,12 +8,13 @@ class Constants {
   static String appName = "TAT";
 
   //Colors for theme
-  static Color lightPrimary = Color(0xfff3f4f9);
+  static Color lightPrimary = Colors.white;
   static Color darkPrimary = Color(0xff2B2B2B);
   static Color lightAccent = Color(0xff597ef7);
-  static Color darkAccent = Color(0xff597ef7);
-  static Color lightBG = Color(0xfff3f4f9);
-  static Color darkBG = Color(0xff2B2B2B);
+  static Color darkAccent = Color(0xff4F4F4f);
+  static Color lightBG = Colors.white;
+  static Color darkBG = Color(0xEE2B2B2B);
+  static Color hyperlinkColor = Colors.blue;
 
 /*
   static ThemeData lightTheme = ThemeData(
@@ -61,6 +62,7 @@ class Constants {
     primaryColor: AppColors.mainColor,
     accentColor: lightAccent,
     cursorColor: lightAccent,
+    dividerColor: Color(0xFFF8F8F8),
     scaffoldBackgroundColor: lightBG,
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: AppColors.mainColor,
@@ -75,9 +77,11 @@ class Constants {
     accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
     cursorColor: darkAccent,
+    dividerColor: Color(0xEE2F2F2F),
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: darkAccent,
     ),
+    buttonColor: darkAccent,
   );
 
   static List<T> map<T>(List list, Function handler) {
