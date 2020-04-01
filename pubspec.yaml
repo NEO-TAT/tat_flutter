@@ -59,7 +59,6 @@ dependencies:
   pull_to_refresh: ^1.5.8  #提供ListView可下拉式更新並且可動態加載
   cached_network_image: ^2.0.0  #用url顯示圖片
   auto_size_text: ^2.1.0  #課表顯示有用到
-  easy_dialog: ^1.0.5     #about用到
   table_calendar: ^2.2.2    #顯示行事曆
   step_slider: ^1.0.0+1     #語言切換用
   fluttertoast: ^3.1.3      #Toast

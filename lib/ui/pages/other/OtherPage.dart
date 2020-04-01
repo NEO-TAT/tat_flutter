@@ -10,13 +10,13 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
-import 'package:flutter_app/ui/pages/other/page/LanguagePage.dart';
+import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 
 enum onListViewPress {
-  Language,
+  Setting,
   FileViewer,
   Logout,
   Report,
@@ -35,10 +35,10 @@ class OtherPage extends StatefulWidget {
 class _OtherPageState extends State<OtherPage> {
   final List<Map> optionList = [
     {
-      "icon": EvaIcons.globeOutline,
+      "icon": EvaIcons.settings2Outline,
       "color": Colors.orange,
-      "title": R.current.languageSetting,
-      "onPress": onListViewPress.Language
+      "title": R.current.setting,
+      "onPress": onListViewPress.Setting
     },
     {
       "icon": EvaIcons.downloadOutline,
@@ -108,11 +108,11 @@ class _OtherPageState extends State<OtherPage> {
           ),
         );
         break;
-      case onListViewPress.Language:
+      case onListViewPress.Setting:
         Navigator.of(context).push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: LanguagePage(widget.pageController),
+            child: SettingPage(widget.pageController),
           ),
         );
         break;

@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "creditViewer" : MessageLookupByLibrary.simpleMessage("學分查詢"),
     "culturalDimension" : MessageLookupByLibrary.simpleMessage("文化向度"),
     "culturalHistoricalDimension" : MessageLookupByLibrary.simpleMessage("文史向度"),
+    "darkMode" : MessageLookupByLibrary.simpleMessage("暗黑模式"),
     "delete" : MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteMessage" : MessageLookupByLibrary.simpleMessage("刪除訊息中..."),
     "deleteMessageError" : MessageLookupByLibrary.simpleMessage("刪除錯誤"),

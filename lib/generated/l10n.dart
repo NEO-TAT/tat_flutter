@@ -1082,6 +1082,15 @@ class S {
     );
   }
 
+  String get darkMode {
+    return Intl.message(
+      'Dark mode',
+      name: 'darkMode',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',

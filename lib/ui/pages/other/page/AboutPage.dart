@@ -1,10 +1,10 @@
-import 'package:easy_dialog/easy_dialog.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum onListViewPress { AppUpdate, Contribution, Version }
 
@@ -53,19 +53,8 @@ class _AboutPageState extends State<AboutPage> {
         });
         break;
       case onListViewPress.Contribution:
-        EasyDialog(
-          contentPadding: EdgeInsets.all(10),
-          title: Text(
-            R.current.aboutDialogString,
-          ),
-          description: Text(""),
-          contentList: [
-            Text(
-              "Power by morris13579",
-              textAlign: TextAlign.end,
-            ),
-          ],
-        ).show(context);
+        const url = 'https://github.com/NEO-TAT/NTUTCourseHelper-Flutter';
+        launch(url);
         break;
       case onListViewPress.Version:
         AppUpdate.getAppVersion().then((version) {

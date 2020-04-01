@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
@@ -9,16 +8,16 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:step_slider/step_slider.dart';
 
-class LanguagePage extends StatefulWidget {
+class SettingPage extends StatefulWidget {
   final PageController pageController;
 
-  LanguagePage(this.pageController);
+  SettingPage(this.pageController);
 
   @override
-  _LanguagePageState createState() => _LanguagePageState();
+  _SettingPageState createState() => _SettingPageState();
 }
 
-class _LanguagePageState extends State<LanguagePage> {
+class _SettingPageState extends State<SettingPage> {
   Map<double, String> langMap = {0: "en", 1: "zh"};
   bool focusLogin;
 
@@ -96,65 +95,72 @@ class _LanguagePageState extends State<LanguagePage> {
                 ),
               ],
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        R.current.focusLogin,
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      Text(
-                        R.current.focusLoginResult,
-                        style: TextStyle(fontSize: 16, color: Color(0xFF808080)),
-                      ),
-                    ],
-                  ),
-                ),
-                Checkbox(
-                  value: focusLogin,
-                  onChanged: (bool value) {
-                    setState(() {
-                      focusLogin = value;
-                      Model.instance.getOtherSetting().focusLogin = value;
-                      Model.instance.saveOtherSetting();
-                    });
-                  },
-                ),
-              ],
-            ),
-            MediaQuery.of(context).platformBrightness != Constants.darkTheme.brightness
-                ?SwitchListTile.adaptive(
+            SwitchListTile.adaptive(
               contentPadding: EdgeInsets.all(0),
-              secondary: Icon(
-                Feather.moon,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    R.current.focusLogin,
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  Text(
+                    R.current.focusLoginResult,
+                    style: TextStyle(fontSize: 16, color: Color(0xFF808080)),
+                  ),
+                ],
               ),
-              title: Text(
-                "Dark mode",
-              ),
-              value: Provider.of<AppProvider>(context).theme == Constants.lightTheme
-                  ? false
-                  : true,
-              onChanged: (v){
-                if (v) {
-                  Provider.of<AppProvider>(context, listen: false)
-                      .setTheme(Constants.darkTheme, "dark");
-                } else {
-                  Provider.of<AppProvider>(context, listen: false)
-                      .setTheme(Constants.lightTheme, "light");
-                }
+              value: focusLogin,
+              onChanged: (value) {
+                setState(() {
+                  focusLogin = value;
+                  Model.instance.getOtherSetting().focusLogin = value;
+                  Model.instance.saveOtherSetting();
+                });
               },
               activeColor: Theme.of(context).accentColor,
-            ):SizedBox(),
-
-            MediaQuery.of(context).platformBrightness != Constants.darkTheme.brightness
-                ?Container(
-              height: 1,
-              color: Theme.of(context).dividerColor,
-            ):SizedBox(),
-
+            ),
+            MediaQuery.of(context).platformBrightness !=
+                    Constants.darkTheme.brightness
+                ? SwitchListTile.adaptive(
+                    contentPadding: EdgeInsets.all(0),
+                    title: Row(
+                      children: <Widget>[
+                        Text(
+                          R.current.darkMode,
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                        ),
+                        Icon(
+                          Feather.moon,
+                        ),
+                      ],
+                    ),
+                    value: Provider.of<AppProvider>(context).theme ==
+                            Constants.lightTheme
+                        ? false
+                        : true,
+                    onChanged: (v) {
+                      if (v) {
+                        Provider.of<AppProvider>(context, listen: false)
+                            .setTheme(Constants.darkTheme, "dark");
+                      } else {
+                        Provider.of<AppProvider>(context, listen: false)
+                            .setTheme(Constants.lightTheme, "light");
+                      }
+                    },
+                    activeColor: Theme.of(context).accentColor,
+                  )
+                : SizedBox(),
+            MediaQuery.of(context).platformBrightness !=
+                    Constants.darkTheme.brightness
+                ? Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor,
+                  )
+                : SizedBox(),
           ],
         ),
       ),

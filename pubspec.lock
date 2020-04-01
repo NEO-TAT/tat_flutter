@@ -211,13 +211,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  easy_dialog:
-    dependency: "direct main"
-    description:
-      name: easy_dialog
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   eva_icons_flutter:
     dependency: "direct main"
     description:

@@ -76,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "creditViewer" : MessageLookupByLibrary.simpleMessage("Credit Viewer"),
     "culturalDimension" : MessageLookupByLibrary.simpleMessage("Cultural dimension"),
     "culturalHistoricalDimension" : MessageLookupByLibrary.simpleMessage("Cultural and Historical dimension"),
+    "darkMode" : MessageLookupByLibrary.simpleMessage("Dark mode"),
     "delete" : MessageLookupByLibrary.simpleMessage("Delete"),
     "deleteMessage" : MessageLookupByLibrary.simpleMessage("Deleting message..."),
     "deleteMessageError" : MessageLookupByLibrary.simpleMessage("Delete error"),
