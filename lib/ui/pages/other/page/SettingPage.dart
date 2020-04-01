@@ -19,12 +19,10 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   Map<double, String> langMap = {0: "en", 1: "zh"};
-  bool focusLogin;
 
   @override
   void initState() {
     super.initState();
-    focusLogin = Model.instance.getOtherSetting().focusLogin;
   }
 
   @override
@@ -110,16 +108,37 @@ class _SettingPageState extends State<SettingPage> {
                   ),
                 ],
               ),
-              value: focusLogin,
+              value: Model.instance.getOtherSetting().focusLogin,
               onChanged: (value) {
                 setState(() {
-                  focusLogin = value;
                   Model.instance.getOtherSetting().focusLogin = value;
                   Model.instance.saveOtherSetting();
                 });
               },
               activeColor: Theme.of(context).accentColor,
             ),
+
+            SwitchListTile.adaptive(
+              contentPadding: EdgeInsets.all(0),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    R.current.autoAppCheck,
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ],
+              ),
+              value: Model.instance.getOtherSetting().autoCheckAppUpdate,
+              onChanged: (value) {
+                setState(() {
+                  Model.instance.getOtherSetting().autoCheckAppUpdate = value;
+                  Model.instance.saveOtherSetting();
+                });
+              },
+              activeColor: Theme.of(context).accentColor,
+            ),
+
             MediaQuery.of(context).platformBrightness !=
                     Constants.darkTheme.brightness
                 ? SwitchListTile.adaptive(

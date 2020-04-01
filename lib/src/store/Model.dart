@@ -44,9 +44,31 @@ class Model {
   List<SemesterJson> _courseSemesterList;
   CourseScoreCreditJson _courseScoreList;
   SettingJson _setting;
-  bool checkUpdate = false;
+  Map<String, bool> _firstRun = Map();
+  static String courseNotice = "CourseNotice";
+  static String appCheckUpdate = "AppCheckUpdate";
   Map<String, dynamic> _tempData;
   DefaultCacheManager cacheManager = new DefaultCacheManager();
+
+
+  bool get autoCheckAppUpdate{
+    return _setting.other.autoCheckAppUpdate;
+  }
+
+  bool getFirstUse(String key) {
+    if (!_firstRun.containsKey(key)) {
+      _firstRun[key] = true;
+    }
+    return _firstRun[key];
+  }
+
+  void setAlreadyUse(String key) {
+    _firstRun[key] = false;
+  }
+
+  void setFirstUse(String key, bool value) {
+    _firstRun[key] = value;
+  }
 
   //--------------------UserDataJson--------------------//
   Future<void> saveUserData() async {
@@ -173,8 +195,10 @@ class Model {
 
   List<CourseTableJson> getCourseTableList() {
     _courseTableList.sort((a, b) {
-      if(a.studentId == b.studentId){
-        return b.courseSemester.toString().compareTo(a.courseSemester.toString());
+      if (a.studentId == b.studentId) {
+        return b.courseSemester
+            .toString()
+            .compareTo(a.courseSemester.toString());
       }
       return a.studentId.compareTo(b.studentId);
     });

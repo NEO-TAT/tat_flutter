@@ -1415,6 +1415,15 @@ class S {
     );
   }
 
+  String get autoAppCheck {
+    return Intl.message(
+      'Auto App Check',
+      name: 'autoAppCheck',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________CreditUi___________________ {
     return Intl.message(
       '註解',

@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "areYouSureDeleteMessage" : MessageLookupByLibrary.simpleMessage("Are you sure you want to delete the message?"),
     "areYouSureToDownload" : MessageLookupByLibrary.simpleMessage("Are you sure you want to download the file"),
     "authCodeFail" : MessageLookupByLibrary.simpleMessage("Verification code error"),
+    "autoAppCheck" : MessageLookupByLibrary.simpleMessage("Auto App Check"),
     "calendar" : MessageLookupByLibrary.simpleMessage("Calendar"),
     "cancel" : MessageLookupByLibrary.simpleMessage("cancel"),
     "category" : MessageLookupByLibrary.simpleMessage("Category"),

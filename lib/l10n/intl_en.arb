@@ -153,6 +153,7 @@
   "Contribution": "Contribution",
   "versionInfo": "Version Info",
   "isNewVersion": "Already the latest version",
+  "autoAppCheck" : "Auto App Check",
   "___________________CreditUi___________________": "註解",
   "culturalDimension": "Cultural dimension",
   "historicalDimension": "Historical dimension",

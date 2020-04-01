@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "areYouSureDeleteMessage" : MessageLookupByLibrary.simpleMessage("確定要刪除訊息嗎"),
     "areYouSureToDownload" : MessageLookupByLibrary.simpleMessage("確定要下載檔案嗎"),
     "authCodeFail" : MessageLookupByLibrary.simpleMessage("驗證碼錯誤"),
+    "autoAppCheck" : MessageLookupByLibrary.simpleMessage("自動檢查更新"),
     "calendar" : MessageLookupByLibrary.simpleMessage("行事曆"),
     "cancel" : MessageLookupByLibrary.simpleMessage("取消"),
     "category" : MessageLookupByLibrary.simpleMessage("類別"),

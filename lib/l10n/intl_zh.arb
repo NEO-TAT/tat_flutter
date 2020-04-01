@@ -153,6 +153,7 @@
   "Contribution" : "貢獻",
   "versionInfo" : "版本資訊",
   "isNewVersion" : "已經是最新版本了",
+  "autoAppCheck" : "自動檢查更新",
   "___________________CreditUi___________________": "註解",
   "culturalDimension": "文化向度",
   "historicalDimension": "歷史向度",

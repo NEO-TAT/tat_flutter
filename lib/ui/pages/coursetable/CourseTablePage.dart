@@ -76,7 +76,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void getCourseNotice() async {
-    if (Model.instance.checkUpdate) {
+    if (!Model.instance.getFirstUse(Model.courseNotice)) {
       setState(() {
         loadCourseNotice = false;
       });
@@ -139,21 +139,24 @@ class _CourseTablePageState extends State<CourseTablePage> {
         },
       );
     }
+    Model.instance.setAlreadyUse(Model.courseNotice);
     setState(() {
       loadCourseNotice = false;
     });
   }
 
   void _checkAppVersion() {
-    if (!Model.instance.checkUpdate) {
-      AppUpdate.checkUpdate().then(
-        (value) {
-          Model.instance.checkUpdate = true;
-          if (value != null) {
-            AppUpdate.showUpdateDialog(context, value);
-          }
-        },
-      );
+    if (Model.instance.autoCheckAppUpdate) {
+      if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
+        AppUpdate.checkUpdate().then(
+          (value) {
+            Model.instance.setAlreadyUse(Model.appCheckUpdate);
+            if (value != null) {
+              AppUpdate.showUpdateDialog(context, value);
+            }
+          },
+        );
+      }
     }
   }
 
@@ -201,7 +204,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     } else {
       semesterJson = semesterSetting;
     }
-    if(semesterJson == null){
+    if (semesterJson == null) {
       return;
     }
 
@@ -690,7 +693,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _showCourseTable(CourseTableJson courseTable) async {
-    if(courseTable == null){
+    if (courseTable == null) {
       return;
     }
     getCourseNotice(); //查詢訂閱的課程是否有公告
@@ -713,7 +716,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  static const platform = const MethodChannel('club.ntut.npc.tat.update.weight');
+  static const platform =
+      const MethodChannel('club.ntut.npc.tat.update.weight');
 
   Future screenshot() async {
     Directory directory = await getApplicationSupportDirectory();
@@ -728,9 +732,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
     await imgFile.writeAsBytes(pngBytes);
     final bool result = await platform.invokeMethod('update_weight');
     Log.d("complete $result");
-    if(result){
+    if (result) {
       MyToast.show("設定完成");
-    }else{
+    } else {
       MyToast.show("設定完成，請重新添加小工具");
     }
   }

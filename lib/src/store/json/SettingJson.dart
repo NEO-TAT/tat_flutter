@@ -84,10 +84,12 @@ class AnnouncementSettingJson {
 class OtherSettingJson {
   String lang;
   bool focusLogin;
+  bool autoCheckAppUpdate;
 
-  OtherSettingJson({this.lang , this.focusLogin}) {
+  OtherSettingJson({this.lang , this.focusLogin,this.autoCheckAppUpdate}) {
     lang = JsonInit.stringInit(lang);
     focusLogin = focusLogin??false;
+    autoCheckAppUpdate = autoCheckAppUpdate??true;
   }
 
   bool get isEmpty {
