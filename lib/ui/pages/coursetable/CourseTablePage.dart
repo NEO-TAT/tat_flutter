@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
@@ -275,7 +276,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
         break;
       case 2:
         await screenshot();
-        MyToast.show("設定完成，如果沒有看到小工具請重新安裝應用程式");
         break;
       default:
         break;
@@ -713,6 +713,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
+  static const platform = const MethodChannel('club.ntut.npc.tat.update.weight');
+
   Future screenshot() async {
     Directory directory = await getApplicationSupportDirectory();
     String path = directory.path;
@@ -723,7 +725,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
     File imgFile = new File('$path/course_weight.png');
-    imgFile.writeAsBytes(pngBytes);
-    Log.d("complete");
+    await imgFile.writeAsBytes(pngBytes);
+    final bool result = await platform.invokeMethod('update_weight');
+    Log.d("complete $result");
+    if(result){
+      MyToast.show("設定完成");
+    }else{
+      MyToast.show("設定完成，請重新添加小工具");
+    }
   }
 }

@@ -1,8 +1,10 @@
 package weight;
+
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,14 +13,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.widget.RemoteViews;
 import android.widget.Toast;
+
 import java.util.Arrays;
+
 import club.ntut.npc.tat.MainActivity;
 import club.ntut.npc.tat.R;
 import io.flutter.Log;
 
 
 public class CourseWidgetProvider extends AppWidgetProvider {
-    public static final  String TAG = "CourseWidgetProvider";
+    public static final String TAG = "CourseWidgetProvider";
     public static final String ACTION_ONCLICK = "club.ntut.npc.tat.weight.onclick";
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
@@ -27,6 +31,25 @@ public class CourseWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         Log.i(TAG, "【onReceive，其他所有回調方法都是由它調用的】");
         //這裡判斷是自己的action，做自己的事情，比如小工具被點擊了要幹啥
+        if ("android.appwidget.action.APPWIDGET_UPDATE".equals(intent.getAction())) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context.getPackageName(), CourseWidgetProvider.class.getName()));
+            for (int appWidgetId : appWidgetIds) {
+                RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.course_widget);
+                Intent actionIntent = new Intent(context, CourseWidgetProvider.class);//顯示意圖
+                actionIntent.setAction(CourseWidgetProvider.ACTION_ONCLICK);
+                PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                remoteViews.setOnClickPendingIntent(R.id.course_widget_table, pIntent);
+                String path = context.getFilesDir().getPath() + "/course_weight.png";
+                Log.i(TAG, path);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+                Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                remoteViews.setImageViewBitmap(R.id.course_table_image, bitmap);//时间
+                appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+            }
+        }
+
         if (ACTION_ONCLICK.equals(intent.getAction())) {
             //Toast.makeText(context, "開啟app", Toast.LENGTH_LONG).show();
             Intent actIntent = new Intent(context, MainActivity.class);
@@ -37,7 +60,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        super.onUpdate(context,appWidgetManager,appWidgetIds);
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
         //根據 updatePeriodMillis 定義的時間定期調用該函數，此外當用戶添加 Widget 時也會調用該函數，可以在這裡進行必要的初始化操作。
         Log.i(TAG, "【onUpdate，當插件內容更新函數時調用，最重要的方法】" + Arrays.toString(appWidgetIds));
         for (int appWidgetId : appWidgetIds) {
@@ -51,11 +74,12 @@ public class CourseWidgetProvider extends AppWidgetProvider {
             Log.i(TAG, path);
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.RGB_565;
-            Bitmap bitmap = BitmapFactory.decodeFile( path , options);
+            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
             remoteViews.setImageViewBitmap(R.id.course_table_image, bitmap);//时间
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
+
 
     @Override
     public void onEnabled(Context context) {
