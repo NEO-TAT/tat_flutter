@@ -1,6 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -53,7 +54,7 @@ class _AboutPageState extends State<AboutPage> {
         });
         break;
       case onListViewPress.Contribution:
-        const url = 'https://github.com/NEO-TAT/NTUTCourseHelper-Flutter';
+        const url = AppLink.gitHub;
         launch(url);
         break;
       case onListViewPress.Version:
