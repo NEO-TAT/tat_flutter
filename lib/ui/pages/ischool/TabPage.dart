@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class TabPage {
     tab = Column(
       children: <Widget>[
         Icon(icons),
-        Text(title),
+        AutoSizeText(title ,maxLines: 1, minFontSize: 6,),
       ],
     );
     tabPage = (useNavigatorKey)

@@ -91,8 +91,7 @@ class FileDownload {
     ).whenComplete(
       () async {
         //顯示下載萬完成通知窗
-        await Future.delayed(Duration(milliseconds: 100));
-        Notifications.instance.cancelNotification(value.id);
+        await Notifications.instance.cancelNotification(value.id);
         value.body = R.current.downloadComplete;
         value.id = Notifications.instance.notificationId; //取得新的id
         String filePath = path + '/' + realFileName;

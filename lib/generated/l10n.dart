@@ -911,6 +911,15 @@ class S {
     );
   }
 
+  String get noAnyFavorite {
+    return Intl.message(
+      'no any favorite',
+      name: 'noAnyFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________CreditUI___________________ {
     return Intl.message(
       '註解',
@@ -1068,6 +1077,15 @@ class S {
     return Intl.message(
       'Press again to close',
       name: 'closeOnce',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get darkMode {
+    return Intl.message(
+      'Dark mode',
+      name: 'darkMode',
       desc: '',
       args: [],
     );
@@ -1280,6 +1298,42 @@ class S {
     );
   }
 
+  String get isVideo {
+    return Intl.message(
+      'Is a video',
+      name: 'isVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchSubscribe {
+    return Intl.message(
+      'Search subscribe...',
+      name: 'searchSubscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get openSubscribe {
+    return Intl.message(
+      'Open subscribe',
+      name: 'openSubscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get closeSubscribe {
+    return Intl.message(
+      'Close subscribe',
+      name: 'closeSubscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',
@@ -1356,6 +1410,15 @@ class S {
     return Intl.message(
       'Already the latest version',
       name: 'isNewVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get autoAppCheck {
+    return Intl.message(
+      'Auto App Check',
+      name: 'autoAppCheck',
       desc: '',
       args: [],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,7 @@ class AppProvider extends ChangeNotifier {
         SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
           statusBarColor:
-              c == "dark" ? Constants.darkPrimary : Constants.lightPrimary,
+              c == "dark" ? Constants.darkPrimary : AppColors.mainColor,
           statusBarIconBrightness:
               c == "dark" ? Brightness.light : Brightness.dark,
         ));

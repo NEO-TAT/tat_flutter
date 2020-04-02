@@ -29,9 +29,11 @@ class Model {
   static final Model instance = Model._privateConstructor();
   SharedPreferences pref;
   static String userDataJsonKey = "UserDataJsonKey";
+
   //----------List----------//
   static String courseTableJsonKey = "CourseTableJsonListKey";
   static String courseSemesterJsonKey = "CourseSemesterListJson";
+
   //----------Object----------//
   static String scoreCreditJsonKey = "ScoreCreditJsonKey";
   static String newAnnouncementJsonKey = "newAnnouncementJson";
@@ -42,13 +44,35 @@ class Model {
   List<SemesterJson> _courseSemesterList;
   CourseScoreCreditJson _courseScoreList;
   SettingJson _setting;
-  bool checkUpdate = false;
+  Map<String, bool> _firstRun = Map();
+  static String courseNotice = "CourseNotice";
+  static String appCheckUpdate = "AppCheckUpdate";
   Map<String, dynamic> _tempData;
   DefaultCacheManager cacheManager = new DefaultCacheManager();
 
+
+  bool get autoCheckAppUpdate{
+    return _setting.other.autoCheckAppUpdate;
+  }
+
+  bool getFirstUse(String key) {
+    if (!_firstRun.containsKey(key)) {
+      _firstRun[key] = true;
+    }
+    return _firstRun[key];
+  }
+
+  void setAlreadyUse(String key) {
+    _firstRun[key] = false;
+  }
+
+  void setFirstUse(String key, bool value) {
+    _firstRun[key] = value;
+  }
+
   //--------------------UserDataJson--------------------//
   Future<void> saveUserData() async {
-    await _save(userDataJsonKey,_userData);
+    await _save(userDataJsonKey, _userData);
   }
 
   Future<void> clearUserData() async {
@@ -94,7 +118,7 @@ class Model {
 
   //--------------------NewAnnouncementJsonList--------------------//
   Future<void> saveNewAnnouncement() async {
-    _save(newAnnouncementJsonKey,_newAnnouncementList);
+    _save(newAnnouncementJsonKey, _newAnnouncementList);
   }
 
   Future<void> clearNewAnnouncement() async {
@@ -121,7 +145,7 @@ class Model {
 
   //--------------------List<CourseTableJson>--------------------//
   Future<void> saveCourseTableList() async {
-    await _save(courseTableJsonKey,_courseTableList);
+    await _save(courseTableJsonKey, _courseTableList);
   }
 
   Future<void> clearCourseTableList() async {
@@ -152,20 +176,33 @@ class Model {
     return null;
   }
 
-  void addCourseTable(CourseTableJson addCourseTable) {
-    if (addCourseTable.studentId != _userData.account) {
-      //只儲存自己的課表
-      Log.d("is not the same studentId");
-      return;
-    }
+  void removeCourseTable(CourseTableJson addCourseTable) {
     List<CourseTableJson> tableList = _courseTableList;
     for (int i = 0; i < tableList.length; i++) {
       CourseTableJson table = tableList[i];
-      if (table.courseSemester == addCourseTable.courseSemester) {
+      if (table.courseSemester == addCourseTable.courseSemester &&
+          table.studentId == addCourseTable.studentId) {
         tableList.removeAt(i);
       }
     }
+  }
+
+  void addCourseTable(CourseTableJson addCourseTable) {
+    List<CourseTableJson> tableList = _courseTableList;
+    removeCourseTable(addCourseTable);
     tableList.add(addCourseTable);
+  }
+
+  List<CourseTableJson> getCourseTableList() {
+    _courseTableList.sort((a, b) {
+      if (a.studentId == b.studentId) {
+        return b.courseSemester
+            .toString()
+            .compareTo(a.courseSemester.toString());
+      }
+      return a.studentId.compareTo(b.studentId);
+    });
+    return _courseTableList;
   }
 
   CourseTableJson getCourseTable(
@@ -186,7 +223,7 @@ class Model {
 
   //--------------------SettingJson--------------------//
   Future<void> saveSetting() async {
-    await _save(settingJsonKey,_setting);
+    await _save(settingJsonKey, _setting);
   }
 
   Future<void> clearSetting() async {
@@ -202,18 +239,16 @@ class Model {
         : SettingJson();
   }
 
-
-
   //--------------------CourseScoreCreditJson--------------------//
   Future<void> saveCourseScoreCredit() async {
-    await _save(scoreCreditJsonKey,_courseScoreList);
+    await _save(scoreCreditJsonKey, _courseScoreList);
   }
 
   List<SemesterCourseScoreJson> getSemesterCourseScore() {
     return _courseScoreList.semesterCourseScoreList;
   }
 
-  GraduationInformationJson getGraduationInformation(){
+  GraduationInformationJson getGraduationInformation() {
     return _courseScoreList.graduationInformation;
   }
 
@@ -226,12 +261,13 @@ class Model {
     await saveCourseScoreCredit();
   }
 
-  Future<void> setCourseScoreCredit( CourseScoreCreditJson value) async {
+  Future<void> setCourseScoreCredit(CourseScoreCreditJson value) async {
     _courseScoreList = value;
     await saveCourseScoreCredit();
   }
 
-  Future<void> setSemesterCourseScore( List<SemesterCourseScoreJson> value) async {
+  Future<void> setSemesterCourseScore(
+      List<SemesterCourseScoreJson> value) async {
     _courseScoreList.graduationInformation = GraduationInformationJson();
     _courseScoreList.semesterCourseScoreList = value;
     await saveCourseScoreCredit();
@@ -305,7 +341,7 @@ class Model {
   }
 
   Future<void> saveSemesterJsonList() async {
-    _save(courseSemesterJsonKey,_courseSemesterList);
+    _save(courseSemesterJsonKey, _courseSemesterList);
   }
 
   Future<void> loadSemesterJsonList() async {
@@ -324,9 +360,9 @@ class Model {
   }
 
   SemesterJson getSemesterJsonItem(int index) {
-    if( _courseSemesterList.length >= index ){
+    if (_courseSemesterList.length > index) {
       return _courseSemesterList[index];
-    }else{
+    } else {
       return null;
     }
   }
@@ -386,23 +422,23 @@ class Model {
     await clearCourseSetting();
     DioConnector.instance.deleteCookies();
     await cacheManager.emptyCache(); //clears all data in cache.
-    TaskHandler.alreadyCheckSystem = "";  //全部登入重新檢查
+    TaskHandler.alreadyCheckSystem = ""; //全部登入重新檢查
     await init();
   }
 
-  Future<void> _save(String key,dynamic saveObj) async {
-    try{
-      await _saveJsonList(key,saveObj);
-    }catch(e){
-      await _saveJson(key,saveObj);
+  Future<void> _save(String key, dynamic saveObj) async {
+    try {
+      await _saveJsonList(key, saveObj);
+    } catch (e) {
+      await _saveJson(key, saveObj);
     }
   }
 
-  Future<void> _saveJson(String key,dynamic saveObj)async{
+  Future<void> _saveJson(String key, dynamic saveObj) async {
     await _writeString(key, json.encode(saveObj));
   }
 
-  Future<void> _saveJsonList(String key,dynamic saveObj)async{
+  Future<void> _saveJsonList(String key, dynamic saveObj) async {
     List<String> jsonList = List();
     for (dynamic obj in saveObj) {
       jsonList.add(json.encode(obj));

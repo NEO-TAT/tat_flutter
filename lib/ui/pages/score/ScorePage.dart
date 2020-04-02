@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -119,6 +119,19 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     super.dispose();
   }
 
+  _onPopupMenuSelect(int value) async {
+    switch (value) {
+      case 0:
+        _addScoreRankTask();
+        break;
+      case 1:
+        _addSearchCourseTypeTask();
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -128,28 +141,23 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           title: Text('成績查詢'),
           actions: [
             if (courseScoreList.length > 0)
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 20,
-                ),
-                child: InkWell(
-                  onTap: () {
-                    _addSearchCourseTypeTask();
-                  },
-                  child: Icon(EvaIcons.searchOutline),
-                ),
-              ),
-            Padding(
-              padding: EdgeInsets.only(
-                right: 20,
-              ),
-              child: InkWell(
-                onTap: () {
-                  _addScoreRankTask();
+              PopupMenuButton<int>(
+                onSelected: (result) {
+                  setState(() {
+                    _onPopupMenuSelect(result);
+                  });
                 },
-                child: Icon(EvaIcons.refreshOutline),
+                itemBuilder: (BuildContext context) => [
+                  PopupMenuItem(
+                    value: 0,
+                    child: Text(R.current.refresh),
+                  ),
+                  PopupMenuItem(
+                    value: 1,
+                    child: Text('計算學分'),
+                  ),
+                ],
               ),
-            ),
           ],
           bottom: TabBar(
             controller: _tabController,
@@ -252,8 +260,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           //用ink圓角矩形
           // color: Colors.red,
           decoration: new BoxDecoration(
-            //背景
-            color: Colors.white,
             //設置四周圓角 角度
             borderRadius: BorderRadius.all(Radius.circular(25.0)),
             //設置四周邊框

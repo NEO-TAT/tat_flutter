@@ -14,6 +14,8 @@ import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFi
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -184,7 +186,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
 
   Widget _buildCourseFile(int index, CourseFileJson courseFile) {
     return Container(
-        color: selectList.getItemSelect(index) ? Colors.green : Colors.white,
+        color: selectList.getItemSelect(index) ? Theme.of(context).backgroundColor : Theme.of(context).backgroundColor,
         padding: EdgeInsets.all(10),
         child: Column(
           children: _buildFileItem(courseFile),
@@ -227,7 +229,8 @@ class _IPlusFilePage extends State<IPlusFilePage>
     if (url == null) {
       MyToast.show(sprintf("%s%s", [courseFile.name, R.current.downloadError]));
     }
-    if (!Uri.parse(url).host.toLowerCase().contains("ntut.edu.tw")) {
+    Uri urlParse = Uri.parse(url);
+    if (!urlParse.host.toLowerCase().contains("ntut.edu.tw")) {
       //代表可能是一個連結
       ErrorDialogParameter errorDialogParameter =
           ErrorDialogParameter(context: context, desc: R.current.isALink);
@@ -239,8 +242,27 @@ class _IPlusFilePage extends State<IPlusFilePage>
       };
       ErrorDialog(errorDialogParameter).show();
       return;
+    } else if (urlParse.host.contains("istream.ntut.edu.tw") &&
+        urlParse.path.contains("/lecture/player/player2.html")) {
+      ErrorDialogParameter errorDialogParameter =
+      ErrorDialogParameter(context: context, desc: R.current.isVideo);
+      errorDialogParameter.title = R.current.AreYouSureToOpen;
+      errorDialogParameter.dialogType = DialogType.INFO;
+      errorDialogParameter.btnOkText = R.current.sure;
+      errorDialogParameter.btnOkOnPress = () {
+        String uuid = urlParse.queryParameters["vid"];  //影片uuid
+        Navigator.of(context)
+            .push(
+          PageTransition(
+            type: PageTransitionType.downToUp,
+            child: ClassVideoPlayer(uuid),
+          ),
+        );
+      };
+      ErrorDialog(errorDialogParameter).show();
+    } else {
+      await FileDownload.download(context, url, dirName, courseFile.name);
     }
-    await FileDownload.download(context, url, dirName, courseFile.name);
   }
 
   _launchURL(String url) async {

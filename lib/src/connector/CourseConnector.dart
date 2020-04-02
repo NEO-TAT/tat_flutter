@@ -8,6 +8,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
@@ -215,7 +216,7 @@ class CourseConnector {
       courseNodes = node.getElementsByTagName("tr");
 
       List<CourseMainInfoJson> courseMainInfoList = List();
-      for (int i = 2; i < courseNodes.length - 1; i++) {
+      for (int i = 1; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
         nodesOne = courseNodes[i].getElementsByTagName("td");
@@ -223,7 +224,7 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        courseMain.id = nodesOne[0].text.replaceAll("\n", "");
+        courseMain.id = nodesOne[0].text.replaceAll(RegExp(r"[\n| ]"), "");
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.length >= 1) {
@@ -309,11 +310,19 @@ class CourseConnector {
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];
       courseNodes = node.getElementsByTagName("tr");
-
+      String studentName;
+      try {
+        studentName = RegExp(r"姓名：([\u4E00-\u9FA5]+)").firstMatch(
+            courseNodes[0].text).group(1);
+      }catch(e){
+        studentName = "";
+      }
+      Model.instance.setTempData("studentName", studentName);
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
+
         nodesOne = courseNodes[i].getElementsByTagName("td");
         if (nodesOne[16].text.contains("撤選")) {
           continue;
@@ -551,7 +560,7 @@ class CourseConnector {
     String result;
     Document tagNode;
     Element anode, trNode, node, tdNode;
-    List<Element> aNodes, trNodes, tdNodes;
+    List<Element> trNodes, tdNodes;
     GraduationInformationJson graduationInformation =
         GraduationInformationJson();
     try {

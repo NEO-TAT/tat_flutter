@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementTask.dart';
+import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'IPlusAnnouncementDetailPage.dart';
@@ -24,8 +27,10 @@ class IPlusAnnouncementPage extends StatefulWidget {
 class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
   List<ISchoolPlusAnnouncementJson> items;
+  String courseBid;
   bool needRefresh = false;
   bool isSupport;
+  bool openNotifications = false;
 
   @override
   void initState() {
@@ -46,6 +51,11 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     items = Model.instance
         .getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
     items = items ?? List();
+    MyProgressDialog.showProgressDialog(context, R.current.searchSubscribe);
+    courseBid = await ISchoolPlusConnector.getBid(courseId);
+    openNotifications =
+        await ISchoolPlusConnector.getCourseSubscribe(courseBid);
+    MyProgressDialog.hideProgressDialog();
     setState(() {});
   }
 
@@ -64,16 +74,37 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: (items.length > 0)
-          ? _buildMailList()
-          : isSupport
-              ? Center(
-                  child: Text(R.current.noAnyAnnouncement),
-                )
-              : Center(
-                  child: Text(R.current.notSupport),
-                ),
-    );
+        body: (items.length > 0)
+            ? _buildMailList()
+            : isSupport
+                ? Center(
+                    child: Text(R.current.noAnyAnnouncement),
+                  )
+                : Center(
+                    child: Text(R.current.notSupport),
+                  ),
+        floatingActionButton: FloatingActionButton(
+          // FloatingActionButton: 浮動按鈕
+          onPressed: () async {
+            MyToast.show((openNotifications)
+                ? R.current.closeSubscribe
+                : R.current.openSubscribe);
+            MyProgressDialog.showProgressDialog(context, null);
+            bool success = await ISchoolPlusConnector.courseSubscribe(
+                courseBid, !openNotifications);
+            MyProgressDialog.hideProgressDialog();
+            if (success) {
+              setState(() {
+                openNotifications = !openNotifications;
+              });
+            }
+          },
+          tooltip: "訂閱",
+          // 按住按鈕時出現的提示字
+          child: (openNotifications)
+              ? Icon(Icons.notifications_active)
+              : Icon(Icons.notifications_off),
+        ));
   }
 
   Widget _buildMailList() {
@@ -98,9 +129,8 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   }
 
   Widget _listItem(ISchoolPlusAnnouncementJson data) {
-    Color color = (data.readflag != 1) ? Colors.black87 : Colors.black54;
     FontWeight fontWeight =
-        (data.readflag != 1) ? FontWeight.bold : FontWeight.w400;
+        (data.readflag != 1) ? FontWeight.bold : FontWeight.normal;
     return Container(
       child: Column(
         children: <Widget>[
@@ -128,9 +158,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
                                 data.subject,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
-                                    fontWeight: fontWeight,
-                                    color: color,
-                                    fontSize: 17.0),
+                                    fontWeight: fontWeight, fontSize: 17.0),
                               ),
                             ),
                           ],
@@ -141,16 +169,12 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
                             Text(
                               data.realname,
                               style: TextStyle(
-                                  fontWeight: fontWeight,
-                                  color: color,
-                                  fontSize: 15.5),
+                                  fontWeight: fontWeight, fontSize: 15.5),
                             ),
                             Text(
                               data.postdate,
                               style: TextStyle(
-                                  fontWeight: fontWeight,
-                                  color: color,
-                                  fontSize: 13.5),
+                                  fontWeight: fontWeight, fontSize: 13.5),
                             ),
                           ],
                         )

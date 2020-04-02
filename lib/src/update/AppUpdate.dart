@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/file/FileStore.dart';
-import 'package:flutter_app/src/file/MyDownloader.dart';
+import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/json/GithubAPIJson.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info/package_info.dart';
@@ -85,6 +84,12 @@ class AppUpdate {
               child: Text(R.current.cancel),
               onPressed: () {
                 Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text("github"),
+              onPressed: () {
+                launch(AppLink.gitHubReleases);
               },
             ),
             FlatButton(

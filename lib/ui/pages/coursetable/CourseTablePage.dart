@@ -1,7 +1,15 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -15,8 +23,11 @@ import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseTableControl.dart';
+import 'OverRepaintBoundary.dart';
+import 'dart:ui' as ui;
 
 class CourseTablePage extends StatefulWidget {
   @override
@@ -33,7 +44,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double studentIdHeight = 40;
   static double courseHeight = 60;
   static double sectionWidth = 20;
+  static int courseTableWithAlpha = 0xDF;
   CourseTableControl courseTableControl = CourseTableControl();
+  bool favorite = false;
+  bool loadCourseNotice = true;
 
   @override
   void initState() {
@@ -61,16 +75,88 @@ class _CourseTablePageState extends State<CourseTablePage> {
     });
   }
 
-  void _checkAppVersion() {
-    if (!Model.instance.checkUpdate) {
-      AppUpdate.checkUpdate().then(
-        (value) {
-          Model.instance.checkUpdate = true;
-          if (value != null) {
-            AppUpdate.showUpdateDialog(context, value);
-          }
+  void getCourseNotice() async {
+    if (!Model.instance.getFirstUse(Model.courseNotice)) {
+      setState(() {
+        loadCourseNotice = false;
+      });
+      return;
+    }
+    setState(() {
+      loadCourseNotice = true;
+    });
+    bool needNTUTLogin = !await NTUTConnector.checkLogin();
+    bool needISchoolPlusLogin = !await ISchoolPlusConnector.checkLogin();
+    if (needISchoolPlusLogin) {
+      if (needNTUTLogin) {
+        await NTUTConnector.login(
+            Model.instance.getAccount(), Model.instance.getPassword());
+      }
+      await ISchoolPlusConnector.login(Model.instance.getAccount());
+    }
+    List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
+    if (value != null) {
+      showDialog<void>(
+        useRootNavigator: false,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("發現新公告"),
+            content: Container(
+              width: double.minPositive,
+              child: ListView.builder(
+                itemCount: value.length,
+                shrinkWrap: true, //使清單最小化
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    child: FlatButton(
+                      child: Text(value[index]),
+                      onPressed: () {
+                        String courseName = value[index];
+                        CourseInfoJson courseInfo = courseTableData
+                            .getCourseInfoByCourseName(courseName);
+                        if (courseInfo != null) {
+                          _showCourseDetail(courseInfo);
+                        } else {
+                          MyToast.show("不支持");
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text(R.current.sure),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
         },
       );
+    }
+    Model.instance.setAlreadyUse(Model.courseNotice);
+    setState(() {
+      loadCourseNotice = false;
+    });
+  }
+
+  void _checkAppVersion() {
+    if (Model.instance.autoCheckAppUpdate) {
+      if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
+        AppUpdate.checkUpdate().then(
+          (value) {
+            Model.instance.setAlreadyUse(Model.appCheckUpdate);
+            if (value != null) {
+              AppUpdate.showUpdateDialog(context, value);
+            }
+          },
+        );
+      }
     }
   }
 
@@ -104,6 +190,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       {SemesterJson semesterSetting,
       String studentId,
       bool refresh: false}) async {
+    studentId = studentId.replaceAll(" ", "");
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.getUserData();
     studentId = studentId ?? userData.account;
@@ -116,6 +203,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
       semesterJson = Model.instance.getSemesterJsonItem(0);
     } else {
       semesterJson = semesterSetting;
+    }
+    if (semesterJson == null) {
+      return;
     }
 
     CourseTableJson courseTable;
@@ -179,17 +269,71 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-  _onPopupMenuSelect(int value) {
+  _onPopupMenuSelect(int value) async {
     switch (value) {
+      case 0:
+        MyToast.show("學分:" + courseTableData.getTotalCredit().toString());
+        break;
       case 1:
-        _getCourseTable(
-            semesterSetting: courseTableData?.courseSemester,
-            studentId: _studentIdControl.text,
-            refresh: true);
+        _loadFavorite();
+        break;
+      case 2:
+        await screenshot();
         break;
       default:
         break;
     }
+  }
+
+  void _setFavorite(bool like) {
+    if (like) {
+      Model.instance.addCourseTable(courseTableData);
+    } else {
+      Model.instance.removeCourseTable(courseTableData);
+    }
+    Model.instance.saveCourseTableList();
+  }
+
+  void _loadFavorite() {
+    List<CourseTableJson> value = Model.instance.getCourseTableList();
+    if (value.length == 0) {
+      MyToast.show(R.current.noAnyFavorite);
+      return;
+    }
+    showDialog(
+      useRootNavigator: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: double.minPositive,
+            child: ListView.builder(
+              itemCount: value.length,
+              shrinkWrap: true, //使清單最小化
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  child: FlatButton(
+                    child: Text(sprintf("%s %s %s-%s", [
+                      value[index].studentId,
+                      value[index].studentName,
+                      value[index].courseSemester.year,
+                      value[index].courseSemester.semester
+                    ])),
+                    onPressed: () {
+                      Model.instance.getCourseSetting().info =
+                          value[index]; //儲存課表
+                      Model.instance.saveCourseSetting();
+                      _showCourseTable(value[index]);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -203,11 +347,38 @@ class _CourseTablePageState extends State<CourseTablePage> {
       appBar: AppBar(
         title: Text(R.current.titleCourse),
         actions: [
+          (!isLoading && loadCourseNotice)
+              ? Padding(
+                  padding: EdgeInsets.all(10),
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.white,
+                    strokeWidth: 4,
+                  ),
+                )
+              : Container(),
+          (!isLoading &&
+                  Model.instance.getAccount() != courseTableData.studentId)
+              ? Padding(
+                  padding: EdgeInsets.only(
+                    right: 20,
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        favorite = !favorite;
+                      });
+                      _setFavorite(favorite);
+                    },
+                    child: Icon(Icons.favorite,
+                        color: (favorite) ? Colors.pinkAccent : Colors.white),
+                  ),
+                )
+              : Container(),
           Padding(
             padding: EdgeInsets.only(
               right: 20,
             ),
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
                 _getCourseTable(
                   semesterSetting: courseTableData?.courseSemester,
@@ -218,6 +389,27 @@ class _CourseTablePageState extends State<CourseTablePage> {
               child: Icon(EvaIcons.refreshOutline),
             ),
           ),
+          PopupMenuButton<int>(
+            onSelected: (result) {
+              setState(() {
+                _onPopupMenuSelect(result);
+              });
+            },
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem(
+                value: 0,
+                child: Text('查詢學分'),
+              ),
+              const PopupMenuItem(
+                value: 1,
+                child: Text('載入常用課表'),
+              ),
+              const PopupMenuItem(
+                value: 2,
+                child: Text("設為小工具課表"),
+              ),
+            ],
+          )
         ],
       ),
       body: Column(
@@ -225,6 +417,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         children: <Widget>[
           Container(
             height: studentIdHeight,
+            color: Theme.of(context).backgroundColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -273,9 +466,45 @@ class _CourseTablePageState extends State<CourseTablePage> {
             ),
           ),
           Expanded(
-            child: _buildListView(),
+            child: _buildListViewWithScreenshot(),
           ),
         ],
+      ),
+    );
+  }
+
+  final GlobalKey<OverRepaintBoundaryState> overRepaintKey = GlobalKey();
+
+  Widget _buildListViewWithScreenshot() {
+    return SingleChildScrollView(
+      child: OverRepaintBoundary(
+        key: overRepaintKey,
+        child: RepaintBoundary(
+          child: (isLoading)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  children: List.generate(
+                    1 + courseTableControl.getSectionIntList.length,
+                    (index) {
+                      Widget widget;
+                      widget = (index == 0)
+                          ? _buildDay()
+                          : _buildCourseTable(index - 1);
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 375),
+                        child: ScaleAnimation(
+                          child: FadeInAnimation(
+                            child: widget,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+        ),
       ),
     );
   }
@@ -324,6 +553,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     return Container(
+      color: Theme.of(context).backgroundColor.withAlpha(courseTableWithAlpha),
       height: dayHeight,
       child: Row(
         children: widgetList,
@@ -333,7 +563,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Widget _buildCourseTable(int index) {
     int section = courseTableControl.getSectionIntList[index];
-    Color color = (index % 2 == 1) ? Colors.white : Color(0xFFF8F8F8);
+    Color color;
+    color = (index % 2 == 1)
+        ? Theme.of(context).backgroundColor
+        : Theme.of(context).dividerColor;
+    color = color.withAlpha(courseTableWithAlpha);
     List<Widget> widgetList = List();
     widgetList.add(
       Container(
@@ -361,6 +595,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     child: AutoSizeText(
                       courseInfo.main.course.name,
                       style: TextStyle(
+                        color: Colors.black,
                         fontSize: 14,
                       ),
                       minFontSize: 10,
@@ -458,6 +693,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _showCourseTable(CourseTableJson courseTable) async {
+    if (courseTable == null) {
+      return;
+    }
+    getCourseNotice(); //查詢訂閱的課程是否有公告
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
     _unFocusStudentInput();
@@ -469,5 +708,34 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       isLoading = false;
     });
+    favorite = (Model.instance.getCourseTable(
+            courseTable.studentId, courseTable.courseSemester) !=
+        null);
+    if (favorite) {
+      Model.instance.addCourseTable(courseTableData);
+    }
+  }
+
+  static const platform =
+      const MethodChannel('club.ntut.npc.tat.update.weight');
+
+  Future screenshot() async {
+    Directory directory = await getApplicationSupportDirectory();
+    String path = directory.path;
+    Log.d(path);
+    RenderRepaintBoundary boundary =
+        overRepaintKey.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage(pixelRatio: 2);
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    File imgFile = new File('$path/course_weight.png');
+    await imgFile.writeAsBytes(pngBytes);
+    final bool result = await platform.invokeMethod('update_weight');
+    Log.d("complete $result");
+    if (result) {
+      MyToast.show("設定完成");
+    } else {
+      MyToast.show("設定完成，請重新添加小工具");
+    }
   }
 }

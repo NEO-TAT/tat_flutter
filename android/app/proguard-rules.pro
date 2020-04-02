@@ -5,6 +5,8 @@
 -keep class io.flutter.view.**  { *; }
 -keep class io.flutter.**  { *; }
 -keep class io.flutter.plugins.**  { *; }
+-keep class tv.danmaku.ijk.media.player.** {*;}
+
 -dontwarn io.flutter.embedding.**
 
 ## Gson rules

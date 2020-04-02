@@ -36,7 +36,7 @@ GraduationInformationJson _$GraduationInformationJsonFromJson(
         (json['courseTypeMinCredit'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as int),
     ),
-    outerDepartmentMaxCredit: json['outerDepartmentMacCredit'] as int,
+    outerDepartmentMaxCredit: json['outerDepartmentMaxCredit'] as int,
     selectYear: json['selectYear'] as String,
     selectDivision: json['selectDivision'] as String,
     selectDepartment: json['selectDepartment'] as String,
@@ -50,7 +50,7 @@ Map<String, dynamic> _$GraduationInformationJsonToJson(
       'selectDivision': instance.selectDivision,
       'selectDepartment': instance.selectDepartment,
       'lowCredit': instance.lowCredit,
-      'outerDepartmentMacCredit': instance.outerDepartmentMaxCredit,
+      'outerDepartmentMaxCredit': instance.outerDepartmentMaxCredit,
       'courseTypeMinCredit': instance.courseTypeMinCredit,
     };
 

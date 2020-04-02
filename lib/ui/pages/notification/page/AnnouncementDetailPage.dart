@@ -5,6 +5,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -41,10 +42,9 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Colors.black54,
+                color: Theme.of(context).backgroundColor,
               )
             ],
           ),
@@ -88,6 +88,7 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
   Widget _showHtmlWidget() {
     return HtmlWidget(
       widget.data.detail,
+      hyperlinkColor: Constants.hyperlinkColor,
       onTapUrl: (url) {
         onUrlTap(url);
       },

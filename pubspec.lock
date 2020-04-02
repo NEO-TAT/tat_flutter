@@ -211,13 +211,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  easy_dialog:
-    dependency: "direct main"
-    description:
-      name: easy_dialog
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.5"
   eva_icons_flutter:
     dependency: "direct main"
     description:
@@ -335,6 +328,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
+  flutter_ijkplayer:
+    dependency: "direct main"
+    description:
+      name: flutter_ijkplayer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.5+1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -348,7 +348,7 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.2"
+    version: "1.3.0"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
@@ -391,7 +391,7 @@ packages:
       name: flutter_webview_plugin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.10+1"
+    version: "0.3.10+2"
   flutter_widget_from_html_core:
     dependency: "direct main"
     description:
@@ -454,7 +454,7 @@ packages:
       name: http_parser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.3"
+    version: "3.1.4"
   image:
     dependency: transitive
     description:
@@ -769,7 +769,7 @@ packages:
       name: simple_animations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.9"
+    version: "1.3.11"
   simple_gesture_detector:
     dependency: transitive
     description:

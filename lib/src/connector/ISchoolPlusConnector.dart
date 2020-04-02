@@ -110,7 +110,10 @@ class ISchoolPlusConnector {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
         "apOu": "ischool_plus_",
         "sso": "true",
-        "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
+        "datetime1": DateTime
+            .now()
+            .millisecondsSinceEpoch
+            .toString()
       };
       parameter = ConnectorParameter("https://nportal.ntut.edu.tw/ssoIndex.do");
       parameter.data = data;
@@ -124,7 +127,7 @@ class ISchoolPlusConnector {
         data[name] = value;
       }
       String jumpUrl =
-          tagNode.getElementsByTagName("form")[0].attributes["action"];
+      tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
@@ -279,10 +282,10 @@ class ISchoolPlusConnector {
         bool pass = (matches == null)
             ? false
             : (matches.groupCount == null)
-                ? false
-                : matches.group(1).toLowerCase().contains("http")
-                    ? true
-                    : false;
+            ? false
+            : matches.group(1).toLowerCase().contains("http")
+            ? true
+            : false;
         if (pass) {
           //已經是完整連結
           return matches.group(1);
@@ -297,8 +300,7 @@ class ISchoolPlusConnector {
           } else {
             exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
             matches = exp.firstMatch(result);
-            url =
-                _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
+            url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
             result = await RequestsConnector.getDataByGet(parameter);
             exp = new RegExp("DEFAULT_URL.+'(?<url>.+)'"); //取的PDF真實下載位置
@@ -322,6 +324,8 @@ class ISchoolPlusConnector {
     return null;
   }
 
+  static String bid;
+
   static Future<List<ISchoolPlusAnnouncementJson>> getCourseAnnouncement(
       String courseId) async {
     String result;
@@ -343,12 +347,20 @@ class ISchoolPlusConnector {
       parameter.data = data;
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
+      bid = tagNode
+          .getElementById("bid")
+          .attributes["value"];
+
       node = tagNode.getElementById("formSearch");
       nodes = node.getElementsByTagName("input");
       String selectPage =
-          tagNode.getElementById("selectPage").attributes['value'];
+      tagNode
+          .getElementById("selectPage")
+          .attributes['value'];
       String inputPerPage =
-          tagNode.getElementById("inputPerPage").attributes['value'];
+      tagNode
+          .getElementById("inputPerPage")
+          .attributes['value'];
       data = {
         "token": "",
         "bid": "",
@@ -372,14 +384,18 @@ class ISchoolPlusConnector {
       Map<String, dynamic> jsonData = Map();
       result = HtmlUtils.clean(result);
       jsonData = json.decode(result)['data'];
-      int totalRows = int.parse( json.decode(result)['total_rows'] );
-      if( totalRows > 0 ){
+      int totalRows = int.parse(json.decode(result)['total_rows']);
+      if (totalRows > 0) {
         for (String keyName in json.decode(result)['data'].keys.toList()) {
           ISchoolPlusAnnouncementJson courseInfo =
           ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
           courseInfo.token = data['token'];
-          courseInfo.bid = keyName.split("|").first;
-          courseInfo.nid = keyName.split("|").last;
+          courseInfo.bid = keyName
+              .split("|")
+              .first;
+          courseInfo.nid = keyName
+              .split("|")
+              .last;
           announcementList.add(courseInfo);
         }
       }
@@ -414,27 +430,39 @@ class ISchoolPlusConnector {
       parameter.data = data;
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
-      node = tagNode.getElementsByClassName("main node-info").first;
+      node = tagNode
+          .getElementsByClassName("main node-info")
+          .first;
       Map detail = Map();
 
       String title = node.attributes["data-title"];
-      node = tagNode.getElementsByClassName("author-name").first;
+      node = tagNode
+          .getElementsByClassName("author-name")
+          .first;
       String sender = node.text;
-      node = tagNode.getElementsByClassName("post-time").first;
+      node = tagNode
+          .getElementsByClassName("post-time")
+          .first;
       String postTime = node.text;
-      node = tagNode.getElementsByClassName("bottom-tmp").first;
-      node = node.getElementsByClassName("content").first;
+      node = tagNode
+          .getElementsByClassName("bottom-tmp")
+          .first;
+      node = node
+          .getElementsByClassName("content")
+          .first;
       String body = node.innerHtml;
-      node = tagNode.getElementsByClassName("bottom-tmp").first;
+      node = tagNode
+          .getElementsByClassName("bottom-tmp")
+          .first;
       nodes = node.getElementsByClassName("file");
       Map<String, String> fileMap = Map(); // name , url
-      if( nodes.length >= 1){
+      if (nodes.length >= 1) {
         node = nodes.first;
         nodes = node.getElementsByTagName("a");
         for (html.Element node in nodes) {
           String href = node.attributes["href"];
-          if( href[0] == '/' ){
-            href = href.substring(1,href.length);
+          if (href[0] == '/') {
+            href = href.substring(1, href.length);
           }
           fileMap[node.text] = _iSchoolPlusUrl + href;
         }
@@ -450,6 +478,113 @@ class ISchoolPlusConnector {
       Log.e(e.toString());
       return null;
     }
+  }
+
+  static Future<bool> courseSubscribe(String bid,
+      bool subscribe) async {
+    ConnectorParameter parameter;
+    html.Document tagNode;
+    String title;
+    String result;
+    try {
+      parameter =
+          ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
+      parameter.data = {"bid": bid};
+      int time = 0;
+      do {
+        result = await RequestsConnector.getDataByPost(parameter);
+        tagNode = html.parse(result);
+        title = tagNode
+            .getElementsByTagName("title")
+            .first
+            .text;
+        Log.d(title);
+        time++;
+      } while (title.contains("取消") == subscribe && time < 2);
+      if (time >= 2) {
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      Log.e(e.toString());
+      return false;
+    }
+  }
+
+
+  static Future<List<String>> getSubscribeNotice() async {
+    ConnectorParameter parameter;
+    html.Document tagNode;
+    html.Element node;
+    List<html.Element> nodes;
+    String result;
+    List<String> courseNameList = List();
+    try {
+      parameter = ConnectorParameter(
+          "https://istudy.ntut.edu.tw/learn/my_forum.php");
+      result = await RequestsConnector.getDataByPost(parameter);
+      tagNode = html.parse(result);
+      nodes = tagNode.getElementsByTagName("tbody");
+      if( nodes.length > 1 ){
+        node = nodes[1];
+      }else{
+        return null;  //代表無公告
+      }
+      nodes = node.getElementsByTagName("tr");
+      for(int i = 0 ; i < nodes.length ;i++){
+        node = nodes[i];
+        String courseName = node.getElementsByTagName("td")[1].text.split("_")[1];
+        courseNameList.add(courseName);
+      }
+      return courseNameList;
+    } catch (e) {
+      Log.e( e.toString() );
+      return null;
+    }
+  }
+
+  static Future<bool> getCourseSubscribe(String bid) async {
+    ConnectorParameter parameter;
+    html.Document tagNode;
+    String title;
+    String result;
+    try {
+      parameter =
+          ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
+      parameter.data = {"bid": bid};
+      await RequestsConnector.getDataByPost(parameter);
+      result = await RequestsConnector.getDataByPost(parameter);
+      tagNode = html.parse(result);
+      title = tagNode
+          .getElementsByTagName("title")
+          .first
+          .text;
+      return !title.contains("取消");
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<String> getBid(String courseId) async {
+    /*
+    ConnectorParameter parameter;
+    html.Document tagNode;
+    String result;
+    try {
+      await _selectCourse(courseId);
+      parameter = ConnectorParameter(
+          "https://istudy.ntut.edu.tw/forum/m_node_list.php");
+      result = await RequestsConnector.getDataByPost(parameter);
+      tagNode = html.parse(result);
+      return tagNode
+          .getElementById("bid")
+          .attributes["value"];
+    } catch (e) {
+      throw e;
+    }
+     */
+    return bid;
   }
 
   static Future<void> _selectCourse(String courseId) async {
@@ -468,7 +603,9 @@ class ISchoolPlusConnector {
       String courseValue;
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
-        String name = node.text.split("_").last;
+        String name = node.text
+            .split("_")
+            .last;
         if (name == courseId) {
           courseValue = node.attributes["value"];
           break;
@@ -499,12 +636,19 @@ class ISchoolPlusConnector {
     Log.d("ISchoolPlus CheckLogin");
     ConnectorParameter parameter;
     http.Response response;
+    String result;
     _isLogin = false;
     try {
       parameter = ConnectorParameter(_checkLoginUrl);
-      await RequestsConnector.getDataByPostResponse(parameter).then((value) {
-        response = value.rawResponse;
+      await RequestsConnector.getDataByGetResponse(parameter).then((value) {
+        try {
+          response = value.rawResponse;
+        } catch (e) {}
+        result = value.content().toLowerCase();
       });
+      if (result.contains("connect lost") || result.contains("location.href")) {
+        return false;
+      }
       /*
       requests.Response result =  await RequestsConnector.getDataByPostResponse(parameter);
       Log.d( result.rawResponse.statusCode.toString() );

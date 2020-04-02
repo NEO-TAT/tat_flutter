@@ -293,7 +293,6 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     width = width * 0.8;
     return Container(
       width: width,
-      color: Colors.white,
       padding: EdgeInsets.all(10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
