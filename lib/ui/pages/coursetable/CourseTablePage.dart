@@ -45,6 +45,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double courseHeight = 60;
   static double sectionWidth = 20;
   static int courseTableWithAlpha = 0xDF;
+  static int showCourseTableNum = 9;
   CourseTableControl courseTableControl = CourseTableControl();
   bool favorite = false;
   bool loadCourseNotice = true;
@@ -172,7 +173,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     courseHeight = (renderObject.semanticBounds.size.height -
             studentIdHeight -
             dayHeight) /
-        9; //計算高度
+        showCourseTableNum; //計算高度
     CourseTableJson courseTable = Model.instance.getCourseSetting().info;
     if (courseTable.isEmpty) {
       _getCourseTable();
@@ -190,10 +191,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
       {SemesterJson semesterSetting,
       String studentId,
       bool refresh: false}) async {
-    studentId = studentId.replaceAll(" ", "");
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.getUserData();
     studentId = studentId ?? userData.account;
+    studentId = studentId.replaceAll(" ", "");
     if (courseTableData?.studentId != studentId) {
       Model.instance.clearSemesterJsonList(); //需重設因為更換了studentId
     }
@@ -481,8 +482,24 @@ class _CourseTablePageState extends State<CourseTablePage> {
         key: overRepaintKey,
         child: RepaintBoundary(
           child: (isLoading)
-              ? Center(
-                  child: CircularProgressIndicator(),
+              ? Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          //makes the red row full width
+                          child: Container(
+                            height: courseHeight * showCourseTableNum,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 )
               : Column(
                   children: List.generate(
