@@ -264,6 +264,7 @@ class _SettingPageState extends State<SettingPage>
       ),
       onTap: () async {
         Directory newDirectory = await DirectoryPicker.pick(
+          allowFolderCreation: true,
           context: context,
           rootDirectory: Directory(downloadPath),
         );
