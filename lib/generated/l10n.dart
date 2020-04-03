@@ -963,6 +963,33 @@ class S {
     );
   }
 
+  String get pullUpLoad {
+    return Intl.message(
+      'Pull up load',
+      name: 'pullUpLoad',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loadFailed {
+    return Intl.message(
+      'Load Failed!Click retry!',
+      name: 'loadFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ReleaseLoadMore {
+    return Intl.message(
+      'release to load more',
+      name: 'ReleaseLoadMore',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get pullAgainToUpdate {
     return Intl.message(
       'Pull again to update',

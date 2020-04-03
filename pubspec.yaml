@@ -46,7 +46,7 @@ dependencies:
   intl: ^0.16.0    #DateTime to String
   package_info: ^0.4.0+16  #檢測app版本用於檢查更新
   #----------html viewer----------#
-  flutter_html: ^0.11.1
+  #flutter_html: ^0.11.1
   flutter_widget_from_html_core: ^0.3.2+2
   #----------animation----------#
   page_transition: ^1.1.5                #頁面切換動畫

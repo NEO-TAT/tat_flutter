@@ -8,7 +8,6 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
