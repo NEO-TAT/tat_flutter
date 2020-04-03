@@ -115,7 +115,7 @@ class _SettingPageState extends State<SettingPage>
                   int select = it.toInt();
                   if (selectLang == select) {
                     return;
-                  }else{
+                  } else {
                     selectLang = select;
                   }
                   print(langMap[selectLang].toString());
@@ -136,6 +136,11 @@ class _SettingPageState extends State<SettingPage>
                     elevation: 10,
                     child: Container(
                       padding: EdgeInsets.all(5),
+                      child: Icon(
+                        Icons.adjust,
+                        size: 10,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
