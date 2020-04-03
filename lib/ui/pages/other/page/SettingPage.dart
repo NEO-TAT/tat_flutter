@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +61,7 @@ class _SettingPageState extends State<SettingPage>
             _buildFocusLoginSetting(),
             _buildAutoCheckAppVersionSetting(),
             _buildDarkModeSetting(),
-            _buildFolderPathSetting(),
+            if (Platform.isAndroid) _buildFolderPathSetting(),
           ],
         ),
       ),
@@ -260,7 +262,18 @@ class _SettingPageState extends State<SettingPage>
           ],
         ),
       ),
-      onTap: () {},
+      onTap: () async {
+        Directory newDirectory = await DirectoryPicker.pick(
+          context: context,
+          rootDirectory: Directory(downloadPath),
+        );
+        FileStore.setFilePath(newDirectory).then((value) {
+          if (value) {
+            downloadPath = newDirectory.path;
+            setState(() {});
+          }
+        });
+      },
     );
   }
 }
