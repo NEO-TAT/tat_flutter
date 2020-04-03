@@ -220,5 +220,13 @@
   "createFolder": "創建資料夾",
   "createNewFolder": "創建新資料夾",
   "grantPermission": "授予權限",
-  "checkingPermission": "檢查權限"
+  "checkingPermission": "檢查權限",
+  "___________________GraduationPicker___________________": "註解",
+  "searching" : "查詢中...",
+  "searchingYear":"查詢學期中...",
+  "searchingDivision" : "查詢學制中...",
+  "searchingDepartment" : "查詢系所中...",
+  "searchingCreditInfo" : "查詢中學分資訊",
+  "graduationSetting":"畢業學分標準設定",
+  "save" : "儲存"
 }

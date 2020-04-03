@@ -2024,6 +2024,78 @@ class S {
       args: [],
     );
   }
+
+  String get ___________________GraduationPicker___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________GraduationPicker___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searching {
+    return Intl.message(
+      'Searching',
+      name: 'searching',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingYear {
+    return Intl.message(
+      'Searching year',
+      name: 'searchingYear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingDivision {
+    return Intl.message(
+      'Searching division',
+      name: 'searchingDivision',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingDepartment {
+    return Intl.message(
+      'Searching department',
+      name: 'searchingDepartment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingCreditInfo {
+    return Intl.message(
+      'Searching credit',
+      name: 'searchingCreditInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get graduationSetting {
+    return Intl.message(
+      'Graduation Credit Standard Setting',
+      name: 'graduationSetting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

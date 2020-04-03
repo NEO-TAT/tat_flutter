@@ -220,5 +220,13 @@
   "createFolder": "Create Folder",
   "createNewFolder": "Create New Folder",
   "grantPermission": "Grant Permission",
-  "checkingPermission": "Checking permission"
+  "checkingPermission": "Checking permission",
+  "___________________GraduationPicker___________________": "註解",
+  "searching" : "Searching",
+  "searchingYear":"Searching year",
+  "searchingDivision" : "Searching division",
+  "searchingDepartment" : "Searching department",
+  "searchingCreditInfo" : "Searching credit",
+  "graduationSetting": "Graduation Credit Standard Setting",
+  "save" : "Save"
 }
