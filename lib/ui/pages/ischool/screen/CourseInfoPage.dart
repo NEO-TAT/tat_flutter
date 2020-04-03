@@ -292,7 +292,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
           ),
           Expanded(
             child: Text(
-              classmate.studentName,
+              classmate.getName(),
               textAlign: TextAlign.center,
             ),
           ),

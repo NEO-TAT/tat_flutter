@@ -83,7 +83,7 @@ class S {
 
   String get password {
     return Intl.message(
-      'password',
+      'Password',
       name: 'password',
       desc: '',
       args: [],
@@ -92,7 +92,7 @@ class S {
 
   String get account {
     return Intl.message(
-      'account',
+      'Account',
       name: 'account',
       desc: '',
       args: [],
@@ -101,7 +101,7 @@ class S {
 
   String get warning {
     return Intl.message(
-      'warning',
+      'Warning',
       name: 'warning',
       desc: '',
       args: [],
@@ -110,7 +110,7 @@ class S {
 
   String get sure {
     return Intl.message(
-      'sure',
+      'Sure',
       name: 'sure',
       desc: '',
       args: [],
@@ -119,7 +119,7 @@ class S {
 
   String get cancel {
     return Intl.message(
-      'cancel',
+      'Cancel',
       name: 'cancel',
       desc: '',
       args: [],
@@ -128,7 +128,7 @@ class S {
 
   String get update {
     return Intl.message(
-      'update',
+      'Update',
       name: 'update',
       desc: '',
       args: [],
@@ -146,7 +146,7 @@ class S {
 
   String get restart {
     return Intl.message(
-      'restart',
+      'Restart',
       name: 'restart',
       desc: '',
       args: [],
@@ -173,7 +173,7 @@ class S {
 
   String get downloadError {
     return Intl.message(
-      ' Download Error',
+      ' Download error',
       name: 'downloadError',
       desc: '',
       args: [],
@@ -182,7 +182,7 @@ class S {
 
   String get isALink {
     return Intl.message(
-      'is a Link',
+      'Is a link',
       name: 'isALink',
       desc: '',
       args: [],
@@ -362,7 +362,7 @@ class S {
 
   String get loginISchoolPlusError {
     return Intl.message(
-      'Login to ISchool Plus Error',
+      'Login to ISchool Plus error',
       name: 'loginISchoolPlusError',
       desc: '',
       args: [],
@@ -443,7 +443,7 @@ class S {
 
   String get loginCourse {
     return Intl.message(
-      'Login Course System...',
+      'Login course system...',
       name: 'loginCourse',
       desc: '',
       args: [],
@@ -452,7 +452,7 @@ class S {
 
   String get loginCourseError {
     return Intl.message(
-      'Login Course System Error',
+      'Login course system error',
       name: 'loginCourseError',
       desc: '',
       args: [],
@@ -605,7 +605,7 @@ class S {
 
   String get getCalendar {
     return Intl.message(
-      'Getting Calendar...',
+      'Getting calendar...',
       name: 'getCalendar',
       desc: '',
       args: [],
@@ -614,7 +614,7 @@ class S {
 
   String get getCalendarError {
     return Intl.message(
-      'Getting Calendar Error',
+      'Getting calendar error',
       name: 'getCalendarError',
       desc: '',
       args: [],
@@ -821,7 +821,7 @@ class S {
 
   String get noAnyFavorite {
     return Intl.message(
-      'no any favorite',
+      'No any favorite',
       name: 'noAnyFavorite',
       desc: '',
       args: [],
@@ -857,7 +857,7 @@ class S {
 
   String get searchCredit {
     return Intl.message(
-      'Search Credit',
+      'Search credit',
       name: 'searchCredit',
       desc: '',
       args: [],
@@ -938,7 +938,7 @@ class S {
 
   String get renameItem {
     return Intl.message(
-      'Rename Item',
+      'Rename item',
       name: 'renameItem',
       desc: '',
       args: [],
@@ -974,7 +974,7 @@ class S {
 
   String get loadFailed {
     return Intl.message(
-      'Load Failed!Click retry!',
+      'Load Failed! Click retry!',
       name: 'loadFailed',
       desc: '',
       args: [],
@@ -1145,7 +1145,7 @@ class S {
 
   String get creditSearch {
     return Intl.message(
-      'Credit Search...',
+      'Credit search...',
       name: 'creditSearch',
       desc: '',
       args: [],
@@ -1424,7 +1424,7 @@ class S {
 
   String get notSupport {
     return Intl.message(
-      'not Support',
+      'Not support',
       name: 'notSupport',
       desc: '',
       args: [],
@@ -1541,7 +1541,7 @@ class S {
 
   String get checkVersion {
     return Intl.message(
-      'Check Version',
+      'Check version',
       name: 'checkVersion',
       desc: '',
       args: [],
@@ -1550,7 +1550,7 @@ class S {
 
   String get checkingVersion {
     return Intl.message(
-      'Checking Version...',
+      'Checking version...',
       name: 'checkingVersion',
       desc: '',
       args: [],
@@ -1568,7 +1568,7 @@ class S {
 
   String get versionInfo {
     return Intl.message(
-      'Version Info',
+      'Version info',
       name: 'versionInfo',
       desc: '',
       args: [],
@@ -1811,7 +1811,7 @@ class S {
 
   String get semesterRanking {
     return Intl.message(
-      'Semester Ranking',
+      'Semester ranking',
       name: 'semesterRanking',
       desc: '',
       args: [],
@@ -2000,7 +2000,7 @@ class S {
 
   String get createNewFolder {
     return Intl.message(
-      'Create New Folder',
+      'Create New folder',
       name: 'createNewFolder',
       desc: '',
       args: [],
@@ -2009,7 +2009,7 @@ class S {
 
   String get grantPermission {
     return Intl.message(
-      'Grant Permission',
+      'Grant permission',
       name: 'grantPermission',
       desc: '',
       args: [],
@@ -2081,7 +2081,7 @@ class S {
 
   String get graduationSetting {
     return Intl.message(
-      'Graduation Credit Standard Setting',
+      'Graduation credit standard setting',
       name: 'graduationSetting',
       desc: '',
       args: [],

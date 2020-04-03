@@ -1,3 +1,4 @@
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
@@ -282,6 +283,16 @@ class ClassmateJson {
           href,
           isSelect.toString()
         ]);
+  }
+
+  String getName() {
+    String name;
+    if (LanguageUtil.getLangIndex() == LangEnum.en) {
+      name = studentEnglishName;
+    }
+    name = name ?? studentName;
+    name = (name.contains(RegExp(r"\w"))) ? name : studentName;
+    return name;
   }
 
   factory ClassmateJson.fromJson(Map<String, dynamic> json) =>

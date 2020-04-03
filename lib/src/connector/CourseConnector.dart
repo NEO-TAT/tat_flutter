@@ -238,8 +238,16 @@ class CourseConnector {
       parameter.charsetName = 'big5';
       Response response = await Connector.getDataByPostResponse(parameter);
       tagNode = parse(response.toString());
-      node = tagNode.getElementsByTagName("table")[1];
-      courseNodes = node.getElementsByTagName("tr");
+      nodes = tagNode.getElementsByTagName("table");
+      courseNodes = nodes[1].getElementsByTagName("tr");
+      String studentName;
+      try {
+        studentName = strQ2B(nodes[0].getElementsByTagName("td")[4].text).replaceAll(RegExp(r"[\n| ]"), "");
+      } catch (e) {
+        Log.e(e.toString());
+        studentName = "";
+      }
+      Model.instance.setTempData("studentName", studentName);
 
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 1; i < courseNodes.length - 1; i++) {
@@ -250,7 +258,7 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        courseMain.id = nodesOne[0].text.replaceAll(RegExp(r"[\n| ]"), "");
+        courseMain.id = strQ2B(nodesOne[0].text).replaceAll(RegExp(r"[\n| ]"), "");
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.length >= 1) {
