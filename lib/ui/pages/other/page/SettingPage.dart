@@ -5,8 +5,8 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:provider/provider.dart';
-import 'package:step_slider/step_slider.dart';
 
 class SettingPage extends StatefulWidget {
   final PageController pageController;
@@ -18,10 +18,12 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  Map<double, String> langMap = {0: "en", 1: "zh"};
+  Map<int, String> langMap = {LangEnum.en.index: "en", LangEnum.zh.index: "zh"};
+  int selectLang;
 
   @override
   void initState() {
+    selectLang = LanguageUtil.getLangIndex().index;
     super.initState();
   }
 
@@ -70,24 +72,38 @@ class _SettingPageState extends State<SettingPage> {
                           ],
                         ),
                       ),
-                      StepSlider(
-                        min: 0.0,
+                      FlutterSlider(
+                        values: [selectLang.toDouble()],
                         max: 1.0,
-                        animCurve: Curves.fastLinearToSlowEaseIn,
-                        animDuration: const Duration(milliseconds: 500),
-                        steps: Set<double>()..add(0)..add(1),
-                        initialStep:
-                            LanguageUtil.getLangIndex().index.toDouble(),
-                        snapMode: SnapMode.value(10),
-                        hardSnap: true,
-                        onStepChanged: (it) {
-                          LanguageUtil.setLang(langMap[it]).then((_) {
+                        min: 0.0,
+                        step: 1.0,
+                        onDragCompleted: (handlerIndex, it, _) {
+                          selectLang = it.toInt();
+                          print(langMap[selectLang].toString());
+                          LanguageUtil.setLang(langMap[selectLang]).then((_) {
                             widget.pageController.jumpToPage(0);
                             Navigator.of(context).pop();
                           });
+                          setState(() {});
                         },
-                        // ... slider's other args
-                      ),
+                        tooltip: FlutterSliderTooltip(
+                          disabled: true,
+                        ),
+                        handler: FlutterSliderHandler(
+                          decoration: BoxDecoration(),
+                          child: Material(
+                            type: MaterialType.circle,
+                            color: Colors.white,
+                            elevation: 10,
+                            child: Container(
+                                padding: EdgeInsets.all(5),
+                                child: Icon(
+                                  Icons.adjust,
+                                  size: 10,
+                                )),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -117,7 +133,6 @@ class _SettingPageState extends State<SettingPage> {
               },
               activeColor: Theme.of(context).accentColor,
             ),
-
             SwitchListTile.adaptive(
               contentPadding: EdgeInsets.all(0),
               title: Column(
@@ -138,7 +153,6 @@ class _SettingPageState extends State<SettingPage> {
               },
               activeColor: Theme.of(context).accentColor,
             ),
-
             MediaQuery.of(context).platformBrightness !=
                     Constants.darkTheme.brightness
                 ? SwitchListTile.adaptive(
