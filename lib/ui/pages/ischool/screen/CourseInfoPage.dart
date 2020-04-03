@@ -299,7 +299,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
           ),
           Expanded(
             child: RaisedButton(
-              child: Text("查詢"),
+              child: Text(R.current.search),
               onPressed: () {
                 Navigator.of(context, rootNavigator: true)
                     .pop(classmate.studentId);

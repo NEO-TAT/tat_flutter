@@ -1467,6 +1467,24 @@ class S {
     );
   }
 
+  String get subscribe {
+    return Intl.message(
+      'Subscribe',
+      name: 'subscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',

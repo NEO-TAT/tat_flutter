@@ -159,6 +159,8 @@
   "searchSubscribe": "查詢訂閱...",
   "openSubscribe": "開啟訂閱",
   "closeSubscribe": "關閉訂閱",
+  "subscribe" : "訂閱",
+  "search" : "搜尋",
   "___________________FileStore___________________": "註解",
   "noPermission": "沒有權限",
   "___________________AboutPage___________________": "註解",

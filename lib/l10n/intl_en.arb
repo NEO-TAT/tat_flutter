@@ -159,6 +159,8 @@
   "searchSubscribe": "Search subscribe...",
   "openSubscribe": "Open subscribe",
   "closeSubscribe": "Close subscribe",
+  "subscribe" : "Subscribe",
+  "search" : "Search",
   "___________________FileStore___________________": "註解",
   "noPermission": "Permission denied",
   "___________________AboutPage___________________": "註解",
