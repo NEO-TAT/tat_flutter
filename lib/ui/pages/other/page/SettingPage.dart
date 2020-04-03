@@ -1,5 +1,7 @@
+import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/Constants.dart';
@@ -17,14 +19,29 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends State<SettingPage>
+    with AfterInitMixin<SettingPage> {
   Map<int, String> langMap = {LangEnum.en.index: "en", LangEnum.zh.index: "zh"};
   int selectLang;
+  String downloadPath;
 
   @override
   void initState() {
+    downloadPath = "";
     selectLang = LanguageUtil.getLangIndex().index;
     super.initState();
+  }
+
+  @override
+  void didInitState() {
+    _getDownloadPath();
+  }
+
+  void _getDownloadPath() async {
+    String path = await FileStore.findLocalPath(context);
+    setState(() {
+      downloadPath = path;
+    });
   }
 
   @override
@@ -42,11 +59,15 @@ class _SettingPageState extends State<SettingPage> {
             _buildFocusLoginSetting(),
             _buildAutoCheckAppVersionSetting(),
             _buildDarkModeSetting(),
+            _buildFolderPathSetting(),
           ],
         ),
       ),
     );
   }
+
+  final TextStyle textTitle = TextStyle(fontSize: 24);
+  final TextStyle textBody = TextStyle(fontSize: 16, color: Color(0xFF808080));
 
   Widget _buildLanguageSetting() {
     return Row(
@@ -56,11 +77,11 @@ class _SettingPageState extends State<SettingPage> {
           children: <Widget>[
             Text(
               R.current.languageSwitch,
-              style: TextStyle(fontSize: 24),
+              style: textTitle,
             ),
             Text(
               R.current.willRestart,
-              style: TextStyle(fontSize: 16, color: Color(0xFF808080)),
+              style: textBody,
             ),
           ],
         ),
@@ -130,11 +151,11 @@ class _SettingPageState extends State<SettingPage> {
         children: <Widget>[
           Text(
             R.current.focusLogin,
-            style: TextStyle(fontSize: 24),
+            style: textTitle,
           ),
           Text(
             R.current.focusLoginResult,
-            style: TextStyle(fontSize: 16, color: Color(0xFF808080)),
+            style: textBody,
           ),
         ],
       ),
@@ -157,7 +178,7 @@ class _SettingPageState extends State<SettingPage> {
         children: <Widget>[
           Text(
             R.current.autoAppCheck,
-            style: TextStyle(fontSize: 24),
+            style: textTitle,
           ),
         ],
       ),
@@ -181,7 +202,7 @@ class _SettingPageState extends State<SettingPage> {
               children: <Widget>[
                 Text(
                   R.current.darkMode,
-                  style: TextStyle(fontSize: 24),
+                  style: textTitle,
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 10),
@@ -207,5 +228,39 @@ class _SettingPageState extends State<SettingPage> {
             activeColor: Theme.of(context).accentColor,
           )
         : SizedBox();
+  }
+
+  Widget _buildFolderPathSetting() {
+    return InkWell(
+      child: Container(
+        padding: EdgeInsets.only(top: 10, bottom: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    "下載位置",
+                    style: textTitle,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    downloadPath,
+                    style: textBody,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      onTap: () {},
+    );
   }
 }
