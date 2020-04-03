@@ -200,7 +200,7 @@ class _NotificationPageState extends State<NotificationPage>
                 }
               },
               child: Slidable(
-                delegate: SlidableDrawerDelegate(),
+                actionPane: SlidableDrawerActionPane(),
                 actionExtentRatio: 0.25,
                 child: _buildListItem(
                   items[index],
