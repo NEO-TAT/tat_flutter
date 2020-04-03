@@ -112,7 +112,12 @@ class _SettingPageState extends State<SettingPage>
                 min: 0.0,
                 step: 1.0,
                 onDragCompleted: (handlerIndex, it, _) {
-                  selectLang = it.toInt();
+                  int select = it.toInt();
+                  if (selectLang == select) {
+                    return;
+                  }else{
+                    selectLang = select;
+                  }
                   print(langMap[selectLang].toString());
                   LanguageUtil.setLang(langMap[selectLang]).then((_) {
                     widget.pageController.jumpToPage(0);
@@ -130,11 +135,8 @@ class _SettingPageState extends State<SettingPage>
                     color: Colors.white,
                     elevation: 10,
                     child: Container(
-                        padding: EdgeInsets.all(5),
-                        child: Icon(
-                          Icons.adjust,
-                          size: 10,
-                        )),
+                      padding: EdgeInsets.all(5),
+                    ),
                   ),
                 ),
               )
