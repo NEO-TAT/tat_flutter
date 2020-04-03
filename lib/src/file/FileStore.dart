@@ -13,17 +13,23 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/util/PermissionsUtil.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FileStore {
+  static String storeKey = "downloadPath";
+
   static Future<String> findLocalPath(BuildContext context) async {
     bool checkPermission = await PermissionsUtil.check(context);
     if (!checkPermission) {
       MyToast.show(R.current.noPermission);
       return "";
     }
-    final directory = Theme.of(context).platform == TargetPlatform.android
-        ? await getExternalStorageDirectory()
-        : await getApplicationSupportDirectory();
+    Directory directory = await _getFilePath();
+    if (directory == null) {
+      directory = Theme.of(context).platform == TargetPlatform.android
+          ? await getExternalStorageDirectory()
+          : await getApplicationSupportDirectory();
+    }
     return directory.path;
   }
 
@@ -36,5 +42,25 @@ class FileStore {
       savedDir.create();
     }
     return savedDir.path;
+  }
+
+  static Future<bool> setFilePath(Directory directory) async {
+    if (directory != null) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString(storeKey, directory.path);
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  static Future<Directory> _getFilePath() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String path = pref.getString(storeKey);
+    if (path != null && path.isNotEmpty) {
+      return Directory(path);
+    } else {
+      return null;
+    }
   }
 }
