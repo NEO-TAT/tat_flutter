@@ -846,6 +846,42 @@ class S {
     );
   }
 
+  String get findNewMessage {
+    return Intl.message(
+      'Find new message',
+      name: 'findNewMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchCredit {
+    return Intl.message(
+      'Search Credit',
+      name: 'searchCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loadFavorite {
+    return Intl.message(
+      'Load favorite',
+      name: 'loadFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get setAsAndroidWeight {
+    return Intl.message(
+      'Set as android weight',
+      name: 'setAsAndroidWeight',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________NotificationPage___________________ {
     return Intl.message(
       '註解',

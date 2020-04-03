@@ -102,7 +102,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("發現新公告"),
+            title: Text(R.current.findNewMessage),
             content: Container(
               width: double.minPositive,
               child: ListView.builder(
@@ -119,7 +119,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                         if (courseInfo != null) {
                           _showCourseDetail(courseInfo);
                         } else {
-                          MyToast.show("不支持");
+                          MyToast.show(R.current.noSupport);
                           Navigator.of(context).pop();
                         }
                       },
@@ -145,7 +145,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       setState(() {
         loadCourseNotice = false;
       });
-    }catch(e){
+    } catch (e) {
       Log.d("setState() called after dispose()");
     }
   }
@@ -277,7 +277,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
   _onPopupMenuSelect(int value) async {
     switch (value) {
       case 0:
-        MyToast.show("學分:" + courseTableData.getTotalCredit().toString());
+        MyToast.show(sprintf("%s:%s",
+            [R.current.credit, courseTableData.getTotalCredit().toString()]));
         break;
       case 1:
         _loadFavorite();
@@ -401,17 +402,17 @@ class _CourseTablePageState extends State<CourseTablePage> {
               });
             },
             itemBuilder: (BuildContext context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 0,
-                child: Text('查詢學分'),
+                child: Text(R.current.searchCredit),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 1,
-                child: Text('載入常用課表'),
+                child: Text(R.current.loadFavorite),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 2,
-                child: Text("設為小工具課表"),
+                child: Text(R.current.setAsAndroidWeight),
               ),
             ],
           )
