@@ -13,13 +13,12 @@ class PermissionsUtil {
   static Future<bool> check(BuildContext context) async {
     // 先對所在平台進行判斷
     if (Theme.of(context).platform == TargetPlatform.android) {
-      PermissionStatus permission = await PermissionHandler()
-          .checkPermissionStatus(PermissionGroup.storage);
+      PermissionStatus permission = await Permission.storage.status;
       if (permission != PermissionStatus.granted) {
-        Map<PermissionGroup, PermissionStatus> permissions =
-            await PermissionHandler()
-                .requestPermissions([PermissionGroup.storage]);
-        if (permissions[PermissionGroup.storage] == PermissionStatus.granted) {
+        Map<Permission, PermissionStatus> permissions = await [
+          Permission.storage,
+        ].request();
+        if (permissions[Permission.location] == PermissionStatus.granted) {
           return true;
         }
       } else {
