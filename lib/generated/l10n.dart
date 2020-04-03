@@ -882,6 +882,78 @@ class S {
     );
   }
 
+  String get ___________________FileViewerPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________FileViewerPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get sortBy {
+    return Intl.message(
+      'Sort by',
+      name: 'sortBy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get nothingHere {
+    return Intl.message(
+      'There\'s nothing here',
+      name: 'nothingHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get cannotWrite {
+    return Intl.message(
+      'Cannot write to this Storage device!',
+      name: 'cannotWrite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get folderNameAlreadyExists {
+    return Intl.message(
+      'A Folder with that name already exists!',
+      name: 'folderNameAlreadyExists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get fileNameAlreadyExists {
+    return Intl.message(
+      'A File with that name already exists!',
+      name: 'fileNameAlreadyExists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get renameItem {
+    return Intl.message(
+      'Rename Item',
+      name: 'renameItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rename {
+    return Intl.message(
+      'Rename',
+      name: 'rename',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________NotificationPage___________________ {
     return Intl.message(
       '註解',
