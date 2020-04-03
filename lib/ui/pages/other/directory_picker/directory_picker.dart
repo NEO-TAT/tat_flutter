@@ -33,6 +33,7 @@ class DirectoryPicker {
     if (Platform.isAndroid) {
       Directory directory = await showDialog<Directory>(
           context: context,
+          useRootNavigator: false,
           barrierDismissible: barrierDismissible,
           builder: (BuildContext context) {
             return DirectoryPickerData(
