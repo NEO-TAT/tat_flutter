@@ -1251,6 +1251,15 @@ class S {
     );
   }
 
+  String get downloadPath {
+    return Intl.message(
+      'Download path',
+      name: 'downloadPath',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',

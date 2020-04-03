@@ -246,7 +246,7 @@ class _SettingPageState extends State<SettingPage>
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      "下載位置",
+                      R.current.downloadPath,
                       style: textTitle,
                     ),
                   ),

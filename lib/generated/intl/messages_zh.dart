@@ -96,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "downloadComplete" : MessageLookupByLibrary.simpleMessage("下載完成"),
     "downloadError" : MessageLookupByLibrary.simpleMessage("下載發生錯誤"),
     "downloadFile" : MessageLookupByLibrary.simpleMessage("下載檔案"),
+    "downloadPath" : MessageLookupByLibrary.simpleMessage("下載位置"),
     "downloadWillStart" : MessageLookupByLibrary.simpleMessage("下載準備開始"),
     "downloading" : MessageLookupByLibrary.simpleMessage("下載中..."),
     "failedCreateFolder" : MessageLookupByLibrary.simpleMessage("創建資料夾失敗"),
