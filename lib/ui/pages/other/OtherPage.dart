@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
@@ -73,9 +74,6 @@ class _OtherPageState extends State<OtherPage> {
     }
   ];
 
-  String formUrl =
-      "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
-
   @override
   void initState() {
     super.initState();
@@ -121,7 +119,7 @@ class _OtherPageState extends State<OtherPage> {
         Navigator.of(context).push(
           PageTransition(
             type: PageTransitionType.downToUp,
-            child: WebViewPluginPage(R.current.feedback, formUrl),
+            child: WebViewPluginPage(R.current.feedback, AppLink.feedback),
           ),
         );
         break;

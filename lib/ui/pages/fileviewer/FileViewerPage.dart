@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/providers/CoreProvider.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
@@ -220,7 +221,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                   getFiles();
                 });
               },
-              tooltip: "Sort by",
+              tooltip: R.current.sortBy,
               icon: Icon(
                 Icons.sort,
               ),
@@ -229,7 +230,7 @@ class _FileViewerPageState extends State<FileViewerPage>
         ),
         body: files.isEmpty
             ? Center(
-                child: Text("There's nothing here"),
+                child: Text(R.current.nothingHere),
               )
             : ListView.separated(
                 padding: EdgeInsets.only(left: 20),
@@ -251,8 +252,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                     .contains("Permission denied")) {
                                   Provider.of<CoreProvider>(context,
                                           listen: false)
-                                      .showToast(
-                                          "Cannot write to this Storage device!");
+                                      .showToast(R.current.cannotWrite);
                                 }
                               });
                               getFiles();
@@ -280,8 +280,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                     .contains("Permission denied")) {
                                   Provider.of<CoreProvider>(context,
                                           listen: false)
-                                      .showToast(
-                                          "Cannot write to this Storage device!");
+                                      .showToast(R.current.cannotWrite);
                                 }
                               });
                               getFiles();
@@ -329,7 +328,7 @@ class _FileViewerPageState extends State<FileViewerPage>
             children: <Widget>[
               SizedBox(height: 15),
               Text(
-                "Add New Folder",
+                R.current.createNewFolder,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -354,7 +353,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                       borderSide:
                           BorderSide(color: Theme.of(context).accentColor),
                       child: Text(
-                        "Cancel",
+                        R.current.cancel,
                         style: TextStyle(
                           color: Theme.of(context).accentColor,
                         ),
@@ -371,7 +370,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Text(
-                        "Create",
+                        R.current.createFolder,
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -386,14 +385,12 @@ class _FileViewerPageState extends State<FileViewerPage>
                               if (e.toString().contains("Permission denied")) {
                                 Provider.of<CoreProvider>(context,
                                         listen: false)
-                                    .showToast(
-                                        "Cannot write to this Storage  device!");
+                                    .showToast(R.current.cannotWrite);
                               }
                             });
                           } else {
                             Provider.of<CoreProvider>(context, listen: false)
-                                .showToast(
-                                    "A Folder with that name already exists!");
+                                .showToast(R.current.folderNameAlreadyExists);
                           }
                           Navigator.pop(context);
                           getFiles();
@@ -429,7 +426,7 @@ class _FileViewerPageState extends State<FileViewerPage>
             children: <Widget>[
               SizedBox(height: 15),
               Text(
-                "Rename Item",
+                R.current.renameItem,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -454,7 +451,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                       borderSide:
                           BorderSide(color: Theme.of(context).accentColor),
                       child: Text(
-                        "Cancel",
+                        R.current.cancel,
                         style: TextStyle(
                           color: Theme.of(context).accentColor,
                         ),
@@ -471,7 +468,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       child: Text(
-                        "Rename",
+                        R.current.rename,
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -494,14 +491,12 @@ class _FileViewerPageState extends State<FileViewerPage>
                                     .contains("Permission denied")) {
                                   Provider.of<CoreProvider>(context,
                                           listen: false)
-                                      .showToast(
-                                          "Cannot write to this device!");
+                                      .showToast(R.current.cannotWrite);
                                 }
                               });
                             } else {
                               Provider.of<CoreProvider>(context, listen: false)
-                                  .showToast(
-                                      "A File with that name already exists!");
+                                  .showToast(R.current.fileNameAlreadyExists);
                             }
                           } else {
                             if (Directory(path.replaceAll(
@@ -509,8 +504,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                     "${name.text}")
                                 .existsSync()) {
                               Provider.of<CoreProvider>(context, listen: false)
-                                  .showToast(
-                                      "A Folder with that name already exists!");
+                                  .showToast(R.current.folderNameAlreadyExists);
                             } else {
                               await Directory(path)
                                   .rename(path.replaceAll(
@@ -523,8 +517,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                     .contains("Permission denied")) {
                                   Provider.of<CoreProvider>(context,
                                           listen: false)
-                                      .showToast(
-                                          "Cannot write to this device!");
+                                      .showToast(R.current.cannotWrite);
                                 }
                               });
                             }

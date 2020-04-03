@@ -163,15 +163,15 @@ class _NotificationPageState extends State<NotificationPage>
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
             if (mode == LoadStatus.idle) {
-              body = Text("pull up load");
+              body = Text(R.current.pullUpLoad);
             } else if (mode == LoadStatus.loading) {
               body = CupertinoActivityIndicator();
             } else if (mode == LoadStatus.failed) {
-              body = Text("Load Failed!Click retry!");
+              body = Text(R.current.loadFailed);
             } else if (mode == LoadStatus.canLoading) {
-              body = Text("release to load more");
+              body = Text(R.current.ReleaseLoadMore);
             } else {
-              body = Text("No more Data");
+              body = Text(R.current.noMoreData);
             }
             return Container(
               height: 55.0,

@@ -11,8 +11,10 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/score/GraduationPicker.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -61,6 +63,42 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     if (courseScoreList != null) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
     }
+    TaskHandler.instance.addTask(TaskModelFunction(context,
+        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
+      MyProgressDialog.showProgressDialog(context, R.current.searchCredit);
+      List<CourseInfoJson> courseInfoList =
+          courseScoreCredit.getCourseInfoList();
+      int total = courseScoreCredit.getCourseInfoList().length;
+      for (int i = 0; i < total; i++) {
+        CourseInfoJson courseInfo = courseInfoList[i];
+        String courseId = courseInfo.courseId;
+        if (courseInfo.category.isEmpty) {
+          //沒有類別才尋找
+          var courseExtraInfo =
+              await CourseConnector.getCourseExtraInfo(courseId);
+          courseScoreCredit.getCourseByCourseId(courseId);
+          if (LanguageUtil.getLangIndex() == LangEnum.en) {
+            String name = await CourseConnector.getCourseENName(
+                courseExtraInfo.course.href);
+            name = name ?? courseInfo.name;
+            courseInfo.name = name;
+          }
+          courseInfo.category = courseExtraInfo.course.category;
+          courseInfo.openClass =
+              courseExtraInfo.course.openClass.replaceAll("\n", " ");
+          Log.d(courseInfo.openClass);
+        }
+      }
+      await MyProgressDialog.hideProgressDialog();
+      return true;
+    }, errorFunction: () async {
+      ErrorDialogParameter parameter = ErrorDialogParameter(
+        context: context,
+        desc: R.current.error,
+      );
+      ErrorDialog(parameter).show();
+    }, successFunction: () async {}));
+    await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = courseScoreList ?? List();
     _buildTabBar();
     setState(() {
@@ -79,34 +117,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   void _addSearchCourseTypeTask() async {
-    TaskHandler.instance.addTask(TaskModelFunction(context,
-        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
-      List<CourseInfoJson> courseInfoList =
-          courseScoreCredit.getCourseInfoList();
-      int total = courseScoreCredit.getCourseInfoList().length;
-      for (int i = 0; i < total; i++) {
-        CourseInfoJson courseInfo = courseInfoList[i];
-        String courseId = courseInfo.courseId;
-        if (courseInfo.category.isEmpty) {
-          //沒有類別才尋找
-          CourseConnector.getCourseExtraInfo(courseId).then((courseExtraInfo) {
-            courseScoreCredit.getCourseByCourseId(courseId);
-            courseInfo.category = courseExtraInfo.course.category;
-            courseInfo.openClass =
-                courseExtraInfo.course.openClass.replaceAll("\n", " ");
-            Log.d(courseInfo.openClass);
-          });
-        }
-      }
-      return true;
-    }, errorFunction: () async {
-      ErrorDialogParameter parameter = ErrorDialogParameter(
-        context: context,
-        desc: "錯誤",
-      );
-      ErrorDialog(parameter).show();
-    }, successFunction: () async {}));
-    await TaskHandler.instance.startTaskQueue(context);
     GraduationPicker picker = GraduationPicker(context);
     picker.show(_onSelectFinish);
     _buildTabBar();
@@ -138,7 +148,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       length: tabLabelList.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('成績查詢'),
+          title: Text(R.current.searchScore),
           actions: [
             if (courseScoreList.length > 0)
               PopupMenuButton<int>(
@@ -154,7 +164,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                   ),
                   PopupMenuItem(
                     value: 1,
-                    child: Text('計算學分'),
+                    child: Text(R.current.calculationCredit),
                   ),
                 ],
               ),
@@ -199,7 +209,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     tabChildList = List();
 
     if (courseScoreCredit.graduationInformation.isSelect) {
-      tabLabelList.add(_buildTabLabel("學分總覽"));
+      tabLabelList.add(_buildTabLabel(R.current.creditSummary));
       tabChildList.add(
         AnimationLimiter(
           child: Column(
@@ -286,16 +296,17 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     List<Widget> widgetList = List();
     GraduationInformationJson graduationInformation =
         courseScoreCredit.graduationInformation;
-    Widget widget = _buildTile(sprintf("學分總覽 %d/%d", [
+    Widget widget = _buildTile(sprintf("%s %d/%d", [
+      R.current.creditSummary,
       courseScoreCredit.getTotalCourseCredit(),
       graduationInformation.lowCredit
     ]));
-    widgetList.add(_buildType("○", "部訂共同必修"));
-    widgetList.add(_buildType("△", "校訂共同必修"));
-    widgetList.add(_buildType("☆", "共同選修"));
-    widgetList.add(_buildType("●", "部訂專業必修"));
-    widgetList.add(_buildType("▲", "校訂專業必修"));
-    widgetList.add(_buildType("★", "專業選修"));
+    widgetList.add(_buildType("○", R.current.compulsoryCompulsory));
+    widgetList.add(_buildType("△", R.current.revisedCommonCompulsory));
+    widgetList.add(_buildType("☆", R.current.jointElective));
+    widgetList.add(_buildType("●", R.current.compulsoryProfessional));
+    widgetList.add(_buildType("▲", R.current.compulsoryMajorRevision));
+    widgetList.add(_buildType("★", R.current.professionalElectives));
     return Container(
       child: AppExpansionTile(
         title: widget,
@@ -373,8 +384,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget =
-        _buildTile(sprintf("博雅總覽 實得核心:%d 實得選修:%d", [coreCredit, selectCredit]));
+    Widget titleWidget = _buildTile(sprintf("%s %s:%d %s:%d", [
+      R.current.generalLessonSummary,
+      R.current.takeCore,
+      coreCredit,
+      R.current.takeSelect,
+      selectCredit
+    ]));
     return Container(
       child: AppExpansionTile(
         title: titleWidget,
@@ -404,8 +420,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf(
-        "外系學分: %d/%d", [otherDepartmentCredit, otherDepartmentMaxCredit]));
+    Widget titleWidget = _buildTile(sprintf("%s: %d/%d", [
+      R.current.takeForeignDepartmentCredits,
+      otherDepartmentCredit,
+      otherDepartmentMaxCredit
+    ]));
     return Container(
       child: AppExpansionTile(
         title: titleWidget,
@@ -422,7 +441,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         children: <Widget>[
           Expanded(
             child: Text(
-              "此計算僅供參考，實際請以學校為主",
+              R.current.scoreCalculationWarring,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -461,7 +480,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   List<Widget> _buildCourseScores(SemesterCourseScoreJson courseScore) {
     List<CourseInfoJson> scoreList = courseScore.courseScoreList;
     return [
-      _buildTitle('各科成績'),
+      _buildTitle(R.current.resultsOfVariousSubjects),
       for (CourseInfoJson score in scoreList) _buildScoreItem(score),
     ];
   }
@@ -499,18 +518,22 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   List<Widget> _buildSemesterScore(SemesterCourseScoreJson courseScore) {
     return [
-      _buildTitle('學期成績'),
+      _buildTitle(R.current.semesterGrades),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            sprintf("總平均: %s", [courseScore.getAverageScoreString()]),
+            sprintf("%s: %s",
+                [R.current.totalAverage, courseScore.getAverageScoreString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
           ),
           Text(
-            sprintf("操行成績: %s", [courseScore.getPerformanceScoreString()]),
+            sprintf("%s: %s", [
+              R.current.performanceScores,
+              courseScore.getPerformanceScoreString()
+            ]),
             style: TextStyle(
               fontSize: 16.0,
             ),
@@ -524,13 +547,15 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            sprintf("修習學分: %s", [courseScore.getTotalCreditString()]),
+            sprintf("%s: %s",
+                [R.current.practiceCredit, courseScore.getTotalCreditString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
           ),
           Text(
-            sprintf("實得學分: %s", [courseScore.getTakeCreditString()]),
+            sprintf("%s: %s",
+                [R.current.creditsEarned, courseScore.getTakeCreditString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
@@ -548,17 +573,17 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ? [
             Container(
               child: Text(
-                "暫無排名資訊",
+                R.current.noRankInfo,
                 style: TextStyle(fontSize: 24),
               ),
             )
           ]
         : [
-            _buildRankItems(courseScore.now, "學期排名"),
+            _buildRankItems(courseScore.now, R.current.semesterRanking),
             SizedBox(
               height: 16,
             ),
-            _buildRankItems(courseScore.history, "歷屆排名"),
+            _buildRankItems(courseScore.history, R.current.previousRankings),
           ];
   }
 
@@ -583,25 +608,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       children: <Widget>[
         Expanded(
           child: AutoSizeText(
-            sprintf("排名: %s", [rankItem.rank.toString()]),
-            style: textStyle,
-            minFontSize: 10,
-            maxLines: 1,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Expanded(
-          child: AutoSizeText(
-            sprintf("總人數: %s", [rankItem.total.toString()]),
-            style: textStyle,
-            minFontSize: 10,
-            maxLines: 1,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Expanded(
-          child: AutoSizeText(
-            sprintf("百分比: %s %", [rankItem.percentage.toString()]),
+            sprintf("%s: %s    %s: %s    %s: %s% ", [
+              R.current.rank,
+              rankItem.rank.toString(),
+              R.current.totalPeople,
+              rankItem.total.toString(),
+              R.current.percentage,
+              rankItem.percentage.toString()
+            ]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,

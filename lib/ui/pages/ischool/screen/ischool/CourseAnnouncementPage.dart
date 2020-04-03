@@ -11,7 +11,6 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseAnnounceme
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CourseAnnouncementPage extends StatefulWidget {
@@ -107,19 +106,6 @@ class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
     } else {
       _launchURL(url);
     }
-  }
-
-  Widget _buildHtmlCourseAnnouncement(
-      CourseAnnouncementJson courseAnnouncement) {
-    return Html(
-      data: courseAnnouncement.detail,
-      //useRichText: false,
-      padding: EdgeInsets.all(8.0),
-      backgroundColor: Colors.white,
-      onLinkTap: (url) {
-        onUrlTap(url);
-      },
-    );
   }
 
   _launchURL(String url) async {

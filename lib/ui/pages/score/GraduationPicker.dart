@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -118,7 +119,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
       //如果沒有設定過才執行
       TaskHandler.instance.addTask(TaskModelFunction(context,
           require: [CheckCookiesTask.checkNTUTApp], taskFunction: () async {
-        MyProgressDialog.showProgressDialog(context, "查詢中...");
+        MyProgressDialog.showProgressDialog(context, R.current.searching);
         _presetDepartment = await NTUTAppConnector.getDepartment();
         MyProgressDialog.hideProgressDialog();
         if (_presetDepartment == null)
@@ -242,7 +243,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getYearList() async {
-    MyProgressDialog.showProgressDialog(context, "查詢學期中...");
+    MyProgressDialog.showProgressDialog(context, R.current.searchingYear);
     yearList = await CourseConnector.getYearList();
     //Log.d(yearList.toString());
     _selectedYear = yearList.first;
@@ -251,7 +252,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getDivisionList() async {
-    MyProgressDialog.showProgressDialog(context, "查詢學制中...");
+    MyProgressDialog.showProgressDialog(context, R.current.searchingDivision);
     String year = _selectedYear.split(" ")[1];
     divisionList = await CourseConnector.getDivisionList(year);
     //Log.d(divisionList.toString());
@@ -261,7 +262,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getDepartmentList() async {
-    MyProgressDialog.showProgressDialog(context, "查詢系所中...");
+    MyProgressDialog.showProgressDialog(context, R.current.searchingDepartment);
     Map<String, String> code = _selectedDivision["code"];
     departmentList = await CourseConnector.getDepartmentList(code);
     //Log.d(departmentList.toString());
@@ -271,12 +272,12 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getCreditInfo() async {
-    MyProgressDialog.showProgressDialog(context, "查詢中學分資訊...");
+    MyProgressDialog.showProgressDialog(context, R.current.searchingCreditInfo);
     Map code = _selectedDivision["code"];
     try {
       graduationInformation = await CourseConnector.getCreditInfo(
           code, _selectedDepartment["name"]);
-      if(graduationInformation != null){
+      if (graduationInformation != null) {
         graduationInformation.selectYear = _selectedYear;
         graduationInformation.selectDivision = _selectedDivision["name"];
         graduationInformation.selectDepartment = _selectedDepartment["name"];
@@ -300,7 +301,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
           Row(
             children: <Widget>[
               Text(
-                "畢業學分標準設定",
+                R.current.graduationSetting,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ],
@@ -362,13 +363,13 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   FlatButton(
-                    child: Text("取消"),
+                    child: Text(R.current.cancel),
                     onPressed: () {
                       _cancel();
                     },
                   ),
                   FlatButton(
-                    child: Text("儲存"),
+                    child: Text(R.current.save),
                     onPressed: () {
                       _save();
                     },

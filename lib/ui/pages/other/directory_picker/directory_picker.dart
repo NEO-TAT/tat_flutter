@@ -3,6 +3,7 @@ library directory_picker;
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/util/PermissionsUtil.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -118,7 +119,7 @@ class _DirectoryPickerDialogState extends State<_DirectoryPickerDialog>
             children: <Widget>[
               CircularProgressIndicator(),
               SizedBox(height: spacing),
-              Text('Checking permission', textAlign: TextAlign.center)
+              Text(R.current.checkingPermission, textAlign: TextAlign.center)
             ],
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -133,7 +134,7 @@ class _DirectoryPickerDialogState extends State<_DirectoryPickerDialog>
               Text(message, textAlign: TextAlign.center),
               SizedBox(height: spacing),
               RaisedButton(
-                  child: Text('Grant Permission'),
+                  child: Text(R.current.grantPermission),
                   color: theme.primaryColor,
                   onPressed: _requestPermission)
             ],
