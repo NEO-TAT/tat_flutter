@@ -127,6 +127,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "getISchoolPlusCourseFileError" : MessageLookupByLibrary.simpleMessage("Get course files error"),
     "getScoreRank" : MessageLookupByLibrary.simpleMessage("Getting grade..."),
     "getScoreRankError" : MessageLookupByLibrary.simpleMessage("Getting grade error"),
+    "grantPermission" : MessageLookupByLibrary.simpleMessage("Grant Permission"),
     "historicalDimension" : MessageLookupByLibrary.simpleMessage("Historical dimension"),
     "instructor" : MessageLookupByLibrary.simpleMessage("Instructor"),
     "isALink" : MessageLookupByLibrary.simpleMessage("is a Link"),

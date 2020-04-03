@@ -171,5 +171,7 @@
   "EnterValidFolderName": "請輸入有效的資料夾名稱",
   "failedCreateFolder" : "創建資料夾失敗",
   "createFolder" : "創建資料夾",
-  "createNewFolder" : "創建新資料夾"
+  "createNewFolder" : "創建新資料夾",
+  "grantPermission" : "授予權限",
+  "checkingPermission" : "檢查權限"
 }

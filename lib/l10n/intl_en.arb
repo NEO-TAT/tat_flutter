@@ -171,5 +171,7 @@
   "EnterValidFolderName" : "Enter a valid folder name",
   "failedCreateFolder" : "Failed to create folder",
   "createFolder" : "Create Folder",
-  "createNewFolder" : "Create New Folder"
+  "createNewFolder" : "Create New Folder",
+  "grantPermission" : "Grant Permission",
+  "checkingPermission" : "Checking permission"
 }

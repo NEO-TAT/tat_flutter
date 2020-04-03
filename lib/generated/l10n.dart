@@ -1583,6 +1583,15 @@ class S {
       args: [],
     );
   }
+
+  String get grantPermission {
+    return Intl.message(
+      'Grant Permission',
+      name: 'grantPermission',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
