@@ -75,6 +75,25 @@ class CourseConnector {
     }
   }
 
+  static Future<String> getCourseENName(String url)async{
+    try {
+      ConnectorParameter parameter;
+      Document tagNode;
+      Element node;
+      parameter = ConnectorParameter(url);
+      parameter.charsetName = 'big5';
+      String result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table").first;
+      node = node.getElementsByTagName("tr")[1];
+      return node.getElementsByTagName("td")[2].text.replaceAll(RegExp(r"\n"), "");
+    } catch (e) {
+      //throw e;
+      Log.e(e.toString());
+      return null;
+    }
+  }
+
   static Future<CourseExtraInfoJson> getCourseExtraInfo(String courseId) async {
     try {
       ConnectorParameter parameter;
@@ -105,6 +124,13 @@ class CourseConnector {
       CourseExtraJson courseExtra = CourseExtraJson();
 
       courseExtra.name = nodes[3].getElementsByTagName("a")[0].text;
+      if (nodes[3]
+          .getElementsByTagName("a")[0]
+          .attributes
+          .containsKey("href")) {
+        courseExtra.href = _courseCNHost +
+            nodes[3].getElementsByTagName("a")[0].attributes["href"];
+      }
       courseExtra.category = nodes[7].text; // 取得類別
       courseExtra.openClass = nodes[9].text;
       courseExtra.selectNumber = nodes[11].text;
@@ -312,9 +338,10 @@ class CourseConnector {
       courseNodes = node.getElementsByTagName("tr");
       String studentName;
       try {
-        studentName = RegExp(r"姓名：([\u4E00-\u9FA5]+)").firstMatch(
-            courseNodes[0].text).group(1);
-      }catch(e){
+        studentName = RegExp(r"姓名：([\u4E00-\u9FA5]+)")
+            .firstMatch(courseNodes[0].text)
+            .group(1);
+      } catch (e) {
         studentName = "";
       }
       Model.instance.setTempData("studentName", studentName);
@@ -564,7 +591,7 @@ class CourseConnector {
     GraduationInformationJson graduationInformation =
         GraduationInformationJson();
     try {
-      Log.d( "select is $select" );
+      Log.d("select is $select");
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = code;
       //Log.d( code.toString() );
@@ -581,7 +608,7 @@ class CourseConnector {
         String name = anode.text.replaceAll(RegExp("[ |\s]"), "");
         if (name.contains(select)) {
           tdNodes = trNode.getElementsByTagName("td");
-          Log.d( trNode.innerHtml );
+          Log.d(trNode.innerHtml);
           for (int j = 1; j < tdNodes.length; j++) {
             tdNode = tdNodes[j];
             /*

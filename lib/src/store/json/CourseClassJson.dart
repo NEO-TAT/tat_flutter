@@ -73,15 +73,21 @@ class CourseMainJson {
 class CourseExtraJson {
   String id;
   String name;
+  String href; //課程名稱用於取得英文
   String category; //類別 (必修...)
   String selectNumber; //選課人數
   String withdrawNumber; //徹選人數
   String openClass; //開課班級(計算學分用)
 
   CourseExtraJson(
-      {this.name, this.category, this.selectNumber, this.withdrawNumber}) {
+      {this.name,
+      this.category,
+      this.selectNumber,
+      this.withdrawNumber,
+      this.href}) {
     id = JsonInit.stringInit(id);
     name = JsonInit.stringInit(name);
+    href = JsonInit.stringInit(href);
     category = JsonInit.stringInit(category);
     selectNumber = JsonInit.stringInit(selectNumber);
     withdrawNumber = JsonInit.stringInit(withdrawNumber);

@@ -84,6 +84,7 @@ CourseExtraJson _$CourseExtraJsonFromJson(Map<String, dynamic> json) {
     category: json['category'] as String,
     selectNumber: json['selectNumber'] as String,
     withdrawNumber: json['withdrawNumber'] as String,
+    href: json['href'] as String,
   )
     ..id = json['id'] as String
     ..openClass = json['openClass'] as String;
@@ -93,6 +94,7 @@ Map<String, dynamic> _$CourseExtraJsonToJson(CourseExtraJson instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'href': instance.href,
       'category': instance.category,
       'selectNumber': instance.selectNumber,
       'withdrawNumber': instance.withdrawNumber,

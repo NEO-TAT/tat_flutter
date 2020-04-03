@@ -11,8 +11,10 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/score/GraduationPicker.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -61,6 +63,42 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     if (courseScoreList != null) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
     }
+    TaskHandler.instance.addTask(TaskModelFunction(context,
+        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
+      MyProgressDialog.showProgressDialog(context, R.current.searchCredit);
+      List<CourseInfoJson> courseInfoList =
+          courseScoreCredit.getCourseInfoList();
+      int total = courseScoreCredit.getCourseInfoList().length;
+      for (int i = 0; i < total; i++) {
+        CourseInfoJson courseInfo = courseInfoList[i];
+        String courseId = courseInfo.courseId;
+        if (courseInfo.category.isEmpty) {
+          //沒有類別才尋找
+          var courseExtraInfo =
+              await CourseConnector.getCourseExtraInfo(courseId);
+          courseScoreCredit.getCourseByCourseId(courseId);
+          if (LanguageUtil.getLangIndex() == LangEnum.en) {
+            String name = await CourseConnector.getCourseENName(
+                courseExtraInfo.course.href);
+            name = name ?? courseInfo.name;
+            courseInfo.name = name;
+          }
+          courseInfo.category = courseExtraInfo.course.category;
+          courseInfo.openClass =
+              courseExtraInfo.course.openClass.replaceAll("\n", " ");
+          Log.d(courseInfo.openClass);
+        }
+      }
+      await MyProgressDialog.hideProgressDialog();
+      return true;
+    }, errorFunction: () async {
+      ErrorDialogParameter parameter = ErrorDialogParameter(
+        context: context,
+        desc: R.current.error,
+      );
+      ErrorDialog(parameter).show();
+    }, successFunction: () async {}));
+    await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = courseScoreList ?? List();
     _buildTabBar();
     setState(() {
@@ -79,34 +117,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   void _addSearchCourseTypeTask() async {
-    TaskHandler.instance.addTask(TaskModelFunction(context,
-        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
-      List<CourseInfoJson> courseInfoList =
-          courseScoreCredit.getCourseInfoList();
-      int total = courseScoreCredit.getCourseInfoList().length;
-      for (int i = 0; i < total; i++) {
-        CourseInfoJson courseInfo = courseInfoList[i];
-        String courseId = courseInfo.courseId;
-        if (courseInfo.category.isEmpty) {
-          //沒有類別才尋找
-          CourseConnector.getCourseExtraInfo(courseId).then((courseExtraInfo) {
-            courseScoreCredit.getCourseByCourseId(courseId);
-            courseInfo.category = courseExtraInfo.course.category;
-            courseInfo.openClass =
-                courseExtraInfo.course.openClass.replaceAll("\n", " ");
-            Log.d(courseInfo.openClass);
-          });
-        }
-      }
-      return true;
-    }, errorFunction: () async {
-      ErrorDialogParameter parameter = ErrorDialogParameter(
-        context: context,
-        desc: R.current.error,
-      );
-      ErrorDialog(parameter).show();
-    }, successFunction: () async {}));
-    await TaskHandler.instance.startTaskQueue(context);
     GraduationPicker picker = GraduationPicker(context);
     picker.show(_onSelectFinish);
     _buildTabBar();
