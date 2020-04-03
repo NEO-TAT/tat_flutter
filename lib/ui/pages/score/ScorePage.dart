@@ -608,7 +608,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       children: <Widget>[
         Expanded(
           child: AutoSizeText(
-            sprintf("%s: %s    %s: %s    %s: %s ", [
+            sprintf("%s: %s    %s: %s    %s: %s% ", [
               R.current.rank,
               rankItem.rank.toString(),
               R.current.totalPeople,
