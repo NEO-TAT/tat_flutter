@@ -233,48 +233,52 @@ class _SettingPageState extends State<SettingPage>
   }
 
   Widget _buildFolderPathSetting() {
-    return InkWell(
-      child: Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    "下載位置",
-                    style: textTitle,
+    if (downloadPath.isEmpty) {
+      return Container();
+    } else {
+      return InkWell(
+        child: Container(
+          padding: EdgeInsets.only(top: 10, bottom: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      "下載位置",
+                      style: textTitle,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    downloadPath,
-                    style: textBody,
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      downloadPath,
+                      style: textBody,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-      onTap: () async {
-        Directory newDirectory = await DirectoryPicker.pick(
-          allowFolderCreation: true,
-          context: context,
-          rootDirectory: Directory(downloadPath),
-        );
-        FileStore.setFilePath(newDirectory).then((value) {
-          if (value) {
-            downloadPath = newDirectory.path;
-            setState(() {});
-          }
-        });
-      },
-    );
+        onTap: () async {
+          Directory newDirectory = await DirectoryPicker.pick(
+            allowFolderCreation: true,
+            context: context,
+            rootDirectory: Directory(downloadPath),
+          );
+          FileStore.setFilePath(newDirectory).then((value) {
+            if (value) {
+              downloadPath = newDirectory.path;
+              setState(() {});
+            }
+          });
+        },
+      );
+    }
   }
 }
