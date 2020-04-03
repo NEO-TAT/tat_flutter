@@ -657,10 +657,10 @@ class S {
     );
   }
 
-  String get ___________________courseUi___________________ {
+  String get ___________________CourseTableUi___________________ {
     return Intl.message(
       '註解',
-      name: '___________________courseUi___________________',
+      name: '___________________CourseTableUi___________________',
       desc: '',
       args: [],
     );
@@ -749,7 +749,7 @@ class S {
 
   String get refresh {
     return Intl.message(
-      'refresh',
+      'Refresh',
       name: 'refresh',
       desc: '',
       args: [],
@@ -814,6 +814,42 @@ class S {
     return Intl.message(
       ' not support',
       name: 'noSupport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get noAnyFavorite {
+    return Intl.message(
+      'no any favorite',
+      name: 'noAnyFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get settingComplete {
+    return Intl.message(
+      'Setting complete',
+      name: 'settingComplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get settingCompleteWithError {
+    return Intl.message(
+      'Setup is complete, please add the weight again',
+      name: 'settingCompleteWithError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ___________________NotificationPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________NotificationPage___________________',
       desc: '',
       args: [],
     );
@@ -904,15 +940,6 @@ class S {
     return Intl.message(
       'Are you sure you want to download the file',
       name: 'areYouSureToDownload',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get noAnyFavorite {
-    return Intl.message(
-      'no any favorite',
-      name: 'noAnyFavorite',
       desc: '',
       args: [],
     );
@@ -1588,6 +1615,15 @@ class S {
     return Intl.message(
       'Grant Permission',
       name: 'grantPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get checkingPermission {
+    return Intl.message(
+      'Checking permission',
+      name: 'checkingPermission',
       desc: '',
       args: [],
     );

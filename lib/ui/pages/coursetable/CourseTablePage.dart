@@ -754,9 +754,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
     final bool result = await platform.invokeMethod('update_weight');
     Log.d("complete $result");
     if (result) {
-      MyToast.show("設定完成");
+      MyToast.show(R.current.settingComplete);
     } else {
-      MyToast.show("設定完成，請重新添加小工具");
+      MyToast.show(R.current.settingCompleteWithError);
     }
   }
 }
