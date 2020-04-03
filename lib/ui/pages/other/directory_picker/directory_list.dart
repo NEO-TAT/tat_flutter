@@ -53,7 +53,8 @@ class _DirectoryListState extends State<DirectoryList> {
         _buildBackNav(context),
         Expanded(
           child: Center(
-              child: Text(R.current.directoryIsEmpty, textAlign: TextAlign.center)),
+              child: Text(R.current.directoryIsEmpty,
+                  textAlign: TextAlign.center)),
         )
       ];
     } else {
@@ -84,7 +85,8 @@ class _DirectoryListState extends State<DirectoryList> {
           Expanded(
             child: Column(
               children: [
-                Text(R.current.selectedDirectory, style: theme.textTheme.subtitle),
+                Text(R.current.selectedDirectory,
+                    style: theme.textTheme.subtitle),
                 SizedBox(height: spacing / 2),
                 Text(currentDirectory?.path ?? '',
                     style: theme.textTheme.caption)
@@ -142,6 +144,7 @@ class _DirectoryListState extends State<DirectoryList> {
 
   Future<void> _createNewFolder() async {
     final newDirectory = await showDialog<Directory>(
+        useRootNavigator: false,
         builder: (_) => _NewFolderDialog(data: data, parent: currentDirectory),
         context: context);
 
