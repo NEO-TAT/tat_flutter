@@ -26,6 +26,7 @@ enum onListViewPress {
 
 class OtherPage extends StatefulWidget {
   final PageController pageController;
+
   OtherPage(this.pageController);
 
   @override
@@ -176,7 +177,7 @@ class _OtherPageState extends State<OtherPage> {
         backgroundImage: imageProvider,
       ),
       placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error){
+      errorWidget: (context, url, error) {
         Log.e(error.toString());
         return Icon(Icons.error);
       },
@@ -189,9 +190,9 @@ class _OtherPageState extends State<OtherPage> {
         children: <Widget>[
           Container(
             child: InkWell(
-              child:userImage ,
-              onTap: (){
-                Model.instance.cacheManager.emptyCache();  //清除圖片暫存
+              child: userImage,
+              onTap: () {
+                Model.instance.cacheManager.emptyCache(); //清除圖片暫存
               },
             ),
           ),
@@ -223,30 +224,28 @@ class _OtherPageState extends State<OtherPage> {
   }
 
   Widget _buildSetting(Map data) {
-    return Material(
-      child: InkWell(
-        onTap: () {
-          _onListViewPress(data['onPress']);
-        },
-        child: Container(
-          padding:
-          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Icon(
-                data['icon'],
-                color: data['color'],
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              Text(
-                data['title'],
-                style: TextStyle(fontSize: 18),
-              ),
-            ],
-          ),
+    return InkWell(
+      onTap: () {
+        _onListViewPress(data['onPress']);
+      },
+      child: Container(
+        padding:
+            EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Icon(
+              data['icon'],
+              color: data['color'],
+            ),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              data['title'],
+              style: TextStyle(fontSize: 18),
+            ),
+          ],
         ),
       ),
     );
