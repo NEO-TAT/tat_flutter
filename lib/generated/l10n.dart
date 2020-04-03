@@ -1080,24 +1080,6 @@ class S {
     );
   }
 
-  String get ___________________CreditUI___________________ {
-    return Intl.message(
-      '註解',
-      name: '___________________CreditUI___________________',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get titleScore {
-    return Intl.message(
-      'Score',
-      name: 'titleScore',
-      desc: '',
-      args: [],
-    );
-  }
-
   String get ___________________OtherUi___________________ {
     return Intl.message(
       '註解',
@@ -1611,10 +1593,262 @@ class S {
     );
   }
 
-  String get ___________________CreditUi___________________ {
+  String get ___________________ScoreUI___________________ {
     return Intl.message(
       '註解',
-      name: '___________________CreditUi___________________',
+      name: '___________________ScoreUI___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get titleScore {
+    return Intl.message(
+      'Score',
+      name: 'titleScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchScore {
+    return Intl.message(
+      'Search score',
+      name: 'searchScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get calculationCredit {
+    return Intl.message(
+      'Calculation credit',
+      name: 'calculationCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creditSummary {
+    return Intl.message(
+      'Credit Summary',
+      name: 'creditSummary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get compulsoryCompulsory {
+    return Intl.message(
+      'Compulsory Compulsory',
+      name: 'compulsoryCompulsory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get revisedCommonCompulsory {
+    return Intl.message(
+      'Revised Common Compulsory',
+      name: 'revisedCommonCompulsory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get jointElective {
+    return Intl.message(
+      'Joint elective',
+      name: 'jointElective',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get compulsoryProfessional {
+    return Intl.message(
+      'Compulsory professional',
+      name: 'compulsoryProfessional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get compulsoryMajorRevision {
+    return Intl.message(
+      'Compulsory major revision',
+      name: 'compulsoryMajorRevision',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get professionalElectives {
+    return Intl.message(
+      'Professional Electives',
+      name: 'professionalElectives',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get generalLessonSummary {
+    return Intl.message(
+      'General lesson summary',
+      name: 'generalLessonSummary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get takeCore {
+    return Intl.message(
+      'Take core',
+      name: 'takeCore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get takeSelect {
+    return Intl.message(
+      'Take select',
+      name: 'takeSelect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get takeForeignDepartmentCredits {
+    return Intl.message(
+      'Foreign Department Credits',
+      name: 'takeForeignDepartmentCredits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get scoreCalculationWarring {
+    return Intl.message(
+      'This calculation is for reference only. Actually, please focus on the school.',
+      name: 'scoreCalculationWarring',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get resultsOfVariousSubjects {
+    return Intl.message(
+      'Results of various subjects',
+      name: 'resultsOfVariousSubjects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get semesterGrades {
+    return Intl.message(
+      'Semester grades',
+      name: 'semesterGrades',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get totalAverage {
+    return Intl.message(
+      'Total average',
+      name: 'totalAverage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get performanceScores {
+    return Intl.message(
+      'Performance scores',
+      name: 'performanceScores',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get practiceCredit {
+    return Intl.message(
+      'Practice credit',
+      name: 'practiceCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creditsEarned {
+    return Intl.message(
+      'Credits earned',
+      name: 'creditsEarned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get noRankInfo {
+    return Intl.message(
+      'No rank information',
+      name: 'noRankInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get semesterRanking {
+    return Intl.message(
+      'Semester Ranking',
+      name: 'semesterRanking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get previousRankings {
+    return Intl.message(
+      'Previous rankings',
+      name: 'previousRankings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rank {
+    return Intl.message(
+      'Rank',
+      name: 'rank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get totalPeople {
+    return Intl.message(
+      'Total people',
+      name: 'totalPeople',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get percentage {
+    return Intl.message(
+      'Percentage',
+      name: 'percentage',
       desc: '',
       args: [],
     );

@@ -102,7 +102,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     }, errorFunction: () async {
       ErrorDialogParameter parameter = ErrorDialogParameter(
         context: context,
-        desc: "錯誤",
+        desc: R.current.error,
       );
       ErrorDialog(parameter).show();
     }, successFunction: () async {}));
@@ -138,7 +138,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       length: tabLabelList.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('成績查詢'),
+          title: Text(R.current.searchScore),
           actions: [
             if (courseScoreList.length > 0)
               PopupMenuButton<int>(
@@ -154,7 +154,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                   ),
                   PopupMenuItem(
                     value: 1,
-                    child: Text('計算學分'),
+                    child: Text(R.current.calculationCredit),
                   ),
                 ],
               ),
@@ -199,7 +199,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     tabChildList = List();
 
     if (courseScoreCredit.graduationInformation.isSelect) {
-      tabLabelList.add(_buildTabLabel("學分總覽"));
+      tabLabelList.add(_buildTabLabel(R.current.creditSummary));
       tabChildList.add(
         AnimationLimiter(
           child: Column(
@@ -286,16 +286,17 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     List<Widget> widgetList = List();
     GraduationInformationJson graduationInformation =
         courseScoreCredit.graduationInformation;
-    Widget widget = _buildTile(sprintf("學分總覽 %d/%d", [
+    Widget widget = _buildTile(sprintf("%s %d/%d", [
+      R.current.creditSummary,
       courseScoreCredit.getTotalCourseCredit(),
       graduationInformation.lowCredit
     ]));
-    widgetList.add(_buildType("○", "部訂共同必修"));
-    widgetList.add(_buildType("△", "校訂共同必修"));
-    widgetList.add(_buildType("☆", "共同選修"));
-    widgetList.add(_buildType("●", "部訂專業必修"));
-    widgetList.add(_buildType("▲", "校訂專業必修"));
-    widgetList.add(_buildType("★", "專業選修"));
+    widgetList.add(_buildType("○", R.current.compulsoryCompulsory));
+    widgetList.add(_buildType("△", R.current.revisedCommonCompulsory));
+    widgetList.add(_buildType("☆", R.current.jointElective));
+    widgetList.add(_buildType("●", R.current.compulsoryProfessional));
+    widgetList.add(_buildType("▲", R.current.compulsoryMajorRevision));
+    widgetList.add(_buildType("★", R.current.professionalElectives));
     return Container(
       child: AppExpansionTile(
         title: widget,
@@ -373,8 +374,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget =
-        _buildTile(sprintf("博雅總覽 實得核心:%d 實得選修:%d", [coreCredit, selectCredit]));
+    Widget titleWidget = _buildTile(sprintf("%s %s:%d %s:%d", [
+      R.current.generalLessonSummary,
+      R.current.takeCore,
+      coreCredit,
+      R.current.takeSelect,
+      selectCredit
+    ]));
     return Container(
       child: AppExpansionTile(
         title: titleWidget,
@@ -404,8 +410,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf(
-        "外系學分: %d/%d", [otherDepartmentCredit, otherDepartmentMaxCredit]));
+    Widget titleWidget = _buildTile(sprintf("%s: %d/%d", [
+      R.current.takeForeignDepartmentCredits,
+      otherDepartmentCredit,
+      otherDepartmentMaxCredit
+    ]));
     return Container(
       child: AppExpansionTile(
         title: titleWidget,
@@ -422,7 +431,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         children: <Widget>[
           Expanded(
             child: Text(
-              "此計算僅供參考，實際請以學校為主",
+              R.current.scoreCalculationWarring,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -461,7 +470,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   List<Widget> _buildCourseScores(SemesterCourseScoreJson courseScore) {
     List<CourseInfoJson> scoreList = courseScore.courseScoreList;
     return [
-      _buildTitle('各科成績'),
+      _buildTitle(R.current.resultsOfVariousSubjects),
       for (CourseInfoJson score in scoreList) _buildScoreItem(score),
     ];
   }
@@ -499,18 +508,22 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
 
   List<Widget> _buildSemesterScore(SemesterCourseScoreJson courseScore) {
     return [
-      _buildTitle('學期成績'),
+      _buildTitle(R.current.semesterGrades),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            sprintf("總平均: %s", [courseScore.getAverageScoreString()]),
+            sprintf("%s: %s",
+                [R.current.totalAverage, courseScore.getAverageScoreString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
           ),
           Text(
-            sprintf("操行成績: %s", [courseScore.getPerformanceScoreString()]),
+            sprintf("%s: %s", [
+              R.current.performanceScores,
+              courseScore.getPerformanceScoreString()
+            ]),
             style: TextStyle(
               fontSize: 16.0,
             ),
@@ -524,13 +537,15 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            sprintf("修習學分: %s", [courseScore.getTotalCreditString()]),
+            sprintf("%s: %s",
+                [R.current.practiceCredit, courseScore.getTotalCreditString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
           ),
           Text(
-            sprintf("實得學分: %s", [courseScore.getTakeCreditString()]),
+            sprintf("%s: %s",
+                [R.current.creditsEarned, courseScore.getTakeCreditString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
@@ -548,17 +563,17 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ? [
             Container(
               child: Text(
-                "暫無排名資訊",
+                R.current.noRankInfo,
                 style: TextStyle(fontSize: 24),
               ),
             )
           ]
         : [
-            _buildRankItems(courseScore.now, "學期排名"),
+            _buildRankItems(courseScore.now, R.current.semesterRanking),
             SizedBox(
               height: 16,
             ),
-            _buildRankItems(courseScore.history, "歷屆排名"),
+            _buildRankItems(courseScore.history, R.current.previousRankings),
           ];
   }
 
@@ -583,25 +598,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       children: <Widget>[
         Expanded(
           child: AutoSizeText(
-            sprintf("排名: %s", [rankItem.rank.toString()]),
-            style: textStyle,
-            minFontSize: 10,
-            maxLines: 1,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Expanded(
-          child: AutoSizeText(
-            sprintf("總人數: %s", [rankItem.total.toString()]),
-            style: textStyle,
-            minFontSize: 10,
-            maxLines: 1,
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Expanded(
-          child: AutoSizeText(
-            sprintf("百分比: %s %", [rankItem.percentage.toString()]),
+            sprintf("%s: %s    %s: %s    %s: %s ", [
+              R.current.rank,
+              rankItem.rank.toString(),
+              R.current.totalPeople,
+              rankItem.total.toString(),
+              R.current.percentage,
+              rankItem.percentage.toString()
+            ]),
             style: textStyle,
             minFontSize: 10,
             maxLines: 1,
