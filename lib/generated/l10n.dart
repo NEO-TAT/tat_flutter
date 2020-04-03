@@ -1520,6 +1520,69 @@ class S {
       args: [],
     );
   }
+
+  String get ___________________DirectoryPicker___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________DirectoryPicker___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get directoryIsEmpty {
+    return Intl.message(
+      'Directory is empty!',
+      name: 'directoryIsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get selectedDirectory {
+    return Intl.message(
+      'Selected directory',
+      name: 'selectedDirectory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get EnterValidFolderName {
+    return Intl.message(
+      'Enter a valid folder name',
+      name: 'EnterValidFolderName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get failedCreateFolder {
+    return Intl.message(
+      'Failed to create folder',
+      name: 'failedCreateFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get createFolder {
+    return Intl.message(
+      'Create Folder',
+      name: 'createFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get createNewFolder {
+    return Intl.message(
+      'Create New Folder',
+      name: 'createNewFolder',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

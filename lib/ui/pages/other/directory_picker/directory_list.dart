@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:path/path.dart' as path;
 
 import 'directory_picker.dart';
@@ -52,7 +53,7 @@ class _DirectoryListState extends State<DirectoryList> {
         _buildBackNav(context),
         Expanded(
           child: Center(
-              child: Text('Directory is empty!', textAlign: TextAlign.center)),
+              child: Text(R.current.directoryIsEmpty, textAlign: TextAlign.center)),
         )
       ];
     } else {
@@ -83,7 +84,7 @@ class _DirectoryListState extends State<DirectoryList> {
           Expanded(
             child: Column(
               children: [
-                Text('Selected directory', style: theme.textTheme.subtitle),
+                Text(R.current.selectedDirectory, style: theme.textTheme.subtitle),
                 SizedBox(height: spacing / 2),
                 Text(currentDirectory?.path ?? '',
                     style: theme.textTheme.caption)
@@ -195,7 +196,7 @@ class _NewFolderDialogState extends State<_NewFolderDialog> {
 
   Future<void> _createDirectory() async {
     if (name == null || name.trim() == '') {
-      setState(() => errorMessage = 'Enter a valid folder name');
+      setState(() => errorMessage = R.current.EnterValidFolderName);
       return;
     }
 
@@ -205,7 +206,7 @@ class _NewFolderDialogState extends State<_NewFolderDialog> {
           await Directory(path.join(widget.parent.path, name)).create();
       Navigator.pop(context, newDirectory);
     } catch (e) {
-      setState(() => errorMessage = 'Failed to create folder');
+      setState(() => errorMessage = R.current.failedCreateFolder);
     }
     setState(() => isSubmitting = false);
   }
@@ -228,15 +229,15 @@ class _NewFolderDialogState extends State<_NewFolderDialog> {
       ),
       actions: <Widget>[
         FlatButton(
-            child: Text('Cancel'),
+            child: Text(R.current.cancel),
             onPressed: isSubmitting ? null : () => Navigator.pop(context)),
         FlatButton(
-          child: Text('Create Folder'),
+          child: Text(R.current.createFolder),
           onPressed: isSubmitting ? null : _createDirectory,
         )
       ],
       shape: widget.data.shape,
-      title: Text('Create New Folder'),
+      title: Text(R.current.createNewFolder),
     );
   }
 }

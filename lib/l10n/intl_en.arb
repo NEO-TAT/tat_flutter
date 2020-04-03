@@ -164,5 +164,12 @@
   "sociologicalDimension": "Sociological Dimension",
   "creativeDirection": "Creative direction",
   "aestheticDimension": "Aesthetic dimension",
-  "culturalHistoricalDimension": "Cultural and Historical dimension"
+  "culturalHistoricalDimension": "Cultural and Historical dimension",
+  "___________________DirectoryPicker___________________": "註解",
+  "directoryIsEmpty" : "Directory is empty!",
+  "selectedDirectory" : "Selected directory",
+  "EnterValidFolderName" : "Enter a valid folder name",
+  "failedCreateFolder" : "Failed to create folder",
+  "createFolder" : "Create Folder",
+  "createNewFolder" : "Create New Folder"
 }
