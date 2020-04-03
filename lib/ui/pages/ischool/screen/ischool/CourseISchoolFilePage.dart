@@ -5,7 +5,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
-import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/object/CourseFileJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -14,7 +13,6 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolCourseFileTask.d
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:provider/provider.dart';
 
 class CourseISchoolFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;

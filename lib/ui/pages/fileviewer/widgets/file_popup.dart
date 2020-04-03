@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/R.dart';
 
 class FilePopup extends StatelessWidget {
   final String path;
@@ -17,13 +18,13 @@ class FilePopup extends StatelessWidget {
         PopupMenuItem(
           value: 0,
           child: Text(
-            "Rename",
+            R.current.rename,
           ),
         ),
         PopupMenuItem(
           value: 1,
           child: Text(
-            "Delete",
+            R.current.delete,
           ),
         ),
 //        PopupMenuItem(

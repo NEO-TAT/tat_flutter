@@ -9,7 +9,7 @@ import 'intl/messages_all.dart';
 // **************************************************************************
 
 class S {
-  S(this.localeName);
+  S();
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -19,15 +19,13 @@ class S {
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return S(localeName);
+      return S();
     });
   } 
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
-
-  final String localeName;
 
   String get app_name {
     return Intl.message(
@@ -85,7 +83,7 @@ class S {
 
   String get password {
     return Intl.message(
-      'password',
+      'Password',
       name: 'password',
       desc: '',
       args: [],
@@ -94,7 +92,7 @@ class S {
 
   String get account {
     return Intl.message(
-      'account',
+      'Account',
       name: 'account',
       desc: '',
       args: [],
@@ -103,7 +101,7 @@ class S {
 
   String get warning {
     return Intl.message(
-      'warning',
+      'Warning',
       name: 'warning',
       desc: '',
       args: [],
@@ -112,7 +110,7 @@ class S {
 
   String get sure {
     return Intl.message(
-      'sure',
+      'Sure',
       name: 'sure',
       desc: '',
       args: [],
@@ -121,7 +119,7 @@ class S {
 
   String get cancel {
     return Intl.message(
-      'cancel',
+      'Cancel',
       name: 'cancel',
       desc: '',
       args: [],
@@ -130,7 +128,7 @@ class S {
 
   String get update {
     return Intl.message(
-      'update',
+      'Update',
       name: 'update',
       desc: '',
       args: [],
@@ -148,7 +146,7 @@ class S {
 
   String get restart {
     return Intl.message(
-      'restart',
+      'Restart',
       name: 'restart',
       desc: '',
       args: [],
@@ -175,7 +173,7 @@ class S {
 
   String get downloadError {
     return Intl.message(
-      ' Download Error',
+      ' Download error',
       name: 'downloadError',
       desc: '',
       args: [],
@@ -184,7 +182,7 @@ class S {
 
   String get isALink {
     return Intl.message(
-      'is a Link',
+      'Is a link',
       name: 'isALink',
       desc: '',
       args: [],
@@ -364,7 +362,7 @@ class S {
 
   String get loginISchoolPlusError {
     return Intl.message(
-      'Login to ISchool Plus Error',
+      'Login to ISchool Plus error',
       name: 'loginISchoolPlusError',
       desc: '',
       args: [],
@@ -445,7 +443,7 @@ class S {
 
   String get loginCourse {
     return Intl.message(
-      'Login Course System...',
+      'Login course system...',
       name: 'loginCourse',
       desc: '',
       args: [],
@@ -454,7 +452,7 @@ class S {
 
   String get loginCourseError {
     return Intl.message(
-      'Login Course System Error',
+      'Login course system error',
       name: 'loginCourseError',
       desc: '',
       args: [],
@@ -607,7 +605,7 @@ class S {
 
   String get getCalendar {
     return Intl.message(
-      'Getting Calendar...',
+      'Getting calendar...',
       name: 'getCalendar',
       desc: '',
       args: [],
@@ -616,7 +614,7 @@ class S {
 
   String get getCalendarError {
     return Intl.message(
-      'Getting Calendar Error',
+      'Getting calendar error',
       name: 'getCalendarError',
       desc: '',
       args: [],
@@ -659,10 +657,10 @@ class S {
     );
   }
 
-  String get ___________________courseUi___________________ {
+  String get ___________________CourseTableUi___________________ {
     return Intl.message(
       '註解',
-      name: '___________________courseUi___________________',
+      name: '___________________CourseTableUi___________________',
       desc: '',
       args: [],
     );
@@ -751,7 +749,7 @@ class S {
 
   String get refresh {
     return Intl.message(
-      'refresh',
+      'Refresh',
       name: 'refresh',
       desc: '',
       args: [],
@@ -816,6 +814,177 @@ class S {
     return Intl.message(
       ' not support',
       name: 'noSupport',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get noAnyFavorite {
+    return Intl.message(
+      'No any favorite',
+      name: 'noAnyFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get settingComplete {
+    return Intl.message(
+      'Setting complete',
+      name: 'settingComplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get settingCompleteWithError {
+    return Intl.message(
+      'Setup is complete, please add the weight again',
+      name: 'settingCompleteWithError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get findNewMessage {
+    return Intl.message(
+      'Find new message',
+      name: 'findNewMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchCredit {
+    return Intl.message(
+      'Search credit',
+      name: 'searchCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loadFavorite {
+    return Intl.message(
+      'Load favorite',
+      name: 'loadFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get setAsAndroidWeight {
+    return Intl.message(
+      'Set as android weight',
+      name: 'setAsAndroidWeight',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ___________________FileViewerPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________FileViewerPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get sortBy {
+    return Intl.message(
+      'Sort by',
+      name: 'sortBy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get nothingHere {
+    return Intl.message(
+      'There\'s nothing here',
+      name: 'nothingHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get cannotWrite {
+    return Intl.message(
+      'Cannot write to this Storage device!',
+      name: 'cannotWrite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get folderNameAlreadyExists {
+    return Intl.message(
+      'A Folder with that name already exists!',
+      name: 'folderNameAlreadyExists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get fileNameAlreadyExists {
+    return Intl.message(
+      'A File with that name already exists!',
+      name: 'fileNameAlreadyExists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get renameItem {
+    return Intl.message(
+      'Rename item',
+      name: 'renameItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rename {
+    return Intl.message(
+      'Rename',
+      name: 'rename',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ___________________NotificationPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________NotificationPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get pullUpLoad {
+    return Intl.message(
+      'Pull up load',
+      name: 'pullUpLoad',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get loadFailed {
+    return Intl.message(
+      'Load Failed! Click retry!',
+      name: 'loadFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ReleaseLoadMore {
+    return Intl.message(
+      'release to load more',
+      name: 'ReleaseLoadMore',
       desc: '',
       args: [],
     );
@@ -911,33 +1080,6 @@ class S {
     );
   }
 
-  String get noAnyFavorite {
-    return Intl.message(
-      'no any favorite',
-      name: 'noAnyFavorite',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get ___________________CreditUI___________________ {
-    return Intl.message(
-      '註解',
-      name: '___________________CreditUI___________________',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get titleScore {
-    return Intl.message(
-      'Score',
-      name: 'titleScore',
-      desc: '',
-      args: [],
-    );
-  }
-
   String get ___________________OtherUi___________________ {
     return Intl.message(
       '註解',
@@ -1003,7 +1145,7 @@ class S {
 
   String get creditSearch {
     return Intl.message(
-      'Credit Search...',
+      'Credit search...',
       name: 'creditSearch',
       desc: '',
       args: [],
@@ -1086,6 +1228,15 @@ class S {
     return Intl.message(
       'Dark mode',
       name: 'darkMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get downloadPath {
+    return Intl.message(
+      'Download path',
+      name: 'downloadPath',
       desc: '',
       args: [],
     );
@@ -1273,7 +1424,7 @@ class S {
 
   String get notSupport {
     return Intl.message(
-      'not Support',
+      'Not support',
       name: 'notSupport',
       desc: '',
       args: [],
@@ -1334,6 +1485,24 @@ class S {
     );
   }
 
+  String get subscribe {
+    return Intl.message(
+      'Subscribe',
+      name: 'subscribe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',
@@ -1372,7 +1541,7 @@ class S {
 
   String get checkVersion {
     return Intl.message(
-      'Check Version',
+      'Check version',
       name: 'checkVersion',
       desc: '',
       args: [],
@@ -1381,7 +1550,7 @@ class S {
 
   String get checkingVersion {
     return Intl.message(
-      'Checking Version...',
+      'Checking version...',
       name: 'checkingVersion',
       desc: '',
       args: [],
@@ -1399,7 +1568,7 @@ class S {
 
   String get versionInfo {
     return Intl.message(
-      'Version Info',
+      'Version info',
       name: 'versionInfo',
       desc: '',
       args: [],
@@ -1424,10 +1593,262 @@ class S {
     );
   }
 
-  String get ___________________CreditUi___________________ {
+  String get ___________________ScoreUI___________________ {
     return Intl.message(
       '註解',
-      name: '___________________CreditUi___________________',
+      name: '___________________ScoreUI___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get titleScore {
+    return Intl.message(
+      'Score',
+      name: 'titleScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchScore {
+    return Intl.message(
+      'Search score',
+      name: 'searchScore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get calculationCredit {
+    return Intl.message(
+      'Calculation credit',
+      name: 'calculationCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creditSummary {
+    return Intl.message(
+      'Credit Summary',
+      name: 'creditSummary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get compulsoryCompulsory {
+    return Intl.message(
+      'Compulsory Compulsory',
+      name: 'compulsoryCompulsory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get revisedCommonCompulsory {
+    return Intl.message(
+      'Revised Common Compulsory',
+      name: 'revisedCommonCompulsory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get jointElective {
+    return Intl.message(
+      'Joint elective',
+      name: 'jointElective',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get compulsoryProfessional {
+    return Intl.message(
+      'Compulsory professional',
+      name: 'compulsoryProfessional',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get compulsoryMajorRevision {
+    return Intl.message(
+      'Compulsory major revision',
+      name: 'compulsoryMajorRevision',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get professionalElectives {
+    return Intl.message(
+      'Professional Electives',
+      name: 'professionalElectives',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get generalLessonSummary {
+    return Intl.message(
+      'General lesson summary',
+      name: 'generalLessonSummary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get takeCore {
+    return Intl.message(
+      'Take core',
+      name: 'takeCore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get takeSelect {
+    return Intl.message(
+      'Take select',
+      name: 'takeSelect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get takeForeignDepartmentCredits {
+    return Intl.message(
+      'Foreign Department Credits',
+      name: 'takeForeignDepartmentCredits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get scoreCalculationWarring {
+    return Intl.message(
+      'This calculation is for reference only. Actually, please focus on the school.',
+      name: 'scoreCalculationWarring',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get resultsOfVariousSubjects {
+    return Intl.message(
+      'Results of various subjects',
+      name: 'resultsOfVariousSubjects',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get semesterGrades {
+    return Intl.message(
+      'Semester grades',
+      name: 'semesterGrades',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get totalAverage {
+    return Intl.message(
+      'Total average',
+      name: 'totalAverage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get performanceScores {
+    return Intl.message(
+      'Performance scores',
+      name: 'performanceScores',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get practiceCredit {
+    return Intl.message(
+      'Practice credit',
+      name: 'practiceCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get creditsEarned {
+    return Intl.message(
+      'Credits earned',
+      name: 'creditsEarned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get noRankInfo {
+    return Intl.message(
+      'No rank information',
+      name: 'noRankInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get semesterRanking {
+    return Intl.message(
+      'Semester ranking',
+      name: 'semesterRanking',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get previousRankings {
+    return Intl.message(
+      'Previous rankings',
+      name: 'previousRankings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get rank {
+    return Intl.message(
+      'Rank',
+      name: 'rank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get totalPeople {
+    return Intl.message(
+      'Total people',
+      name: 'totalPeople',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get percentage {
+    return Intl.message(
+      'Percentage',
+      name: 'percentage',
       desc: '',
       args: [],
     );
@@ -1518,6 +1939,159 @@ class S {
     return Intl.message(
       'Cultural and Historical dimension',
       name: 'culturalHistoricalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ___________________DirectoryPicker___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________DirectoryPicker___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get directoryIsEmpty {
+    return Intl.message(
+      'Directory is empty!',
+      name: 'directoryIsEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get selectedDirectory {
+    return Intl.message(
+      'Selected directory',
+      name: 'selectedDirectory',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get EnterValidFolderName {
+    return Intl.message(
+      'Enter a valid folder name',
+      name: 'EnterValidFolderName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get failedCreateFolder {
+    return Intl.message(
+      'Failed to create folder',
+      name: 'failedCreateFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get createFolder {
+    return Intl.message(
+      'Create Folder',
+      name: 'createFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get createNewFolder {
+    return Intl.message(
+      'Create New folder',
+      name: 'createNewFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get grantPermission {
+    return Intl.message(
+      'Grant permission',
+      name: 'grantPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get checkingPermission {
+    return Intl.message(
+      'Checking permission',
+      name: 'checkingPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get ___________________GraduationPicker___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________GraduationPicker___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searching {
+    return Intl.message(
+      'Searching',
+      name: 'searching',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingYear {
+    return Intl.message(
+      'Searching year',
+      name: 'searchingYear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingDivision {
+    return Intl.message(
+      'Searching division',
+      name: 'searchingDivision',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingDepartment {
+    return Intl.message(
+      'Searching department',
+      name: 'searchingDepartment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get searchingCreditInfo {
+    return Intl.message(
+      'Searching credit',
+      name: 'searchingCreditInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get graduationSetting {
+    return Intl.message(
+      'Graduation credit standard setting',
+      name: 'graduationSetting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
       desc: '',
       args: [],
     );

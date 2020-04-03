@@ -45,6 +45,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double courseHeight = 60;
   static double sectionWidth = 20;
   static int courseTableWithAlpha = 0xDF;
+  static int showCourseTableNum = 9;
   CourseTableControl courseTableControl = CourseTableControl();
   bool favorite = false;
   bool loadCourseNotice = true;
@@ -101,7 +102,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("發現新公告"),
+            title: Text(R.current.findNewMessage),
             content: Container(
               width: double.minPositive,
               child: ListView.builder(
@@ -118,7 +119,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                         if (courseInfo != null) {
                           _showCourseDetail(courseInfo);
                         } else {
-                          MyToast.show("不支持");
+                          MyToast.show(R.current.noSupport);
                           Navigator.of(context).pop();
                         }
                       },
@@ -140,9 +141,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     Model.instance.setAlreadyUse(Model.courseNotice);
-    setState(() {
-      loadCourseNotice = false;
-    });
+    try {
+      setState(() {
+        loadCourseNotice = false;
+      });
+    } catch (e) {
+      Log.d("setState() called after dispose()");
+    }
   }
 
   void _checkAppVersion() {
@@ -172,7 +177,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     courseHeight = (renderObject.semanticBounds.size.height -
             studentIdHeight -
             dayHeight) /
-        9; //計算高度
+        showCourseTableNum; //計算高度
     CourseTableJson courseTable = Model.instance.getCourseSetting().info;
     if (courseTable.isEmpty) {
       _getCourseTable();
@@ -190,10 +195,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
       {SemesterJson semesterSetting,
       String studentId,
       bool refresh: false}) async {
-    studentId = studentId.replaceAll(" ", "");
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.getUserData();
     studentId = studentId ?? userData.account;
+    studentId = studentId.replaceAll(" ", "");
     if (courseTableData?.studentId != studentId) {
       Model.instance.clearSemesterJsonList(); //需重設因為更換了studentId
     }
@@ -272,7 +277,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
   _onPopupMenuSelect(int value) async {
     switch (value) {
       case 0:
-        MyToast.show("學分:" + courseTableData.getTotalCredit().toString());
+        MyToast.show(sprintf("%s:%s",
+            [R.current.credit, courseTableData.getTotalCredit().toString()]));
         break;
       case 1:
         _loadFavorite();
@@ -396,17 +402,17 @@ class _CourseTablePageState extends State<CourseTablePage> {
               });
             },
             itemBuilder: (BuildContext context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 0,
-                child: Text('查詢學分'),
+                child: Text(R.current.searchCredit),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 1,
-                child: Text('載入常用課表'),
+                child: Text(R.current.loadFavorite),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 2,
-                child: Text("設為小工具課表"),
+                child: Text(R.current.setAsAndroidWeight),
               ),
             ],
           )
@@ -481,8 +487,24 @@ class _CourseTablePageState extends State<CourseTablePage> {
         key: overRepaintKey,
         child: RepaintBoundary(
           child: (isLoading)
-              ? Center(
-                  child: CircularProgressIndicator(),
+              ? Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          //makes the red row full width
+                          child: Container(
+                            height: courseHeight * showCourseTableNum,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 )
               : Column(
                   children: List.generate(
@@ -733,9 +755,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
     final bool result = await platform.invokeMethod('update_weight');
     Log.d("complete $result");
     if (result) {
-      MyToast.show("設定完成");
+      MyToast.show(R.current.settingComplete);
     } else {
-      MyToast.show("設定完成，請重新添加小工具");
+      MyToast.show(R.current.settingCompleteWithError);
     }
   }
 }

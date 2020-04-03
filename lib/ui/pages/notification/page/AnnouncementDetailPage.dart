@@ -8,8 +8,6 @@ import 'package:flutter_app/src/store/json/NewAnnouncementJson.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -115,56 +113,6 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
     }
   }
 
-  Widget _showHtml() {
-    return Html(
-      data: widget.data.detail,
-      //useRichText: false,
-      padding: EdgeInsets.all(8.0),
-      backgroundColor: Colors.white,
-      /*
-              defaultTextStyle: TextStyle(fontFamily: 'serif'),
-              linkStyle: const TextStyle(
-                color: Colors.redAccent,
-              ),
-               */
-      onLinkTap: (url) {
-        onUrlTap(url);
-      },
-      onImageTap: (src) {
-        // Display the image in large form.
-      },
-      //Must have useRichText set to false for this to work.
-      customRender: (node, children) {
-        if (node is dom.Element) {
-          switch (node.localName) {
-            case "video":
-              break;
-            case "custom_tag":
-              break;
-          }
-        }
-        return Text("");
-      },
-      customTextAlign: (dom.Node node) {
-        if (node is dom.Element) {
-          switch (node.localName) {
-            case "p":
-              return TextAlign.justify;
-          }
-        }
-        return null;
-      },
-      customTextStyle: (dom.Node node, TextStyle baseStyle) {
-        if (node is dom.Element) {
-          switch (node.localName) {
-            case "p":
-              return baseStyle.merge(TextStyle(height: 2, fontSize: 20));
-          }
-        }
-        return baseStyle;
-      },
-    );
-  }
 
   _launchURL(String url) async {
     if (await canLaunch(url)) {

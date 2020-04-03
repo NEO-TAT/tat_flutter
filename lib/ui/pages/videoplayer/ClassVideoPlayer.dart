@@ -1,7 +1,6 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
@@ -19,12 +18,13 @@ class ClassVideoPlayer extends StatefulWidget {
 
 class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
-  List<IjkMediaController> controllerList = List();
+  IjkMediaController controller;
   List<String> videoName = List();
   int selectIndex = 0;
 
   @override
   void initState() {
+    controller = IjkMediaController();
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
     parseVideo();
@@ -33,9 +33,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
-    for (IjkMediaController item in controllerList) {
-      item.dispose();
-    }
+    controller.dispose();
     super.dispose();
   }
 
@@ -61,14 +59,9 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     String presentationVideo =
         node.getElementsByTagName("presentation_video").first.text;
 
-    int number = 0;
     for (String name in [presenterVideo, presenterVideo2, presentationVideo]) {
       if (name != null && name.isNotEmpty) {
-        controllerList.add(IjkMediaController());
-        String url = getRTMPUrl(name);
-        controllerList[number].setNetworkDataSource(url, autoPlay: true);
         videoName.add(name);
-        number++;
       }
     }
     await _buildDialog();
@@ -93,8 +86,9 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                   child: FlatButton(
                     child: Text(videoName[index]),
                     onPressed: () {
+                      String url = getRTMPUrl(videoName[index]);
+                      controller.setNetworkDataSource(url, autoPlay: true);
                       Navigator.of(context).pop();
-                      selectIndex = index;
                     },
                   ),
                 );
@@ -116,20 +110,12 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : buildIjkPlayer(controllerList[selectIndex]);
-  }
-
-  Widget _buildVideoPlayer() {
-    return Column(
-      children: controllerList.map((controller) {
-        return buildIjkPlayer(controller);
-      }).toList(),
-    );
+        : buildIjkPlayer(controller);
   }
 
   Widget buildIjkPlayer(IjkMediaController controller) {
     return Container(
-      // height: 400, // 这里随意
+      // height: 400, // 這裡隨意
       child: IjkPlayer(
         mediaController: controller,
       ),

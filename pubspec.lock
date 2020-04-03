@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  after_init:
+    dependency: "direct main"
+    description:
+      name: after_init
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   analyzer:
     dependency: transitive
     description:
@@ -91,7 +98,7 @@ packages:
       name: build_daemon
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.3"
+    version: "2.1.4"
   build_resolvers:
     dependency: transitive
     description:
@@ -105,14 +112,14 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   build_runner_core:
     dependency: transitive
     description:
       name: build_runner_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.2"
+    version: "5.0.0"
   built_collection:
     dependency: transitive
     description:
@@ -313,14 +320,7 @@ packages:
       name: flutter_downloader
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.1"
-  flutter_html:
-    dependency: "direct main"
-    description:
-      name: flutter_html
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.1"
+    version: "1.4.2"
   flutter_icons:
     dependency: "direct main"
     description:
@@ -348,7 +348,7 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.0"
+    version: "1.4.0"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
@@ -367,7 +367,7 @@ packages:
       name: flutter_slidable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.9"
+    version: "0.5.4"
   flutter_staggered_animations:
     dependency: "direct main"
     description:
@@ -399,13 +399,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2+2"
+  flutter_xlider:
+    dependency: "direct main"
+    description:
+      name: flutter_xlider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.0"
   fluttertoast:
     dependency: "direct main"
     description:
       name: fluttertoast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.3"
+    version: "4.0.1"
   glob:
     dependency: transitive
     description:
@@ -496,7 +503,7 @@ packages:
       name: json_serializable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.5"
+    version: "3.3.0"
   logger:
     dependency: "direct main"
     description:
@@ -573,7 +580,7 @@ packages:
       name: package_config
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.2"
+    version: "1.9.3"
   package_info:
     dependency: "direct main"
     description:
@@ -636,14 +643,14 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.4.0+hotfix.2"
+    version: "5.0.0+hotfix.3"
   permission_handler_platform_interface:
     dependency: transitive
     description:
       name: permission_handler_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "2.0.0"
   petitparser:
     dependency: transitive
     description:
@@ -707,13 +714,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
-  quiver_hashcode:
-    dependency: transitive
-    description:
-      name: quiver_hashcode
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -824,13 +824,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
-  step_slider:
-    dependency: "direct main"
-    description:
-      name: step_slider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+1"
   stream_channel:
     dependency: transitive
     description:
@@ -956,7 +949,7 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.19+5"
+    version: "0.3.19+9"
   xml:
     dependency: transitive
     description:

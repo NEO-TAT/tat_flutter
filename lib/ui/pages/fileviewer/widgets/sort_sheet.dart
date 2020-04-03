@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -18,7 +19,7 @@ class SortSheet extends StatelessWidget {
               height: 15,
             ),
             Text(
-              "Sort by".toUpperCase(),
+              R.current.sortBy,
               style: TextStyle(
                 fontSize: 12.0,
               ),

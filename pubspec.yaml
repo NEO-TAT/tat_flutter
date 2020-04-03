@@ -1,7 +1,7 @@
 name: flutter_app
 description: A new Flutter application.
 
-version: 1.2.3+4
+version: 1.2.4+5
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -12,27 +12,28 @@ dependencies:
   flutter_localizations:
       sdk: flutter
   path: ^1.6.4
-  provider: ^4.0.1
-  path_provider: ^1.5.1
-  url_launcher: ^5.4.1   #開啟email phone url...
+  provider: ^4.0.4
+  path_provider: ^1.6.5
+  url_launcher: ^5.4.2   #開啟email phone url...
   logger: ^0.8.3         #顯示Log
   sprintf: ^4.0.2
-  flutter_local_notifications: ^1.2.0+4  #通知欄
+  flutter_local_notifications: ^1.4.0  #通知欄
   hex: ^0.1.2
   rxdart: ^0.23.1 #通知欄有使用到
   flutter_ijkplayer: ^0.3.5+1
+  after_init: ^0.1.2
   #----------store data----------#
-  shared_preferences: ^0.5.6
+  shared_preferences: ^0.5.6+3
   flutter_cache_manager: ^1.1.3
   #----------internet----------#
-  dio: ^3.0.8      #網路get post API
+  dio: ^3.0.9      #網路get post API
   dio_cookie_manager: ^1.0.0  #用於產生cookie_jar與dio接口
   cookie_jar: ^1.0.1  #可儲存式cookies
   http: ^0.12.0+4  #網路get post API (無使用)
   html: ^0.14.0+3  #html解析器
   #----------WebView----------#
-  webview_flutter: 0.3.19+5
-  flutter_webview_plugin: ^0.3.10+1
+  webview_flutter: 0.3.19+9
+  flutter_webview_plugin: ^0.3.10+2
   #---------icon----------#
   eva_icons_flutter: ^2.0.0
   flutter_icons: ^1.0.0+1
@@ -43,41 +44,41 @@ dependencies:
   big5: ^0.0.4     #big5 decode encode
   quiver: ^2.0.5   #hashcode
   intl: ^0.16.0    #DateTime to String
-  package_info: ^0.4.0+13  #檢測app版本用於檢查更新
+  package_info: ^0.4.0+16  #檢測app版本用於檢查更新
   #----------html viewer----------#
-  flutter_html: ^0.11.1
-  flutter_widget_from_html_core: ^0.3.2+1
+  #flutter_html: ^0.11.1
+  flutter_widget_from_html_core: ^0.3.2+2
   #----------animation----------#
   page_transition: ^1.1.5                #頁面切換動畫
   flutter_staggered_animations: ^0.1.2   #listView or gridView動畫
   #----------download----------#
-  flutter_downloader: ^1.4.1  #下載app更新
+  flutter_downloader: ^1.4.2  #下載app更新
   open_file: ^3.0.1
-  permission_handler: ^4.2.0+hotfix.3
-  mime_type: ^0.2.5
+  permission_handler: ^5.0.0+hotfix.3
+  mime_type: ^0.2.7
   #----------Widget----------#
   pull_to_refresh: ^1.5.8  #提供ListView可下拉式更新並且可動態加載
   cached_network_image: ^2.0.0  #用url顯示圖片
   auto_size_text: ^2.1.0  #課表顯示有用到
-  table_calendar: ^2.2.2    #顯示行事曆
-  step_slider: ^1.0.0+1     #語言切換用
-  fluttertoast: ^3.1.3      #Toast
-  awesome_dialog: ^0.1.1  #顯示Error時用到
-  flutter_slidable: ^0.4.7  #email使用可左右滑抽屜
+  table_calendar: ^2.2.3    #顯示行事曆
+  flutter_xlider: ^3.2.0    #語言切換用
+  fluttertoast: ^4.0.1      #Toast
+  awesome_dialog: ^0.1.3  #顯示Error時用到
+  flutter_slidable: ^0.5.4  #email使用可左右滑抽屜
 
   # Firebase
   firebase_core: 0.4.4  # 0.4.4+3 版本在 iOS 尚有問題
   firebase_analytics: ^5.0.11
-  firebase_crashlytics: ^0.1.3+2
+  firebase_crashlytics: ^0.1.3+3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.3
-  flutter_automation: ^1.3.1
+  flutter_launcher_icons: ^0.7.4
+  flutter_automation: ^1.3.2
   #---------json----------#
-  build_runner: ^1.7.3
-  json_serializable: ^3.2.5
+  build_runner: ^1.8.1
+  json_serializable: ^3.3.0
 
 
 flutter:

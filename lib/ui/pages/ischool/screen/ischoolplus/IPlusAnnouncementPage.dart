@@ -99,7 +99,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
               });
             }
           },
-          tooltip: "訂閱",
+          tooltip: R.current.subscribe,
           // 按住按鈕時出現的提示字
           child: (openNotifications)
               ? Icon(Icons.notifications_active)
