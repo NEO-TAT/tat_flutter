@@ -18,7 +18,7 @@ class PermissionsUtil {
         Map<Permission, PermissionStatus> permissions = await [
           Permission.storage,
         ].request();
-        if (permissions[Permission.location] == PermissionStatus.granted) {
+        if (permissions[Permission.storage] == PermissionStatus.granted) {
           return true;
         }
       } else {
