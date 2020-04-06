@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -46,6 +47,11 @@ public class BootLoaderActivity extends Activity {
         return versionName;
     }
 
+    void setPatchVersion(long version){
+        pref.edit().putLong(patch_version_key, version).apply();
+    }
+
+
     void checkPatchDir() {
         if (!dir.exists()) {
             if (dir.mkdirs()) {
@@ -65,7 +71,7 @@ public class BootLoaderActivity extends Activity {
         if (app_version_update) {  //app版本更新
             File dest = new File(dir, hotfixFileName);
             if (dest.delete()) {
-                pref.edit().putInt(patch_version_key, 0).apply();
+                setPatchVersion(0);
             }
         }
     }
@@ -75,7 +81,7 @@ public class BootLoaderActivity extends Activity {
         if (!launch_success) {  //載入失敗刪除補丁
             File dest = new File(dir, hotfixFileName);
             if (dest.delete()) {
-                pref.edit().putInt(patch_version_key, 0).apply();
+                setPatchVersion(0);
             }
         }
         pref.edit().remove(flutter_state_key).apply(); //每次啟動會刪除由flutter重新寫入
@@ -103,8 +109,8 @@ public class BootLoaderActivity extends Activity {
                 if (source.delete()) {
                     FlutterLogger.i("delete patch");
                 }
-                int version = pref.getInt(patch_network_version_key,0);  //取得目前更新版本
-                pref.edit().putInt(patch_version_key,version).apply();  //更新目前版本訊息
+                long version = pref.getLong(patch_network_version_key,0);  //取得目前更新版本
+                setPatchVersion(version);
                 FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
             }
         } catch (Throwable error) {
