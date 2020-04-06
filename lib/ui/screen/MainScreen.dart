@@ -6,8 +6,10 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
+import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
+import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -47,11 +49,33 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
       _setLang();
+      _checkAppVersion();
       //_addTest();
     });
     _flutterDownloaderInit();
     _notificationsInit();
     _addTask();
+  }
+
+  void _checkAppVersion() async {
+    BuildContext contextKey = navigatorKey.currentState.overlay.context;
+    if (Model.instance.autoCheckAppUpdate) {
+      if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
+        UpdateDetail value = await AppUpdate.checkUpdate();
+        Model.instance.setAlreadyUse(Model.appCheckUpdate);
+        if (value != null) {
+          //檢查到app要更新
+          AppUpdate.showUpdateDialog(contextKey, value);
+        } else {
+          //檢查捕丁
+          PatchDetail patch = await AppHotFix.checkPatchVersion();
+          if (patch != null) {
+            bool v = await AppHotFix.showUpdateDialog(contextKey, patch);
+            if (v) AppHotFix.downloadPatch(contextKey, patch);
+          }
+        }
+      }
+    }
   }
 
   void _addTest() async {
@@ -78,12 +102,15 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {});
   }
 
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
+        appProvider.navigatorKey = navigatorKey;
         return MaterialApp(
-          navigatorKey: appProvider.navigatorKey,
+          navigatorKey: navigatorKey,
           title: Constants.appName,
           theme: appProvider.theme,
           darkTheme: Constants.darkTheme,

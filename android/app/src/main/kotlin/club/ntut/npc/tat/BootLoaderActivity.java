@@ -47,7 +47,7 @@ public class BootLoaderActivity extends Activity {
         return versionName;
     }
 
-    void setPatchVersion(long version){
+    void setPatchVersion(long version) {
         pref.edit().putLong(patch_version_key, version).apply();
     }
 
@@ -80,9 +80,17 @@ public class BootLoaderActivity extends Activity {
         boolean launch_success = pref.contains(flutter_state_key);  //如果flutter沒有正常啟動就不會寫入
         if (!launch_success) {  //載入失敗刪除補丁
             File dest = new File(dir, hotfixFileName);
-            if (dest.delete()) {
-                setPatchVersion(0);
+            try {
+                if (dest.exists() && !dest.delete()) {  //刪除舊的補釘
+                    FileWriter writer = new FileWriter(dest, false);
+                    writer.write("");
+                    writer.flush();
+                    writer.close();
+                }
+            } catch (Exception e) {
+                FlutterLogger.i("delete fail");
             }
+            setPatchVersion(0);
         }
         pref.edit().remove(flutter_state_key).apply(); //每次啟動會刪除由flutter重新寫入
     }
@@ -109,7 +117,7 @@ public class BootLoaderActivity extends Activity {
                 if (source.delete()) {
                     FlutterLogger.i("delete patch");
                 }
-                long version = pref.getLong(patch_network_version_key,0);  //取得目前更新版本
+                long version = pref.getLong(patch_network_version_key, 0);  //取得目前更新版本
                 setPatchVersion(version);
                 FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
             }

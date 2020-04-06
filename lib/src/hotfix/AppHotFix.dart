@@ -9,7 +9,9 @@ import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
+import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
+import 'package:flutter_app/src/util/FileUtils.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -134,25 +136,61 @@ class AppHotFix {
 
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
-    await DioConnector.instance.dio
-        .download(value.url, filePath + "/$hotfixFileName");
     getNetWorkPatchVersion(int.parse(value.newVersion));
-    showDialog<void>(
-      useRootNavigator: false,
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        String title = "下載完成，手動重啟完成更新";
-        return AlertDialog(
-          title: Text(title),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(R.current.sure),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+    ReceivedNotification receivedNotification = ReceivedNotification(
+        title: "下載補丁中", body: R.current.prepareDownload, payload: null); //通知窗訊息
+    CancelToken cancelToken; //取消下載用
+    ProgressCallback onReceiveProgress; //下載進度回調
+    await Notifications.instance
+        .showIndeterminateProgressNotification(receivedNotification);
+    //顯示下載進度通知窗
+
+    int nowSize = 0;
+    onReceiveProgress = (int count, int total) async {
+      receivedNotification.body = FileUtils.formatBytes(count, 2);
+      if ((nowSize + 1024 * 128) > count && nowSize != 0) {
+        //128KB顯示一次
+        return;
+      }
+      nowSize = count;
+      if (count < total) {
+        Notifications.instance.showProgressNotification(
+            receivedNotification, 100, (count * 100 / total).round()); //顯示下載進度
+      } else {
+        Notifications.instance.showIndeterminateProgressNotification(
+            receivedNotification); //顯示下載進度
+      }
+    };
+    DioConnector.instance.download(
+      value.url,
+      (Headers responseHeaders) {
+        return filePath + "/$hotfixFileName";
+      },
+      progressCallback: onReceiveProgress,
+      cancelToken: cancelToken,
+    ).whenComplete(
+      () async {
+        //顯示下載萬完成通知窗
+        await Notifications.instance
+            .cancelNotification(receivedNotification.id);
+        showDialog<void>(
+          useRootNavigator: false,
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            String title = "下載完成，手動重啟完成更新";
+            return AlertDialog(
+              title: Text(title),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(R.current.sure),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
         );
       },
     );

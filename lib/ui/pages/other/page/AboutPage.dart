@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -48,17 +49,23 @@ class _AboutPageState extends State<AboutPage> {
     super.initState();
   }
 
-  void _onListViewPress(onListViewPress value) {
+  void _onListViewPress(onListViewPress value) async{
     switch (value) {
       case onListViewPress.AppUpdate:
         MyToast.show(R.current.checkingVersion);
-        AppUpdate.checkUpdate().then((value) {
-          if (value != null) {
-            AppUpdate.showUpdateDialog(context, value);
-          } else {
-            MyToast.show(R.current.isNewVersion);
+        UpdateDetail value = await AppUpdate.checkUpdate();
+        Model.instance.setAlreadyUse(Model.appCheckUpdate);
+        if (value != null) {
+          //檢查到app要更新
+          AppUpdate.showUpdateDialog(context, value);
+        } else {
+          //檢查捕丁
+          PatchDetail patch = await AppHotFix.checkPatchVersion();
+          if (patch != null) {
+            bool v = await AppHotFix.showUpdateDialog(context, patch);
+            if (v) AppHotFix.downloadPatch(context,patch);
           }
-        });
+        }
         break;
       case onListViewPress.Contribution:
         const url = AppLink.gitHub;

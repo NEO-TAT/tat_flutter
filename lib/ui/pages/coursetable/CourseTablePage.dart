@@ -10,7 +10,6 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -18,7 +17,6 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -72,7 +70,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
         }); //尚未登入
       } else {
         _loadSetting();
-        _checkAppVersion();
       }
     });
   }
@@ -148,26 +145,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
       });
     } catch (e) {
       Log.d("setState() called after dispose()");
-    }
-  }
-
-  void _checkAppVersion() async {
-    if (Model.instance.autoCheckAppUpdate) {
-      if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
-        UpdateDetail value = await AppUpdate.checkUpdate();
-        Model.instance.setAlreadyUse(Model.appCheckUpdate);
-        if (value != null) {
-          //檢查到app要更新
-          AppUpdate.showUpdateDialog(context, value);
-        } else {
-          //檢查捕丁
-          PatchDetail patch = await AppHotFix.checkPatchVersion();
-          if (patch != null) {
-            bool v = await AppHotFix.showUpdateDialog(context, patch);
-            if (v) AppHotFix.downloadPatch(context,patch);
-          }
-        }
-      }
     }
   }
 
