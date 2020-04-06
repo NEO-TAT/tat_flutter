@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:android_intent/android_intent.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +40,8 @@ class AppHotFix {
   static Future<void> deleteHotFix() async {
     var pref = await SharedPreferences.getInstance();
     pref.remove(flutterState); //告訴bootloader 需要刪除補丁
+    await Future.delayed(Duration(seconds: 5));
+    getToCloseApp();
   }
 
   static Future<String> _getUpdatePath() async {
@@ -135,6 +138,18 @@ class AppHotFix {
     return v;
   }
 
+  static void getToCloseApp()async{
+    if (Platform.isAndroid) {
+      String packageName = AppLink.appPackageName;
+      final AndroidIntent intent = AndroidIntent(
+        action: 'action_application_details_settings',
+        data: 'package:$packageName', // replace com.example.app with your applicationId
+      );
+      await intent.launch();
+    }
+  }
+
+
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
     getNetWorkPatchVersion(int.parse(value.newVersion));
@@ -179,7 +194,7 @@ class AppHotFix {
           context: context,
           barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
-            String title = "下載完成，將重啟完成更新";
+            String title = "下載完成，關閉APP完成更新";
             return AlertDialog(
               title: Text(title),
               actions: <Widget>[
@@ -187,7 +202,7 @@ class AppHotFix {
                   child: Text(R.current.sure),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    SystemNavigator.pop();  //關閉app
+                    getToCloseApp();
                   },
                 ),
               ],

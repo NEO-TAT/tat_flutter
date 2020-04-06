@@ -120,8 +120,7 @@ class AppUpdate {
   }
 
   static void _openPlayStore() async {
-    String packageId = "club.ntut.npc.tat";
-    String url = "https://play.google.com/store/apps/details?id=$packageId";
+    String url = AppLink.playStore;
     if (await canLaunch(url)) {
       await launch(url);
     }

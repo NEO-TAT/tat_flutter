@@ -1,5 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
@@ -49,7 +50,7 @@ class _AboutPageState extends State<AboutPage> {
     super.initState();
   }
 
-  void _onListViewPress(onListViewPress value) async{
+  void _onListViewPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.AppUpdate:
         MyToast.show(R.current.checkingVersion);
@@ -63,7 +64,7 @@ class _AboutPageState extends State<AboutPage> {
           PatchDetail patch = await AppHotFix.checkPatchVersion();
           if (patch != null) {
             bool v = await AppHotFix.showUpdateDialog(context, patch);
-            if (v) AppHotFix.downloadPatch(context,patch);
+            if (v) AppHotFix.downloadPatch(context, patch);
           }
         }
         break;
@@ -87,15 +88,13 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
-  void _onListViewLongPress(onListViewPress value) {
+  void _onListViewLongPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.Patch:
-        AppHotFix.deleteHotFix().then((version) {
-          MyToast.show("刪除補丁");
-        });
+        await AppHotFix.deleteHotFix();
+        MyToast.show("刪除補丁，APP將自動重啟");
         break;
       default:
-
         break;
     }
   }
@@ -136,7 +135,7 @@ class _AboutPageState extends State<AboutPage> {
     return Container(
       //color: Colors.yellow,
       padding:
-          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
