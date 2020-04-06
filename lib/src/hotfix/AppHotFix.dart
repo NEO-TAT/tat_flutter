@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
+import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
@@ -21,22 +22,23 @@ class PatchDetail {
 }
 
 class AppHotFix {
-  static final String githubLink =
-      "https://api.github.com/repos/NEO-TAT/NTUTCourseHelper-Flutter/contents/hotfix/";
+  static final String githubLink = AppLink.appPatchCheck;
 
   static Future<String> _getUpdatePath() async {
     Directory dir = await getExternalStorageDirectory();
     return dir.path;
   }
 
-  static Future<int> getPatchVersionNow() async {  //實際版本
+  static Future<int> getPatchVersionNow() async {
+    //實際版本
     var pref = await SharedPreferences.getInstance();
     int version = pref.getInt("patch_version_now");
     version = version ?? 0;
     return version;
   }
 
-  static Future<int> getPatchVersion() async {  //更新的版本
+  static Future<int> getPatchVersion() async {
+    //更新的版本
     var pref = await SharedPreferences.getInstance();
     int version = pref.getInt("patch_version");
     version = version ?? 0;
@@ -122,7 +124,7 @@ class AppHotFix {
     return v;
   }
 
-  static void downloadPatch(BuildContext context,PatchDetail value) async {
+  static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
     await DioConnector.instance.dio
         .download(value.url, filePath + "/hotfixed.so");

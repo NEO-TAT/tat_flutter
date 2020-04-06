@@ -20,8 +20,7 @@ class UpdateDetail {
 
 class AppUpdate {
   static Future<UpdateDetail> checkUpdate() async {
-    String androidCheckUrl =
-        "https://api.github.com/repos/NEO-TAT/NTUTCourseHelper-Flutter/releases/latest";
+    String androidCheckUrl = AppLink.appUpdateCheck;
     if (Platform.isAndroid) {
       ConnectorParameter parameter = ConnectorParameter(androidCheckUrl);
       String result = await DioConnector.instance.getDataByGet(parameter);
