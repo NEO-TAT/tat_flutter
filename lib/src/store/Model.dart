@@ -408,6 +408,7 @@ class Model {
     await loadSemesterJsonList();
     String version = await AppUpdate.getAppVersion();
     _writeString("version", version);
+    pref.setBool("flutter_state", true);  //告訴bootloader activity flutter正常啟動
 
     //DioConnector.instance.deleteCookies();
   }

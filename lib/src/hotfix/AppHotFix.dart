@@ -29,7 +29,14 @@ class AppHotFix {
     return dir.path;
   }
 
-  static Future<int> getPatchVersion() async {
+  static Future<int> getPatchVersionNow() async {  //實際版本
+    var pref = await SharedPreferences.getInstance();
+    int version = pref.getInt("patch_version_now");
+    version = version ?? 0;
+    return version;
+  }
+
+  static Future<int> getPatchVersion() async {  //更新的版本
     var pref = await SharedPreferences.getInstance();
     int version = pref.getInt("patch_version");
     version = version ?? 0;
@@ -118,7 +125,7 @@ class AppHotFix {
   static void downloadPatch(BuildContext context,PatchDetail value) async {
     String filePath = await _getUpdatePath();
     await DioConnector.instance.dio
-        .download(value.url, filePath + "hotfixed.so");
+        .download(value.url, filePath + "/hotfixed.so");
     setPatchVersion(int.parse(value.newVersion));
     showDialog<void>(
       useRootNavigator: false,
