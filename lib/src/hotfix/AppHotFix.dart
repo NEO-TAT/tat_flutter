@@ -33,15 +33,19 @@ class AppHotFix {
   static final String hotfixFileName = "hotfix.so";
 
   static Future<void> hotFixSuccess() async {
-    var pref = await SharedPreferences.getInstance();
-    pref.setBool(flutterState, true); //告訴bootloader activity flutter正常啟動
+    if (Platform.isAndroid) {
+      var pref = await SharedPreferences.getInstance();
+      pref.setBool(flutterState, true); //告訴bootloader activity flutter正常啟動
+    }
   }
 
   static Future<void> deleteHotFix() async {
-    var pref = await SharedPreferences.getInstance();
-    pref.remove(flutterState); //告訴bootloader 需要刪除補丁
-    await Future.delayed(Duration(seconds: 2));
-    getToCloseApp();
+    if (Platform.isAndroid) {
+      var pref = await SharedPreferences.getInstance();
+      pref.remove(flutterState); //告訴bootloader 需要刪除補丁
+      await Future.delayed(Duration(seconds: 2));
+      getToCloseApp();
+    }
   }
 
   static Future<String> _getUpdatePath() async {
@@ -49,7 +53,7 @@ class AppHotFix {
     return dir.path;
   }
 
-  static Future<int> getPatchVersion() async {
+  static Future<int> _getPatchVersion() async {
     //更新的版本
     var pref = await SharedPreferences.getInstance();
     int version = pref.getInt(patchVersion);
@@ -57,45 +61,44 @@ class AppHotFix {
     return version;
   }
 
-  static Future<void> getNetWorkPatchVersion(int version) async {
+  static Future<void> _getNetWorkPatchVersion(int version) async {
     //更新的版本
     var pref = await SharedPreferences.getInstance();
     pref.setInt(patchNetWorkVersion, version);
   }
 
   static Future<PatchDetail> checkPatchVersion() async {
-    if (!Platform.isAndroid) {
-      return null;
-    }
-    int version = await getPatchVersion();
-    String appVersion = await AppUpdate.getAppVersion();
-    String url = sprintf(githubLink, [appVersion]);
-    Log.d(version.toString());
-    Log.d(url);
-    Response response = await DioConnector.instance.dio
-        .get(url, options: Options(responseType: ResponseType.plain));
-    String result = response.toString();
-    if (response.statusCode == HttpStatus.ok) {
-      //200
-      List<GithubFileAPIJson> name =
-          getGithubFileAPIJsonList(json.decode(result));
-      int maxVersion = version;
-      GithubFileAPIJson newVersion;
-      for (GithubFileAPIJson i in name) {
-        int v = int.parse(i.name.split(".")[0]);
-        if (v > maxVersion) {
-          maxVersion = v;
-          newVersion = i;
+    if (Platform.isAndroid) {
+      int version = await _getPatchVersion();
+      String appVersion = await AppUpdate.getAppVersion();
+      String url = sprintf(githubLink, [appVersion]);
+      Log.d(version.toString());
+      Log.d(url);
+      Response response = await DioConnector.instance.dio
+          .get(url, options: Options(responseType: ResponseType.plain));
+      String result = response.toString();
+      if (response.statusCode == HttpStatus.ok) {
+        //200
+        List<GithubFileAPIJson> name =
+            getGithubFileAPIJsonList(json.decode(result));
+        int maxVersion = version;
+        GithubFileAPIJson newVersion;
+        for (GithubFileAPIJson i in name) {
+          int v = int.parse(i.name.split(".")[0]);
+          if (v > maxVersion) {
+            maxVersion = v;
+            newVersion = i;
+          }
         }
-      }
-      if (newVersion != null) {
-        //Log.d(maxVersion.toString());
-        //Log.d(newVersion.downloadUrl);
-        PatchDetail detail = PatchDetail();
-        detail.newVersion = maxVersion.toString();
-        detail.url = newVersion.downloadUrl;
-        detail.detail = "更新後重新開啟套用";
-        return detail;
+        if (newVersion != null) {
+          //Log.d(maxVersion.toString());
+          //Log.d(newVersion.downloadUrl);
+          PatchDetail detail = PatchDetail();
+          detail.newVersion = maxVersion.toString();
+          detail.url = newVersion.downloadUrl;
+          detail.detail = "更新後重新開啟套用";
+          return detail;
+        }
       }
     }
     return null;
@@ -138,21 +141,21 @@ class AppHotFix {
     return v;
   }
 
-  static void getToCloseApp()async{
+  static void getToCloseApp() async {
     if (Platform.isAndroid) {
       String packageName = AppLink.appPackageName;
       final AndroidIntent intent = AndroidIntent(
         action: 'action_application_details_settings',
-        data: 'package:$packageName', // replace com.example.app with your applicationId
+        data:
+            'package:$packageName', // replace com.example.app with your applicationId
       );
       await intent.launch();
     }
   }
 
-
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
-    getNetWorkPatchVersion(int.parse(value.newVersion));
+    _getNetWorkPatchVersion(int.parse(value.newVersion));
     ReceivedNotification receivedNotification = ReceivedNotification(
         title: "下載補丁中", body: R.current.prepareDownload, payload: null); //通知窗訊息
     CancelToken cancelToken; //取消下載用
