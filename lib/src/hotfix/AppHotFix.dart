@@ -40,7 +40,7 @@ class AppHotFix {
   static Future<void> deleteHotFix() async {
     var pref = await SharedPreferences.getInstance();
     pref.remove(flutterState); //告訴bootloader 需要刪除補丁
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 2));
     getToCloseApp();
   }
 

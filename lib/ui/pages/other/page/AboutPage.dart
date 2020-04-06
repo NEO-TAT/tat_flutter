@@ -91,8 +91,8 @@ class _AboutPageState extends State<AboutPage> {
   void _onListViewLongPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.Patch:
-        await AppHotFix.deleteHotFix();
         MyToast.show("刪除補丁，APP將自動重啟");
+        await AppHotFix.deleteHotFix();
         break;
       default:
         break;
