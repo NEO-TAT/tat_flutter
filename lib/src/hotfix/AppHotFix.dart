@@ -33,7 +33,7 @@ class AppHotFix {
     var pref = await SharedPreferences.getInstance();
     int version = pref.getInt("patch_version");
     version = version ?? 0;
-    return 0;
+    return version;
   }
 
   static Future<void> setPatchVersion(int version) async {
@@ -66,8 +66,8 @@ class AppHotFix {
         }
       }
       if (newVersion != null) {
-        Log.d(maxVersion.toString());
-        Log.d(newVersion.downloadUrl);
+        //Log.d(maxVersion.toString());
+        //Log.d(newVersion.downloadUrl);
         PatchDetail detail = PatchDetail();
         detail.newVersion = maxVersion.toString();
         detail.url = newVersion.downloadUrl;
@@ -78,8 +78,9 @@ class AppHotFix {
     return null;
   }
 
-  static void showUpdateDialog(BuildContext context, PatchDetail value) {
-    showDialog<void>(
+  static Future<bool> showUpdateDialog(
+      BuildContext context, PatchDetail value) async {
+    bool v = await showDialog<bool>(
       useRootNavigator: false,
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -98,41 +99,36 @@ class AppHotFix {
             FlatButton(
               child: Text(R.current.cancel),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(false);
               },
             ),
             FlatButton(
               child: Text(R.current.update),
               onPressed: () {
-                Navigator.of(context).pop();
-                _downloadTask(context , value);
+                Navigator.of(context).pop(true);
               },
             ),
           ],
         );
       },
     );
+    return v;
   }
 
-  static void _downloadTask(BuildContext context , PatchDetail value) async{
+  static void downloadPatch(BuildContext context,PatchDetail value) async {
     String filePath = await _getUpdatePath();
-    await DioConnector.instance.dio.download(value.url, filePath + "hotfixed.so");
+    await DioConnector.instance.dio
+        .download(value.url, filePath + "hotfixed.so");
     setPatchVersion(int.parse(value.newVersion));
     showDialog<void>(
       useRootNavigator: false,
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        String title = "下載完成，重啟完成更新";
+        String title = "下載完成，手動重啟完成更新";
         return AlertDialog(
           title: Text(title),
           actions: <Widget>[
-            FlatButton(
-              child: Text(R.current.cancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
             FlatButton(
               child: Text(R.current.sure),
               onPressed: () {

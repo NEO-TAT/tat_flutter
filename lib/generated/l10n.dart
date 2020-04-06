@@ -1242,6 +1242,15 @@ class S {
     );
   }
 
+  String get patchVersion {
+    return Intl.message(
+      'Patch version',
+      name: 'patchVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',

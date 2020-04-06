@@ -187,6 +187,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "password" : MessageLookupByLibrary.simpleMessage("密碼"),
     "passwordExpiredWarning" : MessageLookupByLibrary.simpleMessage("密碼即將過期，請盡快更新密碼"),
     "passwordNull" : MessageLookupByLibrary.simpleMessage("請輸入密碼"),
+    "patchVersion" : MessageLookupByLibrary.simpleMessage("補丁版本"),
     "percentage" : MessageLookupByLibrary.simpleMessage("百分比"),
     "performanceScores" : MessageLookupByLibrary.simpleMessage("操行成績"),
     "philosophicalDimension" : MessageLookupByLibrary.simpleMessage("哲學向度"),

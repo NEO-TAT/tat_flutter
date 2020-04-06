@@ -134,6 +134,7 @@
   "closeOnce": "Press again to close",
   "darkMode": "Dark mode",
   "downloadPath": "Download path",
+  "patchVersion" : "Patch version",
   "___________________iSchoolUi___________________": "註解",
   "course": "Course",
   "announcement": "Announcement",

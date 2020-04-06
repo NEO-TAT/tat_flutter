@@ -2,12 +2,13 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
+import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum onListViewPress { AppUpdate, Contribution, Version }
+enum onListViewPress { AppUpdate, Contribution, Version , Patch }
 
 class AboutPage extends StatefulWidget {
   @override
@@ -33,6 +34,12 @@ class _AboutPageState extends State<AboutPage> {
       "color": Colors.blue,
       "title": R.current.versionInfo,
       "onPress": onListViewPress.Version
+    },
+    {
+      "icon": EvaIcons.infoOutline,
+      "color": Colors.amberAccent,
+      "title": R.current.patchVersion,
+      "onPress": onListViewPress.Patch
     },
   ];
 
@@ -60,6 +67,11 @@ class _AboutPageState extends State<AboutPage> {
       case onListViewPress.Version:
         AppUpdate.getAppVersion().then((version) {
           MyToast.show(version);
+        });
+        break;
+      case onListViewPress.Patch:
+        AppHotFix.getPatchVersion().then((version) {
+          MyToast.show(version.toString());
         });
         break;
       default:

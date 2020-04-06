@@ -151,17 +151,20 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  void _checkAppVersion() async{
+  void _checkAppVersion() async {
     if (Model.instance.autoCheckAppUpdate) {
       if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
         UpdateDetail value = await AppUpdate.checkUpdate();
         Model.instance.setAlreadyUse(Model.appCheckUpdate);
-        if (value != null) {  //檢查到app要更新
+        if (value != null) {
+          //檢查到app要更新
           AppUpdate.showUpdateDialog(context, value);
-        }else{  //檢查捕丁
+        } else {
+          //檢查捕丁
           PatchDetail patch = await AppHotFix.checkPatchVersion();
-          if(patch != null){
-            AppHotFix.showUpdateDialog(context, patch);
+          if (patch != null) {
+            bool v = await AppHotFix.showUpdateDialog(context, patch);
+            if (v) AppHotFix.downloadPatch(context,patch);
           }
         }
       }

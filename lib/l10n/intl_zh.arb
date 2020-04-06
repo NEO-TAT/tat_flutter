@@ -134,6 +134,7 @@
   "closeOnce": "再按一次關閉",
   "darkMode": "暗黑模式",
   "downloadPath" : "下載位置",
+  "patchVersion" : "補丁版本",
   "___________________iSchoolUi___________________": "註解",
   "course": "課程",
   "announcement": "公告",
