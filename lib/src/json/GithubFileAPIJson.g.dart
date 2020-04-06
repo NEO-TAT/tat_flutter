@@ -15,6 +15,7 @@ GithubFileAPIJson _$GithubFileAPIJsonFromJson(Map<String, dynamic> json) {
     json['url'] as String,
     json['html_url'] as String,
     json['git_url'] as String,
+    json['download_url'] as String,
     json['type'] as String,
     json['_links'] == null
         ? null
@@ -31,6 +32,7 @@ Map<String, dynamic> _$GithubFileAPIJsonToJson(GithubFileAPIJson instance) =>
       'url': instance.url,
       'html_url': instance.htmlUrl,
       'git_url': instance.gitUrl,
+      'download_url': instance.downloadUrl,
       'type': instance.type,
       '_links': instance.links,
     };

@@ -34,13 +34,16 @@ class GithubFileAPIJson{
   @JsonKey(name: 'git_url')
   String gitUrl;
 
+  @JsonKey(name: 'download_url')
+  String downloadUrl;
+
   @JsonKey(name: 'type')
   String type;
 
   @JsonKey(name: '_links')
   _links links;
 
-  GithubFileAPIJson(this.name,this.path,this.sha,this.size,this.url,this.htmlUrl,this.gitUrl,this.type,this.links,);
+  GithubFileAPIJson(this.name,this.path,this.sha,this.size,this.url,this.htmlUrl,this.gitUrl,this.downloadUrl,this.type,this.links,);
 
   factory GithubFileAPIJson.fromJson(Map<String, dynamic> srcJson) => _$GithubFileAPIJsonFromJson(srcJson);
 
@@ -64,3 +67,4 @@ class _links{
   factory _links.fromJson(Map<String, dynamic> srcJson) => _$_linksFromJson(srcJson);
 
 }
+

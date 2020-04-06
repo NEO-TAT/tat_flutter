@@ -10,6 +10,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -150,17 +151,19 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  void _checkAppVersion() {
+  void _checkAppVersion() async{
     if (Model.instance.autoCheckAppUpdate) {
       if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
-        AppUpdate.checkUpdate().then(
-          (value) {
-            Model.instance.setAlreadyUse(Model.appCheckUpdate);
-            if (value != null) {
-              AppUpdate.showUpdateDialog(context, value);
-            }
-          },
-        );
+        UpdateDetail value = await AppUpdate.checkUpdate();
+        Model.instance.setAlreadyUse(Model.appCheckUpdate);
+        if (value != null) {  //檢查到app要更新
+          AppUpdate.showUpdateDialog(context, value);
+        }else{  //檢查捕丁
+          PatchDetail patch = await AppHotFix.checkPatchVersion();
+          if(patch != null){
+            AppHotFix.showUpdateDialog(context, patch);
+          }
+        }
       }
     }
   }
