@@ -101,6 +101,8 @@ public class BootLoaderActivity extends Activity {
             } else if (dest.exists()) {  //檢查是否有之前更新的補丁
                 FlutterLogger.i("load fixed file finish: " + dest.getAbsolutePath());
                 FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
+            } else {
+                pref.edit().putInt(patch_version_now_key, 0).apply();  //無補丁版本
             }
         } catch (Throwable error) {
             FlutterLogger.e("copy file error: " + error);

@@ -23,6 +23,20 @@ class PatchDetail {
 
 class AppHotFix {
   static final String githubLink = AppLink.appPatchCheck;
+  static final String flutterState = "flutter_state";
+  static final String patchVersion = "patch_version";
+  static final String patchVersionNow = "patch_version_now";
+
+  static Future<void> hotFixSuccess() async {
+    var pref = await SharedPreferences.getInstance();
+    pref.setBool(flutterState, true); //告訴bootloader activity flutter正常啟動
+  }
+
+  static Future<void> deleteHotFix() async {
+    var pref = await SharedPreferences.getInstance();
+    pref.remove(flutterState); //告訴bootloader activity flutter正常啟動
+    setPatchVersion(0);
+  }
 
   static Future<String> _getUpdatePath() async {
     Directory dir = await getExternalStorageDirectory();
@@ -32,7 +46,7 @@ class AppHotFix {
   static Future<int> getPatchVersionNow() async {
     //實際版本
     var pref = await SharedPreferences.getInstance();
-    int version = pref.getInt("patch_version_now");
+    int version = pref.getInt(patchVersionNow);
     version = version ?? 0;
     return version;
   }
@@ -40,14 +54,14 @@ class AppHotFix {
   static Future<int> getPatchVersion() async {
     //更新的版本
     var pref = await SharedPreferences.getInstance();
-    int version = pref.getInt("patch_version");
+    int version = pref.getInt(patchVersion);
     version = version ?? 0;
     return version;
   }
 
   static Future<void> setPatchVersion(int version) async {
     var pref = await SharedPreferences.getInstance();
-    await pref.setInt("patch_version", version);
+    await pref.setInt(patchVersion, version);
   }
 
   static Future<PatchDetail> checkPatchVersion() async {
@@ -56,7 +70,7 @@ class AppHotFix {
     }
     int version = await getPatchVersion();
     String appVersion = await AppUpdate.getAppVersion();
-    String url = sprintf(githubLink , [appVersion]);
+    String url = sprintf(githubLink, [appVersion]);
     Log.d(version.toString());
     Log.d(url);
     Response response = await DioConnector.instance.dio

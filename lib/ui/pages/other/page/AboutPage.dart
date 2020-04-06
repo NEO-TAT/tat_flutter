@@ -8,7 +8,7 @@ import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum onListViewPress { AppUpdate, Contribution, Version , Patch }
+enum onListViewPress { AppUpdate, Contribution, Version, Patch }
 
 class AboutPage extends StatefulWidget {
   @override
@@ -80,6 +80,19 @@ class _AboutPageState extends State<AboutPage> {
     }
   }
 
+  void _onListViewLongPress(onListViewPress value) {
+    switch (value) {
+      case onListViewPress.Patch:
+        AppHotFix.deleteHotFix().then((version) {
+          MyToast.show("刪除補丁");
+        });
+        break;
+      default:
+
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,10 +105,14 @@ class _AboutPageState extends State<AboutPage> {
           Widget widget;
           widget = _buildAbout(listViewData[index]);
           return InkWell(
-              child: WidgetAnimator(widget),
-              onTap: () {
-                _onListViewPress(listViewData[index]['onPress']);
-              });
+            child: WidgetAnimator(widget),
+            onTap: () {
+              _onListViewPress(listViewData[index]['onPress']);
+            },
+            onLongPress: () {
+              _onListViewLongPress(listViewData[index]['onPress']);
+            },
+          );
         },
         separatorBuilder: (context, index) {
           // 顯示格線
