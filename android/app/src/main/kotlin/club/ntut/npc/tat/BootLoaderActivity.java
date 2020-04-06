@@ -1,9 +1,11 @@
 package club.ntut.npc.tat;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.FocusFinder;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +21,8 @@ import io.flutter.Log;
 import io.flutter.embedding.engine.hotfix.FlutterLogger;
 import io.flutter.embedding.engine.hotfix.FlutterManager;
 import io.flutter.embedding.engine.hotfix.FlutterVersion;
+
+import static android.os.Environment.getExternalStorageDirectory;
 
 public class BootLoaderActivity extends Activity {
     final String Tag = "BootLoaderActivity";
@@ -40,8 +44,9 @@ public class BootLoaderActivity extends Activity {
         }
         //更新補丁補丁
         try {
-            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File downloadDir = getApplicationContext().getExternalCacheDir();
             File source = new File(downloadDir, "hotfixed.so");
+            FlutterLogger.i(source.getAbsolutePath());
             File dest = new File(dir, "hotfix.so");
             if (source.exists()) {  //檢查是否有要更新的補丁
                 //寫入前將舊的補丁刪除
