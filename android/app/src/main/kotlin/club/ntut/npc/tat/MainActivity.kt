@@ -7,7 +7,6 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
-import weight.CourseWidgetProvider
 import java.lang.Exception
 
 class MainActivity : FlutterActivity() {
