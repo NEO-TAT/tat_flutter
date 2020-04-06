@@ -30,8 +30,8 @@ public class BootLoaderActivity extends Activity {
     final String patch_network_version_key = "flutter.patch_network";  //取的app版本
     final String hotfixFileName = "hotfix.so";
 
-    SharedPreferences pref = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE);
-    File dir = new File(getFilesDir(), "/flutter/hotfix");  //更新目錄
+    SharedPreferences pref;
+    File dir;
 
     public String getVersionName(Context context) {
         PackageManager packageManager = context.getPackageManager();
@@ -124,6 +124,8 @@ public class BootLoaderActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pref = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE);
+        dir = new File(getFilesDir(), "/flutter/hotfix");  //更新目錄
         setContentView(R.layout.bootloader_activity);
         //創建補丁存放資料夾
         checkPatchDir();
