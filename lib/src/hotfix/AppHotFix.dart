@@ -142,7 +142,7 @@ class AppHotFix {
       useRootNavigator: false,
       context: context, barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        String title = sprintf("%s v%s\n%s", ["發現新補丁版本", value.newVersion,value.platform]);
+        String title = sprintf("%s v%s\n%s", [R.current.findPatchNewVersion, value.newVersion,value.platform]);
         return AlertDialog(
           title: Text(title),
           content: SingleChildScrollView(
@@ -189,7 +189,7 @@ class AppHotFix {
     _setNetWorkPatchVersion(int.parse(value.newVersion));
 
     ReceivedNotification receivedNotification = ReceivedNotification(
-        title: "下載補丁中", body: R.current.prepareDownload, payload: null); //通知窗訊息
+        title: R.current.downloadingPatch, body: R.current.prepareDownload, payload: null); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
     await Notifications.instance
@@ -227,7 +227,7 @@ class AppHotFix {
           useRootNavigator: false,
           context: context, barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
-            String title = "下載完成，關閉APP完成更新";
+            String title = R.current.patchUpdateDown;
             return AlertDialog(
               title: Text(title),
               actions: <Widget>[

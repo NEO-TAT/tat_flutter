@@ -65,6 +65,8 @@ class _AboutPageState extends State<AboutPage> {
           if (patch != null) {
             bool v = await AppHotFix.showUpdateDialog(context, patch);
             if (v) AppHotFix.downloadPatch(context, patch);
+          } else {
+            MyToast.show(R.current.isNewVersion);
           }
         }
         break;
@@ -135,7 +137,7 @@ class _AboutPageState extends State<AboutPage> {
     return Container(
       //color: Colors.yellow,
       padding:
-      EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

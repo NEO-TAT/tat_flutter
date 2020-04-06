@@ -1251,6 +1251,33 @@ class S {
     );
   }
 
+  String get downloadingPatch {
+    return Intl.message(
+      'Downloading patch...',
+      name: 'downloadingPatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get findPatchNewVersion {
+    return Intl.message(
+      'Find the new patch version',
+      name: 'findPatchNewVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get patchUpdateDown {
+    return Intl.message(
+      'Download complete.\nPlease close the app to update',
+      name: 'patchUpdateDown',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',
