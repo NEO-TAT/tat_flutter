@@ -56,7 +56,8 @@ class AppHotFix {
     }
     int version = await getPatchVersion();
     String appVersion = await AppUpdate.getAppVersion();
-    String url = githubLink + appVersion;
+    String url = sprintf(githubLink , [appVersion]);
+    Log.d(version.toString());
     Log.d(url);
     Response response = await DioConnector.instance.dio
         .get(url, options: Options(responseType: ResponseType.plain));
