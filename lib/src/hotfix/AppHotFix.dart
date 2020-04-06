@@ -1,20 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:android_intent/android_intent.dart';
+import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
-import 'package:flutter_app/src/file/FileDownload.dart';
-import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
@@ -53,7 +50,7 @@ class AppHotFix {
     return dir.path;
   }
 
-  static Future<int> _getPatchVersion() async {
+  static Future<int> getPatchVersion() async {
     //更新的版本
     var pref = await SharedPreferences.getInstance();
     int version = pref.getInt(patchVersion);
@@ -69,7 +66,7 @@ class AppHotFix {
 
   static Future<PatchDetail> checkPatchVersion() async {
     if (Platform.isAndroid) {
-      int version = await _getPatchVersion();
+      int version = await getPatchVersion();
       String appVersion = await AppUpdate.getAppVersion();
       String url = sprintf(githubLink, [appVersion]);
       Log.d(version.toString());
@@ -163,6 +160,13 @@ class AppHotFix {
     await Notifications.instance
         .showIndeterminateProgressNotification(receivedNotification);
     //顯示下載進度通知窗
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print('Running on ${androidInfo.supported32BitAbis}');  // e.g. "Moto G (4)"
+    print('Running on ${androidInfo.supported64BitAbis}');  // e.g. "Moto G (4)"
+    print('Running on ${androidInfo.supportedAbis}');  // e.g. "Moto G (4)"
+
 
     int nowSize = 0;
     onReceiveProgress = (int count, int total) async {
