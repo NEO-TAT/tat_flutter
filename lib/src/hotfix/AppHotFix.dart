@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 
 class PatchDetail {
+  String platform;
   String newVersion;
   String detail;
   String url;
@@ -58,44 +59,78 @@ class AppHotFix {
     return version;
   }
 
-  static Future<void> _getNetWorkPatchVersion(int version) async {
+  static Future<void> _setNetWorkPatchVersion(int version) async {
     //更新的版本
     var pref = await SharedPreferences.getInstance();
     pref.setInt(patchNetWorkVersion, version);
   }
 
+  static Future<String> getData(String url) async {
+    try {
+      Log.d(url);
+      Response response = await DioConnector.instance.dio.get(
+        url,
+        options: Options(
+          responseType: ResponseType.plain,
+          validateStatus: (status) {
+            // 關閉狀態檢測
+            return status <= 500;
+          },
+        ),
+      );
+      String result = response.toString();
+      return result;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   static Future<PatchDetail> checkPatchVersion() async {
     if (Platform.isAndroid) {
-      int version = await getPatchVersion();
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      print('Running on ${androidInfo.supported32BitAbis}');
+      print('Running on ${androidInfo.supported64BitAbis}');
+      print('Running on ${androidInfo.supportedAbis}');
+      int patchVersion = await getPatchVersion();
       String appVersion = await AppUpdate.getAppVersion();
       String url = sprintf(githubLink, [appVersion]);
-      Log.d(version.toString());
-      Log.d(url);
-      Response response = await DioConnector.instance.dio
-          .get(url, options: Options(responseType: ResponseType.plain));
-      String result = response.toString();
-      if (response.statusCode == HttpStatus.ok) {
-        //200
-        List<GithubFileAPIJson> name =
+      try {
+        String result = await getData(url);
+        List<GithubFileAPIJson> versionDir =
             getGithubFileAPIJsonList(json.decode(result));
-        int maxVersion = version;
+        int maxVersion = patchVersion;
         GithubFileAPIJson newVersion;
-        for (GithubFileAPIJson i in name) {
-          int v = int.parse(i.name.split(".")[0]);
+        for (GithubFileAPIJson i in versionDir) {
+          int v = int.parse(i.name);
           if (v > maxVersion) {
             maxVersion = v;
             newVersion = i;
           }
         }
         if (newVersion != null) {
-          //Log.d(maxVersion.toString());
-          //Log.d(newVersion.downloadUrl);
-          PatchDetail detail = PatchDetail();
-          detail.newVersion = maxVersion.toString();
-          detail.url = newVersion.downloadUrl;
-          detail.detail = "更新後重新開啟套用";
-          return detail;
+          result = await getData(newVersion.url);
+          PatchDetail patchDetail = PatchDetail();
+          patchDetail.newVersion = maxVersion.toString();
+          List<GithubFileAPIJson> platformDir =
+              getGithubFileAPIJsonList(json.decode(result));
+          for (GithubFileAPIJson i in platformDir) {
+            if (i.name.contains("README.md")) {
+              patchDetail.detail = await getData(i.downloadUrl);
+              patchDetail.detail = patchDetail.detail ?? "";
+              continue;
+            } else if (androidInfo.supportedAbis.contains(i.name)) {
+              result = await getData(i.url);
+              patchDetail.url =
+                  getGithubFileAPIJsonList(json.decode(result))[0].downloadUrl;
+              patchDetail.platform =  i.name;
+              break;
+            }
+          }
+          return patchDetail;
         }
+      } catch (e) {
+        return null;
       }
     }
     return null;
@@ -105,10 +140,9 @@ class AppHotFix {
       BuildContext context, PatchDetail value) async {
     bool v = await showDialog<bool>(
       useRootNavigator: false,
-      context: context,
-      barrierDismissible: false, // user must tap button!
+      context: context, barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        String title = sprintf("%s %s", ["發現新補丁", value.newVersion]);
+        String title = sprintf("%s v%s\n%s", ["發現新補丁版本", value.newVersion,value.platform]);
         return AlertDialog(
           title: Text(title),
           content: SingleChildScrollView(
@@ -152,27 +186,20 @@ class AppHotFix {
 
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
-    _getNetWorkPatchVersion(int.parse(value.newVersion));
+    _setNetWorkPatchVersion(int.parse(value.newVersion));
+
     ReceivedNotification receivedNotification = ReceivedNotification(
         title: "下載補丁中", body: R.current.prepareDownload, payload: null); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
     await Notifications.instance
         .showIndeterminateProgressNotification(receivedNotification);
-    //顯示下載進度通知窗
-
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Running on ${androidInfo.supported32BitAbis}');  // e.g. "Moto G (4)"
-    print('Running on ${androidInfo.supported64BitAbis}');  // e.g. "Moto G (4)"
-    print('Running on ${androidInfo.supportedAbis}');  // e.g. "Moto G (4)"
-
-
+//顯示下載進度通知窗
     int nowSize = 0;
     onReceiveProgress = (int count, int total) async {
       receivedNotification.body = FileUtils.formatBytes(count, 2);
       if ((nowSize + 1024 * 128) > count && nowSize != 0) {
-        //128KB顯示一次
+//128KB顯示一次
         return;
       }
       nowSize = count;
@@ -193,13 +220,12 @@ class AppHotFix {
       cancelToken: cancelToken,
     ).whenComplete(
       () async {
-        //顯示下載萬完成通知窗
+//顯示下載萬完成通知窗
         await Notifications.instance
             .cancelNotification(receivedNotification.id);
         showDialog<void>(
           useRootNavigator: false,
-          context: context,
-          barrierDismissible: false, // user must tap button!
+          context: context, barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
             String title = "下載完成，關閉APP完成更新";
             return AlertDialog(
