@@ -44,7 +44,7 @@ public class BootLoaderActivity extends Activity {
         }
         //更新補丁補丁
         try {
-            File downloadDir = getApplicationContext().getExternalCacheDir();
+            File downloadDir = getApplicationContext().getExternalFilesDir(null);
             File source = new File(downloadDir, "hotfixed.so");
             FlutterLogger.i(source.getAbsolutePath());
             File dest = new File(dir, "hotfix.so");
