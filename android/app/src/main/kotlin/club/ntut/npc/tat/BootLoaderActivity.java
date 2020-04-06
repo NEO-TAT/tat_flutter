@@ -26,7 +26,8 @@ public class BootLoaderActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //尋找是否有補丁
+        setContentView(R.layout.bootloader_activity);
+        //創建補丁存放資料夾
         File dir = new File(getFilesDir(), "/flutter/hotfix");
         if (!dir.exists()) {
             if (dir.mkdirs()) {
@@ -37,20 +38,34 @@ public class BootLoaderActivity extends Activity {
         } else {
             FlutterLogger.i("dirs exists: " + dir.getAbsolutePath());
         }
-        File dest = new File(dir, "hotfix.so");
-        if (dest.exists()) {
-            FlutterLogger.i("find the update patch");
-            Toast.makeText(getApplicationContext(), "載入補丁", Toast.LENGTH_LONG);
+        //尋找是否有補丁
+        try {
+            File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File source = new File(downloadDir, "hotfixed.so");
+            File dest = new File(dir, "hotfix.so");
+            if (dest.exists() && !dest.delete()) {
+                FileWriter writer = new FileWriter(dest, false);
+                writer.write("");
+                writer.flush();
+                writer.close();
+            }
+            FileChannel inputChannel = new FileInputStream(source).getChannel();
+            FileChannel outputChannel = new FileOutputStream(dest).getChannel();
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+            inputChannel.close();
+            outputChannel.close();
+            if(source.delete()){
+                FlutterLogger.i("delete patch");
+            }
+            FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
             FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
+        } catch (Throwable error) {
+            FlutterLogger.e("copy file error: " + error);
         }
-        FlutterLogger.i("dirs exists: " + dir.getAbsolutePath());
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        BootLoaderActivity.this.startActivity(intent);
+        BootLoaderActivity.this.finish();
     }
-
-
-
-
 
 
 }
