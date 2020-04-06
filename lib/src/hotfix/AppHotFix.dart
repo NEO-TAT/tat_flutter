@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
@@ -178,7 +179,7 @@ class AppHotFix {
           context: context,
           barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
-            String title = "下載完成，手動重啟完成更新";
+            String title = "下載完成，將重啟完成更新";
             return AlertDialog(
               title: Text(title),
               actions: <Widget>[
@@ -186,6 +187,7 @@ class AppHotFix {
                   child: Text(R.current.sure),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    SystemNavigator.pop();  //關閉app
                   },
                 ),
               ],
