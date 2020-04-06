@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -14,11 +15,13 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.channels.FileChannel;
 
+import io.flutter.Log;
 import io.flutter.embedding.engine.hotfix.FlutterLogger;
 import io.flutter.embedding.engine.hotfix.FlutterManager;
 import io.flutter.embedding.engine.hotfix.FlutterVersion;
 
 public class BootLoaderActivity extends Activity {
+    final String Tag = "BootLoaderActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,12 +38,19 @@ public class BootLoaderActivity extends Activity {
             FlutterLogger.i("dirs exists: " + dir.getAbsolutePath());
         }
         File dest = new File(dir, "hotfix.so");
-        if(dest.exists()) {
+        if (dest.exists()) {
             FlutterLogger.i("find the update patch");
+            Toast.makeText(getApplicationContext(), "載入補丁", Toast.LENGTH_LONG);
             FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
         }
         FlutterLogger.i("dirs exists: " + dir.getAbsolutePath());
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
+
+
+
+
+
 }
