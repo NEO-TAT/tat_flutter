@@ -38,27 +38,33 @@ public class BootLoaderActivity extends Activity {
         } else {
             FlutterLogger.i("dirs exists: " + dir.getAbsolutePath());
         }
-        //尋找是否有補丁
+        //更新補丁補丁
         try {
             File downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File source = new File(downloadDir, "hotfixed.so");
             File dest = new File(dir, "hotfix.so");
-            if (dest.exists() && !dest.delete()) {
-                FileWriter writer = new FileWriter(dest, false);
-                writer.write("");
-                writer.flush();
-                writer.close();
+            if (source.exists()) {  //檢查是否有要更新的補丁
+                //寫入前將舊的補丁刪除
+                if (dest.exists() && !dest.delete()) {
+                    FileWriter writer = new FileWriter(dest, false);
+                    writer.write("");
+                    writer.flush();
+                    writer.close();
+                }
+                FileChannel inputChannel = new FileInputStream(source).getChannel();
+                FileChannel outputChannel = new FileOutputStream(dest).getChannel();
+                outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+                inputChannel.close();
+                outputChannel.close();
+                if (source.delete()) {
+                    FlutterLogger.i("delete patch");
+                }
+                FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
+                FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
+            }else if(dest.exists()){  //檢查是否有之前更新的補丁
+                FlutterLogger.i("load fixed file finish: " + dest.getAbsolutePath());
+                FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
             }
-            FileChannel inputChannel = new FileInputStream(source).getChannel();
-            FileChannel outputChannel = new FileOutputStream(dest).getChannel();
-            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-            inputChannel.close();
-            outputChannel.close();
-            if(source.delete()){
-                FlutterLogger.i("delete patch");
-            }
-            FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
-            FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
         } catch (Throwable error) {
             FlutterLogger.e("copy file error: " + error);
         }
