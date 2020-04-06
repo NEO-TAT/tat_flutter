@@ -70,7 +70,7 @@ class _AboutPageState extends State<AboutPage> {
         });
         break;
       case onListViewPress.Patch:
-        AppHotFix.getPatchVersionNow().then((version) {
+        AppHotFix.getPatchVersion().then((version) {
           MyToast.show(version.toString());
         });
         break;

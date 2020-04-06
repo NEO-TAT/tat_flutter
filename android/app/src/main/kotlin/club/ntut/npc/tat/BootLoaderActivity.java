@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.lang.reflect.Array;
 import java.nio.channels.FileChannel;
 
 import io.flutter.embedding.engine.hotfix.FlutterLogger;
@@ -24,9 +25,13 @@ public class BootLoaderActivity extends Activity {
     final String Tag = "BootLoaderActivity";
 
     final String patch_version_key = "flutter.patch_version";
-    final String patch_version_now_key = "flutter.patch_version_now";
     final String flutter_state_key = "flutter.flutter_state";
-    final String app_version_key = "flutter.version";
+    final String app_version_key = "flutter.version";  //取的app版本
+    final String patch_network_version_key = "flutter.patch_network";  //取的app版本
+    final String hotfixFileName = "hotfix.so";
+
+    SharedPreferences pref = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE);
+    File dir = new File(getFilesDir(), "/flutter/hotfix");  //更新目錄
 
     public String getVersionName(Context context) {
         PackageManager packageManager = context.getPackageManager();
@@ -41,12 +46,7 @@ public class BootLoaderActivity extends Activity {
         return versionName;
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.bootloader_activity);
-        //創建補丁存放資料夾
-        File dir = new File(getFilesDir(), "/flutter/hotfix");
+    void checkPatchDir() {
         if (!dir.exists()) {
             if (dir.mkdirs()) {
                 FlutterLogger.i("mkdirs success: " + dir.getAbsolutePath());
@@ -56,31 +56,40 @@ public class BootLoaderActivity extends Activity {
         } else {
             FlutterLogger.i("dirs exists: " + dir.getAbsolutePath());
         }
-        SharedPreferences pref = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE);
+    }
+
+    void handleAppVersionUpdate() {
         String appVersionNow = getVersionName(getApplicationContext());
         String appVersionName = pref.getString(app_version_key, appVersionNow);
         boolean app_version_update = !appVersionName.contains(appVersionNow); //版本號不同刪除補丁
-        FlutterLogger.i(String.format("app_version_now:%s app_version:%s %s", appVersionNow, appVersionName, app_version_update));
-        boolean launch_success = pref.contains(flutter_state_key);
-        if (!launch_success || app_version_update) {  //載入失敗刪除補丁或是app版本更新
-            File dest = new File(dir, "hotfix.so");
+        if (app_version_update) {  //app版本更新
+            File dest = new File(dir, hotfixFileName);
             if (dest.delete()) {
-                pref.edit().putInt(patch_version_now_key, 0).apply();  //代表補丁被刪除了
+                pref.edit().putInt(patch_version_key, 0).apply();
             }
-            if (app_version_update) {
+        }
+    }
+
+    void handleAppCrash() {
+        boolean launch_success = pref.contains(flutter_state_key);  //如果flutter沒有正常啟動就不會寫入
+        if (!launch_success) {  //載入失敗刪除補丁
+            File dest = new File(dir, hotfixFileName);
+            if (dest.delete()) {
                 pref.edit().putInt(patch_version_key, 0).apply();
             }
         }
         pref.edit().remove(flutter_state_key).apply(); //每次啟動會刪除由flutter重新寫入
-        //更新補丁補丁
+    }
+
+
+    void handlePatchUpdate() {
         try {
             File downloadDir = getApplicationContext().getExternalFilesDir(null);
-            File source = new File(downloadDir, "hotfixed.so");
-            FlutterLogger.i(source.getAbsolutePath());
-            File dest = new File(dir, "hotfix.so");
+            File source = new File(downloadDir, hotfixFileName);
+            File dest = new File(dir, hotfixFileName);
             if (source.exists()) {  //檢查是否有要更新的補丁
                 //寫入前將舊的補丁刪除
-                if (dest.exists() && !dest.delete()) {
+                if (dest.exists() && !dest.delete()) {  //刪除舊的補釘
                     FileWriter writer = new FileWriter(dest, false);
                     writer.write("");
                     writer.flush();
@@ -94,19 +103,39 @@ public class BootLoaderActivity extends Activity {
                 if (source.delete()) {
                     FlutterLogger.i("delete patch");
                 }
+                int version = pref.getInt(patch_network_version_key,0);  //取得目前更新版本
+                pref.edit().putInt(patch_version_key,version).apply();  //更新目前版本訊息
                 FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
-                FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
-                int patch_update_version = pref.getInt(patch_version_key, 0);
-                pref.edit().putInt(patch_version_now_key, patch_update_version).apply();  //更新實際執行補丁版本
-            } else if (dest.exists()) {  //檢查是否有之前更新的補丁
-                FlutterLogger.i("load fixed file finish: " + dest.getAbsolutePath());
-                FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
-            } else {
-                pref.edit().putInt(patch_version_now_key, 0).apply();  //無補丁版本
             }
         } catch (Throwable error) {
             FlutterLogger.e("copy file error: " + error);
         }
+    }
+
+
+    void loadPatch() {
+        File dest = new File(dir, hotfixFileName);
+        if (dest.exists()) {  //檢查如果補釘存在就載入
+            FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
+        }
+    }
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.bootloader_activity);
+        //創建補丁存放資料夾
+        checkPatchDir();
+        //app版本更新刪除patch
+        handleAppVersionUpdate();
+        //處理更新補釘後app無法開啟
+        handleAppCrash();
+        //檢查補釘是否要更新
+        handlePatchUpdate();
+        //載入補釘
+        loadPatch();
+        //啟動flutter
         Intent intent = new Intent(this, MainActivity.class);
         BootLoaderActivity.this.startActivity(intent);
         BootLoaderActivity.this.finish();

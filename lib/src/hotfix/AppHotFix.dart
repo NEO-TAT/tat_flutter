@@ -24,8 +24,9 @@ class PatchDetail {
 class AppHotFix {
   static final String githubLink = AppLink.appPatchCheck;
   static final String flutterState = "flutter_state";
-  static final String patchVersion = "patch_version";
-  static final String patchVersionNow = "patch_version_now";
+  static final String patchVersion = "patch_version"; //目前版本
+  static final String patchNetWorkVersion = "patch_network"; //目前版本
+  static final String hotfixFileName = "hotfix.so";
 
   static Future<void> hotFixSuccess() async {
     var pref = await SharedPreferences.getInstance();
@@ -34,21 +35,12 @@ class AppHotFix {
 
   static Future<void> deleteHotFix() async {
     var pref = await SharedPreferences.getInstance();
-    pref.remove(flutterState); //告訴bootloader activity flutter正常啟動
-    setPatchVersion(0);
+    pref.remove(flutterState); //告訴bootloader 需要刪除補丁
   }
 
   static Future<String> _getUpdatePath() async {
     Directory dir = await getExternalStorageDirectory();
     return dir.path;
-  }
-
-  static Future<int> getPatchVersionNow() async {
-    //實際版本
-    var pref = await SharedPreferences.getInstance();
-    int version = pref.getInt(patchVersionNow);
-    version = version ?? 0;
-    return version;
   }
 
   static Future<int> getPatchVersion() async {
@@ -59,9 +51,10 @@ class AppHotFix {
     return version;
   }
 
-  static Future<void> setPatchVersion(int version) async {
+  static Future<void> getNetWorkPatchVersion(int version) async {
+    //更新的版本
     var pref = await SharedPreferences.getInstance();
-    await pref.setInt(patchVersion, version);
+    pref.setInt(patchNetWorkVersion, version);
   }
 
   static Future<PatchDetail> checkPatchVersion() async {
@@ -142,8 +135,8 @@ class AppHotFix {
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
     await DioConnector.instance.dio
-        .download(value.url, filePath + "/hotfixed.so");
-    setPatchVersion(int.parse(value.newVersion));
+        .download(value.url, filePath + "/$hotfixFileName");
+    getNetWorkPatchVersion(int.parse(value.newVersion));
     showDialog<void>(
       useRootNavigator: false,
       context: context,
