@@ -41,13 +41,6 @@ class _MainScreenState extends State<MainScreen> {
     //載入儲存資料
     Model.instance.init().then((value) {
       // 需重新初始化 list，PageController 才會清除 cache
-      BuildContext contextKey = navigatorKey.currentState.overlay.context;
-      if (Model.instance.getAccount().isEmpty) {
-        contextKey = null; //不顯示對話框
-      } else {
-        _checkAppVersion();
-      }
-      AppHotFix.hotFixSuccess(contextKey);
       _pageList = List();
       _pageList.add(CourseTablePage());
       _pageList.add(NotificationPage());
@@ -55,6 +48,13 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
       _setLang();
+      BuildContext contextKey = navigatorKey.currentState.overlay.context;
+      if (Model.instance.getAccount().isEmpty) {
+        contextKey = null; //不顯示對話框
+      } else {
+        _checkAppVersion();
+      }
+      AppHotFix.hotFixSuccess(contextKey);
       //_addTest();
     });
     _flutterDownloaderInit();
