@@ -26,8 +26,6 @@ class MainActivity : FlutterActivity() {
                     Log.e(Tag, e.toString())
                     //result.error("UNAVAILABLE", "Battery level not available.", null)
                 }
-            } else if (call.method == "close_app") {
-                this.finish()
             } else {
                 result.notImplemented()
             }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:android_intent/android_intent.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -207,12 +208,11 @@ class AppHotFix {
   }
 
   static void closeApp() async{
-    const platform = const MethodChannel('club.ntut.npc.tat.update.weight');
-    await platform.invokeMethod('close_app');
+    goToCloseApp();
   }
 
-  /*
-  static void getToCloseApp() async {
+
+  static void goToCloseApp() async {
     if (Platform.isAndroid) {
       String packageName = AppLink.appPackageName;
       final AndroidIntent intent = AndroidIntent(
@@ -223,7 +223,6 @@ class AppHotFix {
       await intent.launch();
     }
   }
-   */
 
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
