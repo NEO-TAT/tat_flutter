@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:android_intent/android_intent.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +74,7 @@ class AppHotFix {
       var pref = await SharedPreferences.getInstance();
       pref.remove(flutterState); //告訴bootloader 需要刪除補丁
       await Future.delayed(Duration(seconds: 2));
-      SystemNavigator.pop();
+      closeApp();
       //getToCloseApp();
     }
   }
@@ -207,6 +206,11 @@ class AppHotFix {
     return v;
   }
 
+  static void closeApp() async{
+    const platform = const MethodChannel('club.ntut.npc.tat.update.weight');
+    await platform.invokeMethod('close_app');
+  }
+
   /*
   static void getToCloseApp() async {
     if (Platform.isAndroid) {
@@ -274,7 +278,7 @@ class AppHotFix {
                   child: Text(R.current.sure),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    SystemNavigator.pop();
+                    closeApp();
                   },
                 ),
               ],

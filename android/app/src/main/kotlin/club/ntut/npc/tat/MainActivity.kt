@@ -16,16 +16,18 @@ class MainActivity : FlutterActivity() {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName).setMethodCallHandler { call, result ->
             if (call.method == "update_weight") {
-                Log.i(Tag , "update_weight")
+                Log.i(Tag, "update_weight")
                 try {
                     val intend = Intent("android.appwidget.action.APPWIDGET_UPDATE") //顯示意圖
                     context.sendBroadcast(intend)
                     result.success(true)
                 } catch (e: Exception) {
                     result.success(false)
-                    Log.e(Tag , e.toString())
+                    Log.e(Tag, e.toString())
                     //result.error("UNAVAILABLE", "Battery level not available.", null)
                 }
+            } else if (call.method == "close_app") {
+                this.finish()
             } else {
                 result.notImplemented()
             }
