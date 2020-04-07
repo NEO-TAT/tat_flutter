@@ -4,6 +4,7 @@ import 'package:android_intent/android_intent.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
@@ -28,12 +29,39 @@ class AppHotFix {
   static final String flutterState = "flutter_state";
   static final String patchVersion = "patch_version"; //目前版本
   static final String patchNetWorkVersion = "patch_network"; //目前版本
+  static final String bootloaderState = "bootloader_update_state";
   static final String hotfixFileName = "hotfix.so";
 
-  static Future<void> hotFixSuccess() async {
+  static Future<void> hotFixSuccess(BuildContext context) async {
     if (Platform.isAndroid) {
       var pref = await SharedPreferences.getInstance();
       pref.setBool(flutterState, true); //告訴bootloader activity flutter正常啟動
+      if (pref.containsKey(bootloaderState)) {
+        bool state = pref.getBool(bootloaderState);
+        String body;
+        if (state) {
+          body = "補丁成功升級為v${getPatchVersion()}";
+        } else {
+          body = "補丁升級失敗\n已自動降回原始版本:v${getPatchVersion()}";
+        }
+        showDialog<void>(
+          useRootNavigator: false,
+          context: context, barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(""),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(body),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     }
   }
 
@@ -42,7 +70,8 @@ class AppHotFix {
       var pref = await SharedPreferences.getInstance();
       pref.remove(flutterState); //告訴bootloader 需要刪除補丁
       await Future.delayed(Duration(seconds: 2));
-      getToCloseApp();
+      SystemNavigator.pop();
+      //getToCloseApp();
     }
   }
 
@@ -123,7 +152,7 @@ class AppHotFix {
               result = await getData(i.url);
               patchDetail.url =
                   getGithubFileAPIJsonList(json.decode(result))[0].downloadUrl;
-              patchDetail.platform =  i.name;
+              patchDetail.platform = i.name;
               break;
             }
           }
@@ -142,7 +171,8 @@ class AppHotFix {
       useRootNavigator: false,
       context: context, barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        String title = sprintf("%s v%s\n%s", [R.current.findPatchNewVersion, value.newVersion,value.platform]);
+        String title = sprintf("%s v%s\n%s",
+            [R.current.findPatchNewVersion, value.newVersion, value.platform]);
         return AlertDialog(
           title: Text(title),
           content: SingleChildScrollView(
@@ -172,6 +202,7 @@ class AppHotFix {
     return v;
   }
 
+  /*
   static void getToCloseApp() async {
     if (Platform.isAndroid) {
       String packageName = AppLink.appPackageName;
@@ -183,13 +214,16 @@ class AppHotFix {
       await intent.launch();
     }
   }
+   */
 
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
     _setNetWorkPatchVersion(int.parse(value.newVersion));
 
     ReceivedNotification receivedNotification = ReceivedNotification(
-        title: R.current.downloadingPatch, body: R.current.prepareDownload, payload: null); //通知窗訊息
+        title: R.current.downloadingPatch,
+        body: R.current.prepareDownload,
+        payload: null); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
     await Notifications.instance
@@ -235,7 +269,7 @@ class AppHotFix {
                   child: Text(R.current.sure),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    getToCloseApp();
+                    SystemNavigator.pop();
                   },
                 ),
               ],

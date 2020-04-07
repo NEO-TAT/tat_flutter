@@ -191,6 +191,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "passwordExpiredWarning" : MessageLookupByLibrary.simpleMessage("Password is about to expire, please update password as soon as possible"),
     "passwordNull" : MessageLookupByLibrary.simpleMessage("Please enter the password"),
+    "patchDelete" : MessageLookupByLibrary.simpleMessage("Patch delete , Restart the application and apply"),
     "patchUpdateDown" : MessageLookupByLibrary.simpleMessage("Download complete.\nPlease close the app to update"),
     "patchVersion" : MessageLookupByLibrary.simpleMessage("Patch version"),
     "percentage" : MessageLookupByLibrary.simpleMessage("Percentage"),

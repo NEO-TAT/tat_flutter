@@ -138,7 +138,7 @@
   "downloadingPatch" : "Downloading patch...",
   "findPatchNewVersion" : "Find the new patch version",
   "patchUpdateDown" : "Download complete.\nPlease close the app to update",
-
+  "patchDelete" : "Patch delete , Restart the application and apply",
   "___________________iSchoolUi___________________": "註解",
   "course": "Course",
   "announcement": "Announcement",

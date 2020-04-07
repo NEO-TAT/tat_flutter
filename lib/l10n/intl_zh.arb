@@ -138,6 +138,7 @@
   "downloadingPatch" : "下載補丁中...",
   "findPatchNewVersion" : "發現新補丁版本",
   "patchUpdateDown" : "下載完成，關閉APP完成更新",
+  "patchDelete" : "刪除補丁,重啟應用程式並應用",
   "___________________iSchoolUi___________________": "註解",
   "course": "課程",
   "announcement": "公告",

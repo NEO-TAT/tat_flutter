@@ -1278,6 +1278,15 @@ class S {
     );
   }
 
+  String get patchDelete {
+    return Intl.message(
+      'Patch delete , Restart the application and apply',
+      name: 'patchDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',

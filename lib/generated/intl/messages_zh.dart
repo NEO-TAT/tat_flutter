@@ -189,6 +189,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "password" : MessageLookupByLibrary.simpleMessage("密碼"),
     "passwordExpiredWarning" : MessageLookupByLibrary.simpleMessage("密碼即將過期，請盡快更新密碼"),
     "passwordNull" : MessageLookupByLibrary.simpleMessage("請輸入密碼"),
+    "patchDelete" : MessageLookupByLibrary.simpleMessage("刪除補丁,重啟應用程式並應用"),
     "patchUpdateDown" : MessageLookupByLibrary.simpleMessage("下載完成，關閉APP完成更新"),
     "patchVersion" : MessageLookupByLibrary.simpleMessage("補丁版本"),
     "percentage" : MessageLookupByLibrary.simpleMessage("百分比"),

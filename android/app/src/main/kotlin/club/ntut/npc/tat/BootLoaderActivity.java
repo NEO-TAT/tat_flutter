@@ -25,10 +25,11 @@ import io.flutter.embedding.engine.hotfix.FlutterVersion;
 public class BootLoaderActivity extends Activity {
     final String Tag = "BootLoaderActivity";
 
-    final String patch_version_key = "flutter.patch_version";
-    final String flutter_state_key = "flutter.flutter_state";
-    final String app_version_key = "flutter.version";  //取的app版本
-    final String patch_network_version_key = "flutter.patch_network";  //取的app版本
+    final String patch_version_key = "flutter.patch_version";  //紀錄目前補丁版本
+    final String flutter_state_key = "flutter.flutter_state";  //會刪除由flutter app寫入如果檢查到沒寫入代表app crash，會清除補丁
+    final String app_version_key = "flutter.version";  //取得目前執行的補丁版本
+    final String bootloader_update_state = "flutter.bootloader_update_state";  //true代表更新成功，false代表更新失敗，null代表正常
+    final String patch_network_version_key = "flutter.patch_network";  //取得更新的補丁版本
     final String hotfixFileName = "hotfix.so";
 
     SharedPreferences pref;
@@ -91,6 +92,7 @@ public class BootLoaderActivity extends Activity {
                 FlutterLogger.i("delete fail");
             }
             setPatchVersion(0);
+            pref.edit().putBoolean(bootloader_update_state,false).apply();  //代表升級失敗
         }
         pref.edit().remove(flutter_state_key).apply(); //每次啟動會刪除由flutter重新寫入
     }
@@ -119,6 +121,7 @@ public class BootLoaderActivity extends Activity {
                 }
                 long version = pref.getLong(patch_network_version_key, 0);  //取得目前更新版本
                 setPatchVersion(version);
+                pref.edit().putBoolean(bootloader_update_state,true).apply();  //代表更新成功
                 FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
             }
         } catch (Throwable error) {
@@ -141,6 +144,7 @@ public class BootLoaderActivity extends Activity {
         pref = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE);
         dir = new File(getFilesDir(), "/flutter/hotfix");  //更新目錄
         setContentView(R.layout.bootloader_activity);
+        pref.edit().remove(bootloader_update_state).apply();  //刪除目前狀態
         //創建補丁存放資料夾
         checkPatchDir();
         //app版本更新刪除patch
