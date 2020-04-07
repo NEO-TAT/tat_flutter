@@ -39,20 +39,21 @@ class AppHotFix {
       if (pref.containsKey(bootloaderState)) {
         bool state = pref.getBool(bootloaderState);
         String body;
+        int version = await getPatchVersion();
         if (state) {
-          body = "補丁成功升級為v${getPatchVersion()}";
+          body = "補丁成功升級為v$version";
         } else {
-          body = "補丁升級失敗\n已自動降回原始版本:v${getPatchVersion()}";
+          body = "補丁升級失敗\n已自動降回原始版本:v$version";
         }
         showDialog<void>(
           useRootNavigator: false,
           context: context, barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(""),
+              title: Text(body),
               actions: <Widget>[
                 FlatButton(
-                  child: Text(body),
+                  child: Text(R.current.sure),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
