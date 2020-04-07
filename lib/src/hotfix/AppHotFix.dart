@@ -45,23 +45,27 @@ class AppHotFix {
         } else {
           body = "補丁升級失敗\n已自動降回原始版本:v$version";
         }
-        showDialog<void>(
-          useRootNavigator: false,
-          context: context, barrierDismissible: false, // user must tap button!
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(body),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(R.current.sure),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        if (context != null) {
+          showDialog<void>(
+            useRootNavigator: false,
+            context: context,
+            barrierDismissible: false,
+            // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(body),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text(R.current.sure),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
       }
     }
   }
