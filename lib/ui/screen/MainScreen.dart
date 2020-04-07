@@ -42,8 +42,9 @@ class _MainScreenState extends State<MainScreen> {
     Model.instance.init().then((value) {
       // 需重新初始化 list，PageController 才會清除 cache
       BuildContext contextKey = navigatorKey.currentState.overlay.context;
-      if(Model.instance.getAccount().isNotEmpty){
+      if (Model.instance.getAccount().isEmpty) {
         contextKey = null; //不顯示對話框
+      } else {
         _checkAppVersion();
       }
       AppHotFix.hotFixSuccess(contextKey);
