@@ -408,7 +408,6 @@ class Model {
     await loadSemesterJsonList();
     String version = await AppUpdate.getAppVersion();
     _writeString("version", version);
-    AppHotFix.hotFixSuccess();
     //DioConnector.instance.deleteCookies();
   }
 

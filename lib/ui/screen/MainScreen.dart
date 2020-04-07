@@ -41,8 +41,8 @@ class _MainScreenState extends State<MainScreen> {
     //載入儲存資料
     Model.instance.init().then((value) {
       // 需重新初始化 list，PageController 才會清除 cache
+      AppHotFix.hotFixSuccess(context);
       _pageList = List();
-
       _pageList.add(CourseTablePage());
       _pageList.add(NotificationPage());
       _pageList.add(CalendarPage());
