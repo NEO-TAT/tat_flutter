@@ -1271,7 +1271,7 @@ class S {
 
   String get patchUpdateDown {
     return Intl.message(
-      'Download complete.\nPlease close the app to update',
+      'After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually',
       name: 'patchUpdateDown',
       desc: '',
       args: [],
@@ -1282,6 +1282,24 @@ class S {
     return Intl.message(
       'Patch delete , Restart the application and apply',
       name: 'patchDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get patchUpdateComplete {
+    return Intl.message(
+      'Patch successfully upgraded version:',
+      name: 'patchUpdateComplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get patchUpdateFail {
+    return Intl.message(
+      'Patch upgrade failed\nAutomatically downgraded to original version:',
+      name: 'patchUpdateFail',
       desc: '',
       args: [],
     );

@@ -41,9 +41,9 @@ class AppHotFix {
         String body;
         int version = await getPatchVersion();
         if (state) {
-          body = "補丁成功升級為v$version";
+          body = sprintf("%sv:%d",[R.current.patchUpdateComplete,version]);
         } else {
-          body = "補丁升級失敗\n已自動降回原始版本:v$version";
+          body = sprintf("%sv:%d",[R.current.patchUpdateFail,version]);
         }
         if (context != null) {
           showDialog<void>(
