@@ -207,10 +207,10 @@ class AppHotFix {
     return v;
   }
 
-  static void closeApp() async{
-    goToCloseApp();
+  static void closeApp() async {
+    //goToCloseApp();
+    SystemNavigator.pop();
   }
-
 
   static void goToCloseApp() async {
     if (Platform.isAndroid) {
