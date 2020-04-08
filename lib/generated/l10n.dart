@@ -1287,6 +1287,24 @@ class S {
     );
   }
 
+  String get deletePatch {
+    return Intl.message(
+      'Delete patch',
+      name: 'deletePatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get exitDevMode {
+    return Intl.message(
+      'Exit dev mode',
+      name: 'exitDevMode',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get patchUpdateComplete {
     return Intl.message(
       'Patch successfully upgraded version:',
@@ -1300,6 +1318,15 @@ class S {
     return Intl.message(
       'Patch upgrade failed\nAutomatically downgraded to original version:',
       name: 'patchUpdateFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get developerMode {
+    return Intl.message(
+      'developerMode',
+      name: 'developerMode',
       desc: '',
       args: [],
     );

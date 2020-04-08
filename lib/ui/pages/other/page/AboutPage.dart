@@ -8,10 +8,12 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum onListViewPress { AppUpdate, Contribution, Version, Patch }
+enum onListViewPress { AppUpdate, Contribution, Version, Dev }
 
 class AboutPage extends StatefulWidget {
   @override
@@ -19,37 +21,52 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  final List<Map> listViewData = [
-    {
-      "icon": EvaIcons.refreshOutline,
-      "title": R.current.checkVersion,
-      "color": Colors.orange,
-      "onPress": onListViewPress.AppUpdate
-    },
-    {
-      "icon": EvaIcons.awardOutline,
-      "title": R.current.Contribution,
-      "color": Colors.lightGreen,
-      "onPress": onListViewPress.Contribution
-    },
-    {
-      "icon": EvaIcons.infoOutline,
-      "color": Colors.blue,
-      "title": R.current.versionInfo,
-      "onPress": onListViewPress.Version
-    },
-    {
-      "icon": EvaIcons.infoOutline,
-      "color": Colors.amberAccent,
-      "title": R.current.patchVersion,
-      "onPress": onListViewPress.Patch
-    },
-  ];
+  List<Map> listViewData = List();
 
   @override
   void initState() {
     super.initState();
+    initList();
   }
+
+  void initList() {
+    listViewData = List();
+    listViewData.addAll([
+      {
+        "icon": EvaIcons.refreshOutline,
+        "title": R.current.checkVersion,
+        "color": Colors.orange,
+        "onPress": onListViewPress.AppUpdate
+      },
+      {
+        "icon": EvaIcons.awardOutline,
+        "title": R.current.Contribution,
+        "color": Colors.lightGreen,
+        "onPress": onListViewPress.Contribution
+      },
+      {
+        "icon": EvaIcons.infoOutline,
+        "color": Colors.blue,
+        "title": R.current.versionInfo,
+        "onPress": onListViewPress.Version
+      }
+    ]);
+    _addDevListItem();
+  }
+
+  void _addDevListItem() {
+    if(AppHotFix.inDevMode) {
+      listViewData.add({
+        "icon": EvaIcons.options,
+        "color": Colors.amberAccent,
+        "title": R.current.developerMode,
+        "onPress": onListViewPress.Dev
+      });
+      setState(() {});
+    }
+  }
+
+  int pressTime = 0;
 
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
@@ -79,20 +96,34 @@ class _AboutPageState extends State<AboutPage> {
         String mainVersion = await AppUpdate.getAppVersion();
         int patchVersion = await AppHotFix.getPatchVersion();
         MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
+        if (!AppHotFix.inDevMode) {
+          pressTime++;
+          Future.delayed(Duration(seconds: 2)).then((_) {
+            pressTime = 0;
+          });
+          print(pressTime.toString());
+          if (pressTime > 3) {
+            AppHotFix.setDevMode(true);
+            _addDevListItem();
+          }
+        }
+        break;
+      case onListViewPress.Dev:
+        Navigator.of(context)
+            .push(
+          PageTransition(
+            type: PageTransitionType.downToUp,
+            child: DevPage(),
+          ),
+        )
+            .then((v) {
+          if (v != null) {
+            initList();
+          }
+        });
         break;
       default:
         MyToast.show(R.current.noFunction);
-        break;
-    }
-  }
-
-  void _onListViewLongPress(onListViewPress value) async {
-    switch (value) {
-      case onListViewPress.Patch:
-        MyToast.show(R.current.patchDelete);
-        await AppHotFix.deleteHotFix();
-        break;
-      default:
         break;
     }
   }
@@ -112,9 +143,6 @@ class _AboutPageState extends State<AboutPage> {
             child: WidgetAnimator(widget),
             onTap: () {
               _onListViewPress(listViewData[index]['onPress']);
-            },
-            onLongPress: () {
-              _onListViewLongPress(listViewData[index]['onPress']);
             },
           );
         },

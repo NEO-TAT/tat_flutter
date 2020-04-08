@@ -27,15 +27,35 @@ class PatchDetail {
 }
 
 class AppHotFix {
-  static final String githubLink = AppLink.appPatchCheck;
   static final String flutterStateKey =
       "flutter_state"; //需寫入東西，不然bootloaderActivity會刪除
   static final String patchVersionKey = "patch_version"; //目前版本
+  static final String devPatchChannelKey = "dev_patch_channel";
   static final String hotfixFileNameKey = "hotfix.so";
+  static SharedPreferences pref;
+
+  static Future<void> init() async {
+    pref = await SharedPreferences.getInstance();
+  }
+
+  static String get githubLink {
+    return (inDevMode) ? AppLink.appPatchCheckDev : AppLink.appPatchCheckMaster;
+  }
+
+  static bool get inDevMode {
+    bool v = pref.getBool(devPatchChannelKey);
+    if(v==null){
+      setDevMode(false);
+    }
+    return pref.getBool(devPatchChannelKey);
+  }
+
+  static void setDevMode(bool mode) {
+    pref.setBool(devPatchChannelKey, mode);
+  }
 
   static Future<void> hotFixSuccess(BuildContext context) async {
     if (Platform.isAndroid) {
-      var pref = await SharedPreferences.getInstance();
       pref.setBool(flutterStateKey, true); //告訴bootloader activity flutter正常啟動
       int beforeVersion = await _getBeforePatchVersion();
       int nowVersion = await getPatchVersion();
@@ -71,7 +91,6 @@ class AppHotFix {
 
   static Future<void> deleteHotFix() async {
     if (Platform.isAndroid) {
-      var pref = await SharedPreferences.getInstance();
       pref.remove(flutterStateKey); //告訴bootloader 需要刪除補丁
       await Future.delayed(Duration(seconds: 2));
       closeApp();
@@ -86,20 +105,17 @@ class AppHotFix {
 
   static Future<void> _setPatchVersion(int version) async {
     if (Platform.isAndroid) {
-      var pref = await SharedPreferences.getInstance();
       return pref.setInt(patchVersionKey, version);
     }
   }
 
   static Future<int> _getBeforePatchVersion() async {
-    var pref = await SharedPreferences.getInstance();
     return pref.getInt(patchVersionKey);
   }
 
   static Future<int> getPatchVersion() async {
     //更新的版本
     /*
-    var pref = await SharedPreferences.getInstance();
     int version = pref.getInt(patchVersion);
     version = version ?? 0;
     return version;

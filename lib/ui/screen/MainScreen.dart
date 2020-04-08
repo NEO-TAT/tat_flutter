@@ -41,6 +41,7 @@ class _MainScreenState extends State<MainScreen> {
     //載入儲存資料
     Model.instance.init().then((value) async{
       // 需重新初始化 list，PageController 才會清除 cache
+      await AppHotFix.init();
       BuildContext contextKey = navigatorKey.currentState.overlay.context;
       if (Model.instance.getAccount().isEmpty) {
         contextKey = null; //不顯示對話框

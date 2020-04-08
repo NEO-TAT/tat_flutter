@@ -5,6 +5,6 @@ class AppLink{
   static const String gitHubReleases = "https://github.com/NEO-TAT/NTUTCourseHelper-Flutter/releases";
   static const String feedback = "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
   static const String appUpdateCheck = "https://api.github.com/repos/NEO-TAT/NTUTCourseHelper-Flutter/releases/latest";
-  static const String _branchName = "future/hotfix";
-  static const String appPatchCheck = "https://api.github.com/repos/NEO-TAT/NTUTCourseHelper-Flutter/contents/hotfix/%s?ref=$_branchName";
+  static const String appPatchCheckMaster = "https://api.github.com/repos/morris13579/TAT_Hotfix/contents/%s?ref=master";
+  static const String appPatchCheckDev = "https://api.github.com/repos/morris13579/TAT_Hotfix/contents/%s?ref=dev";
 }
