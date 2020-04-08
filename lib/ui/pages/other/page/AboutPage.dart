@@ -8,6 +8,7 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum onListViewPress { AppUpdate, Contribution, Version, Patch }
@@ -75,14 +76,9 @@ class _AboutPageState extends State<AboutPage> {
         launch(url);
         break;
       case onListViewPress.Version:
-        AppUpdate.getAppVersion().then((version) {
-          MyToast.show(version);
-        });
-        break;
-      case onListViewPress.Patch:
-        AppHotFix.getPatchVersion().then((version) {
-          MyToast.show(version.toString());
-        });
+        String mainVersion = await AppUpdate.getAppVersion();
+        int patchVersion = await AppHotFix.getPatchVersion();
+        MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
         break;
       default:
         MyToast.show(R.current.noFunction);

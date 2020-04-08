@@ -7,15 +7,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.lang.reflect.Array;
 import java.nio.channels.FileChannel;
 
 import io.flutter.embedding.engine.hotfix.FlutterLogger;
@@ -23,13 +20,10 @@ import io.flutter.embedding.engine.hotfix.FlutterManager;
 import io.flutter.embedding.engine.hotfix.FlutterVersion;
 
 public class BootLoaderActivity extends Activity {
-    final String Tag = "BootLoaderActivity";
+    //final String Tag = "BootLoaderActivity";
 
-    final String patch_version_key = "flutter.patch_version";  //紀錄目前補丁版本
     final String flutter_state_key = "flutter.flutter_state";  //會刪除由flutter app寫入如果檢查到沒寫入代表app crash，會清除補丁
-    final String app_version_key = "flutter.version";  //取得目前執行的補丁版本
-    final String bootloader_update_state = "flutter.bootloader_update_state";  //true代表更新成功，false代表更新失敗，null代表正常
-    final String patch_network_version_key = "flutter.patch_network";  //取得更新的補丁版本
+    final String app_version_key = "flutter.version";  //取得之前執行APP版本
     final String hotfixFileName = "hotfix.so";
 
     SharedPreferences pref;
@@ -47,11 +41,6 @@ public class BootLoaderActivity extends Activity {
         }
         return versionName;
     }
-
-    void setPatchVersion(long version) {
-        pref.edit().putLong(patch_version_key, version).apply();
-    }
-
 
     void checkPatchDir() {
         if (!dir.exists()) {
@@ -71,8 +60,15 @@ public class BootLoaderActivity extends Activity {
         boolean app_version_update = !appVersionName.contains(appVersionNow); //版本號不同刪除補丁
         if (app_version_update) {  //app版本更新
             File dest = new File(dir, hotfixFileName);
-            if (dest.delete()) {
-                setPatchVersion(0);
+            try {
+                if (dest.exists() && !dest.delete()) {  //刪除舊的補釘
+                    FileWriter writer = new FileWriter(dest, false);
+                    writer.write("");
+                    writer.flush();
+                    writer.close();
+                }
+            } catch (Exception e) {
+                FlutterLogger.i("delete fail");
             }
         }
     }
@@ -91,8 +87,6 @@ public class BootLoaderActivity extends Activity {
             } catch (Exception e) {
                 FlutterLogger.i("delete fail");
             }
-            setPatchVersion(0);
-            pref.edit().putBoolean(bootloader_update_state,false).apply();  //代表升級失敗
         }
         pref.edit().remove(flutter_state_key).apply(); //每次啟動會刪除由flutter重新寫入
     }
@@ -119,9 +113,6 @@ public class BootLoaderActivity extends Activity {
                 if (source.delete()) {
                     FlutterLogger.i("delete patch");
                 }
-                long version = pref.getLong(patch_network_version_key, 0);  //取得目前更新版本
-                setPatchVersion(version);
-                pref.edit().putBoolean(bootloader_update_state,true).apply();  //代表更新成功
                 FlutterLogger.i("copy fixed file finish: " + dest.getAbsolutePath());
             }
         } catch (Throwable error) {
@@ -144,7 +135,6 @@ public class BootLoaderActivity extends Activity {
         pref = getSharedPreferences("FlutterSharedPreferences", MODE_PRIVATE);
         dir = new File(getFilesDir(), "/flutter/hotfix");  //更新目錄
         setContentView(R.layout.bootloader_activity);
-        pref.edit().remove(bootloader_update_state).apply();  //刪除目前狀態
         //創建補丁存放資料夾
         checkPatchDir();
         //app版本更新刪除patch

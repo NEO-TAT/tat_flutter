@@ -17,6 +17,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 
+import 'PatchVersion.dart';
+
 class PatchDetail {
   String platform;
   String newVersion;
@@ -26,46 +28,43 @@ class PatchDetail {
 
 class AppHotFix {
   static final String githubLink = AppLink.appPatchCheck;
-  static final String flutterState = "flutter_state";
-  static final String patchVersion = "patch_version"; //目前版本
-  static final String patchNetWorkVersion = "patch_network"; //目前版本
-  static final String bootloaderState = "bootloader_update_state";
-  static final String hotfixFileName = "hotfix.so";
+  static final String flutterStateKey =
+      "flutter_state"; //需寫入東西，不然bootloaderActivity會刪除
+  static final String patchVersionKey = "patch_version"; //目前版本
+  static final String hotfixFileNameKey = "hotfix.so";
 
   static Future<void> hotFixSuccess(BuildContext context) async {
     if (Platform.isAndroid) {
       var pref = await SharedPreferences.getInstance();
-      pref.setBool(flutterState, true); //告訴bootloader activity flutter正常啟動
-      if (pref.containsKey(bootloaderState)) {
-        bool state = pref.getBool(bootloaderState);
-        String body;
-        int version = await getPatchVersion();
-        if (state) {
-          body = sprintf("%sv:%d",[R.current.patchUpdateComplete,version]);
-        } else {
-          body = sprintf("%sv:%d",[R.current.patchUpdateFail,version]);
-        }
-        if (context != null) {
-          showDialog<void>(
-            useRootNavigator: false,
-            context: context,
-            barrierDismissible: false,
-            // user must tap button!
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(body),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text(R.current.sure),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
+      pref.setBool(flutterStateKey, true); //告訴bootloader activity flutter正常啟動
+      int beforeVersion = await _getBeforePatchVersion();
+      int nowVersion = await getPatchVersion();
+      String body;
+      if (nowVersion > beforeVersion) {
+        body = sprintf("%sv:%d", [R.current.patchUpdateComplete, nowVersion]);
+      } else if (nowVersion < beforeVersion) {
+        body = sprintf("%sv:%d", [R.current.patchUpdateFail, nowVersion]);
+      }
+      if (context != null && body != null) {
+        showDialog<void>(
+          useRootNavigator: false,
+          context: context,
+          barrierDismissible: false,
+          // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(body),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(R.current.sure),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       }
     }
   }
@@ -73,7 +72,7 @@ class AppHotFix {
   static Future<void> deleteHotFix() async {
     if (Platform.isAndroid) {
       var pref = await SharedPreferences.getInstance();
-      pref.remove(flutterState); //告訴bootloader 需要刪除補丁
+      pref.remove(flutterStateKey); //告訴bootloader 需要刪除補丁
       await Future.delayed(Duration(seconds: 2));
       closeApp();
       //getToCloseApp();
@@ -85,18 +84,27 @@ class AppHotFix {
     return dir.path;
   }
 
+  static Future<void> _setPatchVersion(int version) async {
+    if (Platform.isAndroid) {
+      var pref = await SharedPreferences.getInstance();
+      return pref.setInt(patchVersionKey, version);
+    }
+  }
+
+  static Future<int> _getBeforePatchVersion() async {
+    var pref = await SharedPreferences.getInstance();
+    return pref.getInt(patchVersionKey);
+  }
+
   static Future<int> getPatchVersion() async {
     //更新的版本
+    /*
     var pref = await SharedPreferences.getInstance();
     int version = pref.getInt(patchVersion);
     version = version ?? 0;
     return version;
-  }
-
-  static Future<void> _setNetWorkPatchVersion(int version) async {
-    //更新的版本
-    var pref = await SharedPreferences.getInstance();
-    pref.setInt(patchNetWorkVersion, version);
+     */
+    return patchVersion;
   }
 
   static Future<String> getData(String url) async {
@@ -228,7 +236,7 @@ class AppHotFix {
 
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
-    _setNetWorkPatchVersion(int.parse(value.newVersion));
+    _setPatchVersion(int.parse(value.newVersion));
 
     ReceivedNotification receivedNotification = ReceivedNotification(
         title: R.current.downloadingPatch,
@@ -236,14 +244,13 @@ class AppHotFix {
         payload: null); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
-    await Notifications.instance
-        .showIndeterminateProgressNotification(receivedNotification);
-//顯示下載進度通知窗
+    await Notifications.instance.showIndeterminateProgressNotification(
+        receivedNotification); //顯示下載進度通知窗
     int nowSize = 0;
     onReceiveProgress = (int count, int total) async {
       receivedNotification.body = FileUtils.formatBytes(count, 2);
       if ((nowSize + 1024 * 128) > count && nowSize != 0) {
-//128KB顯示一次
+        //128KB顯示一次
         return;
       }
       nowSize = count;
@@ -258,13 +265,13 @@ class AppHotFix {
     DioConnector.instance.download(
       value.url,
       (Headers responseHeaders) {
-        return filePath + "/$hotfixFileName";
+        return filePath + "/$hotfixFileNameKey";
       },
       progressCallback: onReceiveProgress,
       cancelToken: cancelToken,
     ).whenComplete(
       () async {
-//顯示下載萬完成通知窗
+        //顯示下載萬完成通知窗
         await Notifications.instance
             .cancelNotification(receivedNotification.id);
         showDialog<void>(
