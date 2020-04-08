@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
@@ -39,16 +40,20 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     R.set(context);
     //載入儲存資料
-    Model.instance.init().then((value) async{
+    Model.instance.init().then((value) async {
       // 需重新初始化 list，PageController 才會清除 cache
-      await AppHotFix.init();
-      BuildContext contextKey = navigatorKey.currentState.overlay.context;
-      if (Model.instance.getAccount().isEmpty) {
-        contextKey = null; //不顯示對話框
-      } else {
-        _checkAppVersion();
+      try {
+        await AppHotFix.init();
+        BuildContext contextKey = navigatorKey.currentState.overlay.context;
+        if (Model.instance.getAccount().isEmpty) {
+          contextKey = null; //不顯示對話框
+        } else {
+          _checkAppVersion();
+        }
+        await AppHotFix.hotFixSuccess(contextKey);
+      } catch (e) {
+        Log.e(e.toString());
       }
-      await AppHotFix.hotFixSuccess(contextKey);
       _pageList = List();
       _pageList.add(CourseTablePage());
       _pageList.add(NotificationPage());

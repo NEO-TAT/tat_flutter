@@ -64,8 +64,8 @@ class AppHotFix {
         body = sprintf("%s v%d", [R.current.patchUpdateComplete, nowVersion]);
       } else if (nowVersion < beforeVersion) {
         body = sprintf("%s v%d", [R.current.patchUpdateFail, nowVersion]);
-        _setPatchVersion(nowVersion);
       }
+      _setPatchVersion(nowVersion);
       if (context != null && body != null) {
         showDialog<void>(
           useRootNavigator: false,
@@ -109,7 +109,9 @@ class AppHotFix {
   }
 
   static Future<int> _getBeforePatchVersion() async {
-    return pref.getInt(patchVersionKey);
+    int version = pref.getInt(patchVersionKey);
+    version = version ?? 0;
+    return version;
   }
 
   static Future<int> getPatchVersion() async {
