@@ -253,8 +253,6 @@ class AppHotFix {
 
   static void downloadPatch(BuildContext context, PatchDetail value) async {
     String filePath = await _getUpdatePath();
-    _setPatchVersion(int.parse(value.newVersion));
-
     ReceivedNotification receivedNotification = ReceivedNotification(
         title: R.current.downloadingPatch,
         body: R.current.prepareDownload,
