@@ -209,7 +209,9 @@ class AppHotFix {
 
   static void closeApp() async {
     //goToCloseApp();
-    SystemNavigator.pop();
+    //SystemNavigator.pop();
+    const platform = const MethodChannel('club.ntut.npc.tat.update.weight');
+    platform.invokeMethod('restart_app');
   }
 
   static void goToCloseApp() async {
