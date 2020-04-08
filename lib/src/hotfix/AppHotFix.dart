@@ -44,7 +44,7 @@ class AppHotFix {
 
   static bool get inDevMode {
     bool v = pref.getBool(devPatchChannelKey);
-    if(v==null){
+    if (v == null) {
       setDevMode(false);
     }
     return pref.getBool(devPatchChannelKey);
@@ -61,9 +61,10 @@ class AppHotFix {
       int nowVersion = await getPatchVersion();
       String body;
       if (nowVersion > beforeVersion) {
-        body = sprintf("%sv:%d", [R.current.patchUpdateComplete, nowVersion]);
+        body = sprintf("%s v%d", [R.current.patchUpdateComplete, nowVersion]);
       } else if (nowVersion < beforeVersion) {
-        body = sprintf("%sv:%d", [R.current.patchUpdateFail, nowVersion]);
+        body = sprintf("%s v%d", [R.current.patchUpdateFail, nowVersion]);
+        _setPatchVersion(nowVersion);
       }
       if (context != null && body != null) {
         showDialog<void>(
@@ -104,9 +105,7 @@ class AppHotFix {
   }
 
   static Future<void> _setPatchVersion(int version) async {
-    if (Platform.isAndroid) {
-      return pref.setInt(patchVersionKey, version);
-    }
+    pref.setInt(patchVersionKey, version);
   }
 
   static Future<int> _getBeforePatchVersion() async {
