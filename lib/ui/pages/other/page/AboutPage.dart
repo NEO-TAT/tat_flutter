@@ -55,7 +55,7 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   void _addDevListItem() {
-    if(AppHotFix.inDevMode) {
+    if (AppHotFix.inDevMode) {
       listViewData.add({
         "icon": EvaIcons.options,
         "color": Colors.amberAccent,
@@ -95,18 +95,18 @@ class _AboutPageState extends State<AboutPage> {
       case onListViewPress.Version:
         String mainVersion = await AppUpdate.getAppVersion();
         int patchVersion = await AppHotFix.getPatchVersion();
-        MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
-        if (!AppHotFix.inDevMode) {
-          pressTime++;
-          Future.delayed(Duration(seconds: 2)).then((_) {
-            pressTime = 0;
-          });
-          print(pressTime.toString());
-          if (pressTime > 3) {
-            AppHotFix.setDevMode(true);
-            _addDevListItem();
-          }
+        if (pressTime == 0) {
+          MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
         }
+        pressTime++;
+        Future.delayed(Duration(seconds: 2)).then((_) {
+          pressTime = 0;
+        });
+        if (!AppHotFix.inDevMode && pressTime > 3) {
+          AppHotFix.setDevMode(true);
+          _addDevListItem();
+        }
+        print(pressTime);
         break;
       case onListViewPress.Dev:
         Navigator.of(context)

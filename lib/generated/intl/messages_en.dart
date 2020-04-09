@@ -98,7 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteMessageError" : MessageLookupByLibrary.simpleMessage("Delete error"),
     "deletePatch" : MessageLookupByLibrary.simpleMessage("Delete patch"),
     "details" : MessageLookupByLibrary.simpleMessage("Details"),
-    "developerMode" : MessageLookupByLibrary.simpleMessage("developerMode"),
+    "developerMode" : MessageLookupByLibrary.simpleMessage("DeveloperMode"),
     "directoryIsEmpty" : MessageLookupByLibrary.simpleMessage("Directory is empty!"),
     "download" : MessageLookupByLibrary.simpleMessage("download"),
     "downloadComplete" : MessageLookupByLibrary.simpleMessage("Download complete"),

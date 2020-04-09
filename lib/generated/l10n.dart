@@ -1325,7 +1325,7 @@ class S {
 
   String get developerMode {
     return Intl.message(
-      'developerMode',
+      'DeveloperMode',
       name: 'developerMode',
       desc: '',
       args: [],
