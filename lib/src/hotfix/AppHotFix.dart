@@ -144,13 +144,18 @@ class AppHotFix {
     }
   }
 
+  static Future<List<String>> getSupportABis() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    //IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+    print('Running on ${androidInfo.supported32BitAbis}');
+    print('Running on ${androidInfo.supported64BitAbis}');
+    print('Running on ${androidInfo.supportedAbis}');
+    return (Platform.isAndroid) ? androidInfo.supportedAbis : List();
+  }
+
   static Future<PatchDetail> checkPatchVersion() async {
     if (Platform.isAndroid) {
-      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      print('Running on ${androidInfo.supported32BitAbis}');
-      print('Running on ${androidInfo.supported64BitAbis}');
-      print('Running on ${androidInfo.supportedAbis}');
       int patchVersion = await getPatchVersion();
       String appVersion = await AppUpdate.getAppVersion();
       String url = sprintf(githubLink, [appVersion]);
@@ -167,6 +172,7 @@ class AppHotFix {
             newVersion = i;
           }
         }
+        List<String> supportedABis = await getSupportABis();
         if (newVersion != null) {
           result = await getData(newVersion.url);
           PatchDetail patchDetail = PatchDetail();
@@ -178,7 +184,7 @@ class AppHotFix {
               patchDetail.detail = await getData(i.downloadUrl);
               patchDetail.detail = patchDetail.detail ?? "";
               continue;
-            } else if (androidInfo.supportedAbis.contains(i.name)) {
+            } else if (supportedABis.contains(i.name)) {
               result = await getData(i.url);
               patchDetail.url =
                   getGithubFileAPIJsonList(json.decode(result))[0].downloadUrl;
