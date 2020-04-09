@@ -249,7 +249,8 @@ class _NotificationPageState extends State<NotificationPage>
   }
 
   Widget _buildListItem(NewAnnouncementJson data) {
-    FontWeight fontWeight = (!data.isRead) ? FontWeight.bold : FontWeight.normal ;
+    FontWeight fontWeight =
+        (!data.isRead) ? FontWeight.bold : FontWeight.normal;
     return Container(
       child: Column(
         children: <Widget>[
@@ -272,8 +273,8 @@ class _NotificationPageState extends State<NotificationPage>
                         Text(
                           data.title,
                           overflow: TextOverflow.visible,
-                          style: TextStyle(
-                              fontWeight: fontWeight, fontSize: 18),
+                          style:
+                              TextStyle(fontWeight: fontWeight, fontSize: 18),
                         ),
                         SizedBox(
                           height: 4,

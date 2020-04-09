@@ -19,7 +19,8 @@ class NTUTAppLoginTask extends TaskModel {
     String account = Model.instance.getAccount();
     String password = Model.instance.getPassword();
     MyProgressDialog.showProgressDialog(context, R.current.loginNTUTApp);
-    NTUTAppConnectorStatus value = await NTUTAppConnector.login(account, password);
+    NTUTAppConnectorStatus value =
+        await NTUTAppConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
     if (value != NTUTAppConnectorStatus.LoginSuccess) {
       _handleError(value);

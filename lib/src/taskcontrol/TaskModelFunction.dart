@@ -28,8 +28,8 @@ class TaskModelFunction extends TaskModel {
         errorFunction();
         return TaskStatus.TaskFail;
       }
-    }catch(e){
-      Log.d( e.toString() );
+    } catch (e) {
+      Log.d(e.toString());
       errorFunction();
       return TaskStatus.TaskFail;
     }

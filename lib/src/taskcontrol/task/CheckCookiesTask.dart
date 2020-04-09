@@ -24,14 +24,15 @@ class CheckCookiesTask extends TaskModel {
   static String checkScore = "__Score__";
   static String tempDataKey = "CheckCookiesTempKey";
   CheckCookiesTask(BuildContext context, {this.checkSystem, this.studentId})
-      : super(context, taskName,[]) {
+      : super(context, taskName, []) {
     checkSystem = checkSystem ?? checkNTUT;
   }
 
   @override
   Future<TaskStatus> taskStart() async {
     Log.d(checkSystem);
-    if( Model.instance.getOtherSetting().focusLogin ){  //直接重新登入不檢查
+    if (Model.instance.getOtherSetting().focusLogin) {
+      //直接重新登入不檢查
       checkSystem += checkNTUT;
       Model.instance.setTempData(tempDataKey, checkSystem);
       return TaskStatus.TaskFail;
@@ -53,30 +54,32 @@ class CheckCookiesTask extends TaskModel {
       }
     };
     for (String check in checkMap.keys.toList()) {
-      if( checkSystem.contains(check) ){
+      if (checkSystem.contains(check)) {
         bool pass = await checkMap[check]();
-        if(!pass ){
+        if (!pass) {
           loginSystem += check;
         }
       }
     }
-    if( loginSystem.isNotEmpty || checkSystem.contains(checkNTUT) ){  //代表有任務錯誤
+    if (loginSystem.isNotEmpty || checkSystem.contains(checkNTUT)) {
+      //代表有任務錯誤
       bool pass = await NTUTConnector.checkLogin();
-      if( !pass ){
+      if (!pass) {
         loginSystem += checkNTUT;
       }
     }
-    if( checkSystem.contains(checkNTUTApp) ){  //代表有任務錯誤
+    if (checkSystem.contains(checkNTUTApp)) {
+      //代表有任務錯誤
       bool pass = await NTUTAppConnector.checkLogin();
-      if( !pass ){
+      if (!pass) {
         loginSystem += checkNTUTApp;
       }
     }
     MyProgressDialog.hideProgressDialog();
-    Log.d( "loginSystem: $loginSystem" );
-    if( loginSystem.isEmpty ){
+    Log.d("loginSystem: $loginSystem");
+    if (loginSystem.isEmpty) {
       return TaskStatus.TaskSuccess;
-    }else{
+    } else {
       Model.instance.setTempData(tempDataKey, loginSystem);
       return TaskStatus.TaskFail;
     }

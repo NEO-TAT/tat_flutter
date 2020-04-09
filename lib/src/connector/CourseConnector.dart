@@ -75,7 +75,7 @@ class CourseConnector {
     }
   }
 
-  static Future<String> getCourseENName(String url)async{
+  static Future<String> getCourseENName(String url) async {
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -86,7 +86,10 @@ class CourseConnector {
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       node = node.getElementsByTagName("tr")[1];
-      return node.getElementsByTagName("td")[2].text.replaceAll(RegExp(r"\n"), "");
+      return node
+          .getElementsByTagName("td")[2]
+          .text
+          .replaceAll(RegExp(r"\n"), "");
     } catch (e) {
       //throw e;
       Log.e(e.toString());
@@ -242,7 +245,8 @@ class CourseConnector {
       courseNodes = nodes[1].getElementsByTagName("tr");
       String studentName;
       try {
-        studentName = strQ2B(nodes[0].getElementsByTagName("td")[4].text).replaceAll(RegExp(r"[\n| ]"), "");
+        studentName = strQ2B(nodes[0].getElementsByTagName("td")[4].text)
+            .replaceAll(RegExp(r"[\n| ]"), "");
       } catch (e) {
         Log.e(e.toString());
         studentName = "";
@@ -258,7 +262,8 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        courseMain.id = strQ2B(nodesOne[0].text).replaceAll(RegExp(r"[\n| ]"), "");
+        courseMain.id =
+            strQ2B(nodesOne[0].text).replaceAll(RegExp(r"[\n| ]"), "");
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.length >= 1) {

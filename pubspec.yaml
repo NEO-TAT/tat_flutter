@@ -1,7 +1,7 @@
 name: flutter_app
 description: A new Flutter application.
 
-version: 1.2.4+5
+version: 1.2.5+6
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -22,6 +22,8 @@ dependencies:
   rxdart: ^0.23.1 #通知欄有使用到
   flutter_ijkplayer: ^0.3.5+1
   after_init: ^0.1.2
+  android_intent: ^0.3.6+1
+  device_info: ^0.4.2+1
   #----------store data----------#
   shared_preferences: ^0.5.6+3
   flutter_cache_manager: ^1.1.3

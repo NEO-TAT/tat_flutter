@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
+import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
@@ -50,8 +51,7 @@ class Model {
   Map<String, dynamic> _tempData;
   DefaultCacheManager cacheManager = new DefaultCacheManager();
 
-
-  bool get autoCheckAppUpdate{
+  bool get autoCheckAppUpdate {
     return _setting.other.autoCheckAppUpdate;
   }
 
@@ -408,7 +408,6 @@ class Model {
     await loadSemesterJsonList();
     String version = await AppUpdate.getAppVersion();
     _writeString("version", version);
-
     //DioConnector.instance.deleteCookies();
   }
 

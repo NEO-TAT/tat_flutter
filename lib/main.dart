@@ -14,7 +14,6 @@ import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
 
 Future<Null> main() async {
-
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
@@ -30,11 +29,9 @@ Future<Null> main() async {
         child: MyApp(),
       ),
     );
-  }, onError: (dynamic exception, StackTrace stack,
-      {dynamic context}) {
-    Log.error( exception.toString() );
-    Crashlytics.instance.recordError( exception, stack,
-        context: context);
+  }, onError: (dynamic exception, StackTrace stack, {dynamic context}) {
+    Log.error(exception.toString());
+    Crashlytics.instance.recordError(exception, stack, context: context);
   });
 }
 
