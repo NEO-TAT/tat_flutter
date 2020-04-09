@@ -7,7 +7,7 @@ import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 import '../CheckCookiesTask.dart';
 
-class ScoreLoginTask extends TaskModel{
+class ScoreLoginTask extends TaskModel {
   static final String taskName = "ScoreLoginTask";
   static final List<String> require = [CheckCookiesTask.checkNTUT];
 

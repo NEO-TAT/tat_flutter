@@ -63,7 +63,7 @@ class Notifications {
         .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
-          alert: true ,
+          alert: true,
           badge: true,
           sound: true,
         );
@@ -78,12 +78,12 @@ class Notifications {
   void _configureSelectNotificationSubject() {
     //當通知窗被按下
     selectNotificationSubject.stream.listen((String payload) async {
-      Map parse =  json.decode(payload);
-      int id =  parse["id"];
-      if( parse.containsKey("path") && !idList.contains(id)){
+      Map parse = json.decode(payload);
+      int id = parse["id"];
+      if (parse.containsKey("path") && !idList.contains(id)) {
         String path = parse["path"];
-        Log.d( "open $path");
-        idList.add( parse["id"]);
+        Log.d("open $path");
+        idList.add(parse["id"]);
         await OpenFile.open(path);
       }
     });
@@ -170,18 +170,18 @@ class ReceivedNotification {
     this.title = title;
   }
 
-  String get title{
+  String get title {
     return _showTitle;
   }
-  set title(String value){
+
+  set title(String value) {
     String newTitle;
-    if( value.length >= _titleLong ){
-      newTitle = value.substring(0,_titleLong) + "...";
-      if( value.contains(".") ){
+    if (value.length >= _titleLong) {
+      newTitle = value.substring(0, _titleLong) + "...";
+      if (value.contains(".")) {
         newTitle += value.split(".").last;
       }
     }
     _showTitle = (value.length <= _titleLong) ? value : newTitle;
   }
-
 }

@@ -1,4 +1,3 @@
-
 class HtmlUtils {
   /*
   「		雙引號			&quot;		×	乘號				&times;		←	向左箭頭				&larr;
@@ -26,7 +25,7 @@ class HtmlUtils {
   ⊕		 				&oplus;		³	註解3符號、立方		&sup3;		ω	Omega符號				&omega;
   ∇		倒三角型符號	&nabla;		↵	ENTER符號			&crarr;		Ω	Omega符號、歐姆符號		&Omega;
    */
-  static String clean(String html){
+  static String clean(String html) {
     String result;
     html = html.replaceAll("&amp;", "&");
     html = html.replaceAll("&nbsp;", " ");
@@ -34,16 +33,17 @@ class HtmlUtils {
     return result;
   }
 
-  static String addLink(String html){
-    RegExp exp = RegExp(r'\"?(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\"?');
+  static String addLink(String html) {
+    RegExp exp = RegExp(
+        r'\"?(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\"?');
     List<RegExpMatch> matchList = exp.allMatches(html).toList();
-    for(RegExpMatch match in matchList){
+    for (RegExpMatch match in matchList) {
       String url = match.group(0);
-      if( !url.contains("\"")){
-        html = html.replaceAll(url, r'<a href="' + url + '" target="_blank">' + url + '</a>');
+      if (!url.contains("\"")) {
+        html = html.replaceAll(
+            url, r'<a href="' + url + '" target="_blank">' + url + '</a>');
       }
     }
     return html;
   }
-
 }

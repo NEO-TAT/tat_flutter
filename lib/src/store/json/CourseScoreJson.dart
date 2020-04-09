@@ -67,6 +67,7 @@ class CourseScoreCreditJson {
     }
     return courseIdList;
   }
+
   //取得所有學期
   List<SemesterJson> getSemesterList() {
     List<SemesterJson> value;
@@ -78,27 +79,27 @@ class CourseScoreCreditJson {
 
   int getCreditByType(String type) {
     int credit = 0;
-    Map<String,List<CourseInfoJson>> result = getCourseByType(type);
-    for(String key in result.keys.toList()){
-      for(CourseInfoJson j in result[key]){
+    Map<String, List<CourseInfoJson>> result = getCourseByType(type);
+    for (String key in result.keys.toList()) {
+      for (CourseInfoJson j in result[key]) {
         credit += j.credit.toInt();
       }
     }
     return credit;
   }
 
-
   /*
   key
   Map<Semester , List<CourseInfoJson> >
   */
-  Map<String,List<CourseInfoJson>> getCourseByType(String type) {
-    Map<String,List<CourseInfoJson>> result = Map();
+  Map<String, List<CourseInfoJson>> getCourseByType(String type) {
+    Map<String, List<CourseInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
-      String semester = sprintf("%s-%s" , [i.semester.year , i.semester.semester ]) ;
+      String semester =
+          sprintf("%s-%s", [i.semester.year, i.semester.semester]);
       result[semester] = List();
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.category.contains(type) && j.isPass){
+        if (j.category.contains(type) && j.isPass) {
           result[semester].add(j);
         }
       }
@@ -106,21 +107,21 @@ class CourseScoreCreditJson {
     return result;
   }
 
-  String getSemesterString(SemesterJson semester){
-    return sprintf("%s-%s" , [semester.year , semester.semester ]);
+  String getSemesterString(SemesterJson semester) {
+    return sprintf("%s-%s", [semester.year, semester.semester]);
   }
 
   /*
   key
   Map<Semester , List<CourseInfoJson> >
   */
-  Map<String,List<CourseInfoJson>> getGeneralLesson() {
-    Map<String,List<CourseInfoJson>> result = Map();
+  Map<String, List<CourseInfoJson>> getGeneralLesson() {
+    Map<String, List<CourseInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
-      String semester = getSemesterString(i.semester) ;
+      String semester = getSemesterString(i.semester);
       result[semester] = List();
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.isGeneralLesson && j.isPass ){
+        if (j.isGeneralLesson && j.isPass) {
           result[semester].add(j);
         }
       }
@@ -131,13 +132,14 @@ class CourseScoreCreditJson {
   /*
   計算外系學分
   */
-  Map<String,List<CourseInfoJson>> getOtherDepartmentCourse(String department) {
-    Map<String,List<CourseInfoJson>> result = Map();
+  Map<String, List<CourseInfoJson>> getOtherDepartmentCourse(
+      String department) {
+    Map<String, List<CourseInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
-      String semester = getSemesterString(i.semester) ;
+      String semester = getSemesterString(i.semester);
       result[semester] = List();
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.isOtherDepartment(department) && j.isPass ){
+        if (j.isOtherDepartment(department) && j.isPass) {
           result[semester].add(j);
         }
       }
@@ -149,7 +151,7 @@ class CourseScoreCreditJson {
     int credit = 0;
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       for (CourseInfoJson j in i.courseScoreList) {
-        if( j.isPass ){
+        if (j.isPass) {
           credit += j.credit.toInt();
         }
       }
@@ -193,7 +195,9 @@ class GraduationInformationJson {
   }
 
   bool get isSelect {
-    return !(selectYear.isEmpty & selectDivision.isEmpty & selectDepartment.isEmpty);
+    return !(selectYear.isEmpty &
+        selectDivision.isEmpty &
+        selectDepartment.isEmpty);
   }
 
   factory GraduationInformationJson.fromJson(Map<String, dynamic> json) =>
@@ -219,7 +223,6 @@ class GraduationInformationJson {
           courseTypeMinCredit.toString()
         ]);
   }
-
 }
 
 @JsonSerializable()
@@ -392,36 +395,40 @@ class CourseInfoJson {
     credit = credit ?? 0;
   }
 
-  bool get isPass{ //是否拿到學分
-    try{
+  bool get isPass {
+    //是否拿到學分
+    try {
       int s = int.parse(score);
-      return (s>=60)?true:false;
-    }catch(e){
+      return (s >= 60) ? true : false;
+    } catch (e) {
       return false;
     }
   }
 
-  bool isOtherDepartment(String department){  //是否是跨系選修
-    List<String> containClass = ["最後一哩"];  //包含就是外系
-    List<String> excludeClass = ["體育"];      //包含就不是外系
+  bool isOtherDepartment(String department) {
+    //是否是跨系選修
+    List<String> containClass = ["最後一哩"]; //包含就是外系
+    List<String> excludeClass = ["體育"]; //包含就不是外系
     bool isOther;
     isOther = category.contains("△"); //是校內共同必修就不是外系
-    if( isOther ) return false;
-    isOther = !openClass.contains(department);  //先用開設班級是否是本系判斷
-    for( String key in excludeClass){
+    if (isOther) return false;
+    isOther = !openClass.contains(department); //先用開設班級是否是本系判斷
+    for (String key in excludeClass) {
       isOther &= !openClass.contains(key);
     }
-    for( String key in containClass){
+    for (String key in containClass) {
       isOther |= openClass.contains(key);
     }
     return isOther;
   }
 
-  bool get isGeneralLesson{  //是否是博雅課程
+  bool get isGeneralLesson {
+    //是否是博雅課程
     return openClass.contains("博雅") || openClass.contains("職通識課程");
   }
 
-  bool get isCoreGeneralLesson{  //是否是博雅核心課程
+  bool get isCoreGeneralLesson {
+    //是否是博雅核心課程
     return openClass.contains("核心");
   }
 

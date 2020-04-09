@@ -41,12 +41,12 @@ class NTUTAppConnector {
     }
   }
 
-  static Future<Map<String,String>> getDepartment() async{
+  static Future<Map<String, String>> getDepartment() async {
     ConnectorParameter parameter;
     String code;
     String result;
     Document tagNode;
-    Map<String,String> departmentData = Map();
+    Map<String, String> departmentData = Map();
     List<Element> nodes;
     try {
       parameter = ConnectorParameter(_countCreditUrl);
@@ -62,8 +62,9 @@ class NTUTAppConnector {
         }
       }
       nodes = tagNode.getElementsByTagName("li");
-      departmentData["division"] = nodes[4].getElementsByClassName("item-after").first.text; // 學制
-      Log.d( departmentData.toString() );
+      departmentData["division"] =
+          nodes[4].getElementsByClassName("item-after").first.text; // 學制
+      Log.d(departmentData.toString());
       _isLogin = true;
       return departmentData;
     } catch (e) {
@@ -84,23 +85,20 @@ class NTUTAppConnector {
     Log.d("NTUTApp CheckLogin");
     _isLogin = false;
     String result;
-    try{
+    try {
       ConnectorParameter parameter = ConnectorParameter(_loginUrl);
-      parameter.data = {
-        "checkLogin": "true",
-        "login": "true"
-      };
+      parameter.data = {"checkLogin": "true", "login": "true"};
       result = await Connector.getDataByPost(parameter);
       Map jsonDecode = json.decode(result);
-      if( jsonDecode.containsKey("status") ){
-        if( jsonDecode["status"].contains("logout") ){
+      if (jsonDecode.containsKey("status")) {
+        if (jsonDecode["status"].contains("logout")) {
           return false;
         }
       }
       Log.d("NTUTApp Is Readly Login");
       _isLogin = true;
       return true;
-    }catch(e){
+    } catch (e) {
       Log.e(e.toString());
       return false;
     }
