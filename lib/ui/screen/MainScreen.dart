@@ -43,10 +43,6 @@ class _MainScreenState extends State<MainScreen> {
     //載入儲存資料
     Model.instance.init().then((value) async {
       // 需重新初始化 list，PageController 才會清除 cache
-      Crashlytics.instance
-          .setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
-      Crashlytics.instance
-          .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
       try {
         await AppHotFix.init();
         BuildContext contextKey = navigatorKey.currentState.overlay.context;
@@ -55,6 +51,10 @@ class _MainScreenState extends State<MainScreen> {
         } else {
           _checkAppVersion();
         }
+        Crashlytics.instance
+            .setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
+        Crashlytics.instance
+            .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
         await AppHotFix.hotFixSuccess(contextKey);
       } catch (e) {
         Log.e(e.toString());
