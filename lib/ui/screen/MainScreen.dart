@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -42,6 +43,10 @@ class _MainScreenState extends State<MainScreen> {
     //載入儲存資料
     Model.instance.init().then((value) async {
       // 需重新初始化 list，PageController 才會清除 cache
+      Crashlytics.instance
+          .setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
+      Crashlytics.instance
+          .setBool("Patch Version", AppHotFix.inDevMode); //設定是否加入內測版
       try {
         await AppHotFix.init();
         BuildContext contextKey = navigatorKey.currentState.overlay.context;

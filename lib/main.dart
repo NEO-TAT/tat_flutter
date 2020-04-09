@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/hotfix/PatchVersion.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/providers/CoreProvider.dart';
@@ -16,7 +17,7 @@ import 'generated/l10n.dart';
 Future<Null> main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
-
+  Crashlytics.instance.setInt("Patch Version", patchVersion); //設定patch version
   //runApp( MyApp() );
   runZoned(() {
     runApp(
