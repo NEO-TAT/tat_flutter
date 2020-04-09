@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
       Crashlytics.instance
           .setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
       Crashlytics.instance
-          .setBool("Patch Version", AppHotFix.inDevMode); //設定是否加入內測版
+          .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
       try {
         await AppHotFix.init();
         BuildContext contextKey = navigatorKey.currentState.overlay.context;
