@@ -115,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "fileAttachmentDetected" : MessageLookupByLibrary.simpleMessage("偵測到檔案附件"),
     "fileNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("檔案名稱已經存在!"),
     "fileViewer" : MessageLookupByLibrary.simpleMessage("下載項目"),
+    "findNewMessage" : MessageLookupByLibrary.simpleMessage("發現新公告"),
     "findNewVersion" : MessageLookupByLibrary.simpleMessage("發現新版本"),
     "findPatchNewVersion" : MessageLookupByLibrary.simpleMessage("發現新補丁版本"),
     "focusLogin" : MessageLookupByLibrary.simpleMessage("強制登入"),
