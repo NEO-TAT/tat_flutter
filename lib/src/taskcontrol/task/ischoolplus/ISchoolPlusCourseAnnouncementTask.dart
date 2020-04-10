@@ -16,7 +16,7 @@ class ISchoolPlusCourseAnnouncementTask extends TaskModel {
       "ISchoolPlusCourseAnnouncementTempKey";
 
   ISchoolPlusCourseAnnouncementTask(BuildContext context, this.courseId)
-      : super(context, taskName , require);
+      : super(context, taskName, require);
 
   @override
   Future<TaskStatus> taskStart() async {

@@ -24,7 +24,7 @@ class CourseFileJson {
 class FileType {
   CourseFileType type;
   String href;
-  dynamic postData;  //ISchoolPlus取得真實連結會使用
+  dynamic postData; //ISchoolPlus取得真實連結會使用
 
   FileType({this.type, this.href}) {
     type = type ?? CourseFileType.Unknown;

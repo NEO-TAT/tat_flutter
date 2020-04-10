@@ -106,7 +106,8 @@ class NTUTConnector {
       parameter = ConnectorParameter(_getCalendarUrl);
       parameter.data = data;
       String result = await Connector.getDataByGet(parameter);
-      List<NTUTCalendarJson> calendarList = getNTUTCalendarJsonList( json.decode(result));
+      List<NTUTCalendarJson> calendarList =
+          getNTUTCalendarJsonList(json.decode(result));
       return calendarList;
     } catch (e) {
       Log.e(e.toString());

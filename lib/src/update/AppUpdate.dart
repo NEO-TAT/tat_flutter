@@ -20,8 +20,7 @@ class UpdateDetail {
 
 class AppUpdate {
   static Future<UpdateDetail> checkUpdate() async {
-    String androidCheckUrl =
-        "https://api.github.com/repos/NEO-TAT/NTUTCourseHelper-Flutter/releases/latest";
+    String androidCheckUrl = AppLink.appUpdateCheck;
     if (Platform.isAndroid) {
       ConnectorParameter parameter = ConnectorParameter(androidCheckUrl);
       String result = await DioConnector.instance.getDataByGet(parameter);
@@ -121,8 +120,7 @@ class AppUpdate {
   }
 
   static void _openPlayStore() async {
-    String packageId = "club.ntut.npc.tat";
-    String url = "https://play.google.com/store/apps/details?id=$packageId";
+    String url = AppLink.playStore;
     if (await canLaunch(url)) {
       await launch(url);
     }

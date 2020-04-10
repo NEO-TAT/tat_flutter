@@ -113,7 +113,6 @@ class _AnnouncementDetailPageState extends State<AnnouncementDetailPage> {
     }
   }
 
-
   _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);

@@ -43,7 +43,11 @@ class CourseTableJson {
   String studentName;
   Map<Day, Map<SectionNumber, CourseInfoJson>> courseInfoMap;
 
-  CourseTableJson({this.courseSemester, this.courseInfoMap,this.studentId , this.studentName}) {
+  CourseTableJson(
+      {this.courseSemester,
+      this.courseInfoMap,
+      this.studentId,
+      this.studentName}) {
     studentId = JsonInit.stringInit(studentId);
     studentName = JsonInit.stringInit(studentName);
     courseSemester = courseSemester ?? SemesterJson();
@@ -73,9 +77,9 @@ class CourseTableJson {
         if (courseDetail != null) {
           if (courseDetail.main.course.id == courseId) {
             String creditString = courseDetail.main.course.credits;
-            try{
+            try {
               return double.parse(creditString).toInt();
-            }catch(e){
+            } catch (e) {
               return 0;
             }
           }
@@ -210,7 +214,6 @@ class CourseTableJson {
     }
     return null;
   }
-
 }
 
 @JsonSerializable()

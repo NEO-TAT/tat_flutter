@@ -17,7 +17,6 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -71,7 +70,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
         }); //尚未登入
       } else {
         _loadSetting();
-        _checkAppVersion();
       }
     });
   }
@@ -147,21 +145,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
       });
     } catch (e) {
       Log.d("setState() called after dispose()");
-    }
-  }
-
-  void _checkAppVersion() {
-    if (Model.instance.autoCheckAppUpdate) {
-      if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
-        AppUpdate.checkUpdate().then(
-          (value) {
-            Model.instance.setAlreadyUse(Model.appCheckUpdate);
-            if (value != null) {
-              AppUpdate.showUpdateDialog(context, value);
-            }
-          },
-        );
-      }
     }
   }
 

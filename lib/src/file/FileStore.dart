@@ -49,7 +49,7 @@ class FileStore {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString(storeKey, directory.path);
       return true;
-    }else{
+    } else {
       return false;
     }
   }

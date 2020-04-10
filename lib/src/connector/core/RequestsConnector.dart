@@ -82,7 +82,7 @@ class RequestsConnector {
       _handleHeaders(parameter);
       await _handleCookiesBefore(url);
       Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
-      response = await Requests.post(url, body: data , headers: _headers);
+      response = await Requests.post(url, body: data, headers: _headers);
       await _handleCookiesAfter(parameter.url,
           response.rawResponse.headers[HttpHeaders.setCookieHeader]);
       return response;

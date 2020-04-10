@@ -110,10 +110,7 @@ class ISchoolPlusConnector {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
         "apOu": "ischool_plus_",
         "sso": "true",
-        "datetime1": DateTime
-            .now()
-            .millisecondsSinceEpoch
-            .toString()
+        "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
       parameter = ConnectorParameter("https://nportal.ntut.edu.tw/ssoIndex.do");
       parameter.data = data;
@@ -127,7 +124,7 @@ class ISchoolPlusConnector {
         data[name] = value;
       }
       String jumpUrl =
-      tagNode.getElementsByTagName("form")[0].attributes["action"];
+          tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
@@ -282,10 +279,10 @@ class ISchoolPlusConnector {
         bool pass = (matches == null)
             ? false
             : (matches.groupCount == null)
-            ? false
-            : matches.group(1).toLowerCase().contains("http")
-            ? true
-            : false;
+                ? false
+                : matches.group(1).toLowerCase().contains("http")
+                    ? true
+                    : false;
         if (pass) {
           //已經是完整連結
           return matches.group(1);
@@ -347,20 +344,14 @@ class ISchoolPlusConnector {
       parameter.data = data;
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
-      bid = tagNode
-          .getElementById("bid")
-          .attributes["value"];
+      bid = tagNode.getElementById("bid").attributes["value"];
 
       node = tagNode.getElementById("formSearch");
       nodes = node.getElementsByTagName("input");
       String selectPage =
-      tagNode
-          .getElementById("selectPage")
-          .attributes['value'];
+          tagNode.getElementById("selectPage").attributes['value'];
       String inputPerPage =
-      tagNode
-          .getElementById("inputPerPage")
-          .attributes['value'];
+          tagNode.getElementById("inputPerPage").attributes['value'];
       data = {
         "token": "",
         "bid": "",
@@ -388,14 +379,10 @@ class ISchoolPlusConnector {
       if (totalRows > 0) {
         for (String keyName in json.decode(result)['data'].keys.toList()) {
           ISchoolPlusAnnouncementJson courseInfo =
-          ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
+              ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
           courseInfo.token = data['token'];
-          courseInfo.bid = keyName
-              .split("|")
-              .first;
-          courseInfo.nid = keyName
-              .split("|")
-              .last;
+          courseInfo.bid = keyName.split("|").first;
+          courseInfo.nid = keyName.split("|").last;
           announcementList.add(courseInfo);
         }
       }
@@ -430,30 +417,18 @@ class ISchoolPlusConnector {
       parameter.data = data;
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
-      node = tagNode
-          .getElementsByClassName("main node-info")
-          .first;
+      node = tagNode.getElementsByClassName("main node-info").first;
       Map detail = Map();
 
       String title = node.attributes["data-title"];
-      node = tagNode
-          .getElementsByClassName("author-name")
-          .first;
+      node = tagNode.getElementsByClassName("author-name").first;
       String sender = node.text;
-      node = tagNode
-          .getElementsByClassName("post-time")
-          .first;
+      node = tagNode.getElementsByClassName("post-time").first;
       String postTime = node.text;
-      node = tagNode
-          .getElementsByClassName("bottom-tmp")
-          .first;
-      node = node
-          .getElementsByClassName("content")
-          .first;
+      node = tagNode.getElementsByClassName("bottom-tmp").first;
+      node = node.getElementsByClassName("content").first;
       String body = node.innerHtml;
-      node = tagNode
-          .getElementsByClassName("bottom-tmp")
-          .first;
+      node = tagNode.getElementsByClassName("bottom-tmp").first;
       nodes = node.getElementsByClassName("file");
       Map<String, String> fileMap = Map(); // name , url
       if (nodes.length >= 1) {
@@ -480,8 +455,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<bool> courseSubscribe(String bid,
-      bool subscribe) async {
+  static Future<bool> courseSubscribe(String bid, bool subscribe) async {
     ConnectorParameter parameter;
     html.Document tagNode;
     String title;
@@ -494,10 +468,7 @@ class ISchoolPlusConnector {
       do {
         result = await RequestsConnector.getDataByPost(parameter);
         tagNode = html.parse(result);
-        title = tagNode
-            .getElementsByTagName("title")
-            .first
-            .text;
+        title = tagNode.getElementsByTagName("title").first.text;
         Log.d(title);
         time++;
       } while (title.contains("取消") == subscribe && time < 2);
@@ -512,7 +483,6 @@ class ISchoolPlusConnector {
     }
   }
 
-
   static Future<List<String>> getSubscribeNotice() async {
     ConnectorParameter parameter;
     html.Document tagNode;
@@ -521,25 +491,26 @@ class ISchoolPlusConnector {
     String result;
     List<String> courseNameList = List();
     try {
-      parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/learn/my_forum.php");
+      parameter =
+          ConnectorParameter("https://istudy.ntut.edu.tw/learn/my_forum.php");
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
       nodes = tagNode.getElementsByTagName("tbody");
-      if( nodes.length > 1 ){
+      if (nodes.length > 1) {
         node = nodes[1];
-      }else{
-        return null;  //代表無公告
+      } else {
+        return null; //代表無公告
       }
       nodes = node.getElementsByTagName("tr");
-      for(int i = 0 ; i < nodes.length ;i++){
+      for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
-        String courseName = node.getElementsByTagName("td")[1].text.split("_")[1];
+        String courseName =
+            node.getElementsByTagName("td")[1].text.split("_")[1];
         courseNameList.add(courseName);
       }
       return courseNameList;
     } catch (e) {
-      Log.e( e.toString() );
+      Log.e(e.toString());
       return null;
     }
   }
@@ -556,10 +527,7 @@ class ISchoolPlusConnector {
       await RequestsConnector.getDataByPost(parameter);
       result = await RequestsConnector.getDataByPost(parameter);
       tagNode = html.parse(result);
-      title = tagNode
-          .getElementsByTagName("title")
-          .first
-          .text;
+      title = tagNode.getElementsByTagName("title").first.text;
       return !title.contains("取消");
     } catch (e) {
       return false;
@@ -603,9 +571,7 @@ class ISchoolPlusConnector {
       String courseValue;
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
-        String name = node.text
-            .split("_")
-            .last;
+        String name = node.text.split("_").last;
         if (name == courseId) {
           courseValue = node.attributes["value"];
           break;

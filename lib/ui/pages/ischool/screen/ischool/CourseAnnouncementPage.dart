@@ -39,16 +39,15 @@ class _CourseAnnouncementPageState extends State<CourseAnnouncementPage>
     String courseId = widget.courseInfo.main.course.id;
     if (widget.studentId != ISchoolConnector.loginStudentId) {
       TaskHandler.instance.addTask(
-          ISchoolLoginTask(context,
-              studentId: widget.studentId),
+          ISchoolLoginTask(context, studentId: widget.studentId),
           onLoginCheck: false);
     }
     TaskHandler.instance.addTask(
         ISchoolCourseAnnouncementTask(context, courseId),
         onLoginCheck: false);
     await TaskHandler.instance.startTaskQueue(context);
-    courseAnnouncementList = Model.instance.getTempData(
-        ISchoolCourseAnnouncementTask.tempDataKey);
+    courseAnnouncementList =
+        Model.instance.getTempData(ISchoolCourseAnnouncementTask.tempDataKey);
     courseAnnouncementList = courseAnnouncementList ?? List();
     setState(() {});
   }
