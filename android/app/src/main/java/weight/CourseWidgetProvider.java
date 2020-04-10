@@ -10,14 +10,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import java.util.Arrays;
 
 import club.ntut.npc.tat.BootLoaderActivity;
-import club.ntut.npc.tat.MainActivity;
 import club.ntut.npc.tat.R;
 import io.flutter.Log;
 
