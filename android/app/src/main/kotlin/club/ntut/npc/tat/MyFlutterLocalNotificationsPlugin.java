@@ -465,9 +465,7 @@ public class MyFlutterLocalNotificationsPlugin implements MethodCallHandler, Plu
     }
 
     private static Class getMainActivityClass(Context context) {
-        String packageName = context.getPackageName();
-        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-        String className = launchIntent.getComponent().getClassName();
+        String className = MainActivity.class.getName();
         try {
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
