@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.annotation.NonNull
+import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin
 import io.flutter.Log
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -17,7 +18,9 @@ class MainActivity : FlutterActivity() {
     private val channelName = "club.ntut.npc.tat.update.weight"
     private val logTag = "FlutterActivity"
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
-        GeneratedPluginRegistrant.registerWith(flutterEngine);
+        GeneratedPluginRegistrant.registerWith(flutterEngine)
+        flutterEngine.plugins.remove(FlutterLocalNotificationsPlugin().javaClass)
+        flutterEngine.plugins.add(MyFlutterLocalNotificationsPlugin())
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName).setMethodCallHandler { call, result ->
             when (call.method) {
                 "update_weight" -> {

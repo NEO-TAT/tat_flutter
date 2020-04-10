@@ -17,7 +17,10 @@ dependencies:
   url_launcher: ^5.4.2   #開啟email phone url...
   logger: ^0.8.3         #顯示Log
   sprintf: ^4.0.2
-  flutter_local_notifications: ^1.4.0  #通知欄
+  #flutter_local_notifications: ^1.4.0  #通知欄
+  flutter_local_notifications:
+    git:
+      url: git@github.com:morris13579/flutter_local_notifications.git
   hex: ^0.1.2
   rxdart: ^0.23.1 #通知欄有使用到
   flutter_ijkplayer: ^0.3.5+1
