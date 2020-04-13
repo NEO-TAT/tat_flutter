@@ -144,6 +144,8 @@
   "patchUpdateComplete": "Patch successfully upgraded version:",
   "patchUpdateFail": "Patch upgrade failed\nAutomatically downgraded to original version:",
   "developerMode": "DeveloperMode",
+  "openExternalVideo" : "Open with external video player",
+  "openExternalVideoHint" : "Recommend use MX player",
   "___________________iSchoolUi___________________": "註解",
   "course": "Course",
   "announcement": "Announcement",

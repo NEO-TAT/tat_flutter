@@ -53,6 +53,7 @@ class _SettingPageState extends State<SettingPage>
     List<Widget> listViewData = List();
     listViewData.add(_buildLanguageSetting());
     listViewData.add(_buildFocusLoginSetting());
+    listViewData.add(_buildOpenExternalVideoSetting());
     listViewData.add(_buildAutoCheckAppVersionSetting());
     listViewData.add(_buildDarkModeSetting());
     if (Platform.isAndroid) listViewData.add(_buildFolderPathSetting());
@@ -250,6 +251,33 @@ class _SettingPageState extends State<SettingPage>
             activeColor: Theme.of(context).accentColor,
           )
         : SizedBox();
+  }
+
+  Widget _buildOpenExternalVideoSetting() {
+    return SwitchListTile.adaptive(
+      contentPadding: EdgeInsets.all(0),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            R.current.openExternalVideo,
+            style: textTitle,
+          ),
+          Text(
+            R.current.openExternalVideoHint,
+            style: textBody,
+          ),
+        ],
+      ),
+      value: Model.instance.getOtherSetting().useExternalVideoPlayer,
+      onChanged: (value) {
+        setState(() {
+          Model.instance.getOtherSetting().useExternalVideoPlayer = value;
+          Model.instance.saveOtherSetting();
+        });
+      },
+      activeColor: Theme.of(context).accentColor,
+    );
   }
 
   Widget _buildFolderPathSetting() {

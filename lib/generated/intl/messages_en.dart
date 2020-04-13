@@ -190,6 +190,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "nothingHere" : MessageLookupByLibrary.simpleMessage("There\'s nothing here"),
     "numberOfStudent" : MessageLookupByLibrary.simpleMessage("Number of students"),
     "numberOfWithdraw" : MessageLookupByLibrary.simpleMessage("Number of withdraw"),
+    "openExternalVideo" : MessageLookupByLibrary.simpleMessage("Open with external video player"),
+    "openExternalVideoHint" : MessageLookupByLibrary.simpleMessage("Recommend use MX player"),
     "openSubscribe" : MessageLookupByLibrary.simpleMessage("Open subscribe"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "passwordExpiredWarning" : MessageLookupByLibrary.simpleMessage("Password is about to expire, please update password as soon as possible"),

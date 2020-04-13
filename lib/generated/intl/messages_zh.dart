@@ -189,6 +189,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "nothingHere" : MessageLookupByLibrary.simpleMessage("沒有任何資料"),
     "numberOfStudent" : MessageLookupByLibrary.simpleMessage("修課人數"),
     "numberOfWithdraw" : MessageLookupByLibrary.simpleMessage("撤選人數"),
+    "openExternalVideo" : MessageLookupByLibrary.simpleMessage("使用外置播放器"),
+    "openExternalVideoHint" : MessageLookupByLibrary.simpleMessage("推薦使用MX player"),
     "openSubscribe" : MessageLookupByLibrary.simpleMessage("開啟訂閱"),
     "password" : MessageLookupByLibrary.simpleMessage("密碼"),
     "passwordExpiredWarning" : MessageLookupByLibrary.simpleMessage("密碼即將過期，請盡快更新密碼"),

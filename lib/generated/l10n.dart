@@ -1332,6 +1332,24 @@ class S {
     );
   }
 
+  String get openExternalVideo {
+    return Intl.message(
+      'Open with external video player',
+      name: 'openExternalVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get openExternalVideoHint {
+    return Intl.message(
+      'Recommend use MX player',
+      name: 'openExternalVideoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',
