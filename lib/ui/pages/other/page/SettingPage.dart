@@ -7,8 +7,10 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:provider/provider.dart';
 
@@ -48,22 +50,33 @@ class _SettingPageState extends State<SettingPage>
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> listViewData = List();
+    listViewData.add(_buildLanguageSetting());
+    listViewData.add(_buildFocusLoginSetting());
+    listViewData.add(_buildAutoCheckAppVersionSetting());
+    listViewData.add(_buildDarkModeSetting());
+    if (Platform.isAndroid) listViewData.add(_buildFolderPathSetting());
     return Scaffold(
       appBar: AppBar(
         title: Text(R.current.setting),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _buildLanguageSetting(),
-            _buildFocusLoginSetting(),
-            _buildAutoCheckAppVersionSetting(),
-            _buildDarkModeSetting(),
-            if (Platform.isAndroid) _buildFolderPathSetting(),
-          ],
-        ),
+      body: ListView.separated(
+        itemCount: listViewData.length,
+        itemBuilder: (context, index) {
+          Widget widget;
+          widget = listViewData[index];
+          return Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: WidgetAnimator(widget),
+          );
+        },
+        separatorBuilder: (context, index) {
+          // 顯示格線
+          return Container(
+            color: Colors.black12,
+            height: 1,
+          );
+        },
       ),
     );
   }
@@ -91,7 +104,7 @@ class _SettingPageState extends State<SettingPage>
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(left: 15, right: 15),
+                padding: EdgeInsets.only(top: 15, left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
