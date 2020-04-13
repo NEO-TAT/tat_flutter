@@ -186,6 +186,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noPermission" : MessageLookupByLibrary.simpleMessage("Permission denied"),
     "noRankInfo" : MessageLookupByLibrary.simpleMessage("No rank information"),
     "noSupport" : MessageLookupByLibrary.simpleMessage(" not support"),
+    "noSupportExternalVideoPlayer" : MessageLookupByLibrary.simpleMessage("Not find support external video player"),
     "notSupport" : MessageLookupByLibrary.simpleMessage("Not support"),
     "nothingHere" : MessageLookupByLibrary.simpleMessage("There\'s nothing here"),
     "numberOfStudent" : MessageLookupByLibrary.simpleMessage("Number of students"),

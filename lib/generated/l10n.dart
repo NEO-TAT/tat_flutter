@@ -1611,6 +1611,15 @@ class S {
     );
   }
 
+  String get noSupportExternalVideoPlayer {
+    return Intl.message(
+      'Not find support external video player',
+      name: 'noSupportExternalVideoPlayer',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',

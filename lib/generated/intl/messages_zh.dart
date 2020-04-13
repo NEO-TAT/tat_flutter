@@ -185,6 +185,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "noPermission" : MessageLookupByLibrary.simpleMessage("沒有權限"),
     "noRankInfo" : MessageLookupByLibrary.simpleMessage("暫無排名資訊"),
     "noSupport" : MessageLookupByLibrary.simpleMessage("不支持"),
+    "noSupportExternalVideoPlayer" : MessageLookupByLibrary.simpleMessage("沒有支持的外置播放器"),
     "notSupport" : MessageLookupByLibrary.simpleMessage("不支持查詢非自己課程"),
     "nothingHere" : MessageLookupByLibrary.simpleMessage("沒有任何資料"),
     "numberOfStudent" : MessageLookupByLibrary.simpleMessage("修課人數"),
