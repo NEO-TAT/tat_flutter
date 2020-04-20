@@ -748,14 +748,27 @@ class _CourseTablePageState extends State<CourseTablePage> {
       const MethodChannel('club.ntut.npc.tat.update.weight');
 
   Future screenshot() async {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double originHeight = courseHeight;
+    RenderObject renderObject = _key.currentContext.findRenderObject();
+    double height =
+        renderObject.semanticBounds.size.height - studentIdHeight - dayHeight;
     Directory directory = await getApplicationSupportDirectory();
     String path = directory.path;
+    setState(() {
+      courseHeight = height / courseTableControl.getSectionIntList.length;
+    });
+    await Future.delayed(Duration(milliseconds: 100));
+    setState(() {
+      isLoading = true;
+    });
     Log.d(path);
     RenderRepaintBoundary boundary =
         overRepaintKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage(pixelRatio: 2);
+    setState(() {
+      courseHeight = originHeight;
+      isLoading = false;
+    });
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
     File imgFile = new File('$path/course_weight.png');
