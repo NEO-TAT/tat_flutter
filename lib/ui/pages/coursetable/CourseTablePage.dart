@@ -75,10 +75,18 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void getCourseNotice() async {
+    setState(() {
+      loadCourseNotice = false;
+    });
+    if (!Model.instance.getOtherSetting().checkIPlusNew) {
+      return;
+    }
     if (!Model.instance.getFirstUse(Model.courseNotice)) {
-      setState(() {
-        loadCourseNotice = false;
-      });
+      return;
+    }
+    if (Model.instance.getAccount() !=
+        Model.instance.getCourseSetting().info.studentId) {
+      //只有顯示自己的課表時才會檢查新公告
       return;
     }
     setState(() {
@@ -93,7 +101,16 @@ class _CourseTablePageState extends State<CourseTablePage> {
       }
       await ISchoolPlusConnector.login(Model.instance.getAccount());
     }
-    List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
+    List<String> v = await ISchoolPlusConnector.getSubscribeNotice();
+    List<String> value = List();
+    for (int i = 0; i < v.length; i++) {
+      String courseName = v[i];
+      CourseInfoJson courseInfo =
+          courseTableData.getCourseInfoByCourseName(courseName);
+      if (courseInfo != null) {
+        value.add(courseName);
+      }
+    }
     if (value != null) {
       showDialog<void>(
         useRootNavigator: false,
@@ -313,7 +330,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           value[index]; //儲存課表
                       Model.instance.saveCourseSetting();
                       _showCourseTable(value[index]);
-                      Model.instance.clearSemesterJsonList();  //須清除已儲存學期
+                      Model.instance.clearSemesterJsonList(); //須清除已儲存學期
                       Navigator.of(context).pop();
                     },
                   ),
@@ -633,6 +650,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
+    String studentId = Model.instance.getCourseSetting().info.studentId;
+    setState(() {
+      _studentIdControl.text = studentId;
+    });
     showDialog(
       context: context,
       useRootNavigator: false,
@@ -671,7 +692,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showCourseDetail(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
-    String studentId = _studentIdControl.text;
+    String studentId = Model.instance.getCourseSetting().info.studentId;
     if (course.id.isEmpty) {
       MyToast.show(course.name + R.current.noSupport);
     } else {

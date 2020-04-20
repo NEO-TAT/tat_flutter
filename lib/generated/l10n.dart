@@ -848,7 +848,7 @@ class S {
 
   String get findNewMessage {
     return Intl.message(
-      'Find new message',
+      'Find I Plus new message',
       name: 'findNewMessage',
       desc: '',
       args: [],
@@ -1345,6 +1345,15 @@ class S {
     return Intl.message(
       'Recommend use MX player',
       name: 'openExternalVideoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get checkIPlusNew {
+    return Intl.message(
+      'Check IPlus new',
+      name: 'checkIPlusNew',
       desc: '',
       args: [],
     );

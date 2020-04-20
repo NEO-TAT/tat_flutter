@@ -54,6 +54,7 @@ class _SettingPageState extends State<SettingPage>
     listViewData.add(_buildLanguageSetting());
     listViewData.add(_buildFocusLoginSetting());
     listViewData.add(_buildOpenExternalVideoSetting());
+    listViewData.add(_buildLoadIPlusNewsSetting());
     listViewData.add(_buildAutoCheckAppVersionSetting());
     listViewData.add(_buildDarkModeSetting());
     if (Platform.isAndroid) listViewData.add(_buildFolderPathSetting());
@@ -251,6 +252,29 @@ class _SettingPageState extends State<SettingPage>
             activeColor: Theme.of(context).accentColor,
           )
         : SizedBox();
+  }
+
+  Widget _buildLoadIPlusNewsSetting() {
+    return SwitchListTile.adaptive(
+      contentPadding: EdgeInsets.all(0),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            R.current.checkIPlusNew,
+            style: textTitle,
+          ),
+        ],
+      ),
+      value: Model.instance.getOtherSetting().checkIPlusNew,
+      onChanged: (value) {
+        setState(() {
+          Model.instance.getOtherSetting().checkIPlusNew = value;
+          Model.instance.saveOtherSetting();
+        });
+      },
+      activeColor: Theme.of(context).accentColor,
+    );
   }
 
   Widget _buildOpenExternalVideoSetting() {
