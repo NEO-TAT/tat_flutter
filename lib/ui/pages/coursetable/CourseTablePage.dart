@@ -84,6 +84,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
     if (!Model.instance.getFirstUse(Model.courseNotice)) {
       return;
     }
+    if (Model.instance.getAccount() !=
+        Model.instance.getCourseSetting().info.studentId) {
+      //只有顯示自己的課表時才會檢查新公告
+      return;
+    }
     setState(() {
       loadCourseNotice = true;
     });
@@ -645,6 +650,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
+    String studentId = Model.instance.getCourseSetting().info.studentId;
+    setState(() {
+      _studentIdControl.text = studentId;
+    });
     showDialog(
       context: context,
       useRootNavigator: false,
@@ -683,7 +692,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showCourseDetail(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
-    String studentId = _studentIdControl.text;
+    String studentId = Model.instance.getCourseSetting().info.studentId;
     if (course.id.isEmpty) {
       MyToast.show(course.name + R.current.noSupport);
     } else {
