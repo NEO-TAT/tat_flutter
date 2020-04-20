@@ -1350,6 +1350,15 @@ class S {
     );
   }
 
+  String get checkIPlusNew {
+    return Intl.message(
+      'Check IPlus new',
+      name: 'checkIPlusNew',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',

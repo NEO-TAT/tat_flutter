@@ -64,6 +64,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotWrite" : MessageLookupByLibrary.simpleMessage("無法寫入此存儲設備！"),
     "category" : MessageLookupByLibrary.simpleMessage("類別"),
     "changePassword" : MessageLookupByLibrary.simpleMessage("更改密碼"),
+    "checkIPlusNew" : MessageLookupByLibrary.simpleMessage("檢查IPlus最新公告"),
     "checkLogin" : MessageLookupByLibrary.simpleMessage("檢查登入..."),
     "checkVersion" : MessageLookupByLibrary.simpleMessage("檢查新版本"),
     "checkingPermission" : MessageLookupByLibrary.simpleMessage("檢查權限"),

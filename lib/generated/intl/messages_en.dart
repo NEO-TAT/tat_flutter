@@ -65,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "cannotWrite" : MessageLookupByLibrary.simpleMessage("Cannot write to this Storage device!"),
     "category" : MessageLookupByLibrary.simpleMessage("Category"),
     "changePassword" : MessageLookupByLibrary.simpleMessage("Change the password"),
+    "checkIPlusNew" : MessageLookupByLibrary.simpleMessage("Check IPlus new"),
     "checkLogin" : MessageLookupByLibrary.simpleMessage("Check login..."),
     "checkVersion" : MessageLookupByLibrary.simpleMessage("Check version"),
     "checkingPermission" : MessageLookupByLibrary.simpleMessage("Checking permission"),
