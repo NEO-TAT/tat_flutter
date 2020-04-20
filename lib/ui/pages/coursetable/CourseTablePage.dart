@@ -103,6 +103,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
     List<String> v = await ISchoolPlusConnector.getSubscribeNotice();
     List<String> value = List();
+    v = v ?? List();
     for (int i = 0; i < v.length; i++) {
       String courseName = v[i];
       CourseInfoJson courseInfo =
@@ -111,7 +112,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         value.add(courseName);
       }
     }
-    if (value != null) {
+    if (value != null && value.length > 0) {
       showDialog<void>(
         useRootNavigator: false,
         context: context,
@@ -747,6 +748,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
       const MethodChannel('club.ntut.npc.tat.update.weight');
 
   Future screenshot() async {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     Directory directory = await getApplicationSupportDirectory();
     String path = directory.path;
     Log.d(path);
