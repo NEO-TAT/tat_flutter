@@ -313,6 +313,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           value[index]; //儲存課表
                       Model.instance.saveCourseSetting();
                       _showCourseTable(value[index]);
+                      Model.instance.clearSemesterJsonList();  //須清除已儲存學期
                       Navigator.of(context).pop();
                     },
                   ),
