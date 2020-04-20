@@ -88,11 +88,11 @@ class FileDownload {
           List<String> s = name.split(".");
           s.removeLast();
           if (realFileName.contains(".")) {
-            realFileName = s.join() + realFileName.split(".").last;
+            realFileName = s.join() + '.' + realFileName.split(".").last;
           }
         }
         realFileName = realFileName ?? name; //如果還是沒有找到副檔名直接使用原始名稱
-        print(path + "/" + realFileName);
+        //print(path + "/" + realFileName);
         return path + "/" + realFileName;
       },
       progressCallback: onReceiveProgress,
