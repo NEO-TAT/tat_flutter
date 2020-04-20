@@ -15,7 +15,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 import kotlin.system.exitProcess
 
 class MainActivity : FlutterActivity() {
-    private val channelName = "club.ntut.npc.tat.update.weight"
+    private val channelName = "club.ntut.npc.tat.main.mothod.channel.name"
     private val logTag = "FlutterActivity"
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
