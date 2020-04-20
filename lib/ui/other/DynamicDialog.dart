@@ -5,7 +5,7 @@ bool _isShowing = false;
 BuildContext _context, _dismissingContext;
 bool _barrierDismissible = true;
 String _dialogMessage = "Loading...";
-String _progressString =  "0/100";
+String _progressString = "0/100";
 double _progress = 0;
 
 class DynamicDialog {
@@ -16,7 +16,7 @@ class DynamicDialog {
     _barrierDismissible = isDismissible ?? true;
   }
 
-  void update({String message, double nowProgress , String progressString}) {
+  void update({String message, double nowProgress, String progressString}) {
     _progress = nowProgress ?? _progress;
     _dialogMessage = message ?? _dialogMessage;
     _progressString = progressString ?? _progressString;
@@ -126,7 +126,7 @@ class _BodyState extends State<_Body> {
           Row(
             children: <Widget>[
               Expanded(
-                child: Text( _progressString , textAlign: TextAlign.center),
+                child: Text(_progressString, textAlign: TextAlign.center),
               ),
             ],
           )

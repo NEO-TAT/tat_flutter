@@ -2,10 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'ISchoolPlusAnnouncementJson.g.dart';
 
-
 @JsonSerializable()
-class ISchoolPlusAnnouncementInfoJson{
-
+class ISchoolPlusAnnouncementInfoJson {
   @JsonKey(name: 'total')
   int total;
 
@@ -27,19 +25,19 @@ class ISchoolPlusAnnouncementInfoJson{
   @JsonKey(name: 'data')
   String data;
 
-  ISchoolPlusAnnouncementInfoJson(this.total,this.code,this.totalRows,this.limitRows,this.currentPage,this.editEnable,this.data);
+  ISchoolPlusAnnouncementInfoJson(this.total, this.code, this.totalRows,
+      this.limitRows, this.currentPage, this.editEnable, this.data);
 
-  factory ISchoolPlusAnnouncementInfoJson.fromJson(Map<String, dynamic> srcJson) => _$ISchoolPlusAnnouncementInfoJsonFromJson(srcJson);
-
+  factory ISchoolPlusAnnouncementInfoJson.fromJson(
+          Map<String, dynamic> srcJson) =>
+      _$ISchoolPlusAnnouncementInfoJsonFromJson(srcJson);
 }
 
 @JsonSerializable()
-class ISchoolPlusAnnouncementJson{
-
+class ISchoolPlusAnnouncementJson {
   String token;
   String bid;
   String nid;
-
 
   @JsonKey(name: 'boardid')
   String boardid;
@@ -113,8 +111,33 @@ class ISchoolPlusAnnouncementJson{
   @JsonKey(name: 'postRoles')
   String postRoles;
 
-  ISchoolPlusAnnouncementJson(this.boardid,this.encbid,this.node,this.encnid,this.cid,this.enccid,this.poster,this.realname,this.cpic,this.subject,this.postdate,this.postdatelen,this.postcontent,this.postcontenttext,this.hit,this.qrcodeUrl,this.floor,this.attach,this.postfilelink,this.attachment,this.n,this.s,this.readflag,this.postRoles,);
+  ISchoolPlusAnnouncementJson(
+    this.boardid,
+    this.encbid,
+    this.node,
+    this.encnid,
+    this.cid,
+    this.enccid,
+    this.poster,
+    this.realname,
+    this.cpic,
+    this.subject,
+    this.postdate,
+    this.postdatelen,
+    this.postcontent,
+    this.postcontenttext,
+    this.hit,
+    this.qrcodeUrl,
+    this.floor,
+    this.attach,
+    this.postfilelink,
+    this.attachment,
+    this.n,
+    this.s,
+    this.readflag,
+    this.postRoles,
+  );
 
-  factory ISchoolPlusAnnouncementJson.fromJson(Map<String, dynamic> srcJson) => _$ISchoolPlusAnnouncementJsonFromJson(srcJson);
-
+  factory ISchoolPlusAnnouncementJson.fromJson(Map<String, dynamic> srcJson) =>
+      _$ISchoolPlusAnnouncementJsonFromJson(srcJson);
 }

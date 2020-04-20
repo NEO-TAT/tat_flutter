@@ -848,7 +848,7 @@ class S {
 
   String get findNewMessage {
     return Intl.message(
-      'Find new message',
+      'Find I Plus new message',
       name: 'findNewMessage',
       desc: '',
       args: [],
@@ -1242,6 +1242,123 @@ class S {
     );
   }
 
+  String get patchVersion {
+    return Intl.message(
+      'Patch version',
+      name: 'patchVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get downloadingPatch {
+    return Intl.message(
+      'Downloading patch...',
+      name: 'downloadingPatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get findPatchNewVersion {
+    return Intl.message(
+      'Find the new patch version',
+      name: 'findPatchNewVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get patchUpdateDown {
+    return Intl.message(
+      'After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually',
+      name: 'patchUpdateDown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get patchDelete {
+    return Intl.message(
+      'Patch delete , Restart the application and apply',
+      name: 'patchDelete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get deletePatch {
+    return Intl.message(
+      'Delete patch',
+      name: 'deletePatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get exitDevMode {
+    return Intl.message(
+      'Exit dev mode',
+      name: 'exitDevMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get patchUpdateComplete {
+    return Intl.message(
+      'Patch successfully upgraded version:',
+      name: 'patchUpdateComplete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get patchUpdateFail {
+    return Intl.message(
+      'Patch upgrade failed\nAutomatically downgraded to original version:',
+      name: 'patchUpdateFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get developerMode {
+    return Intl.message(
+      'DeveloperMode',
+      name: 'developerMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get openExternalVideo {
+    return Intl.message(
+      'Open with external video player',
+      name: 'openExternalVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get openExternalVideoHint {
+    return Intl.message(
+      'Recommend use MX player',
+      name: 'openExternalVideoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get checkIPlusNew {
+    return Intl.message(
+      'Check IPlus new',
+      name: 'checkIPlusNew',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',
@@ -1498,6 +1615,15 @@ class S {
     return Intl.message(
       'Search',
       name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get noSupportExternalVideoPlayer {
+    return Intl.message(
+      'Not find support external video player',
+      name: 'noSupportExternalVideoPlayer',
       desc: '',
       args: [],
     );

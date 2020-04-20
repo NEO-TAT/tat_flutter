@@ -181,7 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         color: AppColors.mainColor,
                         textColor: AppColors.lightFontColor,
-                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         onPressed: () => _loginPress(context),
                       ),
                     ),
@@ -195,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTopDecoration () {
+  Widget _buildTopDecoration() {
     return Stack(
       children: <Widget>[
         ClipPath(

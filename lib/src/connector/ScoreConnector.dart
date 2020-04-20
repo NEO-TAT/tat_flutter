@@ -28,12 +28,9 @@ class ScoreConnector {
   static final String _scoreHost = "https://aps-course.ntut.edu.tw/";
   static final String _getLoginScoreUrl =
       "https://nportal.ntut.edu.tw/ssoIndex.do";
-  static final String _scoreUrl =
-      _scoreHost + "StuQuery/StudentQuery.jsp";
-  static final String _scoreRankUrl =
-      _scoreHost + "StuQuery/QryRank.jsp";
-  static final String _scoreAllScoreUrl =
-      _scoreHost + "StuQuery/QryScore.jsp";
+  static final String _scoreUrl = _scoreHost + "StuQuery/StudentQuery.jsp";
+  static final String _scoreRankUrl = _scoreHost + "StuQuery/QryRank.jsp";
+  static final String _scoreAllScoreUrl = _scoreHost + "StuQuery/QryScore.jsp";
   static final String _generalLessonAllScoreUrl =
       _scoreHost + "StuQuery/QryLAECourse.jsp";
 
@@ -113,14 +110,20 @@ class ScoreConnector {
         for (int j = 1; j < scoreNodes.length - 6; j++) {
           scoreNode = scoreNodes[j];
           CourseInfoJson score = CourseInfoJson();
-          score.courseId =
-              scoreNode.getElementsByTagName("th")[0].text.replaceAll(RegExp(r"[\s| ]"), "");
-          score.name =
-              scoreNode.getElementsByTagName("th")[2].text.replaceAll(RegExp(r"[\s| ]"), "");
+          score.courseId = scoreNode
+              .getElementsByTagName("th")[0]
+              .text
+              .replaceAll(RegExp(r"[\s| ]"), "");
+          score.name = scoreNode
+              .getElementsByTagName("th")[2]
+              .text
+              .replaceAll(RegExp(r"[\s| ]"), "");
           score.credit =
               double.parse(scoreNode.getElementsByTagName("th")[5].text);
-          score.score =
-              scoreNode.getElementsByTagName("th")[6].text.replaceAll(RegExp(r"[\s| ]"), "");
+          score.score = scoreNode
+              .getElementsByTagName("th")[6]
+              .text
+              .replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);
         }
 
@@ -225,7 +228,7 @@ class ScoreConnector {
     }
   }
 
-  static Future<List<String>> getCoreGeneralLesson() async{
+  static Future<List<String>> getCoreGeneralLesson() async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -239,13 +242,16 @@ class ScoreConnector {
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("tbody").first;
       nodes = node.getElementsByTagName("tr");
-      for( int i = 2 ; i < nodes.length ; i++){
+      for (int i = 2; i < nodes.length; i++) {
         node = nodes[i];
-        if ( node.innerHtml.contains("＊")){
+        if (node.innerHtml.contains("＊")) {
           String name;
-          if( node.getElementsByTagName("td")[0].attributes.containsKey("rowspan")){
+          if (node
+              .getElementsByTagName("td")[0]
+              .attributes
+              .containsKey("rowspan")) {
             name = node.getElementsByTagName("td")[7].text;
-          }else{
+          } else {
             name = node.getElementsByTagName("td")[3].text;
           }
           name = name.replaceAll(RegExp(r"[\s|\n| ]"), "");
@@ -257,7 +263,6 @@ class ScoreConnector {
       Log.e(e.toString());
       return null;
     }
-
   }
 
   static bool get isLogin {

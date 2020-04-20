@@ -17,7 +17,7 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -71,16 +71,23 @@ class _CourseTablePageState extends State<CourseTablePage> {
         }); //尚未登入
       } else {
         _loadSetting();
-        _checkAppVersion();
       }
     });
   }
 
   void getCourseNotice() async {
+    setState(() {
+      loadCourseNotice = false;
+    });
+    if (!Model.instance.getOtherSetting().checkIPlusNew) {
+      return;
+    }
     if (!Model.instance.getFirstUse(Model.courseNotice)) {
-      setState(() {
-        loadCourseNotice = false;
-      });
+      return;
+    }
+    if (Model.instance.getAccount() !=
+        Model.instance.getCourseSetting().info.studentId) {
+      //只有顯示自己的課表時才會檢查新公告
       return;
     }
     setState(() {
@@ -95,8 +102,18 @@ class _CourseTablePageState extends State<CourseTablePage> {
       }
       await ISchoolPlusConnector.login(Model.instance.getAccount());
     }
-    List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
-    if (value != null) {
+    List<String> v = await ISchoolPlusConnector.getSubscribeNotice();
+    List<String> value = List();
+    v = v ?? List();
+    for (int i = 0; i < v.length; i++) {
+      String courseName = v[i];
+      CourseInfoJson courseInfo =
+          courseTableData.getCourseInfoByCourseName(courseName);
+      if (courseInfo != null) {
+        value.add(courseName);
+      }
+    }
+    if (value != null && value.length > 0) {
       showDialog<void>(
         useRootNavigator: false,
         context: context,
@@ -147,21 +164,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
       });
     } catch (e) {
       Log.d("setState() called after dispose()");
-    }
-  }
-
-  void _checkAppVersion() {
-    if (Model.instance.autoCheckAppUpdate) {
-      if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
-        AppUpdate.checkUpdate().then(
-          (value) {
-            Model.instance.setAlreadyUse(Model.appCheckUpdate);
-            if (value != null) {
-              AppUpdate.showUpdateDialog(context, value);
-            }
-          },
-        );
-      }
     }
   }
 
@@ -253,7 +255,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       await TaskHandler.instance.startTaskQueue(context);
     }
     List<SemesterJson> semesterList = Model.instance.getSemesterList();
-    Model.instance.saveSemesterJsonList();
+    //Model.instance.saveSemesterJsonList();
     showDialog(
       useRootNavigator: false,
       context: context,
@@ -330,6 +332,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           value[index]; //儲存課表
                       Model.instance.saveCourseSetting();
                       _showCourseTable(value[index]);
+                      Model.instance.clearSemesterJsonList(); //須清除已儲存學期
                       Navigator.of(context).pop();
                     },
                   ),
@@ -649,6 +652,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
+    String studentId = Model.instance.getCourseSetting().info.studentId;
+    setState(() {
+      _studentIdControl.text = studentId;
+    });
     showDialog(
       context: context,
       useRootNavigator: false,
@@ -687,7 +694,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showCourseDetail(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     Navigator.of(context).pop();
-    String studentId = _studentIdControl.text;
+    String studentId = Model.instance.getCourseSetting().info.studentId;
     if (course.id.isEmpty) {
       MyToast.show(course.name + R.current.noSupport);
     } else {
@@ -739,18 +746,33 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   static const platform =
-      const MethodChannel('club.ntut.npc.tat.update.weight');
+      const MethodChannel(Constants.methodChannelName);
 
   Future screenshot() async {
+    double originHeight = courseHeight;
+    RenderObject renderObject = _key.currentContext.findRenderObject();
+    double height =
+        renderObject.semanticBounds.size.height - studentIdHeight - dayHeight;
     Directory directory = await getApplicationSupportDirectory();
     String path = directory.path;
+    setState(() {
+      courseHeight = height / courseTableControl.getSectionIntList.length;
+    });
+    await Future.delayed(Duration(milliseconds: 100));
+    setState(() {
+      isLoading = true;
+    });
     Log.d(path);
     RenderRepaintBoundary boundary =
         overRepaintKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage(pixelRatio: 2);
+    setState(() {
+      courseHeight = originHeight;
+      isLoading = false;
+    });
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
-    File imgFile = new File('$path/course_weight.png');
+    File imgFile = new File('$path/course_widget.png');
     await imgFile.writeAsBytes(pngBytes);
     final bool result = await platform.invokeMethod('update_weight');
     Log.d("complete $result");

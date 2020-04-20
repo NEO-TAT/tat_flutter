@@ -61,6 +61,8 @@ OtherSettingJson _$OtherSettingJsonFromJson(Map<String, dynamic> json) {
     lang: json['lang'] as String,
     focusLogin: json['focusLogin'] as bool,
     autoCheckAppUpdate: json['autoCheckAppUpdate'] as bool,
+    useExternalVideoPlayer: json['useExternalVideoPlayer'] as bool,
+    checkIPlusNew: json['checkIPlusNew'] as bool,
   );
 }
 
@@ -69,4 +71,6 @@ Map<String, dynamic> _$OtherSettingJsonToJson(OtherSettingJson instance) =>
       'lang': instance.lang,
       'focusLogin': instance.focusLogin,
       'autoCheckAppUpdate': instance.autoCheckAppUpdate,
+      'useExternalVideoPlayer': instance.useExternalVideoPlayer,
+      'checkIPlusNew': instance.checkIPlusNew,
     };

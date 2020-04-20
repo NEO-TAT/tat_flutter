@@ -1,4 +1,4 @@
-package weight;
+package widget;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -10,20 +10,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import java.util.Arrays;
 
-import club.ntut.npc.tat.MainActivity;
+import club.ntut.npc.tat.BootLoaderActivity;
 import club.ntut.npc.tat.R;
 import io.flutter.Log;
 
 
 public class CourseWidgetProvider extends AppWidgetProvider {
     public static final String TAG = "CourseWidgetProvider";
-    public static final String ACTION_ONCLICK = "club.ntut.npc.tat.weight.onclick";
+    public static final String ACTION_ONCLICK = "club.ntut.npc.tat.coursetable.widget.onclick";
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
@@ -40,7 +38,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
                 actionIntent.setAction(CourseWidgetProvider.ACTION_ONCLICK);
                 PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 remoteViews.setOnClickPendingIntent(R.id.course_widget_table, pIntent);
-                String path = context.getFilesDir().getPath() + "/course_weight.png";
+                String path = context.getFilesDir().getPath() + "/course_widget.png";
                 Log.i(TAG, path);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -52,7 +50,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
 
         if (ACTION_ONCLICK.equals(intent.getAction())) {
             //Toast.makeText(context, "開啟app", Toast.LENGTH_LONG).show();
-            Intent actIntent = new Intent(context, MainActivity.class);
+            Intent actIntent = new Intent(context, BootLoaderActivity.class);
             actIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             context.startActivity(actIntent);
         }

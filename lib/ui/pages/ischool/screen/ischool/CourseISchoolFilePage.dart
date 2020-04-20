@@ -179,7 +179,9 @@ class _CourseISchoolFilePage extends State<CourseISchoolFilePage>
 
   Widget _buildCourseFile(int index, CourseFileJson courseFile) {
     return Container(
-      color: selectList.getItemSelect(index) ? Colors.green : Theme.of(context).backgroundColor,
+      color: selectList.getItemSelect(index)
+          ? Colors.green
+          : Theme.of(context).backgroundColor,
       padding: EdgeInsets.all(10),
       child: Column(
         children: _buildFileItem(courseFile),

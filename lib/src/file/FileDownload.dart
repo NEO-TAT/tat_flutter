@@ -57,7 +57,8 @@ class FileDownload {
         if (headers.containsKey("content-disposition")) {
           //代表有名字
           List<String> name = headers["content-disposition"];
-          RegExp exp = RegExp("['|\"](?<name>.+)['|\"]");
+          RegExp exp =
+              RegExp("['|\"](?<name>.+)['|\"]"); //尋找 'name' , "name" 的name
           RegExpMatch matches = exp.firstMatch(name[0]);
           realFileName = matches.group(1);
         } else if (headers.containsKey("content-type")) {
@@ -80,10 +81,18 @@ class FileDownload {
               fileExtension = maybeName.split(".").toList().last;
               realFileName = name + "." + fileExtension;
             }
-            realFileName = name + "." + fileExtension;
+            //realFileName = name + "." + fileExtension;
+          }
+        } else {
+          //代表包含.
+          List<String> s = name.split(".");
+          s.removeLast();
+          if (realFileName.contains(".")) {
+            realFileName = s.join() + '.' + realFileName.split(".").last;
           }
         }
         realFileName = realFileName ?? name; //如果還是沒有找到副檔名直接使用原始名稱
+        //print(path + "/" + realFileName);
         return path + "/" + realFileName;
       },
       progressCallback: onReceiveProgress,

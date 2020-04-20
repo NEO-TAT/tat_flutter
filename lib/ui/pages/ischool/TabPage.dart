@@ -13,7 +13,11 @@ class TabPage {
     tab = Column(
       children: <Widget>[
         Icon(icons),
-        AutoSizeText(title ,maxLines: 1, minFontSize: 6,),
+        AutoSizeText(
+          title,
+          maxLines: 1,
+          minFontSize: 6,
+        ),
       ],
     );
     tabPage = (useNavigatorKey)

@@ -49,16 +49,14 @@ class _CalendarPageState extends State<CalendarPage>
     _addEvent();
   }
 
-
-  void _addEvent() async{
+  void _addEvent() async {
     final _selectedDay = DateTime.now();
-    await _getEvent( _selectedDay );
+    await _getEvent(_selectedDay);
   }
 
-
-  Future<void> _getEvent(DateTime time) async{
-    DateTime startTime = DateTime( time.year , time.month , 1);
-    DateTime endTime = DateTime( time.year , time.month+1 , 1);
+  Future<void> _getEvent(DateTime time) async {
+    DateTime startTime = DateTime(time.year, time.month, 1);
+    DateTime endTime = DateTime(time.year, time.month + 1, 1);
     List<NTUTCalendarJson> eventNTUTs;
     _events = Map();
     TaskHandler.instance.addTask(TaskModelFunction(
@@ -67,11 +65,11 @@ class _CalendarPageState extends State<CalendarPage>
       taskFunction: () async {
         MyProgressDialog.showProgressDialog(context, R.current.getCalendar);
         //查詢已修課程
-        eventNTUTs = await NTUTConnector.getCalendar( startTime , endTime );
+        eventNTUTs = await NTUTConnector.getCalendar(startTime, endTime);
         MyProgressDialog.hideProgressDialog();
-        if( eventNTUTs != null ){
+        if (eventNTUTs != null) {
           return true;
-        }else{
+        } else {
           return false;
         }
       },
@@ -84,15 +82,14 @@ class _CalendarPageState extends State<CalendarPage>
       },
       successFunction: () async {
         _events = Map();
-        for(int i=0;i<eventNTUTs.length;i++){
+        for (int i = 0; i < eventNTUTs.length; i++) {
           NTUTCalendarJson eventNTUT = eventNTUTs[i];
-          if( _events.containsKey(eventNTUT.startTime) ){
-            _events[ eventNTUT.startTime ].add(eventNTUT.calTitle);
-          }else{
-            _events[ eventNTUT.startTime ] = [eventNTUT.calTitle];
+          if (_events.containsKey(eventNTUT.startTime)) {
+            _events[eventNTUT.startTime].add(eventNTUT.calTitle);
+          } else {
+            _events[eventNTUT.startTime] = [eventNTUT.calTitle];
           }
         }
-
       },
     ));
     await TaskHandler.instance.startTaskQueue(context);
@@ -115,7 +112,7 @@ class _CalendarPageState extends State<CalendarPage>
     });
   }
 
-  void _onVisibleDaysChanged (
+  void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) async {
     print('CALLBACK: _onVisibleDaysChanged');
     await _getEvent(first);

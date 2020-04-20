@@ -17,7 +17,7 @@ final Logger log = Logger('requests');
 class Response {
   final http.Response _rawResponse;
 
-  http.Response get rawResponse{
+  http.Response get rawResponse {
     return _rawResponse;
   }
 
