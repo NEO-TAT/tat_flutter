@@ -73,6 +73,15 @@ class _MainScreenState extends State<MainScreen> {
     _flutterDownloaderInit();
     _notificationsInit();
     _addTask();
+    _backgroundLogin();
+  }
+
+  void _backgroundLogin() async {
+    bool login = await NTUTConnector.checkLogin();
+    if (!login) {
+      NTUTConnector.login(
+          Model.instance.getAccount(), Model.instance.getPassword());
+    }
   }
 
   void _checkAppVersion() async {
