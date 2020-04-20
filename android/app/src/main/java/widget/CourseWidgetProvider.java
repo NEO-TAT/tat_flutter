@@ -1,4 +1,4 @@
-package weight;
+package widget;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -21,7 +21,7 @@ import io.flutter.Log;
 
 public class CourseWidgetProvider extends AppWidgetProvider {
     public static final String TAG = "CourseWidgetProvider";
-    public static final String ACTION_ONCLICK = "club.ntut.npc.tat.weight.onclick";
+    public static final String ACTION_ONCLICK = "club.ntut.npc.tat.coursetable.widget.onclick";
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
@@ -38,7 +38,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
                 actionIntent.setAction(CourseWidgetProvider.ACTION_ONCLICK);
                 PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 remoteViews.setOnClickPendingIntent(R.id.course_widget_table, pIntent);
-                String path = context.getFilesDir().getPath() + "/course_weight.png";
+                String path = context.getFilesDir().getPath() + "/course_widget.png";
                 Log.i(TAG, path);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inPreferredConfig = Bitmap.Config.RGB_565;

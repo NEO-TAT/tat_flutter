@@ -17,6 +17,7 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
+import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -745,18 +746,33 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   static const platform =
-      const MethodChannel('club.ntut.npc.tat.update.weight');
+      const MethodChannel(Constants.methodChannelName);
 
   Future screenshot() async {
+    double originHeight = courseHeight;
+    RenderObject renderObject = _key.currentContext.findRenderObject();
+    double height =
+        renderObject.semanticBounds.size.height - studentIdHeight - dayHeight;
     Directory directory = await getApplicationSupportDirectory();
     String path = directory.path;
+    setState(() {
+      courseHeight = height / courseTableControl.getSectionIntList.length;
+    });
+    await Future.delayed(Duration(milliseconds: 100));
+    setState(() {
+      isLoading = true;
+    });
     Log.d(path);
     RenderRepaintBoundary boundary =
         overRepaintKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage(pixelRatio: 2);
+    setState(() {
+      courseHeight = originHeight;
+      isLoading = false;
+    });
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
-    File imgFile = new File('$path/course_weight.png');
+    File imgFile = new File('$path/course_widget.png');
     await imgFile.writeAsBytes(pngBytes);
     final bool result = await platform.invokeMethod('update_weight');
     Log.d("complete $result");

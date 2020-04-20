@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class Constants {
   //App related strings
   static String appName = "TAT";
+  static const String methodChannelName = "club.ntut.npc.tat.main.mothod.channel.name";
 
   //Colors for theme
   static Color lightPrimary = Colors.white;
