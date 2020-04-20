@@ -75,10 +75,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void getCourseNotice() async {
+    setState(() {
+      loadCourseNotice = false;
+    });
+    if (!Model.instance.getOtherSetting().checkIPlusNew) {
+      return;
+    }
     if (!Model.instance.getFirstUse(Model.courseNotice)) {
-      setState(() {
-        loadCourseNotice = false;
-      });
       return;
     }
     setState(() {
@@ -93,7 +96,16 @@ class _CourseTablePageState extends State<CourseTablePage> {
       }
       await ISchoolPlusConnector.login(Model.instance.getAccount());
     }
-    List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
+    List<String> v = await ISchoolPlusConnector.getSubscribeNotice();
+    List<String> value = List();
+    for (int i = 0; i < v.length; i++) {
+      String courseName = v[i];
+      CourseInfoJson courseInfo =
+          courseTableData.getCourseInfoByCourseName(courseName);
+      if (courseInfo != null) {
+        value.add(courseName);
+      }
+    }
     if (value != null) {
       showDialog<void>(
         useRootNavigator: false,
@@ -313,7 +325,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           value[index]; //儲存課表
                       Model.instance.saveCourseSetting();
                       _showCourseTable(value[index]);
-                      Model.instance.clearSemesterJsonList();  //須清除已儲存學期
+                      Model.instance.clearSemesterJsonList(); //須清除已儲存學期
                       Navigator.of(context).pop();
                     },
                   ),
