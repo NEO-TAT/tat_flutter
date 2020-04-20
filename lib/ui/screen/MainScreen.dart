@@ -73,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
     _flutterDownloaderInit();
     _notificationsInit();
     _addTask();
-    _backgroundLogin();
+    //_backgroundLogin();
   }
 
   void _backgroundLogin() async {
