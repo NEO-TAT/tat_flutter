@@ -50,8 +50,7 @@ class _MainScreenState extends State<MainScreen> {
         } else {
           _checkAppVersion();
         }
-        Crashlytics.instance
-            .setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
+        //Crashlytics.instance.setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
         Crashlytics.instance
             .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
         List<String> supportedABis = await AppHotFix.getSupportABis();
