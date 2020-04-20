@@ -848,7 +848,7 @@ class S {
 
   String get findNewMessage {
     return Intl.message(
-      'Find new message',
+      'Find I Plus new message',
       name: 'findNewMessage',
       desc: '',
       args: [],

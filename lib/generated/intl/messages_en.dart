@@ -116,7 +116,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "fileAttachmentDetected" : MessageLookupByLibrary.simpleMessage("File attachment detected"),
     "fileNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("A File with that name already exists!"),
     "fileViewer" : MessageLookupByLibrary.simpleMessage("Downloads"),
-    "findNewMessage" : MessageLookupByLibrary.simpleMessage("Find new message"),
+    "findNewMessage" : MessageLookupByLibrary.simpleMessage("Find I Plus new message"),
     "findNewVersion" : MessageLookupByLibrary.simpleMessage("Find new version"),
     "findPatchNewVersion" : MessageLookupByLibrary.simpleMessage("Find the new patch version"),
     "focusLogin" : MessageLookupByLibrary.simpleMessage("focusLogin"),
