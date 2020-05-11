@@ -11,7 +11,7 @@ class AppLink {
   static const String appUpdateCheck =
       "https://api.github.com/repos/NEO-TAT/NTUTCourseHelper-Flutter/releases/latest";
   static const String appPatchCheckMaster =
-      "https://api.github.com/repos/morris13579/TAT_Hotfix/contents/%s?ref=master";
+      "https://api.github.com/repos/NEO-TAT/TAT_Hotfix/contents/%s?ref=master";
   static const String appPatchCheckDev =
       "https://api.github.com/repos/morris13579/TAT_Hotfix/contents/%s?ref=dev";
 }
