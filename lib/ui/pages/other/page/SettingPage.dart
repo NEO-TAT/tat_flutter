@@ -125,7 +125,7 @@ class _SettingPageState extends State<SettingPage>
                 values: [selectLang.toDouble()],
                 max: 1.0,
                 min: 0.0,
-                step: 1.0,
+                step: FlutterSliderStep(step: 1.0),
                 onDragCompleted: (handlerIndex, it, _) {
                   int select = it.toInt();
                   if (selectLang == select) {
