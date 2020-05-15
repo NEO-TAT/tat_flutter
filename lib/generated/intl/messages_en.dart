@@ -153,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "graduationSetting" : MessageLookupByLibrary.simpleMessage("Graduation credit standard setting"),
     "grantPermission" : MessageLookupByLibrary.simpleMessage("Grant permission"),
     "historicalDimension" : MessageLookupByLibrary.simpleMessage("Historical dimension"),
+    "identifyLinks" : MessageLookupByLibrary.simpleMessage("Identify links"),
     "instructor" : MessageLookupByLibrary.simpleMessage("Instructor"),
     "isALink" : MessageLookupByLibrary.simpleMessage("Is a link"),
     "isNewVersion" : MessageLookupByLibrary.simpleMessage("Already the latest version"),

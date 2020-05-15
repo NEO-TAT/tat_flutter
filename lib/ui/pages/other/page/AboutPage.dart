@@ -119,6 +119,7 @@ class _AboutPageState extends State<AboutPage> {
           if (v != null) {
             initList();
           }
+          setState(() {});
         });
         break;
       default:

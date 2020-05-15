@@ -6,6 +6,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/util/Constants.dart';
+import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -38,6 +39,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
     return true;
   }
 
+  bool addLink = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +48,24 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(widget.courseInfo.main.course.name),
+        actions: <Widget>[
+          PopupMenuButton<int>(
+            onSelected: (result) {
+              if( !addLink ) {
+                setState(() {
+                  addLink = true;
+                  widget.data["body"] = HtmlUtils.addLink(widget.data["body"]);
+                });
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 0,
+                child: Text(R.current.identifyLinks),
+              ),
+            ],
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: _showAnnouncementDetail(),
