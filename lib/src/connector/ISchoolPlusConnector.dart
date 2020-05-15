@@ -105,7 +105,6 @@ class ISchoolPlusConnector {
       ConnectorParameter parameter;
       html.Document tagNode;
       List<html.Element> nodes;
-      html.Element node;
       Map<String, String> data = {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
         "apOu": "ischool_plus_",
