@@ -10,7 +10,6 @@ import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:provider/provider.dart';
 
@@ -53,7 +52,9 @@ class _SettingPageState extends State<SettingPage>
     List<Widget> listViewData = List();
     listViewData.add(_buildLanguageSetting());
     listViewData.add(_buildFocusLoginSetting());
-    listViewData.add(_buildOpenExternalVideoSetting());
+    if (Platform.isAndroid) {
+      listViewData.add(_buildOpenExternalVideoSetting());
+    }
     listViewData.add(_buildLoadIPlusNewsSetting());
     listViewData.add(_buildAutoCheckAppVersionSetting());
     listViewData.add(_buildDarkModeSetting());
