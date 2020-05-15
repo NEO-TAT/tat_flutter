@@ -57,7 +57,6 @@ class AppHotFix {
 
   static Future<void> hotFixSuccess(BuildContext context) async {
     if (Platform.isAndroid) {
-      pref.setBool(flutterStateKey, true); //告訴bootloader activity flutter正常啟動
       int beforeVersion = await _getBeforePatchVersion();
       int nowVersion = await getPatchVersion();
       String body;
@@ -88,6 +87,7 @@ class AppHotFix {
           },
         );
       }
+      pref.setBool(flutterStateKey, true); //告訴bootloader activity flutter正常啟動
     }
   }
 
