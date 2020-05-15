@@ -152,6 +152,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "graduationSetting" : MessageLookupByLibrary.simpleMessage("畢業學分標準設定"),
     "grantPermission" : MessageLookupByLibrary.simpleMessage("授予權限"),
     "historicalDimension" : MessageLookupByLibrary.simpleMessage("歷史向度"),
+    "identifyLinks" : MessageLookupByLibrary.simpleMessage("辨識連結"),
     "instructor" : MessageLookupByLibrary.simpleMessage("授課老師"),
     "isALink" : MessageLookupByLibrary.simpleMessage("發現外部連結"),
     "isNewVersion" : MessageLookupByLibrary.simpleMessage("已經是最新版本了"),

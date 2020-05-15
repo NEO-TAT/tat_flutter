@@ -105,7 +105,6 @@ class ISchoolPlusConnector {
       ConnectorParameter parameter;
       html.Document tagNode;
       List<html.Element> nodes;
-      html.Element node;
       Map<String, String> data = {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
         "apOu": "ischool_plus_",
@@ -445,7 +444,6 @@ class ISchoolPlusConnector {
           fileMap[node.text] = _iSchoolPlusUrl + href;
         }
       }
-      body = HtmlUtils.addLink(body);
       detail["title"] = title;
       detail["sender"] = sender;
       detail["postTime"] = postTime;
