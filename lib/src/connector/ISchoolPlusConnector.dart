@@ -246,8 +246,8 @@ class ISchoolPlusConnector {
       return null;
     }
   }
-
-  static Future<String> getRealFileUrl(
+  //List[0] RealUrl , List[1] referer
+  static Future<List<String>> getRealFileUrl(
       Map<String, String> postParameter) async {
     ConnectorParameter parameter;
     String url;
@@ -284,8 +284,9 @@ class ISchoolPlusConnector {
                     ? true
                     : false;
         if (pass) {
+          url = matches.group(1);
           //已經是完整連結
-          return matches.group(1);
+          return [url,url];
         } else {
           exp = new RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
           matches = exp.firstMatch(result);
@@ -293,16 +294,18 @@ class ISchoolPlusConnector {
               ? false
               : (matches.groupCount == null) ? false : true;
           if (pass) {
-            return _iSchoolPlusUrl + matches.group(1); //一般下載連結
+            String realUrl = _iSchoolPlusUrl + matches.group(1);
+            return [realUrl,realUrl]; //一般下載連結
           } else {
             exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
             matches = exp.firstMatch(result);
             url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
             result = await RequestsConnector.getDataByGet(parameter);
-            exp = new RegExp("DEFAULT_URL.+'(?<url>.+)'"); //取的PDF真實下載位置
+            exp = new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
-            return _iSchoolPlusUrl + "learn/path/" + matches.group(1);
+            String realUrl = _iSchoolPlusUrl + "learn/path/" + matches.group(1);
+            return [realUrl,url];
           }
         }
       } else if (response.isRedirect || result.isEmpty) {
@@ -310,7 +313,7 @@ class ISchoolPlusConnector {
         url = response.headers[HttpHeaders.locationHeader];
         url = _iSchoolPlusUrl + "learn/path/" + url;
         url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址
-        return url;
+        return [url,url];
       }
     } catch (e) {
       //如果真實網址解析錯誤

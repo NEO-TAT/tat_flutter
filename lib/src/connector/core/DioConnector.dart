@@ -178,12 +178,14 @@ class DioConnector {
   }
 
   Future<void> download(String url, SavePathCallback savePath,
-      {ProgressCallback progressCallback, CancelToken cancelToken}) async {
+      {ProgressCallback progressCallback,
+      CancelToken cancelToken,
+      Map<String, dynamic> header}) async {
     await dio
         .downloadUri(Uri.parse(url), savePath,
             onReceiveProgress: progressCallback,
             cancelToken: cancelToken,
-            options: Options(receiveTimeout: 0)) //設置不超時
+            options: Options(receiveTimeout: 0, headers: header)) //設置不超時
         .catchError((onError) {
       Log.e(onError.toString());
       throw onError;
