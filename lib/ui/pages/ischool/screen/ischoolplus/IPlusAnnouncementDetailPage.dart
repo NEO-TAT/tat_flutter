@@ -61,7 +61,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
             itemBuilder: (BuildContext context) => [
               PopupMenuItem(
                 value: 0,
-                child: Text("辨識連結"),
+                child: Text(R.current.identifyLinks),
               ),
             ],
           )
