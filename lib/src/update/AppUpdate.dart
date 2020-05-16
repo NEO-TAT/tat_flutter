@@ -33,7 +33,7 @@ class AppUpdate {
         for (String i in packageInfo.version.split(".")) {
           nowVersion.add(int.parse(i));
         }
-        for (String i in githubAPIJson.tagName.split(".")) {
+        for (String i in githubAPIJson.name.split(".")) {
           newVersion.add(int.parse(i));
         }
         bool needUpdate = false;
