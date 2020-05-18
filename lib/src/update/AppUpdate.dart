@@ -22,35 +22,40 @@ class AppUpdate {
   static Future<UpdateDetail> checkUpdate() async {
     String androidCheckUrl = AppLink.appUpdateCheck;
     if (Platform.isAndroid) {
-      ConnectorParameter parameter = ConnectorParameter(androidCheckUrl);
-      String result = await DioConnector.instance.getDataByGet(parameter);
-      GithubAPIJson githubAPIJson = GithubAPIJson.fromJson(json.decode(result));
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      List<int> nowVersion = List();
-      List<int> newVersion = List();
-      for (String i in packageInfo.version.split(".")) {
-        nowVersion.add(int.parse(i));
-      }
-      for (String i in githubAPIJson.tagName.split(".")) {
-        newVersion.add(int.parse(i));
-      }
-      bool needUpdate = false;
-      for (int i = 0; i < nowVersion.length; i++) {
-        if (newVersion[i] > nowVersion[i]) {
-          needUpdate = true;
-          break;
+      try {
+        ConnectorParameter parameter = ConnectorParameter(androidCheckUrl);
+        String result = await DioConnector.instance.getDataByGet(parameter);
+        GithubAPIJson githubAPIJson =
+            GithubAPIJson.fromJson(json.decode(result));
+        PackageInfo packageInfo = await PackageInfo.fromPlatform();
+        List<int> nowVersion = List();
+        List<int> newVersion = List();
+        for (String i in packageInfo.version.split(".")) {
+          nowVersion.add(int.parse(i));
         }
-      }
-      if (needUpdate) {
-        UpdateDetail updateDetail = UpdateDetail();
-        updateDetail.newVersion = githubAPIJson.tagName;
-        try {
-          updateDetail.url = githubAPIJson.assets[0].browserDownloadUrl;
-        } catch (e) {
-          updateDetail.url = "";
+        for (String i in githubAPIJson.name.split(".")) {  //利用name解析版本名稱，如解析失敗不會跳出
+          newVersion.add(int.parse(i));
         }
-        updateDetail.detail = githubAPIJson.body;
-        return updateDetail;
+        bool needUpdate = false;
+        for (int i = 0; i < nowVersion.length; i++) {
+          if (newVersion[i] > nowVersion[i]) {
+            needUpdate = true;
+            break;
+          }
+        }
+        if (needUpdate) {
+          UpdateDetail updateDetail = UpdateDetail();
+          updateDetail.newVersion = githubAPIJson.tagName;
+          try {
+            updateDetail.url = githubAPIJson.assets[0].browserDownloadUrl;
+          } catch (e) {
+            updateDetail.url = "";
+          }
+          updateDetail.detail = githubAPIJson.body;
+          return updateDetail;
+        }
+      } catch (e) {
+        return null;
       }
     }
     return null;
