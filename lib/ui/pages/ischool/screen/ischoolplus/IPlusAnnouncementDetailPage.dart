@@ -6,6 +6,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/util/Constants.dart';
+import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -38,6 +39,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
     return true;
   }
 
+  bool addLink = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +48,24 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(widget.courseInfo.main.course.name),
+        actions: <Widget>[
+          PopupMenuButton<int>(
+            onSelected: (result) {
+              if( !addLink ) {
+                setState(() {
+                  addLink = true;
+                  widget.data["body"] = HtmlUtils.addLink(widget.data["body"]);
+                });
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 0,
+                child: Text(R.current.identifyLinks),
+              ),
+            ],
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: _showAnnouncementDetail(),
@@ -99,9 +119,9 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   Widget _showFileList() {
-    List<String> keyMap = widget.data['file'].keys.toList();
-    Map fileMap = widget.data["file"];
-    if (keyMap.length == 0) {
+    List<String> fileNameList = widget.data['file'].keys.toList();  //key : 文件名稱  value : 文件下載url
+    Map fileUrlMap = widget.data["file"];
+    if (fileNameList.length == 0) {
       return Container(
         color: Colors.black12,
         height: 1,
@@ -124,7 +144,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
             ),
             ListView.separated(
               shrinkWrap: true,
-              itemCount: keyMap.length,
+              itemCount: fileNameList.length,
               itemBuilder: (context, index) {
                 Widget fileWidget;
                 fileWidget = Container(
@@ -133,7 +153,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          keyMap[index],
+                          fileNameList[index],
                           style: TextStyle(fontSize: 15, color: Colors.blue),
                         )
                       ],
@@ -143,7 +163,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
                 return InkWell(
                   child: WidgetAnimator(fileWidget),
                   onTap: () {
-                    _downloadFile(fileMap[keyMap[index]], keyMap[index]);
+                    _downloadFile(fileUrlMap[fileNameList[index]], fileNameList[index]);
                   },
                 );
               },

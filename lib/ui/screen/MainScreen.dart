@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
@@ -51,8 +50,7 @@ class _MainScreenState extends State<MainScreen> {
         } else {
           _checkAppVersion();
         }
-        Crashlytics.instance
-            .setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
+        //Crashlytics.instance.setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
         Crashlytics.instance
             .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
         List<String> supportedABis = await AppHotFix.getSupportABis();
@@ -74,6 +72,15 @@ class _MainScreenState extends State<MainScreen> {
     _flutterDownloaderInit();
     _notificationsInit();
     _addTask();
+    //_backgroundLogin();
+  }
+
+  void _backgroundLogin() async {
+    bool login = await NTUTConnector.checkLogin();
+    if (!login) {
+      NTUTConnector.login(
+          Model.instance.getAccount(), Model.instance.getPassword());
+    }
   }
 
   void _checkAppVersion() async {

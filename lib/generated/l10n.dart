@@ -15,8 +15,8 @@ class S {
     AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final String name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       return S();
@@ -848,7 +848,7 @@ class S {
 
   String get findNewMessage {
     return Intl.message(
-      'Find new message',
+      'Find I Plus new message',
       name: 'findNewMessage',
       desc: '',
       args: [],
@@ -1332,6 +1332,33 @@ class S {
     );
   }
 
+  String get openExternalVideo {
+    return Intl.message(
+      'Open with external video player',
+      name: 'openExternalVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get openExternalVideoHint {
+    return Intl.message(
+      'Recommend use MX player',
+      name: 'openExternalVideoHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get checkIPlusNew {
+    return Intl.message(
+      'Check IPlus new',
+      name: 'checkIPlusNew',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',
@@ -1588,6 +1615,24 @@ class S {
     return Intl.message(
       'Search',
       name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get noSupportExternalVideoPlayer {
+    return Intl.message(
+      'Not find support external video player',
+      name: 'noSupportExternalVideoPlayer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get identifyLinks {
+    return Intl.message(
+      'Identify links',
+      name: 'identifyLinks',
       desc: '',
       args: [],
     );
@@ -2193,7 +2238,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   List<Locale> get supportedLocales {
     return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'), Locale.fromSubtags(languageCode: 'zh'),
+      Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'zh'),
     ];
   }
 
@@ -2206,7 +2252,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   bool _isSupported(Locale locale) {
     if (locale != null) {
-      for (Locale supportedLocale in supportedLocales) {
+      for (var supportedLocale in supportedLocales) {
         if (supportedLocale.languageCode == locale.languageCode) {
           return true;
         }

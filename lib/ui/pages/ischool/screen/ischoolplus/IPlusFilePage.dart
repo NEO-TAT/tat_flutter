@@ -187,7 +187,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
   Widget _buildCourseFile(int index, CourseFileJson courseFile) {
     return Container(
         color: selectList.getItemSelect(index)
-            ? Theme.of(context).backgroundColor
+            ? Colors.grey
             : Theme.of(context).backgroundColor,
         padding: EdgeInsets.all(10),
         child: Column(
@@ -223,14 +223,19 @@ class _IPlusFilePage extends State<IPlusFilePage>
     CourseFileJson courseFile = courseFileList[index];
     FileType fileType = courseFile.fileType[0];
     String dirName = widget.courseInfo.main.course.name;
-    String url = fileType.href;
+    String url;
+    String referer;
+    List<String> urlList = List();
     if (showToast) {
       MyToast.show(R.current.downloadWillStart);
     }
-    url = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
-    if (url == null) {
+    urlList = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
+    if (urlList == null) {
       MyToast.show(sprintf("%s%s", [courseFile.name, R.current.downloadError]));
+      return;
     }
+    url = urlList[0];
+    referer = urlList[1];
     Uri urlParse = Uri.parse(url);
     if (!urlParse.host.toLowerCase().contains("ntut.edu.tw")) {
       //代表可能是一個連結
@@ -262,7 +267,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
       };
       ErrorDialog(errorDialogParameter).show();
     } else {
-      await FileDownload.download(context, url, dirName, courseFile.name);
+      await FileDownload.download(context, url, dirName, courseFile.name , referer);
     }
   }
 

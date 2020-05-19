@@ -24,6 +24,7 @@ public class BootLoaderActivity extends Activity {
 
     final String flutter_state_key = "flutter.flutter_state";  //會刪除由flutter app寫入如果檢查到沒寫入代表app crash，會清除補丁
     final String app_version_key = "flutter.version";  //取得之前執行APP版本
+    final String app_patch_version = "flutter.patch_version";
     final String hotfixFileName = "hotfix.so";
 
     SharedPreferences pref;
@@ -67,6 +68,7 @@ public class BootLoaderActivity extends Activity {
                     writer.flush();
                     writer.close();
                 }
+                pref.edit().remove(app_patch_version).apply();
             } catch (Exception e) {
                 FlutterLogger.i("delete fail");
             }

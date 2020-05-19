@@ -2,6 +2,7 @@ import 'package:flutter_app/src/store/JsonInit.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
+
 part 'SettingJson.g.dart';
 
 @JsonSerializable()
@@ -9,6 +10,7 @@ class SettingJson {
   CourseSettingJson course;
   OtherSettingJson other;
   AnnouncementSettingJson announcement;
+
   SettingJson({this.course, this.other, this.announcement}) {
     course = course ?? CourseSettingJson();
     other = other ?? OtherSettingJson();
@@ -30,6 +32,7 @@ class SettingJson {
 
   factory SettingJson.fromJson(Map<String, dynamic> json) =>
       _$SettingJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$SettingJsonToJson(this);
 }
 
@@ -53,6 +56,7 @@ class CourseSettingJson {
 
   factory CourseSettingJson.fromJson(Map<String, dynamic> json) =>
       _$CourseSettingJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$CourseSettingJsonToJson(this);
 }
 
@@ -60,6 +64,7 @@ class CourseSettingJson {
 class AnnouncementSettingJson {
   int page;
   int maxPage;
+
   AnnouncementSettingJson({this.page, this.maxPage}) {
     page = page ?? 0;
     maxPage = maxPage ?? 0;
@@ -77,6 +82,7 @@ class AnnouncementSettingJson {
 
   factory AnnouncementSettingJson.fromJson(Map<String, dynamic> json) =>
       _$AnnouncementSettingJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$AnnouncementSettingJsonToJson(this);
 }
 
@@ -85,11 +91,20 @@ class OtherSettingJson {
   String lang;
   bool focusLogin;
   bool autoCheckAppUpdate;
+  bool useExternalVideoPlayer;
+  bool checkIPlusNew;
 
-  OtherSettingJson({this.lang, this.focusLogin, this.autoCheckAppUpdate}) {
+  OtherSettingJson(
+      {this.lang,
+      this.focusLogin,
+      this.autoCheckAppUpdate,
+      this.useExternalVideoPlayer,
+      this.checkIPlusNew}) {
     lang = JsonInit.stringInit(lang);
     focusLogin = focusLogin ?? false;
     autoCheckAppUpdate = autoCheckAppUpdate ?? true;
+    useExternalVideoPlayer = useExternalVideoPlayer ?? false;
+    checkIPlusNew = checkIPlusNew ?? true;
   }
 
   bool get isEmpty {
@@ -103,5 +118,6 @@ class OtherSettingJson {
 
   factory OtherSettingJson.fromJson(Map<String, dynamic> json) =>
       _$OtherSettingJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$OtherSettingJsonToJson(this);
 }

@@ -7,6 +7,7 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
@@ -48,22 +49,37 @@ class _SettingPageState extends State<SettingPage>
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> listViewData = List();
+    listViewData.add(_buildLanguageSetting());
+    listViewData.add(_buildFocusLoginSetting());
+    if (Platform.isAndroid) {
+      listViewData.add(_buildOpenExternalVideoSetting());
+    }
+    listViewData.add(_buildLoadIPlusNewsSetting());
+    listViewData.add(_buildAutoCheckAppVersionSetting());
+    listViewData.add(_buildDarkModeSetting());
+    if (Platform.isAndroid) listViewData.add(_buildFolderPathSetting());
     return Scaffold(
       appBar: AppBar(
         title: Text(R.current.setting),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _buildLanguageSetting(),
-            _buildFocusLoginSetting(),
-            _buildAutoCheckAppVersionSetting(),
-            _buildDarkModeSetting(),
-            if (Platform.isAndroid) _buildFolderPathSetting(),
-          ],
-        ),
+      body: ListView.separated(
+        itemCount: listViewData.length,
+        itemBuilder: (context, index) {
+          Widget widget;
+          widget = listViewData[index];
+          return Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: WidgetAnimator(widget),
+          );
+        },
+        separatorBuilder: (context, index) {
+          // 顯示格線
+          return Container(
+            color: Colors.black12,
+            height: 1,
+          );
+        },
       ),
     );
   }
@@ -91,7 +107,7 @@ class _SettingPageState extends State<SettingPage>
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(left: 15, right: 15),
+                padding: EdgeInsets.only(top: 15, left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -110,7 +126,7 @@ class _SettingPageState extends State<SettingPage>
                 values: [selectLang.toDouble()],
                 max: 1.0,
                 min: 0.0,
-                step: 1.0,
+                step: FlutterSliderStep(step: 1.0),
                 onDragCompleted: (handlerIndex, it, _) {
                   int select = it.toInt();
                   if (selectLang == select) {
@@ -237,6 +253,56 @@ class _SettingPageState extends State<SettingPage>
             activeColor: Theme.of(context).accentColor,
           )
         : SizedBox();
+  }
+
+  Widget _buildLoadIPlusNewsSetting() {
+    return SwitchListTile.adaptive(
+      contentPadding: EdgeInsets.all(0),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            R.current.checkIPlusNew,
+            style: textTitle,
+          ),
+        ],
+      ),
+      value: Model.instance.getOtherSetting().checkIPlusNew,
+      onChanged: (value) {
+        setState(() {
+          Model.instance.getOtherSetting().checkIPlusNew = value;
+          Model.instance.saveOtherSetting();
+        });
+      },
+      activeColor: Theme.of(context).accentColor,
+    );
+  }
+
+  Widget _buildOpenExternalVideoSetting() {
+    return SwitchListTile.adaptive(
+      contentPadding: EdgeInsets.all(0),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            R.current.openExternalVideo,
+            style: textTitle,
+          ),
+          Text(
+            R.current.openExternalVideoHint,
+            style: textBody,
+          ),
+        ],
+      ),
+      value: Model.instance.getOtherSetting().useExternalVideoPlayer,
+      onChanged: (value) {
+        setState(() {
+          Model.instance.getOtherSetting().useExternalVideoPlayer = value;
+          Model.instance.saveOtherSetting();
+        });
+      },
+      activeColor: Theme.of(context).accentColor,
+    );
   }
 
   Widget _buildFolderPathSetting() {

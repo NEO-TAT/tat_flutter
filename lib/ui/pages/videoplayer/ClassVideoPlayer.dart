@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:android_intent/android_intent.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
@@ -71,7 +77,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   Future<void> _buildDialog() async {
-    await showDialog(
+    String url = await showDialog<String>(
       useRootNavigator: false,
       context: context,
       builder: (BuildContext context) {
@@ -87,8 +93,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                     child: Text(videoName[index]),
                     onPressed: () {
                       String url = getRTMPUrl(videoName[index]);
-                      controller.setNetworkDataSource(url, autoPlay: true);
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(url);
                     },
                   ),
                 );
@@ -98,6 +103,23 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
         );
       },
     );
+    if (Model.instance.getOtherSetting().useExternalVideoPlayer) {
+      if (Platform.isAndroid) {
+        AndroidIntent intent = AndroidIntent(
+          action: 'action_view',
+          data: url,
+        );
+        try {
+          await intent.launch();
+          Navigator.of(context).pop();
+        } catch (e) {
+          MyToast.show(R.current.noSupportExternalVideoPlayer);
+          controller.setNetworkDataSource(url, autoPlay: true);
+        }
+      }
+    } else {
+      controller.setNetworkDataSource(url, autoPlay: true);
+    }
   }
 
   String getRTMPUrl(String name) {

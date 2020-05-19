@@ -1,6 +1,5 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
@@ -120,6 +119,7 @@ class _AboutPageState extends State<AboutPage> {
           if (v != null) {
             initList();
           }
+          setState(() {});
         });
         break;
       default:
