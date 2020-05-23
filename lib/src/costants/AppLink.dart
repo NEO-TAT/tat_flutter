@@ -13,5 +13,5 @@ class AppLink {
   static const String appPatchCheckMaster =
       "https://api.github.com/repos/NEO-TAT/TAT_Hotfix/contents/%s?ref=master";
   static const String appPatchCheckDev =
-      "https://api.github.com/repos/morris13579/TAT_Hotfix/contents/%s?ref=dev";
+      "https://api.github.com/repos/NEO-TAT/TAT_Hotfix/contents/%s?ref=dev";
 }
