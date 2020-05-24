@@ -9,6 +9,7 @@ import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 
 class NTUTLoginTask extends TaskModel {
@@ -25,6 +26,10 @@ class NTUTLoginTask extends TaskModel {
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
     if (value != NTUTConnectorStatus.LoginSuccess) {
+      if(value == NTUTConnectorStatus.PasswordExpiredWarning){
+        MyToast.show(R.current.passwordExpiredWarning);
+        return TaskStatus.TaskSuccess;
+      }
       _handleError(value);
       return TaskStatus.TaskFail;
     } else {
@@ -43,6 +48,8 @@ class NTUTLoginTask extends TaskModel {
         parameter.dialogType = DialogType.INFO;
         parameter.desc = R.current.passwordExpiredWarning;
         parameter.btnOkText = R.current.update;
+        parameter.btnOkOnPress = () {};
+        return;
         break;
       case NTUTConnectorStatus.AccountLockWarning:
         parameter.dialogType = DialogType.INFO;
