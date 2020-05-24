@@ -137,7 +137,7 @@ class S {
 
   String get setting {
     return Intl.message(
-      'Setting',
+      'Settings',
       name: 'setting',
       desc: '',
       args: [],
@@ -1732,6 +1732,15 @@ class S {
     return Intl.message(
       'Auto App Check',
       name: 'autoAppCheck',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get logoutWarning {
+    return Intl.message(
+      'Are you sure you want to log out? \nAll data will be cleared',
+      name: 'logoutWarning',
       desc: '',
       args: [],
     );

@@ -189,6 +189,7 @@
   "versionInfo": "版本資訊",
   "isNewVersion": "已經是最新版本了",
   "autoAppCheck": "自動檢查更新",
+  "logoutWarning" :"確定要登出嗎? \n將會清除所有資料",
   "___________________CreditUI___________________": "註解",
   "titleScore": "成績",
   "error": "錯誤",
