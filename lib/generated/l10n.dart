@@ -137,7 +137,7 @@ class S {
 
   String get setting {
     return Intl.message(
-      'Setting',
+      'Settings',
       name: 'setting',
       desc: '',
       args: [],

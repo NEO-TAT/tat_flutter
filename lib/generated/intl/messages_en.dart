@@ -241,7 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "semesterGrades" : MessageLookupByLibrary.simpleMessage("Semester grades"),
     "semesterRanking" : MessageLookupByLibrary.simpleMessage("Semester ranking"),
     "setAsAndroidWeight" : MessageLookupByLibrary.simpleMessage("Set as android weight"),
-    "setting" : MessageLookupByLibrary.simpleMessage("Setting"),
+    "setting" : MessageLookupByLibrary.simpleMessage("Settings"),
     "settingComplete" : MessageLookupByLibrary.simpleMessage("Setting complete"),
     "settingCompleteWithError" : MessageLookupByLibrary.simpleMessage("Setup is complete, please add the weight again"),
     "socialDimension" : MessageLookupByLibrary.simpleMessage("Social dimension"),
