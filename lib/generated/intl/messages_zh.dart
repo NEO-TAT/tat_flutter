@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkVersion" : MessageLookupByLibrary.simpleMessage("檢查新版本"),
     "checkingPermission" : MessageLookupByLibrary.simpleMessage("檢查權限"),
     "checkingVersion" : MessageLookupByLibrary.simpleMessage("檢查中..."),
+    "classVideo" : MessageLookupByLibrary.simpleMessage("上課錄影"),
     "classroom" : MessageLookupByLibrary.simpleMessage("教室"),
     "classroomUse" : MessageLookupByLibrary.simpleMessage("教室使用"),
     "clearAndRefresh" : MessageLookupByLibrary.simpleMessage("清除並重新整理"),

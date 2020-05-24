@@ -142,7 +142,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
               leading: BackButton(
                 onPressed: () => Navigator.of(context).pop(),
               ),
-              title: Text("影片"),
+              title: Text(R.current.classVideo),
             ),
             body: (isLoading)
                 ? Center(

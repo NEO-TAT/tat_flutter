@@ -1325,7 +1325,7 @@ class S {
 
   String get developerMode {
     return Intl.message(
-      'DeveloperMode',
+      'Developer Mode',
       name: 'developerMode',
       desc: '',
       args: [],
@@ -1570,6 +1570,15 @@ class S {
     return Intl.message(
       'Is a video',
       name: 'isVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get classVideo {
+    return Intl.message(
+      'class video',
+      name: 'classVideo',
       desc: '',
       args: [],
     );
