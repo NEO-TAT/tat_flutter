@@ -1737,6 +1737,15 @@ class S {
     );
   }
 
+  String get logoutWarning {
+    return Intl.message(
+      'Are you sure you want to log out? \nAll data will be cleared',
+      name: 'logoutWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get ___________________ScoreUI___________________ {
     return Intl.message(
       '註解',

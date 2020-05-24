@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
@@ -82,9 +84,18 @@ class _OtherPageState extends State<OtherPage> {
   void _onListViewPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.Logout:
-        Model.instance.logout().then((_) {
-          widget.pageController.jumpToPage(0);
-        });
+        ErrorDialogParameter parameter = ErrorDialogParameter(
+            context: context,
+            desc: R.current.logoutWarning,
+            dialogType: DialogType.WARNING,
+            title: R.current.warning,
+            btnOkText: R.current.sure,
+            btnOkOnPress: () {
+              Model.instance.logout().then((_) {
+                widget.pageController.jumpToPage(0);
+              });
+            });
+        ErrorDialog(parameter).show();
         break;
       case onListViewPress.FileViewer:
         FileStore.findLocalPath(context).then((filePath) {

@@ -178,6 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginScore" : MessageLookupByLibrary.simpleMessage("登入成績查詢系統..."),
     "loginScoreError" : MessageLookupByLibrary.simpleMessage("登入成績查詢系統錯誤"),
     "logout" : MessageLookupByLibrary.simpleMessage("登出"),
+    "logoutWarning" : MessageLookupByLibrary.simpleMessage("確定要登出嗎? \n將會清除所有資料"),
     "naturalDimension" : MessageLookupByLibrary.simpleMessage("自然向度"),
     "networkError" : MessageLookupByLibrary.simpleMessage("網路發生錯誤"),
     "noAnyAnnouncement" : MessageLookupByLibrary.simpleMessage("無任何公告"),

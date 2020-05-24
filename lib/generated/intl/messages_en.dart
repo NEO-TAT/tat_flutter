@@ -179,6 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginScore" : MessageLookupByLibrary.simpleMessage("Login to Score..."),
     "loginScoreError" : MessageLookupByLibrary.simpleMessage("Login to Score Error"),
     "logout" : MessageLookupByLibrary.simpleMessage("Sign out"),
+    "logoutWarning" : MessageLookupByLibrary.simpleMessage("Are you sure you want to log out? \nAll data will be cleared"),
     "naturalDimension" : MessageLookupByLibrary.simpleMessage("Natural dimension"),
     "networkError" : MessageLookupByLibrary.simpleMessage("Network error"),
     "noAnyAnnouncement" : MessageLookupByLibrary.simpleMessage("Without any announcement"),
