@@ -450,6 +450,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     },
                     controller: _studentIdControl,
                     focusNode: _studentFocus,
+                    toolbarOptions: ToolbarOptions(
+                      copy: true,
+                      paste: true,
+                    ),
                   ),
                 ),
                 FlatButton(
@@ -745,8 +749,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  static const platform =
-      const MethodChannel(Constants.methodChannelName);
+  static const platform = const MethodChannel(Constants.methodChannelName);
 
   Future screenshot() async {
     double originHeight = courseHeight;
