@@ -90,7 +90,7 @@ class _OtherPageState extends State<OtherPage> {
         FileStore.findLocalPath(context).then((filePath) {
           Navigator.of(context).push(
             PageTransition(
-              type: PageTransitionType.leftToRight,
+              type: PageTransitionType.downToUp,
               child: FileViewerPage(
                 title: R.current.fileViewer,
                 path: filePath,
