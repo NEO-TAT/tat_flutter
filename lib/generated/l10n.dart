@@ -1548,19 +1548,19 @@ class S {
     );
   }
 
-  String get focusLogin {
+  String get forceReLogin {
     return Intl.message(
-      'focusLogin',
-      name: 'focusLogin',
+      'Force re-login',
+      name: 'forceReLogin',
       desc: '',
       args: [],
     );
   }
 
-  String get focusLoginResult {
+  String get forceLoginResult {
     return Intl.message(
-      '',
-      name: 'focusLoginResult',
+      'When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed',
+      name: 'forceLoginResult',
       desc: '',
       args: [],
     );

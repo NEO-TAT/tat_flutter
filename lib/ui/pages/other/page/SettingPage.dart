@@ -175,11 +175,11 @@ class _SettingPageState extends State<SettingPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            R.current.focusLogin,
+            R.current.forceReLogin,
             style: textTitle,
           ),
           Text(
-            R.current.focusLoginResult,
+            R.current.forceLoginResult,
             style: textBody,
           ),
         ],
