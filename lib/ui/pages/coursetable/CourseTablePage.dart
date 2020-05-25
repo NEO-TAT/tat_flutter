@@ -158,12 +158,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     Model.instance.setAlreadyUse(Model.courseNotice);
-    try {
-      setState(() {
-        loadCourseNotice = false;
-      });
-    } catch (e) {
-      Log.d("setState() called after dispose()");
+    setState(() {
+      loadCourseNotice = false;
+    });
+  }
+
+  @override
+  void setState(fn) {
+    if (context != null) {
+      super.setState(fn);
     }
   }
 
