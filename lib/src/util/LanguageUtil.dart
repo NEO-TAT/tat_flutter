@@ -53,14 +53,16 @@ class LanguageUtil {
   }
 
   static Locale string2Locale(String lang) {
-    String countryCode = lang.split("_")[0];
-    String languageCode = lang.split("_")[1];
-    for (Locale locale in getSupportLocale) {
-      if (locale.languageCode == languageCode &&
-          locale.countryCode == countryCode) {
-        return locale;
+    try {
+      String countryCode = lang.split("_")[0];
+      String languageCode = lang.split("_")[1];
+      for (Locale locale in getSupportLocale) {
+        if (locale.languageCode == languageCode &&
+            locale.countryCode == countryCode) {
+          return locale;
+        }
       }
-    }
+    } catch (e) {}
     return getSupportLocale[0];
   }
 
