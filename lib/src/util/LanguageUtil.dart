@@ -8,6 +8,7 @@
 
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/l10n.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -33,15 +34,17 @@ class LanguageUtil {
 
   static Future<void> load(Locale locale) async {
     if (getSupportLocale.contains(locale)) {
-      await Model.instance.clearCourseTableList();
-      await Model.instance.clearCourseSetting();
       R.load(locale);
       String lang = locale2String(locale);
       OtherSettingJson otherSetting = Model.instance.getOtherSetting();
-      otherSetting.lang = lang;
-      Model.instance.setOtherSetting(otherSetting);
-      await Model.instance.saveOtherSetting();
+      if (otherSetting.lang != lang) {
+        await Model.instance.clearCourseTableList();
+        await Model.instance.clearCourseSetting();
+        Model.instance.setOtherSetting(otherSetting);
+        await Model.instance.saveOtherSetting();
+      }
     } else {
+      Log.e("no any locale load");
       return;
     }
   }
@@ -73,7 +76,6 @@ class LanguageUtil {
 
   static LangEnum getLangIndex() {
     OtherSettingJson otherSetting = Model.instance.getOtherSetting();
-    print(string2Locale(otherSetting.lang));
     int index = getSupportLocale.indexOf(string2Locale(otherSetting.lang));
     switch (index) {
       case 0:
