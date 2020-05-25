@@ -161,7 +161,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "isVideo" : MessageLookupByLibrary.simpleMessage("Is a video"),
     "jointElective" : MessageLookupByLibrary.simpleMessage("Joint elective"),
     "languageSetting" : MessageLookupByLibrary.simpleMessage("Language"),
-    "languageSwitch" : MessageLookupByLibrary.simpleMessage("Language switch"),
+    "languageSwitch" : MessageLookupByLibrary.simpleMessage("Use English interface"),
     "loadFailed" : MessageLookupByLibrary.simpleMessage("Load Failed! Click retry!"),
     "loadFavorite" : MessageLookupByLibrary.simpleMessage("Load favorite"),
     "location" : MessageLookupByLibrary.simpleMessage("Location"),

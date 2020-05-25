@@ -1523,7 +1523,7 @@ class S {
 
   String get languageSwitch {
     return Intl.message(
-      'Language switch',
+      'Use English interface',
       name: 'languageSwitch',
       desc: '',
       args: [],

@@ -160,7 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "isVideo" : MessageLookupByLibrary.simpleMessage("上課錄影"),
     "jointElective" : MessageLookupByLibrary.simpleMessage("共同選修"),
     "languageSetting" : MessageLookupByLibrary.simpleMessage("語言"),
-    "languageSwitch" : MessageLookupByLibrary.simpleMessage("語言切換"),
+    "languageSwitch" : MessageLookupByLibrary.simpleMessage("使用英文介面"),
     "loadFailed" : MessageLookupByLibrary.simpleMessage("加載失敗，請再重試一次"),
     "loadFavorite" : MessageLookupByLibrary.simpleMessage("載入常用課表"),
     "location" : MessageLookupByLibrary.simpleMessage("地點"),
