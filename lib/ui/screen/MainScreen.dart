@@ -70,17 +70,6 @@ class _MainScreenState extends State<MainScreen> {
     });
     _flutterDownloaderInit();
     _notificationsInit();
-    _addTask();
-    //_backgroundLogin();
-  }
-
-  void _backgroundLogin() async {
-    //加入會影響第一次運作
-    bool login = await NTUTConnector.checkLogin();
-    if (!login) {
-      NTUTConnector.login(
-          Model.instance.getAccount(), Model.instance.getPassword());
-    }
   }
 
   void _checkAppVersion() async {
@@ -102,16 +91,6 @@ class _MainScreenState extends State<MainScreen> {
         }
       }
     }
-  }
-
-  void _addTest() async {
-    await NTUTConnector.login(
-        Model.instance.getAccount(), Model.instance.getPassword());
-    await NTUTConnector.getCalendar(DateTime.now(), DateTime.now());
-  }
-
-  void _addTask() async {
-    //TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
   }
 
   void _flutterDownloaderInit() async {
