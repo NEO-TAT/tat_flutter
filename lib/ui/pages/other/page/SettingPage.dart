@@ -5,12 +5,11 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/util/Constants.dart';
+import 'file:///C:/Users/Morris/Desktop/NTUTCourseHelper-Flutter/lib/src/costants/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -24,14 +23,15 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage>
     with AfterInitMixin<SettingPage> {
-  Map<int, String> langMap = {LangEnum.en.index: "en", LangEnum.zh.index: "zh"};
-  int selectLang;
+  Map<int, String> langStringMap = {
+    LangEnum.en.index: "en",
+    LangEnum.zh.index: "zh"
+  };
   String downloadPath;
 
   @override
   void initState() {
     downloadPath = "";
-    selectLang = LanguageUtil.getLangIndex().index;
     super.initState();
   }
 
@@ -58,7 +58,9 @@ class _SettingPageState extends State<SettingPage>
     listViewData.add(_buildLoadIPlusNewsSetting());
     listViewData.add(_buildAutoCheckAppVersionSetting());
     listViewData.add(_buildDarkModeSetting());
-    if (Platform.isAndroid) listViewData.add(_buildFolderPathSetting());
+    if (Platform.isAndroid) {
+      listViewData.add(_buildFolderPathSetting());
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(R.current.setting),
@@ -69,7 +71,7 @@ class _SettingPageState extends State<SettingPage>
           Widget widget;
           widget = listViewData[index];
           return Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(top: 5, left: 20, right: 20),
             child: WidgetAnimator(widget),
           );
         },
@@ -88,83 +90,31 @@ class _SettingPageState extends State<SettingPage>
   final TextStyle textBody = TextStyle(fontSize: 16, color: Color(0xFF808080));
 
   Widget _buildLanguageSetting() {
-    return Row(
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              R.current.languageSwitch,
-              style: textTitle,
-            ),
-            Text(
-              R.current.willRestart,
-              style: textBody,
-            ),
-          ],
-        ),
-        Expanded(
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 15, left: 15, right: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "EN",
-                      textAlign: TextAlign.start,
-                    ),
-                    Text(
-                      "中",
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
-              ),
-              FlutterSlider(
-                values: [selectLang.toDouble()],
-                max: 1.0,
-                min: 0.0,
-                step: FlutterSliderStep(step: 1.0),
-                onDragCompleted: (handlerIndex, it, _) {
-                  int select = it.toInt();
-                  if (selectLang == select) {
-                    return;
-                  } else {
-                    selectLang = select;
-                  }
-                  print(langMap[selectLang].toString());
-                  LanguageUtil.setLang(langMap[selectLang]).then((_) {
-                    widget.pageController.jumpToPage(0);
-                    Navigator.of(context).pop();
-                  });
-                  setState(() {});
-                },
-                tooltip: FlutterSliderTooltip(
-                  disabled: true,
-                ),
-                handler: FlutterSliderHandler(
-                  decoration: BoxDecoration(),
-                  child: Material(
-                    type: MaterialType.circle,
-                    color: Colors.white,
-                    elevation: 10,
-                    child: Container(
-                      padding: EdgeInsets.all(5),
-                      child: Icon(
-                        Icons.adjust,
-                        size: 10,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
+    return SwitchListTile.adaptive(
+      contentPadding: EdgeInsets.all(0),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            R.current.languageSwitch,
+            style: textTitle,
           ),
-        ),
-      ],
+          Text(
+            R.current.willRestart,
+            style: textBody,
+          ),
+        ],
+      ),
+      value: (LanguageUtil.getLangIndex() == LangEnum.en),
+      onChanged: (value) {
+        setState(() {
+          String lang = langStringMap[1 - LanguageUtil.getLangIndex().index];
+          LanguageUtil.setLang(lang).then((_) {
+            widget.pageController.jumpToPage(0);
+            Navigator.of(context).pop();
+          });
+        });
+      },
     );
   }
 
@@ -175,11 +125,11 @@ class _SettingPageState extends State<SettingPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            R.current.focusLogin,
+            R.current.forceReLogin,
             style: textTitle,
           ),
           Text(
-            R.current.focusLoginResult,
+            R.current.forceLoginResult,
             style: textBody,
           ),
         ],
@@ -191,7 +141,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 
@@ -214,7 +163,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 
@@ -250,7 +198,6 @@ class _SettingPageState extends State<SettingPage>
                     .setTheme(Constants.lightTheme, "light");
               }
             },
-            activeColor: Theme.of(context).accentColor,
           )
         : SizedBox();
   }
@@ -274,7 +221,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 
@@ -301,7 +247,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 

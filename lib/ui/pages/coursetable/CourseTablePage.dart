@@ -17,7 +17,7 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
-import 'package:flutter_app/src/util/Constants.dart';
+import 'file:///C:/Users/Morris/Desktop/NTUTCourseHelper-Flutter/lib/src/costants/Constants.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -450,6 +450,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     },
                     controller: _studentIdControl,
                     focusNode: _studentFocus,
+                    toolbarOptions: ToolbarOptions(
+                      copy: true,
+                      paste: true,
+                    ),
                   ),
                 ),
                 FlatButton(
@@ -745,8 +749,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  static const platform =
-      const MethodChannel(Constants.methodChannelName);
+  static const platform = const MethodChannel(Constants.methodChannelName);
 
   Future screenshot() async {
     double originHeight = courseHeight;

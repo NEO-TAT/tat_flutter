@@ -12,7 +12,7 @@ import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
-import 'package:flutter_app/src/util/Constants.dart';
+import 'file:///C:/Users/Morris/Desktop/NTUTCourseHelper-Flutter/lib/src/costants/Constants.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -1,3 +1,5 @@
+import 'package:html_unescape/html_unescape.dart';
+
 class HtmlUtils {
   /*
   「		雙引號			&quot;		×	乘號				&times;		←	向左箭頭				&larr;
@@ -27,9 +29,8 @@ class HtmlUtils {
    */
   static String clean(String html) {
     String result;
-    html = html.replaceAll("&amp;", "&");
-    html = html.replaceAll("&nbsp;", " ");
-    result = html;
+    var unescape = new HtmlUnescape();
+    result = unescape.convert(html);
     return result;
   }
 

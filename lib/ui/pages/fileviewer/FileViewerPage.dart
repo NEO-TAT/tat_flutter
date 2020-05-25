@@ -244,7 +244,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                               renameDialog(context, file.path, "dir");
                             } else if (v == 1) {
                               await Directory(file.path)
-                                  .delete()
+                                  .delete(recursive: true)  //將會刪除資料夾內所有東西
                                   .catchError((e) {
                                 print(e.toString());
                                 if (e
