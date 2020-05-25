@@ -34,10 +34,12 @@ class LanguageUtil {
 
   static Future<void> load(Locale locale) async {
     if (getSupportLocale.contains(locale)) {
-      R.load(locale);
+      await R.load(locale);
       String lang = locale2String(locale);
       OtherSettingJson otherSetting = Model.instance.getOtherSetting();
       if (otherSetting.lang != lang) {
+        //只有不相同時可以載入
+        otherSetting.lang = lang;
         await Model.instance.clearCourseTableList();
         await Model.instance.clearCourseSetting();
         Model.instance.setOtherSetting(otherSetting);
