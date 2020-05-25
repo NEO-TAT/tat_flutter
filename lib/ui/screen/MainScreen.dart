@@ -43,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     Model.instance.init().then((value) async {
       // 需重新初始化 list，PageController 才會清除 cache
       try {
+        await _setLang();
         await AppHotFix.init();
         BuildContext contextKey = navigatorKey.currentState.overlay.context;
         if (Model.instance.getAccount().isEmpty) {
@@ -66,13 +67,12 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(CalendarPage());
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
-      _setLang();
       //_addTest();
     });
     _flutterDownloaderInit();
     _notificationsInit();
     _addTask();
-    //_backgroundLogin();
+    _backgroundLogin();
   }
 
   void _backgroundLogin() async {
@@ -122,10 +122,8 @@ class _MainScreenState extends State<MainScreen> {
     await Notifications.instance.init();
   }
 
-  void _setLang() async {
-    Locale myLocale = Localizations.localeOf(context);
-    LanguageUtil.load(myLocale);
-    setState(() {});
+  Future<void> _setLang() async {
+    await LanguageUtil.init(context);
   }
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
