@@ -58,7 +58,9 @@ class _SettingPageState extends State<SettingPage>
     listViewData.add(_buildLoadIPlusNewsSetting());
     listViewData.add(_buildAutoCheckAppVersionSetting());
     listViewData.add(_buildDarkModeSetting());
-    if (Platform.isAndroid) listViewData.add(_buildFolderPathSetting());
+    if (Platform.isAndroid) {
+      listViewData.add(_buildFolderPathSetting());
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(R.current.setting),
@@ -191,7 +193,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 
@@ -214,7 +215,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 
@@ -250,7 +250,6 @@ class _SettingPageState extends State<SettingPage>
                     .setTheme(Constants.lightTheme, "light");
               }
             },
-            activeColor: Theme.of(context).accentColor,
           )
         : SizedBox();
   }
@@ -274,7 +273,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 
@@ -301,7 +299,6 @@ class _SettingPageState extends State<SettingPage>
           Model.instance.saveOtherSetting();
         });
       },
-      activeColor: Theme.of(context).accentColor,
     );
   }
 
