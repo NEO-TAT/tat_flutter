@@ -185,6 +185,7 @@ class _OtherPageState extends State<OtherPage> {
         radius: 30.0,
         backgroundImage: imageProvider,
       ),
+      useOldImageOnUrlChange: true,
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) {
         Log.e(error.toString());
