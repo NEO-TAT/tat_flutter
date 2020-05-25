@@ -67,15 +67,14 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(CalendarPage());
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
-      //_addTest();
     });
     _flutterDownloaderInit();
     _notificationsInit();
     _addTask();
-    _backgroundLogin();
+    //_backgroundLogin();
   }
 
-  void _backgroundLogin() async {
+  void _backgroundLogin() async {  //加入會影響第一次運作
     bool login = await NTUTConnector.checkLogin();
     if (!login) {
       NTUTConnector.login(
