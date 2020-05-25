@@ -450,10 +450,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     },
                     controller: _studentIdControl,
                     focusNode: _studentFocus,
+                    /*
                     toolbarOptions: ToolbarOptions(
                       copy: true,
                       paste: true,
                     ),
+                     */
                   ),
                 ),
                 FlatButton(

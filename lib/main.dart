@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         S.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate
       ],
       supportedLocales: S.delegate.supportedLocales,
       title: 'TAT',

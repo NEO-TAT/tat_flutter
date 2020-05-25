@@ -23,10 +23,6 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage>
     with AfterInitMixin<SettingPage> {
-  Map<int, String> langStringMap = {
-    LangEnum.en.index: "en",
-    LangEnum.zh.index: "zh"
-  };
   String downloadPath;
 
   @override
@@ -108,8 +104,9 @@ class _SettingPageState extends State<SettingPage>
       value: (LanguageUtil.getLangIndex() == LangEnum.en),
       onChanged: (value) {
         setState(() {
-          String lang = langStringMap[1 - LanguageUtil.getLangIndex().index];
-          LanguageUtil.setLang(lang).then((_) {
+          int langIndex = 1 - LanguageUtil.getLangIndex().index;
+          LanguageUtil.setLangByIndex(LangEnum.values.toList()[langIndex])
+              .then((_) {
             widget.pageController.jumpToPage(0);
             Navigator.of(context).pop();
           });

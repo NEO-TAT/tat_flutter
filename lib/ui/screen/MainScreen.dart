@@ -66,21 +66,10 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(CalendarPage());
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
-      _setLang();
-      //_addTest();
+      await _setLang();
     });
     _flutterDownloaderInit();
     _notificationsInit();
-    _addTask();
-    //_backgroundLogin();
-  }
-
-  void _backgroundLogin() async {
-    bool login = await NTUTConnector.checkLogin();
-    if (!login) {
-      NTUTConnector.login(
-          Model.instance.getAccount(), Model.instance.getPassword());
-    }
   }
 
   void _checkAppVersion() async {
@@ -104,16 +93,6 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  void _addTest() async {
-    await NTUTConnector.login(
-        Model.instance.getAccount(), Model.instance.getPassword());
-    await NTUTConnector.getCalendar(DateTime.now(), DateTime.now());
-  }
-
-  void _addTask() async {
-    //TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
-  }
-
   void _flutterDownloaderInit() async {
     await MyDownloader.init();
   }
@@ -122,9 +101,8 @@ class _MainScreenState extends State<MainScreen> {
     await Notifications.instance.init();
   }
 
-  void _setLang() async {
-    Locale myLocale = Localizations.localeOf(context);
-    LanguageUtil.load(myLocale);
+  Future<void> _setLang() async {
+    await LanguageUtil.init(context);
     setState(() {});
   }
 
