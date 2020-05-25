@@ -5,7 +5,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/util/Constants.dart';
+import 'file:///C:/Users/Morris/Desktop/NTUTCourseHelper-Flutter/lib/src/costants/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';

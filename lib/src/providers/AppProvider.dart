@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/costants/app_colors.dart';
-import 'package:flutter_app/src/util/Constants.dart';
+import 'file:///C:/Users/Morris/Desktop/NTUTCourseHelper-Flutter/lib/src/costants/Constants.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

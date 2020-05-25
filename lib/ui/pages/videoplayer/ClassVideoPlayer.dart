@@ -9,7 +9,7 @@ import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/util/Constants.dart';
+import 'file:///C:/Users/Morris/Desktop/NTUTCourseHelper-Flutter/lib/src/costants/Constants.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:html/dom.dart' as dom;

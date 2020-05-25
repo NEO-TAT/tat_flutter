@@ -5,7 +5,7 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/src/util/Constants.dart';
+import 'file:///C:/Users/Morris/Desktop/NTUTCourseHelper-Flutter/lib/src/costants/Constants.dart';
 import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/ischool/CourseAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/ischool/screen/ischool/CourseISchoolFilePage.dart';
