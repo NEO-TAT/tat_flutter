@@ -857,7 +857,7 @@ class S {
 
   String get searchCredit {
     return Intl.message(
-      'Search credit',
+      'Search credit...',
       name: 'searchCredit',
       desc: '',
       args: [],
