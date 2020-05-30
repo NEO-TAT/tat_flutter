@@ -43,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
       // 需重新初始化 list，PageController 才會清除 cache
       try {
         await AppHotFix.init();
+        await _setLang();
         BuildContext contextKey = navigatorKey.currentState.overlay.context;
         if (Model.instance.getAccount().isEmpty) {
           contextKey = null; //不顯示對話框
@@ -65,7 +66,6 @@ class _MainScreenState extends State<MainScreen> {
       _pageList.add(CalendarPage());
       _pageList.add(ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
-      await _setLang();
     });
     _flutterDownloaderInit();
     _notificationsInit();
