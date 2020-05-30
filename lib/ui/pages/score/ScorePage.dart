@@ -74,19 +74,21 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         String courseId = courseInfo.courseId;
         if (courseInfo.category.isEmpty) {
           //沒有類別才尋找
-          var courseExtraInfo =
-              await CourseConnector.getCourseExtraInfo(courseId);
-          courseScoreCredit.getCourseByCourseId(courseId);
-          if (LanguageUtil.getLangIndex() == LangEnum.en) {
-            String name = await CourseConnector.getCourseENName(
-                courseExtraInfo.course.href);
-            name = name ?? courseInfo.name;
-            courseInfo.name = name;
+          if (courseId.isNotEmpty) {
+            var courseExtraInfo =
+                await CourseConnector.getCourseExtraInfo(courseId);
+            courseScoreCredit.getCourseByCourseId(courseId);
+            if (LanguageUtil.getLangIndex() == LangEnum.en) {
+              String name = await CourseConnector.getCourseENName(
+                  courseExtraInfo.course.href);
+              name = name ?? courseInfo.name;
+              courseInfo.name = name;
+            }
+            courseInfo.category = courseExtraInfo.course.category;
+            courseInfo.openClass =
+                courseExtraInfo.course.openClass.replaceAll("\n", " ");
+            Log.d(courseInfo.openClass);
           }
-          courseInfo.category = courseExtraInfo.course.category;
-          courseInfo.openClass =
-              courseExtraInfo.course.openClass.replaceAll("\n", " ");
-          Log.d(courseInfo.openClass);
         }
       }
       await MyProgressDialog.hideProgressDialog();

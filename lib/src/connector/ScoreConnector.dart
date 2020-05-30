@@ -94,7 +94,7 @@ class ScoreConnector {
           .toList()
           .reversed
           .toList();
-
+      //依照學期取得課程資料
       for (int i = 0; i < tableNodes.length; i++) {
         tableNode = tableNodes[i];
         h3Node = h3Nodes[i];
@@ -105,7 +105,7 @@ class ScoreConnector {
         semester.year = h3Node.text.split(" ")[0];
         semester.semester = h3Node.text.split(" ")[3];
         courseScore.semester = semester;
-
+        //取得課程名稱與分數
         scoreNodes = tableNode.getElementsByTagName("tr");
         for (int j = 1; j < scoreNodes.length - 6; j++) {
           scoreNode = scoreNodes[j];
@@ -126,23 +126,28 @@ class ScoreConnector {
               .replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);
         }
-
-        courseScore.averageScore = double.parse(
-            scoreNodes[scoreNodes.length - 4]
-                .getElementsByTagName("td")[0]
-                .text);
-        courseScore.performanceScore = double.parse(
-            scoreNodes[scoreNodes.length - 3]
-                .getElementsByTagName("td")[0]
-                .text);
-        courseScore.totalCredit = double.parse(scoreNodes[scoreNodes.length - 2]
-            .getElementsByTagName("td")[0]
-            .text);
-        courseScore.takeCredit = double.parse(scoreNodes[scoreNodes.length - 1]
-            .getElementsByTagName("td")[0]
-            .text);
-
-        courseScoreList.add(courseScore);
+        try {
+          courseScore.averageScore = double.parse(
+              scoreNodes[scoreNodes.length - 4]
+                  .getElementsByTagName("td")[0]
+                  .text);
+          courseScore.performanceScore = double.parse(
+              scoreNodes[scoreNodes.length - 3]
+                  .getElementsByTagName("td")[0]
+                  .text);
+          courseScore.totalCredit = double.parse(
+              scoreNodes[scoreNodes.length - 2]
+                  .getElementsByTagName("td")[0]
+                  .text);
+          courseScore.takeCredit = double.parse(
+              scoreNodes[scoreNodes.length - 1]
+                  .getElementsByTagName("td")[0]
+                  .text);
+        } catch (e) {
+          continue;
+        } finally {
+          courseScoreList.add(courseScore);
+        }
       }
 
       parameter = ConnectorParameter(_scoreRankUrl);
