@@ -229,7 +229,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "scoreCalculationWarring" : MessageLookupByLibrary.simpleMessage("此計算僅供參考，實際請以學校為主"),
     "scoreSearch" : MessageLookupByLibrary.simpleMessage("分數查詢"),
     "search" : MessageLookupByLibrary.simpleMessage("搜尋"),
-    "searchCredit" : MessageLookupByLibrary.simpleMessage("查詢學分"),
+    "searchCredit" : MessageLookupByLibrary.simpleMessage("查詢學分..."),
     "searchScore" : MessageLookupByLibrary.simpleMessage("成績查詢"),
     "searchSubscribe" : MessageLookupByLibrary.simpleMessage("查詢訂閱..."),
     "searching" : MessageLookupByLibrary.simpleMessage("查詢中..."),

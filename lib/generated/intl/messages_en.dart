@@ -230,7 +230,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "scoreCalculationWarring" : MessageLookupByLibrary.simpleMessage("This calculation is for reference only. Actually, please focus on the school."),
     "scoreSearch" : MessageLookupByLibrary.simpleMessage("Score query"),
     "search" : MessageLookupByLibrary.simpleMessage("Search"),
-    "searchCredit" : MessageLookupByLibrary.simpleMessage("Search credit"),
+    "searchCredit" : MessageLookupByLibrary.simpleMessage("Search credit..."),
     "searchScore" : MessageLookupByLibrary.simpleMessage("Search score"),
     "searchSubscribe" : MessageLookupByLibrary.simpleMessage("Search subscribe..."),
     "searching" : MessageLookupByLibrary.simpleMessage("Searching"),

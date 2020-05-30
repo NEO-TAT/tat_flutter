@@ -14,8 +14,8 @@ import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/other/ProgressRateDialog.dart';
 import 'package:flutter_app/ui/pages/score/GraduationPicker.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sprintf/sprintf.dart';
@@ -63,13 +63,15 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     if (courseScoreList != null) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
     }
-    TaskHandler.instance.addTask(TaskModelFunction(context,
-        require: [CheckCookiesTask.checkCourse], taskFunction: () async {
-      MyProgressDialog.showProgressDialog(context, R.current.searchCredit);
-      List<CourseInfoJson> courseInfoList =
-          courseScoreCredit.getCourseInfoList();
-      int total = courseScoreCredit.getCourseInfoList().length;
-      for (int i = 0; i < total; i++) {
+    int total = courseScoreCredit.getCourseInfoList().length;
+    List<CourseInfoJson> courseInfoList = courseScoreCredit.getCourseInfoList();
+    ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
+    progressRateDialog.update(
+        message: R.current.searchCredit, nowProgress: 0, progressString: "0/0");
+    progressRateDialog.show();
+    for (int i = 0; i < total; i++) {
+      TaskHandler.instance.addTask(TaskModelFunction(context,
+          require: [CheckCookiesTask.checkCourse], taskFunction: () async {
         CourseInfoJson courseInfo = courseInfoList[i];
         String courseId = courseInfo.courseId;
         if (courseInfo.category.isEmpty) {
@@ -90,17 +92,19 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             Log.d(courseInfo.openClass);
           }
         }
-      }
-      await MyProgressDialog.hideProgressDialog();
-      return true;
-    }, errorFunction: () async {
-      ErrorDialogParameter parameter = ErrorDialogParameter(
-        context: context,
-        desc: R.current.error,
-      );
-      ErrorDialog(parameter).show();
-    }, successFunction: () async {}));
-    await TaskHandler.instance.startTaskQueue(context);
+        return true;
+      }, errorFunction: () async {
+        ErrorDialogParameter parameter = ErrorDialogParameter(
+          context: context,
+          desc: R.current.error,
+        );
+        ErrorDialog(parameter).show();
+      }, successFunction: () async {}));
+      progressRateDialog.update(
+          nowProgress: i / total, progressString: sprintf("%d/%d", [i, total]));
+      await TaskHandler.instance.startTaskQueue(context);
+    }
+    progressRateDialog.hide();
     courseScoreList = courseScoreList ?? List();
     _buildTabBar();
     setState(() {
