@@ -3,13 +3,13 @@ class AppLink {
   static const String playStore =
       "https://play.google.com/store/apps/details?id=$appPackageName";
   static const String gitHub =
-      "https://github.com/NEO-TAT/NTUTCourseHelper-Flutter";
+      "https://github.com/NEO-TAT/tat_flutter";
   static const String gitHubReleases =
-      "https://github.com/NEO-TAT/NTUTCourseHelper-Flutter/releases";
+      "https://github.com/NEO-TAT/tat_flutter/releases";
   static const String feedback =
       "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
   static const String appUpdateCheck =
-      "https://api.github.com/repos/NEO-TAT/NTUTCourseHelper-Flutter/releases/latest";
+      "https://api.github.com/repos/NEO-TAT/tat_flutter/releases/latest";
   static const String appPatchCheckMaster =
       "https://api.github.com/repos/NEO-TAT/TAT_Hotfix/contents/%s?ref=master";
   static const String appPatchCheckDev =
