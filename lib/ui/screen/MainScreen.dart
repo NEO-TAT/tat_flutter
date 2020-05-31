@@ -60,12 +60,14 @@ class _MainScreenState extends State<MainScreen> {
       } catch (e) {
         Log.e(e.toString());
       }
-      _pageList = List();
-      _pageList.add(CourseTablePage());
-      _pageList.add(NotificationPage());
-      _pageList.add(CalendarPage());
-      _pageList.add(ScoreViewerPage());
-      _pageList.add(OtherPage(_pageController));
+      setState(() {
+        _pageList = List();
+        _pageList.add(CourseTablePage());
+        _pageList.add(NotificationPage());
+        _pageList.add(CalendarPage());
+        _pageList.add(ScoreViewerPage());
+        _pageList.add(OtherPage(_pageController));
+      });
     });
     _flutterDownloaderInit();
     _notificationsInit();
