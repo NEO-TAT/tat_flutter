@@ -55,7 +55,7 @@ class ErrorDialog {
             context: parameter.context,
             dialogType: parameter.dialogType,
             animType: parameter.animType,
-            tittle: parameter.title,
+            title: parameter.title,
             desc: parameter.desc,
             btnOkText: parameter.btnOkText,
             btnCancelText: parameter.btnCancelText,

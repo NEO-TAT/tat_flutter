@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sprintf/sprintf.dart';
 
 bool _isShowing = false;
 BuildContext _context, _dismissingContext;
@@ -8,10 +9,10 @@ String _dialogMessage = "Loading...";
 String _progressString = "0/100";
 double _progress = 0;
 
-class DynamicDialog {
+class ProgressRateDialog {
   _Body _dialog;
 
-  DynamicDialog(BuildContext context, {bool isDismissible}) {
+  ProgressRateDialog(BuildContext context, {bool isDismissible}) {
     _context = context;
     _barrierDismissible = isDismissible ?? true;
   }
@@ -62,13 +63,7 @@ class DynamicDialog {
           builder: (BuildContext context) {
             _dismissingContext = context;
             return WillPopScope(
-              onWillPop: () async => _barrierDismissible,
-              child: Dialog(
-                  insetAnimationDuration: Duration(milliseconds: 100),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  child: _dialog),
-            );
+                onWillPop: () async => _barrierDismissible, child: _dialog);
           },
         );
         // Delaying the function for 200 milliseconds
@@ -112,25 +107,60 @@ class _BodyState extends State<_Body> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(_dialogMessage),
-          LinearProgressIndicator(
-            backgroundColor: Colors.grey[200],
-            valueColor: AlwaysStoppedAnimation(Colors.blue),
-            value: _progress,
-          ),
-          Row(
+    return Center(
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          margin: EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(15.0),
+          height: 100.0,
+          decoration: ShapeDecoration(
+              color: Colors.black87,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0))),
+          child: Column(
             children: <Widget>[
               Expanded(
-                child: Text(_progressString, textAlign: TextAlign.center),
+                flex: 10,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 5),
+                  child: Text(
+                    _dialogMessage,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Colors.white, fontSize: 16.0),
+                  ),
+                ),
               ),
+              Expanded(
+                flex: 1,
+                child: LinearProgressIndicator(
+                  backgroundColor: Colors.grey[200],
+                  valueColor: AlwaysStoppedAnimation(Colors.blue),
+                  value: _progress,
+                ),
+              ),
+              Expanded(
+                flex: 10,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(sprintf("%d%", [(_progress * 100).toInt()]),
+                          textAlign: TextAlign.left,
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                    Expanded(
+                      child: Text(_progressString,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
+                ),
+              )
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }

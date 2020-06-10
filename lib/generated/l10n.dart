@@ -137,7 +137,7 @@ class S {
 
   String get setting {
     return Intl.message(
-      'Setting',
+      'Settings',
       name: 'setting',
       desc: '',
       args: [],
@@ -857,7 +857,7 @@ class S {
 
   String get searchCredit {
     return Intl.message(
-      'Search credit',
+      'Search credit...',
       name: 'searchCredit',
       desc: '',
       args: [],
@@ -1325,7 +1325,7 @@ class S {
 
   String get developerMode {
     return Intl.message(
-      'DeveloperMode',
+      'Developer Mode',
       name: 'developerMode',
       desc: '',
       args: [],
@@ -1523,7 +1523,7 @@ class S {
 
   String get languageSwitch {
     return Intl.message(
-      'Language switch',
+      'Use English interface',
       name: 'languageSwitch',
       desc: '',
       args: [],
@@ -1548,19 +1548,19 @@ class S {
     );
   }
 
-  String get focusLogin {
+  String get forceReLogin {
     return Intl.message(
-      'focusLogin',
-      name: 'focusLogin',
+      'Force re-login',
+      name: 'forceReLogin',
       desc: '',
       args: [],
     );
   }
 
-  String get focusLoginResult {
+  String get forceLoginResult {
     return Intl.message(
-      '',
-      name: 'focusLoginResult',
+      'When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed',
+      name: 'forceLoginResult',
       desc: '',
       args: [],
     );
@@ -1570,6 +1570,15 @@ class S {
     return Intl.message(
       'Is a video',
       name: 'isVideo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get classVideo {
+    return Intl.message(
+      'class video',
+      name: 'classVideo',
       desc: '',
       args: [],
     );
@@ -1723,6 +1732,15 @@ class S {
     return Intl.message(
       'Auto App Check',
       name: 'autoAppCheck',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get logoutWarning {
+    return Intl.message(
+      'Are you sure you want to log out? \nAll data will be cleared',
+      name: 'logoutWarning',
       desc: '',
       args: [],
     );
@@ -2239,7 +2257,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'zh'),
+      Locale.fromSubtags(languageCode: 'zh', countryCode: 'TW'),
     ];
   }
 

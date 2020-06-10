@@ -10,6 +10,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
@@ -17,7 +18,6 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
-import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -158,12 +158,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     Model.instance.setAlreadyUse(Model.courseNotice);
-    try {
-      setState(() {
-        loadCourseNotice = false;
-      });
-    } catch (e) {
-      Log.d("setState() called after dispose()");
+    setState(() {
+      loadCourseNotice = false;
+    });
+  }
+
+  @override
+  void setState(fn) {
+    if (context != null) {
+      super.setState(fn);
     }
   }
 
@@ -450,6 +453,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     },
                     controller: _studentIdControl,
                     focusNode: _studentFocus,
+                    /*
+                    toolbarOptions: ToolbarOptions(
+                      copy: true,
+                      paste: true,
+                    ),
+                     */
                   ),
                 ),
                 FlatButton(
@@ -745,8 +754,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  static const platform =
-      const MethodChannel(Constants.methodChannelName);
+  static const platform = const MethodChannel(Constants.methodChannelName);
 
   Future screenshot() async {
     double originHeight = courseHeight;

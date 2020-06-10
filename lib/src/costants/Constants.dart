@@ -5,7 +5,8 @@ import 'package:flutter_app/src/costants/app_colors.dart';
 class Constants {
   //App related strings
   static String appName = "TAT";
-  static const String methodChannelName = "club.ntut.npc.tat.main.mothod.channel.name";
+  static const String methodChannelName =
+      "club.ntut.npc.tat.main.mothod.channel.name";
 
   //Colors for theme
   static Color lightPrimary = Colors.white;
@@ -63,6 +64,7 @@ class Constants {
     primaryColor: AppColors.mainColor,
     accentColor: lightAccent,
     cursorColor: lightAccent,
+    toggleableActiveColor: Colors.blue,
     dividerColor: Color(0xFFF8F8F8),
     scaffoldBackgroundColor: lightBG,
     cupertinoOverrideTheme: CupertinoThemeData(
@@ -78,6 +80,7 @@ class Constants {
     accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
     cursorColor: darkAccent,
+    toggleableActiveColor: Colors.blueAccent,
     dividerColor: Color(0xFF2F2F2F),
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: darkAccent,

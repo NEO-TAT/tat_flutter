@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a zh locale. All the
+// This is a library that provides messages for a zh_TW locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -17,7 +17,7 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'zh';
+  String get localeName => 'zh_TW';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "checkVersion" : MessageLookupByLibrary.simpleMessage("檢查新版本"),
     "checkingPermission" : MessageLookupByLibrary.simpleMessage("檢查權限"),
     "checkingVersion" : MessageLookupByLibrary.simpleMessage("檢查中..."),
+    "classVideo" : MessageLookupByLibrary.simpleMessage("上課錄影"),
     "classroom" : MessageLookupByLibrary.simpleMessage("教室"),
     "classroomUse" : MessageLookupByLibrary.simpleMessage("教室使用"),
     "clearAndRefresh" : MessageLookupByLibrary.simpleMessage("清除並重新整理"),
@@ -119,9 +120,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "findNewMessage" : MessageLookupByLibrary.simpleMessage("發現I Plus新公告"),
     "findNewVersion" : MessageLookupByLibrary.simpleMessage("發現新版本"),
     "findPatchNewVersion" : MessageLookupByLibrary.simpleMessage("發現新補丁版本"),
-    "focusLogin" : MessageLookupByLibrary.simpleMessage("強制登入"),
-    "focusLoginResult" : MessageLookupByLibrary.simpleMessage("勾選可以解決資料取得一直錯誤，但是會讓取得資料速度變慢"),
     "folderNameAlreadyExists" : MessageLookupByLibrary.simpleMessage("資料夾名稱已經存在!"),
+    "forceLoginResult" : MessageLookupByLibrary.simpleMessage("當判斷已登入的機制失效，勾選可以解決，但是會讓取得資料速度變慢"),
+    "forceReLogin" : MessageLookupByLibrary.simpleMessage("強制重新登入"),
     "generalLessonSummary" : MessageLookupByLibrary.simpleMessage("博雅總覽"),
     "getCalendar" : MessageLookupByLibrary.simpleMessage("取得行事曆中..."),
     "getCalendarError" : MessageLookupByLibrary.simpleMessage("取得行事曆錯誤"),
@@ -159,7 +160,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "isVideo" : MessageLookupByLibrary.simpleMessage("上課錄影"),
     "jointElective" : MessageLookupByLibrary.simpleMessage("共同選修"),
     "languageSetting" : MessageLookupByLibrary.simpleMessage("語言"),
-    "languageSwitch" : MessageLookupByLibrary.simpleMessage("語言切換"),
+    "languageSwitch" : MessageLookupByLibrary.simpleMessage("使用英文介面"),
     "loadFailed" : MessageLookupByLibrary.simpleMessage("加載失敗，請再重試一次"),
     "loadFavorite" : MessageLookupByLibrary.simpleMessage("載入常用課表"),
     "location" : MessageLookupByLibrary.simpleMessage("地點"),
@@ -177,6 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "loginScore" : MessageLookupByLibrary.simpleMessage("登入成績查詢系統..."),
     "loginScoreError" : MessageLookupByLibrary.simpleMessage("登入成績查詢系統錯誤"),
     "logout" : MessageLookupByLibrary.simpleMessage("登出"),
+    "logoutWarning" : MessageLookupByLibrary.simpleMessage("確定要登出嗎? \n將會清除所有資料"),
     "naturalDimension" : MessageLookupByLibrary.simpleMessage("自然向度"),
     "networkError" : MessageLookupByLibrary.simpleMessage("網路發生錯誤"),
     "noAnyAnnouncement" : MessageLookupByLibrary.simpleMessage("無任何公告"),
@@ -227,7 +229,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "scoreCalculationWarring" : MessageLookupByLibrary.simpleMessage("此計算僅供參考，實際請以學校為主"),
     "scoreSearch" : MessageLookupByLibrary.simpleMessage("分數查詢"),
     "search" : MessageLookupByLibrary.simpleMessage("搜尋"),
-    "searchCredit" : MessageLookupByLibrary.simpleMessage("查詢學分"),
+    "searchCredit" : MessageLookupByLibrary.simpleMessage("查詢學分..."),
     "searchScore" : MessageLookupByLibrary.simpleMessage("成績查詢"),
     "searchSubscribe" : MessageLookupByLibrary.simpleMessage("查詢訂閱..."),
     "searching" : MessageLookupByLibrary.simpleMessage("查詢中..."),
