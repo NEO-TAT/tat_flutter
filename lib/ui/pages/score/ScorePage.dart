@@ -63,7 +63,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     if (courseScoreList != null && courseScoreList.isNotEmpty) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
     } else {
-      MyToast.show(R.current.unknownError);
+      courseScoreList = List();
+      setState(() {});
       return;
     }
     int total = courseScoreCredit.getCourseInfoList().length;
