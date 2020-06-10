@@ -300,9 +300,11 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Text(
-                R.current.graduationSetting,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Expanded(
+                child: Text(
+                  R.current.graduationSetting,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),

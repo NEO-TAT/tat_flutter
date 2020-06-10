@@ -60,51 +60,56 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     TaskHandler.instance.addTask(ScoreRankTask(context));
     await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = Model.instance.getTempData(ScoreRankTask.tempDataKey);
-    if (courseScoreList != null) {
+    if (courseScoreList != null && courseScoreList.isNotEmpty) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
-    }
-    int total = courseScoreCredit.getCourseInfoList().length;
-    List<CourseInfoJson> courseInfoList = courseScoreCredit.getCourseInfoList();
-    ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
-    progressRateDialog.update(
-        message: R.current.searchCredit, nowProgress: 0, progressString: "0/0");
-    progressRateDialog.show();
-    for (int i = 0; i < total; i++) {
-      TaskHandler.instance.addTask(TaskModelFunction(context,
-          require: [CheckCookiesTask.checkCourse], taskFunction: () async {
-        CourseInfoJson courseInfo = courseInfoList[i];
-        String courseId = courseInfo.courseId;
-        if (courseInfo.category.isEmpty) {
-          //沒有類別才尋找
-          if (courseId.isNotEmpty) {
-            var courseExtraInfo =
-                await CourseConnector.getCourseExtraInfo(courseId);
-            courseScoreCredit.getCourseByCourseId(courseId);
-            if (LanguageUtil.getLangIndex() == LangEnum.en) {
-              String name = await CourseConnector.getCourseENName(
-                  courseExtraInfo.course.href);
-              name = name ?? courseInfo.name;
-              courseInfo.name = name;
-            }
-            courseInfo.category = courseExtraInfo.course.category;
-            courseInfo.openClass =
-                courseExtraInfo.course.openClass.replaceAll("\n", " ");
-            Log.d(courseInfo.openClass);
-          }
-        }
-        return true;
-      }, errorFunction: () async {
-        ErrorDialogParameter parameter = ErrorDialogParameter(
-          context: context,
-          desc: R.current.error,
-        );
-        ErrorDialog(parameter).show();
-      }, successFunction: () async {}));
+      int total = courseScoreCredit.getCourseInfoList().length;
+      List<CourseInfoJson> courseInfoList =
+          courseScoreCredit.getCourseInfoList();
+      ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
       progressRateDialog.update(
-          nowProgress: i / total, progressString: sprintf("%d/%d", [i, total]));
-      await TaskHandler.instance.startTaskQueue(context);
+          message: R.current.searchCredit,
+          nowProgress: 0,
+          progressString: "0/0");
+      progressRateDialog.show();
+      for (int i = 0; i < total; i++) {
+        TaskHandler.instance.addTask(TaskModelFunction(context,
+            require: [CheckCookiesTask.checkCourse], taskFunction: () async {
+          CourseInfoJson courseInfo = courseInfoList[i];
+          String courseId = courseInfo.courseId;
+          if (courseInfo.category.isEmpty) {
+            //沒有類別才尋找
+            if (courseId.isNotEmpty) {
+              var courseExtraInfo =
+                  await CourseConnector.getCourseExtraInfo(courseId);
+              courseScoreCredit.getCourseByCourseId(courseId);
+              if (LanguageUtil.getLangIndex() == LangEnum.en) {
+                String name = await CourseConnector.getCourseENName(
+                    courseExtraInfo.course.href);
+                name = name ?? courseInfo.name;
+                courseInfo.name = name;
+              }
+              courseInfo.category = courseExtraInfo.course.category;
+              courseInfo.openClass =
+                  courseExtraInfo.course.openClass.replaceAll("\n", " ");
+              Log.d(courseInfo.openClass);
+            }
+          }
+          return true;
+        }, errorFunction: () async {
+          ErrorDialogParameter parameter = ErrorDialogParameter(
+            context: context,
+            desc: R.current.error,
+          );
+          ErrorDialog(parameter).show();
+        }, successFunction: () async {}));
+        progressRateDialog.update(
+            nowProgress: i / total,
+            progressString: sprintf("%d/%d", [i, total]));
+        await TaskHandler.instance.startTaskQueue(context);
+      }
+      await Model.instance.setSemesterCourseScore(courseScoreList);
+      progressRateDialog.hide();
     }
-    progressRateDialog.hide();
     courseScoreList = courseScoreList ?? List();
     _buildTabBar();
     setState(() {
