@@ -60,8 +60,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     TaskHandler.instance.addTask(ScoreRankTask(context));
     await TaskHandler.instance.startTaskQueue(context);
     courseScoreList = Model.instance.getTempData(ScoreRankTask.tempDataKey);
-    if (courseScoreList != null) {
+    if (courseScoreList != null && courseScoreList.isNotEmpty) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
+    } else {
+      MyToast.show(R.current.unknownError);
+      return;
     }
     int total = courseScoreCredit.getCourseInfoList().length;
     List<CourseInfoJson> courseInfoList = courseScoreCredit.getCourseInfoList();
