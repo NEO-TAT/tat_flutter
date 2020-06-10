@@ -43,6 +43,7 @@ class _DevPageState extends State<DevPage> {
       case onListViewPress.DeletePatch:
         MyToast.show(R.current.patchDelete);
         AppHotFix.deleteHotFix();
+        AppHotFix.setDevMode(false);
         break;
       default:
         MyToast.show(R.current.noFunction);
