@@ -38,11 +38,11 @@ class _DevPageState extends State<DevPage> {
     switch (value) {
       case onListViewPress.Exit:
         AppHotFix.setDevMode(false);
+        AppHotFix.deleteHotFix();
         Navigator.of(context).pop(false);
         break;
       case onListViewPress.DeletePatch:
         MyToast.show(R.current.patchDelete);
-        AppHotFix.setDevMode(false);
         AppHotFix.deleteHotFix();
         break;
       default:
