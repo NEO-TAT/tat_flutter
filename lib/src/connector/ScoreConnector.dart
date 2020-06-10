@@ -119,9 +119,9 @@ class ScoreConnector {
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
           score.credit =
-              double.parse(scoreNode.getElementsByTagName("th")[5].text);
+              double.parse(scoreNode.getElementsByTagName("th")[6].text);
           score.score = scoreNode
-              .getElementsByTagName("th")[6]
+              .getElementsByTagName("th")[7]
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);

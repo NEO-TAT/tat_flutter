@@ -107,6 +107,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             progressString: sprintf("%d/%d", [i, total]));
         await TaskHandler.instance.startTaskQueue(context);
       }
+      await Model.instance.setSemesterCourseScore(courseScoreList);
       progressRateDialog.hide();
     }
     courseScoreList = courseScoreList ?? List();
