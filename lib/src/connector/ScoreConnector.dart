@@ -161,16 +161,13 @@ class ScoreConnector {
           rankNodes.getRange(2, rankNodes.length).toList().reversed.toList();
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
         SemesterJson semester = SemesterJson();
-        semester.year = rankNodes[i * 3 + 2]
+        String semesterString = rankNodes[i * 3 + 2]
             .getElementsByTagName("td")[0]
-            .text
-            .split(" ")[0];
-        semester.semester = rankNodes[i * 3 + 2]
-            .getElementsByTagName("td")[0]
-            .text
-            .split(" ")
-            .reversed
-            .toList()[0];
+            .innerHtml
+            .split("<br>")
+            .first;
+        semester.year = semesterString.split(" ")[0];
+        semester.semester = semesterString.split(" ").reversed.toList()[0];
 
         //取得學期成績排名
         RankJson rankNow = RankJson();
