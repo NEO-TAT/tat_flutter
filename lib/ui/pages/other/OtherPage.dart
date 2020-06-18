@@ -105,12 +105,16 @@ class _OtherPageState extends State<OtherPage> {
         } else {
           Navigator.of(context)
               .push(
-                PageTransition(
-                  type: PageTransitionType.downToUp,
-                  child: LoginScreen(),
-                ),
-              )
-              .then((value) => widget.pageController.jumpToPage(0));
+            PageTransition(
+              type: PageTransitionType.downToUp,
+              child: LoginScreen(),
+            ),
+          )
+              .then(
+            (value) {
+              if (value) widget.pageController.jumpToPage(0);
+            },
+          );
         }
         break;
       case onListViewPress.FileViewer:
