@@ -230,6 +230,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "scoreSearch" : MessageLookupByLibrary.simpleMessage("分數查詢"),
     "search" : MessageLookupByLibrary.simpleMessage("搜尋"),
     "searchCredit" : MessageLookupByLibrary.simpleMessage("查詢學分"),
+    "searchCreditIsNullWarning" : MessageLookupByLibrary.simpleMessage("目前沒有任何成績請登入學業成績查詢專區查看問題"),
     "searchScore" : MessageLookupByLibrary.simpleMessage("成績查詢"),
     "searchSubscribe" : MessageLookupByLibrary.simpleMessage("查詢訂閱..."),
     "searching" : MessageLookupByLibrary.simpleMessage("查詢中..."),

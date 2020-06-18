@@ -973,6 +973,16 @@ class S {
     );
   }
 
+  /// `There are currently no results, please log in to the academic performance query area to view the problem`
+  String get searchCreditIsNullWarning {
+    return Intl.message(
+      'There are currently no results, please log in to the academic performance query area to view the problem',
+      name: 'searchCreditIsNullWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Load favorite`
   String get loadFavorite {
     return Intl.message(

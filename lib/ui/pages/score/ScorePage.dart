@@ -109,6 +109,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       }
       await Model.instance.setSemesterCourseScore(courseScoreList);
       progressRateDialog.hide();
+    }else{
+      MyToast.show(R.current.searchCreditIsNullWarning);
     }
     courseScoreList = courseScoreList ?? List();
     _buildTabBar();

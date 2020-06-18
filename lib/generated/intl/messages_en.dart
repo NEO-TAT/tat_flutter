@@ -231,6 +231,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "scoreSearch" : MessageLookupByLibrary.simpleMessage("Score query"),
     "search" : MessageLookupByLibrary.simpleMessage("Search"),
     "searchCredit" : MessageLookupByLibrary.simpleMessage("Search credit"),
+    "searchCreditIsNullWarning" : MessageLookupByLibrary.simpleMessage("There are currently no results, please log in to the academic performance query area to view the problem"),
     "searchScore" : MessageLookupByLibrary.simpleMessage("Search score"),
     "searchSubscribe" : MessageLookupByLibrary.simpleMessage("Search subscribe..."),
     "searching" : MessageLookupByLibrary.simpleMessage("Searching"),
