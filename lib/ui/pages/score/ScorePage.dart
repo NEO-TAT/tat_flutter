@@ -67,7 +67,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           courseScoreCredit.getCourseInfoList();
       ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
       progressRateDialog.update(
-          message: R.current.searchCredit,
+          message: R.current.searchingCredit,
           nowProgress: 0,
           progressString: "0/0");
       progressRateDialog.show();

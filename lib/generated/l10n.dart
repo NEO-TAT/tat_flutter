@@ -953,11 +953,21 @@ class S {
     );
   }
 
-  /// `Search credit...`
+  /// `Search credit`
   String get searchCredit {
     return Intl.message(
-      'Search credit...',
+      'Search credit',
       name: 'searchCredit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search credit...`
+  String get searchingCredit {
+    return Intl.message(
+      'Search credit...',
+      name: 'searchingCredit',
       desc: '',
       args: [],
     );
