@@ -85,7 +85,7 @@ class LanguageUtil {
       case 1:
         return LangEnum.zh;
       default:
-        return LangEnum.en;
+        return LangEnum.zh;
     }
   }
 }
