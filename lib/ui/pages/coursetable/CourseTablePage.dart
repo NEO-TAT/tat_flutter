@@ -56,14 +56,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
     _studentIdControl.text = " ";
     UserDataJson userData = Model.instance.getUserData();
     Future.delayed(Duration(milliseconds: 200)).then((_) {
-      if (userData.account.isEmpty || userData.password.isEmpty) {
-        Navigator.of(context)
-            .push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: LoginScreen(),
-          ),
-        )
+      if ((userData.account.isEmpty || userData.password.isEmpty) &&
+            Platform.isAndroid) {
+          Navigator.of(context)
+              .push(
+            PageTransition(
+              type: PageTransitionType.downToUp,
+              child: LoginScreen(),
+            ),
+          )
             .then((value) {
           if (value) {
             _loadSetting();
