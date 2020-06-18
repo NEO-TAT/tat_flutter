@@ -12,9 +12,9 @@ import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolNewAnnouncementD
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolNewAnnouncementPageTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolNewAnnouncementTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'page/AnnouncementDetailPage.dart';
@@ -62,9 +62,8 @@ class _NotificationPageState extends State<NotificationPage>
   void _showAnnouncementDetail(NewAnnouncementJson value) {
     //顯示公告詳細內容
     setState(() {});
-    Navigator.of(context).push(PageTransition(
-        type: PageTransitionType.leftToRight,
-        child: AnnouncementDetailPage(value)));
+    Navigator.of(context)
+        .push(MyPage.transition(AnnouncementDetailPage(value)));
   }
 
   void _loadAnnouncement() async {

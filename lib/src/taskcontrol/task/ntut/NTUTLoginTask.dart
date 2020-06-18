@@ -6,8 +6,8 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
-import 'package:flutter_app/ui/other/CustomRoute.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -26,7 +26,7 @@ class NTUTLoginTask extends TaskModel {
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
     if (value != NTUTConnectorStatus.LoginSuccess) {
-      if(value == NTUTConnectorStatus.PasswordExpiredWarning){
+      if (value == NTUTConnectorStatus.PasswordExpiredWarning) {
         MyToast.show(R.current.passwordExpiredWarning);
         return TaskStatus.TaskSuccess;
       }
@@ -60,7 +60,9 @@ class NTUTLoginTask extends TaskModel {
         parameter.desc = R.current.accountPasswordError;
         parameter.btnOkText = R.current.setting;
         parameter.btnOkOnPress = () {
-          Navigator.of(context).push(CustomRoute(LoginScreen())).then((_) {
+          Navigator.of(context)
+              .push(MyPage.transition(LoginScreen()))
+              .then((_) {
             reStartTask();
           });
         };

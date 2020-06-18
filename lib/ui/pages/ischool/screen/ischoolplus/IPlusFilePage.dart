@@ -13,9 +13,9 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -258,16 +258,12 @@ class _IPlusFilePage extends State<IPlusFilePage>
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
         String uuid = urlParse.queryParameters["vid"]; //影片uuid
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: ClassVideoPlayer(uuid),
-          ),
-        );
+        Navigator.of(context).push(MyPage.transition(ClassVideoPlayer(uuid)));
       };
       ErrorDialog(errorDialogParameter).show();
     } else {
-      await FileDownload.download(context, url, dirName, courseFile.name , referer);
+      await FileDownload.download(
+          context, url, dirName, courseFile.name, referer);
     }
   }
 

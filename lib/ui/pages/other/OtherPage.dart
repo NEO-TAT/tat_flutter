@@ -10,6 +10,7 @@ import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
@@ -17,7 +18,6 @@ import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:page_transition/page_transition.dart';
 
 enum onListViewPress {
   Setting,
@@ -103,14 +103,7 @@ class _OtherPageState extends State<OtherPage> {
               });
           ErrorDialog(parameter).show();
         } else {
-          Navigator.of(context)
-              .push(
-            PageTransition(
-              type: PageTransitionType.downToUp,
-              child: LoginScreen(),
-            ),
-          )
-              .then(
+          Navigator.of(context).push(MyPage.transition(LoginScreen())).then(
             (value) {
               if (value) widget.pageController.jumpToPage(0);
             },
@@ -120,39 +113,23 @@ class _OtherPageState extends State<OtherPage> {
       case onListViewPress.FileViewer:
         FileStore.findLocalPath(context).then((filePath) {
           Navigator.of(context).push(
-            PageTransition(
-              type: PageTransitionType.downToUp,
-              child: FileViewerPage(
-                title: R.current.fileViewer,
-                path: filePath,
-              ),
-            ),
+            MyPage.transition(FileViewerPage(
+              title: R.current.fileViewer,
+              path: filePath,
+            )),
           );
         });
         break;
       case onListViewPress.About:
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: AboutPage(),
-          ),
-        );
+        Navigator.of(context).push(MyPage.transition(AboutPage()));
         break;
       case onListViewPress.Setting:
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: SettingPage(widget.pageController),
-          ),
-        );
+        Navigator.of(context)
+            .push(MyPage.transition(SettingPage(widget.pageController)));
         break;
       case onListViewPress.Report:
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: WebViewPluginPage(R.current.feedback, AppLink.feedback),
-          ),
-        );
+        Navigator.of(context).push(MyPage.transition(
+            WebViewPluginPage(R.current.feedback, AppLink.feedback)));
         break;
       default:
         MyToast.show(R.current.noFunction);

@@ -8,8 +8,12 @@ import 'intl/messages_all.dart';
 // Made by Localizely
 // **************************************************************************
 
+// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
+
 class S {
   S();
+  
+  static S current;
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -19,7 +23,9 @@ class S {
     final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return S();
+      S.current = S();
+      
+      return S.current;
     });
   } 
 
@@ -27,6 +33,7 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `NTUT Course Assistant`
   String get app_name {
     return Intl.message(
       'NTUT Course Assistant',
@@ -36,6 +43,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________loginUi___________________ {
     return Intl.message(
       '註解',
@@ -45,6 +53,7 @@ class S {
     );
   }
 
+  /// `Login`
   String get login {
     return Intl.message(
       'Login',
@@ -54,6 +63,7 @@ class S {
     );
   }
 
+  /// `Account password has been saved`
   String get loginSave {
     return Intl.message(
       'Account password has been saved',
@@ -63,6 +73,7 @@ class S {
     );
   }
 
+  /// `Please enter your account`
   String get accountNull {
     return Intl.message(
       'Please enter your account',
@@ -72,6 +83,7 @@ class S {
     );
   }
 
+  /// `Please enter the password`
   String get passwordNull {
     return Intl.message(
       'Please enter the password',
@@ -81,6 +93,7 @@ class S {
     );
   }
 
+  /// `Password`
   String get password {
     return Intl.message(
       'Password',
@@ -90,6 +103,7 @@ class S {
     );
   }
 
+  /// `Account`
   String get account {
     return Intl.message(
       'Account',
@@ -99,6 +113,7 @@ class S {
     );
   }
 
+  /// `Warning`
   String get warning {
     return Intl.message(
       'Warning',
@@ -108,6 +123,7 @@ class S {
     );
   }
 
+  /// `Sure`
   String get sure {
     return Intl.message(
       'Sure',
@@ -117,6 +133,7 @@ class S {
     );
   }
 
+  /// `Cancel`
   String get cancel {
     return Intl.message(
       'Cancel',
@@ -126,6 +143,7 @@ class S {
     );
   }
 
+  /// `Update`
   String get update {
     return Intl.message(
       'Update',
@@ -135,6 +153,7 @@ class S {
     );
   }
 
+  /// `Settings`
   String get setting {
     return Intl.message(
       'Settings',
@@ -144,6 +163,7 @@ class S {
     );
   }
 
+  /// `Restart`
   String get restart {
     return Intl.message(
       'Restart',
@@ -153,6 +173,7 @@ class S {
     );
   }
 
+  /// `Calendar`
   String get calendar {
     return Intl.message(
       'Calendar',
@@ -162,6 +183,7 @@ class S {
     );
   }
 
+  /// `An error occurred`
   String get alertError {
     return Intl.message(
       'An error occurred',
@@ -171,6 +193,7 @@ class S {
     );
   }
 
+  /// ` Download error`
   String get downloadError {
     return Intl.message(
       ' Download error',
@@ -180,6 +203,7 @@ class S {
     );
   }
 
+  /// `Is a link`
   String get isALink {
     return Intl.message(
       'Is a link',
@@ -189,6 +213,7 @@ class S {
     );
   }
 
+  /// `Are you sure to open?`
   String get AreYouSureToOpen {
     return Intl.message(
       'Are you sure to open?',
@@ -198,6 +223,7 @@ class S {
     );
   }
 
+  /// `Download...`
   String get downloading {
     return Intl.message(
       'Download...',
@@ -207,6 +233,7 @@ class S {
     );
   }
 
+  /// `Download complete`
   String get downloadComplete {
     return Intl.message(
       'Download complete',
@@ -216,6 +243,7 @@ class S {
     );
   }
 
+  /// `Prepare download...`
   String get prepareDownload {
     return Intl.message(
       'Prepare download...',
@@ -225,6 +253,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________task___________________ {
     return Intl.message(
       '註解',
@@ -234,6 +263,7 @@ class S {
     );
   }
 
+  /// `Login to the NTUT...`
   String get loginNTUT {
     return Intl.message(
       'Login to the NTUT...',
@@ -243,6 +273,7 @@ class S {
     );
   }
 
+  /// `Account password incorrect`
   String get accountPasswordError {
     return Intl.message(
       'Account password incorrect',
@@ -252,6 +283,7 @@ class S {
     );
   }
 
+  /// `Connection timed out`
   String get connectTimeOut {
     return Intl.message(
       'Connection timed out',
@@ -261,6 +293,7 @@ class S {
     );
   }
 
+  /// `Verification code error`
   String get authCodeFail {
     return Intl.message(
       'Verification code error',
@@ -270,6 +303,7 @@ class S {
     );
   }
 
+  /// `Account is locked`
   String get accountLock {
     return Intl.message(
       'Account is locked',
@@ -279,6 +313,7 @@ class S {
     );
   }
 
+  /// `Network error`
   String get networkError {
     return Intl.message(
       'Network error',
@@ -288,6 +323,7 @@ class S {
     );
   }
 
+  /// `An unknown error occurred`
   String get unknownError {
     return Intl.message(
       'An unknown error occurred',
@@ -297,6 +333,7 @@ class S {
     );
   }
 
+  /// `Password is about to expire, please update password as soon as possible`
   String get passwordExpiredWarning {
     return Intl.message(
       'Password is about to expire, please update password as soon as possible',
@@ -306,6 +343,7 @@ class S {
     );
   }
 
+  /// `Check login...`
   String get checkLogin {
     return Intl.message(
       'Check login...',
@@ -315,6 +353,7 @@ class S {
     );
   }
 
+  /// `Login to ISchool...`
   String get loginISchool {
     return Intl.message(
       'Login to ISchool...',
@@ -324,6 +363,7 @@ class S {
     );
   }
 
+  /// `Login to ISchool Error`
   String get loginISchoolError {
     return Intl.message(
       'Login to ISchool Error',
@@ -333,6 +373,7 @@ class S {
     );
   }
 
+  /// `Login to ISchool Plus...`
   String get loginISchoolPlus {
     return Intl.message(
       'Login to ISchool Plus...',
@@ -342,6 +383,7 @@ class S {
     );
   }
 
+  /// `Login to Score...`
   String get loginScore {
     return Intl.message(
       'Login to Score...',
@@ -351,6 +393,7 @@ class S {
     );
   }
 
+  /// `Login to Score Error`
   String get loginScoreError {
     return Intl.message(
       'Login to Score Error',
@@ -360,6 +403,7 @@ class S {
     );
   }
 
+  /// `Login to ISchool Plus error`
   String get loginISchoolPlusError {
     return Intl.message(
       'Login to ISchool Plus error',
@@ -369,6 +413,7 @@ class S {
     );
   }
 
+  /// `Get the latest announcement...`
   String get getISchoolNewAnnouncement {
     return Intl.message(
       'Get the latest announcement...',
@@ -378,6 +423,7 @@ class S {
     );
   }
 
+  /// `Get latest announcement error`
   String get getISchoolNewAnnouncementError {
     return Intl.message(
       'Get latest announcement error',
@@ -387,6 +433,7 @@ class S {
     );
   }
 
+  /// `Get announcement information...`
   String get getISchoolNewAnnouncementDetail {
     return Intl.message(
       'Get announcement information...',
@@ -396,6 +443,7 @@ class S {
     );
   }
 
+  /// `Getting announcement information error`
   String get getISchoolNewAnnouncementDetailError {
     return Intl.message(
       'Getting announcement information error',
@@ -405,6 +453,7 @@ class S {
     );
   }
 
+  /// `Get announcement pages...`
   String get getISchoolNewAnnouncementPage {
     return Intl.message(
       'Get announcement pages...',
@@ -414,6 +463,7 @@ class S {
     );
   }
 
+  /// `Error getting page number of announcement`
   String get getISchoolNewAnnouncementPageError {
     return Intl.message(
       'Error getting page number of announcement',
@@ -423,6 +473,7 @@ class S {
     );
   }
 
+  /// `Get schedule...`
   String get getCourse {
     return Intl.message(
       'Get schedule...',
@@ -432,6 +483,7 @@ class S {
     );
   }
 
+  /// `Getting schedule error`
   String get getCourseError {
     return Intl.message(
       'Getting schedule error',
@@ -441,6 +493,7 @@ class S {
     );
   }
 
+  /// `Login course system...`
   String get loginCourse {
     return Intl.message(
       'Login course system...',
@@ -450,6 +503,7 @@ class S {
     );
   }
 
+  /// `Login course system error`
   String get loginCourseError {
     return Intl.message(
       'Login course system error',
@@ -459,6 +513,7 @@ class S {
     );
   }
 
+  /// `Get semester list...`
   String get getCourseSemester {
     return Intl.message(
       'Get semester list...',
@@ -468,6 +523,7 @@ class S {
     );
   }
 
+  /// `Getting semester list error`
   String get getCourseSemesterError {
     return Intl.message(
       'Getting semester list error',
@@ -477,6 +533,7 @@ class S {
     );
   }
 
+  /// `Reading course materials...`
   String get getCourseDetail {
     return Intl.message(
       'Reading course materials...',
@@ -486,6 +543,7 @@ class S {
     );
   }
 
+  /// `Course data reading error`
   String get getCourseDetailError {
     return Intl.message(
       'Course data reading error',
@@ -495,6 +553,7 @@ class S {
     );
   }
 
+  /// `Get course announcement...`
   String get getISchoolCourseAnnouncement {
     return Intl.message(
       'Get course announcement...',
@@ -504,6 +563,7 @@ class S {
     );
   }
 
+  /// `Get course announcement error`
   String get getISchoolCourseAnnouncementError {
     return Intl.message(
       'Get course announcement error',
@@ -513,6 +573,7 @@ class S {
     );
   }
 
+  /// `Get course files`
   String get getISchoolCourseFile {
     return Intl.message(
       'Get course files',
@@ -522,6 +583,7 @@ class S {
     );
   }
 
+  /// `Get course files error`
   String get getISchoolCourseFileError {
     return Intl.message(
       'Get course files error',
@@ -531,6 +593,7 @@ class S {
     );
   }
 
+  /// `Get course files`
   String get getISchoolPlusCourseFile {
     return Intl.message(
       'Get course files',
@@ -540,6 +603,7 @@ class S {
     );
   }
 
+  /// `Get course files error`
   String get getISchoolPlusCourseFileError {
     return Intl.message(
       'Get course files error',
@@ -549,6 +613,7 @@ class S {
     );
   }
 
+  /// `Get course announcement...`
   String get getISchoolPlusCourseAnnouncement {
     return Intl.message(
       'Get course announcement...',
@@ -558,6 +623,7 @@ class S {
     );
   }
 
+  /// `Get course announcement error`
   String get getISchoolPlusCourseAnnouncementError {
     return Intl.message(
       'Get course announcement error',
@@ -567,6 +633,7 @@ class S {
     );
   }
 
+  /// `Get course announcement detail...`
   String get getISchoolPlusCourseAnnouncementDetail {
     return Intl.message(
       'Get course announcement detail...',
@@ -576,6 +643,7 @@ class S {
     );
   }
 
+  /// `Get course announcement detail error`
   String get getISchoolPlusCourseAnnouncementDetailError {
     return Intl.message(
       'Get course announcement detail error',
@@ -585,6 +653,7 @@ class S {
     );
   }
 
+  /// `Getting grade...`
   String get getScoreRank {
     return Intl.message(
       'Getting grade...',
@@ -594,6 +663,7 @@ class S {
     );
   }
 
+  /// `Getting grade error`
   String get getScoreRankError {
     return Intl.message(
       'Getting grade error',
@@ -603,6 +673,7 @@ class S {
     );
   }
 
+  /// `Getting calendar...`
   String get getCalendar {
     return Intl.message(
       'Getting calendar...',
@@ -612,6 +683,7 @@ class S {
     );
   }
 
+  /// `Getting calendar error`
   String get getCalendarError {
     return Intl.message(
       'Getting calendar error',
@@ -621,6 +693,7 @@ class S {
     );
   }
 
+  /// `Deleting message...`
   String get deleteMessage {
     return Intl.message(
       'Deleting message...',
@@ -630,6 +703,7 @@ class S {
     );
   }
 
+  /// `Delete error`
   String get deleteMessageError {
     return Intl.message(
       'Delete error',
@@ -639,6 +713,7 @@ class S {
     );
   }
 
+  /// `Login to the NTUTApp...`
   String get loginNTUTApp {
     return Intl.message(
       'Login to the NTUTApp...',
@@ -648,6 +723,7 @@ class S {
     );
   }
 
+  /// `Login to the NTUTApp Error`
   String get loginNTUTAppError {
     return Intl.message(
       'Login to the NTUTApp Error',
@@ -657,6 +733,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________CourseTableUi___________________ {
     return Intl.message(
       '註解',
@@ -666,6 +743,7 @@ class S {
     );
   }
 
+  /// `MON`
   String get Monday {
     return Intl.message(
       'MON',
@@ -675,6 +753,7 @@ class S {
     );
   }
 
+  /// `TUE`
   String get Tuesday {
     return Intl.message(
       'TUE',
@@ -684,6 +763,7 @@ class S {
     );
   }
 
+  /// `WED`
   String get Wednesday {
     return Intl.message(
       'WED',
@@ -693,6 +773,7 @@ class S {
     );
   }
 
+  /// `THU`
   String get Thursday {
     return Intl.message(
       'THU',
@@ -702,6 +783,7 @@ class S {
     );
   }
 
+  /// `FRI`
   String get Friday {
     return Intl.message(
       'FRI',
@@ -711,6 +793,7 @@ class S {
     );
   }
 
+  /// `SAT`
   String get Saturday {
     return Intl.message(
       'SAT',
@@ -720,6 +803,7 @@ class S {
     );
   }
 
+  /// `SUN`
   String get Sunday {
     return Intl.message(
       'SUN',
@@ -729,6 +813,7 @@ class S {
     );
   }
 
+  /// ``
   String get UnKnown {
     return Intl.message(
       '',
@@ -738,6 +823,7 @@ class S {
     );
   }
 
+  /// `Course`
   String get titleCourse {
     return Intl.message(
       'Course',
@@ -747,6 +833,7 @@ class S {
     );
   }
 
+  /// `Refresh`
   String get refresh {
     return Intl.message(
       'Refresh',
@@ -756,6 +843,7 @@ class S {
     );
   }
 
+  /// `Please enter student number`
   String get pleaseEnterStudentId {
     return Intl.message(
       'Please enter student number',
@@ -765,6 +853,7 @@ class S {
     );
   }
 
+  /// `Course number`
   String get courseId {
     return Intl.message(
       'Course number',
@@ -774,6 +863,7 @@ class S {
     );
   }
 
+  /// `Time`
   String get time {
     return Intl.message(
       'Time',
@@ -783,6 +873,7 @@ class S {
     );
   }
 
+  /// `Instructor`
   String get instructor {
     return Intl.message(
       'Instructor',
@@ -792,6 +883,7 @@ class S {
     );
   }
 
+  /// `Location`
   String get location {
     return Intl.message(
       'Location',
@@ -801,6 +893,7 @@ class S {
     );
   }
 
+  /// `Details`
   String get details {
     return Intl.message(
       'Details',
@@ -810,6 +903,7 @@ class S {
     );
   }
 
+  /// ` not support`
   String get noSupport {
     return Intl.message(
       ' not support',
@@ -819,6 +913,7 @@ class S {
     );
   }
 
+  /// `No any favorite`
   String get noAnyFavorite {
     return Intl.message(
       'No any favorite',
@@ -828,6 +923,7 @@ class S {
     );
   }
 
+  /// `Setting complete`
   String get settingComplete {
     return Intl.message(
       'Setting complete',
@@ -837,6 +933,7 @@ class S {
     );
   }
 
+  /// `Setup is complete, please add the weight again`
   String get settingCompleteWithError {
     return Intl.message(
       'Setup is complete, please add the weight again',
@@ -846,6 +943,7 @@ class S {
     );
   }
 
+  /// `Find I Plus new message`
   String get findNewMessage {
     return Intl.message(
       'Find I Plus new message',
@@ -855,6 +953,7 @@ class S {
     );
   }
 
+  /// `Search credit...`
   String get searchCredit {
     return Intl.message(
       'Search credit...',
@@ -864,6 +963,7 @@ class S {
     );
   }
 
+  /// `Load favorite`
   String get loadFavorite {
     return Intl.message(
       'Load favorite',
@@ -873,6 +973,7 @@ class S {
     );
   }
 
+  /// `Set as android weight`
   String get setAsAndroidWeight {
     return Intl.message(
       'Set as android weight',
@@ -882,6 +983,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________FileViewerPage___________________ {
     return Intl.message(
       '註解',
@@ -891,6 +993,7 @@ class S {
     );
   }
 
+  /// `Sort by`
   String get sortBy {
     return Intl.message(
       'Sort by',
@@ -900,6 +1003,7 @@ class S {
     );
   }
 
+  /// `There's nothing here`
   String get nothingHere {
     return Intl.message(
       'There\'s nothing here',
@@ -909,6 +1013,7 @@ class S {
     );
   }
 
+  /// `Cannot write to this Storage device!`
   String get cannotWrite {
     return Intl.message(
       'Cannot write to this Storage device!',
@@ -918,6 +1023,7 @@ class S {
     );
   }
 
+  /// `A Folder with that name already exists!`
   String get folderNameAlreadyExists {
     return Intl.message(
       'A Folder with that name already exists!',
@@ -927,6 +1033,7 @@ class S {
     );
   }
 
+  /// `A File with that name already exists!`
   String get fileNameAlreadyExists {
     return Intl.message(
       'A File with that name already exists!',
@@ -936,6 +1043,7 @@ class S {
     );
   }
 
+  /// `Rename item`
   String get renameItem {
     return Intl.message(
       'Rename item',
@@ -945,6 +1053,7 @@ class S {
     );
   }
 
+  /// `Rename`
   String get rename {
     return Intl.message(
       'Rename',
@@ -954,6 +1063,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________NotificationPage___________________ {
     return Intl.message(
       '註解',
@@ -963,6 +1073,7 @@ class S {
     );
   }
 
+  /// `Pull up load`
   String get pullUpLoad {
     return Intl.message(
       'Pull up load',
@@ -972,6 +1083,7 @@ class S {
     );
   }
 
+  /// `Load Failed! Click retry!`
   String get loadFailed {
     return Intl.message(
       'Load Failed! Click retry!',
@@ -981,6 +1093,7 @@ class S {
     );
   }
 
+  /// `release to load more`
   String get ReleaseLoadMore {
     return Intl.message(
       'release to load more',
@@ -990,6 +1103,7 @@ class S {
     );
   }
 
+  /// `Pull again to update`
   String get pullAgainToUpdate {
     return Intl.message(
       'Pull again to update',
@@ -999,6 +1113,7 @@ class S {
     );
   }
 
+  /// `No more data`
   String get noMoreData {
     return Intl.message(
       'No more data',
@@ -1008,6 +1123,7 @@ class S {
     );
   }
 
+  /// `Clear and refresh`
   String get clearAndRefresh {
     return Intl.message(
       'Clear and refresh',
@@ -1017,6 +1133,7 @@ class S {
     );
   }
 
+  /// `Notification`
   String get titleNotification {
     return Intl.message(
       'Notification',
@@ -1026,6 +1143,7 @@ class S {
     );
   }
 
+  /// `Delete`
   String get delete {
     return Intl.message(
       'Delete',
@@ -1035,6 +1153,7 @@ class S {
     );
   }
 
+  /// `Are you sure you want to delete the message?`
   String get areYouSureDeleteMessage {
     return Intl.message(
       'Are you sure you want to delete the message?',
@@ -1044,6 +1163,7 @@ class S {
     );
   }
 
+  /// `download`
   String get download {
     return Intl.message(
       'download',
@@ -1053,6 +1173,7 @@ class S {
     );
   }
 
+  /// `Download ready to start`
   String get downloadWillStart {
     return Intl.message(
       'Download ready to start',
@@ -1062,6 +1183,7 @@ class S {
     );
   }
 
+  /// `File attachment detected`
   String get fileAttachmentDetected {
     return Intl.message(
       'File attachment detected',
@@ -1071,6 +1193,7 @@ class S {
     );
   }
 
+  /// `Are you sure you want to download the file`
   String get areYouSureToDownload {
     return Intl.message(
       'Are you sure you want to download the file',
@@ -1080,6 +1203,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________OtherUi___________________ {
     return Intl.message(
       '註解',
@@ -1089,6 +1213,7 @@ class S {
     );
   }
 
+  /// `Score query`
   String get scoreSearch {
     return Intl.message(
       'Score query',
@@ -1098,6 +1223,7 @@ class S {
     );
   }
 
+  /// `Download file`
   String get downloadFile {
     return Intl.message(
       'Download file',
@@ -1107,6 +1233,7 @@ class S {
     );
   }
 
+  /// `Downloads`
   String get fileViewer {
     return Intl.message(
       'Downloads',
@@ -1116,6 +1243,7 @@ class S {
     );
   }
 
+  /// `Language`
   String get languageSetting {
     return Intl.message(
       'Language',
@@ -1125,6 +1253,7 @@ class S {
     );
   }
 
+  /// `Other`
   String get titleOther {
     return Intl.message(
       'Other',
@@ -1134,6 +1263,7 @@ class S {
     );
   }
 
+  /// `Credit Viewer`
   String get creditViewer {
     return Intl.message(
       'Credit Viewer',
@@ -1143,6 +1273,7 @@ class S {
     );
   }
 
+  /// `Credit search...`
   String get creditSearch {
     return Intl.message(
       'Credit search...',
@@ -1152,6 +1283,7 @@ class S {
     );
   }
 
+  /// `Please Login`
   String get pleaseLogin {
     return Intl.message(
       'Please Login',
@@ -1161,6 +1293,7 @@ class S {
     );
   }
 
+  /// `No function`
   String get noFunction {
     return Intl.message(
       'No function',
@@ -1170,6 +1303,7 @@ class S {
     );
   }
 
+  /// `Change the password`
   String get changePassword {
     return Intl.message(
       'Change the password',
@@ -1179,6 +1313,7 @@ class S {
     );
   }
 
+  /// `Sign out`
   String get logout {
     return Intl.message(
       'Sign out',
@@ -1188,6 +1323,7 @@ class S {
     );
   }
 
+  /// `Feedback`
   String get feedback {
     return Intl.message(
       'Feedback',
@@ -1197,6 +1333,7 @@ class S {
     );
   }
 
+  /// `About`
   String get about {
     return Intl.message(
       'About',
@@ -1206,6 +1343,7 @@ class S {
     );
   }
 
+  /// `This is an app about National Taipei University of Technology`
   String get aboutDialogString {
     return Intl.message(
       'This is an app about National Taipei University of Technology',
@@ -1215,6 +1353,7 @@ class S {
     );
   }
 
+  /// `Press again to close`
   String get closeOnce {
     return Intl.message(
       'Press again to close',
@@ -1224,6 +1363,7 @@ class S {
     );
   }
 
+  /// `Dark mode`
   String get darkMode {
     return Intl.message(
       'Dark mode',
@@ -1233,6 +1373,7 @@ class S {
     );
   }
 
+  /// `Download path`
   String get downloadPath {
     return Intl.message(
       'Download path',
@@ -1242,6 +1383,7 @@ class S {
     );
   }
 
+  /// `Patch version`
   String get patchVersion {
     return Intl.message(
       'Patch version',
@@ -1251,6 +1393,7 @@ class S {
     );
   }
 
+  /// `Downloading patch...`
   String get downloadingPatch {
     return Intl.message(
       'Downloading patch...',
@@ -1260,6 +1403,7 @@ class S {
     );
   }
 
+  /// `Find the new patch version`
   String get findPatchNewVersion {
     return Intl.message(
       'Find the new patch version',
@@ -1269,6 +1413,7 @@ class S {
     );
   }
 
+  /// `After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually`
   String get patchUpdateDown {
     return Intl.message(
       'After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually',
@@ -1278,6 +1423,7 @@ class S {
     );
   }
 
+  /// `Patch delete , Restart the application and apply`
   String get patchDelete {
     return Intl.message(
       'Patch delete , Restart the application and apply',
@@ -1287,6 +1433,7 @@ class S {
     );
   }
 
+  /// `Delete patch`
   String get deletePatch {
     return Intl.message(
       'Delete patch',
@@ -1296,6 +1443,7 @@ class S {
     );
   }
 
+  /// `Exit dev mode`
   String get exitDevMode {
     return Intl.message(
       'Exit dev mode',
@@ -1305,6 +1453,7 @@ class S {
     );
   }
 
+  /// `Patch successfully upgraded version:`
   String get patchUpdateComplete {
     return Intl.message(
       'Patch successfully upgraded version:',
@@ -1314,6 +1463,7 @@ class S {
     );
   }
 
+  /// `Patch upgrade failed\nAutomatically downgraded to original version:`
   String get patchUpdateFail {
     return Intl.message(
       'Patch upgrade failed\nAutomatically downgraded to original version:',
@@ -1323,6 +1473,7 @@ class S {
     );
   }
 
+  /// `Developer Mode`
   String get developerMode {
     return Intl.message(
       'Developer Mode',
@@ -1332,6 +1483,7 @@ class S {
     );
   }
 
+  /// `Open with external video player`
   String get openExternalVideo {
     return Intl.message(
       'Open with external video player',
@@ -1341,6 +1493,7 @@ class S {
     );
   }
 
+  /// `Recommend use MX player`
   String get openExternalVideoHint {
     return Intl.message(
       'Recommend use MX player',
@@ -1350,6 +1503,7 @@ class S {
     );
   }
 
+  /// `Check IPlus new`
   String get checkIPlusNew {
     return Intl.message(
       'Check IPlus new',
@@ -1359,6 +1513,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
       '註解',
@@ -1368,6 +1523,7 @@ class S {
     );
   }
 
+  /// `Course`
   String get course {
     return Intl.message(
       'Course',
@@ -1377,6 +1533,7 @@ class S {
     );
   }
 
+  /// `Announcement`
   String get announcement {
     return Intl.message(
       'Announcement',
@@ -1386,6 +1543,7 @@ class S {
     );
   }
 
+  /// `File`
   String get file {
     return Intl.message(
       'File',
@@ -1395,6 +1553,7 @@ class S {
     );
   }
 
+  /// `Without any announcement`
   String get noAnyAnnouncement {
     return Intl.message(
       'Without any announcement',
@@ -1404,6 +1563,7 @@ class S {
     );
   }
 
+  /// `Please go directly to the download page`
   String get pleaseMoveToFilePage {
     return Intl.message(
       'Please go directly to the download page',
@@ -1413,6 +1573,7 @@ class S {
     );
   }
 
+  /// `No files`
   String get noAnyFile {
     return Intl.message(
       'No files',
@@ -1422,6 +1583,7 @@ class S {
     );
   }
 
+  /// `Course Title`
   String get courseName {
     return Intl.message(
       'Course Title',
@@ -1431,6 +1593,7 @@ class S {
     );
   }
 
+  /// `Credit`
   String get credit {
     return Intl.message(
       'Credit',
@@ -1440,6 +1603,7 @@ class S {
     );
   }
 
+  /// `Category`
   String get category {
     return Intl.message(
       'Category',
@@ -1449,6 +1613,7 @@ class S {
     );
   }
 
+  /// `Syllabus`
   String get syllabus {
     return Intl.message(
       'Syllabus',
@@ -1458,6 +1623,7 @@ class S {
     );
   }
 
+  /// `Start class`
   String get startClass {
     return Intl.message(
       'Start class',
@@ -1467,6 +1633,7 @@ class S {
     );
   }
 
+  /// `Classroom`
   String get classroom {
     return Intl.message(
       'Classroom',
@@ -1476,6 +1643,7 @@ class S {
     );
   }
 
+  /// `classroomUse`
   String get classroomUse {
     return Intl.message(
       'classroomUse',
@@ -1485,6 +1653,7 @@ class S {
     );
   }
 
+  /// `Number of students`
   String get numberOfStudent {
     return Intl.message(
       'Number of students',
@@ -1494,6 +1663,7 @@ class S {
     );
   }
 
+  /// `Number of withdraw`
   String get numberOfWithdraw {
     return Intl.message(
       'Number of withdraw',
@@ -1503,6 +1673,7 @@ class S {
     );
   }
 
+  /// `Course Information`
   String get courseData {
     return Intl.message(
       'Course Information',
@@ -1512,6 +1683,7 @@ class S {
     );
   }
 
+  /// `Student list`
   String get studentList {
     return Intl.message(
       'Student list',
@@ -1521,6 +1693,7 @@ class S {
     );
   }
 
+  /// `Use English interface`
   String get languageSwitch {
     return Intl.message(
       'Use English interface',
@@ -1530,6 +1703,7 @@ class S {
     );
   }
 
+  /// `Will restart automatically`
   String get willRestart {
     return Intl.message(
       'Will restart automatically',
@@ -1539,6 +1713,7 @@ class S {
     );
   }
 
+  /// `Not support`
   String get notSupport {
     return Intl.message(
       'Not support',
@@ -1548,6 +1723,7 @@ class S {
     );
   }
 
+  /// `Force re-login`
   String get forceReLogin {
     return Intl.message(
       'Force re-login',
@@ -1557,6 +1733,7 @@ class S {
     );
   }
 
+  /// `When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed`
   String get forceLoginResult {
     return Intl.message(
       'When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed',
@@ -1566,6 +1743,7 @@ class S {
     );
   }
 
+  /// `Is a video`
   String get isVideo {
     return Intl.message(
       'Is a video',
@@ -1575,6 +1753,7 @@ class S {
     );
   }
 
+  /// `class video`
   String get classVideo {
     return Intl.message(
       'class video',
@@ -1584,6 +1763,7 @@ class S {
     );
   }
 
+  /// `Search subscribe...`
   String get searchSubscribe {
     return Intl.message(
       'Search subscribe...',
@@ -1593,6 +1773,7 @@ class S {
     );
   }
 
+  /// `Open subscribe`
   String get openSubscribe {
     return Intl.message(
       'Open subscribe',
@@ -1602,6 +1783,7 @@ class S {
     );
   }
 
+  /// `Close subscribe`
   String get closeSubscribe {
     return Intl.message(
       'Close subscribe',
@@ -1611,6 +1793,7 @@ class S {
     );
   }
 
+  /// `Subscribe`
   String get subscribe {
     return Intl.message(
       'Subscribe',
@@ -1620,6 +1803,7 @@ class S {
     );
   }
 
+  /// `Search`
   String get search {
     return Intl.message(
       'Search',
@@ -1629,6 +1813,7 @@ class S {
     );
   }
 
+  /// `Not find support external video player`
   String get noSupportExternalVideoPlayer {
     return Intl.message(
       'Not find support external video player',
@@ -1638,6 +1823,7 @@ class S {
     );
   }
 
+  /// `Identify links`
   String get identifyLinks {
     return Intl.message(
       'Identify links',
@@ -1647,6 +1833,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________FileStore___________________ {
     return Intl.message(
       '註解',
@@ -1656,6 +1843,7 @@ class S {
     );
   }
 
+  /// `Permission denied`
   String get noPermission {
     return Intl.message(
       'Permission denied',
@@ -1665,6 +1853,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________AboutPage___________________ {
     return Intl.message(
       '註解',
@@ -1674,6 +1863,7 @@ class S {
     );
   }
 
+  /// `Find new version`
   String get findNewVersion {
     return Intl.message(
       'Find new version',
@@ -1683,6 +1873,7 @@ class S {
     );
   }
 
+  /// `Check version`
   String get checkVersion {
     return Intl.message(
       'Check version',
@@ -1692,6 +1883,7 @@ class S {
     );
   }
 
+  /// `Checking version...`
   String get checkingVersion {
     return Intl.message(
       'Checking version...',
@@ -1701,6 +1893,7 @@ class S {
     );
   }
 
+  /// `Contribution`
   String get Contribution {
     return Intl.message(
       'Contribution',
@@ -1710,6 +1903,7 @@ class S {
     );
   }
 
+  /// `Version info`
   String get versionInfo {
     return Intl.message(
       'Version info',
@@ -1719,6 +1913,7 @@ class S {
     );
   }
 
+  /// `Already the latest version`
   String get isNewVersion {
     return Intl.message(
       'Already the latest version',
@@ -1728,6 +1923,7 @@ class S {
     );
   }
 
+  /// `Auto App Check`
   String get autoAppCheck {
     return Intl.message(
       'Auto App Check',
@@ -1737,6 +1933,7 @@ class S {
     );
   }
 
+  /// `Are you sure you want to log out? \nAll data will be cleared`
   String get logoutWarning {
     return Intl.message(
       'Are you sure you want to log out? \nAll data will be cleared',
@@ -1746,6 +1943,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________ScoreUI___________________ {
     return Intl.message(
       '註解',
@@ -1755,6 +1953,7 @@ class S {
     );
   }
 
+  /// `Score`
   String get titleScore {
     return Intl.message(
       'Score',
@@ -1764,6 +1963,7 @@ class S {
     );
   }
 
+  /// `Error`
   String get error {
     return Intl.message(
       'Error',
@@ -1773,6 +1973,7 @@ class S {
     );
   }
 
+  /// `Search score`
   String get searchScore {
     return Intl.message(
       'Search score',
@@ -1782,6 +1983,7 @@ class S {
     );
   }
 
+  /// `Calculation credit`
   String get calculationCredit {
     return Intl.message(
       'Calculation credit',
@@ -1791,6 +1993,7 @@ class S {
     );
   }
 
+  /// `Credit Summary`
   String get creditSummary {
     return Intl.message(
       'Credit Summary',
@@ -1800,6 +2003,7 @@ class S {
     );
   }
 
+  /// `Compulsory Compulsory`
   String get compulsoryCompulsory {
     return Intl.message(
       'Compulsory Compulsory',
@@ -1809,6 +2013,7 @@ class S {
     );
   }
 
+  /// `Revised Common Compulsory`
   String get revisedCommonCompulsory {
     return Intl.message(
       'Revised Common Compulsory',
@@ -1818,6 +2023,7 @@ class S {
     );
   }
 
+  /// `Joint elective`
   String get jointElective {
     return Intl.message(
       'Joint elective',
@@ -1827,6 +2033,7 @@ class S {
     );
   }
 
+  /// `Compulsory professional`
   String get compulsoryProfessional {
     return Intl.message(
       'Compulsory professional',
@@ -1836,6 +2043,7 @@ class S {
     );
   }
 
+  /// `Compulsory major revision`
   String get compulsoryMajorRevision {
     return Intl.message(
       'Compulsory major revision',
@@ -1845,6 +2053,7 @@ class S {
     );
   }
 
+  /// `Professional Electives`
   String get professionalElectives {
     return Intl.message(
       'Professional Electives',
@@ -1854,6 +2063,7 @@ class S {
     );
   }
 
+  /// `General lesson summary`
   String get generalLessonSummary {
     return Intl.message(
       'General lesson summary',
@@ -1863,6 +2073,7 @@ class S {
     );
   }
 
+  /// `Take core`
   String get takeCore {
     return Intl.message(
       'Take core',
@@ -1872,6 +2083,7 @@ class S {
     );
   }
 
+  /// `Take select`
   String get takeSelect {
     return Intl.message(
       'Take select',
@@ -1881,6 +2093,7 @@ class S {
     );
   }
 
+  /// `Foreign Department Credits`
   String get takeForeignDepartmentCredits {
     return Intl.message(
       'Foreign Department Credits',
@@ -1890,6 +2103,7 @@ class S {
     );
   }
 
+  /// `This calculation is for reference only. Actually, please focus on the school.`
   String get scoreCalculationWarring {
     return Intl.message(
       'This calculation is for reference only. Actually, please focus on the school.',
@@ -1899,6 +2113,7 @@ class S {
     );
   }
 
+  /// `Results of various subjects`
   String get resultsOfVariousSubjects {
     return Intl.message(
       'Results of various subjects',
@@ -1908,6 +2123,7 @@ class S {
     );
   }
 
+  /// `Semester grades`
   String get semesterGrades {
     return Intl.message(
       'Semester grades',
@@ -1917,6 +2133,7 @@ class S {
     );
   }
 
+  /// `Total average`
   String get totalAverage {
     return Intl.message(
       'Total average',
@@ -1926,6 +2143,7 @@ class S {
     );
   }
 
+  /// `Performance scores`
   String get performanceScores {
     return Intl.message(
       'Performance scores',
@@ -1935,6 +2153,7 @@ class S {
     );
   }
 
+  /// `Practice credit`
   String get practiceCredit {
     return Intl.message(
       'Practice credit',
@@ -1944,6 +2163,7 @@ class S {
     );
   }
 
+  /// `Credits earned`
   String get creditsEarned {
     return Intl.message(
       'Credits earned',
@@ -1953,6 +2173,7 @@ class S {
     );
   }
 
+  /// `No rank information`
   String get noRankInfo {
     return Intl.message(
       'No rank information',
@@ -1962,6 +2183,7 @@ class S {
     );
   }
 
+  /// `Semester ranking`
   String get semesterRanking {
     return Intl.message(
       'Semester ranking',
@@ -1971,6 +2193,7 @@ class S {
     );
   }
 
+  /// `Previous rankings`
   String get previousRankings {
     return Intl.message(
       'Previous rankings',
@@ -1980,6 +2203,7 @@ class S {
     );
   }
 
+  /// `Rank`
   String get rank {
     return Intl.message(
       'Rank',
@@ -1989,6 +2213,7 @@ class S {
     );
   }
 
+  /// `Total people`
   String get totalPeople {
     return Intl.message(
       'Total people',
@@ -1998,6 +2223,7 @@ class S {
     );
   }
 
+  /// `Percentage`
   String get percentage {
     return Intl.message(
       'Percentage',
@@ -2007,6 +2233,7 @@ class S {
     );
   }
 
+  /// `Cultural dimension`
   String get culturalDimension {
     return Intl.message(
       'Cultural dimension',
@@ -2016,6 +2243,7 @@ class S {
     );
   }
 
+  /// `Historical dimension`
   String get historicalDimension {
     return Intl.message(
       'Historical dimension',
@@ -2025,6 +2253,7 @@ class S {
     );
   }
 
+  /// `Philosophical dimension`
   String get philosophicalDimension {
     return Intl.message(
       'Philosophical dimension',
@@ -2034,6 +2263,7 @@ class S {
     );
   }
 
+  /// `Rule of law`
   String get ruleDimension {
     return Intl.message(
       'Rule of law',
@@ -2043,6 +2273,7 @@ class S {
     );
   }
 
+  /// `Social dimension`
   String get socialDimension {
     return Intl.message(
       'Social dimension',
@@ -2052,6 +2283,7 @@ class S {
     );
   }
 
+  /// `Natural dimension`
   String get naturalDimension {
     return Intl.message(
       'Natural dimension',
@@ -2061,6 +2293,7 @@ class S {
     );
   }
 
+  /// `Sociological Dimension`
   String get sociologicalDimension {
     return Intl.message(
       'Sociological Dimension',
@@ -2070,6 +2303,7 @@ class S {
     );
   }
 
+  /// `Creative direction`
   String get creativeDirection {
     return Intl.message(
       'Creative direction',
@@ -2079,6 +2313,7 @@ class S {
     );
   }
 
+  /// `Aesthetic dimension`
   String get aestheticDimension {
     return Intl.message(
       'Aesthetic dimension',
@@ -2088,6 +2323,7 @@ class S {
     );
   }
 
+  /// `Cultural and Historical dimension`
   String get culturalHistoricalDimension {
     return Intl.message(
       'Cultural and Historical dimension',
@@ -2097,6 +2333,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________DirectoryPicker___________________ {
     return Intl.message(
       '註解',
@@ -2106,6 +2343,7 @@ class S {
     );
   }
 
+  /// `Directory is empty!`
   String get directoryIsEmpty {
     return Intl.message(
       'Directory is empty!',
@@ -2115,6 +2353,7 @@ class S {
     );
   }
 
+  /// `Selected directory`
   String get selectedDirectory {
     return Intl.message(
       'Selected directory',
@@ -2124,6 +2363,7 @@ class S {
     );
   }
 
+  /// `Enter a valid folder name`
   String get EnterValidFolderName {
     return Intl.message(
       'Enter a valid folder name',
@@ -2133,6 +2373,7 @@ class S {
     );
   }
 
+  /// `Failed to create folder`
   String get failedCreateFolder {
     return Intl.message(
       'Failed to create folder',
@@ -2142,6 +2383,7 @@ class S {
     );
   }
 
+  /// `Create Folder`
   String get createFolder {
     return Intl.message(
       'Create Folder',
@@ -2151,6 +2393,7 @@ class S {
     );
   }
 
+  /// `Create New folder`
   String get createNewFolder {
     return Intl.message(
       'Create New folder',
@@ -2160,6 +2403,7 @@ class S {
     );
   }
 
+  /// `Grant permission`
   String get grantPermission {
     return Intl.message(
       'Grant permission',
@@ -2169,6 +2413,7 @@ class S {
     );
   }
 
+  /// `Checking permission`
   String get checkingPermission {
     return Intl.message(
       'Checking permission',
@@ -2178,6 +2423,7 @@ class S {
     );
   }
 
+  /// `註解`
   String get ___________________GraduationPicker___________________ {
     return Intl.message(
       '註解',
@@ -2187,6 +2433,7 @@ class S {
     );
   }
 
+  /// `Searching`
   String get searching {
     return Intl.message(
       'Searching',
@@ -2196,6 +2443,7 @@ class S {
     );
   }
 
+  /// `Searching year`
   String get searchingYear {
     return Intl.message(
       'Searching year',
@@ -2205,6 +2453,7 @@ class S {
     );
   }
 
+  /// `Searching division`
   String get searchingDivision {
     return Intl.message(
       'Searching division',
@@ -2214,6 +2463,7 @@ class S {
     );
   }
 
+  /// `Searching department`
   String get searchingDepartment {
     return Intl.message(
       'Searching department',
@@ -2223,6 +2473,7 @@ class S {
     );
   }
 
+  /// `Searching credit`
   String get searchingCreditInfo {
     return Intl.message(
       'Searching credit',
@@ -2232,6 +2483,7 @@ class S {
     );
   }
 
+  /// `Graduation credit standard setting`
   String get graduationSetting {
     return Intl.message(
       'Graduation credit standard setting',
@@ -2241,6 +2493,7 @@ class S {
     );
   }
 
+  /// `Save`
   String get save {
     return Intl.message(
       'Save',
