@@ -107,7 +107,10 @@ class ScoreConnector {
         courseScore.semester = semester;
         //取得課程名稱與分數
         scoreNodes = tableNode.getElementsByTagName("tr");
-        for (int j = 1; j < scoreNodes.length - 6; j++) {
+        int offset = (scoreNodes.length >= 5)
+            ? (scoreNodes.reversed.toList()[5].text.replaceAll("\n", "") == "") ? 6 : 3
+            : 6;
+        for (int j = 1; j < scoreNodes.length - offset; j++) {
           scoreNode = scoreNodes[j];
           CourseInfoJson score = CourseInfoJson();
           score.courseId = scoreNode

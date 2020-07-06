@@ -85,7 +85,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
               courseInfo.category = courseExtraInfo.course.category;
               courseInfo.openClass =
                   courseExtraInfo.course.openClass.replaceAll("\n", " ");
-              Log.d(courseInfo.openClass);
+              //Log.d(courseInfo.openClass);
             }
           }
           return true;
