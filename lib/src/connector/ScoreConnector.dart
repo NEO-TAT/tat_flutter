@@ -114,8 +114,12 @@ class ScoreConnector {
               .getElementsByTagName("th")[0]
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
-          score.name = scoreNode
+          score.nameZh = scoreNode
               .getElementsByTagName("th")[2]
+              .text
+              .replaceAll(RegExp(r"[\s| ]"), "");
+          score.nameEn = scoreNode
+              .getElementsByTagName("th")[3]
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
           score.credit =

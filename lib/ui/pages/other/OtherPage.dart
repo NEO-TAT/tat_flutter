@@ -10,13 +10,14 @@ import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
+import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:page_transition/page_transition.dart';
 
 enum onListViewPress {
   Setting,
@@ -37,7 +38,7 @@ class OtherPage extends StatefulWidget {
 }
 
 class _OtherPageState extends State<OtherPage> {
-  final List<Map> optionList = [
+  List<Map> optionList = [
     {
       "icon": EvaIcons.settings2Outline,
       "color": Colors.orange,
@@ -57,9 +58,13 @@ class _OtherPageState extends State<OtherPage> {
 //      "onPress": onListViewPress.ChangePassword
 //    },
     {
-      "icon": EvaIcons.undoOutline,
+      "icon": (Model.instance.getAccount().isEmpty)
+          ? EvaIcons.logIn
+          : EvaIcons.undoOutline,
       "color": Colors.teal[400],
-      "title": R.current.logout,
+      "title": (Model.instance.getAccount().isEmpty)
+          ? R.current.login
+          : R.current.logout,
       "onPress": onListViewPress.Logout
     },
     {
@@ -84,55 +89,47 @@ class _OtherPageState extends State<OtherPage> {
   void _onListViewPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.Logout:
-        ErrorDialogParameter parameter = ErrorDialogParameter(
-            context: context,
-            desc: R.current.logoutWarning,
-            dialogType: DialogType.WARNING,
-            title: R.current.warning,
-            btnOkText: R.current.sure,
-            btnOkOnPress: () {
-              Model.instance.logout().then((_) {
-                widget.pageController.jumpToPage(0);
+        if (Model.instance.getAccount().isNotEmpty) {
+          ErrorDialogParameter parameter = ErrorDialogParameter(
+              context: context,
+              desc: R.current.logoutWarning,
+              dialogType: DialogType.WARNING,
+              title: R.current.warning,
+              btnOkText: R.current.sure,
+              btnOkOnPress: () {
+                Model.instance.logout().then((_) {
+                  widget.pageController.jumpToPage(0);
+                });
               });
-            });
-        ErrorDialog(parameter).show();
+          ErrorDialog(parameter).show();
+        } else {
+          Navigator.of(context).push(MyPage.transition(LoginScreen())).then(
+            (value) {
+              if (value) widget.pageController.jumpToPage(0);
+            },
+          );
+        }
         break;
       case onListViewPress.FileViewer:
         FileStore.findLocalPath(context).then((filePath) {
           Navigator.of(context).push(
-            PageTransition(
-              type: PageTransitionType.downToUp,
-              child: FileViewerPage(
-                title: R.current.fileViewer,
-                path: filePath,
-              ),
-            ),
+            MyPage.transition(FileViewerPage(
+              title: R.current.fileViewer,
+              path: filePath,
+            )),
           );
         });
         break;
       case onListViewPress.About:
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: AboutPage(),
-          ),
-        );
+        Navigator.of(context).push(MyPage.transition(AboutPage()));
         break;
       case onListViewPress.Setting:
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: SettingPage(widget.pageController),
-          ),
-        );
+        Navigator.of(context)
+            .push(MyPage.transition(SettingPage(widget.pageController)));
         break;
       case onListViewPress.Report:
-        Navigator.of(context).push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: WebViewPluginPage(R.current.feedback, AppLink.feedback),
-          ),
-        );
+        Navigator.of(context).push(MyPage.transition(
+            WebViewPluginPage(R.current.feedback, AppLink.feedback)));
         break;
       default:
         MyToast.show(R.current.noFunction);
@@ -157,11 +154,11 @@ class _OtherPageState extends State<OtherPage> {
                 ),
               ),
               children: <Widget>[
-                _buildHeader(),
+                if (Model.instance.getAccount().isNotEmpty) _buildHeader(),
                 SizedBox(
                   height: 16,
                 ),
-                for (Map option in optionList) _buildSetting(option),
+                for (Map option in optionList) _buildSetting(option)
               ],
             ),
           ),
@@ -174,8 +171,6 @@ class _OtherPageState extends State<OtherPage> {
     UserInfoJson userInfo = Model.instance.getUserInfo();
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
-    givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
-    userMail = (userMail.isEmpty) ? "" : userMail;
     Map userImageInfo = NTUTConnector.getUserImage();
     Widget userImage = CachedNetworkImage(
       cacheManager: Model.instance.cacheManager,
@@ -192,6 +187,26 @@ class _OtherPageState extends State<OtherPage> {
         return Icon(Icons.error);
       },
     );
+    List<Widget> columnItem = List();
+    if (givenName.isNotEmpty) {
+      columnItem
+        ..add(Text(
+          givenName,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ))
+        ..add(SizedBox(
+          height: 5.0,
+        ))
+        ..add(Text(
+          userMail,
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ));
+    } else {
+      givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
+      userMail = (userMail.isEmpty) ? "" : userMail;
+    }
     return Container(
       padding:
           EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
@@ -212,21 +227,7 @@ class _OtherPageState extends State<OtherPage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                givenName,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              Text(
-                userMail,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-            ],
+            children: columnItem,
           ),
         ],
       ),

@@ -18,11 +18,11 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/ischool/ISchoolPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'CourseTableControl.dart';
@@ -57,18 +57,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
     UserDataJson userData = Model.instance.getUserData();
     Future.delayed(Duration(milliseconds: 200)).then((_) {
       if (userData.account.isEmpty || userData.password.isEmpty) {
-        Navigator.of(context)
-            .push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: LoginScreen(),
-          ),
-        )
-            .then((value) {
-          if (value) {
-            _loadSetting();
-          }
-        }); //尚未登入
+        if (Platform.isAndroid) {
+          Navigator.of(context)
+              .push(MyPage.transition(LoginScreen()))
+              .then((value) {
+            if (value) {
+              _loadSetting();
+            }
+          }); //尚未登入
+        }
       } else {
         _loadSetting();
       }
@@ -708,11 +705,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       MyToast.show(course.name + R.current.noSupport);
     } else {
       Navigator.of(context, rootNavigator: true)
-          .push(
-        PageTransition(
-            type: PageTransitionType.leftToRight,
-            child: ISchoolPage(studentId, courseInfo)),
-      )
+          .push(MyPage.transition(ISchoolPage(studentId, courseInfo)))
           .then(
         (value) {
           if (value != null) {

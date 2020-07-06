@@ -6,9 +6,9 @@ import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -110,10 +110,7 @@ class _AboutPageState extends State<AboutPage> {
       case onListViewPress.Dev:
         Navigator.of(context)
             .push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: DevPage(),
-          ),
+          MyPage.transition(DevPage()),
         )
             .then((v) {
           if (v != null) {

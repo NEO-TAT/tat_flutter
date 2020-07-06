@@ -8,12 +8,11 @@ import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/course/CourseExtraInfoTask.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
+import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
-
-import '../../../../src/taskcontrol/task/course/CourseExtraInfoTask.dart';
-import '../../webview/WebViewPluginPage.dart';
 
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -170,12 +169,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   void _launchWebView(String title, String url) {
     canPop = false;
     Navigator.of(context)
-        .push(
-      PageTransition(
-        type: PageTransitionType.downToUp,
-        child: WebViewPluginPage(title, url),
-      ),
-    )
+        .push(MyPage.transition(WebViewPluginPage(title, url)))
         .then((_) {
       canPop = true;
     });

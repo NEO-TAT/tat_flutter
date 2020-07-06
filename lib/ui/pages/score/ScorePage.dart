@@ -67,7 +67,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           courseScoreCredit.getCourseInfoList();
       ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
       progressRateDialog.update(
-          message: R.current.searchCredit,
+          message: R.current.searchingCredit,
           nowProgress: 0,
           progressString: "0/0");
       progressRateDialog.show();
@@ -82,12 +82,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
               var courseExtraInfo =
                   await CourseConnector.getCourseExtraInfo(courseId);
               courseScoreCredit.getCourseByCourseId(courseId);
-              if (LanguageUtil.getLangIndex() == LangEnum.en) {
-                String name = await CourseConnector.getCourseENName(
-                    courseExtraInfo.course.href);
-                name = name ?? courseInfo.name;
-                courseInfo.name = name;
-              }
               courseInfo.category = courseExtraInfo.course.category;
               courseInfo.openClass =
                   courseExtraInfo.course.openClass.replaceAll("\n", " ");
@@ -109,6 +103,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       }
       await Model.instance.setSemesterCourseScore(courseScoreList);
       progressRateDialog.hide();
+    } else {
+      MyToast.show(R.current.searchCreditIsNullWarning);
     }
     courseScoreList = courseScoreList ?? List();
     _buildTabBar();
@@ -312,12 +308,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       courseScoreCredit.getTotalCourseCredit(),
       graduationInformation.lowCredit
     ]));
-    widgetList.add(_buildType("○", R.current.compulsoryCompulsory));
-    widgetList.add(_buildType("△", R.current.revisedCommonCompulsory));
-    widgetList.add(_buildType("☆", R.current.jointElective));
-    widgetList.add(_buildType("●", R.current.compulsoryProfessional));
-    widgetList.add(_buildType("▲", R.current.compulsoryMajorRevision));
-    widgetList.add(_buildType("★", R.current.professionalElectives));
+    widgetList
+      ..add(_buildType(constCourseType[0], R.current.compulsoryCompulsory))
+      ..add(_buildType(constCourseType[1], R.current.revisedCommonCompulsory))
+      ..add(_buildType(constCourseType[2], R.current.jointElective))
+      ..add(_buildType(constCourseType[3], R.current.compulsoryProfessional))
+      ..add(_buildType(constCourseType[4], R.current.compulsoryMajorRevision))
+      ..add(_buildType(constCourseType[5], R.current.professionalElectives));
     return Container(
       child: AppExpansionTile(
         title: widget,
@@ -391,7 +388,9 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           selectCredit += course.credit.toInt();
         }
         Widget courseItemWidget;
-        courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
+        courseItemWidget = _buildOneLineCourse(
+            course.name,
+            course.openClass);
         widgetList.add(courseItemWidget);
       }
     }

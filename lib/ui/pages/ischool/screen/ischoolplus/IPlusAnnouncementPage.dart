@@ -8,9 +8,9 @@ import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementDetailTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementTask.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:page_transition/page_transition.dart';
 
 import 'IPlusAnnouncementDetailPage.dart';
 
@@ -65,9 +65,8 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     await TaskHandler.instance.startTaskQueue(context);
     Map detail = Model.instance.getTempData(
         ISchoolPlusCourseAnnouncementDetailTask.announcementListTempKey);
-    Navigator.of(context).push(PageTransition(
-        type: PageTransitionType.leftToRight,
-        child: IPlusAnnouncementDetailPage(widget.courseInfo, detail)));
+    Navigator.of(context).push(MyPage.transition(
+        IPlusAnnouncementDetailPage(widget.courseInfo, detail)));
   }
 
   @override
