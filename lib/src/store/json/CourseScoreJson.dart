@@ -261,7 +261,14 @@ class SemesterCourseScoreJson {
   }
 
   String getAverageScoreString() {
-    return averageScore.toString();
+    double average = 0;
+    double total = 0;
+    for (CourseInfoJson score in courseScoreList) {
+      average += double.parse(score.score) * score.credit;
+      total += score.credit;
+    }
+    average /= total;
+    return (averageScore != 0) ? averageScore.toString() : average.toString() ;
   }
 
   String getPerformanceScoreString() {
