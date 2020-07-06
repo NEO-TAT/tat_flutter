@@ -5,13 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
-import 'package:flutter_app/src/util/Constants.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -44,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
       // 需重新初始化 list，PageController 才會清除 cache
       try {
         await AppHotFix.init();
+        await _setLang();
         BuildContext contextKey = navigatorKey.currentState.overlay.context;
         if (Model.instance.getAccount().isEmpty) {
           contextKey = null; //不顯示對話框
@@ -60,27 +60,17 @@ class _MainScreenState extends State<MainScreen> {
       } catch (e) {
         Log.e(e.toString());
       }
-      _pageList = List();
-      _pageList.add(CourseTablePage());
-      _pageList.add(NotificationPage());
-      _pageList.add(CalendarPage());
-      _pageList.add(ScoreViewerPage());
-      _pageList.add(OtherPage(_pageController));
-      _setLang();
-      //_addTest();
+      setState(() {
+        _pageList = List();
+        _pageList.add(CourseTablePage());
+        _pageList.add(NotificationPage());
+        _pageList.add(CalendarPage());
+        _pageList.add(ScoreViewerPage());
+        _pageList.add(OtherPage(_pageController));
+      });
     });
     _flutterDownloaderInit();
     _notificationsInit();
-    _addTask();
-    //_backgroundLogin();
-  }
-
-  void _backgroundLogin() async {
-    bool login = await NTUTConnector.checkLogin();
-    if (!login) {
-      NTUTConnector.login(
-          Model.instance.getAccount(), Model.instance.getPassword());
-    }
   }
 
   void _checkAppVersion() async {
@@ -104,16 +94,6 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  void _addTest() async {
-    await NTUTConnector.login(
-        Model.instance.getAccount(), Model.instance.getPassword());
-    await NTUTConnector.getCalendar(DateTime.now(), DateTime.now());
-  }
-
-  void _addTask() async {
-    //TaskHandler.instance.addTask(CheckCookiesTask(null)); //第一次登入要檢查
-  }
-
   void _flutterDownloaderInit() async {
     await MyDownloader.init();
   }
@@ -122,9 +102,8 @@ class _MainScreenState extends State<MainScreen> {
     await Notifications.instance.init();
   }
 
-  void _setLang() async {
-    Locale myLocale = Localizations.localeOf(context);
-    LanguageUtil.load(myLocale);
+  Future<void> _setLang() async {
+    await LanguageUtil.init(context);
     setState(() {});
   }
 

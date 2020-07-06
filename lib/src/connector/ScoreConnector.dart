@@ -94,7 +94,7 @@ class ScoreConnector {
           .toList()
           .reversed
           .toList();
-
+      //依照學期取得課程資料
       for (int i = 0; i < tableNodes.length; i++) {
         tableNode = tableNodes[i];
         h3Node = h3Nodes[i];
@@ -105,7 +105,7 @@ class ScoreConnector {
         semester.year = h3Node.text.split(" ")[0];
         semester.semester = h3Node.text.split(" ")[3];
         courseScore.semester = semester;
-
+        //取得課程名稱與分數
         scoreNodes = tableNode.getElementsByTagName("tr");
         for (int j = 1; j < scoreNodes.length - 6; j++) {
           scoreNode = scoreNodes[j];
@@ -119,30 +119,35 @@ class ScoreConnector {
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
           score.credit =
-              double.parse(scoreNode.getElementsByTagName("th")[5].text);
+              double.parse(scoreNode.getElementsByTagName("th")[6].text);
           score.score = scoreNode
-              .getElementsByTagName("th")[6]
+              .getElementsByTagName("th")[7]
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);
         }
-
-        courseScore.averageScore = double.parse(
-            scoreNodes[scoreNodes.length - 4]
-                .getElementsByTagName("td")[0]
-                .text);
-        courseScore.performanceScore = double.parse(
-            scoreNodes[scoreNodes.length - 3]
-                .getElementsByTagName("td")[0]
-                .text);
-        courseScore.totalCredit = double.parse(scoreNodes[scoreNodes.length - 2]
-            .getElementsByTagName("td")[0]
-            .text);
-        courseScore.takeCredit = double.parse(scoreNodes[scoreNodes.length - 1]
-            .getElementsByTagName("td")[0]
-            .text);
-
-        courseScoreList.add(courseScore);
+        try {
+          courseScore.averageScore = double.parse(
+              scoreNodes[scoreNodes.length - 4]
+                  .getElementsByTagName("td")[0]
+                  .text);
+          courseScore.performanceScore = double.parse(
+              scoreNodes[scoreNodes.length - 3]
+                  .getElementsByTagName("td")[0]
+                  .text);
+          courseScore.totalCredit = double.parse(
+              scoreNodes[scoreNodes.length - 2]
+                  .getElementsByTagName("td")[0]
+                  .text);
+          courseScore.takeCredit = double.parse(
+              scoreNodes[scoreNodes.length - 1]
+                  .getElementsByTagName("td")[0]
+                  .text);
+        } catch (e) {
+          continue;
+        } finally {
+          courseScoreList.add(courseScore);
+        }
       }
 
       parameter = ConnectorParameter(_scoreRankUrl);
@@ -156,16 +161,13 @@ class ScoreConnector {
           rankNodes.getRange(2, rankNodes.length).toList().reversed.toList();
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
         SemesterJson semester = SemesterJson();
-        semester.year = rankNodes[i * 3 + 2]
+        String semesterString = rankNodes[i * 3 + 2]
             .getElementsByTagName("td")[0]
-            .text
-            .split(" ")[0];
-        semester.semester = rankNodes[i * 3 + 2]
-            .getElementsByTagName("td")[0]
-            .text
-            .split(" ")
-            .reversed
-            .toList()[0];
+            .innerHtml
+            .split("<br>")
+            .first;
+        semester.year = semesterString.split(" ")[0];
+        semester.semester = semesterString.split(" ").reversed.toList()[0];
 
         //取得學期成績排名
         RankJson rankNow = RankJson();

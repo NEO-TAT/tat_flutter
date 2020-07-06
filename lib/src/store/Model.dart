@@ -407,7 +407,14 @@ class Model {
     await loadCourseScoreCredit();
     await loadSemesterJsonList();
     String version = await AppUpdate.getAppVersion();
-    _writeString("version", version);
+    String preVersion = await _readString("version");
+    print(preVersion);
+    print(version);
+    if ( preVersion != version ) {
+      await AppHotFix.init();
+      AppHotFix.setDevMode(false);  //更新APP版本後退出測模式
+      _writeString("version", version);
+    }
     //DioConnector.instance.deleteCookies();
   }
 

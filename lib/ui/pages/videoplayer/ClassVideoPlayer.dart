@@ -7,11 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
+import 'package:provider/provider.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
   final String uuid;
@@ -128,11 +131,28 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return (isLoading)
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : buildIjkPlayer(controller);
+    return Consumer<AppProvider>(
+      builder: (BuildContext context, AppProvider appProvider, Widget child) {
+        return MaterialApp(
+          title: Constants.appName,
+          theme: appProvider.theme,
+          darkTheme: Constants.darkTheme,
+          home: Scaffold(
+            appBar: AppBar(
+              leading: BackButton(
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              title: Text(R.current.classVideo),
+            ),
+            body: (isLoading)
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : buildIjkPlayer(controller),
+          ),
+        );
+      },
+    );
   }
 
   Widget buildIjkPlayer(IjkMediaController controller) {

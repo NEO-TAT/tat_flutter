@@ -375,13 +375,13 @@ class ISchoolPlusConnector {
       result = await RequestsConnector.getDataByPost(parameter);
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
-      result = HtmlUtils.clean(result);
       jsonData = json.decode(result)['data'];
       int totalRows = int.parse(json.decode(result)['total_rows']);
       if (totalRows > 0) {
         for (String keyName in json.decode(result)['data'].keys.toList()) {
           ISchoolPlusAnnouncementJson courseInfo =
               ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
+          courseInfo.subject = HtmlUtils.clean(courseInfo.subject);  //處理HTM特殊字
           courseInfo.token = data['token'];
           courseInfo.bid = keyName.split("|").first;
           courseInfo.nid = keyName.split("|").last;

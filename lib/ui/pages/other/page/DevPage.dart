@@ -1,15 +1,8 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
-import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:sprintf/sprintf.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 enum onListViewPress { DeletePatch, Exit }
 
@@ -45,6 +38,7 @@ class _DevPageState extends State<DevPage> {
     switch (value) {
       case onListViewPress.Exit:
         AppHotFix.setDevMode(false);
+        AppHotFix.deleteHotFix();
         Navigator.of(context).pop(false);
         break;
       case onListViewPress.DeletePatch:

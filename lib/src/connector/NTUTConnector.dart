@@ -74,7 +74,7 @@ class NTUTConnector {
         UserInfoJson userInfo = UserInfoJson.fromJson(json.decode(jsonResult));
         Model.instance.setUserInfo(userInfo);
         Model.instance.saveUserData();
-        if (userInfo.passwordExpiredRemind == 'true') {
+        if (userInfo.passwordExpiredRemind.isNotEmpty) {
           return NTUTConnectorStatus.PasswordExpiredWarning;
         }
         _isLogin = true;
