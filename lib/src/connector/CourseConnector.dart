@@ -219,7 +219,6 @@ class CourseConnector {
     try {
       ConnectorParameter parameter;
       Document tagNode;
-      Element node;
       List<Element> courseNodes, nodesOne, nodes;
       List<Day> dayEnum = [
         Day.Sunday,

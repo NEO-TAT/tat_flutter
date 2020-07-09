@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/ScoreConnector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
