@@ -353,36 +353,6 @@ class S {
     );
   }
 
-  /// `Login to ISchool...`
-  String get loginISchool {
-    return Intl.message(
-      'Login to ISchool...',
-      name: 'loginISchool',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Login to ISchool Error`
-  String get loginISchoolError {
-    return Intl.message(
-      'Login to ISchool Error',
-      name: 'loginISchoolError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Login to ISchool Plus...`
-  String get loginISchoolPlus {
-    return Intl.message(
-      'Login to ISchool Plus...',
-      name: 'loginISchoolPlus',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Login to Score...`
   String get loginScore {
     return Intl.message(
@@ -403,71 +373,21 @@ class S {
     );
   }
 
+  /// `Login to ISchool Plus...`
+  String get loginISchoolPlus {
+    return Intl.message(
+      'Login to ISchool Plus...',
+      name: 'loginISchoolPlus',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Login to ISchool Plus error`
   String get loginISchoolPlusError {
     return Intl.message(
       'Login to ISchool Plus error',
       name: 'loginISchoolPlusError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Get the latest announcement...`
-  String get getISchoolNewAnnouncement {
-    return Intl.message(
-      'Get the latest announcement...',
-      name: 'getISchoolNewAnnouncement',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Get latest announcement error`
-  String get getISchoolNewAnnouncementError {
-    return Intl.message(
-      'Get latest announcement error',
-      name: 'getISchoolNewAnnouncementError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Get announcement information...`
-  String get getISchoolNewAnnouncementDetail {
-    return Intl.message(
-      'Get announcement information...',
-      name: 'getISchoolNewAnnouncementDetail',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Getting announcement information error`
-  String get getISchoolNewAnnouncementDetailError {
-    return Intl.message(
-      'Getting announcement information error',
-      name: 'getISchoolNewAnnouncementDetailError',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Get announcement pages...`
-  String get getISchoolNewAnnouncementPage {
-    return Intl.message(
-      'Get announcement pages...',
-      name: 'getISchoolNewAnnouncementPage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Error getting page number of announcement`
-  String get getISchoolNewAnnouncementPageError {
-    return Intl.message(
-      'Error getting page number of announcement',
-      name: 'getISchoolNewAnnouncementPageError',
       desc: '',
       args: [],
     );
@@ -1093,66 +1013,6 @@ class S {
     );
   }
 
-  /// `Pull up load`
-  String get pullUpLoad {
-    return Intl.message(
-      'Pull up load',
-      name: 'pullUpLoad',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Load Failed! Click retry!`
-  String get loadFailed {
-    return Intl.message(
-      'Load Failed! Click retry!',
-      name: 'loadFailed',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `release to load more`
-  String get ReleaseLoadMore {
-    return Intl.message(
-      'release to load more',
-      name: 'ReleaseLoadMore',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Pull again to update`
-  String get pullAgainToUpdate {
-    return Intl.message(
-      'Pull again to update',
-      name: 'pullAgainToUpdate',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No more data`
-  String get noMoreData {
-    return Intl.message(
-      'No more data',
-      name: 'noMoreData',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Clear and refresh`
-  String get clearAndRefresh {
-    return Intl.message(
-      'Clear and refresh',
-      name: 'clearAndRefresh',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Notification`
   String get titleNotification {
     return Intl.message(
@@ -1168,16 +1028,6 @@ class S {
     return Intl.message(
       'Delete',
       name: 'delete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Are you sure you want to delete the message?`
-  String get areYouSureDeleteMessage {
-    return Intl.message(
-      'Are you sure you want to delete the message?',
-      name: 'areYouSureDeleteMessage',
       desc: '',
       args: [],
     );

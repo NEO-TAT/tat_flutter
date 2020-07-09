@@ -10,7 +10,6 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
@@ -105,8 +104,7 @@ class TaskHandler {
     Log.d("Task fail " + task.getTaskName);
     if (task is NTUTLoginTask || task is NTUTAppLoginTask) {
       _addFirstTask(task);
-    } else if (task is ISchoolLoginTask ||
-        task is CourseLoginTask ||
+    } else if (task is CourseLoginTask ||
         task is ISchoolPlusLoginTask ||
         task is ScoreLoginTask) {
       _addFirstTaskList([NTUTLoginTask(task.context), task]);
@@ -136,7 +134,6 @@ class TaskHandler {
       CheckCookiesTask.checkNTUTApp: NTUTAppLoginTask(context),
       CheckCookiesTask.checkCourse: CourseLoginTask(context),
       CheckCookiesTask.checkScore: ScoreLoginTask(context),
-      CheckCookiesTask.checkISchool: ISchoolLoginTask(context),
       CheckCookiesTask.checkPlusISchool: ISchoolPlusLoginTask(context),
     };
     for (String key in loginMap.keys.toList()) {
