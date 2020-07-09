@@ -69,7 +69,7 @@ class DirectoryPickerData extends InheritedWidget {
       : super(child: child);
 
   static DirectoryPickerData of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(DirectoryPickerData);
+    return context.dependOnInheritedWidgetOfExactType<DirectoryPickerData>();
   }
 
   @override

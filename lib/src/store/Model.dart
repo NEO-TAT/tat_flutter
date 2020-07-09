@@ -6,8 +6,6 @@
 //
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
@@ -16,10 +14,8 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'json/CourseClassJson.dart';
 import 'json/CourseTableJson.dart';
-import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
 
 //flutter packages pub run build_runner build 創建Json
@@ -40,7 +36,6 @@ class Model {
   static String newAnnouncementJsonKey = "newAnnouncementJson";
   static String settingJsonKey = "SettingJsonKey";
   UserDataJson _userData;
-  NewAnnouncementJsonList _newAnnouncementList;
   List<CourseTableJson> _courseTableList;
   List<SemesterJson> _courseSemesterList;
   CourseScoreCreditJson _courseScoreList;
@@ -114,33 +109,6 @@ class Model {
 
   UserDataJson getUserData() {
     return _userData;
-  }
-
-  //--------------------NewAnnouncementJsonList--------------------//
-  Future<void> saveNewAnnouncement() async {
-    _save(newAnnouncementJsonKey, _newAnnouncementList);
-  }
-
-  Future<void> clearNewAnnouncement() async {
-    _newAnnouncementList = NewAnnouncementJsonList();
-    await saveNewAnnouncement();
-    await clearAnnouncementSetting();
-  }
-
-  Future<void> loadNewAnnouncement() async {
-    String readJson;
-    readJson = await _readString(newAnnouncementJsonKey);
-    _newAnnouncementList = (readJson != null)
-        ? NewAnnouncementJsonList.fromJson(json.decode(readJson))
-        : NewAnnouncementJsonList();
-  }
-
-  Future<void> addNewAnnouncement(NewAnnouncementJson value) async {
-    _newAnnouncementList.addNewAnnouncement(value);
-  }
-
-  List<NewAnnouncementJson> getNewAnnouncementList() {
-    return _newAnnouncementList.newAnnouncementList;
   }
 
   //--------------------List<CourseTableJson>--------------------//
@@ -401,7 +369,6 @@ class Model {
     _tempData = Map();
     _courseSemesterList = _courseSemesterList ?? List();
     await loadUserData();
-    await loadNewAnnouncement();
     await loadCourseTableList();
     await loadSetting();
     await loadCourseScoreCredit();
@@ -423,7 +390,6 @@ class Model {
     await clearSemesterJsonList();
     await clearCourseTableList();
     await clearCourseScoreCredit();
-    await clearNewAnnouncement();
     await clearAnnouncementSetting();
     await clearCourseSetting();
     DioConnector.instance.deleteCookies();

@@ -86,7 +86,7 @@ class _DirectoryListState extends State<DirectoryList> {
             child: Column(
               children: [
                 Text(R.current.selectedDirectory,
-                    style: theme.textTheme.subtitle),
+                    style: theme.textTheme.subtitle2),
                 SizedBox(height: spacing / 2),
                 Text(currentDirectory?.path ?? '',
                     style: theme.textTheme.caption)

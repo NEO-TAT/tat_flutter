@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
-import 'package:flutter_app/src/providers/CoreProvider.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:path/path.dart' as pathLib;
 import 'package:provider/provider.dart';
@@ -159,7 +159,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                   : Icons.sd_card,
                               color: index == paths.length - 1
                                   ? Theme.of(context).accentColor
-                                  : Theme.of(context).textTheme.title.color,
+                                  : Theme.of(context).textTheme.headline6.color,
                             ),
                             onPressed: () {
                               print(paths[index]);
@@ -193,7 +193,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                           ? Theme.of(context).accentColor
                                           : Theme.of(context)
                                               .textTheme
-                                              .title
+                                              .headline6
                                               .color,
                                     ),
                                   ),
@@ -244,15 +244,13 @@ class _FileViewerPageState extends State<FileViewerPage>
                               renameDialog(context, file.path, "dir");
                             } else if (v == 1) {
                               await Directory(file.path)
-                                  .delete(recursive: true)  //將會刪除資料夾內所有東西
+                                  .delete(recursive: true) //將會刪除資料夾內所有東西
                                   .catchError((e) {
                                 print(e.toString());
                                 if (e
                                     .toString()
                                     .contains("Permission denied")) {
-                                  Provider.of<CoreProvider>(context,
-                                          listen: false)
-                                      .showToast(R.current.cannotWrite);
+                                  MyToast.show(R.current.cannotWrite);
                                 }
                               });
                               getFiles();
@@ -278,9 +276,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                 if (e
                                     .toString()
                                     .contains("Permission denied")) {
-                                  Provider.of<CoreProvider>(context,
-                                          listen: false)
-                                      .showToast(R.current.cannotWrite);
+                                  MyToast.show(R.current.cannotWrite);
                                 }
                               });
                               getFiles();
@@ -383,14 +379,11 @@ class _FileViewerPageState extends State<FileViewerPage>
                                 .catchError((e) {
                               print(e.toString());
                               if (e.toString().contains("Permission denied")) {
-                                Provider.of<CoreProvider>(context,
-                                        listen: false)
-                                    .showToast(R.current.cannotWrite);
+                                MyToast.show(R.current.cannotWrite);
                               }
                             });
                           } else {
-                            Provider.of<CoreProvider>(context, listen: false)
-                                .showToast(R.current.folderNameAlreadyExists);
+                            MyToast.show(R.current.folderNameAlreadyExists);
                           }
                           Navigator.pop(context);
                           getFiles();
@@ -489,22 +482,18 @@ class _FileViewerPageState extends State<FileViewerPage>
                                 if (e
                                     .toString()
                                     .contains("Permission denied")) {
-                                  Provider.of<CoreProvider>(context,
-                                          listen: false)
-                                      .showToast(R.current.cannotWrite);
+                                  MyToast.show(R.current.cannotWrite);
                                 }
                               });
                             } else {
-                              Provider.of<CoreProvider>(context, listen: false)
-                                  .showToast(R.current.fileNameAlreadyExists);
+                              MyToast.show(R.current.fileNameAlreadyExists);
                             }
                           } else {
                             if (Directory(path.replaceAll(
                                         pathLib.basename(path), "") +
                                     "${name.text}")
                                 .existsSync()) {
-                              Provider.of<CoreProvider>(context, listen: false)
-                                  .showToast(R.current.folderNameAlreadyExists);
+                              MyToast.show(R.current.fileNameAlreadyExists);
                             } else {
                               await Directory(path)
                                   .rename(path.replaceAll(
@@ -515,9 +504,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                                 if (e
                                     .toString()
                                     .contains("Permission denied")) {
-                                  Provider.of<CoreProvider>(context,
-                                          listen: false)
-                                      .showToast(R.current.cannotWrite);
+                                  MyToast.show(R.current.cannotWrite);
                                 }
                               });
                             }

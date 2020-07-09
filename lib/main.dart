@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/hotfix/PatchVersion.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
-import 'package:flutter_app/src/providers/CoreProvider.dart';
 import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,6 @@ Future<Null> main() async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => AppProvider()),
-          ChangeNotifierProvider(create: (_) => CoreProvider()),
           ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ],
         child: MyApp(),

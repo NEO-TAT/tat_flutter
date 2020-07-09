@@ -6,12 +6,10 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/ui/pages/ischool/TabPage.dart';
-import 'package:flutter_app/ui/pages/ischool/screen/ischool/CourseAnnouncementPage.dart';
-import 'package:flutter_app/ui/pages/ischool/screen/ischool/CourseISchoolFilePage.dart';
-import 'package:flutter_app/ui/pages/ischool/screen/ischoolplus/IPlusAnnouncementPage.dart';
-import 'package:flutter_app/ui/pages/ischool/screen/ischoolplus/IPlusFilePage.dart';
-import 'package:flutter_app/ui/pages/ischool/screen/CourseInfoPage.dart';
+import 'package:flutter_app/ui/pages/coursedetail/TabPage.dart';
+import 'package:flutter_app/ui/pages/coursedetail/screen/CourseInfoPage.dart';
+import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementPage.dart';
+import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusFilePage.dart';
 import 'package:provider/provider.dart';
 
 class ISchoolPage extends StatefulWidget {
@@ -45,10 +43,6 @@ class _ISchoolPageState extends State<ISchoolPage>
       tabPageList.add(TabPage(R.current.file + 'Plus', Icons.file_download,
           IPlusFilePage(widget.studentId, widget.courseInfo)));
     }
-    tabPageList.add(TabPage(R.current.announcement, Icons.announcement,
-        CourseAnnouncementPage(widget.studentId, widget.courseInfo)));
-    tabPageList.add(TabPage(R.current.file, Icons.file_download,
-        CourseISchoolFilePage(widget.studentId, widget.courseInfo)));
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
   }
