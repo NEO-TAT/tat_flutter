@@ -413,10 +413,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 value: 1,
                 child: Text(R.current.loadFavorite),
               ),
-              PopupMenuItem(
-                value: 2,
-                child: Text(R.current.setAsAndroidWeight),
-              ),
+              if (Platform.isAndroid)
+                PopupMenuItem(
+                  value: 2,
+                  child: Text(R.current.setAsAndroidWidget),
+                ),
             ],
           )
         ],

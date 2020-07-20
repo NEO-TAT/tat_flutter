@@ -914,7 +914,7 @@ class S {
   }
 
   /// `Set as android weight`
-  String get setAsAndroidWeight {
+  String get setAsAndroidWidget {
     return Intl.message(
       'Set as android weight',
       name: 'setAsAndroidWeight',
@@ -1968,6 +1968,16 @@ class S {
     return Intl.message(
       'Foreign Department Credits',
       name: 'takeForeignDepartmentCredits',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Credit limit`
+  String get takeForeignDepartmentCreditsLimit {
+    return Intl.message(
+      'Credit limit',
+      name: 'takeForeignDepartmentCreditsLimit',
       desc: '',
       args: [],
     );

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 
-
 class NotificationPage extends StatefulWidget {
   @override
   _NotificationPageState createState() => _NotificationPageState();
@@ -22,7 +21,9 @@ class _NotificationPageState extends State<NotificationPage>
       appBar: AppBar(
         title: Text(R.current.titleNotification),
       ),
-      body: Text("None"),
+      body: Center(
+        child: Text("目前尚未開放功能"),
+      ),
     );
   }
 
