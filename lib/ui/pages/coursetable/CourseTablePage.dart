@@ -416,7 +416,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               if (Platform.isAndroid)
                 PopupMenuItem(
                   value: 2,
-                  child: Text(R.current.setAsAndroidWidget),
+                  child: Text(R.current.setAsAndroidWeight),
                 ),
             ],
           )
