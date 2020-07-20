@@ -241,6 +241,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "syllabus" : MessageLookupByLibrary.simpleMessage("教學大綱"),
     "takeCore" : MessageLookupByLibrary.simpleMessage("實得核心"),
     "takeForeignDepartmentCredits" : MessageLookupByLibrary.simpleMessage("外系學分"),
+    "takeForeignDepartmentCreditsLimit" : MessageLookupByLibrary.simpleMessage("學分上限"),
     "takeSelect" : MessageLookupByLibrary.simpleMessage("實得選修"),
     "time" : MessageLookupByLibrary.simpleMessage("時間"),
     "titleCourse" : MessageLookupByLibrary.simpleMessage("課表"),

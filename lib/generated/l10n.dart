@@ -1973,6 +1973,16 @@ class S {
     );
   }
 
+  /// `Credit limit`
+  String get takeForeignDepartmentCreditsLimit {
+    return Intl.message(
+      'Credit limit',
+      name: 'takeForeignDepartmentCreditsLimit',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `This calculation is for reference only. Actually, please focus on the school.`
   String get scoreCalculationWarring {
     return Intl.message(

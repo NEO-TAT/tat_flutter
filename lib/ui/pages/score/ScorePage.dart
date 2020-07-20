@@ -290,7 +290,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
               alignment: Alignment(0, 0),
               height: 50,
               width: 300,
-              child: Text(title),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
@@ -387,13 +390,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           selectCredit += course.credit.toInt();
         }
         Widget courseItemWidget;
-        courseItemWidget = _buildOneLineCourse(
-            course.name,
-            course.openClass);
+        courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf("%s %s:%d %s:%d", [
+    Widget titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d", [
       R.current.generalLessonSummary,
       R.current.takeCore,
       coreCredit,
@@ -429,9 +430,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf("%s: %d/%d", [
+    Widget titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
       R.current.takeForeignDepartmentCredits,
       otherDepartmentCredit,
+      R.current.takeForeignDepartmentCreditsLimit,
       otherDepartmentMaxCredit
     ]));
     return Container(

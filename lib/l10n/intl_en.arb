@@ -193,6 +193,7 @@
   "takeCore": "Take core",
   "takeSelect": "Take select",
   "takeForeignDepartmentCredits": "Foreign Department Credits",
+  "takeForeignDepartmentCreditsLimit": "Credit limit",
   "scoreCalculationWarring": "This calculation is for reference only. Actually, please focus on the school.",
   "resultsOfVariousSubjects": "Results of various subjects",
   "semesterGrades": "Semester grades",

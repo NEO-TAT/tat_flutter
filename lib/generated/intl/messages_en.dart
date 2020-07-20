@@ -242,6 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "syllabus" : MessageLookupByLibrary.simpleMessage("Syllabus"),
     "takeCore" : MessageLookupByLibrary.simpleMessage("Take core"),
     "takeForeignDepartmentCredits" : MessageLookupByLibrary.simpleMessage("Foreign Department Credits"),
+    "takeForeignDepartmentCreditsLimit" : MessageLookupByLibrary.simpleMessage("Credit limit"),
     "takeSelect" : MessageLookupByLibrary.simpleMessage("Take select"),
     "time" : MessageLookupByLibrary.simpleMessage("Time"),
     "titleCourse" : MessageLookupByLibrary.simpleMessage("Course"),

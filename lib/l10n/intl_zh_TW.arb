@@ -193,6 +193,7 @@
   "takeCore": "實得核心",
   "takeSelect": "實得選修",
   "takeForeignDepartmentCredits": "外系學分",
+  "takeForeignDepartmentCreditsLimit": "學分上限",
   "scoreCalculationWarring": "此計算僅供參考，實際請以學校為主",
   "resultsOfVariousSubjects": "各科成績",
   "semesterGrades": "學期成績",
