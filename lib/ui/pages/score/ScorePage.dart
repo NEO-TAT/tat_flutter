@@ -358,6 +358,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         if (courseInfo.length != 0) {
           showDialog(
             context: context,
+            useRootNavigator: false,
             builder: (context) {
               return new AlertDialog(
                 title: new Text(R.current.creditInfo),
