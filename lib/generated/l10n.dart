@@ -914,7 +914,7 @@ class S {
   }
 
   /// `Set as android weight`
-  String get setAsAndroidWidget {
+  String get setAsAndroidWeight {
     return Intl.message(
       'Set as android weight',
       name: 'setAsAndroidWeight',
@@ -2208,6 +2208,16 @@ class S {
     return Intl.message(
       'Cultural and Historical dimension',
       name: 'culturalHistoricalDimension',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Credit info`
+  String get creditInfo {
+    return Intl.message(
+      'Credit info',
+      name: 'creditInfo',
       desc: '',
       args: [],
     );

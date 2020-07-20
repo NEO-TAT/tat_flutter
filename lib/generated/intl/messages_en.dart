@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "createNewFolder" : MessageLookupByLibrary.simpleMessage("Create New folder"),
     "creativeDirection" : MessageLookupByLibrary.simpleMessage("Creative direction"),
     "credit" : MessageLookupByLibrary.simpleMessage("Credit"),
+    "creditInfo" : MessageLookupByLibrary.simpleMessage("Credit info"),
     "creditSearch" : MessageLookupByLibrary.simpleMessage("Credit search..."),
     "creditSummary" : MessageLookupByLibrary.simpleMessage("Credit Summary"),
     "creditViewer" : MessageLookupByLibrary.simpleMessage("Credit Viewer"),

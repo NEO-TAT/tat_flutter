@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "createNewFolder" : MessageLookupByLibrary.simpleMessage("創建新資料夾"),
     "creativeDirection" : MessageLookupByLibrary.simpleMessage("創創向度"),
     "credit" : MessageLookupByLibrary.simpleMessage("學分"),
+    "creditInfo" : MessageLookupByLibrary.simpleMessage("詳細內容"),
     "creditSearch" : MessageLookupByLibrary.simpleMessage("查詢學分中..."),
     "creditSummary" : MessageLookupByLibrary.simpleMessage("學分總覽"),
     "creditViewer" : MessageLookupByLibrary.simpleMessage("學分查詢"),

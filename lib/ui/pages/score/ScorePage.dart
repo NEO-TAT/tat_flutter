@@ -348,16 +348,45 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       onTap: () {
         Map<String, List<CourseInfoJson>> result =
             courseScoreCredit.getCourseByType(type);
-        String pr = "";
+        List<String> courseInfo = List();
         for (String key in result.keys.toList()) {
-          pr += "\n$key";
+          courseInfo.add(key);
           for (CourseInfoJson course in result[key]) {
-            pr += (course.name + " ");
+            courseInfo.add(sprintf("     %s",[course.name]));
           }
         }
-        pr = pr.substring(1, pr.length);
-        MyToast.show(pr);
-        Log.d(pr);
+        if (courseInfo.length != 0) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return new AlertDialog(
+                title: new Text(R.current.creditInfo),
+                content: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8),
+                    itemCount: courseInfo.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 35,
+                        child: Text(courseInfo[index]),
+                      );
+                    },
+                  ),
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: new Text(R.current.sure),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
     );
   }
