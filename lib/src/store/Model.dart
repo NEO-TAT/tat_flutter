@@ -377,10 +377,12 @@ class Model {
     String preVersion = await _readString("version");
     print(preVersion);
     print(version);
-    if ( preVersion != version ) {
+    if (preVersion != version) {
       await AppHotFix.init();
-      AppHotFix.setDevMode(false);  //更新APP版本後退出測模式
-      _writeString("version", version);
+      AppHotFix.setDevMode(false); //更新APP版本後退出測模式
+      _writeString("version", version); //寫入目前版本
+      _setting.other.autoCheckAppUpdate = true; //開啟更新檢查
+      saveOtherSetting();
     }
     //DioConnector.instance.deleteCookies();
   }

@@ -914,7 +914,7 @@ class S {
   }
 
   /// `Set as android weight`
-  String get setAsAndroidWeight {
+  String get setAsAndroidWidget {
     return Intl.message(
       'Set as android weight',
       name: 'setAsAndroidWeight',
