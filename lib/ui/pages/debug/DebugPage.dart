@@ -29,6 +29,17 @@ class _DebugPageState extends State<DebugPage>
     return Scaffold(
       appBar: AppBar(
         title: Text("Debug Page"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              setState(() {
+                Log.debugLog = List();
+                Log.errorLog = List();
+              });
+            },
+            child: new Text("Clear All"),
+          ),
+        ],
         bottom: TabBar(
           indicatorPadding: EdgeInsets.all(0),
           labelPadding: EdgeInsets.all(0),
@@ -37,7 +48,7 @@ class _DebugPageState extends State<DebugPage>
           tabs: [
             Container(
               width: MediaQuery.of(context).size.width / 2,
-              child: Tab(text: "Warning"),
+              child: Tab(text: "Debug"),
             ),
             Container(
               width: MediaQuery.of(context).size.width / 2,
