@@ -32,6 +32,15 @@ class Log {
   static List<String> errorLog = List();
   static List<String> debugLog = List();
 
+  static void eWithStack(String data, String stack) {
+    //用於顯示已用try catch的處理error
+    myLogNew(LogMode.LogError, data);
+    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
+        "\n\n" +
+        stack.split("#5").first;
+    addErrorLog(error);
+  }
+
   static void e(String data) {
     //用於顯示已用try catch的處理error
     myLogNew(LogMode.LogError, data);
@@ -41,7 +50,7 @@ class Log {
     addErrorLog(error);
   }
 
-  static void error(String data) {
+  static void error(String data, String stack) {
     //用於顯示無try catch的error
     myLogNew(LogMode.LogError, data);
     String error = data.substring(0, (data.length > 100) ? 100 : data.length) +

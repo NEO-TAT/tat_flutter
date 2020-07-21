@@ -64,8 +64,8 @@ class ScoreConnector {
       await Connector.getDataByPostResponse(parameter);
       _isLogin = true;
       return ScoreConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return ScoreConnectorStatus.LoginFail;
     }
   }
@@ -108,7 +108,9 @@ class ScoreConnector {
         //取得課程名稱與分數
         scoreNodes = tableNode.getElementsByTagName("tr");
         int offset = (scoreNodes.length >= 5)
-            ? (scoreNodes.reversed.toList()[5].text.replaceAll("\n", "") == "") ? 6 : 3
+            ? (scoreNodes.reversed.toList()[5].text.replaceAll("\n", "") == "")
+                ? 6
+                : 3
             : 6;
         for (int j = 1; j < scoreNodes.length - offset; j++) {
           scoreNode = scoreNodes[j];
@@ -231,8 +233,8 @@ class ScoreConnector {
         }
       }
       return courseScoreList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -268,8 +270,8 @@ class ScoreConnector {
         }
       }
       return coreGeneralLessonList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -296,9 +298,8 @@ class ScoreConnector {
         _isLogin = true;
         return true;
       }
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return false;
     }
   }

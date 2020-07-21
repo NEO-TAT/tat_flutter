@@ -69,8 +69,8 @@ class CourseConnector {
       await Connector.getDataByPostResponse(parameter);
       _isLogin = true;
       return CourseConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return CourseConnectorStatus.LoginFail;
     }
   }
@@ -90,9 +90,8 @@ class CourseConnector {
           .getElementsByTagName("td")[2]
           .text
           .replaceAll(RegExp(r"\n"), "");
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -158,9 +157,8 @@ class CourseConnector {
         courseExtraInfo.classmate.add(classmate);
       }
       return courseExtraInfo;
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -192,9 +190,8 @@ class CourseConnector {
         semesterJsonList.add(SemesterJson(year: year, semester: semester));
       }
       return semesterJsonList;
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -246,8 +243,8 @@ class CourseConnector {
       try {
         studentName = strQ2B(nodes[0].getElementsByTagName("td")[4].text)
             .replaceAll(RegExp(r"[\n| ]"), "");
-      } catch (e) {
-        Log.e(e.toString());
+      } catch (e, stack) {
+        Log.eWithStack(e.toString(), stack.toString());
         studentName = "";
       }
       Model.instance.setTempData("studentName", studentName);
@@ -312,9 +309,8 @@ class CourseConnector {
       }
 
       return courseMainInfoList;
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -428,9 +424,8 @@ class CourseConnector {
       }
 
       return courseMainInfoList;
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -490,8 +485,8 @@ class CourseConnector {
       matches = exp.firstMatch(result);
       */
       return graduationMap;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -516,8 +511,8 @@ class CourseConnector {
         resultList.add(node.text);
       }
       return resultList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -548,8 +543,8 @@ class CourseConnector {
         resultList.add({"name": node.text, "code": code});
       }
       return resultList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -583,8 +578,8 @@ class CourseConnector {
         resultList.add({"name": name, "code": code});
       }
       return resultList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -676,8 +671,8 @@ class CourseConnector {
         Log.d("not find $select");
       }
       return graduationInformation;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -705,9 +700,8 @@ class CourseConnector {
         _isLogin = true;
         return true;
       }
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return false;
     }
   }

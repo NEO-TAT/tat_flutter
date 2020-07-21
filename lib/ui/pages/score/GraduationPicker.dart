@@ -282,8 +282,8 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
         graduationInformation.selectDivision = _selectedDivision["name"];
         graduationInformation.selectDepartment = _selectedDepartment["name"];
       }
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
     }
     await MyProgressDialog.hideProgressDialog();
   }

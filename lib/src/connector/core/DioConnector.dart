@@ -73,8 +73,8 @@ class DioConnector {
       dio.interceptors.add(HeaderInterceptors());
       dio.interceptors.add(ErrorInterceptors(dio));
       //dio.interceptors.add(ResponseInterceptors());
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
     }
   }
 
@@ -194,8 +194,8 @@ class DioConnector {
             onReceiveProgress: progressCallback,
             cancelToken: cancelToken,
             options: Options(receiveTimeout: 0, headers: header)) //設置不超時
-        .catchError((onError) {
-      Log.e(onError.toString());
+        .catchError((onError, stack) {
+      Log.eWithStack(onError.toString(), stack.toString());
       throw onError;
     });
   }

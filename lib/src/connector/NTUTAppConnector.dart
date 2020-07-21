@@ -34,8 +34,8 @@ class NTUTAppConnector {
       String jsonResult = await Connector.getDataByPost(parameter);
       _isLogin = true;
       return NTUTAppConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return NTUTAppConnectorStatus.LoginFail;
     }
   }
@@ -66,8 +66,8 @@ class NTUTAppConnector {
       Log.d(departmentData.toString());
       _isLogin = true;
       return departmentData;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -97,8 +97,8 @@ class NTUTAppConnector {
       Log.d("NTUTApp Is Readly Login");
       _isLogin = true;
       return true;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return false;
     }
   }

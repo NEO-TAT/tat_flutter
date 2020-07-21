@@ -44,8 +44,8 @@ class LogsInterceptors extends InterceptorsWrapper {
         map["data"] = data;
       }
       addLogic(sHttpRequest, map);
-    } catch (e) {
-      Log.e(e);
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
     }
     return options;
   }
@@ -63,8 +63,8 @@ class LogsInterceptors extends InterceptorsWrapper {
         data["data"] = response.data;
         addLogic(sResponsesHttpUrl, response?.request?.uri?.toString() ?? "");
         addLogic(sHttpResponses, data);
-      } catch (e) {
-        Log.e(e);
+      } catch (e, stack) {
+        Log.eWithStack(e.toString(), stack.toString());
       }
     } else if (response.data is String) {
       try {
@@ -72,16 +72,16 @@ class LogsInterceptors extends InterceptorsWrapper {
         data["data"] = response.data;
         addLogic(sResponsesHttpUrl, response?.request?.uri.toString() ?? "");
         addLogic(sHttpResponses, data);
-      } catch (e) {
-        Log.e(e);
+      } catch (e, stack) {
+        Log.eWithStack(e.toString(), stack.toString());
       }
     } else if (response.data != null) {
       try {
         String data = response.data.toJson();
         addLogic(sResponsesHttpUrl, response?.request?.uri.toString() ?? "");
         addLogic(sHttpResponses, json.decode(data));
-      } catch (e) {
-        Log.e(e);
+      } catch (e, stack) {
+        Log.eWithStack(e.toString(), stack.toString());
       }
     }
     return response; // continue
@@ -90,16 +90,16 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onError(DioError err) async {
     if (Config.DEBUG) {
-      Log.e('請求異常: ' + err.toString());
-      Log.e('請求異常信息: ' + (err.response?.toString() ?? ""));
+      Log.d('請求異常: ' + err.toString());
+      Log.d('請求異常信息: ' + (err.response?.toString() ?? ""));
     }
     try {
       addLogic(sHttpErrorUrl, err.request.path ?? "null");
       var errors = Map<String, dynamic>();
       errors["error"] = err.message;
       addLogic(sHttpError, errors);
-    } catch (e) {
-      Log.e(e);
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
     }
     return err; // continue;
   }

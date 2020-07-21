@@ -57,8 +57,8 @@ class _MainScreenState extends State<MainScreen> {
         Crashlytics.instance
             .setString("Supported ABis", supportedABis.toString());
         await AppHotFix.hotFixSuccess(contextKey);
-      } catch (e) {
-        Log.e(e.toString());
+      } catch (e, stack) {
+        Log.eWithStack(e.toString(), stack.toString());
       }
       setState(() {
         _pageList = List();

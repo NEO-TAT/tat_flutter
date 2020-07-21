@@ -80,8 +80,8 @@ class NTUTConnector {
         _isLogin = true;
         return NTUTConnectorStatus.LoginSuccess;
       }
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       if (e is TimeoutException || e is DioError) {
         return NTUTConnectorStatus.ConnectTimeOutError;
       } else if (e is SocketException) {
@@ -109,8 +109,8 @@ class NTUTConnector {
       List<NTUTCalendarJson> calendarList =
           getNTUTCalendarJsonList(json.decode(result));
       return calendarList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -158,9 +158,8 @@ class NTUTConnector {
         _isLogin = true;
         return true;
       }
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return false;
     }
   }

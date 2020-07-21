@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class DebugPage extends StatefulWidget {
@@ -76,14 +78,18 @@ class _DebugPageState extends State<DebugPage>
                     padding: EdgeInsets.only(
                         left: 20, right: 20, top: 10, bottom: 10),
                     child: Text(logList[index])),
-                onTap: () {},
+                onLongPress: () {
+                  Clipboard.setData(ClipboardData(text: logList[index]));
+                  MyToast.show("Copy");
+                },
               ),
             ),
           ),
         );
       },
       separatorBuilder: (BuildContext context, int index) {
-        return Divider(height: 2.0, color: Theme.of(context).textSelectionColor);
+        return Divider(
+            height: 2.0, color: Theme.of(context).textSelectionColor);
       },
     );
   }

@@ -29,7 +29,7 @@ Future<Null> main() async {
       ),
     );
   }, onError: (dynamic exception, StackTrace stack, {dynamic context}) {
-    Log.error(exception.toString());
+    Log.error(exception.toString(), stack.toString());
     Crashlytics.instance.recordError(exception, stack, context: context);
   });
 }

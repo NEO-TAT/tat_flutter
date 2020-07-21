@@ -129,8 +129,8 @@ class ISchoolPlusConnector {
       await Connector.getDataByPostResponse(parameter);
       _isLogin = true;
       return ISchoolPlusConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return ISchoolPlusConnectorStatus.LoginFail;
     }
   }
@@ -240,11 +240,12 @@ class ISchoolPlusConnector {
       }
 
       return courseFileList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
+
   //List[0] RealUrl , List[1] referer
   static Future<List<String>> getRealFileUrl(
       Map<String, String> postParameter) async {
@@ -285,7 +286,7 @@ class ISchoolPlusConnector {
         if (pass) {
           url = matches.group(1);
           //已經是完整連結
-          return [url,url];
+          return [url, url];
         } else {
           exp = new RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
           matches = exp.firstMatch(result);
@@ -294,17 +295,18 @@ class ISchoolPlusConnector {
               : (matches.groupCount == null) ? false : true;
           if (pass) {
             String realUrl = _iSchoolPlusUrl + matches.group(1);
-            return [realUrl,realUrl]; //一般下載連結
+            return [realUrl, realUrl]; //一般下載連結
           } else {
             exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
             matches = exp.firstMatch(result);
             url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
             result = await RequestsConnector.getDataByGet(parameter);
-            exp = new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
+            exp =
+                new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
             String realUrl = _iSchoolPlusUrl + "learn/path/" + matches.group(1);
-            return [realUrl,url];
+            return [realUrl, url];
           }
         }
       } else if (response.isRedirect || result.isEmpty) {
@@ -312,12 +314,11 @@ class ISchoolPlusConnector {
         url = response.headers[HttpHeaders.locationHeader];
         url = _iSchoolPlusUrl + "learn/path/" + url;
         url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址
-        return [url,url];
+        return [url, url];
       }
-    } catch (e) {
-      //如果真實網址解析錯誤
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       Log.e(result);
-      Log.e(e.toString());
       return null;
     }
     return null;
@@ -381,7 +382,7 @@ class ISchoolPlusConnector {
         for (String keyName in json.decode(result)['data'].keys.toList()) {
           ISchoolPlusAnnouncementJson courseInfo =
               ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
-          courseInfo.subject = HtmlUtils.clean(courseInfo.subject);  //處理HTM特殊字
+          courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
           courseInfo.token = data['token'];
           courseInfo.bid = keyName.split("|").first;
           courseInfo.nid = keyName.split("|").last;
@@ -389,8 +390,8 @@ class ISchoolPlusConnector {
         }
       }
       return announcementList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -450,8 +451,8 @@ class ISchoolPlusConnector {
       detail["body"] = body;
       detail["file"] = fileMap;
       return detail;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -478,8 +479,8 @@ class ISchoolPlusConnector {
       } else {
         return true;
       }
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return false;
     }
   }
@@ -510,8 +511,8 @@ class ISchoolPlusConnector {
         courseNameList.add(courseName);
       }
       return courseNameList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return null;
     }
   }
@@ -628,9 +629,8 @@ class ISchoolPlusConnector {
         _isLogin = true;
         return true;
       }
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack.toString());
       return false;
     }
   }
