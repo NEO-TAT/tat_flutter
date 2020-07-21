@@ -12,6 +12,7 @@ import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/debug/DebugPage.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
@@ -137,6 +138,16 @@ class _OtherPageState extends State<OtherPage> {
     }
   }
 
+  void _onLongPress(onListViewPress value) {
+    switch (value) {
+      case onListViewPress.About:
+        Navigator.of(context).push(MyPage.transition(DebugPage()));
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -238,6 +249,9 @@ class _OtherPageState extends State<OtherPage> {
     return InkWell(
       onTap: () {
         _onListViewPress(data['onPress']);
+      },
+      onLongPress: () {
+        _onLongPress(data['onPress']);
       },
       child: Container(
         padding:

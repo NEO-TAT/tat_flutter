@@ -29,20 +29,45 @@ class Log {
         printTime: false // Should each log print contain a timestamp
         ),
   );
+  static List<String> errorLog = List();
+  static List<String> debugLog = List();
 
   static void e(String data) {
     //用於顯示已用try catch的處理error
     myLogNew(LogMode.LogError, data);
+    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
+        "\n\n" +
+        StackTrace.current.toString().split("#5").first;
+    addErrorLog(error);
   }
 
   static void error(String data) {
     //用於顯示無try catch的error
     myLogNew(LogMode.LogError, data);
+    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
+        "\n\n" +
+        StackTrace.current.toString().split("#5").first;
+    addErrorLog(error);
+  }
+
+  static addErrorLog(String error) {
+    errorLog.add(error);
+    if (errorLog.length >= 30) {
+      errorLog.removeAt(0);
+    }
+  }
+
+  static addDebugLog(String error) {
+    debugLog.add(error);
+    if (debugLog.length >= 20) {
+      debugLog.removeAt(0);
+    }
   }
 
   static void d(String data) {
     //用於debug的Log
     myLogNew(LogMode.LogDebug, data);
+    addDebugLog(data);
   }
 
   static myLogNew(LogMode mode, String log) {

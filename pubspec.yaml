@@ -34,6 +34,7 @@ dependencies:
   cookie_jar: 1.0.1  #可儲存式cookies
   http: 0.12.1  #網路get post API (無使用)
   html: 0.14.0+3  #html解析器
+  connectivity: 0.4.9
   #----------WebView----------#
   webview_flutter: 0.3.22+1
   flutter_webview_plugin: 0.3.11

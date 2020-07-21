@@ -92,14 +92,14 @@ class _ISchoolPageState extends State<ISchoolPage>
           ),
         ),
         body: PageView(
-          //控制滑動
-          controller: _pageController,
-          children: tabPageList.getTabPageList,
-          onPageChanged: (index) {
-            _tabController.animateTo(index); //與上面tab同步
-            _currentIndex = index;
-          },
-        ),
+        //控制滑動
+        controller: _pageController,
+        children: tabPageList.getTabPageList,
+        onPageChanged: (index) {
+          _tabController.animateTo(index); //與上面tab同步
+          _currentIndex = index;
+        },
+      ),
       ),
     );
   }

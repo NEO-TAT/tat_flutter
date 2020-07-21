@@ -13,6 +13,10 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/interceptors/error_interceptor.dart';
+import 'package:flutter_app/src/connector/interceptors/header_interceptor.dart';
+import 'package:flutter_app/src/connector/interceptors/log_interceptor.dart';
+import 'package:flutter_app/src/connector/interceptors/response_interceptor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'ConnectorParameter.dart';
@@ -65,6 +69,10 @@ class DioConnector {
       String appDocPath = appDocDir.path;
       _cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
       dio.interceptors.add(CookieManager(_cookieJar));
+      dio.interceptors.add(LogsInterceptors());
+      dio.interceptors.add(HeaderInterceptors());
+      dio.interceptors.add(ErrorInterceptors(dio));
+      //dio.interceptors.add(ResponseInterceptors());
     } catch (e) {
       Log.e(e.toString());
     }
