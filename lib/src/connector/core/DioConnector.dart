@@ -113,7 +113,7 @@ class DioConnector {
       ConnectorParameter parameter) async {
     Response<ResponseBody> response;
     try {
-      Log.d("getHeaderByGet " + parameter.url);
+      //Log.d("getHeaderByGet " + parameter.url);
       response = await dio.get<ResponseBody>(
         parameter.url,
         options: Options(
@@ -136,7 +136,7 @@ class DioConnector {
       Map<String, String> data = parameter.data;
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
-      Log.d(sprintf("Get : %s", [_putDataToUrl(url, data)]));
+      //Log.d(sprintf("Get : %s", [_putDataToUrl(url, data)]));
       response = await dio.get(url, queryParameters: data);
       return response;
     } catch (e) {
@@ -152,7 +152,7 @@ class DioConnector {
           (parameter.data is Map) ? parameter.data : Map();
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
-      Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
+      //Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
       response = await dio.post(url, data: parameter.data);
       return response;
     } catch (e) {
