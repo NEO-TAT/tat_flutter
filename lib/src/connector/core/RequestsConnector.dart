@@ -62,7 +62,7 @@ class RequestsConnector {
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
       await _handleCookiesBefore(url);
-      Log.d(sprintf("Get : %s", [_putDataToUrl(url, data)]));
+      //Log.d(sprintf("Get : %s", [_putDataToUrl(url, data)]));
       response = await Requests.get(url, headers: _headers);
       await _handleCookiesAfter(parameter.url,
           response.rawResponse.headers[HttpHeaders.setCookieHeader]);
@@ -81,7 +81,7 @@ class RequestsConnector {
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
       await _handleCookiesBefore(url);
-      Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
+      //Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
       response = await Requests.post(url, body: data, headers: _headers);
       await _handleCookiesAfter(parameter.url,
           response.rawResponse.headers[HttpHeaders.setCookieHeader]);
