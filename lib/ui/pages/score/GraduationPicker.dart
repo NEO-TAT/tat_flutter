@@ -107,8 +107,6 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   @override
   void initState() {
     super.initState();
-    graduationInformation =
-        Model.instance.getCourseScoreCredit().graduationInformation;
     Future.delayed(Duration.zero).then((_) {
       _addPresetTask();
     });

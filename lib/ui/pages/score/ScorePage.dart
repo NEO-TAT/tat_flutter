@@ -213,26 +213,30 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   void _buildTabBar() {
     tabLabelList = List();
     tabChildList = List();
-    if (courseScoreCredit.graduationInformation.isSelect) {
-      tabLabelList.add(_buildTabLabel(R.current.creditSummary));
-      tabChildList.add(
-        AnimationLimiter(
-          child: Column(
-            children: AnimationConfiguration.toStaggeredList(
-              childAnimationBuilder: (widget) => SlideAnimation(
-                verticalOffset: 50.0,
-                child: FadeInAnimation(child: widget),
+    try {
+      if (courseScoreCredit.graduationInformation.isSelect) {
+        tabLabelList.add(_buildTabLabel(R.current.creditSummary));
+        tabChildList.add(
+          AnimationLimiter(
+            child: Column(
+              children: AnimationConfiguration.toStaggeredList(
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  verticalOffset: 50.0,
+                  child: FadeInAnimation(child: widget),
+                ),
+                children: <Widget>[
+                  _buildSummary(),
+                  _buildGeneralLessonItem(),
+                  _buildOtherDepartmentItem(),
+                  _buildWarning(),
+                ],
               ),
-              children: <Widget>[
-                _buildSummary(),
-                _buildGeneralLessonItem(),
-                _buildOtherDepartmentItem(),
-                _buildWarning(),
-              ],
             ),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
     }
     for (int i = 0; i < courseScoreList.length; i++) {
       SemesterCourseScoreJson courseScore = courseScoreList[i];
