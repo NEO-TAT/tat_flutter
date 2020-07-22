@@ -5,7 +5,6 @@ import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
@@ -127,7 +126,6 @@ class AppHotFix {
 
   static Future<String> getData(String url) async {
     try {
-      Log.d(url);
       Response response = await DioConnector.instance.dio.get(
         url,
         options: Options(
