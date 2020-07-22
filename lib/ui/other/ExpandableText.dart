@@ -60,11 +60,15 @@ class _ExpandableTextState extends State<ExpandableText> {
                   Expanded(
                     child: Text(""),
                   ),
-                  if (!expand)
-                    Icon(
-                      Icons.arrow_drop_down,
-                      size: 20,
-                    ),
+                  (expand)
+                      ? Icon(
+                          Icons.arrow_drop_up,
+                          size: 20,
+                        )
+                      : Icon(
+                          Icons.arrow_drop_down,
+                          size: 20,
+                        ),
                 ],
               ),
               expand

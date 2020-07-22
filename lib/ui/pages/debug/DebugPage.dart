@@ -65,7 +65,10 @@ class _DebugPageState extends State<DebugPage>
       body: PageView(
         //控制滑動
         controller: _pageController,
-        children: [buildLog(Log.debugLog), buildLog(Log.errorLog)],
+        children: [
+          buildLog(Log.debugLog.reversed.toList()),
+          buildLog(Log.errorLog.reversed.toList())
+        ],
         onPageChanged: (index) {
           _tabController.animateTo(index); //與上面tab同步
           _currentIndex = index;
@@ -99,7 +102,7 @@ class _DebugPageState extends State<DebugPage>
       },
       separatorBuilder: (BuildContext context, int index) {
         return Divider(
-            height: 2.0, color: Theme.of(context).textSelectionColor);
+            height: 3.0, color: Theme.of(context).textSelectionColor);
       },
     );
   }
