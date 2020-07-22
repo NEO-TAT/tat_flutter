@@ -146,13 +146,18 @@ class AppHotFix {
   }
 
   static Future<List<String>> getSupportABis() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    //IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-    print('Running on ${androidInfo.supported32BitAbis}');
-    print('Running on ${androidInfo.supported64BitAbis}');
-    print('Running on ${androidInfo.supportedAbis}');
-    return (Platform.isAndroid) ? androidInfo.supportedAbis : List();
+    if(Platform.isAndroid) {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      //IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      print('Running on ${androidInfo.supported32BitAbis}');
+      print('Running on ${androidInfo.supported64BitAbis}');
+      print('Running on ${androidInfo.supportedAbis}');
+      return androidInfo.supportedAbis;
+    }else{
+      return List();
+    }
+
   }
 
   static Future<PatchDetail> checkPatchVersion() async {

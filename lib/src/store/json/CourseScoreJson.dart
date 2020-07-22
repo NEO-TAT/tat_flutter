@@ -267,8 +267,12 @@ class SemesterCourseScoreJson {
     double average = 0;
     double total = 0;
     for (CourseInfoJson score in courseScoreList) {
-      average += double.parse(score.score) * score.credit;
-      total += score.credit;
+      try {
+        average += double.parse(score.score) * score.credit;
+        total += score.credit;
+      }catch(e){
+        continue;
+      }
     }
     average /= total;
     return (averageScore != 0) ? averageScore.toString() : average.toString();
