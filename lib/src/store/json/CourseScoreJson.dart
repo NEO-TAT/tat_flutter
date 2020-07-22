@@ -196,9 +196,12 @@ class GraduationInformationJson {
   }
 
   bool get isSelect {
-    return !(selectYear.isEmpty &
-        selectDivision.isEmpty &
-        selectDepartment.isEmpty);
+    return selectYear != null &&
+        selectDivision != null &&
+        selectDepartment != null &&
+        !(selectYear.isEmpty |
+            selectDivision.isEmpty |
+            selectDepartment.isEmpty);
   }
 
   factory GraduationInformationJson.fromJson(Map<String, dynamic> json) =>
@@ -268,7 +271,7 @@ class SemesterCourseScoreJson {
       total += score.credit;
     }
     average /= total;
-    return (averageScore != 0) ? averageScore.toString() : average.toString() ;
+    return (averageScore != 0) ? averageScore.toString() : average.toString();
   }
 
   String getPerformanceScoreString() {

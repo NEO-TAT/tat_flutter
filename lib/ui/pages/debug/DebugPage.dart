@@ -26,6 +26,13 @@ class _DebugPageState extends State<DebugPage>
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

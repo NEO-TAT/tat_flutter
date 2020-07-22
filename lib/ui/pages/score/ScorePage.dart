@@ -213,7 +213,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   void _buildTabBar() {
     tabLabelList = List();
     tabChildList = List();
-
     if (courseScoreCredit.graduationInformation.isSelect) {
       tabLabelList.add(_buildTabLabel(R.current.creditSummary));
       tabChildList.add(
@@ -352,7 +351,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         for (String key in result.keys.toList()) {
           courseInfo.add(key);
           for (CourseInfoJson course in result[key]) {
-            courseInfo.add(sprintf("     %s",[course.name]));
+            courseInfo.add(sprintf("     %s", [course.name]));
           }
         }
         if (courseInfo.length != 0) {
@@ -445,8 +444,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         Model.instance.getGraduationInformation().selectDepartment;
     int otherDepartmentMaxCredit =
         courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
-    department = department.substring(0, 2);
-    Log.d(department);
+    try {
+      department = department.substring(0, 2);
+      Log.d(department);
+    } catch (e) {}
     Map<String, List<CourseInfoJson>> generalLesson =
         courseScoreCredit.getOtherDepartmentCourse(department);
     List<Widget> widgetList = List();
