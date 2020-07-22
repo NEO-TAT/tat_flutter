@@ -130,7 +130,7 @@ class ISchoolPlusConnector {
       _isLogin = true;
       return ISchoolPlusConnectorStatus.LoginSuccess;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return ISchoolPlusConnectorStatus.LoginFail;
     }
   }
@@ -241,7 +241,7 @@ class ISchoolPlusConnector {
 
       return courseFileList;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -317,7 +317,7 @@ class ISchoolPlusConnector {
         return [url, url];
       }
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       Log.e(result);
       return null;
     }
@@ -391,7 +391,7 @@ class ISchoolPlusConnector {
       }
       return announcementList;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -452,7 +452,7 @@ class ISchoolPlusConnector {
       detail["file"] = fileMap;
       return detail;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -480,7 +480,7 @@ class ISchoolPlusConnector {
         return true;
       }
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }
@@ -512,7 +512,7 @@ class ISchoolPlusConnector {
       }
       return courseNameList;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -630,7 +630,7 @@ class ISchoolPlusConnector {
         return true;
       }
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

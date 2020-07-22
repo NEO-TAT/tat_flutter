@@ -48,7 +48,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       }
       addLogic(sHttpRequest, map);
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
     }
     return options;
   }
@@ -67,7 +67,7 @@ class LogsInterceptors extends InterceptorsWrapper {
         addLogic(sResponsesHttpUrl, response?.request?.uri?.toString() ?? "");
         addLogic(sHttpResponses, data);
       } catch (e, stack) {
-        Log.eWithStack(e.toString(), stack.toString());
+        Log.eWithStack(e.toString(), stack);
       }
     } else if (response.data is String) {
       try {
@@ -76,7 +76,7 @@ class LogsInterceptors extends InterceptorsWrapper {
         addLogic(sResponsesHttpUrl, response?.request?.uri.toString() ?? "");
         addLogic(sHttpResponses, data);
       } catch (e, stack) {
-        Log.eWithStack(e.toString(), stack.toString());
+        Log.eWithStack(e.toString(), stack);
       }
     } else if (response.data != null) {
       try {
@@ -84,7 +84,7 @@ class LogsInterceptors extends InterceptorsWrapper {
         addLogic(sResponsesHttpUrl, response?.request?.uri.toString() ?? "");
         addLogic(sHttpResponses, json.decode(data));
       } catch (e, stack) {
-        Log.eWithStack(e.toString(), stack.toString());
+        Log.eWithStack(e.toString(), stack);
       }
     }
     return response; // continue
@@ -103,7 +103,7 @@ class LogsInterceptors extends InterceptorsWrapper {
       errors["error"] = err.message;
       addLogic(sHttpError, errors);
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
     }
     return err; // continue;
   }

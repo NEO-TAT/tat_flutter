@@ -67,7 +67,7 @@ class DioConnector {
       dio.interceptors.add(CookieManager(_cookieJar));
       dio.interceptors.add(LogsInterceptors());
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
     }
   }
 
@@ -190,7 +190,7 @@ class DioConnector {
             cancelToken: cancelToken,
             options: Options(receiveTimeout: 0, headers: header)) //設置不超時
         .catchError((onError, stack) {
-      Log.eWithStack(onError.toString(), stack.toString());
+      Log.eWithStack(onError.toString(), stack);
       throw onError;
     });
   }

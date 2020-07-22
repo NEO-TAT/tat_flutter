@@ -6,6 +6,7 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:sprintf/sprintf.dart';
@@ -13,7 +14,6 @@ import 'package:sprintf/sprintf.dart';
 enum LogMode { LogError, LogDebug }
 
 class Log {
-  static String _lastLog = "";
   static Logger logger = Logger(
     printer: PrettyPrinter(
         methodCount: 3,
@@ -32,18 +32,21 @@ class Log {
   static List<String> errorLog = List();
   static List<String> debugLog = List();
 
-  static void eWithStack(String data, String stack) {
+  static void eWithStack(String data, StackTrace stackTrace) {
     //用於顯示已用try catch的處理error
+    String stack = stackTrace.toString();
     String stackSplit = stack.split("#5").first;
     String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
         "\n\n" +
         stackSplit;
     logger.e(data, stackSplit);
+    Crashlytics.instance.recordError(data, stackTrace);
     addErrorLog(error);
   }
 
-  static void error(String data, String stack) {
+  static void error(String data, StackTrace stackTrace) {
     //用於顯示無try catch的error
+    String stack = stackTrace.toString();
     String stackSplit = stack.split("#5").first;
     String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
         "\n\n" +

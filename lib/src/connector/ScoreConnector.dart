@@ -65,7 +65,7 @@ class ScoreConnector {
       _isLogin = true;
       return ScoreConnectorStatus.LoginSuccess;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return ScoreConnectorStatus.LoginFail;
     }
   }
@@ -234,7 +234,7 @@ class ScoreConnector {
       }
       return courseScoreList;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -271,7 +271,7 @@ class ScoreConnector {
       }
       return coreGeneralLessonList;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -299,7 +299,7 @@ class ScoreConnector {
         return true;
       }
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

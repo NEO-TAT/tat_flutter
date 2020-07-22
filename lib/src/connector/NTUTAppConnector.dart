@@ -35,7 +35,7 @@ class NTUTAppConnector {
       _isLogin = true;
       return NTUTAppConnectorStatus.LoginSuccess;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return NTUTAppConnectorStatus.LoginFail;
     }
   }
@@ -67,7 +67,7 @@ class NTUTAppConnector {
       _isLogin = true;
       return departmentData;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -98,7 +98,7 @@ class NTUTAppConnector {
       _isLogin = true;
       return true;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack.toString());
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

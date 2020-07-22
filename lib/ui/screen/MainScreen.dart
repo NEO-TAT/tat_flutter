@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
             .setString("Supported ABis", supportedABis.toString());
         await AppHotFix.hotFixSuccess(contextKey);
       } catch (e, stack) {
-        Log.eWithStack(e.toString(), stack.toString());
+        Log.eWithStack(e.toString(), stack);
       }
       setState(() {
         _pageList = List();

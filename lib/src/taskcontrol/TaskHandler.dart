@@ -84,7 +84,7 @@ class TaskHandler {
           _handleSuccessTask(task);
         }
       } catch (e, stack) {
-        Log.eWithStack(e.toString(), stack.toString());
+        Log.eWithStack(e.toString(), stack);
         _handleErrorTask(task);
       }
     }
