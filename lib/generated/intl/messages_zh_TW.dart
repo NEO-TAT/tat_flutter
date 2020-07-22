@@ -154,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageSetting" : MessageLookupByLibrary.simpleMessage("語言"),
     "languageSwitch" : MessageLookupByLibrary.simpleMessage("使用英文介面"),
     "loadFavorite" : MessageLookupByLibrary.simpleMessage("載入常用課表"),
+    "loading" : MessageLookupByLibrary.simpleMessage("載入中..."),
     "location" : MessageLookupByLibrary.simpleMessage("地點"),
     "login" : MessageLookupByLibrary.simpleMessage("登入"),
     "loginCourse" : MessageLookupByLibrary.simpleMessage("登入課程系統..."),

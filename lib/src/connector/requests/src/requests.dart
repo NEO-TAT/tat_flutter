@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 
+import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/config/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart' as io_client;
 import 'package:logging/logging.dart';
@@ -166,6 +168,12 @@ class Requests {
     if (response.hasError) {
       var errorEvent = {"response": response};
       onError.publish(errorEvent);
+    }
+
+    if (Config.DEBUG) {
+      if (response != null) {
+        Log.d('返回參數: \n' + response.content().toString());
+      }
     }
 
     return response;
@@ -336,7 +344,14 @@ class Requests {
         headers["content-type"] = contentTypeHeader;
       }
     }
-
+    if (Config.DEBUG) {
+      String log =
+          "請求url：${uri.path}" + "\n" + '請求頭: ${headers.toString()}' + "\n";
+      if (uri.data != null) {
+        log += '請求參數: ${uri.data.toString()}';
+      }
+      Log.d(log);
+    }
     method = method.toLowerCase();
     Future future;
     switch (method) {

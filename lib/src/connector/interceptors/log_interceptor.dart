@@ -23,11 +23,14 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options) async {
     if (Config.DEBUG) {
-      Log.d("請求url：${options.path}");
-      Log.d('請求頭: ' + options.headers.toString());
+      String log = "請求url：${options.path}" +
+          "\n" +
+          '請求頭: ${options.headers.toString()}' +
+          "\n";
       if (options.data != null) {
-        Log.d('請求參數: ' + options.data.toString());
+        log += '請求參數: ${options.data.toString()}';
       }
+      Log.d(log);
     }
     try {
       addLogic(sRequestHttpUrl, options.path ?? "");
@@ -54,7 +57,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   onResponse(Response response) async {
     if (Config.DEBUG) {
       if (response != null) {
-        Log.d('返回參數: ' + response.toString());
+        Log.d('返回參數: \n' + response.toString());
       }
     }
     if (response.data is Map || response.data is List) {
@@ -90,8 +93,9 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onError(DioError err) async {
     if (Config.DEBUG) {
-      Log.d('請求異常: ' + err.toString());
-      Log.d('請求異常信息: ' + (err.response?.toString() ?? ""));
+      String log =
+          '請求異常: ' + err.toString() + '\n' + err.response?.toString() ?? "";
+      Log.d(log);
     }
     try {
       addLogic(sHttpErrorUrl, err.request.path ?? "null");

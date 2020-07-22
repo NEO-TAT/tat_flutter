@@ -13,12 +13,8 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/interceptors/error_interceptor.dart';
-import 'package:flutter_app/src/connector/interceptors/header_interceptor.dart';
 import 'package:flutter_app/src/connector/interceptors/log_interceptor.dart';
-import 'package:flutter_app/src/connector/interceptors/response_interceptor.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sprintf/sprintf.dart';
 import 'ConnectorParameter.dart';
 
 typedef SavePathCallback = String Function(Headers responseHeaders);
@@ -70,9 +66,6 @@ class DioConnector {
       _cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
       dio.interceptors.add(CookieManager(_cookieJar));
       dio.interceptors.add(LogsInterceptors());
-      dio.interceptors.add(HeaderInterceptors());
-      dio.interceptors.add(ErrorInterceptors(dio));
-      //dio.interceptors.add(ResponseInterceptors());
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack.toString());
     }
@@ -113,7 +106,7 @@ class DioConnector {
       ConnectorParameter parameter) async {
     Response<ResponseBody> response;
     try {
-      Log.d("getHeaderByGet " + parameter.url);
+      //Log.d("getHeaderByGet " + parameter.url);
       response = await dio.get<ResponseBody>(
         parameter.url,
         options: Options(
@@ -136,7 +129,7 @@ class DioConnector {
       Map<String, String> data = parameter.data;
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
-      Log.d(sprintf("Get : %s", [_putDataToUrl(url, data)]));
+      //Log.d(sprintf("Get : %s", [_putDataToUrl(url, data)]));
       response = await dio.get(url, queryParameters: data);
       return response;
     } catch (e) {
@@ -148,11 +141,13 @@ class DioConnector {
     Response response;
     try {
       String url = parameter.url;
-      Map<String, String> data =
-          (parameter.data is Map) ? parameter.data : Map();
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
+      /*
+      Map<String, String> data =
+          (parameter.data is Map) ? parameter.data : Map();
       Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
+       */
       response = await dio.post(url, data: parameter.data);
       return response;
     } catch (e) {

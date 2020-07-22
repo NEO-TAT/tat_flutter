@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/ui/other/ExpandableText.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -64,7 +65,10 @@ class _DebugPageState extends State<DebugPage>
       body: PageView(
         //控制滑動
         controller: _pageController,
-        children: [buildLog(Log.debugLog), buildLog(Log.errorLog)],
+        children: [
+          buildLog(Log.debugLog.reversed.toList()),
+          buildLog(Log.errorLog.reversed.toList())
+        ],
         onPageChanged: (index) {
           _tabController.animateTo(index); //與上面tab同步
           _currentIndex = index;
@@ -80,27 +84,25 @@ class _DebugPageState extends State<DebugPage>
         return AnimationConfiguration.staggeredList(
           position: index,
           duration: const Duration(milliseconds: 375),
-          child: SlideAnimation(
-            verticalOffset: 50.0,
-            child: FadeInAnimation(
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                child: Container(
-                    padding: EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 10),
-                    child: Text(logList[index])),
-                onLongPress: () {
-                  Clipboard.setData(ClipboardData(text: logList[index]));
-                  MyToast.show("Copy");
-                },
-              ),
-            ),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque, //讓透明部分有反應
+            child: Container(
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                child: ExpandableText(
+                  text: logList[index],
+                  maxLines: 3,
+                )),
+            onLongPress: () {
+              Clipboard.setData(ClipboardData(text: logList[index]));
+              MyToast.show("Copy");
+            },
           ),
         );
       },
       separatorBuilder: (BuildContext context, int index) {
         return Divider(
-            height: 2.0, color: Theme.of(context).textSelectionColor);
+            height: 3.0, color: Theme.of(context).textSelectionColor);
       },
     );
   }

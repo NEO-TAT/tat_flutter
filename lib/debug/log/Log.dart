@@ -34,29 +34,37 @@ class Log {
 
   static void eWithStack(String data, String stack) {
     //用於顯示已用try catch的處理error
-    myLogNew(LogMode.LogError, data);
+    String stackSplit = stack.split("#5").first;
     String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
         "\n\n" +
-        stack.split("#5").first;
-    addErrorLog(error);
-  }
-
-  static void e(String data) {
-    //用於顯示已用try catch的處理error
-    myLogNew(LogMode.LogError, data);
-    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
-        "\n\n" +
-        StackTrace.current.toString().split("#5").first;
+        stackSplit;
+    logger.e(data, stackSplit);
     addErrorLog(error);
   }
 
   static void error(String data, String stack) {
     //用於顯示無try catch的error
-    myLogNew(LogMode.LogError, data);
+    String stackSplit = stack.split("#5").first;
+    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
+        "\n\n" +
+        stackSplit;
+    logger.e(data, stackSplit);
+    addErrorLog(error);
+  }
+
+  static void e(String data) {
+    //用於顯示已用try catch的處理error
     String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
         "\n\n" +
         StackTrace.current.toString().split("#5").first;
+    logger.e(data);
     addErrorLog(error);
+  }
+
+  static void d(String data) {
+    //用於debug的Log
+    logger.d(data);
+    addDebugLog(data);
   }
 
   static addErrorLog(String error) {
@@ -71,81 +79,5 @@ class Log {
     if (debugLog.length >= 20) {
       debugLog.removeAt(0);
     }
-  }
-
-  static void d(String data) {
-    //用於debug的Log
-    myLogNew(LogMode.LogDebug, data);
-    addDebugLog(data);
-  }
-
-  static myLogNew(LogMode mode, String log) {
-    if (bool.fromEnvironment("dart.vm.product") == true) {
-      //代表現在不是debug模式
-      return;
-    }
-    switch (mode) {
-      case LogMode.LogDebug:
-        logger.d(log);
-        break;
-      case LogMode.LogError:
-        logger.e(log);
-        break;
-    }
-  }
-
-  static myLog(LogMode mode, String data) {
-    if (bool.fromEnvironment("dart.vm.product") == true) {
-      //代表現在不是debug模式
-      return;
-    }
-    String log;
-    String nowLog = _getFileLogDebug();
-    String printLog = "";
-    String printMode = "";
-    switch (mode) {
-      case LogMode.LogDebug:
-        printLog = _getFileLogDebug();
-        printMode = "Debug";
-        break;
-      case LogMode.LogError:
-        printLog = _getFileLogError();
-        printMode = "Error";
-        break;
-    }
-    if (_lastLog != nowLog) {
-      print("\n\n");
-      log = sprintf("LogLevel: %s \nClass : %s \nMessage : \n%s",
-          [printMode, printLog, data]);
-    } else {
-      log = sprintf("%s", [data]);
-    }
-    _lastLog = nowLog;
-    _printWrapped(log);
-  }
-
-  static void _printWrapped(String text) {
-    final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-    pattern.allMatches(text).forEach((match) => debugPrint(match.group(0)));
-  }
-
-  static String _getFileLogError() {
-    String log = buildLog(StackTrace.current.toString());
-    return log;
-  }
-
-  static String _getFileLogDebug() {
-    String log = StackTrace.current.toString();
-    return log.split('\n')[3].replaceFirst("#3      ", "");
-  }
-
-  static String buildLog(String inputLog) {
-    List<String> logList = inputLog.split("#");
-    String log = "";
-    int size = (logList.length >= 20) ? 20 : logList.length;
-    for (String logItem in logList.sublist(0, size)) {
-      log += '#' + logItem + "\n";
-    }
-    return log;
   }
 }

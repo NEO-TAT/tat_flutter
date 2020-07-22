@@ -155,6 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "languageSetting" : MessageLookupByLibrary.simpleMessage("Language"),
     "languageSwitch" : MessageLookupByLibrary.simpleMessage("Use English interface"),
     "loadFavorite" : MessageLookupByLibrary.simpleMessage("Load favorite"),
+    "loading" : MessageLookupByLibrary.simpleMessage("Loading..."),
     "location" : MessageLookupByLibrary.simpleMessage("Location"),
     "login" : MessageLookupByLibrary.simpleMessage("Login"),
     "loginCourse" : MessageLookupByLibrary.simpleMessage("Login course system..."),
