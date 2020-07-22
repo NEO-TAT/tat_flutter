@@ -72,7 +72,7 @@ class DioConnector {
       dio.interceptors.add(LogsInterceptors());
       dio.interceptors.add(HeaderInterceptors());
       dio.interceptors.add(ErrorInterceptors(dio));
-      //dio.interceptors.add(ResponseInterceptors());
+      dio.interceptors.add(ResponseInterceptors(dio));
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack.toString());
     }

@@ -80,10 +80,7 @@ class _DebugPageState extends State<DebugPage>
         return AnimationConfiguration.staggeredList(
           position: index,
           duration: const Duration(milliseconds: 375),
-          child: SlideAnimation(
-            verticalOffset: 50.0,
-            child: FadeInAnimation(
-              child: GestureDetector(
+          child: GestureDetector(
                 behavior: HitTestBehavior.opaque, //讓透明部分有反應
                 child: Container(
                     padding: EdgeInsets.only(
@@ -93,8 +90,6 @@ class _DebugPageState extends State<DebugPage>
                   Clipboard.setData(ClipboardData(text: logList[index]));
                   MyToast.show("Copy");
                 },
-              ),
-            ),
           ),
         );
       },
