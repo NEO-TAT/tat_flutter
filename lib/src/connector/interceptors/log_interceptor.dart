@@ -57,7 +57,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   onResponse(Response response) async {
     if (Config.DEBUG) {
       if (response != null) {
-        Log.d('返回參數: ' + response.toString());
+        Log.d('返回參數: \n' + response.toString());
       }
     }
     if (response.data is Map || response.data is List) {
