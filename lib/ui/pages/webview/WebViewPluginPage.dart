@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class WebViewPluginPage extends StatefulWidget {
@@ -59,6 +61,26 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
     }
   }
 
+  renderLoading() {
+    return new Center(
+      child: new Container(
+        width: 200.0,
+        height: 200.0,
+        padding: new EdgeInsets.all(4.0),
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
+            new Container(width: 10.0),
+            new Container(
+              child: new Text(R.current.loading),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
@@ -90,6 +112,7 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
       withZoom: true,
       withLocalStorage: true,
       withJavascript: true,
+      initialChild: renderLoading(),
     );
   }
 

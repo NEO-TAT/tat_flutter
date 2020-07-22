@@ -234,5 +234,6 @@
   "searchingDepartment": "Searching department",
   "searchingCreditInfo": "Searching credit",
   "graduationSetting": "Graduation credit standard setting",
-  "save": "Save"
+  "save": "Save",
+  "loading": "Loading..."
 }

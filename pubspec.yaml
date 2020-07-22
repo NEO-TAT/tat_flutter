@@ -69,6 +69,7 @@ dependencies:
   fluttertoast: 4.0.1      #Toast
   awesome_dialog: 1.1.2  #顯示Error時用到
   flutter_slidable: 0.5.4  #email使用可左右滑抽屜
+  flutter_spinkit: 4.1.2+1 #等待動畫
 
   # Firebase
   firebase_core: 0.4.5  # 0.4.4+3 版本在 iOS 尚有問題
