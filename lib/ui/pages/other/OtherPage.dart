@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -142,6 +144,7 @@ class _OtherPageState extends State<OtherPage> {
           int patchVersion = await AppHotFix.getPatchVersion();
           Uri url = Uri.https(Uri.parse(AppLink.feedback).host,
               Uri.parse(AppLink.feedback).path, {
+            "entry.978972557": (Platform.isAndroid) ? "Android" : "IOS",
             "entry.823909330": sprintf("%s.%d", [mainVersion, patchVersion]),
             "entry.517392071": Log.getLogString()
           });
