@@ -44,6 +44,7 @@ class MediaType {
       // This parsing is based on sections 3.6 and 3.7 of the HTTP spec:
       // http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html.
       wrapFormatException('media type', mediaType, () {
+        mediaType = mediaType.replaceAll(';;', ';');
         final scanner = StringScanner(mediaType);
         scanner.scan(whitespace);
         scanner.expect(token);
