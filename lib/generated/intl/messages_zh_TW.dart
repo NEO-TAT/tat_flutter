@@ -197,6 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "percentage" : MessageLookupByLibrary.simpleMessage("百分比"),
     "performanceScores" : MessageLookupByLibrary.simpleMessage("操行成績"),
     "philosophicalDimension" : MessageLookupByLibrary.simpleMessage("哲學向度"),
+    "pleaseConnectToNetwork" : MessageLookupByLibrary.simpleMessage("請連接到網路"),
     "pleaseEnterStudentId" : MessageLookupByLibrary.simpleMessage("請輸入學號"),
     "pleaseLogin" : MessageLookupByLibrary.simpleMessage("請登入"),
     "pleaseMoveToFilePage" : MessageLookupByLibrary.simpleMessage("請直接移到下載頁面"),

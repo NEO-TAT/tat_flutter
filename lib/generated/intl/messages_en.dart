@@ -198,6 +198,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "percentage" : MessageLookupByLibrary.simpleMessage("Percentage"),
     "performanceScores" : MessageLookupByLibrary.simpleMessage("Performance scores"),
     "philosophicalDimension" : MessageLookupByLibrary.simpleMessage("Philosophical dimension"),
+    "pleaseConnectToNetwork" : MessageLookupByLibrary.simpleMessage("Please connect to network"),
     "pleaseEnterStudentId" : MessageLookupByLibrary.simpleMessage("Please enter student number"),
     "pleaseLogin" : MessageLookupByLibrary.simpleMessage("Please Login"),
     "pleaseMoveToFilePage" : MessageLookupByLibrary.simpleMessage("Please go directly to the download page"),

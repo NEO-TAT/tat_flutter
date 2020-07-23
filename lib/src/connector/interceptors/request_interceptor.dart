@@ -1,9 +1,5 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-
-import '../../../debug/log/Log.dart';
-import '../core/ConnectorParameter.dart';
 
 class RequestInterceptors extends InterceptorsWrapper {
   String referer = "https://nportal.ntut.edu.tw";

@@ -235,5 +235,6 @@
   "searchingCreditInfo": "查詢中學分資訊",
   "graduationSetting": "畢業學分標準設定",
   "save": "儲存",
-  "loading": "載入中..."
+  "loading": "載入中...",
+  "pleaseConnectToNetwork": "請連接到網路"
 }
