@@ -85,4 +85,20 @@ class Log {
       debugLog.removeAt(0);
     }
   }
+
+  static getLogString() {
+    String log = "";
+    log += 'error log \n';
+    if (errorLog.length == 0) {
+      return "目前沒有記錄到任何錯誤訊息";
+    }
+    for (String i in errorLog.reversed.toList()) {
+      log += i;
+    }
+    log += 'debug log \n';
+    for (String i in debugLog.reversed.toList()) {
+      log += i;
+    }
+    return (log.length <= 500) ? log : log.substring(0, 500);
+  }
 }

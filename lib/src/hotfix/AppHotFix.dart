@@ -17,6 +17,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
 
+import '../../debug/log/Log.dart';
 import 'PatchVersion.dart';
 
 class PatchDetail {
@@ -148,9 +149,11 @@ class AppHotFix {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       //IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      print('Running on ${androidInfo.supported32BitAbis}');
-      print('Running on ${androidInfo.supported64BitAbis}');
-      print('Running on ${androidInfo.supportedAbis}');
+      String log = "";
+      log += "supported32BitAbis : ${androidInfo.supported32BitAbis} \n";
+      log += "supported64BitAbis : ${androidInfo.supported64BitAbis} \n";
+      log += "supportedAbis : ${androidInfo.supportedAbis}";
+      Log.d(log);
       return androidInfo.supportedAbis;
     }else{
       return List();

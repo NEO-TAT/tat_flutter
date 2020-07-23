@@ -5,6 +5,7 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 import 'dart:async';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -15,6 +16,9 @@ import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntutapp/NTUTAppLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreLoginTask.dart';
+
+import '../../ui/other/MyToast.dart';
+import '../R.dart';
 
 class TaskHandler {
   TaskHandler._privateConstructor();
@@ -64,6 +68,11 @@ class TaskHandler {
   }
 
   Future<void> startTaskQueue(BuildContext context) async {
+    var connectivityResult = await (new Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      MyToast.show(R.current.pleaseConnectToNetwork);
+      giveUpTask();
+    }
     startTaskContext = context;
     for (TaskModel task in _taskQueue) {
       Log.d("Task: " + task.getTaskName);

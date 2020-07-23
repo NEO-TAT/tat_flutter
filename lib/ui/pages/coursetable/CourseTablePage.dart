@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
@@ -25,6 +24,9 @@ import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
+import '../../../src/taskcontrol/TaskHandler.dart';
+import '../../../src/taskcontrol/TaskModelFunction.dart';
+import '../../../src/taskcontrol/task/CheckCookiesTask.dart';
 import 'CourseTableControl.dart';
 import 'OverRepaintBoundary.dart';
 import 'dart:ui' as ui;
@@ -90,70 +92,68 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       loadCourseNotice = true;
     });
-    bool needNTUTLogin = !await NTUTConnector.checkLogin();
-    bool needISchoolPlusLogin = !await ISchoolPlusConnector.checkLogin();
-    if (needISchoolPlusLogin) {
-      if (needNTUTLogin) {
-        await NTUTConnector.login(
-            Model.instance.getAccount(), Model.instance.getPassword());
+    TaskHandler.instance.addTask(TaskModelFunction(null, require: [
+      CheckCookiesTask.checkNTUT,
+      CheckCookiesTask.checkPlusISchool
+    ], taskFunction: () async {
+      List<String> v = await ISchoolPlusConnector.getSubscribeNotice();
+      List<String> value = List();
+      v = v ?? List();
+      for (int i = 0; i < v.length; i++) {
+        String courseName = v[i];
+        CourseInfoJson courseInfo =
+            courseTableData.getCourseInfoByCourseName(courseName);
+        if (courseInfo != null) {
+          value.add(courseName);
+        }
       }
-      await ISchoolPlusConnector.login(Model.instance.getAccount());
-    }
-    List<String> v = await ISchoolPlusConnector.getSubscribeNotice();
-    List<String> value = List();
-    v = v ?? List();
-    for (int i = 0; i < v.length; i++) {
-      String courseName = v[i];
-      CourseInfoJson courseInfo =
-          courseTableData.getCourseInfoByCourseName(courseName);
-      if (courseInfo != null) {
-        value.add(courseName);
+      if (value != null && value.length > 0) {
+        showDialog<void>(
+          useRootNavigator: false,
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(R.current.findNewMessage),
+              content: Container(
+                width: double.minPositive,
+                child: ListView.builder(
+                  itemCount: value.length,
+                  shrinkWrap: true, //使清單最小化
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      child: FlatButton(
+                        child: Text(value[index]),
+                        onPressed: () {
+                          String courseName = value[index];
+                          CourseInfoJson courseInfo = courseTableData
+                              .getCourseInfoByCourseName(courseName);
+                          if (courseInfo != null) {
+                            _showCourseDetail(courseInfo);
+                          } else {
+                            MyToast.show(R.current.noSupport);
+                            Navigator.of(context).pop();
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(R.current.sure),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       }
-    }
-    if (value != null && value.length > 0) {
-      showDialog<void>(
-        useRootNavigator: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(R.current.findNewMessage),
-            content: Container(
-              width: double.minPositive,
-              child: ListView.builder(
-                itemCount: value.length,
-                shrinkWrap: true, //使清單最小化
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    child: FlatButton(
-                      child: Text(value[index]),
-                      onPressed: () {
-                        String courseName = value[index];
-                        CourseInfoJson courseInfo = courseTableData
-                            .getCourseInfoByCourseName(courseName);
-                        if (courseInfo != null) {
-                          _showCourseDetail(courseInfo);
-                        } else {
-                          MyToast.show(R.current.noSupport);
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text(R.current.sure),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+      return true;
+    }, errorFunction: () {}, successFunction: () {}));
+    await TaskHandler.instance.startTaskQueue(null);
     Model.instance.setAlreadyUse(Model.courseNotice);
     setState(() {
       loadCourseNotice = false;
