@@ -81,12 +81,12 @@ class NTUTConnector {
         return NTUTConnectorStatus.LoginSuccess;
       }
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
       if (e is TimeoutException || e is DioError) {
         return NTUTConnectorStatus.ConnectTimeOutError;
       } else if (e is SocketException) {
         return NTUTConnectorStatus.NetworkError;
       }
+      Log.eWithStack(e.toString(), stack);
       return NTUTConnectorStatus.UnknownError;
     }
   }
@@ -159,7 +159,7 @@ class NTUTConnector {
         return true;
       }
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
+      //Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

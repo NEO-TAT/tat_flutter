@@ -98,7 +98,7 @@ class NTUTAppConnector {
       _isLogin = true;
       return true;
     } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
+      //Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

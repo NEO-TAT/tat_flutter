@@ -18,9 +18,11 @@ import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sprintf/sprintf.dart';
 
+import '../../../src/connector/NTUTConnector.dart';
 import '../../../src/costants/AppLink.dart';
 import '../../../src/hotfix/AppHotFix.dart';
 import '../../../src/update/AppUpdate.dart';
@@ -208,7 +210,8 @@ class _OtherPageState extends State<OtherPage> {
         backgroundImage: imageProvider,
       ),
       useOldImageOnUrlChange: true,
-      placeholder: (context, url) => CircularProgressIndicator(),
+      placeholder: (context, url) =>
+          SpinKitPouringHourglass(color: Colors.white),
       errorWidget: (context, url, error) {
         Log.e(error.toString());
         return Icon(Icons.error);
@@ -241,8 +244,26 @@ class _OtherPageState extends State<OtherPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
+            width: 60,
             child: InkWell(
-              child: userImage,
+              child: FutureBuilder<NTUTConnectorStatus>(
+                future: NTUTConnector.checkLogin().then((value) {
+                  if (!value)
+                    return NTUTConnector.login(Model.instance.getAccount(),
+                        Model.instance.getPassword());
+                  else
+                    return NTUTConnectorStatus.LoginSuccess;
+                }),
+                builder: (BuildContext context,
+                    AsyncSnapshot<NTUTConnectorStatus> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.data == NTUTConnectorStatus.LoginSuccess) {
+                    return userImage;
+                  } else {
+                    return SpinKitPouringHourglass(color: Colors.white);
+                  }
+                },
+              ),
               onTap: () {
                 Model.instance.cacheManager.emptyCache(); //清除圖片暫存
               },
