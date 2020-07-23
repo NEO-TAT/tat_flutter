@@ -12,13 +12,12 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   path: 1.6.4
-  provider: 4.1.3
-  path_provider: 1.6.10
-  url_launcher: 5.4.10   #開啟email phone url...
+  provider: 4.3.1
+  path_provider: 1.6.11
+  url_launcher: 5.5.0   #開啟email phone url...
   logger: 0.9.1         #顯示Log
   sprintf: 4.0.2
   flutter_local_notifications: 1.4.3  #通知欄  需修改android原始碼
-  hex: 0.1.2
   rxdart: 0.24.1 #通知欄有使用到
   flutter_ijkplayer: 0.3.5+1
   after_init: 0.1.2
@@ -26,55 +25,55 @@ dependencies:
   device_info: 0.4.2+4
   html_unescape: 1.0.1+3  #處理HTML特殊字
   #----------store data----------#
-  shared_preferences: 0.5.7+3
-  flutter_cache_manager: 1.4.0
+  shared_preferences: 0.5.8
+  flutter_cache_manager: 1.4.1
   #----------internet----------#
   dio: 3.0.9      #網路get post API
   dio_cookie_manager: 1.0.0  #用於產生cookie_jar與dio接口
   cookie_jar: 1.0.1  #可儲存式cookies
-  http: 0.12.1  #網路get post API (無使用)
   html: 0.14.0+3  #html解析器
   connectivity: 0.4.9
   #----------WebView----------#
-  webview_flutter: 0.3.22+1
   flutter_webview_plugin: 0.3.11
   #---------icon----------#
-  eva_icons_flutter: 2.0.0
+  eva_icons_flutter: 2.0.1
   flutter_icons: 1.1.0
   #---------json----------#
   json_annotation: 3.0.1
   #----------other----------#
   back_button_interceptor: 4.2.4     #攔截返回鍵訊息
   big5: 0.0.4     #big5 decode encode
-  quiver: 2.1.3   #hashcode
   intl: 0.16.1    #DateTime to String
   package_info: 0.4.1  #檢測app版本用於檢查更新
   #----------html viewer----------#
-  #flutter_html: ^0.11.1
-  flutter_widget_from_html_core: 0.3.3+4
+  flutter_widget_from_html_core: 0.4.2
   #----------animation----------#
   page_transition: 1.1.5                #頁面切換動畫
   flutter_staggered_animations: 0.1.2   #listView or gridView動畫
   #----------download----------#
   flutter_downloader: 1.4.4  #下載app更新
   open_file: 3.0.1
-  permission_handler: 5.0.1
-  mime_type: 0.3.1
+  permission_handler: 5.0.1+1
+  mime_type: 0.3.2
   #----------Widget----------#
-  pull_to_refresh: 1.5.8  #提供ListView可下拉式更新並且可動態加載
+  pull_to_refresh: 1.6.0  #提供ListView可下拉式更新並且可動態加載
   cached_network_image: 2.2.0+1  #用url顯示圖片
   auto_size_text: 2.1.0  #課表顯示有用到
   table_calendar: 2.2.3    #顯示行事曆
   flutter_xlider: 3.4.0    #語言切換用
-  fluttertoast: 4.0.1      #Toast
-  awesome_dialog: 1.1.2  #顯示Error時用到
-  flutter_slidable: 0.5.4  #email使用可左右滑抽屜
+  fluttertoast: 7.0.1      #Toast
+  awesome_dialog: 1.1.3  #顯示Error時用到
+  flutter_slidable: 0.5.5  #email使用可左右滑抽屜
   flutter_spinkit: 4.1.2+1 #等待動畫
 
   # Firebase
   firebase_core: 0.4.5  # 0.4.4+3 版本在 iOS 尚有問題
-  firebase_analytics: 5.0.15
+  firebase_analytics: 5.0.16
   firebase_crashlytics: 0.1.3+3
+dependency_overrides:
+  http_parser:
+    path: plugins/http_parser
+
 
 dev_dependencies:
   flutter_test:
@@ -90,8 +89,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/icon/
-    - assets/gif/
 
   fonts:
     - family: MyIcon

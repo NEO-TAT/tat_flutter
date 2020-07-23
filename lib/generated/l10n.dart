@@ -2402,6 +2402,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Please connect to network`
+  String get pleaseConnectToNetwork {
+    return Intl.message(
+      'Please connect to network',
+      name: 'pleaseConnectToNetwork',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

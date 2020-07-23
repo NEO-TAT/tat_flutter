@@ -235,5 +235,6 @@
   "searchingCreditInfo": "Searching credit",
   "graduationSetting": "Graduation credit standard setting",
   "save": "Save",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "pleaseConnectToNetwork": "Please connect to network"
 }
