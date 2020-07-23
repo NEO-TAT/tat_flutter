@@ -112,16 +112,9 @@ class ISchoolPlusConnector {
           downloadPost[key] = node.attributes['value'];
         }
       }
-
       parameter = ConnectorParameter(
           _iSchoolPlusUrl + "learn/path/SCORM_loadCA.php"); //取得下載檔案XML
       result = await Connector.getDataByGet(parameter);
-/*
-      xml.XmlDocument xmlDocument = xml.parse(result);
-      Iterable<xml.XmlElement> itemIterable = xmlDocument.findAllElements("item");
-      Iterable<xml.XmlElement> resourceIterable = xmlDocument.findAllElements("resource");
-      Log.d( 'a' + itemIterable.toList()[0].text.split("\t")[0].replaceAll(RegExp("[\s|\n| ]"), "") );
- */
       tagNode = html.parse(result);
       itemNodes = tagNode.getElementsByTagName("item");
       resourceNodes = tagNode.getElementsByTagName("resource");
@@ -153,20 +146,6 @@ class ISchoolPlusConnector {
         downloadPost['href'] = href;
         fileType.postData = Map.of(downloadPost); //紀錄  需要使用Map.of不一個改全部都改
         fileType.type = CourseFileType.Unknown;
-        //以下這段會花費大量時間，改成點擊下載在取得
-        /*
-        fileType.href = await getRealFileUrl(downloadPost);
-        if ( fileType.href == null ){
-          continue;
-        }
-        if (courseFile.name.toLowerCase().contains(".pdf")) {  //是PDF
-          fileType.type = CourseFileType.PDF;
-        }else if( !Uri.parse(fileType.href).host.toLowerCase().contains("ntut.edu.tw") ){  //代表是外部連接
-          fileType.type = CourseFileType.Link;
-        }else{
-          fileType.type = CourseFileType.Unknown;
-        }
-         */
         courseFile.fileType = [fileType];
         courseFileList.add(courseFile);
       }
@@ -189,24 +168,15 @@ class ISchoolPlusConnector {
           _iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
       parameter.data = postParameter;
       parameter.charsetName = 'big5';
+      parameter.referer = "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
       Response response;
-      response = await Connector.getDataByGetResponse(parameter);
+      response = await Connector.getDataByPostResponse(parameter);
       result = response.toString();
       RegExp exp;
       RegExpMatch matches;
       if (response.statusCode == HttpStatus.ok) {
-        /*  //如果需要使用\w \\w
-        RegExp exp = new RegExp("\"(?<url>https?:\/\/[\w|\:|\/|\.|\+|\s|\?|%|#|&|=]+)\""); //檢測http或https開頭網址
-        RegExpMatch matches = exp.firstMatch(result);
-        Log.d( matches.toString() );
-        bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : true;
-         */
         exp = new RegExp("\"(?<url>http.+)\""); //檢測網址
         matches = exp.firstMatch(result);
-        //Log.d( matches.toString() );
-        //Log.d( matches.group(1));
-        //Log.d( result);
-        //bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : matches.group(1).toLowerCase().contains(RegExp("https"))? true:false;
         bool pass = (matches == null)
             ? false
             : (matches.groupCount == null)

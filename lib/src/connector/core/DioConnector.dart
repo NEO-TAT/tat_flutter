@@ -21,11 +21,9 @@ import 'ConnectorParameter.dart';
 typedef SavePathCallback = String Function(Headers responseHeaders);
 
 class DioConnector {
-  static String _refererUrl = "https://nportal.ntut.edu.tw";
   static Map<String, String> _headers = {
-    "User-Agent": presetUserAgent,
+    HttpHeaders.userAgentHeader: presetUserAgent,
     "Upgrade-Insecure-Requests": "1",
-    "Referer": _refererUrl,
   };
   static final BaseOptions dioOptions = new BaseOptions(
       connectTimeout: 5000,
@@ -108,7 +106,6 @@ class DioConnector {
       ConnectorParameter parameter) async {
     Response<ResponseBody> response;
     try {
-      //Log.d("getHeaderByGet " + parameter.url);
       response = await dio.get<ResponseBody>(
         parameter.url,
         options: Options(
@@ -131,7 +128,6 @@ class DioConnector {
       Map<String, String> data = parameter.data;
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
-      //Log.d(sprintf("Get : %s", [_putDataToUrl(url, data)]));
       response = await dio.get(url, queryParameters: data);
       return response;
     } catch (e) {
@@ -145,11 +141,6 @@ class DioConnector {
       String url = parameter.url;
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
-      /*
-      Map<String, String> data =
-          (parameter.data is Map) ? parameter.data : Map();
-      Log.d(sprintf("Post : %s", [_putDataToUrl(url, data)]));
-       */
       response = await dio.post(url, data: parameter.data);
       return response;
     } catch (e) {
@@ -157,19 +148,11 @@ class DioConnector {
     }
   }
 
-  static String _putDataToUrl(String url, Map<String, String> data) {
-    Uri newUrl = Uri.https(_getHost(url), _getPath(url), data);
-    url = newUrl.toString();
-    //Log.d( "put data $url");
-    return url;
-  }
-
   void _handleHeaders(ConnectorParameter parameter) {
-    //_setReferer( _putDataToUrl(url, data) );
-    //dio.options.headers = headers;
-    //Log.d( cookieJar.loadForRequest( Uri.parse(url) ).toString() );
-    //Log.d( dio.options.headers.toString() );
-    dio.options.headers["user-agent"] = parameter.userAgent;
+    dio.options.headers[HttpHeaders.userAgentHeader] = parameter.userAgent;
+    if (parameter.referer != null) {
+      dio.options.headers[HttpHeaders.refererHeader] = parameter.referer;
+    }
   }
 
   void _handleCharsetName(String charsetName) {
@@ -199,22 +182,6 @@ class DioConnector {
 
   Map<String, String> get headers {
     return _headers;
-  }
-
-  static void _setReferer(String url) {
-    Log.d("Referer : $_refererUrl");
-    _headers["Referer"] = _refererUrl;
-    _refererUrl = url;
-  }
-
-  static String _getHost(String url) {
-    String host = Uri.parse(url).host;
-    return host;
-  }
-
-  static String _getPath(String url) {
-    String path = Uri.parse(url).path;
-    return path;
   }
 
   PersistCookieJar get cookiesManager {

@@ -3,12 +3,16 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 import '../../../debug/log/Log.dart';
+import '../core/ConnectorParameter.dart';
 
 class RequestInterceptors extends InterceptorsWrapper {
-  String referer;
+  String referer = "https://nportal.ntut.edu.tw";
+
   @override
   onRequest(RequestOptions options) async {
-    options.headers[HttpHeaders.refererHeader] = referer;
+    if (!options.headers.containsKey(HttpHeaders.refererHeader)) {
+      options.headers[HttpHeaders.refererHeader] = referer;
+    }
     referer = options.uri.toString();
     return options;
   }
