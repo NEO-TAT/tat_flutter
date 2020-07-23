@@ -19,6 +19,11 @@ import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:sprintf/sprintf.dart';
+
+import '../../../src/costants/AppLink.dart';
+import '../../../src/hotfix/AppHotFix.dart';
+import '../../../src/update/AppUpdate.dart';
 
 enum onListViewPress {
   Setting,
@@ -87,7 +92,7 @@ class _OtherPageState extends State<OtherPage> {
     super.initState();
   }
 
-  void _onListViewPress(onListViewPress value) {
+  void _onListViewPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.Logout:
         if (Model.instance.getAccount().isNotEmpty) {
@@ -129,8 +134,19 @@ class _OtherPageState extends State<OtherPage> {
             .push(MyPage.transition(SettingPage(widget.pageController)));
         break;
       case onListViewPress.Report:
-        Navigator.of(context).push(MyPage.transition(
-            WebViewPluginPage(R.current.feedback, AppLink.feedback)));
+        String link = AppLink.feedback;
+        try {
+          String mainVersion = await AppUpdate.getAppVersion();
+          int patchVersion = await AppHotFix.getPatchVersion();
+          Uri url = Uri.https(Uri.parse(AppLink.feedback).host,
+              Uri.parse(AppLink.feedback).path, {
+            "entry.823909330": sprintf("%s.%d", [mainVersion, patchVersion]),
+            "entry.517392071": Log.getLogString()
+          });
+          link = url.toString();
+        } catch (e) {}
+        Navigator.of(context).push(
+            MyPage.transition(WebViewPluginPage(R.current.feedback, link)));
         break;
       default:
         MyToast.show(R.current.noFunction);
