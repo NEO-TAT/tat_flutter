@@ -66,7 +66,7 @@ class DioConnector {
       _cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
       dio.interceptors.add(CookieManager(_cookieJar));
       dio.interceptors.add(RequestInterceptors());
-      dio.interceptors.add(ErrorInterceptors());
+      dio.interceptors.add(ErrorInterceptors(dio));
       dio.interceptors.add(LogsInterceptors());
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);

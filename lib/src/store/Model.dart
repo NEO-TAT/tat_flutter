@@ -14,6 +14,7 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../debug/log/Log.dart';
 import 'json/CourseClassJson.dart';
 import 'json/CourseTableJson.dart';
 import 'json/UserDataJson.dart';
@@ -375,8 +376,7 @@ class Model {
     await loadSemesterJsonList();
     String version = await AppUpdate.getAppVersion();
     String preVersion = await _readString("version");
-    print(preVersion);
-    print(version);
+    Log.d(" preVersion: $preVersion \n version: $version");
     if (preVersion != version) {
       await AppHotFix.init();
       AppHotFix.setDevMode(false); //更新APP版本後退出測模式

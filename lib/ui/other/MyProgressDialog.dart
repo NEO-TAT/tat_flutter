@@ -8,6 +8,7 @@ class MyProgressDialog {
   static BuildContext _context;
 
   static void showProgressDialog(BuildContext context, String message) async {
+    if (context == null) return;
     _context = context;
     _progressDialog.showProgressDialog(context,
         //dismissAfter: Duration(seconds: 20 ),
@@ -18,6 +19,7 @@ class MyProgressDialog {
   }
 
   static Future<void> hideProgressDialog() async {
+    if (_context == null) return;
     await _progressDialog.dismissProgressDialog(_context);
   }
 }
