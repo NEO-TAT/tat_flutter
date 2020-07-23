@@ -206,7 +206,7 @@ class _OtherPageState extends State<OtherPage> {
       imageUrl: userImageInfo["url"],
       httpHeaders: userImageInfo["header"],
       imageBuilder: (context, imageProvider) => CircleAvatar(
-        radius: 30.0,
+        radius: 40.0,
         backgroundImage: imageProvider,
       ),
       useOldImageOnUrlChange: true,
@@ -245,6 +245,7 @@ class _OtherPageState extends State<OtherPage> {
         children: <Widget>[
           Container(
             width: 60,
+            height: 60,
             child: InkWell(
               child: FutureBuilder<NTUTConnectorStatus>(
                 future: NTUTConnector.checkLogin().then((value) {
