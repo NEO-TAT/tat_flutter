@@ -11,6 +11,10 @@ import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
+import '../../../src/taskcontrol/TaskHandler.dart';
+import '../../../src/taskcontrol/TaskModelFunction.dart';
+import '../../../src/taskcontrol/task/CheckCookiesTask.dart';
+
 class GraduationPicker {
   GraduationPickerWidget _dialog;
   BuildContext _context;
@@ -241,49 +245,103 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getYearList() async {
-    MyProgressDialog.showProgressDialog(context, R.current.searchingYear);
-    yearList = await CourseConnector.getYearList();
-    //Log.d(yearList.toString());
-    _selectedYear = yearList.first;
-    MyProgressDialog.hideProgressDialog();
+    TaskHandler.instance.addTask(
+      TaskModelFunction(
+        context,
+        require: [CheckCookiesTask.checkCourse],
+        taskFunction: () async {
+          MyProgressDialog.showProgressDialog(context, R.current.searchingYear);
+          yearList = await CourseConnector.getYearList();
+          //Log.d(yearList.toString());
+          _selectedYear = yearList.first;
+          MyProgressDialog.hideProgressDialog();
+          return true;
+        },
+        errorFunction: () {},
+        successFunction: () {},
+      ),
+    );
+    await TaskHandler.instance.startTaskQueue(context);
     setState(() {});
   }
 
   Future<void> _getDivisionList() async {
-    MyProgressDialog.showProgressDialog(context, R.current.searchingDivision);
-    String year = _selectedYear.split(" ")[1];
-    divisionList = await CourseConnector.getDivisionList(year);
-    //Log.d(divisionList.toString());
-    _selectedDivision = divisionList.first;
-    MyProgressDialog.hideProgressDialog();
+    TaskHandler.instance.addTask(
+      TaskModelFunction(
+        context,
+        require: [CheckCookiesTask.checkCourse],
+        taskFunction: () async {
+          await TaskHandler.instance.startTaskQueue(context);
+          MyProgressDialog.showProgressDialog(
+              context, R.current.searchingDivision);
+          String year = _selectedYear.split(" ")[1];
+          divisionList = await CourseConnector.getDivisionList(year);
+          //Log.d(divisionList.toString());
+          _selectedDivision = divisionList.first;
+          MyProgressDialog.hideProgressDialog();
+          return true;
+        },
+        errorFunction: () {},
+        successFunction: () {},
+      ),
+    );
+    await TaskHandler.instance.startTaskQueue(context);
     setState(() {});
   }
 
   Future<void> _getDepartmentList() async {
-    MyProgressDialog.showProgressDialog(context, R.current.searchingDepartment);
-    Map<String, String> code = _selectedDivision["code"];
-    departmentList = await CourseConnector.getDepartmentList(code);
-    //Log.d(departmentList.toString());
-    _selectedDepartment = departmentList.first;
-    MyProgressDialog.hideProgressDialog();
+    TaskHandler.instance.addTask(
+      TaskModelFunction(
+        context,
+        require: [CheckCookiesTask.checkCourse],
+        taskFunction: () async {
+          await TaskHandler.instance.startTaskQueue(context);
+          MyProgressDialog.showProgressDialog(
+              context, R.current.searchingDepartment);
+          Map<String, String> code = _selectedDivision["code"];
+          departmentList = await CourseConnector.getDepartmentList(code);
+          //Log.d(departmentList.toString());
+          _selectedDepartment = departmentList.first;
+          MyProgressDialog.hideProgressDialog();
+          return true;
+        },
+        errorFunction: () {},
+        successFunction: () {},
+      ),
+    );
+    await TaskHandler.instance.startTaskQueue(context);
     setState(() {});
   }
 
   Future<void> _getCreditInfo() async {
-    MyProgressDialog.showProgressDialog(context, R.current.searchingCreditInfo);
-    Map code = _selectedDivision["code"];
-    try {
-      graduationInformation = await CourseConnector.getCreditInfo(
-          code, _selectedDepartment["name"]);
-      if (graduationInformation != null) {
-        graduationInformation.selectYear = _selectedYear;
-        graduationInformation.selectDivision = _selectedDivision["name"];
-        graduationInformation.selectDepartment = _selectedDepartment["name"];
-      }
-    } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
-    }
-    await MyProgressDialog.hideProgressDialog();
+    TaskHandler.instance.addTask(
+      TaskModelFunction(
+        context,
+        require: [CheckCookiesTask.checkCourse],
+        taskFunction: () async {
+          MyProgressDialog.showProgressDialog(
+              context, R.current.searchingCreditInfo);
+          Map code = _selectedDivision["code"];
+          try {
+            graduationInformation = await CourseConnector.getCreditInfo(
+                code, _selectedDepartment["name"]);
+            if (graduationInformation != null) {
+              graduationInformation.selectYear = _selectedYear;
+              graduationInformation.selectDivision = _selectedDivision["name"];
+              graduationInformation.selectDepartment =
+                  _selectedDepartment["name"];
+            }
+          } catch (e, stack) {
+            Log.eWithStack(e.toString(), stack);
+          }
+          await MyProgressDialog.hideProgressDialog();
+          return true;
+        },
+        errorFunction: () {},
+        successFunction: () {},
+      ),
+    );
+    await TaskHandler.instance.startTaskQueue(context);
   }
 
   @override
