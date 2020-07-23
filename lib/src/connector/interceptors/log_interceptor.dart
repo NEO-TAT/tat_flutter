@@ -23,10 +23,12 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options) async {
     if (Config.DEBUG) {
-      String log = "請求url：${options.path}" +
-          "\n" +
-          '請求頭: ${options.headers.toString()}' +
-          "\n";
+      String headers = '';
+      for (String key in options.headers.keys) {
+        headers += key + ":" + options.headers[key] + "\n\n";
+      }
+      String log =
+          "請求url：${options.path}" + "\n" + '請求頭: \n${headers.toString()}' + "\n";
       if (options.data != null) {
         log += '請求參數: ${options.data.toString()}';
       }
