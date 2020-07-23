@@ -5,6 +5,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WebViewPluginPage extends StatefulWidget {
   final String url;
@@ -108,6 +109,20 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
           children: titleContent,
         ),
         iconTheme: new IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          Container(
+            width: 50,
+            child: InkWell(
+              onTap: () async {
+                String url = widget.url;
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+              child: Icon(Icons.open_in_new, color: Colors.white),
+            ),
+          ),
+        ],
       ),
       withZoom: true,
       withLocalStorage: true,
