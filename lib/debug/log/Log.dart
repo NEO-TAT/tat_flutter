@@ -66,7 +66,9 @@ class Log {
 
   static void d(String data) {
     //用於debug的Log
-    logger.d(data);
+    if (data.length <= 200) {
+      logger.d(data);
+    }
     addDebugLog(data);
   }
 
