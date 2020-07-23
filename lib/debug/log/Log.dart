@@ -89,6 +89,7 @@ class Log {
   static getLogString() {
     String log = "";
     log += 'error log \n';
+    log = "";
     if (errorLog.length == 0) {
       return "目前沒有記錄到任何錯誤訊息";
     }
@@ -97,8 +98,8 @@ class Log {
     }
     log += 'debug log \n';
     for (String i in debugLog.reversed.toList()) {
-      log += i;
+      log += (i.length <= 200) ? i : i.substring(0, 200);
     }
-    return (log.length <= 500) ? log : log.substring(0, 500);
+    return (log.length <= 5000) ? log : log.substring(0, 5000);
   }
 }
