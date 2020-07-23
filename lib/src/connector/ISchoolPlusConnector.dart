@@ -35,69 +35,6 @@ class ISchoolPlusConnector {
   static final String _getCourseName =
       _iSchoolPlusUrl + "learn/mooc_sysbar.php";
 
-  /*
-  static Future<ISchoolPlusConnectorStatus> oldLogin(
-      String account, String password) async {
-    String result;
-    try {
-      ConnectorParameter parameter;
-      html.Document tagNode;
-      List<html.Element> nodes;
-      html.Element node;
-
-      await RequestsConnector.deleteCookies(_iSchoolPlusUrl); //刪除先前登入
-
-      parameter = ConnectorParameter(_getLoginISchoolUrl);
-      result = await RequestsConnector.getDataByGet(parameter);
-
-      tagNode = html.parse(result);
-      node = tagNode.getElementById("loginForm");
-      nodes = node.getElementsByTagName("input");
-      String loginKey;
-      for (html.Element node in nodes) {
-        if (node.attributes["name"] == "login_key")
-          loginKey = node.attributes['value'];
-      }
-
-      var bytes = utf8.encode(password);
-      String md5Key = md5.convert(bytes).toString();
-      String cypKey = md5Key.substring(0, 4) + loginKey.substring(0, 4);
-      var blockCipher = new BlockCipher(new DESEngine(), cypKey);
-      var encryptPwd = blockCipher.encodeB64(password);
-      var password1 = base64.encode(utf8.encode(password));
-
-      String passwordMask = "**********************************";
-      Map<String, String> data = {
-        "reurl": "",
-        "login_key": loginKey,
-        "encrypt_pwd": encryptPwd,
-        "username": account,
-        "password": passwordMask.substring(0, password.length),
-        "password1": password1,
-      };
-
-      parameter = ConnectorParameter(_postLoginISchoolUrl);
-      parameter.data = data;
-
-      await RequestsConnector.getDataByPost(parameter);
-
-      parameter = ConnectorParameter(_iSchoolPlusLearnIndexUrl);
-
-      result = await RequestsConnector.getDataByGet(parameter);
-
-      if (result.contains("Guest")) {
-        //代表登入失敗
-        return ISchoolPlusConnectorStatus.LoginFail;
-      }
-      _isLogin = true;
-      return ISchoolPlusConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
-      return ISchoolPlusConnectorStatus.LoginFail;
-    }
-  }
-
-   */
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
