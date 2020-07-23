@@ -13,10 +13,10 @@ import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
-
 import '../../debug/log/Log.dart';
 import 'PatchVersion.dart';
 
@@ -32,7 +32,8 @@ class AppHotFix {
       "flutter_state"; //需寫入東西，不然bootloaderActivity會刪除
   static final String patchVersionKey = "patch_version"; //目前版本
   static final String devPatchChannelKey = "dev_patch_channel";
-  static final String hotfixFileNameKey = "hotfix.so";
+  static final String hotfixFileName = "hotfix.so";
+  static final String hotfixDownloadCacheName = "cache.so";
   static SharedPreferences pref;
 
   static Future<void> init() async {
@@ -145,7 +146,7 @@ class AppHotFix {
   }
 
   static Future<List<String>> getSupportABis() async {
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       //IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
@@ -155,10 +156,9 @@ class AppHotFix {
       log += "supportedAbis : ${androidInfo.supportedAbis}";
       Log.d(log);
       return androidInfo.supportedAbis;
-    }else{
+    } else {
       return List();
     }
-
   }
 
   static Future<PatchDetail> checkPatchVersion() async {
@@ -293,7 +293,7 @@ class AppHotFix {
     DioConnector.instance.download(
       value.url,
       (Headers responseHeaders) {
-        return filePath + "/$hotfixFileNameKey";
+        return path.join(filePath, hotfixDownloadCacheName);
       },
       progressCallback: onReceiveProgress,
       cancelToken: cancelToken,
@@ -302,6 +302,8 @@ class AppHotFix {
         //顯示下載萬完成通知窗
         await Notifications.instance
             .cancelNotification(receivedNotification.id);
+        File file = File(path.join(filePath, hotfixDownloadCacheName)); //確保下載完成
+        await file.rename(path.join(filePath, hotfixFileName));
         showDialog<void>(
           useRootNavigator: false,
           context: context, barrierDismissible: false, // user must tap button!
