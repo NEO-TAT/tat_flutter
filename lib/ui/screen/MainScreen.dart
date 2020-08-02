@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     Model.instance.init().then((value) async {
       // 需重新初始化 list，PageController 才會清除 cache
       try {
-        //await AppHotFix.init();
+        await AppHotFix.init();
         await _setLang();
         BuildContext contextKey = navigatorKey.currentState.overlay.context;
         if (Model.instance.getAccount().isEmpty) {
