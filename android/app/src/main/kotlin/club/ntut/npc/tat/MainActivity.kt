@@ -19,8 +19,8 @@ class MainActivity : FlutterActivity() {
     private val logTag = "FlutterActivity"
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
-        flutterEngine.plugins.remove(FlutterLocalNotificationsPlugin().javaClass)
-        flutterEngine.plugins.add(MyFlutterLocalNotificationsPlugin())
+        //flutterEngine.plugins.remove(FlutterLocalNotificationsPlugin().javaClass)
+        //flutterEngine.plugins.add(MyFlutterLocalNotificationsPlugin())
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName).setMethodCallHandler { call, result ->
             when (call.method) {
                 "update_weight" -> {

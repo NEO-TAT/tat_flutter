@@ -94,6 +94,7 @@ class _AboutPageState extends State<AboutPage> {
       case onListViewPress.Version:
         String mainVersion = await AppUpdate.getAppVersion();
         int patchVersion = await AppHotFix.getPatchVersion();
+        /*
         if (pressTime == 0) {
           MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
         }
@@ -106,6 +107,7 @@ class _AboutPageState extends State<AboutPage> {
           _addDevListItem();
         }
         print(pressTime);
+         */
         break;
       case onListViewPress.Dev:
         Navigator.of(context)
