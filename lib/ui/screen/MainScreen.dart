@@ -52,12 +52,13 @@ class _MainScreenState extends State<MainScreen> {
           _checkAppVersion();
         }
         //Crashlytics.instance.setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
+        Crashlytics.instance
+            .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
+        List<String> supportedABis = await AppHotFix.getSupportABis();
+        Crashlytics.instance
+            .setString("Supported ABis", supportedABis.toString());
         if (enableHotfix) {
-          Crashlytics.instance
-              .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
-          List<String> supportedABis = await AppHotFix.getSupportABis();
-          Crashlytics.instance
-              .setString("Supported ABis", supportedABis.toString());
+          //不開啟就算手動放入檔案下次重新開啟也會還原
           await AppHotFix.hotFixSuccess(contextKey);
         }
       } catch (e, stack) {
@@ -86,13 +87,11 @@ class _MainScreenState extends State<MainScreen> {
           //檢查到app要更新
           AppUpdate.showUpdateDialog(contextKey, value);
         } else {
-          if (enableHotfix) {
-            //檢查捕丁
-            PatchDetail patch = await AppHotFix.checkPatchVersion();
-            if (patch != null) {
-              bool v = await AppHotFix.showUpdateDialog(contextKey, patch);
-              if (v) AppHotFix.downloadPatch(contextKey, patch);
-            }
+          //檢查捕丁
+          PatchDetail patch = await AppHotFix.checkPatchVersion();
+          if (patch != null) {
+            bool v = await AppHotFix.showUpdateDialog(contextKey, patch);
+            if (v) AppHotFix.downloadPatch(contextKey, patch);
           }
         }
       }

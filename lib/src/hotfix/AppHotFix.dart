@@ -162,6 +162,9 @@ class AppHotFix {
   }
 
   static Future<PatchDetail> checkPatchVersion() async {
+    if (enableHotfix) {
+      return null;
+    }
     if (Platform.isAndroid) {
       int patchVersion = await getPatchVersion();
       String appVersion = await AppUpdate.getAppVersion();
