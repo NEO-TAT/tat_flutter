@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/hotfix/PatchVersion.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
@@ -94,20 +95,20 @@ class _AboutPageState extends State<AboutPage> {
       case onListViewPress.Version:
         String mainVersion = await AppUpdate.getAppVersion();
         int patchVersion = await AppHotFix.getPatchVersion();
-        /*
-        if (pressTime == 0) {
-          MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
+        if (enableHotfix) {
+          if (pressTime == 0) {
+            MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
+          }
+          pressTime++;
+          Future.delayed(Duration(seconds: 2)).then((_) {
+            pressTime = 0;
+          });
+          if (!AppHotFix.inDevMode && pressTime > 3) {
+            AppHotFix.setDevMode(true);
+            _addDevListItem();
+          }
+          print(pressTime);
         }
-        pressTime++;
-        Future.delayed(Duration(seconds: 2)).then((_) {
-          pressTime = 0;
-        });
-        if (!AppHotFix.inDevMode && pressTime > 3) {
-          AppHotFix.setDevMode(true);
-          _addDevListItem();
-        }
-        print(pressTime);
-         */
         break;
       case onListViewPress.Dev:
         Navigator.of(context)

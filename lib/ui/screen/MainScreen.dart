@@ -8,6 +8,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/hotfix/PatchVersion.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/update/AppUpdate.dart';
@@ -51,14 +52,14 @@ class _MainScreenState extends State<MainScreen> {
           _checkAppVersion();
         }
         //Crashlytics.instance.setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
-        /*
-        Crashlytics.instance
-            .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
-        List<String> supportedABis = await AppHotFix.getSupportABis();
-        Crashlytics.instance
-            .setString("Supported ABis", supportedABis.toString());
-        await AppHotFix.hotFixSuccess(contextKey);
-         */
+        if (enableHotfix) {
+          Crashlytics.instance
+              .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
+          List<String> supportedABis = await AppHotFix.getSupportABis();
+          Crashlytics.instance
+              .setString("Supported ABis", supportedABis.toString());
+          await AppHotFix.hotFixSuccess(contextKey);
+        }
       } catch (e, stack) {
         Log.eWithStack(e.toString(), stack);
       }
@@ -85,14 +86,14 @@ class _MainScreenState extends State<MainScreen> {
           //檢查到app要更新
           AppUpdate.showUpdateDialog(contextKey, value);
         } else {
-          /*
-          //檢查捕丁
-          PatchDetail patch = await AppHotFix.checkPatchVersion();
-          if (patch != null) {
-            bool v = await AppHotFix.showUpdateDialog(contextKey, patch);
-            if (v) AppHotFix.downloadPatch(contextKey, patch);
+          if (enableHotfix) {
+            //檢查捕丁
+            PatchDetail patch = await AppHotFix.checkPatchVersion();
+            if (patch != null) {
+              bool v = await AppHotFix.showUpdateDialog(contextKey, patch);
+              if (v) AppHotFix.downloadPatch(contextKey, patch);
+            }
           }
-           */
         }
       }
     }
