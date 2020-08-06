@@ -4,5 +4,5 @@ public enum FlutterVersion {
     /**
      * Flutter Version: 1.14.0
      */
-    VERSION_011400
+    VERSION_012000
 }

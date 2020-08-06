@@ -126,7 +126,7 @@ public class BootLoaderActivity extends Activity {
     void loadPatch() {
         File dest = new File(dir, hotfixFileName);
         if (dest.exists()) {  //檢查如果補釘存在就載入
-            FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_011400);
+            FlutterManager.startInitialization(this, dest, FlutterVersion.VERSION_012000);
         }
     }
 
