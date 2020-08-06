@@ -18,8 +18,12 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.llew.reflect.FieldUtils;
+
 import io.flutter.BuildConfig;
 import io.flutter.embedding.engine.FlutterJNI;
+import io.flutter.embedding.engine.hotfix.FlutterLogger;
+import io.flutter.embedding.engine.hotfix.FlutterManager;
 import io.flutter.util.PathUtils;
 import io.flutter.view.VsyncWaiter;
 
@@ -32,7 +36,7 @@ import java.util.concurrent.Future;
 /**
  * Finds Flutter resources in an application APK and also loads Flutter's native library.
  */
-public class FlutterLoaderV012000 {
+public class FlutterLoaderV012000 extends FlutterLoader implements FlutterManager.FlutterCallback {
     private static final String TAG = "FlutterLoader";
 
     // Must match values in flutter::switches
@@ -175,6 +179,43 @@ public class FlutterLoaderV012000 {
         initResultFuture = Executors.newSingleThreadExecutor().submit(initTask);
     }
 
+    // *************************************************** hot fix code start  ***************************************************//
+    private static final String FIELD_NAME = "instance";
+
+    private File aotSharedLibraryFile;
+
+    @Override
+    public void startInitialization(Context context, File aotFile, FlutterLoader.Settings settings) {
+        aotSharedLibraryFile = aotFile;
+        hookFlutterLoaderIfNecessary();
+        FlutterLoader.getInstance().startInitialization(context, settings);
+    }
+
+    private void hookFlutterLoaderIfNecessary() {
+        try {
+            if (!flutterLoaderHookedSuccess()) {
+                FlutterLogger.i(TAG, "FlutterLoader hook start.");
+                FlutterLoaderV012000 instance = FlutterLoaderV012000.getInstance();
+                FieldUtils.writeStaticField(FlutterLoader.class, FIELD_NAME, instance);
+                FlutterLogger.i(TAG, "FlutterLoader hook finish.");
+
+                if (flutterLoaderHookedSuccess()) {
+                    FlutterLogger.i(TAG, "FlutterLoader hook success.");
+                } else {
+                    FlutterLogger.i(TAG, "FlutterLoader hook failure.");
+                }
+            } else {
+                FlutterLogger.i(TAG, "FlutterLoader already hooked.");
+            }
+        } catch (Throwable error) {
+            FlutterLogger.w(TAG, "FlutterLoader hook " + (flutterLoaderHookedSuccess() ? "success" : "failure") + " and error occured: " + error);
+        }
+    }
+
+    private boolean flutterLoaderHookedSuccess() {
+        return FlutterLoader.getInstance() instanceof FlutterLoaderV012000;
+    }
+
     /**
      * Blocks until initialization of the native system has completed.
      *
@@ -220,18 +261,37 @@ public class FlutterLoaderV012000 {
                 shellArgs.add("--" + VM_SNAPSHOT_DATA_KEY + "=" + vmSnapshotData);
                 shellArgs.add("--" + ISOLATE_SNAPSHOT_DATA_KEY + "=" + isolateSnapshotData);
             } else {
-                shellArgs.add("--" + AOT_SHARED_LIBRARY_NAME + "=" + aotSharedLibraryName);
+                // replace libapp.so fie here if aotSharedLibraryFile is valid
+                if (null != aotSharedLibraryFile
+                        && aotSharedLibraryFile.exists()
+                        && aotSharedLibraryFile.isFile()
+                        && aotSharedLibraryFile.canRead()
+                        && aotSharedLibraryFile.length() > 0) {
+                    shellArgs.add("--" + AOT_SHARED_LIBRARY_NAME + "=" + aotSharedLibraryFile.getName());
 
-                // Most devices can load the AOT shared library based on the library name
-                // with no directory path.  Provide a fully qualified path to the library
-                // as a workaround for devices where that fails.
-                shellArgs.add(
-                        "--"
-                                + AOT_SHARED_LIBRARY_NAME
-                                + "="
-                                + applicationInfo.nativeLibraryDir
-                                + File.separator
-                                + aotSharedLibraryName);
+                    // Most devices can load the AOT shared library based on the library name
+                    // with no directory path.  Provide a fully qualified path to the library
+                    // as a workaround for devices where that fails.
+                    shellArgs.add("--" + AOT_SHARED_LIBRARY_NAME + "=" + aotSharedLibraryFile.getAbsolutePath());
+
+                    FlutterLogger.i(TAG, "initialize with fixed file: " + aotSharedLibraryFile.getAbsolutePath());
+                } else {
+                    // aotSharedLibraryFile is not valid, and use origin file here
+                    shellArgs.add("--" + AOT_SHARED_LIBRARY_NAME + "=" + aotSharedLibraryName);
+
+                    // Most devices can load the AOT shared library based on the library name
+                    // with no directory path.  Provide a fully qualified path to the library
+                    // as a workaround for devices where that fails.
+                    shellArgs.add(
+                            "--"
+                                    + AOT_SHARED_LIBRARY_NAME
+                                    + "="
+                                    + applicationInfo.nativeLibraryDir
+                                    + File.separator
+                                    + aotSharedLibraryName);
+                    FlutterLogger.i(TAG, "initialize with origin file: " + applicationInfo.nativeLibraryDir + File.separator + aotSharedLibraryName);
+                }
+
             }
 
             shellArgs.add("--cache-dir-path=" + result.engineCachesPath);
