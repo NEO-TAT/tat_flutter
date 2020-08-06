@@ -6,7 +6,7 @@ import android.os.Looper;
 import java.io.File;
 
 import io.flutter.embedding.engine.loader.FlutterLoader;
-import io.flutter.embedding.engine.loader.FlutterLoaderV011400;
+import io.flutter.embedding.engine.loader.FlutterLoaderV012000;
 import io.flutter.view.FlutterMain;
 
 public class FlutterManager {
@@ -18,7 +18,7 @@ public class FlutterManager {
     }
 
     public static void startInitialization(Context context, File aotFile) {
-        startInitialization(context, aotFile, FlutterVersion.VERSION_011400);
+        startInitialization(context, aotFile, FlutterVersion.VERSION_012000);
     }
 
     public static void startInitialization(Context context, File aotFile, FlutterVersion version) {
@@ -51,8 +51,8 @@ public class FlutterManager {
     }
 
     private static FlutterCallback generateFlutterCallback(FlutterVersion version) {
-        if (FlutterVersion.VERSION_011400 == version) {
-            return FlutterLoaderV011400.getInstance();
+        if (FlutterVersion.VERSION_012000 == version) {
+            return FlutterLoaderV012000.getInstance();
         }
         return null;
     }
