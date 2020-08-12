@@ -16,6 +16,8 @@ class ConnectorParameter {
   String url;
   dynamic data;
   String charsetName = presetCharsetName; //設定編碼預設utf-8 可以設定big5
-  String userAgent = presetUserAgent;
+  String userAgent = presetComputerUserAgent;
+  String referer;
+
   ConnectorParameter(this.url);
 }

@@ -40,10 +40,10 @@ class LanguageUtil {
       if (otherSetting.lang != lang) {
         //只有不相同時可以載入
         otherSetting.lang = lang;
-        await Model.instance.clearCourseTableList();
-        await Model.instance.clearCourseSetting();
         Model.instance.setOtherSetting(otherSetting);
         await Model.instance.saveOtherSetting();
+        await Model.instance.clearCourseTableList();
+        await Model.instance.clearCourseSetting();
       }
     } else {
       Log.e("no any locale load");
@@ -85,7 +85,7 @@ class LanguageUtil {
       case 1:
         return LangEnum.zh;
       default:
-        return LangEnum.en;
+        return LangEnum.zh;
     }
   }
 }

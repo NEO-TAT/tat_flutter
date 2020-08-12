@@ -11,7 +11,6 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreRankTask.dart';
-import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -67,7 +66,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           courseScoreCredit.getCourseInfoList();
       ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
       progressRateDialog.update(
-          message: R.current.searchCredit,
+          message: R.current.searchingCredit,
           nowProgress: 0,
           progressString: "0/0");
       progressRateDialog.show();
@@ -82,16 +81,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
               var courseExtraInfo =
                   await CourseConnector.getCourseExtraInfo(courseId);
               courseScoreCredit.getCourseByCourseId(courseId);
-              if (LanguageUtil.getLangIndex() == LangEnum.en) {
-                String name = await CourseConnector.getCourseENName(
-                    courseExtraInfo.course.href);
-                name = name ?? courseInfo.name;
-                courseInfo.name = name;
-              }
               courseInfo.category = courseExtraInfo.course.category;
               courseInfo.openClass =
                   courseExtraInfo.course.openClass.replaceAll("\n", " ");
-              Log.d(courseInfo.openClass);
+              //Log.d(courseInfo.openClass);
             }
           }
           return true;
@@ -109,6 +102,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       }
       await Model.instance.setSemesterCourseScore(courseScoreList);
       progressRateDialog.hide();
+    } else {
+      MyToast.show(R.current.searchCreditIsNullWarning);
     }
     courseScoreList = courseScoreList ?? List();
     _buildTabBar();
@@ -218,27 +213,30 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   void _buildTabBar() {
     tabLabelList = List();
     tabChildList = List();
-
-    if (courseScoreCredit.graduationInformation.isSelect) {
-      tabLabelList.add(_buildTabLabel(R.current.creditSummary));
-      tabChildList.add(
-        AnimationLimiter(
-          child: Column(
-            children: AnimationConfiguration.toStaggeredList(
-              childAnimationBuilder: (widget) => SlideAnimation(
-                verticalOffset: 50.0,
-                child: FadeInAnimation(child: widget),
+    try {
+      if (courseScoreCredit.graduationInformation.isSelect) {
+        tabLabelList.add(_buildTabLabel(R.current.creditSummary));
+        tabChildList.add(
+          AnimationLimiter(
+            child: Column(
+              children: AnimationConfiguration.toStaggeredList(
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  verticalOffset: 50.0,
+                  child: FadeInAnimation(child: widget),
+                ),
+                children: <Widget>[
+                  _buildSummary(),
+                  _buildGeneralLessonItem(),
+                  _buildOtherDepartmentItem(),
+                  _buildWarning(),
+                ],
               ),
-              children: <Widget>[
-                _buildSummary(),
-                _buildGeneralLessonItem(),
-                _buildOtherDepartmentItem(),
-                _buildWarning(),
-              ],
             ),
           ),
-        ),
-      );
+        );
+      }
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
     }
     for (int i = 0; i < courseScoreList.length; i++) {
       SemesterCourseScoreJson courseScore = courseScoreList[i];
@@ -295,7 +293,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
               alignment: Alignment(0, 0),
               height: 50,
               width: 300,
-              child: Text(title),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ),
@@ -312,12 +313,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       courseScoreCredit.getTotalCourseCredit(),
       graduationInformation.lowCredit
     ]));
-    widgetList.add(_buildType("○", R.current.compulsoryCompulsory));
-    widgetList.add(_buildType("△", R.current.revisedCommonCompulsory));
-    widgetList.add(_buildType("☆", R.current.jointElective));
-    widgetList.add(_buildType("●", R.current.compulsoryProfessional));
-    widgetList.add(_buildType("▲", R.current.compulsoryMajorRevision));
-    widgetList.add(_buildType("★", R.current.professionalElectives));
+    widgetList
+      ..add(_buildType(constCourseType[0], R.current.compulsoryCompulsory))
+      ..add(_buildType(constCourseType[1], R.current.revisedCommonCompulsory))
+      ..add(_buildType(constCourseType[2], R.current.jointElective))
+      ..add(_buildType(constCourseType[3], R.current.compulsoryProfessional))
+      ..add(_buildType(constCourseType[4], R.current.compulsoryMajorRevision))
+      ..add(_buildType(constCourseType[5], R.current.professionalElectives));
     return Container(
       child: AppExpansionTile(
         title: widget,
@@ -349,16 +351,46 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       onTap: () {
         Map<String, List<CourseInfoJson>> result =
             courseScoreCredit.getCourseByType(type);
-        String pr = "";
+        List<String> courseInfo = List();
         for (String key in result.keys.toList()) {
-          pr += "\n$key";
+          courseInfo.add(key);
           for (CourseInfoJson course in result[key]) {
-            pr += (course.name + " ");
+            courseInfo.add(sprintf("     %s", [course.name]));
           }
         }
-        pr = pr.substring(1, pr.length);
-        MyToast.show(pr);
-        Log.d(pr);
+        if (courseInfo.length != 0) {
+          showDialog(
+            context: context,
+            useRootNavigator: false,
+            builder: (context) {
+              return new AlertDialog(
+                title: new Text(R.current.creditInfo),
+                content: Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8),
+                    itemCount: courseInfo.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 35,
+                        child: Text(courseInfo[index]),
+                      );
+                    },
+                  ),
+                ),
+                actions: <Widget>[
+                  new FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: new Text(R.current.sure),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       },
     );
   }
@@ -395,7 +427,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf("%s %s:%d %s:%d", [
+    Widget titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d", [
       R.current.generalLessonSummary,
       R.current.takeCore,
       coreCredit,
@@ -416,8 +448,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         Model.instance.getGraduationInformation().selectDepartment;
     int otherDepartmentMaxCredit =
         courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
-    department = department.substring(0, 2);
-    Log.d(department);
+    try {
+      department = department.substring(0, 2);
+      Log.d(department);
+    } catch (e) {}
     Map<String, List<CourseInfoJson>> generalLesson =
         courseScoreCredit.getOtherDepartmentCourse(department);
     List<Widget> widgetList = List();
@@ -431,9 +465,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf("%s: %d/%d", [
+    Widget titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
       R.current.takeForeignDepartmentCredits,
       otherDepartmentCredit,
+      R.current.takeForeignDepartmentCreditsLimit,
       otherDepartmentMaxCredit
     ]));
     return Container(

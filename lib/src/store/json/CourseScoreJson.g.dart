@@ -125,7 +125,8 @@ Map<String, dynamic> _$RankItemJsonToJson(RankItemJson instance) =>
 CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
   return CourseInfoJson(
     courseId: json['courseId'] as String,
-    name: json['name'] as String,
+    nameZh: json['nameZh'] as String,
+    nameEn: json['nameEn'] as String,
     score: json['score'] as String,
     credit: (json['credit'] as num)?.toDouble(),
     category: json['category'] as String,
@@ -136,7 +137,8 @@ CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$CourseInfoJsonToJson(CourseInfoJson instance) =>
     <String, dynamic>{
       'courseId': instance.courseId,
-      'name': instance.name,
+      'nameZh': instance.nameZh,
+      'nameEn': instance.nameEn,
       'score': instance.score,
       'credit': instance.credit,
       'openClass': instance.openClass,

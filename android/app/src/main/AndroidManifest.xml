@@ -27,6 +27,10 @@
             android:theme="@style/LaunchTheme"
             android:clearTaskOnLaunch="true"
             android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
@@ -37,10 +41,12 @@
         <activity
             android:name=".BootLoaderActivity"
             android:theme="@style/LaunchTheme">
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
 
         <receiver android:name="widget.CourseWidgetProvider">

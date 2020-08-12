@@ -59,8 +59,8 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     String xml = await Connector.getDataByGet(parameter);
     dom.Document tagNode = parse(xml);
     dom.Element node = tagNode.getElementsByTagName("item").first;
-    String title = node.getElementsByTagName("title").first.text;
-    String description = node.getElementsByTagName("description").first.text;
+    //String title = node.getElementsByTagName("title").first.text;
+    //String description = node.getElementsByTagName("description").first.text;
     String presenterVideo =
         node.getElementsByTagName("presenter_video").first.text;
     String presenterVideo2 =

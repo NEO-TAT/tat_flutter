@@ -6,20 +6,17 @@
 //
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
+import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'json/CourseClassJson.dart';
 import 'json/CourseTableJson.dart';
-import 'json/NewAnnouncementJson.dart';
 import 'json/UserDataJson.dart';
 
 //flutter packages pub run build_runner build 創建Json
@@ -40,7 +37,6 @@ class Model {
   static String newAnnouncementJsonKey = "newAnnouncementJson";
   static String settingJsonKey = "SettingJsonKey";
   UserDataJson _userData;
-  NewAnnouncementJsonList _newAnnouncementList;
   List<CourseTableJson> _courseTableList;
   List<SemesterJson> _courseSemesterList;
   CourseScoreCreditJson _courseScoreList;
@@ -114,33 +110,6 @@ class Model {
 
   UserDataJson getUserData() {
     return _userData;
-  }
-
-  //--------------------NewAnnouncementJsonList--------------------//
-  Future<void> saveNewAnnouncement() async {
-    _save(newAnnouncementJsonKey, _newAnnouncementList);
-  }
-
-  Future<void> clearNewAnnouncement() async {
-    _newAnnouncementList = NewAnnouncementJsonList();
-    await saveNewAnnouncement();
-    await clearAnnouncementSetting();
-  }
-
-  Future<void> loadNewAnnouncement() async {
-    String readJson;
-    readJson = await _readString(newAnnouncementJsonKey);
-    _newAnnouncementList = (readJson != null)
-        ? NewAnnouncementJsonList.fromJson(json.decode(readJson))
-        : NewAnnouncementJsonList();
-  }
-
-  Future<void> addNewAnnouncement(NewAnnouncementJson value) async {
-    _newAnnouncementList.addNewAnnouncement(value);
-  }
-
-  List<NewAnnouncementJson> getNewAnnouncementList() {
-    return _newAnnouncementList.newAnnouncementList;
   }
 
   //--------------------List<CourseTableJson>--------------------//
@@ -395,25 +364,25 @@ class Model {
     return value;
   }
 
-  Future<void> init() async {
+  Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
     _tempData = Map();
     _courseSemesterList = _courseSemesterList ?? List();
     await loadUserData();
-    await loadNewAnnouncement();
     await loadCourseTableList();
     await loadSetting();
     await loadCourseScoreCredit();
     await loadSemesterJsonList();
     String version = await AppUpdate.getAppVersion();
     String preVersion = await _readString("version");
-    print(preVersion);
-    print(version);
-    if ( preVersion != version ) {
-      await AppHotFix.init();
-      AppHotFix.setDevMode(false);  //更新APP版本後退出測模式
-      _writeString("version", version);
+    Log.d(" preVersion: $preVersion \n version: $version");
+    if (preVersion != version) {
+      await AppHotFix.getInstance();
+      AppHotFix.setDevMode(false); //更新APP版本後退出測模式
+      _writeString("version", version); //寫入目前版本
+      _setting.other.autoCheckAppUpdate = true; //開啟更新檢查
+      saveOtherSetting();
     }
     //DioConnector.instance.deleteCookies();
   }
@@ -423,14 +392,13 @@ class Model {
     await clearSemesterJsonList();
     await clearCourseTableList();
     await clearCourseScoreCredit();
-    await clearNewAnnouncement();
     await clearAnnouncementSetting();
     await clearCourseSetting();
     DioConnector.instance.deleteCookies();
     await cacheManager.emptyCache(); //clears all data in cache.
     TaskHandler.alreadyCheckSystem = ""; //全部登入重新檢查
     setFirstUse(courseNotice, true);
-    await init();
+    await getInstance();
   }
 
   Future<void> _save(String key, dynamic saveObj) async {

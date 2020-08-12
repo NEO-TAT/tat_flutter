@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
-import 'package:flutter_app/src/connector/ISchoolConnector.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
@@ -19,7 +18,6 @@ class CheckCookiesTask extends TaskModel {
   static String checkNTUTApp = "__NTUTApp__";
   // subSystem
   static String checkCourse = "__Course__";
-  static String checkISchool = "__ISchool__";
   static String checkPlusISchool = "__ISchoolPlus__";
   static String checkScore = "__Score__";
   static String tempDataKey = "CheckCookiesTempKey";
@@ -49,9 +47,6 @@ class CheckCookiesTask extends TaskModel {
       checkPlusISchool: () async {
         return await ISchoolPlusConnector.checkLogin();
       },
-      checkISchool: () async {
-        return await ISchoolConnector.checkLogin(studentId: studentId);
-      }
     };
     for (String check in checkMap.keys.toList()) {
       if (checkSystem.contains(check)) {

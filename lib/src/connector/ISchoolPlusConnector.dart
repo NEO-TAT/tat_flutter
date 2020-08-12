@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:big5/big5.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
-import 'package:flutter_app/src/connector/core/RequestsConnector.dart';
 import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/object/CourseFileJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
-import 'package:http/http.dart' as http;
-
 import 'core/ConnectorParameter.dart';
 
 enum ISchoolPlusConnectorStatus {
@@ -34,70 +30,6 @@ class ISchoolPlusConnector {
   static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
   static final String _getCourseName =
       _iSchoolPlusUrl + "learn/mooc_sysbar.php";
-
-  /*
-  static Future<ISchoolPlusConnectorStatus> oldLogin(
-      String account, String password) async {
-    String result;
-    try {
-      ConnectorParameter parameter;
-      html.Document tagNode;
-      List<html.Element> nodes;
-      html.Element node;
-
-      await RequestsConnector.deleteCookies(_iSchoolPlusUrl); //刪除先前登入
-
-      parameter = ConnectorParameter(_getLoginISchoolUrl);
-      result = await RequestsConnector.getDataByGet(parameter);
-
-      tagNode = html.parse(result);
-      node = tagNode.getElementById("loginForm");
-      nodes = node.getElementsByTagName("input");
-      String loginKey;
-      for (html.Element node in nodes) {
-        if (node.attributes["name"] == "login_key")
-          loginKey = node.attributes['value'];
-      }
-
-      var bytes = utf8.encode(password);
-      String md5Key = md5.convert(bytes).toString();
-      String cypKey = md5Key.substring(0, 4) + loginKey.substring(0, 4);
-      var blockCipher = new BlockCipher(new DESEngine(), cypKey);
-      var encryptPwd = blockCipher.encodeB64(password);
-      var password1 = base64.encode(utf8.encode(password));
-
-      String passwordMask = "**********************************";
-      Map<String, String> data = {
-        "reurl": "",
-        "login_key": loginKey,
-        "encrypt_pwd": encryptPwd,
-        "username": account,
-        "password": passwordMask.substring(0, password.length),
-        "password1": password1,
-      };
-
-      parameter = ConnectorParameter(_postLoginISchoolUrl);
-      parameter.data = data;
-
-      await RequestsConnector.getDataByPost(parameter);
-
-      parameter = ConnectorParameter(_iSchoolPlusLearnIndexUrl);
-
-      result = await RequestsConnector.getDataByGet(parameter);
-
-      if (result.contains("Guest")) {
-        //代表登入失敗
-        return ISchoolPlusConnectorStatus.LoginFail;
-      }
-      _isLogin = true;
-      return ISchoolPlusConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
-      return ISchoolPlusConnectorStatus.LoginFail;
-    }
-  }
-
-   */
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
@@ -129,8 +61,8 @@ class ISchoolPlusConnector {
       await Connector.getDataByPostResponse(parameter);
       _isLogin = true;
       return ISchoolPlusConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return ISchoolPlusConnectorStatus.LoginFail;
     }
   }
@@ -148,7 +80,7 @@ class ISchoolPlusConnector {
       await _selectCourse(courseId);
 
       parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/launch.php");
-      result = await RequestsConnector.getDataByGet(parameter);
+      result = await Connector.getDataByGet(parameter);
       exp = new RegExp(r"cid=(?<cid>[\w|-]+,)");
       matches = exp.firstMatch(result);
       String cid = matches.group(1);
@@ -156,7 +88,7 @@ class ISchoolPlusConnector {
           ConnectorParameter(_iSchoolPlusUrl + "learn/path/pathtree.php");
       parameter.data = {'cid': cid};
 
-      result = await RequestsConnector.getDataByGet(parameter);
+      result = await Connector.getDataByGet(parameter);
       tagNode = html.parse(result);
       node = tagNode.getElementById("fetchResourceForm");
       nodes = node.getElementsByTagName("input");
@@ -180,16 +112,9 @@ class ISchoolPlusConnector {
           downloadPost[key] = node.attributes['value'];
         }
       }
-
       parameter = ConnectorParameter(
           _iSchoolPlusUrl + "learn/path/SCORM_loadCA.php"); //取得下載檔案XML
-      result = await RequestsConnector.getDataByGet(parameter);
-/*
-      xml.XmlDocument xmlDocument = xml.parse(result);
-      Iterable<xml.XmlElement> itemIterable = xmlDocument.findAllElements("item");
-      Iterable<xml.XmlElement> resourceIterable = xmlDocument.findAllElements("resource");
-      Log.d( 'a' + itemIterable.toList()[0].text.split("\t")[0].replaceAll(RegExp("[\s|\n| ]"), "") );
- */
+      result = await Connector.getDataByGet(parameter);
       tagNode = html.parse(result);
       itemNodes = tagNode.getElementsByTagName("item");
       resourceNodes = tagNode.getElementsByTagName("resource");
@@ -221,30 +146,17 @@ class ISchoolPlusConnector {
         downloadPost['href'] = href;
         fileType.postData = Map.of(downloadPost); //紀錄  需要使用Map.of不一個改全部都改
         fileType.type = CourseFileType.Unknown;
-        //以下這段會花費大量時間，改成點擊下載在取得
-        /*
-        fileType.href = await getRealFileUrl(downloadPost);
-        if ( fileType.href == null ){
-          continue;
-        }
-        if (courseFile.name.toLowerCase().contains(".pdf")) {  //是PDF
-          fileType.type = CourseFileType.PDF;
-        }else if( !Uri.parse(fileType.href).host.toLowerCase().contains("ntut.edu.tw") ){  //代表是外部連接
-          fileType.type = CourseFileType.Link;
-        }else{
-          fileType.type = CourseFileType.Unknown;
-        }
-         */
         courseFile.fileType = [fileType];
         courseFileList.add(courseFile);
       }
 
       return courseFileList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
+
   //List[0] RealUrl , List[1] referer
   static Future<List<String>> getRealFileUrl(
       Map<String, String> postParameter) async {
@@ -255,26 +167,16 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter(
           _iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
       parameter.data = postParameter;
-      http.Response response;
-      await RequestsConnector.getDataByPostResponse(parameter).then((value) {
-        response = value.rawResponse;
-      });
-      result = big5.decode(response.bodyBytes); //使用bi5編碼
+      parameter.charsetName = 'big5';
+      parameter.referer = "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
+      Response response;
+      response = await Connector.getDataByPostResponse(parameter);
+      result = response.toString();
       RegExp exp;
       RegExpMatch matches;
       if (response.statusCode == HttpStatus.ok) {
-        /*  //如果需要使用\w \\w
-        RegExp exp = new RegExp("\"(?<url>https?:\/\/[\w|\:|\/|\.|\+|\s|\?|%|#|&|=]+)\""); //檢測http或https開頭網址
-        RegExpMatch matches = exp.firstMatch(result);
-        Log.d( matches.toString() );
-        bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : true;
-         */
         exp = new RegExp("\"(?<url>http.+)\""); //檢測網址
         matches = exp.firstMatch(result);
-        //Log.d( matches.toString() );
-        //Log.d( matches.group(1));
-        //Log.d( result);
-        //bool pass = (matches == null) ? false : (matches.groupCount == null) ? false : matches.group(1).toLowerCase().contains(RegExp("https"))? true:false;
         bool pass = (matches == null)
             ? false
             : (matches.groupCount == null)
@@ -285,7 +187,7 @@ class ISchoolPlusConnector {
         if (pass) {
           url = matches.group(1);
           //已經是完整連結
-          return [url,url];
+          return [url, url];
         } else {
           exp = new RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
           matches = exp.firstMatch(result);
@@ -294,30 +196,30 @@ class ISchoolPlusConnector {
               : (matches.groupCount == null) ? false : true;
           if (pass) {
             String realUrl = _iSchoolPlusUrl + matches.group(1);
-            return [realUrl,realUrl]; //一般下載連結
+            return [realUrl, realUrl]; //一般下載連結
           } else {
             exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
             matches = exp.firstMatch(result);
             url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
-            result = await RequestsConnector.getDataByGet(parameter);
-            exp = new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
+            result = await Connector.getDataByGet(parameter);
+            exp =
+                new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
             String realUrl = _iSchoolPlusUrl + "learn/path/" + matches.group(1);
-            return [realUrl,url];
+            return [realUrl, url];
           }
         }
       } else if (response.isRedirect || result.isEmpty) {
         //發生跳轉 出現檔案下載頁面
-        url = response.headers[HttpHeaders.locationHeader];
+        url = response.headers[HttpHeaders.locationHeader][0];
         url = _iSchoolPlusUrl + "learn/path/" + url;
         url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址
-        return [url,url];
+        return [url, url];
       }
-    } catch (e) {
-      //如果真實網址解析錯誤
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       Log.e(result);
-      Log.e(e.toString());
       return null;
     }
     return null;
@@ -344,7 +246,7 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter(
           "https://istudy.ntut.edu.tw/forum/m_node_list.php");
       parameter.data = data;
-      result = await RequestsConnector.getDataByPost(parameter);
+      result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
       bid = tagNode.getElementById("bid").attributes["value"];
 
@@ -372,7 +274,7 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter(
           "https://istudy.ntut.edu.tw/mooc/controllers/forum_ajax.php");
       parameter.data = data;
-      result = await RequestsConnector.getDataByPost(parameter);
+      result = await Connector.getDataByPost(parameter);
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
       jsonData = json.decode(result)['data'];
@@ -381,7 +283,7 @@ class ISchoolPlusConnector {
         for (String keyName in json.decode(result)['data'].keys.toList()) {
           ISchoolPlusAnnouncementJson courseInfo =
               ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
-          courseInfo.subject = HtmlUtils.clean(courseInfo.subject);  //處理HTM特殊字
+          courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
           courseInfo.token = data['token'];
           courseInfo.bid = keyName.split("|").first;
           courseInfo.nid = keyName.split("|").last;
@@ -389,8 +291,8 @@ class ISchoolPlusConnector {
         }
       }
       return announcementList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -417,7 +319,7 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter(
           "https://istudy.ntut.edu.tw/forum/m_node_chain.php");
       parameter.data = data;
-      result = await RequestsConnector.getDataByPost(parameter);
+      result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
       node = tagNode.getElementsByClassName("main node-info").first;
       Map detail = Map();
@@ -450,8 +352,8 @@ class ISchoolPlusConnector {
       detail["body"] = body;
       detail["file"] = fileMap;
       return detail;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -467,7 +369,7 @@ class ISchoolPlusConnector {
       parameter.data = {"bid": bid};
       int time = 0;
       do {
-        result = await RequestsConnector.getDataByPost(parameter);
+        result = await Connector.getDataByPost(parameter);
         tagNode = html.parse(result);
         title = tagNode.getElementsByTagName("title").first.text;
         Log.d(title);
@@ -478,8 +380,8 @@ class ISchoolPlusConnector {
       } else {
         return true;
       }
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }
@@ -494,7 +396,7 @@ class ISchoolPlusConnector {
     try {
       parameter =
           ConnectorParameter("https://istudy.ntut.edu.tw/learn/my_forum.php");
-      result = await RequestsConnector.getDataByPost(parameter);
+      result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
       nodes = tagNode.getElementsByTagName("tbody");
       if (nodes.length > 1) {
@@ -510,8 +412,8 @@ class ISchoolPlusConnector {
         courseNameList.add(courseName);
       }
       return courseNameList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -525,8 +427,8 @@ class ISchoolPlusConnector {
       parameter =
           ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
       parameter.data = {"bid": bid};
-      await RequestsConnector.getDataByPost(parameter);
-      result = await RequestsConnector.getDataByPost(parameter);
+      await Connector.getDataByPost(parameter);
+      result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
       title = tagNode.getElementsByTagName("title").first.text;
       return !title.contains("取消");
@@ -564,8 +466,7 @@ class ISchoolPlusConnector {
     String result;
     try {
       parameter = ConnectorParameter(_getCourseName);
-      result = await RequestsConnector.getDataByGet(parameter);
-
+      result = await Connector.getDataByGet(parameter);
       tagNode = html.parse(result);
       node = tagNode.getElementById("selcourse");
       nodes = node.getElementsByTagName("option");
@@ -602,24 +503,16 @@ class ISchoolPlusConnector {
   static Future<bool> checkLogin() async {
     Log.d("ISchoolPlus CheckLogin");
     ConnectorParameter parameter;
-    http.Response response;
+    Response response;
     String result;
     _isLogin = false;
     try {
       parameter = ConnectorParameter(_checkLoginUrl);
-      await RequestsConnector.getDataByGetResponse(parameter).then((value) {
-        try {
-          response = value.rawResponse;
-        } catch (e) {}
-        result = value.content().toLowerCase();
-      });
+      response = await Connector.getDataByGetResponse(parameter);
+      result = response.toString();
       if (result.contains("connect lost") || result.contains("location.href")) {
         return false;
       }
-      /*
-      requests.Response result =  await RequestsConnector.getDataByPostResponse(parameter);
-      Log.d( result.rawResponse.statusCode.toString() );
-       */
       if (response.statusCode != HttpStatus.ok) {
         //代表登入失敗
         return false;
@@ -628,9 +521,8 @@ class ISchoolPlusConnector {
         _isLogin = true;
         return true;
       }
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      //Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

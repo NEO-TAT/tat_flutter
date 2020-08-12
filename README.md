@@ -9,6 +9,10 @@
   <img width="180" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/>
 </a>
 
+<a href="https://apps.apple.com/tw/app/tat-北科生活/id1513875597?l=en">
+  <img alt='Get it on AppStore' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?releaseDate=2019-04-02&kind=iossoftware&bubble=ios_apps' width='200'>
+</a>
+
 ## 功能
 1. 查詢北科學生課表
 2. 查詢北科當學年行事曆

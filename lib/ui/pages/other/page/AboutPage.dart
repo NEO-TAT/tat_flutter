@@ -2,13 +2,15 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
-import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
+import 'package:flutter_app/src/version/Version.dart';
+import 'package:flutter_app/src/version/VersionConfig.dart';
+import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
+import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -71,24 +73,13 @@ class _AboutPageState extends State<AboutPage> {
     switch (value) {
       case onListViewPress.AppUpdate:
         MyToast.show(R.current.checkingVersion);
-        UpdateDetail value = await AppUpdate.checkUpdate();
-        Model.instance.setAlreadyUse(Model.appCheckUpdate);
-        if (value != null) {
-          //檢查到app要更新
-          AppUpdate.showUpdateDialog(context, value);
-        } else {
-          //檢查捕丁
-          PatchDetail patch = await AppHotFix.checkPatchVersion();
-          if (patch != null) {
-            bool v = await AppHotFix.showUpdateDialog(context, patch);
-            if (v) AppHotFix.downloadPatch(context, patch);
-          } else {
-            MyToast.show(R.current.isNewVersion);
-          }
+        bool result = await Version.check(context);
+        if (!result) {
+          MyToast.show(R.current.isNewVersion);
         }
         break;
       case onListViewPress.Contribution:
-        const url = AppLink.gitHub;
+        final url = AppLink.gitHub;
         launch(url);
         break;
       case onListViewPress.Version:
@@ -101,7 +92,9 @@ class _AboutPageState extends State<AboutPage> {
         Future.delayed(Duration(seconds: 2)).then((_) {
           pressTime = 0;
         });
-        if (!AppHotFix.inDevMode && pressTime > 3) {
+        if (!AppHotFix.inDevMode &&
+            pressTime > 3 &&
+            VersionConfig.enableHotfix) {
           AppHotFix.setDevMode(true);
           _addDevListItem();
         }
@@ -110,10 +103,7 @@ class _AboutPageState extends State<AboutPage> {
       case onListViewPress.Dev:
         Navigator.of(context)
             .push(
-          PageTransition(
-            type: PageTransitionType.downToUp,
-            child: DevPage(),
-          ),
+          MyPage.transition(DevPage()),
         )
             .then((v) {
           if (v != null) {

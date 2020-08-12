@@ -1,5 +1,6 @@
 import 'package:flutter_app/src/store/JsonInit.dart';
 import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -195,8 +196,8 @@ class GraduationInformationJson {
   }
 
   bool get isSelect {
-    return !(selectYear.isEmpty &
-        selectDivision.isEmpty &
+    return !(selectYear.isEmpty |
+        selectDivision.isEmpty |
         selectDepartment.isEmpty);
   }
 
@@ -260,7 +261,18 @@ class SemesterCourseScoreJson {
   }
 
   String getAverageScoreString() {
-    return averageScore.toString();
+    double average = 0;
+    double total = 0;
+    for (CourseInfoJson score in courseScoreList) {
+      try {
+        average += double.parse(score.score) * score.credit;
+        total += score.credit;
+      } catch (e) {
+        continue;
+      }
+    }
+    average /= total;
+    return (averageScore != 0) ? averageScore.toString() : average.toString();
   }
 
   String getPerformanceScoreString() {
@@ -374,21 +386,28 @@ class RankItemJson {
 @JsonSerializable()
 class CourseInfoJson {
   String courseId;
-  String name;
+  String nameZh;
+  String nameEn;
   String score;
   double credit; //學分
   String openClass;
   String category;
 
+  String get name {
+    return (LanguageUtil.getLangIndex() == LangEnum.en) ? nameEn : nameZh;
+  }
+
   CourseInfoJson(
       {this.courseId,
-      this.name,
+      this.nameZh,
+      this.nameEn,
       this.score,
       this.credit,
       this.category,
       this.openClass}) {
     courseId = JsonInit.stringInit(courseId);
-    name = JsonInit.stringInit(name);
+    nameZh = JsonInit.stringInit(nameZh);
+    nameEn = JsonInit.stringInit(nameEn);
     score = JsonInit.stringInit(score);
     category = JsonInit.stringInit(category);
     openClass = JsonInit.stringInit(openClass);
@@ -439,7 +458,7 @@ class CourseInfoJson {
             "score           :%s \n" +
             "credit          :%s \n",
         [
-          name.toString(),
+          nameZh.toString(),
           score.toString(),
           credit.toString(),
         ]);

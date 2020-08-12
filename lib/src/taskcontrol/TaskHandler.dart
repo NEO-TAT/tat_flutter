@@ -5,17 +5,20 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 import 'dart:async';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischool/ISchoolLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntutapp/NTUTAppLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreLoginTask.dart';
+
+import '../../ui/other/MyToast.dart';
+import '../R.dart';
 
 class TaskHandler {
   TaskHandler._privateConstructor();
@@ -65,6 +68,11 @@ class TaskHandler {
   }
 
   Future<void> startTaskQueue(BuildContext context) async {
+    var connectivityResult = await (new Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      MyToast.show(R.current.pleaseConnectToNetwork);
+      giveUpTask();
+    }
     startTaskContext = context;
     for (TaskModel task in _taskQueue) {
       Log.d("Task: " + task.getTaskName);
@@ -84,8 +92,8 @@ class TaskHandler {
         } else {
           _handleSuccessTask(task);
         }
-      } catch (e) {
-        Log.e(e.toString());
+      } catch (e, stack) {
+        Log.eWithStack(e.toString(), stack);
         _handleErrorTask(task);
       }
     }
@@ -105,8 +113,7 @@ class TaskHandler {
     Log.d("Task fail " + task.getTaskName);
     if (task is NTUTLoginTask || task is NTUTAppLoginTask) {
       _addFirstTask(task);
-    } else if (task is ISchoolLoginTask ||
-        task is CourseLoginTask ||
+    } else if (task is CourseLoginTask ||
         task is ISchoolPlusLoginTask ||
         task is ScoreLoginTask) {
       _addFirstTaskList([NTUTLoginTask(task.context), task]);
@@ -136,7 +143,6 @@ class TaskHandler {
       CheckCookiesTask.checkNTUTApp: NTUTAppLoginTask(context),
       CheckCookiesTask.checkCourse: CourseLoginTask(context),
       CheckCookiesTask.checkScore: ScoreLoginTask(context),
-      CheckCookiesTask.checkISchool: ISchoolLoginTask(context),
       CheckCookiesTask.checkPlusISchool: ISchoolPlusLoginTask(context),
     };
     for (String key in loginMap.keys.toList()) {

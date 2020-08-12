@@ -8,6 +8,7 @@ class MyProgressDialog {
   static BuildContext _context;
 
   static void showProgressDialog(BuildContext context, String message) async {
+    if (context == null) return;
     _context = context;
     _progressDialog.showProgressDialog(context,
         //dismissAfter: Duration(seconds: 20 ),
@@ -18,51 +19,7 @@ class MyProgressDialog {
   }
 
   static Future<void> hideProgressDialog() async {
+    if (_context == null) return;
     await _progressDialog.dismissProgressDialog(_context);
   }
 }
-
-/*
-class MyProgressDialog {
-  static ProgressDialog _progressDialog;
-  static BuildContext _context;
-
-  static void showProgressDialog(BuildContext context, String message) {
-    hideProgressDialog();
-    _progressDialog = new ProgressDialog(
-      context,
-      showLogs: false,
-      useRootNavigator:false,
-    );
-
-
-    _progressDialog.style(
-      message: message,
-        /*
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: CircularProgressIndicator(),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
-        progress: 0.0,
-        maxProgress: 100.0,
-        progressTextStyle: TextStyle(
-            color: Colors.black, fontSize: 13.0),
-        messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.bold)
-
-         */
-    );
-    _progressDialog.show();
-  }
-
-  static void hideProgressDialog() async {
-    if( _progressDialog != null ){
-      _progressDialog.dismiss();
-    }
-
-  }
-
-
-}
-*/

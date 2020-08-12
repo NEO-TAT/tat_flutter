@@ -7,12 +7,14 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
-import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/version/Version.dart';
+import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/version/VersionConfig.dart';
+import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
@@ -34,75 +36,44 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> _pageList = List<Widget>();
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
+
+
   @override
   void initState() {
+    appInit();
     super.initState();
+  }
+
+  void appInit() async {
     R.set(context);
-    //載入儲存資料
-    Model.instance.init().then((value) async {
-      // 需重新初始化 list，PageController 才會清除 cache
-      try {
-        await AppHotFix.init();
-        await _setLang();
-        BuildContext contextKey = navigatorKey.currentState.overlay.context;
-        if (Model.instance.getAccount().isEmpty) {
-          contextKey = null; //不顯示對話框
-        } else {
-          _checkAppVersion();
-        }
-        //Crashlytics.instance.setString("StudentId", Model.instance.getAccount()); //設定發生問題學號
-        Crashlytics.instance
-            .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
-        List<String> supportedABis = await AppHotFix.getSupportABis();
-        Crashlytics.instance
-            .setString("Supported ABis", supportedABis.toString());
-        await AppHotFix.hotFixSuccess(contextKey);
-      } catch (e) {
-        Log.e(e.toString());
-      }
-      setState(() {
-        _pageList = List();
-        _pageList.add(CourseTablePage());
-        _pageList.add(NotificationPage());
-        _pageList.add(CalendarPage());
-        _pageList.add(ScoreViewerPage());
-        _pageList.add(OtherPage(_pageController));
-      });
-    });
-    _flutterDownloaderInit();
-    _notificationsInit();
-  }
-
-  void _checkAppVersion() async {
-    BuildContext contextKey = navigatorKey.currentState.overlay.context;
-    if (Model.instance.autoCheckAppUpdate) {
-      if (Model.instance.getFirstUse(Model.appCheckUpdate)) {
-        UpdateDetail value = await AppUpdate.checkUpdate();
-        Model.instance.setAlreadyUse(Model.appCheckUpdate);
-        if (value != null) {
-          //檢查到app要更新
-          AppUpdate.showUpdateDialog(contextKey, value);
-        } else {
-          //檢查捕丁
-          PatchDetail patch = await AppHotFix.checkPatchVersion();
-          if (patch != null) {
-            bool v = await AppHotFix.showUpdateDialog(contextKey, patch);
-            if (v) AppHotFix.downloadPatch(contextKey, patch);
-          }
-        }
-      }
+    await Model.instance.getInstance();
+    try {
+      await initLanguage();
+      Version.initAndCheck(navigatorKey.currentState.context);
+      initFlutterDownloader();
+      initNotifications();
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
     }
+    setState(() {
+      _pageList = List();
+      _pageList.add(CourseTablePage());
+      _pageList.add(NotificationPage());
+      _pageList.add(CalendarPage());
+      _pageList.add(ScoreViewerPage());
+      _pageList.add(OtherPage(_pageController));
+    });
   }
 
-  void _flutterDownloaderInit() async {
+  void initFlutterDownloader() async {
     await MyDownloader.init();
   }
 
-  void _notificationsInit() async {
+  void initNotifications() async {
     await Notifications.instance.init();
   }
 
-  Future<void> _setLang() async {
+  Future<void> initLanguage() async {
     await LanguageUtil.init(context);
     setState(() {});
   }

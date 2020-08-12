@@ -6,6 +6,7 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:sprintf/sprintf.dart';
@@ -13,7 +14,6 @@ import 'package:sprintf/sprintf.dart';
 enum LogMode { LogError, LogDebug }
 
 class Log {
-  static String _lastLog = "";
   static Logger logger = Logger(
     printer: PrettyPrinter(
         methodCount: 3,
@@ -29,89 +29,77 @@ class Log {
         printTime: false // Should each log print contain a timestamp
         ),
   );
+  static List<String> errorLog = List();
+  static List<String> debugLog = List();
+
+  static void eWithStack(String data, StackTrace stackTrace) {
+    //用於顯示已用try catch的處理error
+    String stack = stackTrace.toString();
+    String stackSplit = stack.split("#5").first;
+    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
+        "\n\n" +
+        stackSplit;
+    logger.e(data, stackSplit);
+    Crashlytics.instance.recordError(data, stackTrace);
+    addErrorLog(error);
+  }
+
+  static void error(String data, StackTrace stackTrace) {
+    //用於顯示無try catch的error
+    String stack = stackTrace.toString();
+    String stackSplit = stack.split("#5").first;
+    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
+        "\n\n" +
+        stackSplit;
+    logger.e(data, stackSplit);
+    addErrorLog(error);
+  }
 
   static void e(String data) {
     //用於顯示已用try catch的處理error
-    myLogNew(LogMode.LogError, data);
-  }
-
-  static void error(String data) {
-    //用於顯示無try catch的error
-    myLogNew(LogMode.LogError, data);
+    String error = data.substring(0, (data.length > 100) ? 100 : data.length) +
+        "\n\n" +
+        StackTrace.current.toString().split("#5").first;
+    logger.e(data);
+    addErrorLog(error);
   }
 
   static void d(String data) {
     //用於debug的Log
-    myLogNew(LogMode.LogDebug, data);
+    if (data.length <= 200) {
+      logger.d(data);
+    }
+    addDebugLog(data);
   }
 
-  static myLogNew(LogMode mode, String log) {
-    if (bool.fromEnvironment("dart.vm.product") == true) {
-      //代表現在不是debug模式
-      return;
-    }
-    switch (mode) {
-      case LogMode.LogDebug:
-        logger.d(log);
-        break;
-      case LogMode.LogError:
-        logger.e(log);
-        break;
+  static addErrorLog(String error) {
+    errorLog.add(error);
+    if (errorLog.length >= 30) {
+      errorLog.removeAt(0);
     }
   }
 
-  static myLog(LogMode mode, String data) {
-    if (bool.fromEnvironment("dart.vm.product") == true) {
-      //代表現在不是debug模式
-      return;
+  static addDebugLog(String error) {
+    debugLog.add(error);
+    if (debugLog.length >= 20) {
+      debugLog.removeAt(0);
     }
-    String log;
-    String nowLog = _getFileLogDebug();
-    String printLog = "";
-    String printMode = "";
-    switch (mode) {
-      case LogMode.LogDebug:
-        printLog = _getFileLogDebug();
-        printMode = "Debug";
-        break;
-      case LogMode.LogError:
-        printLog = _getFileLogError();
-        printMode = "Error";
-        break;
-    }
-    if (_lastLog != nowLog) {
-      print("\n\n");
-      log = sprintf("LogLevel: %s \nClass : %s \nMessage : \n%s",
-          [printMode, printLog, data]);
-    } else {
-      log = sprintf("%s", [data]);
-    }
-    _lastLog = nowLog;
-    _printWrapped(log);
   }
 
-  static void _printWrapped(String text) {
-    final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-    pattern.allMatches(text).forEach((match) => debugPrint(match.group(0)));
-  }
-
-  static String _getFileLogError() {
-    String log = buildLog(StackTrace.current.toString());
-    return log;
-  }
-
-  static String _getFileLogDebug() {
-    String log = StackTrace.current.toString();
-    return log.split('\n')[3].replaceFirst("#3      ", "");
-  }
-
-  static String buildLog(String inputLog) {
-    List<String> logList = inputLog.split("#");
+  static getLogString() {
     String log = "";
-    int size = (logList.length >= 20) ? 20 : logList.length;
-    for (String logItem in logList.sublist(0, size)) {
-      log += '#' + logItem + "\n";
+    log += 'error log \n';
+    log = "";
+    if (errorLog.length == 0) {
+      return "目前沒有記錄到任何錯誤訊息";
     }
-    return log;
+    for (String i in errorLog.reversed.toList()) {
+      log += i;
+    }
+    log += 'debug log \n';
+    for (String i in debugLog.reversed.toList()) {
+      log += (i.length <= 200) ? i : i.substring(0, 200);
+    }
+    return (log.length <= 5000) ? log : log.substring(0, 5000);
   }
 }

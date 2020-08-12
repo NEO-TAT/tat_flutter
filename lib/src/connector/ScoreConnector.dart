@@ -64,8 +64,8 @@ class ScoreConnector {
       await Connector.getDataByPostResponse(parameter);
       _isLogin = true;
       return ScoreConnectorStatus.LoginSuccess;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return ScoreConnectorStatus.LoginFail;
     }
   }
@@ -107,15 +107,24 @@ class ScoreConnector {
         courseScore.semester = semester;
         //取得課程名稱與分數
         scoreNodes = tableNode.getElementsByTagName("tr");
-        for (int j = 1; j < scoreNodes.length - 6; j++) {
+        int offset = (scoreNodes.length >= 5)
+            ? (scoreNodes.reversed.toList()[5].text.replaceAll("\n", "") == "")
+                ? 6
+                : 3
+            : 6;
+        for (int j = 1; j < scoreNodes.length - offset; j++) {
           scoreNode = scoreNodes[j];
           CourseInfoJson score = CourseInfoJson();
           score.courseId = scoreNode
               .getElementsByTagName("th")[0]
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
-          score.name = scoreNode
+          score.nameZh = scoreNode
               .getElementsByTagName("th")[2]
+              .text
+              .replaceAll(RegExp(r"[\s| ]"), "");
+          score.nameEn = scoreNode
+              .getElementsByTagName("th")[3]
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
           score.credit =
@@ -224,8 +233,8 @@ class ScoreConnector {
         }
       }
       return courseScoreList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -261,8 +270,8 @@ class ScoreConnector {
         }
       }
       return coreGeneralLessonList;
-    } catch (e) {
-      Log.e(e.toString());
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
@@ -289,9 +298,8 @@ class ScoreConnector {
         _isLogin = true;
         return true;
       }
-    } catch (e) {
-      //throw e;
-      Log.e(e.toString());
+    } catch (e, stack) {
+      //Log.eWithStack(e.toString(), stack);
       return false;
     }
   }
