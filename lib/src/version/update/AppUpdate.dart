@@ -33,7 +33,8 @@ class AppUpdate {
         for (String i in packageInfo.version.split(".")) {
           nowVersion.add(int.parse(i));
         }
-        for (String i in githubAPIJson.name.split(".")) {  //利用name解析版本名稱，如解析失敗不會跳出
+        for (String i in githubAPIJson.name.split(".")) {
+          //利用name解析版本名稱，如解析失敗不會跳出
           newVersion.add(int.parse(i));
         }
         bool needUpdate = false;
@@ -115,7 +116,7 @@ class AppUpdate {
                   },
                 );
                  */
-                _openPlayStore();
+                _openAppStore();
               },
             ),
           ],
@@ -124,8 +125,8 @@ class AppUpdate {
     );
   }
 
-  static void _openPlayStore() async {
-    String url = AppLink.playStore;
+  static void _openAppStore() async {
+    String url = AppLink.storeLink;
     if (await canLaunch(url)) {
       await launch(url);
     }

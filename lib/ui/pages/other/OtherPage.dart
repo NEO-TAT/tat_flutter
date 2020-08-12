@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -11,6 +10,8 @@ import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -23,11 +24,6 @@ import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:sprintf/sprintf.dart';
-
-import '../../../src/connector/NTUTConnector.dart';
-import '../../../src/costants/AppLink.dart';
-import '../../../src/hotfix/AppHotFix.dart';
-import '../../../src/update/AppUpdate.dart';
 
 enum onListViewPress {
   Setting,

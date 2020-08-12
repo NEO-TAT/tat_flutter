@@ -7,6 +7,7 @@ import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_app/src/version/VersionConfig.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';

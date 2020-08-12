@@ -1,17 +1,24 @@
+import 'dart:io';
+
 class AppLink {
-  static const String appPackageName = "club.ntut.npc.tat";
-  static const String playStore =
-      "https://play.google.com/store/apps/details?id=$appPackageName";
-  static const String gitHub =
-      "https://github.com/NEO-TAT/tat_flutter";
-  static const String gitHubReleases =
+  static final String androidAppPackageName = "club.ntut.npc.tat";
+  static final String _playStore =
+      "https://play.google.com/store/apps/details?id=$androidAppPackageName";
+  static final String _appleStore =
+      "https://apps.apple.com/tw/app/id1513875597";
+  static final String gitHub = "https://github.com/NEO-TAT/tat_flutter";
+  static final String gitHubReleases =
       "https://github.com/NEO-TAT/tat_flutter/releases";
-  static const String feedback =
+  static final String feedback =
       "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
-  static const String appUpdateCheck =
+  static final String appUpdateCheck =
       "https://api.github.com/repos/NEO-TAT/tat_flutter/releases/latest";
-  static const String appPatchCheckMaster =
+  static final String appPatchCheckMaster =
       "https://api.github.com/repos/NEO-TAT/tat_hotfix/contents/%s?ref=master";
-  static const String appPatchCheckDev =
+  static final String appPatchCheckDev =
       "https://api.github.com/repos/NEO-TAT/tat_hotfix/contents/%s?ref=dev";
+
+  static String get storeLink {
+    return (Platform.isAndroid) ? _playStore : _appleStore;
+  }
 }

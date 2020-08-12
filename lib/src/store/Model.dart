@@ -6,15 +6,15 @@
 //
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/json/SettingJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
+import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../debug/log/Log.dart';
 import 'json/CourseClassJson.dart';
 import 'json/CourseTableJson.dart';
 import 'json/UserDataJson.dart';
@@ -364,7 +364,7 @@ class Model {
     return value;
   }
 
-  Future<void> init() async {
+  Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
     _tempData = Map();
@@ -378,7 +378,7 @@ class Model {
     String preVersion = await _readString("version");
     Log.d(" preVersion: $preVersion \n version: $version");
     if (preVersion != version) {
-      await AppHotFix.init();
+      await AppHotFix.getInstance();
       AppHotFix.setDevMode(false); //更新APP版本後退出測模式
       _writeString("version", version); //寫入目前版本
       _setting.other.autoCheckAppUpdate = true; //開啟更新檢查
@@ -398,7 +398,7 @@ class Model {
     await cacheManager.emptyCache(); //clears all data in cache.
     TaskHandler.alreadyCheckSystem = ""; //全部登入重新檢查
     setFirstUse(courseNotice, true);
-    await init();
+    await getInstance();
   }
 
   Future<void> _save(String key, dynamic saveObj) async {

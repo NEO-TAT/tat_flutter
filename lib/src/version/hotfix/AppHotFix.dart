@@ -5,20 +5,20 @@ import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
-import 'package:flutter_app/src/update/AppUpdate.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
+import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
-import '../../debug/log/Log.dart';
-import 'PatchVersion.dart';
+import '../VersionConfig.dart';
 
 class PatchDetail {
   String platform;
@@ -36,7 +36,7 @@ class AppHotFix {
   static final String hotfixDownloadCacheName = "cache.so";
   static SharedPreferences pref;
 
-  static Future<void> init() async {
+  static Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
   }
 
@@ -118,12 +118,7 @@ class AppHotFix {
 
   static Future<int> getPatchVersion() async {
     //更新的版本
-    /*
-    int version = pref.getInt(patchVersion);
-    version = version ?? 0;
-    return version;
-     */
-    return patchVersion;
+    return VersionConfig.patchVersion;
   }
 
   static Future<String> getData(String url) async {
@@ -162,7 +157,7 @@ class AppHotFix {
   }
 
   static Future<PatchDetail> checkPatchVersion() async {
-    if (enableHotfix) {
+    if (VersionConfig.enableHotfix) {
       return null;
     }
     if (Platform.isAndroid) {
@@ -257,7 +252,7 @@ class AppHotFix {
 
   static void goToCloseApp() async {
     if (Platform.isAndroid) {
-      String packageName = AppLink.appPackageName;
+      String packageName = AppLink.androidAppPackageName;
       final AndroidIntent intent = AndroidIntent(
         action: 'action_application_details_settings',
         data:
