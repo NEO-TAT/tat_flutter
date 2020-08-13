@@ -168,7 +168,8 @@ class ISchoolPlusConnector {
           _iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
       parameter.data = postParameter;
       parameter.charsetName = 'big5';
-      parameter.referer = "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
+      parameter.referer =
+          "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
       Response response;
       response = await Connector.getDataByPostResponse(parameter);
       result = response.toString();

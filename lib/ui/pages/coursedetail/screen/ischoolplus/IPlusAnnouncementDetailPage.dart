@@ -51,7 +51,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
         actions: <Widget>[
           PopupMenuButton<int>(
             onSelected: (result) {
-              if( !addLink ) {
+              if (!addLink) {
                 setState(() {
                   addLink = true;
                   widget.data["body"] = HtmlUtils.addLink(widget.data["body"]);
@@ -119,7 +119,8 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   Widget _showFileList() {
-    List<String> fileNameList = widget.data['file'].keys.toList();  //key : 文件名稱  value : 文件下載url
+    List<String> fileNameList =
+        widget.data['file'].keys.toList(); //key : 文件名稱  value : 文件下載url
     Map fileUrlMap = widget.data["file"];
     if (fileNameList.length == 0) {
       return Container(
@@ -163,7 +164,8 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
                 return InkWell(
                   child: WidgetAnimator(fileWidget),
                   onTap: () {
-                    _downloadFile(fileUrlMap[fileNameList[index]], fileNameList[index]);
+                    _downloadFile(
+                        fileUrlMap[fileNameList[index]], fileNameList[index]);
                   },
                 );
               },

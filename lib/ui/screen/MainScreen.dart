@@ -36,8 +36,6 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> _pageList = List<Widget>();
   FirebaseAnalytics analytics = FirebaseAnalytics();
 
-
-
   @override
   void initState() {
     appInit();
