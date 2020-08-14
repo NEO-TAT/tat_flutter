@@ -40,6 +40,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   bool addLink = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,10 +84,12 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(
-                      widget.data["title"],
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
+                    Expanded(
+                      child: Text(
+                        widget.data["title"],
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ],
                 ),
