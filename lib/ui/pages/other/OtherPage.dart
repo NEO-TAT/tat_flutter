@@ -260,7 +260,8 @@ class _OtherPageState extends State<OtherPage> {
                       snapshot.data == NTUTConnectorStatus.LoginSuccess) {
                     return userImage;
                   } else {
-                    return SpinKitPouringHourglass(color: Colors.white);
+                    return SpinKitPouringHourglass(
+                        color: Theme.of(context).accentColor);
                   }
                 },
               ),
