@@ -10,7 +10,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
+import 'package:flutter_app/src/model/github/GithubFileAPIJson.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';

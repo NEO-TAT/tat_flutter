@@ -5,8 +5,8 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
@@ -62,7 +62,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     if (courseScoreList != null && courseScoreList.isNotEmpty) {
       await Model.instance.setSemesterCourseScore(courseScoreList);
       int total = courseScoreCredit.getCourseInfoList().length;
-      List<CourseInfoJson> courseInfoList =
+      List<CourseScoreInfoJson> courseInfoList =
           courseScoreCredit.getCourseInfoList();
       ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
       progressRateDialog.update(
@@ -73,7 +73,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       for (int i = 0; i < total; i++) {
         TaskHandler.instance.addTask(TaskModelFunction(context,
             require: [CheckCookiesTask.checkCourse], taskFunction: () async {
-          CourseInfoJson courseInfo = courseInfoList[i];
+          CourseScoreInfoJson courseInfo = courseInfoList[i];
           String courseId = courseInfo.courseId;
           if (courseInfo.category.isEmpty) {
             //沒有類別才尋找
@@ -349,12 +349,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ),
       ),
       onTap: () {
-        Map<String, List<CourseInfoJson>> result =
+        Map<String, List<CourseScoreInfoJson>> result =
             courseScoreCredit.getCourseByType(type);
         List<String> courseInfo = List();
         for (String key in result.keys.toList()) {
           courseInfo.add(key);
-          for (CourseInfoJson course in result[key]) {
+          for (CourseScoreInfoJson course in result[key]) {
             courseInfo.add(sprintf("     %s", [course.name]));
           }
         }
@@ -410,13 +410,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildGeneralLessonItem() {
-    Map<String, List<CourseInfoJson>> generalLesson =
+    Map<String, List<CourseScoreInfoJson>> generalLesson =
         courseScoreCredit.getGeneralLesson();
     List<Widget> widgetList = List();
     int selectCredit = 0;
     int coreCredit = 0;
     for (String key in generalLesson.keys) {
-      for (CourseInfoJson course in generalLesson[key]) {
+      for (CourseScoreInfoJson course in generalLesson[key]) {
         if (course.isCoreGeneralLesson) {
           coreCredit += course.credit.toInt();
         } else {
@@ -452,12 +452,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       department = department.substring(0, 2);
       Log.d(department);
     } catch (e) {}
-    Map<String, List<CourseInfoJson>> generalLesson =
+    Map<String, List<CourseScoreInfoJson>> generalLesson =
         courseScoreCredit.getOtherDepartmentCourse(department);
     List<Widget> widgetList = List();
     int otherDepartmentCredit = 0;
     for (String key in generalLesson.keys) {
-      for (CourseInfoJson course in generalLesson[key]) {
+      for (CourseScoreInfoJson course in generalLesson[key]) {
         otherDepartmentCredit += course.credit.toInt();
         Widget courseItemWidget;
         courseItemWidget = courseItemWidget =
@@ -524,14 +524,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   List<Widget> _buildCourseScores(SemesterCourseScoreJson courseScore) {
-    List<CourseInfoJson> scoreList = courseScore.courseScoreList;
+    List<CourseScoreInfoJson> scoreList = courseScore.courseScoreList;
     return [
       _buildTitle(R.current.resultsOfVariousSubjects),
-      for (CourseInfoJson score in scoreList) _buildScoreItem(score),
+      for (CourseScoreInfoJson score in scoreList) _buildScoreItem(score),
     ];
   }
 
-  Widget _buildScoreItem(CourseInfoJson score) {
+  Widget _buildScoreItem(CourseScoreInfoJson score) {
     return Column(
       children: <Widget>[
         Row(

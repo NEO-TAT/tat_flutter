@@ -28,8 +28,8 @@ class Version {
     }
     if (AppConfig.enableHotfix) {
       Log.d("Start check hotfix");
-      Crashlytics.instance.setInt(
-          "Patch Version", AppConfig.patchVersion); //設定patch version
+      Crashlytics.instance
+          .setInt("Patch Version", AppConfig.patchVersion); //設定patch version
       Crashlytics.instance
           .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
       List<String> supportedABis = await AppHotFix.getSupportABis();

@@ -5,7 +5,6 @@ import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
-
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();

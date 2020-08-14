@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 

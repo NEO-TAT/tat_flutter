@@ -1,4 +1,4 @@
-class Constants{
+class Constants {
   static List sortList = [
     "File name (A to Z)",
     "File name (Z to A)",

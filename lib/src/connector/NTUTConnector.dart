@@ -9,17 +9,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
-import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:intl/intl.dart';
-
-import '../store/Model.dart';
-import '../store/json/UserDataJson.dart';
-import 'core/Connector.dart';
-import 'core/ConnectorParameter.dart';
 
 enum NTUTConnectorStatus {
   LoginSuccess,

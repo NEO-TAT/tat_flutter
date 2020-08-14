@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 
-
 class ErrorInterceptors extends InterceptorsWrapper {
   final Dio dio;
 

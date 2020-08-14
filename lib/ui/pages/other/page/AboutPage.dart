@@ -91,9 +91,7 @@ class _AboutPageState extends State<AboutPage> {
         Future.delayed(Duration(seconds: 2)).then((_) {
           pressTime = 0;
         });
-        if (!AppHotFix.inDevMode &&
-            pressTime > 3 &&
-            AppConfig.enableHotfix) {
+        if (!AppHotFix.inDevMode && pressTime > 3 && AppConfig.enableHotfix) {
           AppHotFix.setDevMode(true);
           _addDevListItem();
         }

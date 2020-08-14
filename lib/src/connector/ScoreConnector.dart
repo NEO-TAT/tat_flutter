@@ -8,8 +8,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'core/Connector.dart';
@@ -114,7 +114,7 @@ class ScoreConnector {
             : 6;
         for (int j = 1; j < scoreNodes.length - offset; j++) {
           scoreNode = scoreNodes[j];
-          CourseInfoJson score = CourseInfoJson();
+          CourseScoreInfoJson score = CourseScoreInfoJson();
           score.courseId = scoreNode
               .getElementsByTagName("th")[0]
               .text
