@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/config/AppLink.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/json/GithubFileAPIJson.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
@@ -18,7 +18,6 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sprintf/sprintf.dart';
-import '../VersionConfig.dart';
 
 class PatchDetail {
   String platform;
@@ -118,7 +117,7 @@ class AppHotFix {
 
   static Future<int> getPatchVersion() async {
     //更新的版本
-    return VersionConfig.patchVersion;
+    return AppConfig.patchVersion;
   }
 
   static Future<String> getData(String url) async {
@@ -157,7 +156,7 @@ class AppHotFix {
   }
 
   static Future<PatchDetail> checkPatchVersion() async {
-    if (VersionConfig.enableHotfix) {
+    if (AppConfig.enableHotfix) {
       return null;
     }
     if (Platform.isAndroid) {
@@ -246,7 +245,7 @@ class AppHotFix {
   static void closeApp() async {
     //goToCloseApp();
     //SystemNavigator.pop();
-    const platform = const MethodChannel(Constants.methodChannelName);
+    const platform = const MethodChannel(AppConfig.methodChannelName);
     platform.invokeMethod('restart_app');
   }
 

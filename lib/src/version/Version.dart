@@ -1,8 +1,8 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/version/VersionConfig.dart';
 import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 
@@ -17,7 +17,7 @@ class Version {
   }
 
   static Future<bool> check(BuildContext context) async {
-    if (VersionConfig.enableUpdate) {
+    if (AppConfig.enableUpdate) {
       Log.d("Start check update");
       UpdateDetail value = await AppUpdate.checkUpdate();
       if (value != null) {
@@ -26,10 +26,10 @@ class Version {
         return true;
       }
     }
-    if (VersionConfig.enableHotfix) {
+    if (AppConfig.enableHotfix) {
       Log.d("Start check hotfix");
       Crashlytics.instance.setInt(
-          "Patch Version", VersionConfig.patchVersion); //設定patch version
+          "Patch Version", AppConfig.patchVersion); //設定patch version
       Crashlytics.instance
           .setBool("inDevMode", AppHotFix.inDevMode); //設定是否加入內測版
       List<String> supportedABis = await AppHotFix.getSupportABis();

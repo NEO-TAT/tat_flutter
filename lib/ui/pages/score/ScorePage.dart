@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
+import 'file:///C:/Users/Morris/Desktop/tat_flutter/lib/src/config/AppColors.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';

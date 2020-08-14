@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
+import 'file:///C:/Users/Morris/Desktop/tat_flutter/lib/src/config/AppLink.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/store/json/UserDataJson.dart';

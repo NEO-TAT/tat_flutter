@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
+import 'file:///C:/Users/Morris/Desktop/tat_flutter/lib/src/config/AppColors.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
 import '../../src/store/Model.dart';

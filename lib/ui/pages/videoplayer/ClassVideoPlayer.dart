@@ -5,9 +5,10 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -134,9 +135,9 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
         return MaterialApp(
-          title: Constants.appName,
+          title: AppConfig.appName,
           theme: appProvider.theme,
-          darkTheme: Constants.darkTheme,
+          darkTheme: AppThemes.darkTheme,
           home: Scaffold(
             appBar: AppBar(
               leading: BackButton(

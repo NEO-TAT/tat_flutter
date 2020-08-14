@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +11,7 @@ class AppProvider extends ChangeNotifier {
     checkTheme();
   }
 
-  ThemeData theme = Constants.lightTheme;
+  ThemeData theme = AppThemes.darkTheme;
   Key key = UniqueKey();
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -32,7 +32,7 @@ class AppProvider extends ChangeNotifier {
         SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
           statusBarColor:
-              c == "dark" ? Constants.darkPrimary : AppColors.mainColor,
+              c == "dark" ? AppColors.darkPrimary : AppColors.mainColor,
           statusBarIconBrightness:
               c == "dark" ? Brightness.light : Brightness.dark,
         ));
@@ -52,11 +52,11 @@ class AppProvider extends ChangeNotifier {
         prefs.getString("theme") == null ? "light" : prefs.getString("theme");
 
     if (r == "light") {
-      t = Constants.lightTheme;
-      setTheme(Constants.lightTheme, "light");
+      t = AppThemes.lightTheme;
+      setTheme(AppThemes.lightTheme, "light");
     } else {
-      t = Constants.darkTheme;
-      setTheme(Constants.darkTheme, "dark");
+      t = AppThemes.darkTheme;
+      setTheme(AppThemes.darkTheme, "dark");
     }
 
     return t;

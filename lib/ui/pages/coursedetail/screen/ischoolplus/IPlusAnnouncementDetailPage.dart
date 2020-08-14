@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
@@ -189,7 +189,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
       onTapUrl: (url) {
         onUrlTap(url);
       },
-      hyperlinkColor: Constants.hyperlinkColor,
+      hyperlinkColor: AppColors.hyperlinkColor,
     );
   }
 
