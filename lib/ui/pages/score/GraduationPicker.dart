@@ -4,16 +4,12 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-
-import '../../../src/taskcontrol/TaskHandler.dart';
-import '../../../src/taskcontrol/TaskModelFunction.dart';
-import '../../../src/taskcontrol/task/CheckCookiesTask.dart';
 
 class GraduationPicker {
   GraduationPickerWidget _dialog;

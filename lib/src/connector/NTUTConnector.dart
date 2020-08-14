@@ -9,17 +9,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
-import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:intl/intl.dart';
-
-import '../store/Model.dart';
-import '../store/json/UserDataJson.dart';
-import 'core/Connector.dart';
-import 'core/ConnectorParameter.dart';
 
 enum NTUTConnectorStatus {
   LoginSuccess,
@@ -36,7 +33,6 @@ class NTUTConnector {
   static bool _isLogin = false;
   static final String _host = "https://nportal.ntut.edu.tw/";
   static final String _loginUrl = _host + "login.do";
-  static final String _indexUrl = _host + "index.do";
   static final String _getPictureUrl = _host + "photoView.do";
   static final String _checkLoginUrl = _host + "myPortal.do";
   static final String _getCalendarUrl = _host + "calModeApp.do";
@@ -159,7 +155,7 @@ class NTUTConnector {
         return true;
       }
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

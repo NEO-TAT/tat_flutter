@@ -1,9 +1,8 @@
-import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
+import 'package:flutter_app/src/model/JsonInit.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
-
-import '../JsonInit.dart';
-import 'CourseClassJson.dart';
 
 part 'CourseTableJson.g.dart';
 

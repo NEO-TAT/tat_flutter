@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
-import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
-import 'package:flutter_app/src/store/object/CourseFileJson.dart';
+import 'package:flutter_app/src/model/ischoolplus/CourseFileJson.dart';
+import 'package:flutter_app/src/model/ischoolplus/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
@@ -22,9 +22,9 @@ class ISchoolPlusConnector {
   static bool _isLogin = false;
 
   static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
-  static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
-  static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
-  static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
+  //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
+  //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
+  //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
   static final String _iSchoolPlusLearnIndexUrl =
       _iSchoolPlusUrl + "learn/index.php";
   static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
@@ -523,7 +523,7 @@ class ISchoolPlusConnector {
         return true;
       }
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

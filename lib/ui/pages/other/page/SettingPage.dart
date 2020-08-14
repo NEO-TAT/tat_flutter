@@ -2,12 +2,11 @@ import 'dart:io';
 import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
-import 'package:flutter_app/src/version/VersionConfig.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -166,7 +165,7 @@ class _SettingPageState extends State<SettingPage>
 
   Widget _buildDarkModeSetting() {
     return (MediaQuery.of(context).platformBrightness !=
-            Constants.darkTheme.brightness)
+            AppThemes.darkTheme.brightness)
         ? SwitchListTile.adaptive(
             contentPadding: EdgeInsets.all(0),
             title: Row(
@@ -184,16 +183,16 @@ class _SettingPageState extends State<SettingPage>
               ],
             ),
             value:
-                Provider.of<AppProvider>(context).theme == Constants.lightTheme
+                Provider.of<AppProvider>(context).theme == AppThemes.lightTheme
                     ? false
                     : true,
             onChanged: (v) {
               if (v) {
                 Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(Constants.darkTheme, "dark");
+                    .setTheme(AppThemes.darkTheme, "dark");
               } else {
                 Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(Constants.lightTheme, "light");
+                    .setTheme(AppThemes.lightTheme, "light");
               }
             },
           )

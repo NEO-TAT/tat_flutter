@@ -1,10 +1,9 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
+import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/version/Version.dart';
-import 'package:flutter_app/src/version/VersionConfig.dart';
 import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
@@ -92,9 +91,7 @@ class _AboutPageState extends State<AboutPage> {
         Future.delayed(Duration(seconds: 2)).then((_) {
           pressTime = 0;
         });
-        if (!AppHotFix.inDevMode &&
-            pressTime > 3 &&
-            VersionConfig.enableHotfix) {
+        if (!AppHotFix.inDevMode && pressTime > 3 && AppConfig.enableHotfix) {
           AppHotFix.setDevMode(true);
           _addDevListItem();
         }

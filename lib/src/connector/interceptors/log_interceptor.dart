@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/config/config.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
 
 /**
  * Log 攔截器
@@ -22,7 +22,7 @@ class LogsInterceptors extends InterceptorsWrapper {
 
   @override
   onRequest(RequestOptions options) async {
-    if (Config.DEBUG) {
+    if (AppConfig.dioLogDebug) {
       String logItem = '';
       String log;
       log = "使用方法: ${options.method}" + "\n";
@@ -65,7 +65,7 @@ class LogsInterceptors extends InterceptorsWrapper {
 
   @override
   onResponse(Response response) async {
-    if (Config.DEBUG) {
+    if (AppConfig.dioLogDebug) {
       if (response != null) {
         Log.d('返回參數: \n' + response.toString());
       }
@@ -102,7 +102,7 @@ class LogsInterceptors extends InterceptorsWrapper {
 
   @override
   onError(DioError err) async {
-    if (Config.DEBUG) {
+    if (AppConfig.dioLogDebug) {
       String log =
           '請求異常: ' + err.toString() + '\n' + err.response?.toString() ?? "";
       Log.d(log);

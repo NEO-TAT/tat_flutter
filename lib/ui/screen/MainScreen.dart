@@ -1,20 +1,17 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/version/Version.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
-import 'package:flutter_app/src/version/VersionConfig.dart';
-import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
@@ -85,9 +82,9 @@ class _MainScreenState extends State<MainScreen> {
         appProvider.navigatorKey = navigatorKey;
         return MaterialApp(
           navigatorKey: navigatorKey,
-          title: Constants.appName,
+          title: AppConfig.appName,
           theme: appProvider.theme,
-          darkTheme: Constants.darkTheme,
+          darkTheme: AppThemes.darkTheme,
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: analytics),
           ],

@@ -6,7 +6,6 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:big5/big5.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -53,11 +52,13 @@ class DioConnector {
     return result;
   }
 
+  /*
   static String _utf8Decoder(List<int> responseBytes, RequestOptions options,
       ResponseBody responseBody) {
     String result = Utf8Codec().decode(responseBytes);
     return result;
   }
+   */
 
   Future<void> init() async {
     try {

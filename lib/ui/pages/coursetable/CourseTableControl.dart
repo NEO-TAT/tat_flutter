@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 
 class CourseTableControl {
   bool isHideSaturday = false;

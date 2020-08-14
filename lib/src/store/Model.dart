@@ -8,16 +8,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
-import 'package:flutter_app/src/store/json/SettingJson.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
+import 'package:flutter_app/src/model/setting/SettingJson.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'json/CourseClassJson.dart';
-import 'json/CourseTableJson.dart';
-import 'json/UserDataJson.dart';
+import '../model/course/CourseClassJson.dart';
 
 //flutter packages pub run build_runner build 創建Json
 //flutter packages pub run build_runner build --delete-conflicting-outputs

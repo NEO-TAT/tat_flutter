@@ -1,8 +1,4 @@
-import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
-
-import '../../../ui/other/MyToast.dart';
-import '../../R.dart';
 
 class ErrorInterceptors extends InterceptorsWrapper {
   final Dio dio;

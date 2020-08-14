@@ -1,5 +1,5 @@
-import 'package:flutter_app/src/store/JsonInit.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/JsonInit.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
@@ -38,8 +38,8 @@ class CourseScoreCreditJson {
   }
 
   //取得所有課程資訊
-  List<CourseInfoJson> getCourseInfoList() {
-    List<CourseInfoJson> courseInfoList = List();
+  List<CourseScoreInfoJson> getCourseInfoList() {
+    List<CourseScoreInfoJson> courseInfoList = List();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       courseInfoList.addAll(i.courseScoreList);
     }
@@ -47,9 +47,9 @@ class CourseScoreCreditJson {
   }
 
   //利用課程id取得課程資訊
-  CourseInfoJson getCourseByCourseId(String courseId) {
+  CourseScoreInfoJson getCourseByCourseId(String courseId) {
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
-      for (CourseInfoJson j in i.courseScoreList) {
+      for (CourseScoreInfoJson j in i.courseScoreList) {
         if (courseId == j.courseId) {
           return j;
         }
@@ -62,7 +62,7 @@ class CourseScoreCreditJson {
   List<String> getCourseIdList() {
     List<String> courseIdList = List();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
-      for (CourseInfoJson j in i.courseScoreList) {
+      for (CourseScoreInfoJson j in i.courseScoreList) {
         courseIdList.add(j.courseId);
       }
     }
@@ -80,9 +80,9 @@ class CourseScoreCreditJson {
 
   int getCreditByType(String type) {
     int credit = 0;
-    Map<String, List<CourseInfoJson>> result = getCourseByType(type);
+    Map<String, List<CourseScoreInfoJson>> result = getCourseByType(type);
     for (String key in result.keys.toList()) {
-      for (CourseInfoJson j in result[key]) {
+      for (CourseScoreInfoJson j in result[key]) {
         credit += j.credit.toInt();
       }
     }
@@ -93,13 +93,13 @@ class CourseScoreCreditJson {
   key
   Map<Semester , List<CourseInfoJson> >
   */
-  Map<String, List<CourseInfoJson>> getCourseByType(String type) {
-    Map<String, List<CourseInfoJson>> result = Map();
+  Map<String, List<CourseScoreInfoJson>> getCourseByType(String type) {
+    Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester =
           sprintf("%s-%s", [i.semester.year, i.semester.semester]);
       result[semester] = List();
-      for (CourseInfoJson j in i.courseScoreList) {
+      for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.category.contains(type) && j.isPass) {
           result[semester].add(j);
         }
@@ -116,12 +116,12 @@ class CourseScoreCreditJson {
   key
   Map<Semester , List<CourseInfoJson> >
   */
-  Map<String, List<CourseInfoJson>> getGeneralLesson() {
-    Map<String, List<CourseInfoJson>> result = Map();
+  Map<String, List<CourseScoreInfoJson>> getGeneralLesson() {
+    Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester = getSemesterString(i.semester);
       result[semester] = List();
-      for (CourseInfoJson j in i.courseScoreList) {
+      for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.isGeneralLesson && j.isPass) {
           result[semester].add(j);
         }
@@ -133,13 +133,13 @@ class CourseScoreCreditJson {
   /*
   計算外系學分
   */
-  Map<String, List<CourseInfoJson>> getOtherDepartmentCourse(
+  Map<String, List<CourseScoreInfoJson>> getOtherDepartmentCourse(
       String department) {
-    Map<String, List<CourseInfoJson>> result = Map();
+    Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester = getSemesterString(i.semester);
       result[semester] = List();
-      for (CourseInfoJson j in i.courseScoreList) {
+      for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.isOtherDepartment(department) && j.isPass) {
           result[semester].add(j);
         }
@@ -151,7 +151,7 @@ class CourseScoreCreditJson {
   int getTotalCourseCredit() {
     int credit = 0;
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
-      for (CourseInfoJson j in i.courseScoreList) {
+      for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.isPass) {
           credit += j.credit.toInt();
         }
@@ -231,7 +231,7 @@ class SemesterCourseScoreJson {
   SemesterJson semester;
   RankJson now;
   RankJson history;
-  List<CourseInfoJson> courseScoreList;
+  List<CourseScoreInfoJson> courseScoreList;
   double averageScore; //總平均
   double performanceScore; //操行成績
   double totalCredit; //修習總學分數
@@ -263,7 +263,7 @@ class SemesterCourseScoreJson {
   String getAverageScoreString() {
     double average = 0;
     double total = 0;
-    for (CourseInfoJson score in courseScoreList) {
+    for (CourseScoreInfoJson score in courseScoreList) {
       try {
         average += double.parse(score.score) * score.credit;
         total += score.credit;
@@ -285,7 +285,7 @@ class SemesterCourseScoreJson {
 
   String getTotalCreditString() {
     double total = 0;
-    for (CourseInfoJson score in courseScoreList) {
+    for (CourseScoreInfoJson score in courseScoreList) {
       total += score.credit;
     }
     return (totalCredit != 0) ? totalCredit.toString() : total.toString();
@@ -384,7 +384,7 @@ class RankItemJson {
 }
 
 @JsonSerializable()
-class CourseInfoJson {
+class CourseScoreInfoJson {
   String courseId;
   String nameZh;
   String nameEn;
@@ -397,7 +397,7 @@ class CourseInfoJson {
     return (LanguageUtil.getLangIndex() == LangEnum.en) ? nameEn : nameZh;
   }
 
-  CourseInfoJson(
+  CourseScoreInfoJson(
       {this.courseId,
       this.nameZh,
       this.nameEn,
@@ -464,7 +464,7 @@ class CourseInfoJson {
         ]);
   }
 
-  factory CourseInfoJson.fromJson(Map<String, dynamic> json) =>
+  factory CourseScoreInfoJson.fromJson(Map<String, dynamic> json) =>
       _$CourseInfoJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseInfoJsonToJson(this);

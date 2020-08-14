@@ -67,7 +67,7 @@ SemesterCourseScoreJson _$SemesterCourseScoreJsonFromJson(
     courseScoreList: (json['courseScoreList'] as List)
         ?.map((e) => e == null
             ? null
-            : CourseInfoJson.fromJson(e as Map<String, dynamic>))
+            : CourseScoreInfoJson.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     history: json['history'] == null
         ? null
@@ -122,8 +122,8 @@ Map<String, dynamic> _$RankItemJsonToJson(RankItemJson instance) =>
       'percentage': instance.percentage,
     };
 
-CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
-  return CourseInfoJson(
+CourseScoreInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
+  return CourseScoreInfoJson(
     courseId: json['courseId'] as String,
     nameZh: json['nameZh'] as String,
     nameEn: json['nameEn'] as String,
@@ -134,7 +134,7 @@ CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CourseInfoJsonToJson(CourseInfoJson instance) =>
+Map<String, dynamic> _$CourseInfoJsonToJson(CourseScoreInfoJson instance) =>
     <String, dynamic>{
       'courseId': instance.courseId,
       'nameZh': instance.nameZh,

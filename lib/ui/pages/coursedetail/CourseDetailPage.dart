@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/coursedetail/TabPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/CourseInfoPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementPage.dart';
@@ -58,9 +59,9 @@ class _ISchoolPageState extends State<ISchoolPage>
             return pop;
           },
           child: MaterialApp(
-            title: Constants.appName,
+            title: AppConfig.appName,
             theme: appProvider.theme,
-            darkTheme: Constants.darkTheme,
+            darkTheme: AppThemes.darkTheme,
             home: tabPageView(),
           ),
         );

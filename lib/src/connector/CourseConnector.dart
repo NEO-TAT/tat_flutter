@@ -8,16 +8,15 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-
-import 'core/Connector.dart';
-import 'core/ConnectorParameter.dart';
 
 enum CourseConnectorStatus {
   LoginSuccess,
@@ -701,7 +700,7 @@ class CourseConnector {
         return true;
       }
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

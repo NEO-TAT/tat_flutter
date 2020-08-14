@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
-import 'package:flutter_app/src/json/GithubAPIJson.dart';
+import 'package:flutter_app/src/model/github/GithubAPIJson.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sprintf/sprintf.dart';

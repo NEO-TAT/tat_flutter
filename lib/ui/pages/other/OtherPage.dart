@@ -4,12 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
@@ -260,7 +260,8 @@ class _OtherPageState extends State<OtherPage> {
                       snapshot.data == NTUTConnectorStatus.LoginSuccess) {
                     return userImage;
                   } else {
-                    return SpinKitPouringHourglass(color: Colors.white);
+                    return SpinKitPouringHourglass(
+                        color: Theme.of(context).accentColor);
                   }
                 },
               ),

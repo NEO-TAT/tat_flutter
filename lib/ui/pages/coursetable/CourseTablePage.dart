@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -8,27 +7,26 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/src/store/json/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
+import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseTableTask.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/coursedetail/CourseDetailPage.dart';
+import 'package:flutter_app/ui/pages/coursetable/CourseTableControl.dart';
+import 'package:flutter_app/ui/pages/coursetable/OverRepaintBoundary.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
-import '../../../src/taskcontrol/TaskHandler.dart';
-import '../../../src/taskcontrol/TaskModelFunction.dart';
-import '../../../src/taskcontrol/task/CheckCookiesTask.dart';
-import 'CourseTableControl.dart';
-import 'OverRepaintBoundary.dart';
 import 'dart:ui' as ui;
 
 class CourseTablePage extends StatefulWidget {
@@ -541,34 +539,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-  Widget _buildListView() {
-    return Container(
-      child: (isLoading)
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : AnimationLimiter(
-              child: ListView.builder(
-                itemCount: 1 + courseTableControl.getSectionIntList.length,
-                itemBuilder: (context, index) {
-                  Widget widget;
-                  widget =
-                      (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    child: ScaleAnimation(
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-    );
-  }
-
   Widget _buildDay() {
     List<Widget> widgetList = List();
     widgetList.add(Container(
@@ -748,7 +718,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  static const platform = const MethodChannel(Constants.methodChannelName);
+  static const platform = const MethodChannel(AppConfig.methodChannelName);
 
   Future screenshot() async {
     double originHeight = courseHeight;

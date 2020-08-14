@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
@@ -40,6 +40,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   bool addLink = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,10 +84,12 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(
-                      widget.data["title"],
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
+                    Expanded(
+                      child: Text(
+                        widget.data["title"],
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ],
                 ),
@@ -189,7 +192,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
       onTapUrl: (url) {
         onUrlTap(url);
       },
-      hyperlinkColor: Constants.hyperlinkColor,
+      hyperlinkColor: AppColors.hyperlinkColor,
     );
   }
 
