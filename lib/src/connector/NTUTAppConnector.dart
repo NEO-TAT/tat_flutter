@@ -18,7 +18,6 @@ class NTUTAppConnector {
   static final String _host = "https://ntut.app/";
   static final String _loginUrl = _host + "php/login.php";
   static final String _countCreditUrl = _host + "pages/credit.php";
-  static final String _creditUrl = _host + "pages/creditResult.php";
 
   static Future<NTUTAppConnectorStatus> login(
       String account, String password) async {
@@ -31,7 +30,8 @@ class NTUTAppConnector {
       };
       parameter = ConnectorParameter(_loginUrl);
       parameter.data = data.toString();
-      String jsonResult = await Connector.getDataByPost(parameter);
+      //String jsonResult = await Connector.getDataByPost(parameter);
+      await Connector.getDataByPost(parameter);
       _isLogin = true;
       return NTUTAppConnectorStatus.LoginSuccess;
     } catch (e, stack) {
@@ -98,7 +98,7 @@ class NTUTAppConnector {
       _isLogin = true;
       return true;
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

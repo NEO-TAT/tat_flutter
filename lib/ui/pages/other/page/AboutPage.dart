@@ -2,7 +2,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
-import 'file:///C:/Users/Morris/Desktop/tat_flutter/lib/src/config/AppLink.dart';
+import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/version/Version.dart';
 import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';

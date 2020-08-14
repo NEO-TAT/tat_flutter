@@ -36,7 +36,6 @@ class NTUTConnector {
   static bool _isLogin = false;
   static final String _host = "https://nportal.ntut.edu.tw/";
   static final String _loginUrl = _host + "login.do";
-  static final String _indexUrl = _host + "index.do";
   static final String _getPictureUrl = _host + "photoView.do";
   static final String _checkLoginUrl = _host + "myPortal.do";
   static final String _getCalendarUrl = _host + "calModeApp.do";
@@ -159,7 +158,7 @@ class NTUTConnector {
         return true;
       }
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }

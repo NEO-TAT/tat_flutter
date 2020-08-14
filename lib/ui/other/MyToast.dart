@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Morris/Desktop/tat_flutter/lib/src/config/AppColors.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyToast {

@@ -22,9 +22,9 @@ class ISchoolPlusConnector {
   static bool _isLogin = false;
 
   static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
-  static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
-  static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
-  static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
+  //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
+  //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
+  //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
   static final String _iSchoolPlusLearnIndexUrl =
       _iSchoolPlusUrl + "learn/index.php";
   static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
@@ -523,7 +523,7 @@ class ISchoolPlusConnector {
         return true;
       }
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
+      Log.eWithStack(e.toString(), stack);
       return false;
     }
   }
