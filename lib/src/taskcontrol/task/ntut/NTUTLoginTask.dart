@@ -62,8 +62,10 @@ class NTUTLoginTask extends TaskModel {
         parameter.btnOkOnPress = () {
           Navigator.of(context)
               .push(MyPage.transition(LoginScreen()))
-              .then((_) {
-            reStartTask();
+              .then((value) {
+            if (value) {
+              reStartTask();
+            }
           });
         };
         break;
