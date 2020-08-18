@@ -26,7 +26,7 @@
   "accountPasswordError": "帳號密碼錯誤",
   "connectTimeOut": "連接逾時",
   "authCodeFail": "驗證碼錯誤",
-  "accountLock": "帳號已被鎖住",
+  "accountLock": "帳號已被鎖住，請15分鐘後再試",
   "networkError": "網路發生錯誤",
   "unknownError": "發生未知錯誤",
   "passwordExpiredWarning": "密碼即將過期，請盡快更新密碼",

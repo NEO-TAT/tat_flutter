@@ -26,7 +26,7 @@
   "accountPasswordError": "Account password incorrect",
   "connectTimeOut": "Connection timed out",
   "authCodeFail": "Verification code error",
-  "accountLock": "Account is locked",
+  "accountLock": "Account is locked, please try again in 15 minutes",
   "networkError": "Network error",
   "unknownError": "An unknown error occurred",
   "passwordExpiredWarning": "Password is about to expire, please update password as soon as possible",
