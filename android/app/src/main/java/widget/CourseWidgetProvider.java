@@ -11,10 +11,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.RemoteViews;
-
 import java.util.Arrays;
 
-import club.ntut.npc.tat.BootLoaderActivity;
+import club.ntut.npc.tat.MainActivity;
 import club.ntut.npc.tat.R;
 import io.flutter.Log;
 
@@ -50,7 +49,8 @@ public class CourseWidgetProvider extends AppWidgetProvider {
 
         if (ACTION_ONCLICK.equals(intent.getAction())) {
             //Toast.makeText(context, "開啟app", Toast.LENGTH_LONG).show();
-            Intent actIntent = new Intent(context, BootLoaderActivity.class);
+            //Intent actIntent = new Intent(context, BootLoaderActivity.class);
+            Intent actIntent = new Intent(context, MainActivity.class);
             actIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             context.startActivity(actIntent);
         }
