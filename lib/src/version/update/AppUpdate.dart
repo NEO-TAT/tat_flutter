@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/model/github/GithubAPIJson.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -92,30 +90,9 @@ class AppUpdate {
               },
             ),
             FlatButton(
-              child: Text("github"),
-              onPressed: () {
-                launch(AppLink.gitHubReleases);
-              },
-            ),
-            FlatButton(
               child: Text(R.current.update),
               onPressed: () {
                 Navigator.of(context).pop();
-                /*
-                FileStore.findLocalPath(context).then(
-                  (filePath) {
-                    FlutterDownloader.enqueue(
-                            url: value.url, savedDir: filePath)
-                        .then(
-                      (id) {
-                        MyDownloader.addCallBack(id, _downloadCompleteCallBack);
-                        downloadTaskId = id;
-                        //FlutterDownloader.open(taskId: id);
-                      },
-                    );
-                  },
-                );
-                 */
                 _openAppStore();
               },
             ),
@@ -130,11 +107,5 @@ class AppUpdate {
     if (await canLaunch(url)) {
       await launch(url);
     }
-  }
-
-  static String downloadTaskId;
-
-  static void _downloadCompleteCallBack() {
-    FlutterDownloader.open(taskId: downloadTaskId);
   }
 }
