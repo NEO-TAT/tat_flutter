@@ -1,19 +1,14 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/version/Version.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-enum onListViewPress { AppUpdate, Contribution, Version, Dev }
+enum onListViewPress { AppUpdate, Contribution, Version }
 
 class AboutPage extends StatefulWidget {
   @override
@@ -51,19 +46,6 @@ class _AboutPageState extends State<AboutPage> {
         "onPress": onListViewPress.Version
       }
     ]);
-    _addDevListItem();
-  }
-
-  void _addDevListItem() {
-    if (AppHotFix.inDevMode) {
-      listViewData.add({
-        "icon": EvaIcons.options,
-        "color": Colors.amberAccent,
-        "title": R.current.developerMode,
-        "onPress": onListViewPress.Dev
-      });
-      setState(() {});
-    }
   }
 
   int pressTime = 0;
@@ -83,30 +65,12 @@ class _AboutPageState extends State<AboutPage> {
         break;
       case onListViewPress.Version:
         String mainVersion = await AppUpdate.getAppVersion();
-        int patchVersion = await AppHotFix.getPatchVersion();
         if (pressTime == 0) {
-          MyToast.show(sprintf("%s.%d", [mainVersion, patchVersion]));
+          MyToast.show(mainVersion);
         }
         pressTime++;
         Future.delayed(Duration(seconds: 2)).then((_) {
           pressTime = 0;
-        });
-        if (!AppHotFix.inDevMode && pressTime > 3 && AppConfig.enableHotfix) {
-          AppHotFix.setDevMode(true);
-          _addDevListItem();
-        }
-        print(pressTime);
-        break;
-      case onListViewPress.Dev:
-        Navigator.of(context)
-            .push(
-          MyPage.transition(DevPage()),
-        )
-            .then((v) {
-          if (v != null) {
-            initList();
-          }
-          setState(() {});
         });
         break;
       default:

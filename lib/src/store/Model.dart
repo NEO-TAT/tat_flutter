@@ -13,7 +13,6 @@ import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/setting/SettingJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -378,8 +377,6 @@ class Model {
     String preVersion = await _readString("version");
     Log.d(" preVersion: $preVersion \n version: $version");
     if (preVersion != version) {
-      await AppHotFix.getInstance();
-      AppHotFix.setDevMode(false); //更新APP版本後退出測模式
       _writeString("version", version); //寫入目前版本
       _setting.other.autoCheckAppUpdate = true; //開啟更新檢查
       saveOtherSetting();

@@ -10,7 +10,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
@@ -23,7 +22,6 @@ import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:sprintf/sprintf.dart';
 
 enum onListViewPress {
   Setting,
@@ -137,11 +135,10 @@ class _OtherPageState extends State<OtherPage> {
         String link = AppLink.feedback;
         try {
           String mainVersion = await AppUpdate.getAppVersion();
-          int patchVersion = await AppHotFix.getPatchVersion();
           Uri url = Uri.https(Uri.parse(AppLink.feedback).host,
               Uri.parse(AppLink.feedback).path, {
             "entry.978972557": (Platform.isAndroid) ? "Android" : "IOS",
-            "entry.823909330": sprintf("%s.%d", [mainVersion, patchVersion]),
+            "entry.823909330": mainVersion,
             "entry.517392071": Log.getLogString()
           });
           link = url.toString();
