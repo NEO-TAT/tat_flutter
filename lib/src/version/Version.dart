@@ -14,14 +14,12 @@ class Version {
   }
 
   static Future<bool> check(BuildContext context) async {
-    if (AppConfig.enableUpdate) {
-      Log.d("Start check update");
-      UpdateDetail value = await AppUpdate.checkUpdate();
-      if (value != null) {
-        //檢查到app要更新
-        AppUpdate.showUpdateDialog(context, value);
-        return true;
-      }
+    Log.d("Start check update");
+    UpdateDetail value = await AppUpdate.checkUpdate();
+    if (value != null) {
+      //檢查到app要更新
+      AppUpdate.showUpdateDialog(context, value);
+      return true;
     }
     return false;
   }

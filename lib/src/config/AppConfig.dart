@@ -5,5 +5,4 @@ class AppConfig {
   static const String methodChannelName =
       "club.ntut.npc.tat.main.mothod.channel.name";
   static bool dioLogDebug = true;
-  static final bool enableUpdate = true;
 }
