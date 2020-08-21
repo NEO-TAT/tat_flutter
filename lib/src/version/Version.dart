@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 
