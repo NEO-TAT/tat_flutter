@@ -8,12 +8,13 @@ import android.content.pm.PackageManager
 import androidx.annotation.NonNull
 import io.flutter.Log
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import kotlin.system.exitProcess
 
-class MainActivity : FlutterActivity() {
+class MainActivity : FlutterFragmentActivity() {
     private val channelName = "club.ntut.npc.tat.main.mothod.channel.name"
     private val logTag = "FlutterActivity"
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
@@ -26,7 +27,7 @@ class MainActivity : FlutterActivity() {
                     Log.i(logTag, "update_weight")
                     try {
                         val intend = Intent("android.appwidget.action.APPWIDGET_UPDATE") //顯示意圖
-                        context.sendBroadcast(intend)
+                        this.sendBroadcast(intend)
                         result.success(true)
                     } catch (e: Exception) {
                         result.success(false)
@@ -35,7 +36,7 @@ class MainActivity : FlutterActivity() {
                     }
                 }
                 "restart_app" -> {
-                    doRestart(context)
+                    doRestart(this)
                 }
                 else -> {
                     result.notImplemented()

@@ -12,23 +12,22 @@ import 'intl/messages_all.dart';
 
 class S {
   S();
-
+  
   static S current;
-
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  
+  static const AppLocalizationDelegate delegate =
+    AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
+    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       S.current = S();
-
+      
       return S.current;
     });
-  }
+  } 
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S);
@@ -649,6 +648,56 @@ class S {
     return Intl.message(
       'Login to the NTUTApp Error',
       name: 'loginNTUTAppError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Changing password...`
+  String get changingPassword {
+    return Intl.message(
+      'Changing password...',
+      name: 'changingPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Changing password Error`
+  String get changingPasswordError {
+    return Intl.message(
+      'Changing password Error',
+      name: 'changingPasswordError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check identity`
+  String get checkIdentity {
+    return Intl.message(
+      'Check identity',
+      name: 'checkIdentity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Origin password`
+  String get originPassword {
+    return Intl.message(
+      'Origin password',
+      name: 'originPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Different from the original password`
+  String get passwordNotSame {
+    return Intl.message(
+      'Different from the original password',
+      name: 'passwordNotSame',
       desc: '',
       args: [],
     );
