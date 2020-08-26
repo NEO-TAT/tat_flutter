@@ -9,6 +9,7 @@ import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
+import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/version/Version.dart';
@@ -183,6 +184,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _onTap(int index) {
+    TaskHandler.instance.giveUpTask();
     _pageController.jumpToPage(index);
   }
 }
