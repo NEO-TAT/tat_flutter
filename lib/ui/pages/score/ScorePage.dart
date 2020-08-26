@@ -216,24 +216,27 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     try {
       if (courseScoreCredit.graduationInformation.isSelect) {
         tabLabelList.add(_buildTabLabel(R.current.creditSummary));
-        tabChildList.add(
-          AnimationLimiter(
-            child: Column(
-              children: AnimationConfiguration.toStaggeredList(
-                childAnimationBuilder: (widget) => SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(child: widget),
+        tabChildList.add(StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return AnimationLimiter(
+              child: Column(
+                children: AnimationConfiguration.toStaggeredList(
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(child: widget),
+                  ),
+                  children: <Widget>[
+                    _buildSummary(),
+                    _buildGeneralLessonItem(),
+                    _buildOtherDepartmentItem(),
+                    _buildWarning(),
+                  ],
                 ),
-                children: <Widget>[
-                  _buildSummary(),
-                  _buildGeneralLessonItem(),
-                  _buildOtherDepartmentItem(),
-                  _buildWarning(),
-                ],
               ),
-            ),
-          ),
-        );
+            );
+          },
+        ));
       }
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
