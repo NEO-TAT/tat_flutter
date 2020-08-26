@@ -532,28 +532,45 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildScoreItem(CourseScoreInfoJson score) {
+    int typeSelect = constCourseType.indexOf(score.category);
     return Column(
       children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                score.name,
-                style: TextStyle(fontSize: 16.0),
+        Container(
+          height: 25,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Text(
+                  score.name,
+                  style: TextStyle(fontSize: 16.0),
+                ),
               ),
-            ),
-            if (score.category.isNotEmpty)
-              Text(
-                score.category,
-                style: TextStyle(fontSize: 16.0),
+              if (score.category.isNotEmpty)
+                DropdownButton(
+                  underline: Container(),
+                    value: typeSelect,
+                    items: constCourseType
+                        .map((e) => DropdownMenuItem(
+                              child: Text(
+                                e,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              value: constCourseType.indexOf(e),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        typeSelect = value;
+                      });
+                    }),
+              Container(
+                width: 40,
+                child: Text(score.score,
+                    style: TextStyle(fontSize: 16.0), textAlign: TextAlign.end),
               ),
-            Container(
-              width: 40,
-              child: Text(score.score,
-                  style: TextStyle(fontSize: 16.0), textAlign: TextAlign.end),
-            ),
-          ],
+            ],
+          ),
         ),
         SizedBox(
           height: 8.0,
