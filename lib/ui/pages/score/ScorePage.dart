@@ -216,24 +216,27 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     try {
       if (courseScoreCredit.graduationInformation.isSelect) {
         tabLabelList.add(_buildTabLabel(R.current.creditSummary));
-        tabChildList.add(
-          AnimationLimiter(
-            child: Column(
-              children: AnimationConfiguration.toStaggeredList(
-                childAnimationBuilder: (widget) => SlideAnimation(
-                  verticalOffset: 50.0,
-                  child: FadeInAnimation(child: widget),
+        tabChildList.add(StatefulBuilder(
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
+            return AnimationLimiter(
+              child: Column(
+                children: AnimationConfiguration.toStaggeredList(
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(child: widget),
+                  ),
+                  children: <Widget>[
+                    _buildSummary(),
+                    _buildGeneralLessonItem(),
+                    _buildOtherDepartmentItem(),
+                    _buildWarning(),
+                  ],
                 ),
-                children: <Widget>[
-                  _buildSummary(),
-                  _buildGeneralLessonItem(),
-                  _buildOtherDepartmentItem(),
-                  _buildWarning(),
-                ],
               ),
-            ),
-          ),
-        );
+            );
+          },
+        ));
       }
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -532,34 +535,67 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildScoreItem(CourseScoreInfoJson score) {
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Text(
-                score.name,
-                style: TextStyle(fontSize: 16.0),
-              ),
+    return StatefulBuilder(builder:
+        (BuildContext context, void Function(void Function()) setState) {
+      int typeSelect = constCourseType.indexOf(score.category);
+      return Column(
+        children: <Widget>[
+          Container(
+            height: 25,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    score.name,
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ),
+                if (score.category.isNotEmpty)
+                  DropdownButton(
+                      underline: Container(),
+                      value: typeSelect,
+                      items: constCourseType
+                          .map((e) => DropdownMenuItem(
+                                child: Text(
+                                  e,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                value: constCourseType.indexOf(e),
+                              ))
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          typeSelect = value;
+                          score.category = constCourseType[typeSelect];
+                          /*
+                        print(courseScoreList
+                            .map((e) => e.courseScoreList
+                                .map((k) => k.category)
+                                .toList())
+                            .toList());
+                         */
+                          //存檔
+                          Model.instance
+                              .setCourseScoreCredit(courseScoreCredit);
+                          Model.instance.saveCourseScoreCredit();
+                        });
+                      }),
+                Container(
+                  width: 40,
+                  child: Text(score.score,
+                      style: TextStyle(fontSize: 16.0),
+                      textAlign: TextAlign.end),
+                ),
+              ],
             ),
-            if (score.category.isNotEmpty)
-              Text(
-                score.category,
-                style: TextStyle(fontSize: 16.0),
-              ),
-            Container(
-              width: 40,
-              child: Text(score.score,
-                  style: TextStyle(fontSize: 16.0), textAlign: TextAlign.end),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 8.0,
-        ),
-      ],
-    );
+          ),
+          SizedBox(
+            height: 8.0,
+          ),
+        ],
+      );
+    });
   }
 
   List<Widget> _buildSemesterScore(SemesterCourseScoreJson courseScore) {
