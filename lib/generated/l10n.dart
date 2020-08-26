@@ -703,6 +703,66 @@ class S {
     );
   }
 
+  /// `Input new password`
+  String get inputNewPassword {
+    return Intl.message(
+      'Input new password',
+      name: 'inputNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input new password again`
+  String get inputNewPasswordAgain {
+    return Intl.message(
+      'Input new password again',
+      name: 'inputNewPasswordAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input is null`
+  String get inputNull {
+    return Intl.message(
+      'Input is null',
+      name: 'inputNull',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 4 character`
+  String get passwordLengthShort {
+    return Intl.message(
+      'At least 4 character',
+      name: 'passwordLengthShort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input not same`
+  String get inputNotSame {
+    return Intl.message(
+      'Input not same',
+      name: 'inputNotSame',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set new password`
+  String get setNewPassword {
+    return Intl.message(
+      'Set new password',
+      name: 'setNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________CourseTableUi___________________ {
     return Intl.message(
