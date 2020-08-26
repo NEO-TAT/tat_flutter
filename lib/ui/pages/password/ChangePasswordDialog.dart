@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTChangePasswordTask.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
   ChangePasswordDialog({Key key}) : super(key: key);
@@ -112,8 +114,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         ),
         FlatButton(
             child: Text(R.current.sure),
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
+                TaskHandler.instance.addTask(NTUTChangePasswordTask(
+                    context, _onePasswordController.text));
+                await TaskHandler.instance.startTaskQueue(context);
                 Navigator.of(context).pop(true);
               }
             })
@@ -130,6 +135,8 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
       _passwordErrorMessage = R.current.inputNotSame;
     } else if (_onePasswordController.text.length <= 4) {
       _passwordErrorMessage = R.current.passwordLengthShort;
+    } else if (_onePasswordController.text == Model.instance.getPassword()) {
+      _passwordErrorMessage = R.current.sameOldPassword;
     }
     setState(() {});
     return _passwordErrorMessage.isNotEmpty ? _passwordErrorMessage : null;

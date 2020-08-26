@@ -763,6 +763,16 @@ class S {
     );
   }
 
+  /// `Same password as before`
+  String get sameOldPassword {
+    return Intl.message(
+      'Same password as before',
+      name: 'sameOldPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________CourseTableUi___________________ {
     return Intl.message(

@@ -224,6 +224,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resultsOfVariousSubjects" : MessageLookupByLibrary.simpleMessage("Results of various subjects"),
     "revisedCommonCompulsory" : MessageLookupByLibrary.simpleMessage("Revised Common Compulsory"),
     "ruleDimension" : MessageLookupByLibrary.simpleMessage("Rule of law"),
+    "sameOldPassword" : MessageLookupByLibrary.simpleMessage("Same password as before"),
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
     "scoreCalculationWarring" : MessageLookupByLibrary.simpleMessage("This calculation is for reference only. Actually, please focus on the school."),
     "scoreSearch" : MessageLookupByLibrary.simpleMessage("Score query"),

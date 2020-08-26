@@ -72,6 +72,7 @@
   "passwordLengthShort": "密碼過短",
   "inputNotSame": "輸入不一致",
   "setNewPassword": "設定新密碼",
+  "sameOldPassword": "不可以與之前密碼相同",
   "___________________CourseTableUi___________________": "註解",
   "Monday": "一",
   "Tuesday": "二",

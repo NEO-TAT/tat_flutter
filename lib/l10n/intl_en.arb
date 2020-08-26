@@ -72,6 +72,7 @@
   "passwordLengthShort": "At least 4 character",
   "inputNotSame": "Input not same",
   "setNewPassword": "Set new password",
+  "sameOldPassword": "Same password as before",
   "___________________CourseTableUi___________________": "註解",
   "Monday": "MON",
   "Tuesday": "TUE",

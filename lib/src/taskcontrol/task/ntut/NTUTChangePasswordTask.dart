@@ -24,6 +24,8 @@ class NTUTChangePasswordTask extends TaskModel {
       _handleError(value);
       return TaskStatus.TaskFail;
     } else {
+      Model.instance.setPassword(password);
+      await Model.instance.saveUserData();
       return TaskStatus.TaskSuccess;
     }
   }

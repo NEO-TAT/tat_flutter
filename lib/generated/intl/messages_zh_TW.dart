@@ -223,6 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resultsOfVariousSubjects" : MessageLookupByLibrary.simpleMessage("各科成績"),
     "revisedCommonCompulsory" : MessageLookupByLibrary.simpleMessage("校訂共同必修"),
     "ruleDimension" : MessageLookupByLibrary.simpleMessage("法治向度"),
+    "sameOldPassword" : MessageLookupByLibrary.simpleMessage("不可以與之前密碼相同"),
     "save" : MessageLookupByLibrary.simpleMessage("儲存"),
     "scoreCalculationWarring" : MessageLookupByLibrary.simpleMessage("此計算僅供參考，實際請以學校為主"),
     "scoreSearch" : MessageLookupByLibrary.simpleMessage("分數查詢"),
