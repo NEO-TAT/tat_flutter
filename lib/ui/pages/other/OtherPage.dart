@@ -12,6 +12,7 @@ import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/debug/DebugPage.dart';
@@ -177,27 +178,24 @@ class _OtherPageState extends State<OtherPage> {
       appBar: AppBar(
         title: Text(R.current.titleOther),
       ),
-      body: AnimationLimiter(
-        child: Container(
-          child: Column(
-            children: AnimationConfiguration.toStaggeredList(
-              childAnimationBuilder: (widget) => SlideAnimation(
-                horizontalOffset: 50.0,
-                child: FadeInAnimation(
-                  child: widget,
-                ),
-              ),
-              children: <Widget>[
-                if (Model.instance.getAccount().isNotEmpty) _buildHeader(),
-                SizedBox(
-                  height: 16,
-                ),
-                for (Map option in optionList) _buildSetting(option)
-              ],
-            ),
+      body: Column(children: <Widget>[
+        if (Model.instance.getAccount().isNotEmpty)
+          Container(
+            child: _buildHeader(),
+          ),
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          child: Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: optionList.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    WidgetAnimator(_buildSetting(optionList[index]))),
           ),
         ),
-      ),
+      ]),
     );
   }
 
