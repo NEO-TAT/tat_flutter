@@ -733,21 +733,11 @@ class S {
     );
   }
 
-  /// `At least 4 character`
-  String get passwordLengthShort {
+  /// `The password length must be between 8 characters and 14 characters`
+  String get passwordLengthError {
     return Intl.message(
-      'At least 4 character',
-      name: 'passwordLengthShort',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Input not same`
-  String get inputNotSame {
-    return Intl.message(
-      'Input not same',
-      name: 'inputNotSame',
+      'The password length must be between 8 characters and 14 characters',
+      name: 'passwordLengthError',
       desc: '',
       args: [],
     );

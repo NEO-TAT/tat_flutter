@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
@@ -13,11 +14,10 @@ class ChangePasswordDialog extends StatefulWidget {
 }
 
 class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
-  final TextEditingController _onePasswordController = TextEditingController();
-  final TextEditingController _twoPasswordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final FocusNode _onePasswordFocus = new FocusNode();
-  final FocusNode _twoPasswordFocus = new FocusNode();
+  final FocusNode _passwordFocus = new FocusNode();
+  bool passwordShow = false;
   String _passwordErrorMessage = "";
 
   @override
@@ -43,49 +43,43 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           children: <Widget>[
             Material(
               elevation: 2,
-              child: TextFormField(
-                controller: _onePasswordController,
-                cursorColor: Colors.blue[800],
-                textInputAction: TextInputAction.done,
-                focusNode: _onePasswordFocus,
-                onEditingComplete: () {
-                  _onePasswordFocus.unfocus();
-                  FocusScope.of(context).requestFocus(_twoPasswordFocus);
-                },
-                obscureText: true,
-                validator: (value) => _validatorSamePassword(value),
-                decoration: InputDecoration(
-                  hintText: R.current.inputNewPassword,
-                  errorStyle: TextStyle(
-                    height: 0,
-                    fontSize: 0,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _passwordController,
+                      cursorColor: Colors.blue[800],
+                      textInputAction: TextInputAction.done,
+                      focusNode: _passwordFocus,
+                      onEditingComplete: () {
+                        _passwordFocus.unfocus();
+                      },
+                      obscureText: !passwordShow,
+                      validator: (value) => _validatorSamePassword(value),
+                      decoration: InputDecoration(
+                        hintText: R.current.inputNewPassword,
+                        errorStyle: TextStyle(
+                          height: 0,
+                          fontSize: 0,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  IconButton(
+                    icon: (passwordShow)
+                        ? Icon(EvaIcons.eyeOutline)
+                        : Icon(EvaIcons.eyeOffOutline),
+                    onPressed: () {
+                      setState(() {
+                        passwordShow = !passwordShow;
+                      });
+                    },
+                  )
+                ],
               ),
             ),
             SizedBox(
               height: 4,
-            ),
-            Material(
-              elevation: 2,
-              child: TextFormField(
-                controller: _twoPasswordController,
-                cursorColor: Colors.blue[800],
-                textInputAction: TextInputAction.done,
-                focusNode: _twoPasswordFocus,
-                onEditingComplete: () {
-                  _twoPasswordFocus.unfocus();
-                },
-                obscureText: true,
-                validator: (value) => _validatorSamePassword(value),
-                decoration: InputDecoration(
-                  hintText: R.current.inputNewPasswordAgain,
-                  errorStyle: TextStyle(
-                    height: 0,
-                    fontSize: 0,
-                  ),
-                ),
-              ),
             ),
             SizedBox(
               height: 4,
@@ -116,10 +110,13 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
             child: Text(R.current.sure),
             onPressed: () async {
               if (_formKey.currentState.validate()) {
-                TaskHandler.instance.addTask(NTUTChangePasswordTask(
-                    context, _onePasswordController.text));
-                await TaskHandler.instance.startTaskQueue(context);
-                Navigator.of(context).pop(true);
+                TaskHandler.instance.addTask(
+                    NTUTChangePasswordTask(context, _passwordController.text));
+                bool success =
+                    await TaskHandler.instance.startTaskQueue(context);
+                if (success) {
+                  Navigator.of(context).pop(true);
+                }
               }
             })
       ],
@@ -128,16 +125,15 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
 
   String _validatorSamePassword(String value) {
     _passwordErrorMessage = "";
-    if (_onePasswordController.text.isEmpty ||
-        _twoPasswordController.text.isEmpty) {
+    if (_passwordController.text.isEmpty) {
       _passwordErrorMessage = R.current.inputNull;
-    } else if (_onePasswordController.text != _twoPasswordController.text) {
-      _passwordErrorMessage = R.current.inputNotSame;
-    } else if (_onePasswordController.text.length <= 4) {
-      _passwordErrorMessage = R.current.passwordLengthShort;
-    } else if (_onePasswordController.text == Model.instance.getPassword()) {
+    } else if (_passwordController.text.length < 8 ||
+        _passwordController.text.length > 14) {
+      _passwordErrorMessage = R.current.passwordLengthError;
+    } else if (_passwordController.text == Model.instance.getPassword()) {
       _passwordErrorMessage = R.current.sameOldPassword;
     }
+    print(Model.instance.getPassword());
     setState(() {});
     return _passwordErrorMessage.isNotEmpty ? _passwordErrorMessage : null;
   }

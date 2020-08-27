@@ -156,12 +156,14 @@ class NTUTConnector {
       result = result.split("/")[1];
       if (result.contains("密碼已修改完成")) {
         return "";
-      } else {
+      } else if (result.contains("密碼")) {
         return result;
+      } else {
+        return null;
       }
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return result;
+      return null;
     }
   }
 
