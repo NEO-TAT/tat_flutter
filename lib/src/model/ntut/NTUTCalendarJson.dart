@@ -99,6 +99,12 @@ class NTUTCalendarJson {
   }
 
   DateTime get startTime {
-    return DateTime.fromMillisecondsSinceEpoch(calStart);
+    return DateTime.fromMillisecondsSinceEpoch(calStart, isUtc: true)
+        .add(new Duration(hours: 8));
+  }
+
+  DateTime get endTime {
+    return DateTime.fromMillisecondsSinceEpoch(calEnd, isUtc: true)
+        .add(new Duration(hours: 8));
   }
 }
