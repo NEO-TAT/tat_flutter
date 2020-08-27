@@ -18,6 +18,7 @@ import 'package:flutter_app/ui/pages/debug/DebugPage.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
+import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,6 +30,7 @@ enum onListViewPress {
   Logout,
   Report,
   About,
+  Login,
   ChangePassword
 }
 
@@ -55,22 +57,27 @@ class _OtherPageState extends State<OtherPage> {
       "title": R.current.fileViewer,
       "onPress": onListViewPress.FileViewer
     },
-//    {
-//      "icon": EvaIcons.syncOutline,
-//      "color": Colors.lightGreen,
-//      "title": R.current.changePassword,
-//      "onPress": onListViewPress.ChangePassword
-//    },
-    {
-      "icon": (Model.instance.getAccount().isEmpty)
-          ? EvaIcons.logIn
-          : EvaIcons.undoOutline,
-      "color": Colors.teal[400],
-      "title": (Model.instance.getAccount().isEmpty)
-          ? R.current.login
-          : R.current.logout,
-      "onPress": onListViewPress.Logout
-    },
+    if (Model.instance.getPassword().isNotEmpty)
+      {
+        "icon": EvaIcons.syncOutline,
+        "color": Colors.lightGreen,
+        "title": R.current.changePassword,
+        "onPress": onListViewPress.ChangePassword
+      },
+    if (Model.instance.getPassword().isNotEmpty)
+      {
+        "icon": EvaIcons.undoOutline,
+        "color": Colors.teal[400],
+        "title": R.current.logout,
+        "onPress": onListViewPress.Logout
+      },
+    if (Model.instance.getPassword().isEmpty)
+      {
+        "icon": EvaIcons.logIn,
+        "color": Colors.teal[400],
+        "title": R.current.login,
+        "onPress": onListViewPress.Login
+      },
     {
       "icon": EvaIcons.messageSquareOutline,
       "color": Colors.cyan,
@@ -93,26 +100,25 @@ class _OtherPageState extends State<OtherPage> {
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.Logout:
-        if (Model.instance.getAccount().isNotEmpty) {
-          ErrorDialogParameter parameter = ErrorDialogParameter(
-              context: context,
-              desc: R.current.logoutWarning,
-              dialogType: DialogType.WARNING,
-              title: R.current.warning,
-              btnOkText: R.current.sure,
-              btnOkOnPress: () {
-                Model.instance.logout().then((_) {
-                  widget.pageController.jumpToPage(0);
-                });
+        ErrorDialogParameter parameter = ErrorDialogParameter(
+            context: context,
+            desc: R.current.logoutWarning,
+            dialogType: DialogType.WARNING,
+            title: R.current.warning,
+            btnOkText: R.current.sure,
+            btnOkOnPress: () {
+              Model.instance.logout().then((_) {
+                widget.pageController.jumpToPage(0);
               });
-          ErrorDialog(parameter).show();
-        } else {
-          Navigator.of(context).push(MyPage.transition(LoginScreen())).then(
-            (value) {
-              if (value) widget.pageController.jumpToPage(0);
-            },
-          );
-        }
+            });
+        ErrorDialog(parameter).show();
+        break;
+      case onListViewPress.Login:
+        Navigator.of(context).push(MyPage.transition(LoginScreen())).then(
+          (value) {
+            if (value) widget.pageController.jumpToPage(0);
+          },
+        );
         break;
       case onListViewPress.FileViewer:
         FileStore.findLocalPath(context).then((filePath) {
@@ -145,6 +151,9 @@ class _OtherPageState extends State<OtherPage> {
         } catch (e) {}
         Navigator.of(context).push(
             MyPage.transition(WebViewPluginPage(R.current.feedback, link)));
+        break;
+      case onListViewPress.ChangePassword:
+        ChangePassword.show(context);
         break;
       default:
         MyToast.show(R.current.noFunction);

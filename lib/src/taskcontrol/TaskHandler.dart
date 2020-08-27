@@ -27,6 +27,7 @@ class TaskHandler {
   static final List<TaskModel> _taskQueue = List();
   static String alreadyCheckSystem = "";
   bool taskContinue;
+  bool taskSuccess;
   BuildContext startTaskContext;
 
   void addTask(TaskModel task, {bool onLoginCheck: true}) {
@@ -67,7 +68,8 @@ class TaskHandler {
     }
   }
 
-  Future<void> startTaskQueue(BuildContext context) async {
+  Future<bool> startTaskQueue(BuildContext context) async {
+    taskSuccess = true;
     var connectivityResult = await (new Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       MyToast.show(R.current.pleaseConnectToNetwork);
@@ -97,6 +99,7 @@ class TaskHandler {
         _handleErrorTask(task);
       }
     }
+    return taskSuccess;
     Log.d("startTaskQueue finish");
   }
 
@@ -105,6 +108,7 @@ class TaskHandler {
   }
 
   void giveUpTask() {
+    taskSuccess = false;
     continueTask();
     _taskQueue.removeRange(0, _taskQueue.length);
   }

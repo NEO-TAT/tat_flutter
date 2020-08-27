@@ -36,6 +36,7 @@ class NTUTConnector {
   static final String _getPictureUrl = _host + "photoView.do";
   static final String _checkLoginUrl = _host + "myPortal.do";
   static final String _getCalendarUrl = _host + "calModeApp.do";
+  static final String _changePasswordUrl = _host + "passwordMdy.do";
 
   static Future<NTUTConnectorStatus> login(
       String account, String password) async {
@@ -138,6 +139,32 @@ class NTUTConnector {
 
   static void loginFalse() {
     _isLogin = false;
+  }
+
+  static Future<String> changePassword(String password) async {
+    ConnectorParameter parameter;
+    String result;
+    try {
+      parameter = ConnectorParameter(_changePasswordUrl);
+      parameter.data = {
+        "userPassword": password,
+        "confirmPassword": password,
+        "pwdForceMdy": "profile",
+        "localeId": "zh_TW"
+      };
+      result = await Connector.getDataByPost(parameter);
+      result = result.split("/")[1];
+      if (result.contains("密碼已修改完成")) {
+        return "";
+      } else if (result.contains("密碼")) {
+        return result;
+      } else {
+        return null;
+      }
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
   }
 
   static Future<bool> checkLogin() async {

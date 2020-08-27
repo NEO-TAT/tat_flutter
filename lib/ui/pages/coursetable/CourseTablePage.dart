@@ -23,6 +23,8 @@ import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/coursedetail/CourseDetailPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTableControl.dart';
 import 'package:flutter_app/ui/pages/coursetable/OverRepaintBoundary.dart';
+import 'package:flutter_app/ui/pages/password/ChangePasswordDialog.dart';
+import 'package:flutter_app/ui/pages/password/CheckPasswordDialog.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:path_provider/path_provider.dart';
