@@ -8,6 +8,7 @@ import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/pages/calendar/CalendarDetailDialog.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -85,9 +86,9 @@ class _CalendarPageState extends State<CalendarPage>
         for (int i = 0; i < eventNTUTs.length; i++) {
           NTUTCalendarJson eventNTUT = eventNTUTs[i];
           if (_events.containsKey(eventNTUT.startTime)) {
-            _events[eventNTUT.startTime].add(eventNTUT.calTitle);
+            _events[eventNTUT.startTime].add(eventNTUT);
           } else {
-            _events[eventNTUT.startTime] = [eventNTUT.calTitle];
+            _events[eventNTUT.startTime] = [eventNTUT];
           }
         }
       },
@@ -356,9 +357,13 @@ class _CalendarPageState extends State<CalendarPage>
                 margin:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 child: ListTile(
-                  title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
-                ),
+                    title: Text(event.calTitle),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          child: CalendarDetailDialog(calendarDetail: event),
+                          useRootNavigator: false);
+                    }),
               ))
           .toList(),
     );
