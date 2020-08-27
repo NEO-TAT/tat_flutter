@@ -81,7 +81,9 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
       actions: [
         FlatButton(
           child: Text(R.current.sure),
-          onPressed: () async {},
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
         ),
       ],
     );
