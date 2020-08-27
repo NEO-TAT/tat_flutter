@@ -763,6 +763,16 @@ class S {
     );
   }
 
+  /// `Use old password`
+  String get useOldPassword {
+    return Intl.message(
+      'Use old password',
+      name: 'useOldPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________CourseTableUi___________________ {
     return Intl.message(

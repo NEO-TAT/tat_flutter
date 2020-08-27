@@ -72,6 +72,7 @@
   "passwordLengthError": "密碼長度須介於8個字元，至14個字元之間",
   "setNewPassword": "設定新密碼",
   "sameOldPassword": "不可以與之前密碼相同",
+  "useOldPassword": "延長原始密碼時間",
   "___________________CourseTableUi___________________": "註解",
   "Monday": "一",
   "Tuesday": "二",

@@ -72,6 +72,7 @@
   "passwordLengthError": "The password length must be between 8 characters and 14 characters",
   "setNewPassword": "Set new password",
   "sameOldPassword": "Same password as before",
+  "useOldPassword" : "Use old password",
   "___________________CourseTableUi___________________": "註解",
   "Monday": "MON",
   "Tuesday": "TUE",

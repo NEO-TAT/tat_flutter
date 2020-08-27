@@ -266,6 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalPeople" : MessageLookupByLibrary.simpleMessage("總人數"),
     "unknownError" : MessageLookupByLibrary.simpleMessage("發生未知錯誤"),
     "update" : MessageLookupByLibrary.simpleMessage("更新"),
+    "useOldPassword" : MessageLookupByLibrary.simpleMessage("延長原始密碼時間"),
     "versionInfo" : MessageLookupByLibrary.simpleMessage("版本資訊"),
     "warning" : MessageLookupByLibrary.simpleMessage("警告"),
     "willRestart" : MessageLookupByLibrary.simpleMessage("將自動重啟並套用語言")

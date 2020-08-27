@@ -5,6 +5,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTChangePasswordTask.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
   ChangePasswordDialog({Key key}) : super(key: key);
@@ -85,15 +86,19 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
               height: 4,
             ),
             if (_passwordErrorMessage.isNotEmpty)
-              Padding(
-                padding: EdgeInsets.only(left: 16),
-                child: Text(
-                  _passwordErrorMessage,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.red,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _passwordErrorMessage,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             SizedBox(
               height: 20,
@@ -102,6 +107,20 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         ),
       ),
       actions: [
+        FlatButton(
+          child: Text(R.current.useOldPassword),
+          onPressed: () async {
+            String password = Model.instance.getPassword();
+            TaskHandler.instance.addTask(NTUTChangePasswordTask(
+                context, password.split('').reversed.join()));
+            TaskHandler.instance
+                .addTask(NTUTChangePasswordTask(context, password));
+            bool success = await TaskHandler.instance.startTaskQueue(context);
+            if (success) {
+              Navigator.of(context).pop(true);
+            }
+          },
+        ),
         FlatButton(
           child: Text(R.current.cancel),
           onPressed: () => Navigator.of(context).pop(false),

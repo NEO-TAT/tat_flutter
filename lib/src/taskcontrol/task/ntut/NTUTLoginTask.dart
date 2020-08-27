@@ -1,20 +1,24 @@
+import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 
 class NTUTLoginTask extends TaskModel {
   static final String taskName = "NTUTLoginTask";
   static final List<String> require = [CheckCookiesTask.checkNTUT];
+  static bool remindPasswordExpiredWarning = false;
 
   NTUTLoginTask(BuildContext context) : super(context, taskName, require);
 
@@ -26,7 +30,8 @@ class NTUTLoginTask extends TaskModel {
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     MyProgressDialog.hideProgressDialog();
     if (value != NTUTConnectorStatus.LoginSuccess) {
-      if (value == NTUTConnectorStatus.PasswordExpiredWarning) {
+      if (remindPasswordExpiredWarning &&
+          value == NTUTConnectorStatus.PasswordExpiredWarning) {
         MyToast.show(R.current.passwordExpiredWarning);
         return TaskStatus.TaskSuccess;
       }
@@ -45,11 +50,18 @@ class NTUTLoginTask extends TaskModel {
 
     switch (value) {
       case NTUTConnectorStatus.PasswordExpiredWarning:
+        remindPasswordExpiredWarning = true;
         parameter.dialogType = DialogType.INFO;
+        parameter.title = R.current.warning;
         parameter.desc = R.current.passwordExpiredWarning;
         parameter.btnOkText = R.current.update;
-        parameter.btnOkOnPress = () {};
-        return;
+        parameter.btnOkOnPress = () async {
+          await ChangePassword.show(context);
+          TaskHandler.instance.continueTask();
+        };
+        parameter.btnCancelOnPress = () {
+          TaskHandler.instance.continueTask();
+        };
         break;
       case NTUTConnectorStatus.AccountLockWarning:
         parameter.dialogType = DialogType.INFO;

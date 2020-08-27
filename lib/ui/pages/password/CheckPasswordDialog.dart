@@ -95,15 +95,19 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
               height: 4,
             ),
             if (_originPasswordErrorMessage.isNotEmpty)
-              Padding(
-                padding: EdgeInsets.only(left: 16),
-                child: Text(
-                  _originPasswordErrorMessage,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.red,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _originPasswordErrorMessage,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             SizedBox(
               height: 20,

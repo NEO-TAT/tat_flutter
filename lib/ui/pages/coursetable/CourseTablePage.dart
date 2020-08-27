@@ -92,11 +92,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       loadCourseNotice = true;
     });
-    showDialog(
-        context: context,
-        child: ChangePasswordDialog(),
-        useRootNavigator: false);
-    await TaskHandler.instance.startTaskQueue(context);
     TaskHandler.instance.addTask(TaskModelFunction(null, require: [
       CheckCookiesTask.checkNTUT,
       CheckCookiesTask.checkPlusISchool
