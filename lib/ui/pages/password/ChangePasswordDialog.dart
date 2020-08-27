@@ -5,7 +5,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTChangePasswordTask.dart';
-import 'package:flutter_app/ui/other/MyToast.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
   ChangePasswordDialog({Key key}) : super(key: key);
