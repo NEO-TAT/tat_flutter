@@ -51,8 +51,19 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   void _addEvent() async {
-    final _selectedDay = DateTime.now();
+    var _selectedDay = DateTime.now();
+    _selectedDay = _selectedDay.add(Duration(hours: 8)); //to TW time
+    print(_selectedDay.toIso8601String());
     await _getEvent(_selectedDay);
+    for (DateTime time in _events.keys) {
+      //顯示當天事件
+      int diffDays = _selectedDay.difference(time).inDays;
+      bool isSame = (diffDays == 0);
+      if (isSame) {
+        _onDaySelected(_selectedDay, _events[time]);
+        break;
+      }
+    }
   }
 
   Future<void> _getEvent(DateTime time) async {
