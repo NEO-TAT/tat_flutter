@@ -139,7 +139,7 @@ class _OtherPageState extends State<OtherPage> {
             .push(MyPage.transition(SettingPage(widget.pageController)));
         break;
       case onListViewPress.Report:
-        String link;
+        String link = AppLink.feedbackBaseUrl;
         try {
           String mainVersion = await AppUpdate.getAppVersion();
           link = AppLink.feedback(mainVersion, Log.getLogString());
