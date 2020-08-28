@@ -151,7 +151,6 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     } else if (_passwordController.text == Model.instance.getPassword()) {
       _passwordErrorMessage = R.current.sameOldPassword;
     }
-    print(Model.instance.getPassword());
     setState(() {});
     return _passwordErrorMessage.isNotEmpty ? _passwordErrorMessage : null;
   }
