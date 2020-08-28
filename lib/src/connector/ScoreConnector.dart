@@ -127,7 +127,7 @@ class ScoreConnector {
           score.nameEn = scoreNode
               .getElementsByTagName("th")[3]
               .text
-              .replaceAll(RegExp(r"[\s| ]"), "");
+              .replaceAll(RegExp("\n"), "");
           score.credit =
               double.parse(scoreNode.getElementsByTagName("th")[6].text);
           score.score = scoreNode

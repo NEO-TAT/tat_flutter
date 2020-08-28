@@ -546,7 +546,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
-                  child: Text(
+                  child: AutoSizeText(
                     score.name,
                     style: TextStyle(fontSize: 16.0),
                   ),
@@ -604,14 +604,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(
+          AutoSizeText(
             sprintf("%s: %s",
                 [R.current.totalAverage, courseScore.getAverageScoreString()]),
             style: TextStyle(
               fontSize: 16.0,
             ),
           ),
-          Text(
+          AutoSizeText(
             sprintf("%s: %s", [
               R.current.performanceScores,
               courseScore.getPerformanceScoreString()
