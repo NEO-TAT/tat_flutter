@@ -120,23 +120,29 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
             }
           },
         ),
-        FlatButton(
-          child: Text(R.current.cancel),
-          onPressed: () => Navigator.of(context).pop(false),
-        ),
-        FlatButton(
-            child: Text(R.current.sure),
-            onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                TaskHandler.instance.addTask(
-                    NTUTChangePasswordTask(context, _passwordController.text));
-                bool success =
-                    await TaskHandler.instance.startTaskQueue(context);
-                if (success) {
-                  Navigator.of(context).pop(true);
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FlatButton(
+              child: Text(R.current.cancel),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            FlatButton(
+              child: Text(R.current.sure),
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  TaskHandler.instance.addTask(NTUTChangePasswordTask(
+                      context, _passwordController.text));
+                  bool success =
+                      await TaskHandler.instance.startTaskQueue(context);
+                  if (success) {
+                    Navigator.of(context).pop(true);
+                  }
                 }
-              }
-            })
+              },
+            )
+          ],
+        ),
       ],
     );
   }
