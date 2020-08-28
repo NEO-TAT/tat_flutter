@@ -1,17 +1,18 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
-import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/version/Version.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
@@ -19,7 +20,6 @@ import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/notification/NotificationPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
 import 'package:flutter_app/ui/pages/score/ScorePage.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {

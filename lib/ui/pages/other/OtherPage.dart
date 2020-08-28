@@ -1,18 +1,18 @@
 import 'dart:io';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/debug/DebugPage.dart';

@@ -12,6 +12,7 @@ import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+
 import 'core/Connector.dart';
 import 'core/ConnectorParameter.dart';
 

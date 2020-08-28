@@ -5,8 +5,9 @@ import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import '../../../store/Model.dart';
+
 import '../../../../ui/other/ErrorDialog.dart';
+import '../../../store/Model.dart';
 
 class NTUTAppLoginTask extends TaskModel {
   static final String taskName = "NTUTAppLoginTask";

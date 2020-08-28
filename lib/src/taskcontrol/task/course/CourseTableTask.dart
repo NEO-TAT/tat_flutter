@@ -4,10 +4,10 @@ import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
-import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 

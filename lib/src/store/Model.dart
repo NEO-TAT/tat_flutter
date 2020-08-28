@@ -6,6 +6,7 @@
 //
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../model/course/CourseClassJson.dart';
 
 //flutter packages pub run build_runner build 創建Json

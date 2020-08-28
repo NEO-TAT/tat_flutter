@@ -7,6 +7,7 @@
 //
 
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/l10n.dart';

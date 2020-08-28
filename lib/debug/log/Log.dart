@@ -7,9 +7,7 @@
 //
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
-import 'package:sprintf/sprintf.dart';
 
 enum LogMode { LogError, LogDebug }
 

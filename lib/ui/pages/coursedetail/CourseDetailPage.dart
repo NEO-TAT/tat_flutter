@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';

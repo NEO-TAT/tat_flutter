@@ -7,6 +7,7 @@
 //
 
 import 'dart:io';
+
 import 'package:big5/big5.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_app/src/connector/interceptors/error_interceptor.dart';
 import 'package:flutter_app/src/connector/interceptors/log_interceptor.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
 import 'package:path_provider/path_provider.dart';
+
 import 'ConnectorParameter.dart';
 
 typedef SavePathCallback = String Function(Headers responseHeaders);

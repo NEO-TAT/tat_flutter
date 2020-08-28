@@ -5,15 +5,16 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 import 'dart:async';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/taskcontrol/task/course/CourseLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTLoginTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/TaskModel.dart';
 import 'package:flutter_app/src/taskcontrol/task/ntutapp/NTUTAppLoginTask.dart';
 import 'package:flutter_app/src/taskcontrol/task/score/ScoreLoginTask.dart';
 

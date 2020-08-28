@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +25,10 @@ import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/coursedetail/CourseDetailPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTableControl.dart';
 import 'package:flutter_app/ui/pages/coursetable/OverRepaintBoundary.dart';
-import 'package:flutter_app/ui/pages/password/ChangePasswordDialog.dart';
-import 'package:flutter_app/ui/pages/password/CheckPasswordDialog.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
-import 'dart:ui' as ui;
 
 class CourseTablePage extends StatefulWidget {
   @override
@@ -63,7 +62,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
           Navigator.of(context)
               .push(MyPage.transition(LoginScreen()))
               .then((value) {
-            if (value) {
+            if (value != null && value) {
               _loadSetting();
             }
           }); //尚未登入

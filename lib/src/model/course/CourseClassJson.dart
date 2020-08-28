@@ -1,5 +1,5 @@
-import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/JsonInit.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';

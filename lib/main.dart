@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+
 import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_app/src/model/ischoolplus/ISchoolPlusAnnouncementJson.da
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
+
 import 'core/ConnectorParameter.dart';
 
 enum ISchoolPlusConnectorStatus {

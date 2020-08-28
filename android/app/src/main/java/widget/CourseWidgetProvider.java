@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.RemoteViews;
+
 import java.util.Arrays;
 
 import club.ntut.npc.tat.MainActivity;

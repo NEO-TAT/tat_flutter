@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
