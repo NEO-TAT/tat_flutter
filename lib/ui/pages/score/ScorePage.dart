@@ -604,20 +604,25 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          AutoSizeText(
-            sprintf("%s: %s",
-                [R.current.totalAverage, courseScore.getAverageScoreString()]),
-            style: TextStyle(
-              fontSize: 16.0,
+          Expanded(
+            child: AutoSizeText(
+              sprintf("%s: %s", [
+                R.current.totalAverage,
+                courseScore.getAverageScoreString()
+              ]),
+              style: TextStyle(fontSize: 16),
+              maxLines: 1,
             ),
           ),
-          AutoSizeText(
-            sprintf("%s: %s", [
-              R.current.performanceScores,
-              courseScore.getPerformanceScoreString()
-            ]),
-            style: TextStyle(
-              fontSize: 16.0,
+          Expanded(
+            child: AutoSizeText(
+              sprintf("%s: %s", [
+                R.current.performanceScores,
+                courseScore.getPerformanceScoreString()
+              ]),
+              textAlign: TextAlign.end,
+              style: TextStyle(fontSize: 16),
+              maxLines: 1,
             ),
           ),
         ],
@@ -628,18 +633,23 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(
-            sprintf("%s: %s",
-                [R.current.practiceCredit, courseScore.getTotalCreditString()]),
-            style: TextStyle(
-              fontSize: 16.0,
+          Expanded(
+            child: AutoSizeText(
+              sprintf(
+                "%s: %s",
+                [R.current.practiceCredit, courseScore.getTotalCreditString()],
+              ),
+              style: TextStyle(fontSize: 16),
+              maxLines: 1,
             ),
           ),
-          Text(
-            sprintf("%s: %s",
-                [R.current.creditsEarned, courseScore.getTakeCreditString()]),
-            style: TextStyle(
-              fontSize: 16.0,
+          Expanded(
+            child: AutoSizeText(
+              sprintf("%s: %s",
+                  [R.current.creditsEarned, courseScore.getTakeCreditString()]),
+              textAlign: TextAlign.end,
+              style: TextStyle(fontSize: 16),
+              maxLines: 1,
             ),
           ),
         ],

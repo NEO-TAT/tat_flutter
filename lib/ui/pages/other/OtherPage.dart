@@ -139,16 +139,10 @@ class _OtherPageState extends State<OtherPage> {
             .push(MyPage.transition(SettingPage(widget.pageController)));
         break;
       case onListViewPress.Report:
-        String link = AppLink.feedback;
+        String link;
         try {
           String mainVersion = await AppUpdate.getAppVersion();
-          Uri url = Uri.https(Uri.parse(AppLink.feedback).host,
-              Uri.parse(AppLink.feedback).path, {
-            "entry.978972557": (Platform.isAndroid) ? "Android" : "IOS",
-            "entry.823909330": mainVersion,
-            "entry.517392071": Log.getLogString()
-          });
-          link = url.toString();
+          link = AppLink.feedback(mainVersion, Log.getLogString());
         } catch (e) {}
         Navigator.of(context).push(
             MyPage.transition(WebViewPluginPage(R.current.feedback, link)));
