@@ -95,6 +95,8 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.5.1):
     - GoogleUtilities/Logger
+  - local_auth (0.0.1):
+    - Flutter
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -131,6 +133,7 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - local_auth (from `.symlinks/plugins/local_auth/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -182,6 +185,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  local_auth:
+    :path: ".symlinks/plugins/local_auth/ios"
   open_file:
     :path: ".symlinks/plugins/open_file/ios"
   package_info:
@@ -223,6 +228,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
   GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
+  local_auth: 25938960984c3a7f6e3253e3f8d962fdd16852bd
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
@@ -236,4 +242,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1e52d0d75f64a96b2800e0e779e57d8328dcfe03
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.3
