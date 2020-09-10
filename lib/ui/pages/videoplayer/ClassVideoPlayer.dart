@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
@@ -12,10 +13,10 @@ import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
   final String videoUrl;
@@ -33,13 +34,13 @@ class VideoInfo {
 
 class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
-  IjkMediaController controller;
+  VideoPlayerController controller;
+  ChewieController _chewieController;
   List<VideoInfo> videoName = List();
   int selectIndex = 0;
 
   @override
   void initState() {
-    controller = IjkMediaController();
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
     parseVideo();
@@ -48,7 +49,8 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
-    controller.dispose();
+    controller?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
@@ -63,6 +65,10 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     String result = await Connector.getDataByGet(parameter);
     dom.Document tagNode = parse(result);
     dom.Element node = tagNode.getElementById("videoplayer");
+    if (node?.children == null) {
+      MyToast.show(R.current.unknownError);
+      Navigator.of(context).pop();
+    }
     for (dom.Element child in node.children) {
       try {
         if (child.children.first.localName == 'source') {
@@ -83,7 +89,8 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   String getVideoUrl(String path) {
-    return "https://istream.ntut.edu.tw/videoplayer/$path";
+    String url = "https://istream.ntut.edu.tw/videoplayer/$path";
+    return url;
   }
 
   Future<void> _buildDialog() async {
@@ -124,12 +131,30 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
           Navigator.of(context).pop();
         } catch (e) {
           MyToast.show(R.current.noSupportExternalVideoPlayer);
-          controller.setNetworkDataSource(url, autoPlay: true);
+          await initController(url);
         }
       }
     } else {
-      controller.setNetworkDataSource(url, autoPlay: true);
+      await initController(url);
     }
+  }
+
+  Future<void> initController(String url) async {
+    controller = VideoPlayerController.network(
+      url,
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
+    controller.addListener(() {
+      setState(() {});
+    });
+    controller.setLooping(true);
+    await controller.initialize();
+    _chewieController = ChewieController(
+      videoPlayerController: controller,
+      autoPlay: true,
+      //aspectRatio: 3 / 2.0,
+      //customControls: CustomControls(),
+    );
   }
 
   @override
@@ -147,22 +172,22 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
               ),
               title: Text(R.current.classVideo),
             ),
-            body: (isLoading)
+            body: (isLoading || controller == null)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : buildIjkPlayer(controller),
+                : buildVideoPlayer(controller),
           ),
         );
       },
     );
   }
 
-  Widget buildIjkPlayer(IjkMediaController controller) {
+  Widget buildVideoPlayer(VideoPlayerController controller) {
     return Container(
       // height: 400, // 這裡隨意
-      child: IjkPlayer(
-        mediaController: controller,
+      child: Chewie(
+        controller: _chewieController,
       ),
     );
   }
