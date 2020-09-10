@@ -24,6 +24,7 @@ class ISchoolPlusConnector {
   static bool _isLogin = false;
 
   static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
+
   //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
   //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
   //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
@@ -178,15 +179,12 @@ class ISchoolPlusConnector {
       RegExp exp;
       RegExpMatch matches;
       if (response.statusCode == HttpStatus.ok) {
-        exp = new RegExp("\"(?<url>http.+)\""); //檢測網址
+        exp = new RegExp("[\"\'](?<url>https?:\/\/.+)[\"\']");
+        //檢測網址 "http://....." or 'https://.....' or "http://..." or 'http://...'
         matches = exp.firstMatch(result);
-        bool pass = (matches == null)
+        bool pass = (matches?.groupCount == null)
             ? false
-            : (matches.groupCount == null)
-                ? false
-                : matches.group(1).toLowerCase().contains("http")
-                    ? true
-                    : false;
+            : matches.group(1).toLowerCase().contains("http") ? true : false;
         if (pass) {
           url = matches.group(1);
           //已經是完整連結
@@ -194,14 +192,12 @@ class ISchoolPlusConnector {
         } else {
           exp = new RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
           matches = exp.firstMatch(result);
-          bool pass = (matches == null)
-              ? false
-              : (matches.groupCount == null) ? false : true;
+          bool pass = (matches?.groupCount == null) ? false : true;
           if (pass) {
             String realUrl = _iSchoolPlusUrl + matches.group(1);
             return [realUrl, realUrl]; //一般下載連結
           } else {
-            exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
+            exp = new RegExp("\"(?<url>.+)\""); //檢測""內包含字
             matches = exp.firstMatch(result);
             url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
@@ -210,11 +206,11 @@ class ISchoolPlusConnector {
                 new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
             String realUrl = _iSchoolPlusUrl + "learn/path/" + matches.group(1);
-            return [realUrl, url];
+            return [realUrl, url]; //PDF需要有referer不然會無法下載
           }
         }
       } else if (response.isRedirect || result.isEmpty) {
-        //發生跳轉 出現檔案下載頁面
+        //發生跳轉 出現檔案下載預覽頁面
         url = response.headers[HttpHeaders.locationHeader][0];
         url = _iSchoolPlusUrl + "learn/path/" + url;
         url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址

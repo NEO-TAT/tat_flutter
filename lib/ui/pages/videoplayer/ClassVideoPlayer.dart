@@ -18,18 +18,23 @@ import 'package:html/parser.dart';
 import 'package:provider/provider.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
-  final String uuid;
+  final String videoUrl;
 
-  ClassVideoPlayer(this.uuid);
+  ClassVideoPlayer(this.videoUrl);
 
   @override
   _VideoPlayer createState() => _VideoPlayer();
 }
 
+class VideoInfo {
+  String name;
+  String url;
+}
+
 class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
   IjkMediaController controller;
-  List<String> videoName = List();
+  List<VideoInfo> videoName = List();
   int selectIndex = 0;
 
   @override
@@ -54,30 +59,31 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
 
   void parseVideo() async {
     isLoading = true;
-    ConnectorParameter parameter = ConnectorParameter(
-        "https://istream.ntut.edu.tw/lecture/api/Search/recordingSearchByUUID");
-    parameter.data = {"type": "xml", "uuid": widget.uuid};
-    String xml = await Connector.getDataByGet(parameter);
-    dom.Document tagNode = parse(xml);
-    dom.Element node = tagNode.getElementsByTagName("item").first;
-    //String title = node.getElementsByTagName("title").first.text;
-    //String description = node.getElementsByTagName("description").first.text;
-    String presenterVideo =
-        node.getElementsByTagName("presenter_video").first.text;
-    String presenterVideo2 =
-        node.getElementsByTagName("presenter2_video").first.text;
-    String presentationVideo =
-        node.getElementsByTagName("presentation_video").first.text;
-
-    for (String name in [presenterVideo, presenterVideo2, presentationVideo]) {
-      if (name != null && name.isNotEmpty) {
-        videoName.add(name);
+    ConnectorParameter parameter = ConnectorParameter(widget.videoUrl);
+    String result = await Connector.getDataByGet(parameter);
+    dom.Document tagNode = parse(result);
+    dom.Element node = tagNode.getElementById("videoplayer");
+    for (dom.Element child in node.children) {
+      try {
+        if (child.children.first.localName == 'source') {
+          String url = child.children.first.attributes['src'];
+          VideoInfo info = VideoInfo();
+          info.url = url;
+          info.name = child.id;
+          videoName.add(info);
+        }
+      } catch (e, stack) {
+        continue;
       }
     }
     await _buildDialog();
     setState(() {
       isLoading = false;
     });
+  }
+
+  String getVideoUrl(String path) {
+    return "https://istream.ntut.edu.tw/videoplayer/$path";
   }
 
   Future<void> _buildDialog() async {
@@ -94,9 +100,9 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
               itemBuilder: (BuildContext context, int index) {
                 return Container(
                   child: FlatButton(
-                    child: Text(videoName[index]),
+                    child: Text(videoName[index].name),
                     onPressed: () {
-                      String url = getRTMPUrl(videoName[index]);
+                      String url = getVideoUrl(videoName[index].url);
                       Navigator.of(context).pop(url);
                     },
                   ),
@@ -124,10 +130,6 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     } else {
       controller.setNetworkDataSource(url, autoPlay: true);
     }
-  }
-
-  String getRTMPUrl(String name) {
-    return "rtmp://istreaming.ntut.edu.tw/lecture/" + widget.uuid + "/" + name;
   }
 
   @override
