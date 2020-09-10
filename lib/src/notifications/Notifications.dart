@@ -178,9 +178,6 @@ class ReceivedNotification {
     String newTitle;
     if (value.length >= _titleLong) {
       newTitle = value.substring(0, _titleLong) + "...";
-      if (value.contains(".")) {
-        newTitle += value.split(".").last;
-      }
     }
     _showTitle = (value.length <= _titleLong) ? value : newTitle;
   }

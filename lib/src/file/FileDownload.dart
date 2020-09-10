@@ -86,7 +86,7 @@ class FileDownload {
         //代表包含.
         List<String> s = name.split(".");
         s.removeLast();
-        if (realFileName.contains(".")) {
+        if (realFileName != null && realFileName.contains(".")) {
           realFileName = s.join() + '.' + realFileName.split(".").last;
         }
       }

@@ -10,18 +10,25 @@ import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/file/FileDownload.dart';
+import 'package:flutter_app/src/file/FileStore.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
+import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
   final String videoUrl;
+  final CourseInfoJson courseInfo;
+  final String name;
 
-  ClassVideoPlayer(this.videoUrl);
+  ClassVideoPlayer(this.videoUrl, this.courseInfo, this.name);
 
   @override
   _VideoPlayer createState() => _VideoPlayer();
@@ -34,9 +41,10 @@ class VideoInfo {
 
 class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
-  VideoPlayerController controller;
+  VideoPlayerController _controller;
   ChewieController _chewieController;
   List<VideoInfo> videoName = List();
+  VideoInfo _select;
   int selectIndex = 0;
 
   @override
@@ -49,7 +57,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
-    controller?.dispose();
+    _controller?.dispose();
     _chewieController?.dispose();
     super.dispose();
   }
@@ -110,6 +118,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                     child: Text(videoName[index].name),
                     onPressed: () {
                       String url = getVideoUrl(videoName[index].url);
+                      _select = videoName[index];
                       Navigator.of(context).pop(url);
                     },
                   ),
@@ -140,17 +149,17 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   Future<void> initController(String url) async {
-    controller = VideoPlayerController.network(
+    _controller = VideoPlayerController.network(
       url,
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
-    controller.addListener(() {
+    _controller.addListener(() {
       setState(() {});
     });
-    controller.setLooping(true);
-    await controller.initialize();
+    _controller.setLooping(true);
+    await _controller.initialize();
     _chewieController = ChewieController(
-      videoPlayerController: controller,
+      videoPlayerController: _controller,
       autoPlay: true,
       //aspectRatio: 3 / 2.0,
       //customControls: CustomControls(),
@@ -171,12 +180,30 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               title: Text(R.current.classVideo),
+              actions: [
+                if (!isLoading)
+                  IconButton(
+                    icon: Icon(Icons.file_download),
+                    onPressed: () async {
+                      String url = _controller.dataSource;
+                      String courseName = widget.courseInfo.main.course.name;
+                      String saveName =
+                          widget.name + "_" + _select.name + ".mp4";
+                      String subDir =
+                          (LanguageUtil.getLangIndex() == LangEnum.zh)
+                              ? "上課錄影"
+                              : "video";
+                      String dirName = path.join(courseName, subDir);
+                      FileDownload.download(context, url, dirName, saveName);
+                    },
+                  )
+              ],
             ),
-            body: (isLoading || controller == null)
+            body: (isLoading || _controller == null)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : buildVideoPlayer(controller),
+                : buildVideoPlayer(_controller),
           ),
         );
       },

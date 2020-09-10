@@ -256,8 +256,8 @@ class _IPlusFilePage extends State<IPlusFilePage>
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
-        Navigator.of(context)
-            .push(MyPage.transition(ClassVideoPlayer(urlParse.toString())));
+        Navigator.of(context).push(MyPage.transition(ClassVideoPlayer(
+            urlParse.toString(), widget.courseInfo, courseFile.name)));
       };
       ErrorDialog(errorDialogParameter).show();
     } else {
