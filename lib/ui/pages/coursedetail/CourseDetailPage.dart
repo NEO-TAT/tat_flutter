@@ -37,11 +37,9 @@ class _ISchoolPageState extends State<ISchoolPage>
     tabPageList.add(TabPage(R.current.course, Icons.info,
         CourseInfoPage(widget.studentId, widget.courseInfo)));
     if (widget.studentId == Model.instance.getAccount()) {
-      tabPageList.add(TabPage(
-          R.current.announcement + 'Plus',
-          Icons.announcement,
+      tabPageList.add(TabPage(R.current.announcement, Icons.announcement,
           IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
-      tabPageList.add(TabPage(R.current.file + 'Plus', Icons.file_download,
+      tabPageList.add(TabPage(R.current.fileAndVideo, Icons.file_download,
           IPlusFilePage(widget.studentId, widget.courseInfo)));
     }
 
