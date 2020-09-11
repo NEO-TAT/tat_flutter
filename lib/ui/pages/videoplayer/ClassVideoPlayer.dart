@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:android_intent/android_intent.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,16 +8,17 @@ import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
-import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_app/src/util/MXPlayerUtil.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart' as URI;
 import 'package:video_player/video_player.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
@@ -76,6 +74,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     if (node?.children == null) {
       MyToast.show(R.current.unknownError);
       Navigator.of(context).pop();
+      return;
     }
     for (dom.Element child in node.children) {
       try {
@@ -129,22 +128,15 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
         );
       },
     );
+    bool open = false;
     if (Model.instance.getOtherSetting().useExternalVideoPlayer) {
-      if (Platform.isAndroid) {
-        AndroidIntent intent = AndroidIntent(
-          action: 'action_view',
-          data: url,
-        );
-        try {
-          await intent.launch();
-          Navigator.of(context).pop();
-        } catch (e) {
-          MyToast.show(R.current.noSupportExternalVideoPlayer);
-          await initController(url);
-        }
-      }
-    } else {
+      String name = widget.name + "_" + _select.name + ".mp4";
+      open = await MXPlayerUtil.launch(url: url, name: name);
+    }
+    if (!open) {
       await initController(url);
+    } else {
+      Navigator.of(context).pop();
     }
   }
 
@@ -195,6 +187,13 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                               : "video";
                       String dirName = path.join(courseName, subDir);
                       FileDownload.download(context, url, dirName, saveName);
+                    },
+                  ),
+                if (!isLoading)
+                  IconButton(
+                    icon: Icon(Icons.open_in_new),
+                    onPressed: () async {
+                      await URI.launch(_controller.dataSource);
                     },
                   )
               ],
