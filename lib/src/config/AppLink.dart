@@ -13,7 +13,8 @@ class AppLink {
       "https://api.github.com/repos/NEO-TAT/tat_flutter/releases/latest";
 
   static String feedback(String mainVersion, String log) {
-    Uri url = Uri.https(Uri.parse(feedbackBaseUrl).host, Uri.parse(feedbackBaseUrl).path, {
+    Uri url = Uri.https(
+        Uri.parse(feedbackBaseUrl).host, Uri.parse(feedbackBaseUrl).path, {
       "entry.978972557": (Platform.isAndroid) ? "Android" : "IOS",
       "entry.823909330": mainVersion,
       "entry.517392071": log

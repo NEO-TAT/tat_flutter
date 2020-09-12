@@ -19,7 +19,8 @@ dependencies:
   sprintf: 4.0.2
   flutter_local_notifications: 1.4.3  #通知欄  需修改android原始碼
   rxdart: 0.24.1 #通知欄有使用到
-  flutter_ijkplayer: 0.3.5+1
+  video_player: 0.10.12+2
+  chewie: 0.9.10
   after_init: 0.1.2
   android_intent: 0.3.7+2
   device_info: 0.4.2+4

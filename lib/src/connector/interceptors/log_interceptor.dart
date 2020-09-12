@@ -91,9 +91,10 @@ class LogsInterceptors extends InterceptorsWrapper {
       }
     } else if (response.data != null) {
       try {
-        String data = response.data.toJson();
+        var data = Map<String, dynamic>();
+        data["data"] = response.data.toString();
         addLogic(sResponsesHttpUrl, response?.request?.uri.toString() ?? "");
-        addLogic(sHttpResponses, json.decode(data));
+        addLogic(sHttpResponses, data);
       } catch (e, stack) {
         Log.eWithStack(e.toString(), stack);
       }

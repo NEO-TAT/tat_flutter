@@ -166,6 +166,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Failed to create folder"),
         "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
         "file": MessageLookupByLibrary.simpleMessage("File"),
+        "fileAndVideo": MessageLookupByLibrary.simpleMessage("File and Videos"),
         "fileAttachmentDetected":
             MessageLookupByLibrary.simpleMessage("File attachment detected"),
         "fileNameAlreadyExists": MessageLookupByLibrary.simpleMessage(

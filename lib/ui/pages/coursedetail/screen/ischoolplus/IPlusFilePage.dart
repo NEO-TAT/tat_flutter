@@ -249,16 +249,15 @@ class _IPlusFilePage extends State<IPlusFilePage>
       };
       ErrorDialog(errorDialogParameter).show();
       return;
-    } else if (urlParse.host.contains("istream.ntut.edu.tw") &&
-        urlParse.path.contains("/lecture/player/player2.html")) {
+    } else if (urlParse.host.contains("istream.ntut.edu.tw")) {
       ErrorDialogParameter errorDialogParameter =
           ErrorDialogParameter(context: context, desc: R.current.isVideo);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
-        String uuid = urlParse.queryParameters["vid"]; //影片uuid
-        Navigator.of(context).push(MyPage.transition(ClassVideoPlayer(uuid)));
+        Navigator.of(context).push(MyPage.transition(ClassVideoPlayer(
+            urlParse.toString(), widget.courseInfo, courseFile.name)));
       };
       ErrorDialog(errorDialogParameter).show();
     } else {

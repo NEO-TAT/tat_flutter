@@ -132,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedCreateFolder": MessageLookupByLibrary.simpleMessage("創建資料夾失敗"),
         "feedback": MessageLookupByLibrary.simpleMessage("意見反饋"),
         "file": MessageLookupByLibrary.simpleMessage("檔案"),
+        "fileAndVideo": MessageLookupByLibrary.simpleMessage("教材及錄影"),
         "fileAttachmentDetected":
             MessageLookupByLibrary.simpleMessage("偵測到檔案附件"),
         "fileNameAlreadyExists":
