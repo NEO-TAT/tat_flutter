@@ -512,12 +512,10 @@ class CourseConnector {
         courseMainInfo.course = courseMain;
 
         //取得老師名稱
-        for (Element node in nodesOne[6].getElementsByTagName("a")) {
-          TeacherJson teacher = TeacherJson();
-          teacher.name = node.text;
-          teacher.href = _courseCNHost + node.attributes["href"];
-          courseMainInfo.teacher.add(teacher);
-        }
+        TeacherJson teacher = TeacherJson();
+        teacher.name = "";
+        teacher.href = "";
+        courseMainInfo.teacher.add(teacher);
 
         //取得教室名稱
         for (Element node in nodesOne[15].getElementsByTagName("a")) {
