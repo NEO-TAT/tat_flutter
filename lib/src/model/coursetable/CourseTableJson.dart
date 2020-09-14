@@ -142,6 +142,9 @@ class CourseTableJson {
       Day day, SectionNumber sectionNumber, CourseInfoJson courseInfo) {
     if (day == Day.UnKnown) {
       for (SectionNumber value in SectionNumber.values) {
+        if (courseInfo.main.course.id.isEmpty) {
+          continue;
+        }
         if (!courseInfoMap[day].containsKey(value)) {
           courseInfoMap[day][value] = courseInfo;
           //Log.d( day.toString() + value.toString() + courseInfo.toString() );
