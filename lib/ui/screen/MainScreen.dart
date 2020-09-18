@@ -1,6 +1,4 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -12,6 +10,7 @@ import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/version/Version.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -32,7 +31,6 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   int _closeAppCount = 0;
   List<Widget> _pageList = List<Widget>();
-  FirebaseAnalytics analytics = FirebaseAnalytics();
 
   @override
   void initState() {
@@ -86,9 +84,7 @@ class _MainScreenState extends State<MainScreen> {
           title: AppConfig.appName,
           theme: appProvider.theme,
           darkTheme: AppThemes.darkTheme,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: analytics),
-          ],
+          navigatorObservers: [AnalyticsUtils.observer],
           home: WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
