@@ -7,6 +7,6 @@ class AnalyticsUtils {
       FirebaseAnalyticsObserver(analytics: analytics);
 
   static Future<void> logDownloadFileEvent() async {
-    await analytics.logEvent(name: "Download File");
+    await analytics.logEvent(name: "file_download");
   }
 }

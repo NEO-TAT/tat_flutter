@@ -11,6 +11,7 @@ import 'package:flutter_app/src/model/ischoolplus/CourseFileJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
+import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
@@ -226,6 +227,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     String url;
     String referer;
     List<String> urlList = List();
+    await AnalyticsUtils.logDownloadFileEvent();
     if (showToast) {
       MyToast.show(R.current.downloadWillStart);
     }
