@@ -1,6 +1,4 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -12,6 +10,7 @@ import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/version/Version.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -27,17 +26,28 @@ class MainScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with RouteAware {
   final _pageController = PageController();
   int _currentIndex = 0;
   int _closeAppCount = 0;
   List<Widget> _pageList = List<Widget>();
-  FirebaseAnalytics analytics = FirebaseAnalytics();
 
   @override
   void initState() {
     appInit();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    AnalyticsUtils.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    AnalyticsUtils.observer.unsubscribe(this);
+    super.dispose();
   }
 
   void appInit() async {
@@ -86,9 +96,7 @@ class _MainScreenState extends State<MainScreen> {
           title: AppConfig.appName,
           theme: appProvider.theme,
           darkTheme: AppThemes.darkTheme,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: analytics),
-          ],
+          navigatorObservers: [AnalyticsUtils.observer],
           home: WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
@@ -126,12 +134,6 @@ class _MainScreenState extends State<MainScreen> {
       children: _pageList,
       physics: NeverScrollableScrollPhysics(), // 禁止滑動
     );
-  }
-
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
   }
 
   Widget _buildBottomNavigationBar() {
@@ -183,8 +185,20 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  void _onPageChange(int index) {
+    String screenName = _pageList[index].toString();
+    AnalyticsUtils.setScreenName(screenName);
+  }
+
   void _onTap(int index) {
     TaskHandler.instance.giveUpTask();
     _pageController.jumpToPage(index);
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+      _onPageChange(_currentIndex);
+    });
   }
 }
