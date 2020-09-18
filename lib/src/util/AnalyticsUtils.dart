@@ -9,4 +9,10 @@ class AnalyticsUtils {
   static Future<void> logDownloadFileEvent() async {
     await analytics.logEvent(name: "file_download");
   }
+
+  static Future<void> setScreenName(String name) async {
+    await analytics.setCurrentScreen(
+      screenName: name,
+    );
+  }
 }

@@ -26,7 +26,7 @@ class MainScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with RouteAware {
   final _pageController = PageController();
   int _currentIndex = 0;
   int _closeAppCount = 0;
@@ -36,6 +36,18 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     appInit();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    AnalyticsUtils.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    AnalyticsUtils.observer.unsubscribe(this);
+    super.dispose();
   }
 
   void appInit() async {
@@ -124,12 +136,6 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
@@ -179,8 +185,20 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  void _onPageChange(int index) {
+    String screenName = _pageList[index].toString();
+    AnalyticsUtils.setScreenName(screenName);
+  }
+
   void _onTap(int index) {
     TaskHandler.instance.giveUpTask();
     _pageController.jumpToPage(index);
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+      _onPageChange(_currentIndex);
+    });
   }
 }
