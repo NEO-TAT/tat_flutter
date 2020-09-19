@@ -96,11 +96,11 @@ flutter:
     - family: MyIcon
       fonts:
         - asset: assets/fonts/MyIcon.ttf
-    - family: GenSenMaruGothicTW
+    - family: MyFont
       fonts:
-        - asset: fonts/GenSenMaruGothicTW-Regular.ttf
+        - asset: fonts/GenSenRounded-L.ttc
           weight: 400
-        - asset: fonts/GenSenMaruGothicTW-Bold.ttf
+        - asset: fonts/GenSenRounded-M.ttc
           weight: 700
 
 flutter_intl:

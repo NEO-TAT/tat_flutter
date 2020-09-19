@@ -4,7 +4,7 @@ import 'package:flutter_app/src/config/AppColors.dart';
 
 class AppThemes {
   static ThemeData lightTheme = ThemeData(
-    fontFamily: 'GenSenMaruGothicTW',
+    fontFamily: 'MyFont',
     brightness: Brightness.light,
     backgroundColor: AppColors.lightBG,
     primaryColor: AppColors.mainColor,
@@ -19,7 +19,7 @@ class AppThemes {
   );
 
   static ThemeData darkTheme = ThemeData(
-    fontFamily: 'GenSenMaruGothicTW',
+    fontFamily: 'MyFont',
     brightness: Brightness.dark,
     backgroundColor: AppColors.darkBG,
     primaryColor: AppColors.darkPrimary,
