@@ -1,4 +1,5 @@
 {
+  "@@locale": "en",
   "app_name": "NTUT Course Assistant",
   "___________________loginUi___________________": "註解",
   "login": "Login",
