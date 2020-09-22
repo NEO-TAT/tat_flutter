@@ -74,9 +74,9 @@ packages:
   big5:
     dependency: "direct main"
     description:
-      name: big5
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "plugins/big5-dart"
+      relative: true
+    source: path
     version: "0.0.4"
   boolean_selector:
     dependency: transitive

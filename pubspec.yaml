@@ -44,7 +44,8 @@ dependencies:
   json_annotation: 3.0.1
   #----------other----------#
   back_button_interceptor: 4.2.4     #攔截返回鍵訊息
-  big5: 0.0.4     #big5 decode encode
+  big5:      #big5 decode encode
+    path: plugins/big5-dart
   intl: 0.16.1    #DateTime to String
   package_info: 0.4.1  #檢測app版本用於檢查更新
   #----------html viewer----------#
