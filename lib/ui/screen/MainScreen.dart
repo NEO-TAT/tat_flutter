@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
 
   void appInit() async {
     R.set(context);
-    await Model.instance.getInstance();
+    await Model.instance.getInstance(); //一定要先getInstance()不然無法取得資料
     try {
       await initLanguage();
       Version.initAndCheck(navigatorKey.currentState.context);

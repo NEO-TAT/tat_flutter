@@ -365,6 +365,14 @@ class Model {
     return value;
   }
 
+  Future<String> getVersion() async {
+    return await _readString("version");
+  }
+
+  Future<void> setVersion(String version) async {
+    await _writeString("version", version); //寫入目前版本
+  }
+
   Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
@@ -375,14 +383,6 @@ class Model {
     await loadSetting();
     await loadCourseScoreCredit();
     await loadSemesterJsonList();
-    String version = await AppUpdate.getAppVersion();
-    String preVersion = await _readString("version");
-    Log.d(" preVersion: $preVersion \n version: $version");
-    if (preVersion != version) {
-      _writeString("version", version); //寫入目前版本
-      _setting.other.autoCheckAppUpdate = true; //開啟更新檢查
-      saveOtherSetting();
-    }
     //DioConnector.instance.deleteCookies();
   }
 
