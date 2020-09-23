@@ -1963,6 +1963,16 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________ContributorsPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________ContributorsPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Project link`
   String get projectLink {
     return Intl.message(
@@ -1978,6 +1988,16 @@ class S {
     return Intl.message(
       'Github',
       name: 'github',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contributors`
+  String get Contributors {
+    return Intl.message(
+      'Contributors',
+      name: 'Contributors',
       desc: '',
       args: [],
     );

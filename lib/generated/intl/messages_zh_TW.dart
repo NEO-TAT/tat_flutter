@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "AreYouSureToOpen" : MessageLookupByLibrary.simpleMessage("確定要打開嗎"),
     "Contribution" : MessageLookupByLibrary.simpleMessage("貢獻"),
+    "Contributors" : MessageLookupByLibrary.simpleMessage("貢獻者"),
     "EnterValidFolderName" : MessageLookupByLibrary.simpleMessage("請輸入有效的資料夾名稱"),
     "Friday" : MessageLookupByLibrary.simpleMessage("五"),
     "Monday" : MessageLookupByLibrary.simpleMessage("一"),
@@ -33,6 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "UnKnown" : MessageLookupByLibrary.simpleMessage(""),
     "Wednesday" : MessageLookupByLibrary.simpleMessage("三"),
     "___________________AboutPage___________________" : MessageLookupByLibrary.simpleMessage("註解"),
+    "___________________ContributorsPage___________________" : MessageLookupByLibrary.simpleMessage("註解"),
     "___________________CourseTableUi___________________" : MessageLookupByLibrary.simpleMessage("註解"),
     "___________________DirectoryPicker___________________" : MessageLookupByLibrary.simpleMessage("註解"),
     "___________________FileStore___________________" : MessageLookupByLibrary.simpleMessage("註解"),

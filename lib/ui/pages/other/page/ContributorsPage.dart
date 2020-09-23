@@ -73,7 +73,7 @@ class ContributorsPage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
-                  R.current.Contribution,
+                  R.current.Contributors,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
