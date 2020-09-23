@@ -7,10 +7,12 @@ abstract class TaskModel {
   String _taskName;
   List<String> requireSystem;
   BuildContext _context;
+
   TaskModel(BuildContext context, String name, this.requireSystem) {
     _taskName = name;
     _context = context;
   }
+
   String get getTaskName {
     return _taskName;
   }
@@ -32,6 +34,6 @@ abstract class TaskModel {
   }
 
   Future<TaskStatus> taskStart();
-  //Future<List<TaskModel>> taskErrorList();
+//Future<List<TaskModel>> taskErrorList();
 
 }

@@ -161,6 +161,7 @@ class ReceivedNotification {
   String body;
   String payload;
   final _titleLong = 26;
+
   ReceivedNotification(
       {this.id,
       @required String title,

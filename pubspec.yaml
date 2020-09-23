@@ -25,7 +25,8 @@ dependencies:
   android_intent: 0.3.7+2
   device_info: 0.4.2+4
   html_unescape: 1.0.1+3  #處理HTML特殊字
-  local_auth: 0.6.3+1  #驗證身分
+  local_auth: 0.6.3+1  #驗證身分指紋
+  version: 1.2.0  #版本比較
   #----------store data----------#
   shared_preferences: 0.5.8
   flutter_cache_manager: 1.4.1
@@ -35,6 +36,8 @@ dependencies:
   cookie_jar: 1.0.1  #可儲存式cookies
   html: 0.14.0+3  #html解析器
   connectivity: 0.4.9
+  github: ^7.0.2
+  bloc: ^6.0.3
   #----------WebView----------#
   flutter_webview_plugin: 0.3.11
   #---------icon----------#
@@ -70,12 +73,14 @@ dependencies:
   flutter_spinkit: 4.1.2+1 #等待動畫
 
   # Firebase
-  firebase_core: 0.4.5  # 0.4.4+3 版本在 iOS 尚有問題
-  firebase_analytics: 5.0.16
-  firebase_crashlytics: 0.1.3+3
+  firebase_core: ^0.5.0  # 0.4.4+3 版本在 iOS 尚有問題
+  firebase_analytics: ^6.0.0
+  firebase_crashlytics: ^0.1.4+1
+  firebase_remote_config: 0.4.0
 dependency_overrides:
   http_parser:
     path: plugins/http_parser
+  analyzer: 0.39.14
 
 
 dev_dependencies:
@@ -99,9 +104,9 @@ flutter:
         - asset: assets/fonts/MyIcon.ttf
     - family: MyFont
       fonts:
-        - asset: fonts/GenSenRounded-L.ttc
+        - asset: fonts/GenSenRounded-R.ttc
           weight: 400
-        - asset: fonts/GenSenRounded-M.ttc
+        - asset: fonts/GenSenRounded-B.ttc
           weight: 700
 
 flutter_intl:

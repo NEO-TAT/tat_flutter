@@ -26,8 +26,8 @@ class CourseTableTask extends TaskModel {
     MyProgressDialog.showProgressDialog(context, R.current.getCourse);
     List<CourseMainInfoJson> courseMainInfoList;
     if (studentId.length == 5) {
-      courseMainInfoList =
-          await CourseConnector.getTWTeacherCourseMainInfoList(studentId, semester);
+      courseMainInfoList = await CourseConnector.getTWTeacherCourseMainInfoList(
+          studentId, semester);
     } else {
       if (LanguageUtil.getLangIndex() == LangEnum.zh) {
         //根據語言選擇課表

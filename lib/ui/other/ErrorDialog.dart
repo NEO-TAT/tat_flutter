@@ -20,6 +20,7 @@ class ErrorDialogParameter {
   AnimType animType;
   Function btnOkOnPress;
   Function btnCancelOnPress;
+
   ErrorDialogParameter(
       {@required this.context,
       @required this.desc,
@@ -48,6 +49,7 @@ class ErrorDialogParameter {
 
 class ErrorDialog {
   ErrorDialogParameter parameter;
+
   ErrorDialog(this.parameter);
 
   void show() {

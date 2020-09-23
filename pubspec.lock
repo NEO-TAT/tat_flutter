@@ -16,12 +16,12 @@ packages:
     source: hosted
     version: "0.1.2"
   analyzer:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.39.16"
+    version: "0.39.14"
   android_intent:
     dependency: "direct main"
     description:
@@ -78,6 +78,13 @@ packages:
       relative: true
     source: path
     version: "0.0.4"
+  bloc:
+    dependency: "direct main"
+    description:
+      name: bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -329,7 +336,7 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.16"
+    version: "6.0.0"
   firebase_analytics_platform_interface:
     dependency: transitive
     description:
@@ -350,28 +357,35 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.5"
+    version: "0.5.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "2.0.0"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1+2"
+    version: "0.2.0"
   firebase_crashlytics:
     dependency: "direct main"
     description:
       name: firebase_crashlytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3+3"
+    version: "0.1.4+1"
+  firebase_remote_config:
+    dependency: "direct main"
+    description:
+      name: firebase_remote_config
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   fixnum:
     dependency: transitive
     description:
@@ -518,6 +532,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.1"
+  github:
+    dependency: "direct main"
+    description:
+      name: github
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.0.2"
   glob:
     dependency: transitive
     description:
@@ -1118,6 +1139,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  version:
+    dependency: "direct main"
+    description:
+      name: version
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   video_player:
     dependency: "direct main"
     description:

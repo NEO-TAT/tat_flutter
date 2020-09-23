@@ -253,6 +253,26 @@ class S {
     );
   }
 
+  /// `APP will close`
+  String get appWillClose {
+    return Intl.message(
+      'APP will close',
+      name: 'appWillClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `isFocusUpdate`
+  String get isFocusUpdate {
+    return Intl.message(
+      'isFocusUpdate',
+      name: 'isFocusUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________task___________________ {
     return Intl.message(
@@ -1938,6 +1958,46 @@ class S {
     return Intl.message(
       'Are you sure you want to log out? \nAll data will be cleared',
       name: 'logoutWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________ContributorsPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________ContributorsPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project link`
+  String get projectLink {
+    return Intl.message(
+      'Project link',
+      name: 'projectLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Github`
+  String get github {
+    return Intl.message(
+      'Github',
+      name: 'github',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contributors`
+  String get Contributors {
+    return Intl.message(
+      'Contributors',
+      name: 'Contributors',
       desc: '',
       args: [],
     );

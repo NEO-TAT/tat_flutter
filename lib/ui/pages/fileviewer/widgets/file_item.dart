@@ -17,6 +17,7 @@ class FileItem extends StatelessWidget {
     @required this.file,
     this.popTap,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ListTile(

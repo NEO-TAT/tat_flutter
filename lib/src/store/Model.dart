@@ -7,14 +7,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/setting/SettingJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -365,6 +363,14 @@ class Model {
     return value;
   }
 
+  Future<String> getVersion() async {
+    return await _readString("version");
+  }
+
+  Future<void> setVersion(String version) async {
+    await _writeString("version", version); //寫入目前版本
+  }
+
   Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
@@ -375,14 +381,6 @@ class Model {
     await loadSetting();
     await loadCourseScoreCredit();
     await loadSemesterJsonList();
-    String version = await AppUpdate.getAppVersion();
-    String preVersion = await _readString("version");
-    Log.d(" preVersion: $preVersion \n version: $version");
-    if (preVersion != version) {
-      _writeString("version", version); //寫入目前版本
-      _setting.other.autoCheckAppUpdate = true; //開啟更新檢查
-      saveOtherSetting();
-    }
     //DioConnector.instance.deleteCookies();
   }
 

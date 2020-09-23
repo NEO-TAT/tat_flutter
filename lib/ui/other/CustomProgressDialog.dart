@@ -86,6 +86,7 @@ class StyleProgressDialog {
   bool isDismissed = true;
   var lock = Lock();
   Timer _timer;
+
   Future<void> dismissProgressDialog(BuildContext context) async {
     _timer?.cancel();
     await lock.synchronized(() async {

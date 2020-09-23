@@ -16,11 +16,13 @@ class CheckCookiesTask extends TaskModel {
   String studentId;
   static String checkNTUT = "__NTUT__";
   static String checkNTUTApp = "__NTUTApp__";
+
   // subSystem
   static String checkCourse = "__Course__";
   static String checkPlusISchool = "__ISchoolPlus__";
   static String checkScore = "__Score__";
   static String tempDataKey = "CheckCookiesTempKey";
+
   CheckCookiesTask(BuildContext context, {this.checkSystem, this.studentId})
       : super(context, taskName, []) {
     checkSystem = checkSystem ?? checkNTUT;
