@@ -12,7 +12,8 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
-import 'package:flutter_app/src/version/Version.dart';
+import 'package:flutter_app/src/util/RemoteConfigUtil.dart';
+import 'package:flutter_app/src/version/APPVersion.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
@@ -54,8 +55,9 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     R.set(context);
     await Model.instance.getInstance(); //一定要先getInstance()不然無法取得資料
     try {
+      await RemoteConfigUtil.init();
       await initLanguage();
-      Version.initAndCheck(navigatorKey.currentState.context);
+      APPVersion.initAndCheck(navigatorKey.currentState.context);
       initFlutterDownloader();
       initNotifications();
     } catch (e, stack) {

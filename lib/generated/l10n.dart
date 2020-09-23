@@ -253,6 +253,26 @@ class S {
     );
   }
 
+  /// `APP will close`
+  String get appWillClose {
+    return Intl.message(
+      'APP will close',
+      name: 'appWillClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `isFocusUpdate`
+  String get isFocusUpdate {
+    return Intl.message(
+      'isFocusUpdate',
+      name: 'isFocusUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________task___________________ {
     return Intl.message(

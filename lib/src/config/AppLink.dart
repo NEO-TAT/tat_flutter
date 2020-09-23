@@ -9,8 +9,6 @@ class AppLink {
   static final String gitHub = "https://github.com/NEO-TAT/tat_flutter";
   static final String feedbackBaseUrl =
       "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
-  static final String appUpdateCheck =
-      "https://api.github.com/repos/NEO-TAT/tat_flutter/releases/latest";
 
   static String feedback(String mainVersion, String log) {
     Uri url = Uri.https(

@@ -2,7 +2,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
-import 'package:flutter_app/src/version/Version.dart';
+import 'package:flutter_app/src/version/APPVersion.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -54,7 +54,7 @@ class _AboutPageState extends State<AboutPage> {
     switch (value) {
       case onListViewPress.AppUpdate:
         MyToast.show(R.current.checkingVersion);
-        bool result = await Version.check(context);
+        bool result = await APPVersion.check(context);
         if (!result) {
           MyToast.show(R.current.isNewVersion);
         }

@@ -22,6 +22,8 @@
   "downloading": "Download...",
   "downloadComplete": "Download complete",
   "prepareDownload": "Prepare download...",
+  "appWillClose": "APP will close",
+  "isFocusUpdate": "isFocusUpdate",
   "___________________task___________________": "註解",
   "loginNTUT": "Login to the NTUT...",
   "accountPasswordError": "Account password incorrect",
