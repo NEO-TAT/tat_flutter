@@ -122,7 +122,7 @@ Map<String, dynamic> _$RankItemJsonToJson(RankItemJson instance) =>
       'percentage': instance.percentage,
     };
 
-CourseScoreInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
+CourseScoreInfoJson _$CourseScoreInfoJsonFromJson(Map<String, dynamic> json) {
   return CourseScoreInfoJson(
     courseId: json['courseId'] as String,
     nameZh: json['nameZh'] as String,
@@ -134,7 +134,8 @@ CourseScoreInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CourseInfoJsonToJson(CourseScoreInfoJson instance) =>
+Map<String, dynamic> _$CourseScoreInfoJsonToJson(
+        CourseScoreInfoJson instance) =>
     <String, dynamic>{
       'courseId': instance.courseId,
       'nameZh': instance.nameZh,

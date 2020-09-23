@@ -76,6 +76,7 @@ dependencies:
 dependency_overrides:
   http_parser:
     path: plugins/http_parser
+  analyzer: 0.39.14
 
 
 dev_dependencies:

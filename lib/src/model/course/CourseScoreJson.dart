@@ -465,7 +465,7 @@ class CourseScoreInfoJson {
   }
 
   factory CourseScoreInfoJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseInfoJsonFromJson(json);
+      _$CourseScoreInfoJsonFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CourseInfoJsonToJson(this);
+  Map<String, dynamic> toJson() => _$CourseScoreInfoJsonToJson(this);
 }
