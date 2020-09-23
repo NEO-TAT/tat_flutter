@@ -7,8 +7,9 @@ import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/other/page/ContributorsPage.dart';
+import 'package:flutter_app/ui/pages/other/page/PrivacyPolicyPage.dart';
 
-enum onListViewPress { AppUpdate, Contribution, Version }
+enum onListViewPress { AppUpdate, Contribution, PrivacyPolicy, Version }
 
 class AboutPage extends StatefulWidget {
   @override
@@ -38,6 +39,12 @@ class _AboutPageState extends State<AboutPage> {
         "title": R.current.Contribution,
         "color": Colors.lightGreen,
         "onPress": onListViewPress.Contribution
+      },
+      {
+        "icon": EvaIcons.shieldOffOutline,
+        "color": Colors.blueGrey,
+        "title": R.current.PrivacyPolicy,
+        "onPress": onListViewPress.PrivacyPolicy
       },
       {
         "icon": EvaIcons.infoOutline,
@@ -71,6 +78,9 @@ class _AboutPageState extends State<AboutPage> {
         Future.delayed(Duration(seconds: 2)).then((_) {
           pressTime = 0;
         });
+        break;
+      case onListViewPress.PrivacyPolicy:
+        Navigator.of(context).push(MyPage.transition(PrivacyPolicyPage()));
         break;
       default:
         MyToast.show(R.current.noFunction);

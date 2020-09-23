@@ -41,8 +41,8 @@ dependencies:
   #----------WebView----------#
   flutter_webview_plugin: 0.3.11
   #---------icon----------#
-  eva_icons_flutter: 2.0.1
-  flutter_icons: 1.1.0
+  eva_icons_flutter: 2.0.1  #https://akveo.github.io/eva-icons/#/
+  flutter_icons: 1.1.0 #https://oblador.github.io/react-native-vector-icons/
   #---------json----------#
   json_annotation: 3.0.1
   #----------other----------#
@@ -71,6 +71,7 @@ dependencies:
   awesome_dialog: 1.1.3  #顯示Error時用到
   flutter_slidable: 0.5.5  #email使用可左右滑抽屜
   flutter_spinkit: 4.1.2+1 #等待動畫
+  flutter_markdown: 0.4.4
 
   # Firebase
   firebase_core: ^0.5.0  # 0.4.4+3 版本在 iOS 尚有問題

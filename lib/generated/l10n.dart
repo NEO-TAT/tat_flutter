@@ -2004,6 +2004,26 @@ class S {
   }
 
   /// `註解`
+  String get ___________________PrivacyPolicyPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________PrivacyPolicyPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy policy`
+  String get PrivacyPolicy {
+    return Intl.message(
+      'Privacy policy',
+      name: 'PrivacyPolicy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
   String get ___________________ScoreUI___________________ {
     return Intl.message(
       '註解',
