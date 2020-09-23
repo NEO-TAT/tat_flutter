@@ -36,6 +36,8 @@ dependencies:
   cookie_jar: 1.0.1  #可儲存式cookies
   html: 0.14.0+3  #html解析器
   connectivity: 0.4.9
+  github: ^7.0.2
+  bloc: ^6.0.3
   #----------WebView----------#
   flutter_webview_plugin: 0.3.11
   #---------icon----------#

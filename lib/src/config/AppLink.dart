@@ -6,7 +6,9 @@ class AppLink {
       "https://play.google.com/store/apps/details?id=$androidAppPackageName";
   static final String _appleStore =
       "https://apps.apple.com/tw/app/id1513875597";
-  static final String gitHub = "https://github.com/NEO-TAT/tat_flutter";
+  static final String githubOwner = "NEO-TAT";
+  static final String githubName = "tat_flutter";
+  static final String gitHub = "https://github.com/$githubOwner/$githubName";
   static final String feedbackBaseUrl =
       "https://docs.google.com/forms/d/e/1FAIpQLSc3JFQECAA6HuzqybasZEXuVf8_ClM0UZYFjpPvMwtHbZpzDA/viewform";
 

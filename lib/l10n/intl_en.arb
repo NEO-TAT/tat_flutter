@@ -193,6 +193,8 @@
   "isNewVersion": "Already the latest version",
   "autoAppCheck": "Auto App Check",
   "logoutWarning": "Are you sure you want to log out? \nAll data will be cleared",
+  "projectLink": "Project link",
+  "github": "Github",
   "___________________ScoreUI___________________": "註解",
   "titleScore": "Score",
   "error": "Error",

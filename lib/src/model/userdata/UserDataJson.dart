@@ -9,6 +9,7 @@ class UserDataJson {
   String account;
   String password;
   UserInfoJson info;
+
   UserDataJson({this.account, this.password, this.info}) {
     this.account = JsonInit.stringInit(this.account);
     this.password = JsonInit.stringInit(this.password);
@@ -17,6 +18,7 @@ class UserDataJson {
 
   factory UserDataJson.fromJson(Map<String, dynamic> json) =>
       _$UserDataJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserDataJsonToJson(this);
 
   bool get isEmpty {
@@ -57,6 +59,7 @@ class UserInfoJson {
 
   factory UserInfoJson.fromJson(Map<String, dynamic> json) =>
       _$UserInfoJsonFromJson(json);
+
   Map<String, dynamic> toJson() => _$UserInfoJsonToJson(this);
 
   bool get isEmpty {

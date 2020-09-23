@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
+  bloc:
+    dependency: "direct main"
+    description:
+      name: bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -525,6 +532,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.1"
+  github:
+    dependency: "direct main"
+    description:
+      name: github
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.0.2"
   glob:
     dependency: transitive
     description:

@@ -1963,6 +1963,26 @@ class S {
     );
   }
 
+  /// `Project link`
+  String get projectLink {
+    return Intl.message(
+      'Project link',
+      name: 'projectLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Github`
+  String get github {
+    return Intl.message(
+      'Github',
+      name: 'github',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________ScoreUI___________________ {
     return Intl.message(
