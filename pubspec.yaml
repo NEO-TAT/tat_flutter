@@ -103,9 +103,9 @@ flutter:
         - asset: assets/fonts/MyIcon.ttf
     - family: MyFont
       fonts:
-        - asset: fonts/GenSenRounded-L.ttc
+        - asset: fonts/GenSenRounded-R.ttc
           weight: 400
-        - asset: fonts/GenSenRounded-M.ttc
+        - asset: fonts/GenSenRounded-B.ttc
           weight: 700
 
 flutter_intl:
