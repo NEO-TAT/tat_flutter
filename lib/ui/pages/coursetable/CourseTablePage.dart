@@ -302,13 +302,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
     Model.instance.saveCourseTableList();
   }
 
-  void _loadFavorite() {
+  void _loadFavorite() async {
     List<CourseTableJson> value = Model.instance.getCourseTableList();
     if (value.length == 0) {
       MyToast.show(R.current.noAnyFavorite);
       return;
     }
-    showDialog(
+    await showDialog(
       useRootNavigator: false,
       context: context,
       builder: (BuildContext context) {
@@ -366,6 +366,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
         });
       },
     );
+    setState(() {
+      favorite =
+          (Model.instance.getCourseTableList().contains(courseTableData));
+    });
   }
 
   @override
