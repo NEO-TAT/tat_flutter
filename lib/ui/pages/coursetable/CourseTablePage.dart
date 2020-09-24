@@ -26,6 +26,7 @@ import 'package:flutter_app/ui/pages/coursedetail/CourseDetailPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTableControl.dart';
 import 'package:flutter_app/ui/pages/coursetable/OverRepaintBoundary.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
@@ -311,35 +312,58 @@ class _CourseTablePageState extends State<CourseTablePage> {
       useRootNavigator: false,
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            width: double.minPositive,
-            child: ListView.builder(
-              itemCount: value.length,
-              shrinkWrap: true, //使清單最小化
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: FlatButton(
-                    child: Text(sprintf("%s %s %s-%s", [
-                      value[index].studentId,
-                      value[index].studentName,
-                      value[index].courseSemester.year,
-                      value[index].courseSemester.semester
-                    ])),
-                    onPressed: () {
-                      Model.instance.getCourseSetting().info =
-                          value[index]; //儲存課表
-                      Model.instance.saveCourseSetting();
-                      _showCourseTable(value[index]);
-                      Model.instance.clearSemesterJsonList(); //須清除已儲存學期
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                );
-              },
+        return StatefulBuilder(builder:
+            (BuildContext context, void Function(void Function()) setState) {
+          return AlertDialog(
+            content: Container(
+              width: double.minPositive,
+              child: ListView.builder(
+                itemCount: value.length,
+                shrinkWrap: true, //使清單最小化
+                itemBuilder: (BuildContext context, int index) {
+                  return Slidable(
+                    actionPane: SlidableDrawerActionPane(),
+                    actionExtentRatio: 0.25,
+                    child: Container(
+                      height: 50,
+                      child: FlatButton(
+                        child: Container(
+                          child: Text(sprintf("%s %s %s-%s", [
+                            value[index].studentId,
+                            value[index].studentName,
+                            value[index].courseSemester.year,
+                            value[index].courseSemester.semester
+                          ])),
+                        ),
+                        onPressed: () {
+                          Model.instance.getCourseSetting().info =
+                              value[index]; //儲存課表
+                          Model.instance.saveCourseSetting();
+                          _showCourseTable(value[index]);
+                          Model.instance.clearSemesterJsonList(); //須清除已儲存學期
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                    secondaryActions: <Widget>[
+                      IconSlideAction(
+                        caption: R.current.delete,
+                        color: Colors.red,
+                        icon: Icons.delete_forever,
+                        onTap: () async {
+                          Model.instance.removeCourseTable(value[index]);
+                          value.remove(index);
+                          await Model.instance.saveCourseTableList();
+                          setState(() {});
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
-        );
+          );
+        });
       },
     );
   }
