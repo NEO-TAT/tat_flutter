@@ -60,7 +60,7 @@ class _CalendarPageState extends State<CalendarPage>
       int diffDays = _selectedDay.difference(time).inDays;
       bool isSame = (diffDays == 0);
       if (isSame) {
-        _onDaySelected(_selectedDay, _events[time]);
+        _onDaySelected(_selectedDay, _events[time], null);
         break;
       }
     }
@@ -117,7 +117,7 @@ class _CalendarPageState extends State<CalendarPage>
     super.dispose();
   }
 
-  void _onDaySelected(DateTime day, List events) {
+  void _onDaySelected(DateTime day, List events, List holidays) {
     print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;

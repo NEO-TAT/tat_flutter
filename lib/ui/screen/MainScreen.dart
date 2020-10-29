@@ -148,40 +148,31 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
           icon: Icon(
             EvaIcons.clockOutline,
           ),
-          title: Text(
-            R.current.titleCourse,
-          ),
+          label: R.current.titleCourse,
         ),
         BottomNavigationBarItem(
           icon: Icon(
             EvaIcons.emailOutline,
           ),
-          title: Text(
-            R.current.titleNotification,
-          ),
+          label: R.current.titleNotification,
         ),
         BottomNavigationBarItem(
-            icon: Icon(
-              EvaIcons.calendarOutline,
-            ),
-            title: Text(
-              R.current.calendar,
-            )),
+          icon: Icon(
+            EvaIcons.calendarOutline,
+          ),
+          label: R.current.calendar,
+        ),
         BottomNavigationBarItem(
           icon: Icon(
             EvaIcons.bookOpenOutline,
           ),
-          title: Text(
-            R.current.titleScore,
-          ),
+          label: R.current.titleScore
         ),
         BottomNavigationBarItem(
           icon: Icon(
             EvaIcons.menu,
           ),
-          title: Text(
-            R.current.titleOther,
-          ),
+          label: R.current.titleOther
         ),
       ],
     );

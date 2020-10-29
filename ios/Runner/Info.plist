@@ -28,10 +28,6 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Check change password</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>NSLocationAlwaysUsageDescription</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>NSLocationWhenInUseUsageDescription</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

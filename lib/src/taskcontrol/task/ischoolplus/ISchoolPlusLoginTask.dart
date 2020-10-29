@@ -18,7 +18,6 @@ class ISchoolPlusLoginTask extends TaskModel {
   Future<TaskStatus> taskStart() async {
     MyProgressDialog.showProgressDialog(context, R.current.loginISchoolPlus);
     String studentId = Model.instance.getAccount();
-    String password = Model.instance.getPassword();
     ISchoolPlusConnectorStatus value =
         await ISchoolPlusConnector.login(studentId);
     MyProgressDialog.hideProgressDialog();

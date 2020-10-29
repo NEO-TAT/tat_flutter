@@ -100,8 +100,8 @@ class TaskHandler {
         _handleErrorTask(task);
       }
     }
-    return taskSuccess;
     Log.d("startTaskQueue finish");
+    return taskSuccess;
   }
 
   void continueTask() {

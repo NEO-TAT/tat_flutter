@@ -5,7 +5,7 @@ import 'package:page_transition/page_transition.dart';
 
 class MyPage {
   static Route transition(Widget widget,
-      {PageTransitionType type = PageTransitionType.downToUp}) {
+      {PageTransitionType type = PageTransitionType.bottomToTop}) {
     return (Platform.isAndroid)
         ? PageTransition(
             type: type,

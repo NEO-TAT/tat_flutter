@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,9 @@ import 'generated/l10n.dart';
 
 Future<Null> main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   runZoned(() {
     runApp(
       MultiProvider(
@@ -27,7 +30,7 @@ Future<Null> main() async {
     );
   }, onError: (dynamic exception, StackTrace stack, {dynamic context}) {
     Log.error(exception.toString(), stack);
-    Crashlytics.instance.recordError(exception, stack, context: context);
+    FirebaseCrashlytics.instance.recordError(exception, stack);
   });
 }
 
