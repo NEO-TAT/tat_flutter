@@ -19,7 +19,7 @@ dependencies:
   logger: ^0.9.4
   #顯示Log
   sprintf: ^5.0.0
-  flutter_local_notifications: 1.4.3
+  flutter_local_notifications: ^3.0.1
   #通知欄  需修改android原始碼
   rxdart: 0.24.1
   #通知欄有使用到
