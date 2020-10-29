@@ -1085,6 +1085,26 @@ class S {
     );
   }
 
+  /// `Create New folder`
+  String get createNewFolder {
+    return Intl.message(
+      'Create New folder',
+      name: 'createNewFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Folder`
+  String get createFolder {
+    return Intl.message(
+      'Create Folder',
+      name: 'createFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `There's nothing here`
   String get nothingHere {
     return Intl.message(
@@ -1520,6 +1540,16 @@ class S {
     return Intl.message(
       'Check IPlus new',
       name: 'checkIPlusNew',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The path is wrong, please do not select the folder containing the Download directory`
+  String get selectDirectoryFail {
+    return Intl.message(
+      'The path is wrong, please do not select the folder containing the Download directory',
+      name: 'selectDirectoryFail',
       desc: '',
       args: [],
     );
@@ -2430,96 +2460,6 @@ class S {
     return Intl.message(
       'Credit info',
       name: 'creditInfo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `註解`
-  String get ___________________DirectoryPicker___________________ {
-    return Intl.message(
-      '註解',
-      name: '___________________DirectoryPicker___________________',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Directory is empty!`
-  String get directoryIsEmpty {
-    return Intl.message(
-      'Directory is empty!',
-      name: 'directoryIsEmpty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Selected directory`
-  String get selectedDirectory {
-    return Intl.message(
-      'Selected directory',
-      name: 'selectedDirectory',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter a valid folder name`
-  String get EnterValidFolderName {
-    return Intl.message(
-      'Enter a valid folder name',
-      name: 'EnterValidFolderName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Failed to create folder`
-  String get failedCreateFolder {
-    return Intl.message(
-      'Failed to create folder',
-      name: 'failedCreateFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create Folder`
-  String get createFolder {
-    return Intl.message(
-      'Create Folder',
-      name: 'createFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create New folder`
-  String get createNewFolder {
-    return Intl.message(
-      'Create New folder',
-      name: 'createNewFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Grant permission`
-  String get grantPermission {
-    return Intl.message(
-      'Grant permission',
-      name: 'grantPermission',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Checking permission`
-  String get checkingPermission {
-    return Intl.message(
-      'Checking permission',
-      name: 'checkingPermission',
       desc: '',
       args: [],
     );

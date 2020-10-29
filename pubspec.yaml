@@ -34,6 +34,8 @@ dependencies:
   #驗證身分指紋
   version: 1.2.0
   #版本比較
+  file_picker: ^2.0.11
+  #選擇android資料夾
   #----------store data----------#
   shared_preferences: ^0.5.12+2
   flutter_cache_manager: ^2.0.0
