@@ -50,7 +50,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
     super.dispose();
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
     if (!canPop) {
       Navigator.of(context).pop();
     }

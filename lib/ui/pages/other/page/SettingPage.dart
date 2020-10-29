@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:after_init/after_init.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/Appthemes.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
-import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -282,17 +283,17 @@ class _SettingPageState extends State<SettingPage>
           ),
         ),
         onTap: () async {
-          Directory newDirectory = await DirectoryPicker.pick(
-            allowFolderCreation: true,
-            context: context,
-            rootDirectory: Directory(downloadPath),
-          );
-          FileStore.setFilePath(newDirectory).then((value) {
-            if (value) {
-              downloadPath = newDirectory.path;
-              setState(() {});
+          String directory = await FilePicker.platform.getDirectoryPath();
+          if (directory == "/" || directory == null) {
+            if (directory == '/') {
+              MyToast.show(R.current.selectDirectoryFail);
             }
-          });
+          } else {
+            await FileStore.setFilePath(directory);
+            setState(() {
+              downloadPath = directory;
+            });
+          }
         },
       );
     }

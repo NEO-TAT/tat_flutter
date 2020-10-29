@@ -60,7 +60,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     super.dispose();
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
     Navigator.of(context).pop();
     return true;
   }

@@ -38,7 +38,7 @@ class Log {
         "\n\n" +
         stackSplit;
     logger.e(data, stackSplit);
-    Crashlytics.instance.recordError(data, stackTrace);
+    FirebaseCrashlytics.instance.recordError(data, stackTrace);
     addErrorLog(error);
   }
 

@@ -45,10 +45,10 @@ class FileStore {
     return savedDir.path;
   }
 
-  static Future<bool> setFilePath(Directory directory) async {
+  static Future<bool> setFilePath(String directory) async {
     if (directory != null) {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString(storeKey, directory.path);
+      pref.setString(storeKey, directory);
       return true;
     } else {
       return false;

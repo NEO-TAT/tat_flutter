@@ -55,7 +55,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     super.dispose();
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
     if (selectList.inSelectMode) {
       selectList.leaveSelectMode();
       setState(() {});
