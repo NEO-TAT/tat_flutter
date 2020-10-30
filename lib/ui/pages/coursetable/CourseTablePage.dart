@@ -674,7 +674,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(sprintf("%s : %s", [R.current.courseId, course.id])),
+                GestureDetector(
+                  child:
+                      Text(sprintf("%s : %s", [R.current.courseId, course.id])),
+                  onLongPress: () async {
+                    course.id = await _showEditDialog(course.id);
+                    Model.instance.saveOtherSetting();
+                    setState(() {});
+                  },
+                ),
                 Text(sprintf("%s : %s", [
                   R.current.time,
                   courseTableControl.getTimeString(section)
@@ -695,6 +703,43 @@ class _CourseTablePageState extends State<CourseTablePage> {
         );
       },
     );
+  }
+
+  Future<String> _showEditDialog(String value) async {
+    final TextEditingController controller = TextEditingController();
+    controller.text = value;
+    String v = await showDialog<String>(
+      useRootNavigator: false,
+      context: context,
+      child: new AlertDialog(
+        contentPadding: const EdgeInsets.all(16.0),
+        title: Text('Edit'),
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new TextField(
+                controller: controller,
+                autofocus: true,
+                decoration: new InputDecoration(hintText: value),
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              child: Text(R.current.cancel),
+              onPressed: () {
+                Navigator.of(context).pop(null);
+              }),
+          new FlatButton(
+              child: Text(R.current.sure),
+              onPressed: () {
+                Navigator.of(context).pop(controller.text);
+              })
+        ],
+      ),
+    );
+    return v ?? value;
   }
 
   void _showCourseDetail(CourseInfoJson courseInfo) {
