@@ -16,6 +16,7 @@ import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
+import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -260,6 +261,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
+        Get.back();
         RouteUtils.toVideoPlayer(
             urlParse.toString(), widget.courseInfo, courseFile.name);
       };
