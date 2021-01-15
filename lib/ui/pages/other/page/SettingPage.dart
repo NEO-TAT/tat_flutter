@@ -12,6 +12,7 @@ import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -49,7 +50,6 @@ class _SettingPageState extends State<SettingPage>
   Widget build(BuildContext context) {
     List<Widget> listViewData = List();
     listViewData.add(_buildLanguageSetting());
-    listViewData.add(_buildFocusLoginSetting());
     if (Platform.isAndroid) {
       listViewData.add(_buildOpenExternalVideoSetting());
     }
@@ -110,34 +110,8 @@ class _SettingPageState extends State<SettingPage>
           LanguageUtil.setLangByIndex(LangEnum.values.toList()[langIndex])
               .then((_) {
             widget.pageController.jumpToPage(0);
-            Navigator.of(context).pop();
+            Get.back();
           });
-        });
-      },
-    );
-  }
-
-  Widget _buildFocusLoginSetting() {
-    return SwitchListTile.adaptive(
-      contentPadding: EdgeInsets.all(0),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            R.current.forceReLogin,
-            style: textTitle,
-          ),
-          Text(
-            R.current.forceLoginResult,
-            style: textBody,
-          ),
-        ],
-      ),
-      value: Model.instance.getOtherSetting().focusLogin,
-      onChanged: (value) {
-        setState(() {
-          Model.instance.getOtherSetting().focusLogin = value;
-          Model.instance.saveOtherSetting();
         });
       },
     );

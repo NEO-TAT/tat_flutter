@@ -21,8 +21,6 @@ enum ISchoolPlusConnectorStatus {
 }
 
 class ISchoolPlusConnector {
-  static bool _isLogin = false;
-
   static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
 
   //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
@@ -33,6 +31,7 @@ class ISchoolPlusConnector {
   static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
   static final String _getCourseName =
       _iSchoolPlusUrl + "learn/mooc_sysbar.php";
+  static final _ssoLoginUrl = "https://app.ntut.edu.tw/ssoIndex.do";
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
@@ -46,7 +45,7 @@ class ISchoolPlusConnector {
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter("https://nportal.ntut.edu.tw/ssoIndex.do");
+      parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = html.parse(result);
@@ -62,7 +61,6 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
-      _isLogin = true;
       return ISchoolPlusConnectorStatus.LoginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -184,7 +182,9 @@ class ISchoolPlusConnector {
         matches = exp.firstMatch(result);
         bool pass = (matches?.groupCount == null)
             ? false
-            : matches.group(1).toLowerCase().contains("http") ? true : false;
+            : matches.group(1).toLowerCase().contains("http")
+                ? true
+                : false;
         if (pass) {
           url = matches.group(1);
           //已經是完整連結
@@ -276,17 +276,20 @@ class ISchoolPlusConnector {
       result = await Connector.getDataByPost(parameter);
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
-      jsonData = json.decode(result)['data'];
-      int totalRows = int.parse(json.decode(result)['total_rows']);
-      if (totalRows > 0) {
-        for (String keyName in json.decode(result)['data'].keys.toList()) {
-          ISchoolPlusAnnouncementJson courseInfo =
-              ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
-          courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
-          courseInfo.token = data['token'];
-          courseInfo.bid = keyName.split("|").first;
-          courseInfo.nid = keyName.split("|").last;
-          announcementList.add(courseInfo);
+      Map j = json.decode(result);
+      if (j["code"] == 0) {
+        jsonData = j['data'];
+        int totalRows = int.parse(json.decode(result)['total_rows']);
+        if (totalRows > 0) {
+          for (String keyName in json.decode(result)['data'].keys.toList()) {
+            ISchoolPlusAnnouncementJson courseInfo =
+                ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
+            courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
+            courseInfo.token = data['token'];
+            courseInfo.bid = keyName.split("|").first;
+            courseInfo.nid = keyName.split("|").last;
+            announcementList.add(courseInfo);
+          }
         }
       }
       return announcementList;
@@ -478,6 +481,9 @@ class ISchoolPlusConnector {
           break;
         }
       }
+      if (courseValue == null) {
+        throw Exception("courseValue is null");
+      }
       String xml =
           "<manifest><ticket/><course_id>$courseValue</course_id><env/></manifest>";
       parameter = ConnectorParameter(
@@ -485,44 +491,8 @@ class ISchoolPlusConnector {
       parameter.data = xml;
       await Connector.getDataByPost(
           parameter); //因為RequestsConnector無法傳送XML但是 DioConnector無法解析 Content-Type: text/html;;charset=UTF-8
-
     } catch (e) {
       throw e;
-    }
-  }
-
-  static bool get isLogin {
-    return _isLogin;
-  }
-
-  static void loginFalse() {
-    _isLogin = false;
-  }
-
-  static Future<bool> checkLogin() async {
-    Log.d("ISchoolPlus CheckLogin");
-    ConnectorParameter parameter;
-    Response response;
-    String result;
-    _isLogin = false;
-    try {
-      parameter = ConnectorParameter(_checkLoginUrl);
-      response = await Connector.getDataByGetResponse(parameter);
-      result = response.toString();
-      if (result.contains("connect lost") || result.contains("location.href")) {
-        return false;
-      }
-      if (response.statusCode != HttpStatus.ok) {
-        //代表登入失敗
-        return false;
-      } else {
-        Log.d("ISchoolPlus Is Readly Login");
-        _isLogin = true;
-        return true;
-      }
-    } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
-      return false;
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -82,7 +83,7 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
         FlatButton(
           child: Text(R.current.sure),
           onPressed: () async {
-            Navigator.of(context).pop();
+            Get.back();
           },
         ),
       ],

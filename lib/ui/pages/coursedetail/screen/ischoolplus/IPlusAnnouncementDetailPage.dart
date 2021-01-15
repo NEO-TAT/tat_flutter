@@ -9,6 +9,7 @@ import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class IPlusAnnouncementDetailPage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
-    Navigator.of(context).pop();
+    Get.back();
     return true;
   }
 
@@ -46,7 +47,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Get.back(),
         ),
         title: Text(widget.courseInfo.main.course.name),
         actions: <Widget>[

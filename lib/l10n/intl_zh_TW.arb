@@ -175,8 +175,6 @@
   "languageSwitch": "使用英文介面",
   "willRestart": "將自動重啟並套用語言",
   "notSupport": "不支持查詢非自己課程",
-  "forceReLogin": "強制重新登入",
-  "forceLoginResult": "當判斷已登入的機制失效，勾選可以解決，但是會讓取得資料速度變慢",
   "isVideo": "上課錄影",
   "classVideo": "上課錄影",
   "searchSubscribe": "查詢訂閱...",

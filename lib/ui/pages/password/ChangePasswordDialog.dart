@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/ntut/NTUTChangePasswordTask.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/ntut/NTUTChangePasswordTask.dart';
+import 'package:get/get.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
   ChangePasswordDialog({Key key}) : super(key: key);
@@ -110,13 +111,13 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           child: Text(R.current.useOldPassword),
           onPressed: () async {
             String password = Model.instance.getPassword();
-            TaskHandler.instance.addTask(NTUTChangePasswordTask(
-                context, password.split('').reversed.join()));
-            TaskHandler.instance
-                .addTask(NTUTChangePasswordTask(context, password));
-            bool success = await TaskHandler.instance.startTaskQueue(context);
+            TaskFlow taskFlow = TaskFlow();
+            taskFlow.addTask(
+                NTUTChangePasswordTask(password.split('').reversed.join()));
+            taskFlow.addTask(NTUTChangePasswordTask(password));
+            bool success = await taskFlow.start();
             if (success) {
-              Navigator.of(context).pop(true);
+              Get.back<bool>(result: true);
             }
           },
         ),
@@ -125,18 +126,18 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           children: [
             FlatButton(
               child: Text(R.current.cancel),
-              onPressed: () => Navigator.of(context).pop(false),
+              onPressed: () => Get.back<bool>(result: false),
             ),
             FlatButton(
               child: Text(R.current.sure),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  TaskHandler.instance.addTask(NTUTChangePasswordTask(
-                      context, _passwordController.text));
-                  bool success =
-                      await TaskHandler.instance.startTaskQueue(context);
+                  TaskFlow taskFlow = TaskFlow();
+                  taskFlow.addTask(
+                      NTUTChangePasswordTask(_passwordController.text));
+                  bool success = await taskFlow.start();
                   if (success) {
-                    Navigator.of(context).pop(true);
+                    Get.back<bool>(result: true);
                   }
                 }
               },

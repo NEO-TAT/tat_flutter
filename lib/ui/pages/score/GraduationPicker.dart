@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/CourseConnector.dart';
-import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
-import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/course/CourseCreditInfoTask.dart';
+import 'package:flutter_app/src/task/course/CourseDepartmentTask.dart';
+import 'package:flutter_app/src/task/course/CourseDivisionTask.dart';
+import 'package:flutter_app/src/task/course/CourseYearTask.dart';
+import 'package:flutter_app/src/task/ntutapp/NTUTAPPDepartmentTask.dart';
+import 'package:get/get.dart';
 
 class GraduationPicker {
   GraduationPickerWidget _dialog;
@@ -56,22 +56,17 @@ class GraduationPicker {
     if (!_isShowing) {
       try {
         _dialog = GraduationPickerWidget();
-        showDialog<GraduationInformationJson>(
-          context: _context,
-          barrierDismissible: false,
-          useRootNavigator: false,
-          builder: (BuildContext context) {
-            _dismissingContext = context;
-            return WillPopScope(
-              onWillPop: () async => _barrierDismissible,
-              child: Dialog(
-                  insetAnimationDuration: Duration(milliseconds: 100),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  child: _dialog),
-            );
-          },
-        ).then((value) {
+        Get.dialog<GraduationInformationJson>(
+                WillPopScope(
+                    onWillPop: () async => _barrierDismissible,
+                    child: Dialog(
+                        insetAnimationDuration: Duration(milliseconds: 100),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8))),
+                        child: _dialog)),
+                barrierDismissible: false,
+                useRootNavigator: false)
+            .then((value) {
           finishCallBack(value);
         });
         // Delaying the function for 200 milliseconds
@@ -113,21 +108,11 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _addPresetTask() async {
-    if (!graduationInformation.isSelect) {
-      //如果沒有設定過才執行
-      TaskHandler.instance.addTask(TaskModelFunction(context,
-          require: [CheckCookiesTask.checkNTUTApp], taskFunction: () async {
-        MyProgressDialog.showProgressDialog(context, R.current.searching);
-        _presetDepartment = await NTUTAppConnector.getDepartment();
-        MyProgressDialog.hideProgressDialog();
-        if (_presetDepartment == null)
-          return false;
-        else
-          return true;
-      }, errorFunction: () {
-        TaskHandler.instance.giveUpTask();
-      }, successFunction: () {}));
-      await TaskHandler.instance.startTaskQueue(context);
+    TaskFlow taskFlow = TaskFlow();
+    var task = NTUTAPPDepartmentTask();
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      _presetDepartment = task.result;
     }
     _addSelectTask();
   }
@@ -171,29 +156,6 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     }
     await _getCreditInfo();
     setState(() {});
-  }
-
-  _showSelectList(List<String> listItems) async {
-    int select = await showDialog<int>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return ListView.builder(
-          itemCount: listItems.length,
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-              child: Container(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  children: <Widget>[Text(listItems[index])],
-                ),
-              ),
-              onTap: () {},
-            );
-          },
-        );
-      },
-    );
   }
 
   Widget buildText(String title) {
@@ -241,103 +203,54 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getYearList() async {
-    TaskHandler.instance.addTask(
-      TaskModelFunction(
-        context,
-        require: [CheckCookiesTask.checkCourse],
-        taskFunction: () async {
-          MyProgressDialog.showProgressDialog(context, R.current.searchingYear);
-          yearList = await CourseConnector.getYearList();
-          //Log.d(yearList.toString());
-          _selectedYear = yearList.first;
-          MyProgressDialog.hideProgressDialog();
-          return true;
-        },
-        errorFunction: () {},
-        successFunction: () {},
-      ),
-    );
-    await TaskHandler.instance.startTaskQueue(context);
+    TaskFlow taskFlow = TaskFlow();
+    var task = CourseYearTask();
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      yearList = task.result;
+      _selectedYear = yearList.first;
+    }
+    print(_selectedYear);
     setState(() {});
   }
 
   Future<void> _getDivisionList() async {
-    TaskHandler.instance.addTask(
-      TaskModelFunction(
-        context,
-        require: [CheckCookiesTask.checkCourse],
-        taskFunction: () async {
-          await TaskHandler.instance.startTaskQueue(context);
-          MyProgressDialog.showProgressDialog(
-              context, R.current.searchingDivision);
-          String year = _selectedYear.split(" ")[1];
-          divisionList = await CourseConnector.getDivisionList(year);
-          //Log.d(divisionList.toString());
-          _selectedDivision = divisionList.first;
-          MyProgressDialog.hideProgressDialog();
-          return true;
-        },
-        errorFunction: () {},
-        successFunction: () {},
-      ),
-    );
-    await TaskHandler.instance.startTaskQueue(context);
+    TaskFlow taskFlow = TaskFlow();
+    String year = _selectedYear.split(" ")[1];
+    var task = CourseDivisionTask(year);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      divisionList = task.result;
+      _selectedDivision = divisionList.first;
+    }
     setState(() {});
   }
 
   Future<void> _getDepartmentList() async {
-    TaskHandler.instance.addTask(
-      TaskModelFunction(
-        context,
-        require: [CheckCookiesTask.checkCourse],
-        taskFunction: () async {
-          await TaskHandler.instance.startTaskQueue(context);
-          MyProgressDialog.showProgressDialog(
-              context, R.current.searchingDepartment);
-          Map<String, String> code = _selectedDivision["code"];
-          departmentList = await CourseConnector.getDepartmentList(code);
-          //Log.d(departmentList.toString());
-          _selectedDepartment = departmentList.first;
-          MyProgressDialog.hideProgressDialog();
-          return true;
-        },
-        errorFunction: () {},
-        successFunction: () {},
-      ),
-    );
-    await TaskHandler.instance.startTaskQueue(context);
+    TaskFlow taskFlow = TaskFlow();
+    Map<String, String> code = _selectedDivision["code"];
+    var task = CourseDepartmentTask(code);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      departmentList = task.result;
+      _selectedDepartment = departmentList.first;
+    }
     setState(() {});
   }
 
   Future<void> _getCreditInfo() async {
-    TaskHandler.instance.addTask(
-      TaskModelFunction(
-        context,
-        require: [CheckCookiesTask.checkCourse],
-        taskFunction: () async {
-          MyProgressDialog.showProgressDialog(
-              context, R.current.searchingCreditInfo);
-          Map code = _selectedDivision["code"];
-          try {
-            graduationInformation = await CourseConnector.getCreditInfo(
-                code, _selectedDepartment["name"]);
-            if (graduationInformation != null) {
-              graduationInformation.selectYear = _selectedYear;
-              graduationInformation.selectDivision = _selectedDivision["name"];
-              graduationInformation.selectDepartment =
-                  _selectedDepartment["name"];
-            }
-          } catch (e, stack) {
-            Log.eWithStack(e.toString(), stack);
-          }
-          await MyProgressDialog.hideProgressDialog();
-          return true;
-        },
-        errorFunction: () {},
-        successFunction: () {},
-      ),
-    );
-    await TaskHandler.instance.startTaskQueue(context);
+    TaskFlow taskFlow = TaskFlow();
+    Map code = _selectedDivision["code"];
+    String name = _selectedDepartment["name"];
+    var task = CourseCreditInfoTask(code, name);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      graduationInformation = task.result;
+      graduationInformation.selectYear = _selectedYear;
+      graduationInformation.selectDivision = _selectedDivision["name"];
+      graduationInformation.selectDepartment = _selectedDepartment["name"];
+    }
+    setState(() {});
   }
 
   @override
@@ -447,6 +360,6 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   void _returnValue() {
-    Navigator.of(context).pop(graduationInformation);
+    Get.back(result: graduationInformation);
   }
 }

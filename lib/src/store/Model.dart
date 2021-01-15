@@ -12,7 +12,6 @@ import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/setting/SettingJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -393,7 +392,6 @@ class Model {
     await clearCourseSetting();
     DioConnector.instance.deleteCookies();
     await cacheManager.emptyCache(); //clears all data in cache.
-    TaskHandler.alreadyCheckSystem = ""; //全部登入重新檢查
     setFirstUse(courseNotice, true);
     await getInstance();
   }

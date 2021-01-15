@@ -89,19 +89,16 @@ class AnnouncementSettingJson {
 @JsonSerializable()
 class OtherSettingJson {
   String lang;
-  bool focusLogin;
   bool autoCheckAppUpdate;
   bool useExternalVideoPlayer;
   bool checkIPlusNew;
 
   OtherSettingJson(
       {this.lang,
-      this.focusLogin,
       this.autoCheckAppUpdate,
       this.useExternalVideoPlayer,
       this.checkIPlusNew}) {
     lang = JsonInit.stringInit(lang);
-    focusLogin = focusLogin ?? false;
     autoCheckAppUpdate = autoCheckAppUpdate ?? true;
     useExternalVideoPlayer = useExternalVideoPlayer ?? false;
     checkIPlusNew = checkIPlusNew ?? true;

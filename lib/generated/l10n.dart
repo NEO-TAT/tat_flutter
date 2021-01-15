@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -14,22 +15,23 @@ import 'intl/messages_all.dart';
 
 class S {
   S();
-  
+
   static S current;
-  
-  static const AppLocalizationDelegate delegate =
-    AppLocalizationDelegate();
+
+  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name); 
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       S.current = S();
-      
+
       return S.current;
     });
-  } 
+  }
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S);
@@ -1775,26 +1777,6 @@ class S {
     );
   }
 
-  /// `Force re-login`
-  String get forceReLogin {
-    return Intl.message(
-      'Force re-login',
-      name: 'forceReLogin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed`
-  String get forceLoginResult {
-    return Intl.message(
-      'When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed',
-      name: 'forceLoginResult',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Is a video`
   String get isVideo {
     return Intl.message(
@@ -2578,8 +2560,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
+
   @override
   Future<S> load(Locale locale) => S.load(locale);
+
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

@@ -1,18 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/ischoolplus/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementDetailTask.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseAnnouncementTask.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
-import 'package:flutter_app/ui/other/MyProgressDialog.dart';
-import 'package:flutter_app/ui/other/MyToast.dart';
-
-import 'IPlusAnnouncementDetailPage.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/iPlus/IPlusGetCourseSubscribeTask.dart';
+import 'package:flutter_app/src/task/iPlus/IPlusSetCourseSubscribeTask.dart';
+import 'package:flutter_app/src/task/iplus/IPlusCourseAnnouncementDetailTask.dart';
+import 'package:flutter_app/src/task/iplus/IPlusCourseAnnouncementTask.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 
 class IPlusAnnouncementPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -45,28 +42,29 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   void _addTask() async {
     //第一次
     String courseId = widget.courseInfo.main.course.id;
-    TaskHandler.instance
-        .addTask(ISchoolPlusCourseAnnouncementTask(context, courseId));
-    await TaskHandler.instance.startTaskQueue(context);
-    items = Model.instance
-        .getTempData(ISchoolPlusCourseAnnouncementTask.announcementListTempKey);
+    TaskFlow taskFlow = TaskFlow();
+    var task = IPlusCourseAnnouncementTask(courseId);
+    var getTask = IPlusGetCourseSubscribeTask(courseId);
+    taskFlow.addTask(task);
+    taskFlow.addTask(getTask);
+    if (await taskFlow.start()) {
+      items = task.result;
+      courseBid = getTask.result["courseBid"];
+      openNotifications = getTask.result["openNotifications"];
+    }
     items = items ?? List();
-    MyProgressDialog.showProgressDialog(context, R.current.searchSubscribe);
-    courseBid = await ISchoolPlusConnector.getBid(courseId);
-    openNotifications =
-        await ISchoolPlusConnector.getCourseSubscribe(courseBid);
-    MyProgressDialog.hideProgressDialog();
     setState(() {});
   }
 
   void _getAnnouncementDetail(ISchoolPlusAnnouncementJson value) async {
-    TaskHandler.instance
-        .addTask(ISchoolPlusCourseAnnouncementDetailTask(context, value));
-    await TaskHandler.instance.startTaskQueue(context);
-    Map detail = Model.instance.getTempData(
-        ISchoolPlusCourseAnnouncementDetailTask.announcementListTempKey);
-    Navigator.of(context).push(MyPage.transition(
-        IPlusAnnouncementDetailPage(widget.courseInfo, detail)));
+    TaskFlow taskFlow = TaskFlow();
+    var task = IPlusCourseAnnouncementDetailTask(value);
+    taskFlow.addTask(task);
+    Map detail;
+    if (await taskFlow.start()) {
+      detail = task.result;
+    }
+    RouteUtils.toIPlusAnnouncementDetailPage(widget.courseInfo, detail);
   }
 
   @override
@@ -85,14 +83,10 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
         floatingActionButton: FloatingActionButton(
           // FloatingActionButton: 浮動按鈕
           onPressed: () async {
-            MyToast.show((openNotifications)
-                ? R.current.closeSubscribe
-                : R.current.openSubscribe);
-            MyProgressDialog.showProgressDialog(context, null);
-            bool success = await ISchoolPlusConnector.courseSubscribe(
-                courseBid, !openNotifications);
-            MyProgressDialog.hideProgressDialog();
-            if (success) {
+            TaskFlow taskFlow = TaskFlow();
+            taskFlow.addTask(
+                IPlusSetCourseSubscribeTask(courseBid, !openNotifications));
+            if (await taskFlow.start()) {
               setState(() {
                 openNotifications = !openNotifications;
               });

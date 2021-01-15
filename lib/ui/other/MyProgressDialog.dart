@@ -1,25 +1,55 @@
+import 'dart:io';
+
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'CustomProgressDialog.dart';
 
 class MyProgressDialog {
-  static StyleProgressDialog _progressDialog = StyleProgressDialog();
-  static BuildContext _context;
+  static void showProgressDialogOld(
+      BuildContext context, String message) async {}
 
-  static void showProgressDialog(BuildContext context, String message) async {
-    if (context == null) return;
-    _context = context;
-    _progressDialog.showProgressDialog(context,
-        //dismissAfter: Duration(seconds: 20 ),
-        dismissAfter: null, //不設置自動關閉時間
-        textToBeDisplayed: message, onDismiss: () {
-      _progressDialog.dismissProgressDialog(_context);
+  static void progressDialog(String message) async {
+    BotToast.showCustomLoading(toastBuilder: (cancel) {
+      return CustomProgressDialog(
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: const BorderRadius.all(Radius.circular(5))),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Platform.isIOS
+                  ? CupertinoActivityIndicator(
+                      radius: 15,
+                    )
+                  : CircularProgressIndicator(),
+              message == null
+                  ? Padding(
+                      padding: EdgeInsets.all(0),
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        message,
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+            ],
+          ),
+        ),
+      );
     });
   }
 
   static Future<void> hideProgressDialog() async {
-    if (_context == null) return;
-    await _progressDialog.dismissProgressDialog(_context);
+    BotToast.cleanAll();
+  }
+
+  static Future<void> hideAllDialog() async {
+    BotToast.cleanAll();
   }
 }

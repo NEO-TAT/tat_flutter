@@ -12,7 +12,7 @@ class WebViewPluginPage extends StatefulWidget {
   final String url;
   final String title;
 
-  WebViewPluginPage(this.title, this.url);
+  WebViewPluginPage({this.title, this.url});
 
   @override
   _WebViewPluginPageState createState() => _WebViewPluginPageState();

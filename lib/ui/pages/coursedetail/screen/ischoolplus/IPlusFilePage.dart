@@ -9,14 +9,13 @@ import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/ischoolplus/CourseFileJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/iplus/IPlusCourseFileTask.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -68,10 +67,13 @@ class _IPlusFilePage extends State<IPlusFilePage>
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
-    TaskHandler.instance.addTask(ISchoolPlusCourseFileTask(context, courseId));
-    await TaskHandler.instance.startTaskQueue(context);
-    courseFileList = Model.instance
-        .getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
+
+    TaskFlow taskFlow = TaskFlow();
+    var task = IPlusCourseFileTask(courseId);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      courseFileList = task.result;
+    }
     courseFileList = courseFileList ?? List();
     selectList.addItems(courseFileList.length);
     setState(() {});
@@ -258,8 +260,8 @@ class _IPlusFilePage extends State<IPlusFilePage>
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
-        Navigator.of(context).push(MyPage.transition(ClassVideoPlayer(
-            urlParse.toString(), widget.courseInfo, courseFile.name)));
+        RouteUtils.toVideoPlayer(
+            urlParse.toString(), widget.courseInfo, courseFile.name);
       };
       ErrorDialog(errorDialogParameter).show();
     } else {

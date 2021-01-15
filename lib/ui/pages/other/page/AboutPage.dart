@@ -4,10 +4,8 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/version/APPVersion.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/other/page/ContributorsPage.dart';
-import 'package:flutter_app/ui/pages/other/page/PrivacyPolicyPage.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 
 enum onListViewPress { AppUpdate, Contribution, PrivacyPolicy, Version }
 
@@ -61,13 +59,13 @@ class _AboutPageState extends State<AboutPage> {
     switch (value) {
       case onListViewPress.AppUpdate:
         MyToast.show(R.current.checkingVersion);
-        bool result = await APPVersion.check(context);
+        bool result = await APPVersion.check();
         if (!result) {
           MyToast.show(R.current.isNewVersion);
         }
         break;
       case onListViewPress.Contribution:
-        Navigator.of(context).push(MyPage.transition(ContributorsPage()));
+        RouteUtils.toContributorsPage();
         break;
       case onListViewPress.Version:
         String mainVersion = await AppUpdate.getAppVersion();
@@ -80,7 +78,7 @@ class _AboutPageState extends State<AboutPage> {
         });
         break;
       case onListViewPress.PrivacyPolicy:
-        Navigator.of(context).push(MyPage.transition(PrivacyPolicyPage()));
+        RouteUtils.toPrivacyPolicyPage();
         break;
       default:
         MyToast.show(R.current.noFunction);

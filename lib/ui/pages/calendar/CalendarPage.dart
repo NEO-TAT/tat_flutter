@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/ntut/NTUTCalendarTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
-import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/pages/calendar/CalendarDetailDialog.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -70,41 +67,23 @@ class _CalendarPageState extends State<CalendarPage>
     DateTime startTime = DateTime(time.year, time.month, 1);
     DateTime endTime = DateTime(time.year, time.month + 1, 1);
     List<NTUTCalendarJson> eventNTUTs;
+
+    TaskFlow taskFlow = TaskFlow();
+    var calendarTask = NTUTCalendarTask(startTime, endTime);
+    taskFlow.addTask(calendarTask);
     _events = Map();
-    TaskHandler.instance.addTask(TaskModelFunction(
-      context,
-      require: [CheckCookiesTask.checkNTUT],
-      taskFunction: () async {
-        MyProgressDialog.showProgressDialog(context, R.current.getCalendar);
-        //查詢已修課程
-        eventNTUTs = await NTUTConnector.getCalendar(startTime, endTime);
-        MyProgressDialog.hideProgressDialog();
-        if (eventNTUTs != null) {
-          return true;
+    if (await taskFlow.start()) {
+      eventNTUTs = calendarTask.result;
+      _events = Map();
+      for (int i = 0; i < eventNTUTs.length; i++) {
+        NTUTCalendarJson eventNTUT = eventNTUTs[i];
+        if (_events.containsKey(eventNTUT.startTime)) {
+          _events[eventNTUT.startTime].add(eventNTUT);
         } else {
-          return false;
+          _events[eventNTUT.startTime] = [eventNTUT];
         }
-      },
-      errorFunction: () {
-        ErrorDialogParameter parameter = ErrorDialogParameter(
-          context: context,
-          desc: R.current.getCalendarError,
-        );
-        ErrorDialog(parameter).show();
-      },
-      successFunction: () async {
-        _events = Map();
-        for (int i = 0; i < eventNTUTs.length; i++) {
-          NTUTCalendarJson eventNTUT = eventNTUTs[i];
-          if (_events.containsKey(eventNTUT.startTime)) {
-            _events[eventNTUT.startTime].add(eventNTUT);
-          } else {
-            _events[eventNTUT.startTime] = [eventNTUT];
-          }
-        }
-      },
-    ));
-    await TaskHandler.instance.startTaskQueue(context);
+      }
+    }
     setState(() {
       _selectedEvents = [];
     });
@@ -370,10 +349,11 @@ class _CalendarPageState extends State<CalendarPage>
                 child: ListTile(
                     title: Text(event.calTitle),
                     onTap: () {
-                      showDialog(
-                          context: context,
-                          child: CalendarDetailDialog(calendarDetail: event),
-                          useRootNavigator: false);
+                      Get.dialog(
+                        CalendarDetailDialog(calendarDetail: event),
+                        useRootNavigator: false,
+                        barrierDismissible: true,
+                      );
                     }),
               ))
           .toList(),

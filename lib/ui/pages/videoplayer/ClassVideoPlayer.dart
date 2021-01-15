@@ -14,6 +14,7 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/util/MXPlayerUtil.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:get/get.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:path/path.dart' as path;
@@ -61,7 +62,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
-    Navigator.of(context).pop();
+    Get.back();
     return true;
   }
 
@@ -73,7 +74,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     dom.Element node = tagNode.getElementById("videoplayer");
     if (node?.children == null) {
       MyToast.show(R.current.unknownError);
-      Navigator.of(context).pop();
+      Get.back();
       return;
     }
     for (dom.Element child in node.children) {
@@ -101,32 +102,30 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   Future<void> _buildDialog() async {
-    String url = await showDialog<String>(
-      useRootNavigator: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            width: double.minPositive,
-            child: ListView.builder(
-              itemCount: videoName.length,
-              shrinkWrap: true, //使清單最小化
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: FlatButton(
-                    child: Text(videoName[index].name),
-                    onPressed: () {
-                      String url = getVideoUrl(videoName[index].url);
-                      _select = videoName[index];
-                      Navigator.of(context).pop(url);
-                    },
-                  ),
-                );
-              },
-            ),
+    String url = await Get.dialog<String>(
+      AlertDialog(
+        content: Container(
+          width: double.minPositive,
+          child: ListView.builder(
+            itemCount: videoName.length,
+            shrinkWrap: true, //使清單最小化
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                child: FlatButton(
+                  child: Text(videoName[index].name),
+                  onPressed: () {
+                    String url = getVideoUrl(videoName[index].url);
+                    _select = videoName[index];
+                    Get.back<String>(result: url);
+                  },
+                ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
+      useRootNavigator: false,
+      barrierDismissible: true,
     );
     bool open = false;
     if (Model.instance.getOtherSetting().useExternalVideoPlayer) {
@@ -136,7 +135,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     if (!open) {
       await initController(url);
     } else {
-      Navigator.of(context).pop();
+      Get.back();
     }
   }
 
@@ -169,7 +168,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
           home: Scaffold(
             appBar: AppBar(
               leading: BackButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Get.back(),
               ),
               title: Text(R.current.classVideo),
               actions: [

@@ -3,13 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/AppConfig.dart';
-import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/util/RemoteConfigUtil.dart';
@@ -20,6 +17,7 @@ import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/notification/NotificationPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
 import 'package:flutter_app/ui/pages/score/ScorePage.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -57,7 +55,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     try {
       await RemoteConfigUtil.init();
       await initLanguage();
-      APPVersion.initAndCheck(navigatorKey.currentState.context);
+      APPVersion.initAndCheck();
       initFlutterDownloader();
       initNotifications();
     } catch (e, stack) {
@@ -86,27 +84,18 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     setState(() {});
   }
 
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
-        appProvider.navigatorKey = navigatorKey;
-        return MaterialApp(
-          navigatorKey: navigatorKey,
-          title: AppConfig.appName,
-          theme: appProvider.theme,
-          darkTheme: AppThemes.darkTheme,
-          navigatorObservers: [AnalyticsUtils.observer],
-          home: WillPopScope(
-            onWillPop: _onWillPop,
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              resizeToAvoidBottomPadding: false,
-              body: _buildPageView(),
-              bottomNavigationBar: _buildBottomNavigationBar(),
-            ),
+        appProvider.navigatorKey = Get.key;
+        return WillPopScope(
+          onWillPop: _onWillPop,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            resizeToAvoidBottomPadding: false,
+            body: _buildPageView(),
+            bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         );
       },
@@ -163,17 +152,15 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
           label: R.current.calendar,
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            EvaIcons.bookOpenOutline,
-          ),
-          label: R.current.titleScore
-        ),
+            icon: Icon(
+              EvaIcons.bookOpenOutline,
+            ),
+            label: R.current.titleScore),
         BottomNavigationBarItem(
-          icon: Icon(
-            EvaIcons.menu,
-          ),
-          label: R.current.titleOther
-        ),
+            icon: Icon(
+              EvaIcons.menu,
+            ),
+            label: R.current.titleOther),
       ],
     );
   }
@@ -184,7 +171,6 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   }
 
   void _onTap(int index) {
-    TaskHandler.instance.giveUpTask();
     _pageController.jumpToPage(index);
   }
 
