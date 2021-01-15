@@ -12,19 +12,19 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   path: ^1.7.0
-  provider: ^4.3.2+3
-  path_provider: ^1.6.24
+  provider: ^4.3.2+4
+  path_provider: ^1.6.27
   url_launcher: 5.5.0
   #開啟email phone url...
   logger: ^0.9.4
   #顯示Log
   sprintf: ^5.0.0
-  flutter_local_notifications: ^3.0.2
+  flutter_local_notifications: ^3.0.3
   #通知欄  需修改android原始碼
   rxdart: ^0.25.0
   #通知欄有使用到
   video_player: ^1.0.1
-  chewie: ^0.12.0
+  chewie: ^0.12.1+1
   after_init: 0.1.2
   android_intent: ^0.3.7+7
   device_info: ^1.0.0
@@ -34,11 +34,11 @@ dependencies:
   #驗證身分指紋
   version: 1.2.0
   #版本比較
-  file_picker: ^2.1.4
+  file_picker: ^2.1.5+1
   #選擇android資料夾
   #----------store data----------#
   shared_preferences: ^0.5.12+4
-  flutter_cache_manager: ^2.1.0
+  flutter_cache_manager: ^2.1.1
   #----------internet----------#
   dio: ^3.0.10
   #網路get post API
@@ -72,8 +72,6 @@ dependencies:
   #----------html viewer----------#
   flutter_widget_from_html_core: ^0.5.1+4
   #----------animation----------#
-  page_transition: ^1.1.7+5
-  #頁面切換動畫
   flutter_staggered_animations: 0.1.2
   #listView or gridView動畫
   #----------download----------#
@@ -104,7 +102,7 @@ dependencies:
   #email使用可左右滑抽屜
   flutter_spinkit: 4.1.2+1
   #等待動畫
-  flutter_markdown: ^0.5.1
+  flutter_markdown: ^0.5.2
 
   # Firebase
   firebase_core: ^0.5.3
