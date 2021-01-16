@@ -14,6 +14,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
 import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -35,6 +36,7 @@ class NTUTConnector {
   static final String _loginUrl = _host + "login.do";
   static final String _getPictureUrl = _host + "photoView.do";
   static final String _checkLoginUrl = _host + "myPortal.do";
+  static final String _getTreeUrl = _host + "aptreeList.do";
   static final String _getCalendarUrl = _host + "calModeApp.do";
   static final String _changePasswordUrl = _host + "passwordMdy.do";
 
@@ -104,6 +106,23 @@ class NTUTConnector {
       List<NTUTCalendarJson> calendarList =
           getNTUTCalendarJsonList(json.decode(result));
       return calendarList;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
+  static Future<APTreeJson> getTree(String arg) async {
+    ConnectorParameter parameter;
+    try {
+      parameter = ConnectorParameter(_getTreeUrl);
+      if (arg != null) {
+        print(arg);
+        parameter.data = {"apDn": arg};
+      }
+      String result = await Connector.getDataByPost(parameter);
+      APTreeJson apTreeJson = APTreeJson.fromJson(json.decode(result));
+      return apTreeJson;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;

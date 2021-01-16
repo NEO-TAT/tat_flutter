@@ -8,7 +8,9 @@ import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/ContributorsPage.dart';
 import 'package:flutter_app/ui/pages/other/page/PrivacyPolicyPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
+import 'package:flutter_app/ui/pages/other/page/SubSystemPage.dart';
 import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
+import 'package:flutter_app/ui/pages/webview/WebViewPage.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,13 @@ class RouteUtils {
   static Future toLoginScreen() async {
     return await Get.to(
       LoginScreen(),
+      transition: Transition.downToUp,
+    );
+  }
+
+  static Future toSubSystemPage() async {
+    return await Get.to(
+      SubSystemPage(),
       transition: Transition.downToUp,
     );
   }
@@ -69,6 +78,16 @@ class RouteUtils {
   static Future toWebViewPluginPage(String title, String url) async {
     return await Get.to(
       WebViewPluginPage(
+        title: title,
+        url: url,
+      ),
+      transition: Transition.downToUp,
+    );
+  }
+
+  static Future toWebViewPage(String title, String url) async {
+    return await Get.to(
+      WebViewPage(
         title: title,
         url: url,
       ),

@@ -9,6 +9,8 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -24,6 +26,7 @@ enum onListViewPress {
   Report,
   About,
   Login,
+  SubSystem,
   ChangePassword
 }
 
@@ -43,6 +46,12 @@ class _OtherPageState extends State<OtherPage> {
       "color": Colors.orange,
       "title": R.current.setting,
       "onPress": onListViewPress.Setting
+    },
+    {
+      "icon": Icons.computer,
+      "color": Colors.lightBlue,
+      "title": "資訊系統",
+      "onPress": onListViewPress.SubSystem
     },
     {
       "icon": EvaIcons.downloadOutline,
@@ -92,6 +101,9 @@ class _OtherPageState extends State<OtherPage> {
 
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
+      case onListViewPress.SubSystem:
+        RouteUtils.toSubSystemPage();
+        break;
       case onListViewPress.Logout:
         ErrorDialogParameter parameter = ErrorDialogParameter(
             context: context,
@@ -226,6 +238,8 @@ class _OtherPageState extends State<OtherPage> {
       givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
       userMail = (userMail.isEmpty) ? "" : userMail;
     }
+    TaskFlow taskFlow = TaskFlow();
+    taskFlow.addTask(NTUTTask("ImageTask"));
     return Container(
       padding:
           EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
@@ -236,13 +250,11 @@ class _OtherPageState extends State<OtherPage> {
             width: 60,
             height: 60,
             child: InkWell(
-              child: FutureBuilder<NTUTConnectorStatus>(
-                future: NTUTConnector.login(
-                    Model.instance.getAccount(), Model.instance.getPassword()),
-                builder: (BuildContext context,
-                    AsyncSnapshot<NTUTConnectorStatus> snapshot) {
+              child: FutureBuilder<bool>(
+                future: taskFlow.start(),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.data == NTUTConnectorStatus.LoginSuccess) {
+                      snapshot.data == true) {
                     return userImage;
                   } else {
                     return SpinKitPouringHourglass(

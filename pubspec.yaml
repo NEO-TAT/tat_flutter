@@ -12,8 +12,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   path: ^1.7.0
-  provider: ^4.3.2+4
-  path_provider: ^1.6.27
+  provider: ^4.3.2+3
+  path_provider: ^1.6.24
   url_launcher: 5.5.0
   #開啟email phone url...
   logger: ^0.9.4
@@ -53,6 +53,7 @@ dependencies:
   bloc: ^6.1.1
   #----------WebView----------#
   flutter_webview_plugin: 0.3.11
+  flutter_inappwebview: ^4.0.0+4
   #---------icon----------#
   eva_icons_flutter: 2.0.1
   #https://akveo.github.io/eva-icons/#/
@@ -105,10 +106,10 @@ dependencies:
   flutter_markdown: ^0.5.2
 
   # Firebase
-  firebase_core: ^0.5.3
-  firebase_analytics: ^6.3.0
-  firebase_crashlytics: ^0.2.4
-  firebase_remote_config: ^0.4.3
+  firebase_core: ^0.7.0
+  firebase_analytics: ^7.0.1
+  firebase_crashlytics: ^0.4.0+1
+  firebase_remote_config: ^0.6.0
 dependency_overrides:
   http_parser:
     path: plugins/http_parser
