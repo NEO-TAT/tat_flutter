@@ -18,6 +18,7 @@ import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/task/course/CourseTableTask.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSubscribeNoticeTask.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTableControl.dart';
@@ -182,8 +183,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Future<void> _getSemesterList(String studentId) async {
     TaskFlow taskFlow = TaskFlow();
-    taskFlow.addTask(CourseSemesterTask(studentId));
-    await taskFlow.start();
+    var task = CourseSemesterTask(studentId);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      Model.instance.setSemesterJsonList(task.result);
+    }
   }
 
   void _getCourseTable(

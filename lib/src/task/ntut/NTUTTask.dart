@@ -3,6 +3,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/Task.dart';
+import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
@@ -16,6 +17,10 @@ class NTUTTask<T> extends Task<T> {
 
   NTUTTask(name) : super(name);
 
+  static set isLogin(bool value) {
+    _isLogin = value;
+  }
+
   @override
   Future<TaskStatus> execute() async {
     if (_isLogin) return TaskStatus.Success;
@@ -24,6 +29,7 @@ class NTUTTask<T> extends Task<T> {
     onStart(R.current.loginNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     onEnd();
+    NTUTAppTask.isLogin = false;
     value =
         NTUTConnectorStatus.LoginSuccess; //////////////////////////////////////
     if (value == NTUTConnectorStatus.LoginSuccess) {

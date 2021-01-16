@@ -117,7 +117,6 @@ class NTUTConnector {
     try {
       parameter = ConnectorParameter(_getTreeUrl);
       if (arg != null) {
-        print(arg);
         parameter.data = {"apDn": arg};
       }
       String result = await Connector.getDataByPost(parameter);

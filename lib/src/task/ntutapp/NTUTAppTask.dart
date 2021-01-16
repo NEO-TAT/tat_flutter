@@ -2,6 +2,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTAppConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/Task.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
@@ -12,6 +13,10 @@ class NTUTAppTask<T> extends Task<T> {
 
   NTUTAppTask(name) : super(name);
 
+  static set isLogin(bool value) {
+    _isLogin = value;
+  }
+
   @override
   Future<TaskStatus> execute() async {
     if (_isLogin) return TaskStatus.Success;
@@ -21,6 +26,7 @@ class NTUTAppTask<T> extends Task<T> {
     NTUTAppConnectorStatus value =
         await NTUTAppConnector.login(account, password);
     onEnd();
+    NTUTTask.isLogin = false;
     if (value == NTUTAppConnectorStatus.LoginSuccess) {
       _isLogin = true;
       return TaskStatus.Success;
