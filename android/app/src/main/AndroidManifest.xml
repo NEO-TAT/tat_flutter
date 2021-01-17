@@ -16,10 +16,11 @@
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".Application"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
-        android:label="TAT">
+        android:label="TAT"
+        tools:targetApi="m">
 
         <activity
             android:name=".MainActivity"

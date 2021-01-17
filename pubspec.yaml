@@ -51,6 +51,8 @@ dependencies:
   connectivity: ^2.0.2
   github: ^7.0.4
   bloc: ^6.1.1
+  clipboard: ^0.1.2+8
+  #剪貼簿
   #----------WebView----------#
   flutter_webview_plugin: 0.3.11
   flutter_inappwebview: ^4.0.0+4

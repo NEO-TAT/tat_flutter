@@ -8,6 +8,7 @@ import 'package:flutter_app/ui/pages/debug/DebugPage.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/ContributorsPage.dart';
+import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
 import 'package:flutter_app/ui/pages/other/page/PrivacyPolicyPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SubSystemPage.dart';
@@ -28,15 +29,22 @@ class RouteUtils {
     );
   }
 
+  static Future toDevPage() async {
+    return await Get.to(
+      DevPage(),
+      transition: transition,
+    );
+  }
+
   static Future toSubSystemPage(String title, String arg) async {
     return Get.to(
-      SubSystemPage(
-        title: title,
-        arg: arg,
-      ),
-      transition: transition,
-      preventDuplicates: false  //必免重覆頁面時不載入
-    );
+        SubSystemPage(
+          title: title,
+          arg: arg,
+        ),
+        transition: transition,
+        preventDuplicates: false //必免重覆頁面時不載入
+        );
   }
 
   static Future toFileViewerPage(String title, String path) async {

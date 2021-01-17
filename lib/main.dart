@@ -11,6 +11,7 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/ui/screen/MainScreen.dart';
+import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  await CloudMessagingUtils.init();
   runZoned(() {
     runApp(
       MultiProvider(

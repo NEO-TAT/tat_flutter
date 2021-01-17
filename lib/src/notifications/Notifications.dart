@@ -81,12 +81,25 @@ class Notifications {
     //當通知窗被按下
     selectNotificationSubject.stream.listen((String payload) async {
       Map parse = json.decode(payload);
-      int id = parse["id"];
-      if (parse.containsKey("path") && !idList.contains(id)) {
-        String path = parse["path"];
-        Log.d("open $path");
-        idList.add(parse["id"]);
-        await OpenFile.open(path);
+      String type = parse["type"];
+      switch (type) {
+        case "download_complete":
+          int id = parse["id"];
+          if (parse.containsKey("path") && !idList.contains(id)) {
+            String path = parse["path"];
+            Log.d("open $path");
+            idList.add(parse["id"]);
+            await OpenFile.open(path);
+          }
+          break;
+        case "download_fail":
+          break;
+        case "cloud_message_background":
+          break;
+        case "cloud_message":
+          break;
+        default:
+          break;
       }
     });
   }

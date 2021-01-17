@@ -7,7 +7,7 @@ import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
 
-enum onListViewPress { AppUpdate, Contribution, PrivacyPolicy, Version }
+enum onListViewPress { AppUpdate, Contribution, PrivacyPolicy, Version, Dev }
 
 class AboutPage extends StatefulWidget {
   @override
@@ -16,6 +16,8 @@ class AboutPage extends StatefulWidget {
 
 class _AboutPageState extends State<AboutPage> {
   List<Map> listViewData = List();
+
+  static bool inDevMode = false;
 
   @override
   void initState() {
@@ -51,6 +53,20 @@ class _AboutPageState extends State<AboutPage> {
         "onPress": onListViewPress.Version
       }
     ]);
+    _addDevListItem();
+  }
+
+  void _addDevListItem() {
+    if (inDevMode) {
+      setState(() {
+        listViewData.add({
+          "icon": EvaIcons.options,
+          "color": Colors.amberAccent,
+          "title": R.current.developerMode,
+          "onPress": onListViewPress.Dev
+        });
+      });
+    }
   }
 
   int pressTime = 0;
@@ -76,9 +92,18 @@ class _AboutPageState extends State<AboutPage> {
         Future.delayed(Duration(seconds: 2)).then((_) {
           pressTime = 0;
         });
+        if (pressTime > 3) {
+          if (!inDevMode) {
+            inDevMode = true;
+            _addDevListItem();
+          }
+        }
         break;
       case onListViewPress.PrivacyPolicy:
         RouteUtils.toPrivacyPolicyPage();
+        break;
+      case onListViewPress.Dev:
+        RouteUtils.toDevPage();
         break;
       default:
         MyToast.show(R.current.noFunction);
