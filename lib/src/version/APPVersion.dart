@@ -1,21 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 
 class APPVersion {
-  static void initAndCheck(BuildContext context) async {
+  static void initAndCheck() async {
     if (!Model.instance.autoCheckAppUpdate ||
         !Model.instance.getFirstUse(Model.appCheckUpdate) ||
         Model.instance.getAccount().isEmpty) return;
     Model.instance.setAlreadyUse(Model.appCheckUpdate);
-    await check(context);
+    await check();
     checkIFAPPUpdate(); //檢查是否有更新
   }
 
-  static Future<bool> check(BuildContext context) async {
+  static Future<bool> check() async {
     Log.d("Start check update");
-    bool value = await AppUpdate.checkUpdate(context);
+    bool value = await AppUpdate.checkUpdate();
     return value;
   }
 

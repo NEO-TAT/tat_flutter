@@ -8,7 +8,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:get/get.dart';
 
 class ErrorDialogParameter {
   BuildContext context;
@@ -22,7 +22,7 @@ class ErrorDialogParameter {
   Function btnCancelOnPress;
 
   ErrorDialogParameter(
-      {@required this.context,
+      {this.context,
       @required this.desc,
       this.title,
       this.btnOkText,
@@ -38,11 +38,11 @@ class ErrorDialogParameter {
     dialogType = dialogType ?? DialogType.ERROR;
     btnCancelOnPress = btnCancelOnPress ??
         () {
-          TaskHandler.instance.giveUpTask();
+          Get.back<bool>(result: false);
         };
     btnOkOnPress = btnOkOnPress ??
         () {
-          TaskHandler.instance.continueTask();
+          Get.back<bool>(result: true);
         };
   }
 }
@@ -52,19 +52,20 @@ class ErrorDialog {
 
   ErrorDialog(this.parameter);
 
-  void show() {
-    AwesomeDialog(
-            context: parameter.context,
-            dialogType: parameter.dialogType,
-            animType: parameter.animType,
-            title: parameter.title,
-            desc: parameter.desc,
-            btnOkText: parameter.btnOkText,
-            btnCancelText: parameter.btnCancelText,
-            useRootNavigator: true,
-            dismissOnTouchOutside: false,
-            btnCancelOnPress: parameter.btnCancelOnPress,
-            btnOkOnPress: parameter.btnOkOnPress)
-        .show();
+  Future<bool> show() async {
+    return await Get.dialog<bool>(AwesomeDialog(
+                context: Get.key.currentState.context,
+                dialogType: parameter.dialogType,
+                animType: parameter.animType,
+                title: parameter.title,
+                desc: parameter.desc,
+                btnOkText: parameter.btnOkText,
+                btnCancelText: parameter.btnCancelText,
+                useRootNavigator: false,
+                dismissOnTouchOutside: false,
+                btnCancelOnPress: parameter.btnCancelOnPress,
+                btnOkOnPress: parameter.btnOkOnPress)
+            .child) ??
+        false;
   }
 }

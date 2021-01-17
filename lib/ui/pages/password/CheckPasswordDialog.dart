@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:get/get.dart';
 import 'package:local_auth/error_codes.dart' as errorCode;
 import 'package:local_auth/local_auth.dart';
 
@@ -33,7 +34,7 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
           await localAuthentication.authenticateWithBiometrics(
               localizedReason: R.current.checkIdentity, useErrorDialogs: false);
       if (didAuthenticate) {
-        Navigator.of(context).pop(true);
+        Get.back<bool>(result: true);
       }
     } on PlatformException catch (e) {
       Log.d(e.code);
@@ -118,13 +119,13 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
       actions: [
         FlatButton(
           child: Text(R.current.cancel),
-          onPressed: () => Navigator.of(context).pop(false),
+          onPressed: () => Get.back<bool>(result: false),
         ),
         FlatButton(
             child: Text(R.current.sure),
             onPressed: () {
               if (_formKey.currentState.validate()) {
-                Navigator.of(context).pop(true);
+                Get.back<bool>(result: true);
               }
             })
       ],

@@ -12,7 +12,7 @@ class WebViewPluginPage extends StatefulWidget {
   final String url;
   final String title;
 
-  WebViewPluginPage(this.title, this.url);
+  WebViewPluginPage({this.title, this.url});
 
   @override
   _WebViewPluginPageState createState() => _WebViewPluginPageState();
@@ -88,9 +88,12 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
     super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
     List<Widget> titleContent = [];
     titleContent.add(
-      Text(
-        widget.title,
-        style: TextStyle(color: Colors.white),
+      Expanded(
+        child: Text(
+          widget.title,
+          style: TextStyle(color: Colors.white),
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
     if (loading) {

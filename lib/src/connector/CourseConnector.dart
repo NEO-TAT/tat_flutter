@@ -27,9 +27,7 @@ enum CourseConnectorStatus {
 }
 
 class CourseConnector {
-  static bool _isLogin = false;
-  static final String _getLoginCourseUrl =
-      "https://nportal.ntut.edu.tw/ssoIndex.do";
+  static final _ssoLoginUrl = "https://app.ntut.edu.tw/ssoIndex.do";
   static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
   static final String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
   static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";
@@ -40,7 +38,6 @@ class CourseConnector {
 
   static Future<CourseConnectorStatus> login() async {
     String result;
-    _isLogin = false;
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -51,7 +48,7 @@ class CourseConnector {
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter(_getLoginCourseUrl);
+      parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
@@ -67,7 +64,6 @@ class CourseConnector {
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
-      _isLogin = true;
       return CourseConnectorStatus.LoginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -787,35 +783,6 @@ class CourseConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
-    }
-  }
-
-  static bool get isLogin {
-    return _isLogin;
-  }
-
-  static void loginFalse() {
-    _isLogin = false;
-  }
-
-  static Future<bool> checkLogin() async {
-    Log.d("Course CheckLogin");
-    ConnectorParameter parameter;
-    _isLogin = false;
-    try {
-      parameter = ConnectorParameter(_checkLoginUrl);
-      parameter.charsetName = "big5";
-      String result = await Connector.getDataByGet(parameter);
-      if (result.isEmpty || result.contains("尚未登錄入口網站")) {
-        return false;
-      } else {
-        Log.d("Course Is Readly Login");
-        _isLogin = true;
-        return true;
-      }
-    } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
-      return false;
     }
   }
 }

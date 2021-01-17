@@ -11,6 +11,7 @@ import 'package:flutter_app/ui/pages/coursedetail/TabPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/CourseInfoPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusFilePage.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ISchoolPage extends StatefulWidget {
@@ -75,7 +76,7 @@ class _ISchoolPageState extends State<ISchoolPage>
       child: Scaffold(
         appBar: AppBar(
           leading: BackButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Get.back(),
           ),
           title: Text(course.name),
           bottom: TabBar(

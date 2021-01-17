@@ -14,6 +14,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
 import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
@@ -31,11 +32,11 @@ enum NTUTConnectorStatus {
 }
 
 class NTUTConnector {
-  static bool _isLogin = false;
-  static final String _host = "https://nportal.ntut.edu.tw/";
+  static final String _host = "https://app.ntut.edu.tw/";
   static final String _loginUrl = _host + "login.do";
   static final String _getPictureUrl = _host + "photoView.do";
   static final String _checkLoginUrl = _host + "myPortal.do";
+  static final String _getTreeUrl = _host + "aptreeList.do";
   static final String _getCalendarUrl = _host + "calModeApp.do";
   static final String _changePasswordUrl = _host + "passwordMdy.do";
 
@@ -43,11 +44,10 @@ class NTUTConnector {
       String account, String password) async {
     try {
       ConnectorParameter parameter;
-      _isLogin = false;
       Map<String, String> data = {
         "muid": account,
         "mpassword": password,
-        "forceMobile": "mobile",
+        "forceMobile": "app",
         //"rememberUidValue": "" ,
         //"rememberPwdValue" : "1" ,
         //"authcode" : "" ,
@@ -75,7 +75,6 @@ class NTUTConnector {
         if (userInfo.passwordExpiredRemind.isNotEmpty) {
           return NTUTConnectorStatus.PasswordExpiredWarning;
         }
-        _isLogin = true;
         return NTUTConnectorStatus.LoginSuccess;
       }
     } catch (e, stack) {
@@ -113,6 +112,22 @@ class NTUTConnector {
     }
   }
 
+  static Future<APTreeJson> getTree(String arg) async {
+    ConnectorParameter parameter;
+    try {
+      parameter = ConnectorParameter(_getTreeUrl);
+      if (arg != null) {
+        parameter.data = {"apDn": arg};
+      }
+      String result = await Connector.getDataByPost(parameter);
+      APTreeJson apTreeJson = APTreeJson.fromJson(json.decode(result));
+      return apTreeJson;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
   /*
   Map key
   url
@@ -132,14 +147,6 @@ class NTUTConnector {
     imageInfo["url"] = url;
     imageInfo["header"] = Connector.getLoginHeaders(url);
     return imageInfo;
-  }
-
-  static bool get isLogin {
-    return _isLogin;
-  }
-
-  static void loginFalse() {
-    _isLogin = false;
   }
 
   static Future<String> changePassword(String password) async {
@@ -165,26 +172,6 @@ class NTUTConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
-    }
-  }
-
-  static Future<bool> checkLogin() async {
-    Log.d("NTUT CheckLogin");
-    ConnectorParameter parameter;
-    _isLogin = false;
-    try {
-      parameter = ConnectorParameter(_checkLoginUrl);
-      String result = await Connector.getDataByGet(parameter);
-      if (result.isEmpty || result.contains("請重新登入")) {
-        return false;
-      } else {
-        Log.d("NTUT Is Readly Login");
-        _isLogin = true;
-        return true;
-      }
-    } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
-      return false;
     }
   }
 }

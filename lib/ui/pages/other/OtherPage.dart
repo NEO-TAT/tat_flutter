@@ -9,17 +9,13 @@ import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/debug/DebugPage.dart';
-import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
-import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
-import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
-import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -30,6 +26,7 @@ enum onListViewPress {
   Report,
   About,
   Login,
+  SubSystem,
   ChangePassword
 }
 
@@ -49,6 +46,12 @@ class _OtherPageState extends State<OtherPage> {
       "color": Colors.orange,
       "title": R.current.setting,
       "onPress": onListViewPress.Setting
+    },
+    {
+      "icon": Icons.computer,
+      "color": Colors.lightBlue,
+      "title": R.current.informationSystem,
+      "onPress": onListViewPress.SubSystem
     },
     {
       "icon": EvaIcons.downloadOutline,
@@ -98,6 +101,9 @@ class _OtherPageState extends State<OtherPage> {
 
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
+      case onListViewPress.SubSystem:
+        RouteUtils.toSubSystemPage(R.current.informationSystem, null);
+        break;
       case onListViewPress.Logout:
         ErrorDialogParameter parameter = ErrorDialogParameter(
             context: context,
@@ -113,28 +119,20 @@ class _OtherPageState extends State<OtherPage> {
         ErrorDialog(parameter).show();
         break;
       case onListViewPress.Login:
-        Navigator.of(context).push(MyPage.transition(LoginScreen())).then(
-          (value) {
-            if (value) widget.pageController.jumpToPage(0);
-          },
-        );
+        RouteUtils.toLoginScreen().then((value) {
+          if (value) widget.pageController.jumpToPage(0);
+        });
         break;
       case onListViewPress.FileViewer:
         FileStore.findLocalPath(context).then((filePath) {
-          Navigator.of(context).push(
-            MyPage.transition(FileViewerPage(
-              title: R.current.fileViewer,
-              path: filePath,
-            )),
-          );
+          RouteUtils.toFileViewerPage(R.current.fileViewer, filePath);
         });
         break;
       case onListViewPress.About:
-        Navigator.of(context).push(MyPage.transition(AboutPage()));
+        RouteUtils.toAboutPage();
         break;
       case onListViewPress.Setting:
-        Navigator.of(context)
-            .push(MyPage.transition(SettingPage(widget.pageController)));
+        RouteUtils.toSettingPage(widget.pageController);
         break;
       case onListViewPress.Report:
         String link = AppLink.feedbackBaseUrl;
@@ -142,11 +140,10 @@ class _OtherPageState extends State<OtherPage> {
           String mainVersion = await AppUpdate.getAppVersion();
           link = AppLink.feedback(mainVersion, Log.getLogString());
         } catch (e) {}
-        Navigator.of(context).push(
-            MyPage.transition(WebViewPluginPage(R.current.feedback, link)));
+        RouteUtils.toWebViewPluginPage(R.current.feedback, link);
         break;
       case onListViewPress.ChangePassword:
-        ChangePassword.show(context);
+        ChangePassword.show();
         break;
       default:
         MyToast.show(R.current.noFunction);
@@ -157,7 +154,7 @@ class _OtherPageState extends State<OtherPage> {
   void _onLongPress(onListViewPress value) {
     switch (value) {
       case onListViewPress.About:
-        Navigator.of(context).push(MyPage.transition(DebugPage()));
+        RouteUtils.toDebugPage();
         break;
       default:
         break;
@@ -241,6 +238,10 @@ class _OtherPageState extends State<OtherPage> {
       givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
       userMail = (userMail.isEmpty) ? "" : userMail;
     }
+    TaskFlow taskFlow = TaskFlow();
+    var task = NTUTTask("ImageTask");
+    task.openLoadingDialog = false;
+    taskFlow.addTask(task);
     return Container(
       padding:
           EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
@@ -251,18 +252,11 @@ class _OtherPageState extends State<OtherPage> {
             width: 60,
             height: 60,
             child: InkWell(
-              child: FutureBuilder<NTUTConnectorStatus>(
-                future: NTUTConnector.checkLogin().then((value) {
-                  if (!value)
-                    return NTUTConnector.login(Model.instance.getAccount(),
-                        Model.instance.getPassword());
-                  else
-                    return NTUTConnectorStatus.LoginSuccess;
-                }),
-                builder: (BuildContext context,
-                    AsyncSnapshot<NTUTConnectorStatus> snapshot) {
+              child: FutureBuilder<bool>(
+                future: taskFlow.start(),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.data == NTUTConnectorStatus.LoginSuccess) {
+                      snapshot.data == true) {
                     return userImage;
                   } else {
                     return SpinKitPouringHourglass(

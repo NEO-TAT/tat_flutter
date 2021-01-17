@@ -78,7 +78,7 @@ class Connector {
     try {
       ConnectorParameter parameter = ConnectorParameter(url);
       Map<String, List<String>> headers =
-      await DioConnector.instance.getHeadersByGet(parameter);
+          await DioConnector.instance.getHeadersByGet(parameter);
       if (headers.containsKey("content-disposition")) {
         //代表有名字
         List<String> name = headers["content-disposition"];
