@@ -110,6 +110,7 @@ dependencies:
   firebase_analytics: ^7.0.1
   firebase_crashlytics: ^0.4.0+1
   firebase_remote_config: ^0.6.0
+  firebase_cloud_messaging: ^4.0.4+1
 dependency_overrides:
   http_parser:
     path: plugins/http_parser
