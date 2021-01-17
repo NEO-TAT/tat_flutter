@@ -1785,6 +1785,16 @@ class S {
     );
   }
 
+  /// `This course does not support queries`
+  String get iPlusNoThisClass {
+    return Intl.message(
+      'This course does not support queries',
+      name: 'iPlusNoThisClass',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________FileStore___________________ {
     return Intl.message(

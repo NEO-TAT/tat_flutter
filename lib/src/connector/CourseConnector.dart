@@ -14,7 +14,6 @@ import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 
@@ -24,6 +23,11 @@ enum CourseConnectorStatus {
   ConnectTimeOutError,
   NetworkError,
   UnknownError
+}
+
+class CourseMainInfo {
+  List<CourseMainInfoJson> json;
+  String studentName;
 }
 
 class CourseConnector {
@@ -207,8 +211,9 @@ class CourseConnector {
     return String.fromCharCodes(newString);
   }
 
-  static Future<List<CourseMainInfoJson>> getENCourseMainInfoList(
+  static Future<CourseMainInfo> getENCourseMainInfoList(
       String studentId, SemesterJson semester) async {
+    var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -243,7 +248,7 @@ class CourseConnector {
         Log.eWithStack(e.toString(), stack);
         studentName = "";
       }
-      Model.instance.setTempData("studentName", studentName);
+      info.studentName = studentName;
 
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 1; i < courseNodes.length - 1; i++) {
@@ -303,16 +308,17 @@ class CourseConnector {
         }
         courseMainInfoList.add(courseMainInfo);
       }
-
-      return courseMainInfoList;
+      info.json = courseMainInfoList;
+      return info;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
 
-  static Future<List<CourseMainInfoJson>> getTWCourseMainInfoList(
+  static Future<CourseMainInfo> getTWCourseMainInfoList(
       String studentId, SemesterJson semester) async {
+    var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -348,7 +354,7 @@ class CourseConnector {
       } catch (e) {
         studentName = "";
       }
-      Model.instance.setTempData("studentName", studentName);
+      info.studentName = studentName;
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
@@ -418,16 +424,17 @@ class CourseConnector {
 
         courseMainInfoList.add(courseMainInfo);
       }
-
-      return courseMainInfoList;
+      info.json = courseMainInfoList;
+      return info;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
 
-  static Future<List<CourseMainInfoJson>> getTWTeacherCourseMainInfoList(
+  static Future<CourseMainInfo> getTWTeacherCourseMainInfoList(
       String studentId, SemesterJson semester) async {
+    var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -463,7 +470,7 @@ class CourseConnector {
       } catch (e) {
         studentName = "";
       }
-      Model.instance.setTempData("studentName", studentName);
+      info.studentName = studentName;
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
@@ -531,8 +538,8 @@ class CourseConnector {
 
         courseMainInfoList.add(courseMainInfo);
       }
-
-      return courseMainInfoList;
+      info.json = courseMainInfoList;
+      return info;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;

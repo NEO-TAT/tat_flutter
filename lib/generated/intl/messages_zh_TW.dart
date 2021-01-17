@@ -143,6 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "github" : MessageLookupByLibrary.simpleMessage("Github"),
     "graduationSetting" : MessageLookupByLibrary.simpleMessage("畢業學分標準設定"),
     "historicalDimension" : MessageLookupByLibrary.simpleMessage("歷史向度"),
+    "iPlusNoThisClass" : MessageLookupByLibrary.simpleMessage("此課程不支持查詢"),
     "identifyLinks" : MessageLookupByLibrary.simpleMessage("辨識連結"),
     "informationSystem" : MessageLookupByLibrary.simpleMessage("資訊系統"),
     "inputNewPassword" : MessageLookupByLibrary.simpleMessage("請輸入新密碼"),

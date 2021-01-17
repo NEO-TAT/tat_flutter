@@ -42,14 +42,26 @@ class Model {
   Map<String, bool> _firstRun = Map();
   static String courseNotice = "CourseNotice";
   static String appCheckUpdate = "AppCheckUpdate";
-  Map<String, dynamic> _tempData;
   DefaultCacheManager cacheManager = new DefaultCacheManager();
 
   bool get autoCheckAppUpdate {
     return _setting.other.autoCheckAppUpdate;
   }
 
-  bool getFirstUse(String key) {
+  //timeOut seconds
+  bool getFirstUse(String key, {int timeOut}) {
+    if (timeOut != null) {
+      int millsTimeOut = timeOut * 1000;
+      String wKey = "firstUse$key";
+      int now = DateTime.now().millisecondsSinceEpoch;
+      int before = _readInt(wKey);
+      if (before != null && before > now) {
+        //Already Use
+        return false;
+      } else {
+        _writeInt(wKey, now + millsTimeOut);
+      }
+    }
     if (!_firstRun.containsKey(key)) {
       _firstRun[key] = true;
     }
@@ -348,20 +360,6 @@ class Model {
     return stringList;
   }
 
-  //--------------------TempData--------------------//
-  void setTempData(String key, dynamic value) {
-    _tempData[key] = value;
-  }
-
-  dynamic getTempData(String key) {
-    dynamic value;
-    if (_tempData.containsKey(key)) {
-      value = _tempData[key];
-      _tempData.remove(key);
-    }
-    return value;
-  }
-
   Future<String> getVersion() async {
     return await _readString("version");
   }
@@ -373,7 +371,6 @@ class Model {
   Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
-    _tempData = Map();
     _courseSemesterList = _courseSemesterList ?? List();
     await loadUserData();
     await loadCourseTableList();
@@ -424,6 +421,14 @@ class Model {
 
   Future<void> _writeString(String key, String value) async {
     await pref.setString(key, value);
+  }
+
+  Future<void> _writeInt(String key, int value) async {
+    await pref.setInt(key, value);
+  }
+
+  int _readInt(String key) {
+    return pref.getInt(key);
   }
 
   Future<void> _writeStringList(String key, List<String> value) async {

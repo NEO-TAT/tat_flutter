@@ -76,7 +76,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     if (!Model.instance.getOtherSetting().checkIPlusNew) {
       return;
     }
-    if (!Model.instance.getFirstUse(Model.courseNotice)) {
+    if (!Model.instance.getFirstUse(Model.courseNotice, timeOut: 15 * 60)) {
       return;
     }
     if (Model.instance.getAccount() !=

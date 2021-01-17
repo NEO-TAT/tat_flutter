@@ -19,10 +19,11 @@ class CloudMessagingUtils {
     FirebaseMessaging.onMessage.listen((event) {
       _onMessage(event);
     });
-
+/*
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       _onMessage(event);
     });
+ */
   }
 
   static Future<String> getToken() async {
@@ -35,6 +36,7 @@ class CloudMessagingUtils {
       body: message.notification.body,
       payload: json.encode({
         "type": "cloud_message_background",
+        "id": Notifications.instance.notificationId,
         "data": message.data,
       }),
     );
@@ -48,6 +50,7 @@ class CloudMessagingUtils {
       body: message.notification.body,
       payload: json.encode({
         "type": "cloud_message",
+        "id": Notifications.instance.notificationId,
         "data": message.data,
       }),
     );

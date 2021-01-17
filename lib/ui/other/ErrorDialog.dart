@@ -20,6 +20,8 @@ class ErrorDialogParameter {
   AnimType animType;
   Function btnOkOnPress;
   Function btnCancelOnPress;
+  bool offOkBtn;
+  bool offCancelBtn;
 
   ErrorDialogParameter(
       {this.context,
@@ -30,7 +32,9 @@ class ErrorDialogParameter {
       this.animType,
       this.dialogType,
       this.btnCancelOnPress,
-      this.btnOkOnPress}) {
+      this.btnOkOnPress,
+      this.offOkBtn: false,
+      this.offCancelBtn: false}) {
     title = title ?? R.current.alertError;
     btnOkText = btnOkText ?? R.current.restart;
     btnCancelText = btnCancelText ?? R.current.cancel;
@@ -44,6 +48,12 @@ class ErrorDialogParameter {
         () {
           Get.back<bool>(result: true);
         };
+    if (offOkBtn) {
+      btnOkOnPress = null;
+    }
+    if (offCancelBtn) {
+      btnCancelOnPress = null;
+    }
   }
 }
 

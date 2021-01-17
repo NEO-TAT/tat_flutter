@@ -20,6 +20,13 @@ enum ISchoolPlusConnectorStatus {
   UnknownError
 }
 
+enum IPlusReturnStatus { Success, Fail, NoPermission }
+
+class ReturnWithStatus<T> {
+  IPlusReturnStatus status;
+  T result;
+}
+
 class ISchoolPlusConnector {
   static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
 
@@ -68,7 +75,8 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<List<CourseFileJson>> getCourseFile(String courseId) async {
+  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(
+      String courseId) async {
     ConnectorParameter parameter;
     String result;
     html.Document tagNode;
@@ -76,9 +84,13 @@ class ISchoolPlusConnector {
     RegExp exp;
     RegExpMatch matches;
     List<html.Element> nodes, itemNodes, resourceNodes;
+    var value = ReturnWithStatus<List<CourseFileJson>>();
     try {
       List<CourseFileJson> courseFileList = List();
-      await _selectCourse(courseId);
+      if (!await _selectCourse(courseId)) {
+        value.status = IPlusReturnStatus.NoPermission;
+        return value;
+      }
 
       parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/launch.php");
       result = await Connector.getDataByGet(parameter);
@@ -150,11 +162,13 @@ class ISchoolPlusConnector {
         courseFile.fileType = [fileType];
         courseFileList.add(courseFile);
       }
-
-      return courseFileList;
+      value.status = IPlusReturnStatus.Success;
+      value.result = courseFileList;
+      return value;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return null;
+      value.status = IPlusReturnStatus.Fail;
+      return value;
     }
   }
 
@@ -226,11 +240,15 @@ class ISchoolPlusConnector {
 
   static String bid;
 
-  static Future<List<ISchoolPlusAnnouncementJson>> getCourseAnnouncement(
-      String courseId) async {
+  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>>
+      getCourseAnnouncement(String courseId) async {
     String result;
+    var value = ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>();
     try {
-      await _selectCourse(courseId);
+      if (!await _selectCourse(courseId)) {
+        value.status = IPlusReturnStatus.NoPermission;
+        return value;
+      }
       ConnectorParameter parameter;
       html.Document tagNode;
       List<html.Element> nodes;
@@ -292,10 +310,13 @@ class ISchoolPlusConnector {
           }
         }
       }
-      return announcementList;
+      value.status = IPlusReturnStatus.Success;
+      value.result = announcementList;
+      return value;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return null;
+      value.status = IPlusReturnStatus.Fail;
+      return value;
     }
   }
 
@@ -460,7 +481,7 @@ class ISchoolPlusConnector {
     return bid;
   }
 
-  static Future<void> _selectCourse(String courseId) async {
+  static Future<bool> _selectCourse(String courseId) async {
     ConnectorParameter parameter;
     html.Document tagNode;
     html.Element node;
@@ -482,7 +503,7 @@ class ISchoolPlusConnector {
         }
       }
       if (courseValue == null) {
-        throw Exception("courseValue is null");
+        return false;
       }
       String xml =
           "<manifest><ticket/><course_id>$courseValue</course_id><env/></manifest>";
@@ -491,8 +512,10 @@ class ISchoolPlusConnector {
       parameter.data = xml;
       await Connector.getDataByPost(
           parameter); //因為RequestsConnector無法傳送XML但是 DioConnector無法解析 Content-Type: text/html;;charset=UTF-8
-    } catch (e) {
-      throw e;
+      return true;
+    } catch (e, stack) {
+      Log.eWithStack(e, stack);
+      return false;
     }
   }
 }

@@ -20,7 +20,7 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getCourse);
-      List<CourseMainInfoJson> value;
+      CourseMainInfo value;
       if (studentId.length == 5) {
         value = await CourseConnector.getTWTeacherCourseMainInfoList(
             studentId, semester);
@@ -39,9 +39,9 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         CourseTableJson courseTable = CourseTableJson();
         courseTable.courseSemester = semester;
         courseTable.studentId = studentId;
-        courseTable.studentName = Model.instance.getTempData("studentName");
+        courseTable.studentName = value.studentName;
         //依照時間創建課表
-        for (CourseMainInfoJson courseMainInfo in value) {
+        for (CourseMainInfoJson courseMainInfo in value.json) {
           CourseInfoJson courseInfo = CourseInfoJson();
           bool add = false;
           for (int i = 0; i < 7; i++) {

@@ -20,7 +20,7 @@ class AppUpdate {
           await RemoteConfigUtil.getVersionConfig();
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       Version currentVersion = Version.parse(packageInfo.version);
-      Version latestVersion = Version.parse(config.lastVersion);
+      Version latestVersion = Version.parse(config.last.version);
       bool needUpdate = latestVersion > currentVersion;
       if (needUpdate) {
         _showUpdateDialog(config);
@@ -39,7 +39,7 @@ class AppUpdate {
 
   static void _showUpdateDialog(RemoteConfigVersionInfo value) async {
     String title =
-        sprintf("%s %s", [R.current.findNewVersion, value.lastVersion]);
+        sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
 
     bool v = await Get.dialog<bool>(
       AlertDialog(
