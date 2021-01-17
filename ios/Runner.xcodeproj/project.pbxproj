@@ -139,7 +139,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				892D960F0C68EDDAA1E42917 /* [CP] Embed Pods Frameworks */,
-				A55FD5AB25B416EB00F4C4FC /* ShellScript */,
+				A55FD5AB25B416EB00F4C4FC /* Firebase Script */,
 			);
 			buildRules = (
 			);
@@ -265,7 +265,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A55FD5AB25B416EB00F4C4FC /* ShellScript */ = {
+		A55FD5AB25B416EB00F4C4FC /* Firebase Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -274,13 +274,14 @@
 			);
 			inputPaths = (
 			);
+			name = "Firebase Script";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/FirebaseCrashlytics/run\n";
+			shellScript = "${PODS_ROOT}/FirebaseCrashlytics/run -gsp ${PROJECT_DIR}/Runner/GoogleService-Info.plist\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
