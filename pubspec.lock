@@ -364,7 +364,7 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.0"
+    version: "7.0.1"
   firebase_analytics_platform_interface:
     dependency: transitive
     description:
@@ -385,7 +385,7 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.0"
+    version: "0.7.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -406,28 +406,42 @@ packages:
       name: firebase_crashlytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.0+1"
   firebase_crashlytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_crashlytics_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.5"
+    version: "1.1.6"
   firebase_messaging:
     dependency: "direct main"
     description:
       name: firebase_messaging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.16"
+    version: "8.0.0-dev.14"
+  firebase_messaging_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_messaging_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0-dev.10"
+  firebase_messaging_web:
+    dependency: transitive
+    description:
+      name: firebase_messaging_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0-dev.5"
   firebase_remote_config:
     dependency: "direct main"
     description:
       name: firebase_remote_config
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0"
+    version: "0.6.0"
   fixnum:
     dependency: transitive
     description:
@@ -959,6 +973,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  service_worker:
+    dependency: transitive
+    description:
+      name: service_worker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.4"
   shared_preferences:
     dependency: "direct main"
     description:
