@@ -7,7 +7,6 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 
 class NTUTAppTask<T> extends Task<T> {
-  static bool _remindPasswordExpiredWarning = false;
   static bool _isLogin = false;
   static bool openLoadingDialog = true;
 

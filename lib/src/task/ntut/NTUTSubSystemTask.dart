@@ -1,3 +1,4 @@
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
@@ -18,7 +19,7 @@ class NTUTSubSystemTask extends NTUTTask<APTreeJson> {
         result = value;
         return TaskStatus.Success;
       } else {
-        return await super.onError("錯誤");
+        return await super.onError(R.current.error);
       }
     }
     return status;

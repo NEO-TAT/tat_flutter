@@ -9,7 +9,6 @@ import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/course/CourseExtraInfoTask.dart';
-import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/src/task/score/ScoreRankTask.dart';
 import 'package:flutter_app/ui/other/AppExpansionTile.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -79,6 +78,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         if (courseInfo.category.isEmpty) {
           //沒有類別才尋找
           var task = CourseExtraInfoTask(courseId);
+          task.openLoadingDialog = false;
           if (courseId.isNotEmpty) {
             taskFlow.addTask(task);
           }
@@ -98,9 +98,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         courseScoreInfo.openClass =
             extraInfo.course.openClass.replaceAll("\n", " ");
       };
-      NTUTTask.openLoadingDialog = false;
       await taskFlow.start();
-      NTUTTask.openLoadingDialog = true;
       await Model.instance.setSemesterCourseScore(courseScoreList);
       progressRateDialog.hide();
     } else {

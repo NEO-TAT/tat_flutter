@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 class NTUTTask<T> extends Task<T> {
   static bool _remindPasswordExpiredWarning = false;
   static bool _isLogin = false;
-  static bool openLoadingDialog = true;
+  bool openLoadingDialog = true;
 
   NTUTTask(name) : super(name);
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/coursedetail/CourseDetailPage.dart';
@@ -16,17 +18,24 @@ import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:get/get.dart';
 
 class RouteUtils {
+  static Transition transition =
+      (Platform.isAndroid) ? Transition.downToUp : Transition.cupertino;
+
   static Future toLoginScreen() async {
     return await Get.to(
       LoginScreen(),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
-  static Future toSubSystemPage() async {
-    return await Get.to(
-      SubSystemPage(),
-      transition: Transition.downToUp,
+  static Future toSubSystemPage(String title, String arg) async {
+    return Get.to(
+      SubSystemPage(
+        title: title,
+        arg: arg,
+      ),
+      transition: transition,
+      preventDuplicates: false  //必免重覆頁面時不載入
     );
   }
 
@@ -36,42 +45,42 @@ class RouteUtils {
           title: title,
           path: path,
         ),
-        transition: Transition.downToUp);
+        transition: transition);
   }
 
   static Future toISchoolPage(
       String studentId, CourseInfoJson courseInfo) async {
     return await Get.to(
       ISchoolPage(studentId, courseInfo),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
   static Future toPrivacyPolicyPage() async {
     return await Get.to(
       PrivacyPolicyPage(),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
   static Future toContributorsPage() async {
     return await Get.to(
       ContributorsPage(),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
   static Future toAboutPage() async {
     return await Get.to(
       AboutPage(),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
   static Future toSettingPage(PageController controller) async {
     return await Get.to(
       SettingPage(controller),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
@@ -81,7 +90,7 @@ class RouteUtils {
         title: title,
         url: url,
       ),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
@@ -91,14 +100,14 @@ class RouteUtils {
         title: title,
         url: url,
       ),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
   static toDebugPage() async {
     return await Get.to(
       DebugPage(),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
@@ -106,7 +115,7 @@ class RouteUtils {
       CourseInfoJson courseInfo, Map detail) async {
     return await Get.to(
       IPlusAnnouncementDetailPage(courseInfo, detail),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 
@@ -114,7 +123,7 @@ class RouteUtils {
       String url, CourseInfoJson courseInfo, String name) async {
     return await Get.to(
       ClassVideoPlayer(url, courseInfo, name),
-      transition: Transition.downToUp,
+      transition: transition,
     );
   }
 }

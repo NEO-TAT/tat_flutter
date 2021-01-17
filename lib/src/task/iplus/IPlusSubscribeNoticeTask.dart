@@ -1,6 +1,5 @@
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSystemTask.dart';
-import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 
 import '../Task.dart';
 

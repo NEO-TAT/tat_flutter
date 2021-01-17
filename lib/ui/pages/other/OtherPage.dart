@@ -50,7 +50,7 @@ class _OtherPageState extends State<OtherPage> {
     {
       "icon": Icons.computer,
       "color": Colors.lightBlue,
-      "title": "資訊系統",
+      "title": R.current.informationSystem,
       "onPress": onListViewPress.SubSystem
     },
     {
@@ -102,7 +102,7 @@ class _OtherPageState extends State<OtherPage> {
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.SubSystem:
-        RouteUtils.toSubSystemPage();
+        RouteUtils.toSubSystemPage(R.current.informationSystem, null);
         break;
       case onListViewPress.Logout:
         ErrorDialogParameter parameter = ErrorDialogParameter(
@@ -239,7 +239,9 @@ class _OtherPageState extends State<OtherPage> {
       userMail = (userMail.isEmpty) ? "" : userMail;
     }
     TaskFlow taskFlow = TaskFlow();
-    taskFlow.addTask(NTUTTask("ImageTask"));
+    var task = NTUTTask("ImageTask");
+    task.openLoadingDialog = false;
+    taskFlow.addTask(task);
     return Container(
       padding:
           EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),

@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -1415,96 +1416,6 @@ class S {
     );
   }
 
-  /// `Patch version`
-  String get patchVersion {
-    return Intl.message(
-      'Patch version',
-      name: 'patchVersion',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Downloading patch...`
-  String get downloadingPatch {
-    return Intl.message(
-      'Downloading patch...',
-      name: 'downloadingPatch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Find the new patch version`
-  String get findPatchNewVersion {
-    return Intl.message(
-      'Find the new patch version',
-      name: 'findPatchNewVersion',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually`
-  String get patchUpdateDown {
-    return Intl.message(
-      'After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually',
-      name: 'patchUpdateDown',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Patch delete , Restart the application and apply`
-  String get patchDelete {
-    return Intl.message(
-      'Patch delete , Restart the application and apply',
-      name: 'patchDelete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delete patch`
-  String get deletePatch {
-    return Intl.message(
-      'Delete patch',
-      name: 'deletePatch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Exit dev mode`
-  String get exitDevMode {
-    return Intl.message(
-      'Exit dev mode',
-      name: 'exitDevMode',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Patch successfully upgraded version:`
-  String get patchUpdateComplete {
-    return Intl.message(
-      'Patch successfully upgraded version:',
-      name: 'patchUpdateComplete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Patch upgrade failed\nAutomatically downgraded to original version:`
-  String get patchUpdateFail {
-    return Intl.message(
-      'Patch upgrade failed\nAutomatically downgraded to original version:',
-      name: 'patchUpdateFail',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Developer Mode`
   String get developerMode {
     return Intl.message(
@@ -1550,6 +1461,16 @@ class S {
     return Intl.message(
       'The path is wrong, please do not select the folder containing the Download directory',
       name: 'selectDirectoryFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Information System`
+  String get informationSystem {
+    return Intl.message(
+      'Information System',
+      name: 'informationSystem',
       desc: '',
       args: [],
     );

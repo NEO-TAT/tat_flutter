@@ -3,7 +3,13 @@ import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/ntut/NTUTSubSystemTask.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
+
 class SubSystemPage extends StatefulWidget {
+  final title;
+  final arg;
+
+  SubSystemPage({this.title, this.arg});
+
   @override
   _SubSystemPageState createState() => _SubSystemPageState();
 }
@@ -15,7 +21,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
   @override
   void initState() {
     super.initState();
-    loadTree(null);
+    loadTree(widget.arg);
   }
 
   void loadTree(String arg) async {
@@ -33,26 +39,17 @@ class _SubSystemPageState extends State<SubSystemPage> {
     }
   }
 
-  Future<bool> _onWillPop() async {
-    if (apTree != null && apTree.parentDn.isNotEmpty) {
-      loadTree(apTree.parentDn);
-      return false;
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("系統"),
+        title: Text(widget.title),
       ),
-      body: WillPopScope(
-        onWillPop: _onWillPop,
-        child: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : buildTree(),
-      ),
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : buildTree(),
     );
   }
 
@@ -85,7 +82,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
               String url = "https://app.ntut.edu.tw/" + ap.urlLink;
               RouteUtils.toWebViewPage(ap.description, url);
             } else {
-              loadTree(ap.apDn);
+              RouteUtils.toSubSystemPage(ap.description, ap.apDn);
             }
           },
         );
