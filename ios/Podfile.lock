@@ -48,27 +48,20 @@ PODS:
   - Firebase/Crashlytics (7.3.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 7.3.0)
-  - Firebase/Messaging (7.3.0):
-    - Firebase/CoreOnly
-    - FirebaseMessaging (~> 7.3.0)
   - Firebase/RemoteConfig (7.3.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 7.3.0)
-  - firebase_analytics (7.0.1):
+  - firebase_analytics (7.0.0):
     - Firebase/Analytics (= 7.3.0)
     - firebase_core
     - Flutter
-  - firebase_core (0.7.0):
+  - firebase_core (0.6.0):
     - Firebase/CoreOnly (= 7.3.0)
     - Flutter
-  - firebase_crashlytics (0.4.0-1):
+  - firebase_crashlytics (0.3.0):
     - Firebase/Crashlytics (= 7.3.0)
     - firebase_core
-  - firebase_messaging (8.0.0-dev.14):
-    - Firebase/Messaging (= 7.3.0)
-    - firebase_core
-    - Flutter
-  - firebase_remote_config (0.6.0):
+  - firebase_remote_config (0.5.0):
     - Firebase/RemoteConfig (= 7.3.0)
     - firebase_core
     - Flutter
@@ -103,18 +96,6 @@ PODS:
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/UserDefaults (~> 7.0)
     - PromisesObjC (~> 1.2)
-  - FirebaseInstanceID (7.4.0):
-    - FirebaseCore (~> 7.0)
-    - FirebaseInstallations (~> 7.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/UserDefaults (~> 7.0)
-  - FirebaseMessaging (7.3.0):
-    - FirebaseCore (~> 7.0)
-    - FirebaseInstanceID (~> 7.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
-    - GoogleUtilities/Environment (~> 7.0)
-    - GoogleUtilities/Reachability (~> 7.0)
-    - GoogleUtilities/UserDefaults (~> 7.0)
   - FirebaseRemoteConfig (7.3.0):
     - FirebaseABTesting (~> 7.0)
     - FirebaseCore (~> 7.0)
@@ -206,7 +187,6 @@ DEPENDENCIES:
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
-  - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
   - flutter_downloader (from `.symlinks/plugins/flutter_downloader/ios`)
@@ -236,8 +216,6 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
     - FirebaseInstallations
-    - FirebaseInstanceID
-    - FirebaseMessaging
     - FirebaseRemoteConfig
     - FMDB
     - GoogleAppMeasurement
@@ -263,8 +241,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_crashlytics:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
-  firebase_messaging:
-    :path: ".symlinks/plugins/firebase_messaging/ios"
   firebase_remote_config:
     :path: ".symlinks/plugins/firebase_remote_config/ios"
   Flutter:
@@ -307,19 +283,16 @@ SPEC CHECKSUMS:
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Firebase: 26223c695fe322633274198cb19dca8cb7e54416
-  firebase_analytics: 41043f6e14fc9bc27c3f05217ab7f2b0ad9b41eb
-  firebase_core: 91b27774a52f41f8b58484a75edf71197ac01c59
-  firebase_crashlytics: e6ecb908f6249ce3757d18a812819a41495bf1cb
-  firebase_messaging: d039d8279704fc1e3d05e0a2bb2ce7dc29ee6be8
-  firebase_remote_config: 1c56b7b8caa840aa2e9432e66bf606d10f492fc9
+  firebase_analytics: 34b6ff11c8238ea3f05918e8a9b5ce09faaef634
+  firebase_core: 8613bc5de3449d9d068be5b234a7c97a7f08af81
+  firebase_crashlytics: 8bca645dc7959195caf6c83843733391150c6693
+  firebase_remote_config: 4a58c68635627185a24ec42f4e78b3ff228ceaee
   FirebaseABTesting: 9d9c21ed27a1ac7213fe377cde655434da9c16d2
   FirebaseAnalytics: 2580c2d62535ae7b644143d48941fcc239ea897a
   FirebaseCore: 4d3c72622ce0e2106aaa07bb4b2935ba2c370972
   FirebaseCoreDiagnostics: d50e11039e5984d92c8a512be2395f13df747350
   FirebaseCrashlytics: d31325312c92e2cb2f0386d589b9aa44e303d99b
   FirebaseInstallations: 30646fc9a61c6f4ee3cd7a8b7231721842b40c95
-  FirebaseInstanceID: 46d93d287108246fabbd85371ca27141d2c21ff9
-  FirebaseMessaging: 68d1bcb14880189558a8ae57167abe0b7e417232
   FirebaseRemoteConfig: 826fad8bec5ce1912ef97a124d6ec0ce4dcf6ec1
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_downloader: 058b9c41564a90500f67f3e432e3524613a7fd83
@@ -348,6 +321,6 @@ SPEC CHECKSUMS:
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   wakelock: bfc7955c418d0db797614075aabbc58a39ab5107
 
-PODFILE CHECKSUM: a100e2c80095f9860b3cabd3b3d9c2dae57f9fc7
+PODFILE CHECKSUM: a63e20461f83f84112af675ced526f8791160b56
 
 COCOAPODS: 1.10.1
