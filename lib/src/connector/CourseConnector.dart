@@ -8,6 +8,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
@@ -31,7 +32,7 @@ class CourseMainInfo {
 }
 
 class CourseConnector {
-  static final _ssoLoginUrl = "https://app.ntut.edu.tw/ssoIndex.do";
+  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
   static final String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
   static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";

@@ -7,6 +7,7 @@
 //
 
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:html/dom.dart';
@@ -25,7 +26,7 @@ enum ScoreConnectorStatus {
 
 class ScoreConnector {
   static final String _scoreHost = "https://aps-course.ntut.edu.tw/";
-  static final _ssoLoginUrl = "https://app.ntut.edu.tw/ssoIndex.do";
+  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static final String _scoreUrl = _scoreHost + "StuQuery/StudentQuery.jsp";
   static final String _scoreRankUrl = _scoreHost + "StuQuery/QryRank.jsp";
   static final String _scoreAllScoreUrl = _scoreHost + "StuQuery/QryScore.jsp";

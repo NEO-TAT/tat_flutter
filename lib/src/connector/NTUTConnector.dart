@@ -32,13 +32,13 @@ enum NTUTConnectorStatus {
 }
 
 class NTUTConnector {
-  static final String _host = "https://app.ntut.edu.tw/";
-  static final String _loginUrl = _host + "login.do";
-  static final String _getPictureUrl = _host + "photoView.do";
-  static final String _checkLoginUrl = _host + "myPortal.do";
-  static final String _getTreeUrl = _host + "aptreeList.do";
-  static final String _getCalendarUrl = _host + "calModeApp.do";
-  static final String _changePasswordUrl = _host + "passwordMdy.do";
+  static final String host = "https://app.ntut.edu.tw/";
+  static final String _loginUrl = host + "login.do";
+  static final String _getPictureUrl = host + "photoView.do";
+  static final String _checkLoginUrl = host + "myPortal.do";
+  static final String _getTreeUrl = host + "aptreeList.do";
+  static final String _getCalendarUrl = host + "calModeApp.do";
+  static final String _changePasswordUrl = host + "passwordMdy.do";
 
   static Future<NTUTConnectorStatus> login(
       String account, String password) async {
@@ -57,25 +57,28 @@ class NTUTConnector {
       parameter = ConnectorParameter(_loginUrl);
       parameter.data = data;
       parameter.userAgent = "Direk Android App";
-      String jsonResult = await Connector.getDataByPost(parameter);
-      parameter.userAgent = "";
       String result = await Connector.getDataByPost(parameter);
-      if (result.contains("帳號或密碼錯誤")) {
-        return NTUTConnectorStatus.AccountPasswordIncorrect;
-      } else if (result.contains("驗證碼")) {
-        return NTUTConnectorStatus.AuthCodeFailError;
-      } else if (result.contains("帳號已被鎖住")) {
-        return NTUTConnectorStatus.AccountLockWarning;
-      } else if (result.contains("重新登入")) {
-        return NTUTConnectorStatus.UnknownError;
-      } else {
-        UserInfoJson userInfo = UserInfoJson.fromJson(json.decode(jsonResult));
+      parameter.userAgent = "";
+      Map jsonMap = json.decode(result);
+      if (jsonMap["success"]) {
+        UserInfoJson userInfo = UserInfoJson.fromJson(jsonMap);
         Model.instance.setUserInfo(userInfo);
         Model.instance.saveUserData();
         if (userInfo.passwordExpiredRemind.isNotEmpty) {
           return NTUTConnectorStatus.PasswordExpiredWarning;
         }
         return NTUTConnectorStatus.LoginSuccess;
+      } else {
+        String errorMsg = jsonMap["errorMsg"];
+        if (errorMsg.contains("帳號或密碼錯誤")) {
+          return NTUTConnectorStatus.AccountPasswordIncorrect;
+        } else if (errorMsg.contains("驗證碼")) {
+          return NTUTConnectorStatus.AuthCodeFailError;
+        } else if (errorMsg.contains("帳號已被鎖住")) {
+          return NTUTConnectorStatus.AccountLockWarning;
+        } else {
+          return NTUTConnectorStatus.UnknownError;
+        }
       }
     } catch (e, stack) {
       if (e is TimeoutException || e is DioError) {

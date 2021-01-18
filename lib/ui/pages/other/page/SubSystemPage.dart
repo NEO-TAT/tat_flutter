@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/ntut/NTUTSubSystemTask.dart';
@@ -79,7 +80,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
           ),
           onTap: () async {
             if (ap.type == 'link') {
-              String url = "https://app.ntut.edu.tw/" + ap.urlLink;
+              String url = "${NTUTConnector.host}${ap.urlLink}";
               RouteUtils.toWebViewPage(ap.description, url);
             } else {
               RouteUtils.toSubSystemPage(ap.description, ap.apDn);

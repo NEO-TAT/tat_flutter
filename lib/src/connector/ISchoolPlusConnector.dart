@@ -10,6 +10,7 @@ import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 
+import 'NTUTConnector.dart';
 import 'core/ConnectorParameter.dart';
 
 enum ISchoolPlusConnectorStatus {
@@ -38,7 +39,7 @@ class ISchoolPlusConnector {
   static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
   static final String _getCourseName =
       _iSchoolPlusUrl + "learn/mooc_sysbar.php";
-  static final _ssoLoginUrl = "https://app.ntut.edu.tw/ssoIndex.do";
+  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;

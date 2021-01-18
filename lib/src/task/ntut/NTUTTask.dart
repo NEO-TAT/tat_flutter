@@ -30,8 +30,6 @@ class NTUTTask<T> extends Task<T> {
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     onEnd();
     NTUTAppTask.isLogin = false;
-    value =
-        NTUTConnectorStatus.LoginSuccess; //////////////////////////////////////
     if (value == NTUTConnectorStatus.LoginSuccess) {
       _isLogin = true;
       return TaskStatus.Success;
