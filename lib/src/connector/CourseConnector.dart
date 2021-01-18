@@ -464,9 +464,7 @@ class CourseConnector {
       courseNodes = node.getElementsByTagName("tr");
       String studentName;
       try {
-        studentName = RegExp(r"姓名：([\u4E00-\u9FA5]+)")
-            .firstMatch(courseNodes[0].text)
-            .group(1);
+        studentName = courseNodes[0].text.replaceAll("　　", " ").split(" ")[2];
       } catch (e) {
         studentName = "";
       }
