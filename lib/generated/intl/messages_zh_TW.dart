@@ -232,6 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchingDivision" : MessageLookupByLibrary.simpleMessage("查詢學制中..."),
     "searchingYear" : MessageLookupByLibrary.simpleMessage("查詢學期中..."),
     "selectDirectoryFail" : MessageLookupByLibrary.simpleMessage("路徑錯誤，請不要選擇包含Download目錄的資料夾"),
+    "selectSemester" : MessageLookupByLibrary.simpleMessage("選擇學期時間"),
     "semesterGrades" : MessageLookupByLibrary.simpleMessage("學期成績"),
     "semesterRanking" : MessageLookupByLibrary.simpleMessage("學期排名"),
     "setAsAndroidWeight" : MessageLookupByLibrary.simpleMessage("設為小工具課表"),

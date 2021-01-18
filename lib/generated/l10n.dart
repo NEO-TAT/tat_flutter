@@ -1065,6 +1065,16 @@ class S {
     );
   }
 
+  /// `Select semester`
+  String get selectSemester {
+    return Intl.message(
+      'Select semester',
+      name: 'selectSemester',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________FileViewerPage___________________ {
     return Intl.message(
