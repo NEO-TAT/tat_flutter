@@ -10,8 +10,8 @@ import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
-import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
+import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +64,9 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         home: MainScreen(),
+        logWriterCallback: (String text, {bool isError}) {
+          Log.d(text);
+        },
       );
     });
   }

@@ -31,7 +31,6 @@ class APListJson {
   @JsonKey(name: 'urlLink')
   String urlLink;
 
-
   APListJson(this.apDn, this.description, this.icon, this.type, this.urlLink,
       this.urlSource);
 

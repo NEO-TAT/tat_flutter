@@ -15,6 +15,7 @@ import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
+import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
 import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -138,7 +139,7 @@ class _OtherPageState extends State<OtherPage> {
         String link = AppLink.feedbackBaseUrl;
         try {
           String mainVersion = await AppUpdate.getAppVersion();
-          link = AppLink.feedback(mainVersion, Log.getLogString());
+          link = AppLink.feedback(mainVersion, LogConsole.getLog());
         } catch (e) {}
         RouteUtils.toWebViewPluginPage(R.current.feedback, link);
         break;
@@ -147,16 +148,6 @@ class _OtherPageState extends State<OtherPage> {
         break;
       default:
         MyToast.show(R.current.noFunction);
-        break;
-    }
-  }
-
-  void _onLongPress(onListViewPress value) {
-    switch (value) {
-      case onListViewPress.About:
-        RouteUtils.toDebugPage();
-        break;
-      default:
         break;
     }
   }
@@ -286,9 +277,6 @@ class _OtherPageState extends State<OtherPage> {
     return InkWell(
       onTap: () {
         _onListViewPress(data['onPress']);
-      },
-      onLongPress: () {
-        _onLongPress(data['onPress']);
       },
       child: Container(
         padding:

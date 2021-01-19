@@ -13,13 +13,7 @@ import 'package:html/parser.dart' as html;
 import 'NTUTConnector.dart';
 import 'core/ConnectorParameter.dart';
 
-enum ISchoolPlusConnectorStatus {
-  LoginSuccess,
-  LoginFail,
-  ConnectTimeOutError,
-  NetworkError,
-  UnknownError
-}
+enum ISchoolPlusConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
 enum IPlusReturnStatus { Success, Fail, NoPermission }
 

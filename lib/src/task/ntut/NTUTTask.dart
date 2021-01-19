@@ -5,15 +5,15 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/Task.dart';
 import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyProgressDialog.dart';
 import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:get/get.dart';
 
-class NTUTTask<T> extends Task<T> {
+import '../DialogTask.dart';
+
+class NTUTTask<T> extends DialogTask<T> {
   static bool _remindPasswordExpiredWarning = false;
   static bool _isLogin = false;
-  bool openLoadingDialog = true;
 
   NTUTTask(name) : super(name);
 
@@ -24,11 +24,12 @@ class NTUTTask<T> extends Task<T> {
   @override
   Future<TaskStatus> execute() async {
     if (_isLogin) return TaskStatus.Success;
+    name = "NTUTTask " + name;
     String account = Model.instance.getAccount();
     String password = Model.instance.getPassword();
-    onStart(R.current.loginNTUT);
+    super.onStart(R.current.loginNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
-    onEnd();
+    super.onEnd();
     NTUTAppTask.isLogin = false;
     if (value == NTUTConnectorStatus.LoginSuccess) {
       _isLogin = true;
@@ -71,14 +72,8 @@ class NTUTTask<T> extends Task<T> {
           Get.to(LoginScreen()).then((value) => Get.back<bool>(result: true));
         };
         break;
-      case NTUTConnectorStatus.ConnectTimeOutError:
-        parameter.desc = R.current.connectTimeOut;
-        break;
       case NTUTConnectorStatus.AuthCodeFailError:
         parameter.desc = R.current.authCodeFail;
-        break;
-      case NTUTConnectorStatus.NetworkError:
-        parameter.desc = R.current.networkError;
         break;
       default:
         parameter.desc = R.current.unknownError;
@@ -87,34 +82,15 @@ class NTUTTask<T> extends Task<T> {
     return await onErrorParameter(parameter);
   }
 
-  void onStart(String message) {
-    if (openLoadingDialog) {
-      MyProgressDialog.progressDialog(message);
-    }
-  }
-
-  void onEnd() {
-    if (openLoadingDialog) {
-      MyProgressDialog.hideProgressDialog();
-    }
-  }
-
-  Future<TaskStatus> onError(String message) async {
-    ErrorDialogParameter parameter = ErrorDialogParameter(
-      desc: message,
-    );
-    return await onErrorParameter(parameter);
-  }
-
-  Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) async {
-    //可自定義處理Error
+  @override
+  Future<TaskStatus> onError(String message) {
     _isLogin = false;
-    try {
-      return (await ErrorDialog(parameter).show())
-          ? TaskStatus.Restart
-          : TaskStatus.GiveUp;
-    } catch (e) {
-      return TaskStatus.GiveUp;
-    }
+    return super.onError(message);
+  }
+
+  @override
+  Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) {
+    _isLogin = false;
+    return super.onErrorParameter(parameter);
   }
 }

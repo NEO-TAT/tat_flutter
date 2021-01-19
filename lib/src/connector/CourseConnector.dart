@@ -18,13 +18,7 @@ import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 
-enum CourseConnectorStatus {
-  LoginSuccess,
-  LoginFail,
-  ConnectTimeOutError,
-  NetworkError,
-  UnknownError
-}
+enum CourseConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
 class CourseMainInfo {
   List<CourseMainInfoJson> json;

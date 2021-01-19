@@ -83,12 +83,12 @@ class Notifications {
       Map parse = json.decode(payload);
       String type = parse["type"];
       int id = parse["id"];
-      if(!idList.contains(id)){
+      if (!idList.contains(id)) {
         idList.add(parse["id"]);
       }
       switch (type) {
         case "download_complete":
-          if (parse.containsKey("path") ) {
+          if (parse.containsKey("path")) {
             String path = parse["path"];
             Log.d("open $path");
             await OpenFile.open(path);

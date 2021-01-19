@@ -34,7 +34,7 @@ class IPlusCourseAnnouncementTask
             title: R.current.warning,
             dialogType: DialogType.INFO,
             desc: R.current.iPlusNoThisClass,
-            btnOkOnPress: (){
+            btnOkOnPress: () {
               Get.back<bool>(result: false);
             },
             btnOkText: R.current.sure,

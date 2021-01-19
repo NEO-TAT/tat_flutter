@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/coursedetail/CourseDetailPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementDetailPage.dart';
-import 'package:flutter_app/ui/pages/debug/DebugPage.dart';
 import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
+import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
 import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
 import 'package:flutter_app/ui/pages/other/page/ContributorsPage.dart';
 import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
@@ -112,14 +113,18 @@ class RouteUtils {
     );
   }
 
-  static toDebugPage() async {
+  static Future toLogConsolePage() async {
     return await Get.to(
-      DebugPage(),
+      LogConsole(dark: true),
       transition: transition,
     );
   }
 
-  static toIPlusAnnouncementDetailPage(
+  static Future toAliceInspectorPage() async {
+    DioConnector.instance.alice.showInspector();
+  }
+
+  static Future toIPlusAnnouncementDetailPage(
       CourseInfoJson courseInfo, Map detail) async {
     return await Get.to(
       IPlusAnnouncementDetailPage(courseInfo, detail),
@@ -127,7 +132,7 @@ class RouteUtils {
     );
   }
 
-  static toVideoPlayer(
+  static Future toVideoPlayer(
       String url, CourseInfoJson courseInfo, String name) async {
     return await Get.to(
       ClassVideoPlayer(url, courseInfo, name),

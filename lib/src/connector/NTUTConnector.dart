@@ -8,9 +8,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
@@ -26,8 +24,6 @@ enum NTUTConnectorStatus {
   AccountLockWarning, //帳號鎖住
   AccountPasswordIncorrect,
   AuthCodeFailError, //驗證碼錯誤
-  ConnectTimeOutError,
-  NetworkError,
   UnknownError
 }
 
@@ -81,11 +77,6 @@ class NTUTConnector {
         }
       }
     } catch (e, stack) {
-      if (e is TimeoutException || e is DioError) {
-        return NTUTConnectorStatus.ConnectTimeOutError;
-      } else if (e is SocketException) {
-        return NTUTConnectorStatus.NetworkError;
-      }
       Log.eWithStack(e.toString(), stack);
       return NTUTConnectorStatus.UnknownError;
     }
@@ -146,7 +137,6 @@ class NTUTConnector {
       url =
           Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
     }
-    Log.d(url);
     imageInfo["url"] = url;
     imageInfo["header"] = Connector.getLoginHeaders(url);
     return imageInfo;

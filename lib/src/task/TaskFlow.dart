@@ -1,4 +1,5 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
@@ -9,6 +10,7 @@ typedef onSuccessCallBack = Function(Task);
 class TaskFlow {
   List<Task> _queue;
   List<Task> _completeTask;
+  List<Task> _failTask;
   onSuccessCallBack callback;
 
   int get length {
@@ -22,6 +24,7 @@ class TaskFlow {
   TaskFlow() {
     _queue = List();
     _completeTask = List();
+    _failTask = List();
   }
 
   void addTask(Task task) {
@@ -47,6 +50,7 @@ class TaskFlow {
           }
           break;
         case TaskStatus.GiveUp:
+          _failTask.addAll(_queue);
           _queue = List();
           success = false;
           break;
@@ -54,6 +58,19 @@ class TaskFlow {
           break;
       }
     }
+    String log = "success";
+    for (Task task in _completeTask) {
+      log += '\n--' + task.name;
+    }
+    if (!success) {
+      log += "\nfail";
+      for (Task task in _failTask) {
+        log += '\n--' + task.name;
+      }
+    }
+    _completeTask = List();
+    _failTask = List();
+    Log.d(log);
     return success;
   }
 }

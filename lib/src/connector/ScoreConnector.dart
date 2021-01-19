@@ -16,13 +16,7 @@ import 'package:html/parser.dart';
 import 'core/Connector.dart';
 import 'core/ConnectorParameter.dart';
 
-enum ScoreConnectorStatus {
-  LoginSuccess,
-  LoginFail,
-  ConnectTimeOutError,
-  NetworkError,
-  UnknownError
-}
+enum ScoreConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
 class ScoreConnector {
   static final String _scoreHost = "https://aps-course.ntut.edu.tw/";

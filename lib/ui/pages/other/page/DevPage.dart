@@ -4,8 +4,9 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 
-enum onListViewPress { CloudMessageToken }
+enum onListViewPress { CloudMessageToken, DioLog, AppLog }
 
 class DevPage extends StatefulWidget {
   @override
@@ -17,8 +18,20 @@ class _DevPageState extends State<DevPage> {
     {
       "icon": Icons.vpn_key_outlined,
       "title": "Cloud Messaging Token",
-      "color": Colors.yellow,
+      "color": Colors.green,
       "onPress": onListViewPress.CloudMessageToken
+    },
+    {
+      "icon": Icons.info_outline,
+      "title": "Dio Log",
+      "color": Colors.blue,
+      "onPress": onListViewPress.DioLog
+    },
+    {
+      "icon": Icons.info_outline,
+      "title": "App Log",
+      "color": Colors.yellow,
+      "onPress": onListViewPress.AppLog
     },
   ];
 
@@ -35,6 +48,12 @@ class _DevPageState extends State<DevPage> {
         String token = await CloudMessagingUtils.getToken();
         MyToast.show(token + " copy");
         FlutterClipboard.copy(token);
+        break;
+      case onListViewPress.DioLog:
+        RouteUtils.toAliceInspectorPage();
+        break;
+      case onListViewPress.AppLog:
+        RouteUtils.toLogConsolePage();
         break;
       default:
         MyToast.show(R.current.noFunction);
