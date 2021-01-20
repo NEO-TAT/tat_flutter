@@ -20,6 +20,7 @@ import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
 import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 
 enum onListViewPress {
   Setting,
@@ -114,6 +115,7 @@ class _OtherPageState extends State<OtherPage> {
             title: R.current.warning,
             btnOkText: R.current.sure,
             btnOkOnPress: () {
+              Get.back();
               Model.instance.logout().then((_) {
                 widget.pageController.jumpToPage(0);
               });
