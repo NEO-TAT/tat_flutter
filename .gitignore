@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.last_build_id
 
 # IntelliJ related
 *.iml
@@ -39,3 +40,6 @@ lib/generated_plugin_registrant.dart
 # Firebase
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+
+# release build
+*.symbols
