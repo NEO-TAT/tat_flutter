@@ -27,6 +27,9 @@ class NTUTTask<T> extends DialogTask<T> {
     name = "NTUTTask " + name;
     String account = Model.instance.getAccount();
     String password = Model.instance.getPassword();
+    if(account.isEmpty || password.isEmpty){
+      return TaskStatus.GiveUp;
+    }
     super.onStart(R.current.loginNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     super.onEnd();
