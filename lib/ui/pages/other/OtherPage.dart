@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -210,19 +211,26 @@ class _OtherPageState extends State<OtherPage> {
       },
     );
     List<Widget> columnItem = List();
+    final MediaQueryData data = MediaQuery.of(context);
     if (givenName.isNotEmpty) {
       columnItem
         ..add(Text(
           givenName,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ))
         ..add(SizedBox(
           height: 5.0,
         ))
-        ..add(Text(
-          userMail,
-          style: TextStyle(
-            fontSize: 16,
+        ..add(MediaQuery(
+          data: data.copyWith(textScaleFactor: 1.0),
+          child: Text(
+            userMail,
+            style: TextStyle(
+              fontSize: 16,
+            ),
           ),
         ));
     } else {
