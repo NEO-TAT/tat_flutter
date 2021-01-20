@@ -12,8 +12,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   path: ^1.7.0
-  provider: ^4.3.2+3
-  path_provider: ^1.6.24
+  provider: ^4.3.3
+  path_provider: ^1.6.27
   url_launcher: 5.5.0
   #開啟email phone url...
   logger: ^0.9.4
@@ -86,7 +86,7 @@ dependencies:
   #----------Widget----------#
   get: ^3.24.0
   bot_toast: ^3.0.5
-  pull_to_refresh: ^1.6.3
+  pull_to_refresh: ^1.6.4
   #提供ListView可下拉式更新並且可動態加載
   cached_network_image: ^2.5.0
   #用url顯示圖片
@@ -128,7 +128,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.8.1
   flutter_automation: ^1.4.0
   #---------json----------#
-  build_runner: ^1.10.11
+  build_runner: ^1.10.13
   json_serializable: ^3.5.1
 
 
