@@ -1,7 +1,7 @@
 name: flutter_app
 description: NTUT Life TAT, convenient, concise, fast, powerful, enrich your NTUT life!
 
-version: 1.3.0+15
+version: 1.3.0+17
 
 environment:
   sdk: ">=2.10.4 <3.0.0"

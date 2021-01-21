@@ -48,12 +48,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSAppTransportSecurity</key>
-    <dict>
-      <key>NSAllowsArbitraryLoads</key>
-      <true/>
-       <key>NSAllowsArbitraryLoadsInWebContent</key>
-       <true/>
-    </dict>
+	<key> NSAppleMusicUsageDescription </key>
+	<string> App 需要您的同意, 才能訪問媒體資料庫</string>
+	<key> NSCalendarsUsageDescription </key>
+	<string> App 需要您的同意, 才能訪問日曆</string>
+	<key> NSContactsUsageDescription </key>
+	<string> App 需要您的同意, 才能訪問通信錄</string>
+	<key> NSMotionUsageDescription </key>
+	<string> App 需要您的同意, 才能訪問運動與健身</string>
+	<key> NSPhotoLibraryUsageDescription </key>
+	<string> App 需要您的同意, 才能訪問相機</string>
+	<key> NSSpeechRecognitionUsageDescription </key>
+	<string> App 需要您的同意, 才能訪問語音識別</string>
 </dict>
 </plist>
