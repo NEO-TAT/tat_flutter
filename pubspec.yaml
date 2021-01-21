@@ -1,7 +1,11 @@
 name: flutter_app
 description: NTUT Life TAT, convenient, concise, fast, powerful, enrich your NTUT life!
 
-version: 1.3.0+20
+# you can use this command to build both android app bundle and ios ipa:
+# flutter clean && flutter build ios --split-debug-info=build/app/outputs/symbols --obfuscate && flutter build appbundle --split-debug-info=build/app/outputs/symbols --obfuscate --shrink
+# follow the google play new policy in 2021, do not build apk but aab.
+# CHECK THE BUILD CODE BEFORE DISTRIBUTION!!
+version: 1.3.0+5000
 
 environment:
   sdk: ">=2.10.4 <3.0.0"
