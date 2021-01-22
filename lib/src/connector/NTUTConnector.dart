@@ -155,7 +155,6 @@ class NTUTConnector {
       };
       result = await Connector.getDataByPost(parameter);
       var jsonResult = json.decode(result);
-      Log.d(jsonResult);
       if (jsonResult["success"] == 'true') {
         return "";
       } else {
