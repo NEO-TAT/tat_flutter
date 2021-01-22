@@ -29,7 +29,7 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
         result = value;
         return TaskStatus.Success;
       } else {
-        return await super.onError(R.current.getCourseError);
+        return await super.onError(R.current.getCourseSemesterError);
       }
     }
     return status;
