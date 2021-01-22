@@ -60,5 +60,24 @@
 	<string> App 需要您的同意, 才能訪問相簿</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string> App 需要您的同意, 才能訪問語音識別</string>
+    
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSExceptionDomains</key>
+      <dict>
+        <key>ntut.edu.tw</key>
+        <dict>
+          <!-- enable subdomains such as sub.yourserver.com -->
+          <key>NSIncludesSubdomains</key>
+          <true/>
+          <!-- allow standard HTTP requests, thus negating the ATS -->
+          <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+          <true/>
+          <!-- specify the minimum TLS version to accept -->
+          <key>NSTemporaryExceptionMinimumTLSVersion</key>
+          <string>TLSv1.2</string>
+        </dict>
+      </dict>
+    </dict>
 </dict>
 </plist>
