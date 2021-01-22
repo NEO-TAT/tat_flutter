@@ -15,6 +15,7 @@ import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
@@ -25,6 +26,12 @@ Future<Null> main() async {
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await CloudMessagingUtils.init();
+  await SystemChrome.setPreferredOrientations(
+    [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ],
+  );
   runZoned(() {
     runApp(
       MultiProvider(

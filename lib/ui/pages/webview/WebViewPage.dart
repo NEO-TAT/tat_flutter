@@ -15,9 +15,12 @@ class WebViewPage extends StatefulWidget {
 class _WebViewPageState extends State<WebViewPage> {
   final cookieManager = CookieManager.instance();
   final cookieJar = DioConnector.instance.cookiesManager;
+  InAppWebViewController webView;
+  String url = "";
+  double progress = 0;
 
   Future<bool> setCookies() async {
-    var cookies = cookieJar.loadForRequest(Uri.parse(widget.url));
+    final cookies = cookieJar.loadForRequest(Uri.parse(widget.url));
     for (var cookie in cookies) {
       await cookieManager.setCookie(
         url: widget.url,
@@ -43,7 +46,95 @@ class _WebViewPageState extends State<WebViewPage> {
         future: setCookies(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
-            return InAppWebView(initialUrl: widget.url);
+            return SafeArea(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: progress < 1.0
+                          ? LinearProgressIndicator(value: progress)
+                          : Container(),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: InAppWebView(
+                          initialUrl: widget.url,
+                          initialOptions: InAppWebViewGroupOptions(
+                            crossPlatform: InAppWebViewOptions(
+                              debuggingEnabled: true,
+                            ),
+                          ),
+                          onWebViewCreated:
+                              (InAppWebViewController controller) {
+                            webView = controller;
+                          },
+                          onLoadStart:
+                              (InAppWebViewController controller, String url) {
+                            setState(() {
+                              this.url = url;
+                            });
+                          },
+                          onLoadStop: (InAppWebViewController controller,
+                              String url) async {
+                            setState(
+                              () {
+                                this.url = url;
+                              },
+                            );
+                          },
+                          onProgressChanged: (InAppWebViewController controller,
+                              int progress) {
+                            setState(
+                              () {
+                                this.progress = progress / 100;
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    ButtonBar(
+                      alignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.arrow_back),
+                          onPressed: () async {
+                            if (webView != null) {
+                              await webView.goBack();
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.arrow_forward),
+                          onPressed: () async {
+                            if (webView != null) {
+                              await webView.goForward();
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Icon(Icons.refresh),
+                          onPressed: () async {
+                            if (webView != null) {
+                              await webView.reload();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
           } else {
             return Center(
               child: CircularProgressIndicator(),
