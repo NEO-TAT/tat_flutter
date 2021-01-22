@@ -73,9 +73,10 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
             shrinkResources false   // To enable code shrinking with ProGuard
-            minifyEnabled false     // 移除未使用的code, 簡化apk
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro'
+            minifyEnabled false     // remove unused code
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android.txt'
+            ), 'proguard-rules.pro'
         }
     }
 }
@@ -95,4 +96,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:18.0.1'
     implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation "androidx.multidex:multidex:2.0.1"
 }
