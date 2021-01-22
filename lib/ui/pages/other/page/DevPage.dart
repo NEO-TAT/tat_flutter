@@ -65,7 +65,7 @@ class _DevPageState extends State<DevPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(R.current.about),
+        title: Text(R.current.developerMode),
       ),
       body: ListView.separated(
         itemCount: listViewData.length,
