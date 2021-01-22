@@ -147,20 +147,19 @@ class NTUTConnector {
     String result;
     try {
       parameter = ConnectorParameter(_changePasswordUrl);
+      String oldPassword = Model.instance.getPassword();
       parameter.data = {
         "userPassword": password,
-        "confirmPassword": password,
+        "oldPassword": oldPassword,
         "pwdForceMdy": "profile",
-        "localeId": "zh_TW"
       };
       result = await Connector.getDataByPost(parameter);
-      result = result.split("/")[1];
-      if (result.contains("密碼已修改完成")) {
+      var jsonResult = json.decode(result);
+      Log.d(jsonResult);
+      if (jsonResult["success"] == 'true') {
         return "";
-      } else if (result.contains("密碼")) {
-        return result;
       } else {
-        return null;
+        return jsonResult["returnMsg"];
       }
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
