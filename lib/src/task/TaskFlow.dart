@@ -1,6 +1,11 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/task/course/CourseSystemTask.dart';
+import 'package:flutter_app/src/task/iplus/IPlusSystemTask.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
+import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
+import 'package:flutter_app/src/task/score/ScoreSystemTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
 import 'Task.dart';
@@ -12,6 +17,14 @@ class TaskFlow {
   List<Task> _completeTask;
   List<Task> _failTask;
   onSuccessCallBack callback;
+
+  static resetLoginStatus() {
+    NTUTTask.isLogin = false;
+    NTUTAppTask.isLogin = false;
+    ScoreSystemTask.isLogin = false;
+    IPlusSystemTask.isLogin = false;
+    CourseSystemTask.isLogin = false;
+  }
 
   int get length {
     return _queue.length;

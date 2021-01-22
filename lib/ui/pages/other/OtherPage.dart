@@ -116,6 +116,7 @@ class _OtherPageState extends State<OtherPage> {
             btnOkText: R.current.sure,
             btnOkOnPress: () {
               Get.back();
+              TaskFlow.resetLoginStatus();
               Model.instance.logout().then((_) {
                 widget.pageController.jumpToPage(0);
               });

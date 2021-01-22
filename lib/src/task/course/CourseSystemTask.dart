@@ -6,15 +6,15 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 
 class CourseSystemTask<T> extends NTUTTask<T> {
   CourseSystemTask(String name) : super(name);
-  static bool _isLogin = false;
+  static bool isLogin = false;
 
   @override
   Future<TaskStatus> execute() async {
     TaskStatus status = await super.execute();
-    if (_isLogin) return TaskStatus.Success;
+    if (isLogin) return TaskStatus.Success;
     name = "CourseSystemTask " + name;
     if (status == TaskStatus.Success) {
-      _isLogin = true;
+      isLogin = true;
       super.onStart(R.current.loginCourse);
       CourseConnectorStatus value = await CourseConnector.login();
       super.onEnd();
@@ -27,13 +27,13 @@ class CourseSystemTask<T> extends NTUTTask<T> {
 
   @override
   Future<TaskStatus> onError(String message) {
-    _isLogin = false;
+    isLogin = false;
     return super.onError(message);
   }
 
   @override
   Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) {
-    _isLogin = false;
+    isLogin = false;
     return super.onErrorParameter(parameter);
   }
 }
