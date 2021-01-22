@@ -172,7 +172,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
             dayHeight) /
         showCourseTableNum; //計算高度
     CourseTableJson courseTable = Model.instance.getCourseSetting().info;
-    if (courseTable.isEmpty) {
+    if (courseTable == null || courseTable.isEmpty) {
       _getCourseTable();
     } else {
       _showCourseTable(courseTable);
