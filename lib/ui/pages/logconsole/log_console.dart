@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 
 import 'ansi_parser.dart';
@@ -22,9 +23,8 @@ class MyConsoleOutput extends LogOutput {
 
 class LogConsole extends StatefulWidget {
   final bool dark;
-  final bool showCloseButton;
 
-  LogConsole({this.dark = false, this.showCloseButton = false})
+  LogConsole({this.dark = false})
       : assert(_initialized, "Please call LogConsole.init() first.");
 
   static void init({int bufferSize = 50}) {
@@ -148,11 +148,42 @@ class _LogConsoleState extends State<LogConsole> {
               accentColor: Colors.lightBlueAccent,
             ),
       home: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Get.back(),
+          ),
+          title: Text("Log Console"),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                _outputEventBuffer.clear();
+                didChangeDependencies();
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
+                setState(() {
+                  _logFontSize++;
+                });
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.remove),
+              onPressed: () {
+                setState(() {
+                  _logFontSize--;
+                });
+              },
+            )
+          ],
+        ),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              _buildTopBar(),
               Expanded(
                 child: _buildLogContent(),
               ),
@@ -201,55 +232,6 @@ class _LogConsoleState extends State<LogConsole> {
             itemCount: _filteredBuffer.length,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTopBar() {
-    return LogBar(
-      dark: widget.dark,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Text(
-            "Log Console",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Spacer(),
-          IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              _outputEventBuffer.clear();
-              didChangeDependencies();
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                _logFontSize++;
-              });
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.remove),
-            onPressed: () {
-              setState(() {
-                _logFontSize--;
-              });
-            },
-          ),
-          if (widget.showCloseButton)
-            IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-        ],
       ),
     );
   }
