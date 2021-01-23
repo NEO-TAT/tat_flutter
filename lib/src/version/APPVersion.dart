@@ -1,12 +1,17 @@
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/model/remoteconfig/RemoteConfigVersionInfo.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/util/RemoteConfigUtil.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 
 class APPVersion {
   static void initAndCheck() async {
-    if (!Model.instance.autoCheckAppUpdate ||
-        !Model.instance.getFirstUse(Model.appCheckUpdate) ||
-        Model.instance.getAccount().isEmpty) return;
+    RemoteConfigVersionInfo config = await RemoteConfigUtil.getVersionConfig();
+    if (!config.isFocusUpdate) {
+      if (!Model.instance.autoCheckAppUpdate ||
+          !Model.instance.getFirstUse(Model.appCheckUpdate) ||
+          Model.instance.getAccount().isEmpty) return;
+    }
     Model.instance.setAlreadyUse(Model.appCheckUpdate);
     await check();
     checkIFAPPUpdate(); //檢查是否有更新
