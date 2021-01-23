@@ -272,7 +272,7 @@ class SemesterCourseScoreJson {
       }
     }
     average /= total;
-    return (averageScore != 0) ? averageScore.toString() : average.toString();
+    return (averageScore != 0) ? averageScore.toString() : average.toStringAsFixed(2);
   }
 
   String getPerformanceScoreString() {
