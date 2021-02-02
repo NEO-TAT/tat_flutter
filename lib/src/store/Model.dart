@@ -6,18 +6,16 @@
 //
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_app/debug/log/Log.dart';
+
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
-import 'package:flutter_app/src/store/json/SettingJson.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
-import 'package:flutter_app/src/version/update/AppUpdate.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
+import 'package:flutter_app/src/model/setting/SettingJson.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'json/CourseClassJson.dart';
-import 'json/CourseTableJson.dart';
-import 'json/UserDataJson.dart';
+
+import '../model/course/CourseClassJson.dart';
 
 //flutter packages pub run build_runner build 創建Json
 //flutter packages pub run build_runner build --delete-conflicting-outputs
@@ -44,14 +42,26 @@ class Model {
   Map<String, bool> _firstRun = Map();
   static String courseNotice = "CourseNotice";
   static String appCheckUpdate = "AppCheckUpdate";
-  Map<String, dynamic> _tempData;
   DefaultCacheManager cacheManager = new DefaultCacheManager();
 
   bool get autoCheckAppUpdate {
     return _setting.other.autoCheckAppUpdate;
   }
 
-  bool getFirstUse(String key) {
+  //timeOut seconds
+  bool getFirstUse(String key, {int timeOut}) {
+    if (timeOut != null) {
+      int millsTimeOut = timeOut * 1000;
+      String wKey = "firstUse$key";
+      int now = DateTime.now().millisecondsSinceEpoch;
+      int before = _readInt(wKey);
+      if (before != null && before > now) {
+        //Already Use
+        return false;
+      } else {
+        _writeInt(wKey, now + millsTimeOut);
+      }
+    }
     if (!_firstRun.containsKey(key)) {
       _firstRun[key] = true;
     }
@@ -350,40 +360,23 @@ class Model {
     return stringList;
   }
 
-  //--------------------TempData--------------------//
-  void setTempData(String key, dynamic value) {
-    _tempData[key] = value;
+  Future<String> getVersion() async {
+    return await _readString("version");
   }
 
-  dynamic getTempData(String key) {
-    dynamic value;
-    if (_tempData.containsKey(key)) {
-      value = _tempData[key];
-      _tempData.remove(key);
-    }
-    return value;
+  Future<void> setVersion(String version) async {
+    await _writeString("version", version); //寫入目前版本
   }
 
   Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
-    _tempData = Map();
     _courseSemesterList = _courseSemesterList ?? List();
     await loadUserData();
     await loadCourseTableList();
     await loadSetting();
     await loadCourseScoreCredit();
     await loadSemesterJsonList();
-    String version = await AppUpdate.getAppVersion();
-    String preVersion = await _readString("version");
-    Log.d(" preVersion: $preVersion \n version: $version");
-    if (preVersion != version) {
-      await AppHotFix.getInstance();
-      AppHotFix.setDevMode(false); //更新APP版本後退出測模式
-      _writeString("version", version); //寫入目前版本
-      _setting.other.autoCheckAppUpdate = true; //開啟更新檢查
-      saveOtherSetting();
-    }
     //DioConnector.instance.deleteCookies();
   }
 
@@ -396,7 +389,6 @@ class Model {
     await clearCourseSetting();
     DioConnector.instance.deleteCookies();
     await cacheManager.emptyCache(); //clears all data in cache.
-    TaskHandler.alreadyCheckSystem = ""; //全部登入重新檢查
     setFirstUse(courseNotice, true);
     await getInstance();
   }
@@ -429,6 +421,14 @@ class Model {
 
   Future<void> _writeString(String key, String value) async {
     await pref.setString(key, value);
+  }
+
+  Future<void> _writeInt(String key, int value) async {
+    await pref.setInt(key, value);
+  }
+
+  int _readInt(String key) {
+    return pref.getInt(key);
   }
 
   Future<void> _writeStringList(String key, List<String> value) async {

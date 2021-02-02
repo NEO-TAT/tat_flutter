@@ -46,7 +46,9 @@ class Notifications {
               id: id, title: title, body: body, payload: payload));
         });
     var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
       if (payload != null) {}
@@ -79,12 +81,27 @@ class Notifications {
     //當通知窗被按下
     selectNotificationSubject.stream.listen((String payload) async {
       Map parse = json.decode(payload);
+      String type = parse["type"];
       int id = parse["id"];
-      if (parse.containsKey("path") && !idList.contains(id)) {
-        String path = parse["path"];
-        Log.d("open $path");
+      if (!idList.contains(id)) {
         idList.add(parse["id"]);
-        await OpenFile.open(path);
+      }
+      switch (type) {
+        case "download_complete":
+          if (parse.containsKey("path")) {
+            String path = parse["path"];
+            Log.d("open $path");
+            await OpenFile.open(path);
+          }
+          break;
+        case "download_fail":
+          break;
+        case "cloud_message_background":
+          break;
+        case "cloud_message":
+          break;
+        default:
+          break;
       }
     });
   }
@@ -95,8 +112,8 @@ class Notifications {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         downloadChannelId, downloadChannelName, downloadChannelDescription,
         channelShowBadge: false,
-        importance: Importance.Max,
-        priority: Priority.High,
+        importance: Importance.max,
+        priority: Priority.high,
         onlyAlertOnce: true,
         showProgress: true,
         maxProgress: maxProgress,
@@ -104,7 +121,9 @@ class Notifications {
         playSound: false);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
     await flutterLocalNotificationsPlugin.show(
         value.id, value.title, value.body, platformChannelSpecifics,
         payload: value.payload);
@@ -116,15 +135,16 @@ class Notifications {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         downloadChannelId, downloadChannelName, downloadChannelDescription,
         channelShowBadge: false,
-        importance: Importance.Max,
-        priority: Priority.High,
+        importance: Importance.max,
+        priority: Priority.high,
         onlyAlertOnce: true,
         showProgress: true,
         indeterminate: true,
         playSound: false);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
         value.id, value.title, value.body, platformChannelSpecifics,
         payload: value.payload);
@@ -133,14 +153,16 @@ class Notifications {
   Future<void> showNotification(ReceivedNotification value) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         downloadChannelId, downloadChannelName, downloadChannelDescription,
-        importance: Importance.Max,
-        priority: Priority.High,
+        importance: Importance.max,
+        priority: Priority.high,
         onlyAlertOnce: true,
         ticker: 'ticker',
         playSound: false);
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
     await flutterLocalNotificationsPlugin.show(
         value.id, value.title, value.body, platformChannelSpecifics,
         payload: value.payload);
@@ -161,6 +183,7 @@ class ReceivedNotification {
   String body;
   String payload;
   final _titleLong = 26;
+
   ReceivedNotification(
       {this.id,
       @required String title,
@@ -178,9 +201,6 @@ class ReceivedNotification {
     String newTitle;
     if (value.length >= _titleLong) {
       newTitle = value.substring(0, _titleLong) + "...";
-      if (value.contains(".")) {
-        newTitle += value.split(".").last;
-      }
     }
     _showTitle = (value.length <= _titleLong) ? value : newTitle;
   }

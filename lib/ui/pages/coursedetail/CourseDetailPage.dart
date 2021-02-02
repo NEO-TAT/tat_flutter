@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/coursedetail/TabPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/CourseInfoPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusFilePage.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ISchoolPage extends StatefulWidget {
@@ -36,11 +38,9 @@ class _ISchoolPageState extends State<ISchoolPage>
     tabPageList.add(TabPage(R.current.course, Icons.info,
         CourseInfoPage(widget.studentId, widget.courseInfo)));
     if (widget.studentId == Model.instance.getAccount()) {
-      tabPageList.add(TabPage(
-          R.current.announcement + 'Plus',
-          Icons.announcement,
+      tabPageList.add(TabPage(R.current.announcement, Icons.announcement,
           IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
-      tabPageList.add(TabPage(R.current.file + 'Plus', Icons.file_download,
+      tabPageList.add(TabPage(R.current.fileAndVideo, Icons.file_download,
           IPlusFilePage(widget.studentId, widget.courseInfo)));
     }
 
@@ -58,9 +58,9 @@ class _ISchoolPageState extends State<ISchoolPage>
             return pop;
           },
           child: MaterialApp(
-            title: Constants.appName,
+            title: AppConfig.appName,
             theme: appProvider.theme,
-            darkTheme: Constants.darkTheme,
+            darkTheme: AppThemes.darkTheme,
             home: tabPageView(),
           ),
         );
@@ -76,7 +76,7 @@ class _ISchoolPageState extends State<ISchoolPage>
       child: Scaffold(
         appBar: AppBar(
           leading: BackButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Get.back(),
           ),
           title: Text(course.name),
           bottom: TabBar(
@@ -92,14 +92,14 @@ class _ISchoolPageState extends State<ISchoolPage>
           ),
         ),
         body: PageView(
-        //控制滑動
-        controller: _pageController,
-        children: tabPageList.getTabPageList,
-        onPageChanged: (index) {
-          _tabController.animateTo(index); //與上面tab同步
-          _currentIndex = index;
-        },
-      ),
+          //控制滑動
+          controller: _pageController,
+          children: tabPageList.getTabPageList,
+          onPageChanged: (index) {
+            _tabController.animateTo(index); //與上面tab同步
+            _currentIndex = index;
+          },
+        ),
       ),
     );
   }

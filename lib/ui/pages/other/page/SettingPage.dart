@@ -1,16 +1,18 @@
 import 'dart:io';
+
 import 'package:after_init/after_init.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
-import 'package:flutter_app/src/version/VersionConfig.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
-import 'package:flutter_app/ui/pages/other/directory_picker/directory_picker.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
@@ -48,7 +50,6 @@ class _SettingPageState extends State<SettingPage>
   Widget build(BuildContext context) {
     List<Widget> listViewData = List();
     listViewData.add(_buildLanguageSetting());
-    listViewData.add(_buildFocusLoginSetting());
     if (Platform.isAndroid) {
       listViewData.add(_buildOpenExternalVideoSetting());
     }
@@ -109,34 +110,8 @@ class _SettingPageState extends State<SettingPage>
           LanguageUtil.setLangByIndex(LangEnum.values.toList()[langIndex])
               .then((_) {
             widget.pageController.jumpToPage(0);
-            Navigator.of(context).pop();
+            Get.back();
           });
-        });
-      },
-    );
-  }
-
-  Widget _buildFocusLoginSetting() {
-    return SwitchListTile.adaptive(
-      contentPadding: EdgeInsets.all(0),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            R.current.forceReLogin,
-            style: textTitle,
-          ),
-          Text(
-            R.current.forceLoginResult,
-            style: textBody,
-          ),
-        ],
-      ),
-      value: Model.instance.getOtherSetting().focusLogin,
-      onChanged: (value) {
-        setState(() {
-          Model.instance.getOtherSetting().focusLogin = value;
-          Model.instance.saveOtherSetting();
         });
       },
     );
@@ -166,7 +141,7 @@ class _SettingPageState extends State<SettingPage>
 
   Widget _buildDarkModeSetting() {
     return (MediaQuery.of(context).platformBrightness !=
-            Constants.darkTheme.brightness)
+            AppThemes.darkTheme.brightness)
         ? SwitchListTile.adaptive(
             contentPadding: EdgeInsets.all(0),
             title: Row(
@@ -184,16 +159,16 @@ class _SettingPageState extends State<SettingPage>
               ],
             ),
             value:
-                Provider.of<AppProvider>(context).theme == Constants.lightTheme
+                Provider.of<AppProvider>(context).theme == AppThemes.lightTheme
                     ? false
                     : true,
             onChanged: (v) {
               if (v) {
                 Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(Constants.darkTheme, "dark");
+                    .setTheme(AppThemes.darkTheme, "dark");
               } else {
                 Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(Constants.lightTheme, "light");
+                    .setTheme(AppThemes.lightTheme, "light");
               }
             },
           )
@@ -282,17 +257,17 @@ class _SettingPageState extends State<SettingPage>
           ),
         ),
         onTap: () async {
-          Directory newDirectory = await DirectoryPicker.pick(
-            allowFolderCreation: true,
-            context: context,
-            rootDirectory: Directory(downloadPath),
-          );
-          FileStore.setFilePath(newDirectory).then((value) {
-            if (value) {
-              downloadPath = newDirectory.path;
-              setState(() {});
+          String directory = await FilePicker.platform.getDirectoryPath();
+          if (directory == "/" || directory == null) {
+            if (directory == '/') {
+              MyToast.show(R.current.selectDirectoryFail);
             }
-          });
+          } else {
+            await FileStore.setFilePath(directory);
+            setState(() {
+              downloadPath = directory;
+            });
+          }
         },
       );
     }

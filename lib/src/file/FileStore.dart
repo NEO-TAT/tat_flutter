@@ -7,6 +7,7 @@
 //
 
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
@@ -44,10 +45,10 @@ class FileStore {
     return savedDir.path;
   }
 
-  static Future<bool> setFilePath(Directory directory) async {
+  static Future<bool> setFilePath(String directory) async {
     if (directory != null) {
       SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString(storeKey, directory.path);
+      pref.setString(storeKey, directory);
       return true;
     } else {
       return false;

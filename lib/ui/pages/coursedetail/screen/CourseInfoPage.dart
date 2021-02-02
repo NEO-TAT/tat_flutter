@@ -1,17 +1,17 @@
 import 'dart:async';
+
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/course/CourseExtraInfoTask.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/course/CourseExtraInfoTask.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
 
 class CourseInfoPage extends StatefulWidget {
@@ -49,9 +49,9 @@ class _CourseInfoPageState extends State<CourseInfoPage>
     super.dispose();
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
     if (!canPop) {
-      Navigator.of(context).pop();
+      Get.back();
     }
     return !canPop;
   }
@@ -59,10 +59,12 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   void _addTask() async {
     courseMainInfo = widget.courseInfo.main;
     String courseId = courseMainInfo.course.id;
-    TaskHandler.instance.addTask(CourseExtraInfoTask(context, courseId));
-    await TaskHandler.instance.startTaskQueue(context);
-    courseExtraInfo =
-        Model.instance.getTempData(CourseExtraInfoTask.tempDataKey);
+    TaskFlow taskFlow = TaskFlow();
+    var task = CourseExtraInfoTask(courseId);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      courseExtraInfo = task.result;
+    }
     widget.courseInfo.extra = courseExtraInfo;
     courseData.add(_buildCourseInfo(
         sprintf("%s: %s", [R.current.courseId, courseMainInfo.course.id])));
@@ -168,11 +170,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
 
   void _launchWebView(String title, String url) {
     canPop = false;
-    Navigator.of(context)
-        .push(MyPage.transition(WebViewPluginPage(title, url)))
-        .then((_) {
-      canPop = true;
-    });
+    RouteUtils.toWebViewPluginPage(title, url).then((value) => canPop = true);
   }
 
   Widget _buildCourseInfoWithButton(

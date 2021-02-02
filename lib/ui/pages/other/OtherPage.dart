@@ -1,29 +1,26 @@
-import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
+import 'package:flutter_app/src/config/AppLink.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/UserDataJson.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/debug/DebugPage.dart';
-import 'package:flutter_app/ui/pages/fileviewer/FileViewerPage.dart';
-import 'package:flutter_app/ui/pages/other/page/AboutPage.dart';
-import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
-import 'package:flutter_app/ui/screen/LoginScreen.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
+import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
+import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:sprintf/sprintf.dart';
+import 'package:get/get.dart';
 
 enum onListViewPress {
   Setting,
@@ -31,6 +28,8 @@ enum onListViewPress {
   Logout,
   Report,
   About,
+  Login,
+  SubSystem,
   ChangePassword
 }
 
@@ -52,27 +51,38 @@ class _OtherPageState extends State<OtherPage> {
       "onPress": onListViewPress.Setting
     },
     {
+      "icon": Icons.computer,
+      "color": Colors.lightBlue,
+      "title": R.current.informationSystem,
+      "onPress": onListViewPress.SubSystem
+    },
+    {
       "icon": EvaIcons.downloadOutline,
       "color": Colors.yellow[700],
       "title": R.current.fileViewer,
       "onPress": onListViewPress.FileViewer
     },
-//    {
-//      "icon": EvaIcons.syncOutline,
-//      "color": Colors.lightGreen,
-//      "title": R.current.changePassword,
-//      "onPress": onListViewPress.ChangePassword
-//    },
-    {
-      "icon": (Model.instance.getAccount().isEmpty)
-          ? EvaIcons.logIn
-          : EvaIcons.undoOutline,
-      "color": Colors.teal[400],
-      "title": (Model.instance.getAccount().isEmpty)
-          ? R.current.login
-          : R.current.logout,
-      "onPress": onListViewPress.Logout
-    },
+    if (Model.instance.getPassword().isNotEmpty)
+      {
+        "icon": EvaIcons.syncOutline,
+        "color": Colors.lightGreen,
+        "title": R.current.changePassword,
+        "onPress": onListViewPress.ChangePassword
+      },
+    if (Model.instance.getPassword().isNotEmpty)
+      {
+        "icon": EvaIcons.undoOutline,
+        "color": Colors.teal[400],
+        "title": R.current.logout,
+        "onPress": onListViewPress.Logout
+      },
+    if (Model.instance.getPassword().isEmpty)
+      {
+        "icon": EvaIcons.logIn,
+        "color": Colors.teal[400],
+        "title": R.current.login,
+        "onPress": onListViewPress.Login
+      },
     {
       "icon": EvaIcons.messageSquareOutline,
       "color": Colors.cyan,
@@ -94,73 +104,54 @@ class _OtherPageState extends State<OtherPage> {
 
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
+      case onListViewPress.SubSystem:
+        RouteUtils.toSubSystemPage(R.current.informationSystem, null);
+        break;
       case onListViewPress.Logout:
-        if (Model.instance.getAccount().isNotEmpty) {
-          ErrorDialogParameter parameter = ErrorDialogParameter(
-              context: context,
-              desc: R.current.logoutWarning,
-              dialogType: DialogType.WARNING,
-              title: R.current.warning,
-              btnOkText: R.current.sure,
-              btnOkOnPress: () {
-                Model.instance.logout().then((_) {
-                  widget.pageController.jumpToPage(0);
-                });
+        ErrorDialogParameter parameter = ErrorDialogParameter(
+            context: context,
+            desc: R.current.logoutWarning,
+            dialogType: DialogType.WARNING,
+            title: R.current.warning,
+            btnOkText: R.current.sure,
+            btnOkOnPress: () {
+              Get.back();
+              TaskFlow.resetLoginStatus();
+              Model.instance.logout().then((_) {
+                widget.pageController.jumpToPage(0);
               });
-          ErrorDialog(parameter).show();
-        } else {
-          Navigator.of(context).push(MyPage.transition(LoginScreen())).then(
-            (value) {
-              if (value) widget.pageController.jumpToPage(0);
-            },
-          );
-        }
+            });
+        ErrorDialog(parameter).show();
+        break;
+      case onListViewPress.Login:
+        RouteUtils.toLoginScreen().then((value) {
+          if (value) widget.pageController.jumpToPage(0);
+        });
         break;
       case onListViewPress.FileViewer:
         FileStore.findLocalPath(context).then((filePath) {
-          Navigator.of(context).push(
-            MyPage.transition(FileViewerPage(
-              title: R.current.fileViewer,
-              path: filePath,
-            )),
-          );
+          RouteUtils.toFileViewerPage(R.current.fileViewer, filePath);
         });
         break;
       case onListViewPress.About:
-        Navigator.of(context).push(MyPage.transition(AboutPage()));
+        RouteUtils.toAboutPage();
         break;
       case onListViewPress.Setting:
-        Navigator.of(context)
-            .push(MyPage.transition(SettingPage(widget.pageController)));
+        RouteUtils.toSettingPage(widget.pageController);
         break;
       case onListViewPress.Report:
-        String link = AppLink.feedback;
+        String link = AppLink.feedbackBaseUrl;
         try {
           String mainVersion = await AppUpdate.getAppVersion();
-          int patchVersion = await AppHotFix.getPatchVersion();
-          Uri url = Uri.https(Uri.parse(AppLink.feedback).host,
-              Uri.parse(AppLink.feedback).path, {
-            "entry.978972557": (Platform.isAndroid) ? "Android" : "IOS",
-            "entry.823909330": sprintf("%s.%d", [mainVersion, patchVersion]),
-            "entry.517392071": Log.getLogString()
-          });
-          link = url.toString();
+          link = AppLink.feedback(mainVersion, LogConsole.getLog());
         } catch (e) {}
-        Navigator.of(context).push(
-            MyPage.transition(WebViewPluginPage(R.current.feedback, link)));
+        RouteUtils.toWebViewPluginPage(R.current.feedback, link);
+        break;
+      case onListViewPress.ChangePassword:
+        ChangePassword.show();
         break;
       default:
         MyToast.show(R.current.noFunction);
-        break;
-    }
-  }
-
-  void _onLongPress(onListViewPress value) {
-    switch (value) {
-      case onListViewPress.About:
-        Navigator.of(context).push(MyPage.transition(DebugPage()));
-        break;
-      default:
         break;
     }
   }
@@ -171,27 +162,33 @@ class _OtherPageState extends State<OtherPage> {
       appBar: AppBar(
         title: Text(R.current.titleOther),
       ),
-      body: AnimationLimiter(
-        child: Container(
-          child: Column(
-            children: AnimationConfiguration.toStaggeredList(
-              childAnimationBuilder: (widget) => SlideAnimation(
-                horizontalOffset: 50.0,
-                child: FadeInAnimation(
-                  child: widget,
-                ),
+      body: Column(children: <Widget>[
+        if (Model.instance.getAccount().isNotEmpty)
+          Container(
+            child: _buildHeader(),
+          ),
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          child: Expanded(
+            child: AnimationLimiter(
+              child: ListView.builder(
+                itemCount: optionList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: ScaleAnimation(
+                      child: _buildSetting(optionList[index]),
+                    ),
+                  );
+                },
               ),
-              children: <Widget>[
-                if (Model.instance.getAccount().isNotEmpty) _buildHeader(),
-                SizedBox(
-                  height: 16,
-                ),
-                for (Map option in optionList) _buildSetting(option)
-              ],
             ),
           ),
         ),
-      ),
+      ]),
     );
   }
 
@@ -217,25 +214,36 @@ class _OtherPageState extends State<OtherPage> {
       },
     );
     List<Widget> columnItem = List();
+    final MediaQueryData data = MediaQuery.of(context);
     if (givenName.isNotEmpty) {
       columnItem
         ..add(Text(
           givenName,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
         ))
         ..add(SizedBox(
           height: 5.0,
         ))
-        ..add(Text(
-          userMail,
-          style: TextStyle(
-            fontSize: 16,
+        ..add(MediaQuery(
+          data: data.copyWith(textScaleFactor: 1.0),
+          child: Text(
+            userMail,
+            style: TextStyle(
+              fontSize: 16,
+            ),
           ),
         ));
     } else {
       givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
       userMail = (userMail.isEmpty) ? "" : userMail;
     }
+    TaskFlow taskFlow = TaskFlow();
+    var task = NTUTTask("ImageTask");
+    task.openLoadingDialog = false;
+    taskFlow.addTask(task);
     return Container(
       padding:
           EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
@@ -246,21 +254,15 @@ class _OtherPageState extends State<OtherPage> {
             width: 60,
             height: 60,
             child: InkWell(
-              child: FutureBuilder<NTUTConnectorStatus>(
-                future: NTUTConnector.checkLogin().then((value) {
-                  if (!value)
-                    return NTUTConnector.login(Model.instance.getAccount(),
-                        Model.instance.getPassword());
-                  else
-                    return NTUTConnectorStatus.LoginSuccess;
-                }),
-                builder: (BuildContext context,
-                    AsyncSnapshot<NTUTConnectorStatus> snapshot) {
+              child: FutureBuilder<bool>(
+                future: taskFlow.start(),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.data == NTUTConnectorStatus.LoginSuccess) {
+                      snapshot.data == true) {
                     return userImage;
                   } else {
-                    return SpinKitPouringHourglass(color: Colors.white);
+                    return SpinKitPouringHourglass(
+                        color: Theme.of(context).accentColor);
                   }
                 },
               ),
@@ -286,9 +288,6 @@ class _OtherPageState extends State<OtherPage> {
     return InkWell(
       onTap: () {
         _onListViewPress(data['onPress']);
-      },
-      onLongPress: () {
-        _onLongPress(data['onPress']);
       },
       child: Container(
         padding:

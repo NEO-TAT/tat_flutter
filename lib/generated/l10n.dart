@@ -253,6 +253,26 @@ class S {
     );
   }
 
+  /// `APP will close`
+  String get appWillClose {
+    return Intl.message(
+      'APP will close',
+      name: 'appWillClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `isFocusUpdate`
+  String get isFocusUpdate {
+    return Intl.message(
+      'isFocusUpdate',
+      name: 'isFocusUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________task___________________ {
     return Intl.message(
@@ -303,10 +323,10 @@ class S {
     );
   }
 
-  /// `Account is locked`
+  /// `Account is locked, please try again in 15 minutes`
   String get accountLock {
     return Intl.message(
-      'Account is locked',
+      'Account is locked, please try again in 15 minutes',
       name: 'accountLock',
       desc: '',
       args: [],
@@ -653,6 +673,126 @@ class S {
     );
   }
 
+  /// `Changing password...`
+  String get changingPassword {
+    return Intl.message(
+      'Changing password...',
+      name: 'changingPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Changing password Error`
+  String get changingPasswordError {
+    return Intl.message(
+      'Changing password Error',
+      name: 'changingPasswordError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check identity`
+  String get checkIdentity {
+    return Intl.message(
+      'Check identity',
+      name: 'checkIdentity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Origin password`
+  String get originPassword {
+    return Intl.message(
+      'Origin password',
+      name: 'originPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Different from the original password`
+  String get passwordNotSame {
+    return Intl.message(
+      'Different from the original password',
+      name: 'passwordNotSame',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input new password`
+  String get inputNewPassword {
+    return Intl.message(
+      'Input new password',
+      name: 'inputNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input new password again`
+  String get inputNewPasswordAgain {
+    return Intl.message(
+      'Input new password again',
+      name: 'inputNewPasswordAgain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input is null`
+  String get inputNull {
+    return Intl.message(
+      'Input is null',
+      name: 'inputNull',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The password length must be between 8 characters and 14 characters`
+  String get passwordLengthError {
+    return Intl.message(
+      'The password length must be between 8 characters and 14 characters',
+      name: 'passwordLengthError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set new password`
+  String get setNewPassword {
+    return Intl.message(
+      'Set new password',
+      name: 'setNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Same password as before`
+  String get sameOldPassword {
+    return Intl.message(
+      'Same password as before',
+      name: 'sameOldPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use old password`
+  String get useOldPassword {
+    return Intl.message(
+      'Use old password',
+      name: 'useOldPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________CourseTableUi___________________ {
     return Intl.message(
@@ -923,6 +1063,16 @@ class S {
     );
   }
 
+  /// `Select semester`
+  String get selectSemester {
+    return Intl.message(
+      'Select semester',
+      name: 'selectSemester',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________FileViewerPage___________________ {
     return Intl.message(
@@ -938,6 +1088,26 @@ class S {
     return Intl.message(
       'Sort by',
       name: 'sortBy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create New folder`
+  String get createNewFolder {
+    return Intl.message(
+      'Create New folder',
+      name: 'createNewFolder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Folder`
+  String get createFolder {
+    return Intl.message(
+      'Create Folder',
+      name: 'createFolder',
       desc: '',
       args: [],
     );
@@ -1253,96 +1423,6 @@ class S {
     );
   }
 
-  /// `Patch version`
-  String get patchVersion {
-    return Intl.message(
-      'Patch version',
-      name: 'patchVersion',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Downloading patch...`
-  String get downloadingPatch {
-    return Intl.message(
-      'Downloading patch...',
-      name: 'downloadingPatch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Find the new patch version`
-  String get findPatchNewVersion {
-    return Intl.message(
-      'Find the new patch version',
-      name: 'findPatchNewVersion',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually`
-  String get patchUpdateDown {
-    return Intl.message(
-      'After the download is complete, the APP will automatically restart to complete the update, wait about 10 seconds, please do not open it manually',
-      name: 'patchUpdateDown',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Patch delete , Restart the application and apply`
-  String get patchDelete {
-    return Intl.message(
-      'Patch delete , Restart the application and apply',
-      name: 'patchDelete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delete patch`
-  String get deletePatch {
-    return Intl.message(
-      'Delete patch',
-      name: 'deletePatch',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Exit dev mode`
-  String get exitDevMode {
-    return Intl.message(
-      'Exit dev mode',
-      name: 'exitDevMode',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Patch successfully upgraded version:`
-  String get patchUpdateComplete {
-    return Intl.message(
-      'Patch successfully upgraded version:',
-      name: 'patchUpdateComplete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Patch upgrade failed\nAutomatically downgraded to original version:`
-  String get patchUpdateFail {
-    return Intl.message(
-      'Patch upgrade failed\nAutomatically downgraded to original version:',
-      name: 'patchUpdateFail',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Developer Mode`
   String get developerMode {
     return Intl.message(
@@ -1383,6 +1463,26 @@ class S {
     );
   }
 
+  /// `The path is wrong, please do not select the folder containing the Download directory`
+  String get selectDirectoryFail {
+    return Intl.message(
+      'The path is wrong, please do not select the folder containing the Download directory',
+      name: 'selectDirectoryFail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Information System`
+  String get informationSystem {
+    return Intl.message(
+      'Information System',
+      name: 'informationSystem',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________iSchoolUi___________________ {
     return Intl.message(
@@ -1408,6 +1508,16 @@ class S {
     return Intl.message(
       'Announcement',
       name: 'announcement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `File and Videos`
+  String get fileAndVideo {
+    return Intl.message(
+      'File and Videos',
+      name: 'fileAndVideo',
       desc: '',
       args: [],
     );
@@ -1593,26 +1703,6 @@ class S {
     );
   }
 
-  /// `Force re-login`
-  String get forceReLogin {
-    return Intl.message(
-      'Force re-login',
-      name: 'forceReLogin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed`
-  String get forceLoginResult {
-    return Intl.message(
-      'When it is judged that the logged-in mechanism is invalid, the check can be solved, but it will slow down the data acquisition speed',
-      name: 'forceLoginResult',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Is a video`
   String get isVideo {
     return Intl.message(
@@ -1698,6 +1788,16 @@ class S {
     return Intl.message(
       'Identify links',
       name: 'identifyLinks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This course does not support queries`
+  String get iPlusNoThisClass {
+    return Intl.message(
+      'This course does not support queries',
+      name: 'iPlusNoThisClass',
       desc: '',
       args: [],
     );
@@ -1808,6 +1908,66 @@ class S {
     return Intl.message(
       'Are you sure you want to log out? \nAll data will be cleared',
       name: 'logoutWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________ContributorsPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________ContributorsPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project link`
+  String get projectLink {
+    return Intl.message(
+      'Project link',
+      name: 'projectLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Github`
+  String get github {
+    return Intl.message(
+      'Github',
+      name: 'github',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contributors`
+  String get Contributors {
+    return Intl.message(
+      'Contributors',
+      name: 'Contributors',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________PrivacyPolicyPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________PrivacyPolicyPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy policy`
+  String get PrivacyPolicy {
+    return Intl.message(
+      'Privacy policy',
+      name: 'PrivacyPolicy',
       desc: '',
       args: [],
     );
@@ -2218,96 +2378,6 @@ class S {
     return Intl.message(
       'Credit info',
       name: 'creditInfo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `註解`
-  String get ___________________DirectoryPicker___________________ {
-    return Intl.message(
-      '註解',
-      name: '___________________DirectoryPicker___________________',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Directory is empty!`
-  String get directoryIsEmpty {
-    return Intl.message(
-      'Directory is empty!',
-      name: 'directoryIsEmpty',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Selected directory`
-  String get selectedDirectory {
-    return Intl.message(
-      'Selected directory',
-      name: 'selectedDirectory',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enter a valid folder name`
-  String get EnterValidFolderName {
-    return Intl.message(
-      'Enter a valid folder name',
-      name: 'EnterValidFolderName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Failed to create folder`
-  String get failedCreateFolder {
-    return Intl.message(
-      'Failed to create folder',
-      name: 'failedCreateFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create Folder`
-  String get createFolder {
-    return Intl.message(
-      'Create Folder',
-      name: 'createFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create New folder`
-  String get createNewFolder {
-    return Intl.message(
-      'Create New folder',
-      name: 'createNewFolder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Grant permission`
-  String get grantPermission {
-    return Intl.message(
-      'Grant permission',
-      name: 'grantPermission',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Checking permission`
-  String get checkingPermission {
-    return Intl.message(
-      'Checking permission',
-      name: 'checkingPermission',
       desc: '',
       args: [],
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-
-import '../../src/store/Model.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Model.instance.setPassword(_passwordControl.text.toString());
       await Model.instance.saveUserData();
       MyToast.show(R.current.loginSave);
-      Navigator.of(context).pop(true);
+      Get.back<bool>(result: true);
     }
   }
 

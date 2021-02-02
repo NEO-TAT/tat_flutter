@@ -1,35 +1,39 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
-import 'package:flutter_app/src/json/ISchoolPlusAnnouncementJson.dart';
-import 'package:flutter_app/src/store/object/CourseFileJson.dart';
+import 'package:flutter_app/src/model/ischoolplus/CourseFileJson.dart';
+import 'package:flutter_app/src/model/ischoolplus/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
+
+import 'NTUTConnector.dart';
 import 'core/ConnectorParameter.dart';
 
-enum ISchoolPlusConnectorStatus {
-  LoginSuccess,
-  LoginFail,
-  ConnectTimeOutError,
-  NetworkError,
-  UnknownError
+enum ISchoolPlusConnectorStatus { LoginSuccess, LoginFail, UnknownError }
+
+enum IPlusReturnStatus { Success, Fail, NoPermission }
+
+class ReturnWithStatus<T> {
+  IPlusReturnStatus status;
+  T result;
 }
 
 class ISchoolPlusConnector {
-  static bool _isLogin = false;
-
   static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
-  static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
-  static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
-  static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
+
+  //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
+  //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
+  //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
   static final String _iSchoolPlusLearnIndexUrl =
       _iSchoolPlusUrl + "learn/index.php";
   static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
   static final String _getCourseName =
       _iSchoolPlusUrl + "learn/mooc_sysbar.php";
+  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
@@ -43,7 +47,7 @@ class ISchoolPlusConnector {
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter("https://nportal.ntut.edu.tw/ssoIndex.do");
+      parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = html.parse(result);
@@ -59,7 +63,6 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
-      _isLogin = true;
       return ISchoolPlusConnectorStatus.LoginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -67,7 +70,8 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<List<CourseFileJson>> getCourseFile(String courseId) async {
+  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(
+      String courseId) async {
     ConnectorParameter parameter;
     String result;
     html.Document tagNode;
@@ -75,9 +79,13 @@ class ISchoolPlusConnector {
     RegExp exp;
     RegExpMatch matches;
     List<html.Element> nodes, itemNodes, resourceNodes;
+    var value = ReturnWithStatus<List<CourseFileJson>>();
     try {
       List<CourseFileJson> courseFileList = List();
-      await _selectCourse(courseId);
+      if (!await _selectCourse(courseId)) {
+        value.status = IPlusReturnStatus.NoPermission;
+        return value;
+      }
 
       parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/launch.php");
       result = await Connector.getDataByGet(parameter);
@@ -149,11 +157,13 @@ class ISchoolPlusConnector {
         courseFile.fileType = [fileType];
         courseFileList.add(courseFile);
       }
-
-      return courseFileList;
+      value.status = IPlusReturnStatus.Success;
+      value.result = courseFileList;
+      return value;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return null;
+      value.status = IPlusReturnStatus.Fail;
+      return value;
     }
   }
 
@@ -168,22 +178,22 @@ class ISchoolPlusConnector {
           _iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
       parameter.data = postParameter;
       parameter.charsetName = 'big5';
-      parameter.referer = "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
+      parameter.referer =
+          "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
       Response response;
       response = await Connector.getDataByPostResponse(parameter);
       result = response.toString();
       RegExp exp;
       RegExpMatch matches;
       if (response.statusCode == HttpStatus.ok) {
-        exp = new RegExp("\"(?<url>http.+)\""); //檢測網址
+        exp = new RegExp("[\"\'](?<url>https?:\/\/.+)[\"\']");
+        //檢測網址 "http://....." or 'https://.....' or "http://..." or 'http://...'
         matches = exp.firstMatch(result);
-        bool pass = (matches == null)
+        bool pass = (matches?.groupCount == null)
             ? false
-            : (matches.groupCount == null)
-                ? false
-                : matches.group(1).toLowerCase().contains("http")
-                    ? true
-                    : false;
+            : matches.group(1).toLowerCase().contains("http")
+                ? true
+                : false;
         if (pass) {
           url = matches.group(1);
           //已經是完整連結
@@ -191,14 +201,12 @@ class ISchoolPlusConnector {
         } else {
           exp = new RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
           matches = exp.firstMatch(result);
-          bool pass = (matches == null)
-              ? false
-              : (matches.groupCount == null) ? false : true;
+          bool pass = (matches?.groupCount == null) ? false : true;
           if (pass) {
             String realUrl = _iSchoolPlusUrl + matches.group(1);
             return [realUrl, realUrl]; //一般下載連結
           } else {
-            exp = new RegExp("\"(?<url>.+)\""); //檢測網址位置
+            exp = new RegExp("\"(?<url>.+)\""); //檢測""內包含字
             matches = exp.firstMatch(result);
             url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
@@ -207,11 +215,11 @@ class ISchoolPlusConnector {
                 new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
             String realUrl = _iSchoolPlusUrl + "learn/path/" + matches.group(1);
-            return [realUrl, url];
+            return [realUrl, url]; //PDF需要有referer不然會無法下載
           }
         }
       } else if (response.isRedirect || result.isEmpty) {
-        //發生跳轉 出現檔案下載頁面
+        //發生跳轉 出現檔案下載預覽頁面
         url = response.headers[HttpHeaders.locationHeader][0];
         url = _iSchoolPlusUrl + "learn/path/" + url;
         url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址
@@ -227,11 +235,15 @@ class ISchoolPlusConnector {
 
   static String bid;
 
-  static Future<List<ISchoolPlusAnnouncementJson>> getCourseAnnouncement(
-      String courseId) async {
+  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>>
+      getCourseAnnouncement(String courseId) async {
     String result;
+    var value = ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>();
     try {
-      await _selectCourse(courseId);
+      if (!await _selectCourse(courseId)) {
+        value.status = IPlusReturnStatus.NoPermission;
+        return value;
+      }
       ConnectorParameter parameter;
       html.Document tagNode;
       List<html.Element> nodes;
@@ -277,23 +289,29 @@ class ISchoolPlusConnector {
       result = await Connector.getDataByPost(parameter);
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
-      jsonData = json.decode(result)['data'];
-      int totalRows = int.parse(json.decode(result)['total_rows']);
-      if (totalRows > 0) {
-        for (String keyName in json.decode(result)['data'].keys.toList()) {
-          ISchoolPlusAnnouncementJson courseInfo =
-              ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
-          courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
-          courseInfo.token = data['token'];
-          courseInfo.bid = keyName.split("|").first;
-          courseInfo.nid = keyName.split("|").last;
-          announcementList.add(courseInfo);
+      Map j = json.decode(result);
+      if (j["code"] == 0) {
+        jsonData = j['data'];
+        int totalRows = int.parse(json.decode(result)['total_rows']);
+        if (totalRows > 0) {
+          for (String keyName in json.decode(result)['data'].keys.toList()) {
+            ISchoolPlusAnnouncementJson courseInfo =
+                ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
+            courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
+            courseInfo.token = data['token'];
+            courseInfo.bid = keyName.split("|").first;
+            courseInfo.nid = keyName.split("|").last;
+            announcementList.add(courseInfo);
+          }
         }
       }
-      return announcementList;
+      value.status = IPlusReturnStatus.Success;
+      value.result = announcementList;
+      return value;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return null;
+      value.status = IPlusReturnStatus.Fail;
+      return value;
     }
   }
 
@@ -458,7 +476,7 @@ class ISchoolPlusConnector {
     return bid;
   }
 
-  static Future<void> _selectCourse(String courseId) async {
+  static Future<bool> _selectCourse(String courseId) async {
     ConnectorParameter parameter;
     html.Document tagNode;
     html.Element node;
@@ -479,6 +497,9 @@ class ISchoolPlusConnector {
           break;
         }
       }
+      if (courseValue == null) {
+        return false;
+      }
       String xml =
           "<manifest><ticket/><course_id>$courseValue</course_id><env/></manifest>";
       parameter = ConnectorParameter(
@@ -486,43 +507,9 @@ class ISchoolPlusConnector {
       parameter.data = xml;
       await Connector.getDataByPost(
           parameter); //因為RequestsConnector無法傳送XML但是 DioConnector無法解析 Content-Type: text/html;;charset=UTF-8
-
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  static bool get isLogin {
-    return _isLogin;
-  }
-
-  static void loginFalse() {
-    _isLogin = false;
-  }
-
-  static Future<bool> checkLogin() async {
-    Log.d("ISchoolPlus CheckLogin");
-    ConnectorParameter parameter;
-    Response response;
-    String result;
-    _isLogin = false;
-    try {
-      parameter = ConnectorParameter(_checkLoginUrl);
-      response = await Connector.getDataByGetResponse(parameter);
-      result = response.toString();
-      if (result.contains("connect lost") || result.contains("location.href")) {
-        return false;
-      }
-      if (response.statusCode != HttpStatus.ok) {
-        //代表登入失敗
-        return false;
-      } else {
-        Log.d("ISchoolPlus Is Readly Login");
-        _isLogin = true;
-        return true;
-      }
+      return true;
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
+      Log.eWithStack(e, stack);
       return false;
     }
   }

@@ -8,18 +8,15 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
-import 'package:flutter_app/src/store/json/UserDataJson.dart';
+import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
+import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
+import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:intl/intl.dart';
-
-import '../store/Model.dart';
-import '../store/json/UserDataJson.dart';
-import 'core/Connector.dart';
-import 'core/ConnectorParameter.dart';
 
 enum NTUTConnectorStatus {
   LoginSuccess,
@@ -27,29 +24,26 @@ enum NTUTConnectorStatus {
   AccountLockWarning, //帳號鎖住
   AccountPasswordIncorrect,
   AuthCodeFailError, //驗證碼錯誤
-  ConnectTimeOutError,
-  NetworkError,
   UnknownError
 }
 
 class NTUTConnector {
-  static bool _isLogin = false;
-  static final String _host = "https://nportal.ntut.edu.tw/";
-  static final String _loginUrl = _host + "login.do";
-  static final String _indexUrl = _host + "index.do";
-  static final String _getPictureUrl = _host + "photoView.do";
-  static final String _checkLoginUrl = _host + "myPortal.do";
-  static final String _getCalendarUrl = _host + "calModeApp.do";
+  static final String host = "https://app.ntut.edu.tw/";
+  static final String _loginUrl = host + "login.do";
+  static final String _getPictureUrl = host + "photoView.do";
+  static final String _checkLoginUrl = host + "myPortal.do";
+  static final String _getTreeUrl = host + "aptreeList.do";
+  static final String _getCalendarUrl = host + "calModeApp.do";
+  static final String _changePasswordUrl = host + "passwordMdy.do";
 
   static Future<NTUTConnectorStatus> login(
       String account, String password) async {
     try {
       ConnectorParameter parameter;
-      _isLogin = false;
       Map<String, String> data = {
         "muid": account,
         "mpassword": password,
-        "forceMobile": "mobile",
+        "forceMobile": "app",
         //"rememberUidValue": "" ,
         //"rememberPwdValue" : "1" ,
         //"authcode" : "" ,
@@ -59,33 +53,30 @@ class NTUTConnector {
       parameter = ConnectorParameter(_loginUrl);
       parameter.data = data;
       parameter.userAgent = "Direk Android App";
-      String jsonResult = await Connector.getDataByPost(parameter);
-      parameter.userAgent = "";
       String result = await Connector.getDataByPost(parameter);
-      if (result.contains("帳號或密碼錯誤")) {
-        return NTUTConnectorStatus.AccountPasswordIncorrect;
-      } else if (result.contains("驗證碼")) {
-        return NTUTConnectorStatus.AuthCodeFailError;
-      } else if (result.contains("帳號已被鎖住")) {
-        return NTUTConnectorStatus.AccountLockWarning;
-      } else if (result.contains("重新登入")) {
-        return NTUTConnectorStatus.UnknownError;
-      } else {
-        UserInfoJson userInfo = UserInfoJson.fromJson(json.decode(jsonResult));
+      parameter.userAgent = "";
+      Map jsonMap = json.decode(result);
+      if (jsonMap["success"]) {
+        UserInfoJson userInfo = UserInfoJson.fromJson(jsonMap);
         Model.instance.setUserInfo(userInfo);
         Model.instance.saveUserData();
         if (userInfo.passwordExpiredRemind.isNotEmpty) {
           return NTUTConnectorStatus.PasswordExpiredWarning;
         }
-        _isLogin = true;
         return NTUTConnectorStatus.LoginSuccess;
+      } else {
+        String errorMsg = jsonMap["errorMsg"];
+        if (errorMsg.contains("帳號或密碼錯誤")) {
+          return NTUTConnectorStatus.AccountPasswordIncorrect;
+        } else if (errorMsg.contains("驗證碼")) {
+          return NTUTConnectorStatus.AuthCodeFailError;
+        } else if (errorMsg.contains("帳號已被鎖住")) {
+          return NTUTConnectorStatus.AccountLockWarning;
+        } else {
+          return NTUTConnectorStatus.UnknownError;
+        }
       }
     } catch (e, stack) {
-      if (e is TimeoutException || e is DioError) {
-        return NTUTConnectorStatus.ConnectTimeOutError;
-      } else if (e is SocketException) {
-        return NTUTConnectorStatus.NetworkError;
-      }
       Log.eWithStack(e.toString(), stack);
       return NTUTConnectorStatus.UnknownError;
     }
@@ -115,6 +106,22 @@ class NTUTConnector {
     }
   }
 
+  static Future<APTreeJson> getTree(String arg) async {
+    ConnectorParameter parameter;
+    try {
+      parameter = ConnectorParameter(_getTreeUrl);
+      if (arg != null) {
+        parameter.data = {"apDn": arg};
+      }
+      String result = await Connector.getDataByPost(parameter);
+      APTreeJson apTreeJson = APTreeJson.fromJson(json.decode(result));
+      return apTreeJson;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
   /*
   Map key
   url
@@ -130,37 +137,32 @@ class NTUTConnector {
       url =
           Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
     }
-    Log.d(url);
     imageInfo["url"] = url;
     imageInfo["header"] = Connector.getLoginHeaders(url);
     return imageInfo;
   }
 
-  static bool get isLogin {
-    return _isLogin;
-  }
-
-  static void loginFalse() {
-    _isLogin = false;
-  }
-
-  static Future<bool> checkLogin() async {
-    Log.d("NTUT CheckLogin");
+  static Future<String> changePassword(String password) async {
     ConnectorParameter parameter;
-    _isLogin = false;
+    String result;
     try {
-      parameter = ConnectorParameter(_checkLoginUrl);
-      String result = await Connector.getDataByGet(parameter);
-      if (result.isEmpty || result.contains("請重新登入")) {
-        return false;
+      parameter = ConnectorParameter(_changePasswordUrl);
+      String oldPassword = Model.instance.getPassword();
+      parameter.data = {
+        "userPassword": password,
+        "oldPassword": oldPassword,
+        "pwdForceMdy": "profile",
+      };
+      result = await Connector.getDataByPost(parameter);
+      var jsonResult = json.decode(result);
+      if (jsonResult["success"] == 'true') {
+        return "";
       } else {
-        Log.d("NTUT Is Readly Login");
-        _isLogin = true;
-        return true;
+        return jsonResult["returnMsg"];
       }
     } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
-      return false;
+      Log.eWithStack(e.toString(), stack);
+      return null;
     }
   }
 }

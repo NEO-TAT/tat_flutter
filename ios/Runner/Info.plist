@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSAllowsArbitraryLoadsInWebContent</key>
 	<true/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Check change password</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -38,8 +40,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -48,7 +48,36 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string> App 需要您的同意, 才能訪問媒體資料庫</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string> App 需要您的同意, 才能訪問日曆</string>
+	<key>NSContactsUsageDescription</key>
+	<string> App 需要您的同意, 才能訪問通信錄</string>
+	<key>NSMotionUsageDescription</key>
+	<string> App 需要您的同意, 才能訪問運動與健身</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string> App 需要您的同意, 才能訪問相簿</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string> App 需要您的同意, 才能訪問語音識別</string>
+    
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSExceptionDomains</key>
+      <dict>
+        <key>ntut.edu.tw</key>
+        <dict>
+          <!-- enable subdomains such as sub.yourserver.com -->
+          <key>NSIncludesSubdomains</key>
+          <true/>
+          <!-- allow standard HTTP requests, thus negating the ATS -->
+          <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+          <true/>
+          <!-- specify the minimum TLS version to accept -->
+          <key>NSTemporaryExceptionMinimumTLSVersion</key>
+          <string>TLSv1.2</string>
+        </dict>
+      </dict>
+    </dict>
 </dict>
 </plist>

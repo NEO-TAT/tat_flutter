@@ -1,27 +1,23 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/version/Version.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
-import 'package:flutter_app/src/version/VersionConfig.dart';
-import 'package:flutter_app/src/version/update/AppUpdate.dart';
+import 'package:flutter_app/src/util/AnalyticsUtils.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_app/src/util/RemoteConfigUtil.dart';
+import 'package:flutter_app/src/version/APPVersion.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/pages/calendar/CalendarPage.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTablePage.dart';
 import 'package:flutter_app/ui/pages/notification/NotificationPage.dart';
 import 'package:flutter_app/ui/pages/other/OtherPage.dart';
 import 'package:flutter_app/ui/pages/score/ScorePage.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -29,14 +25,11 @@ class MainScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with RouteAware {
   final _pageController = PageController();
   int _currentIndex = 0;
   int _closeAppCount = 0;
   List<Widget> _pageList = List<Widget>();
-  FirebaseAnalytics analytics = FirebaseAnalytics();
-
-
 
   @override
   void initState() {
@@ -44,12 +37,26 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    AnalyticsUtils.observer.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
+  void dispose() {
+    AnalyticsUtils.observer.unsubscribe(this);
+    super.dispose();
+  }
+
   void appInit() async {
     R.set(context);
-    await Model.instance.getInstance();
+    await Model.instance.getInstance(); //一定要先getInstance()不然無法取得資料
     try {
+      await RemoteConfigUtil.init();
       await initLanguage();
-      Version.initAndCheck(navigatorKey.currentState.context);
+      Log.init();
+      APPVersion.initAndCheck();
       initFlutterDownloader();
       initNotifications();
     } catch (e, stack) {
@@ -78,29 +85,18 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {});
   }
 
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
-        appProvider.navigatorKey = navigatorKey;
-        return MaterialApp(
-          navigatorKey: navigatorKey,
-          title: Constants.appName,
-          theme: appProvider.theme,
-          darkTheme: Constants.darkTheme,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: analytics),
-          ],
-          home: WillPopScope(
-            onWillPop: _onWillPop,
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              resizeToAvoidBottomPadding: false,
-              body: _buildPageView(),
-              bottomNavigationBar: _buildBottomNavigationBar(),
-            ),
+        appProvider.navigatorKey = Get.key;
+        return WillPopScope(
+          onWillPop: _onWillPop,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            resizeToAvoidBottomPadding: false,
+            body: _buildPageView(),
+            bottomNavigationBar: _buildBottomNavigationBar(),
           ),
         );
       },
@@ -132,12 +128,6 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _onPageChanged(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
@@ -148,46 +138,47 @@ class _MainScreenState extends State<MainScreen> {
           icon: Icon(
             EvaIcons.clockOutline,
           ),
-          title: Text(
-            R.current.titleCourse,
-          ),
+          label: R.current.titleCourse,
         ),
         BottomNavigationBarItem(
           icon: Icon(
             EvaIcons.emailOutline,
           ),
-          title: Text(
-            R.current.titleNotification,
+          label: R.current.titleNotification,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(
+            EvaIcons.calendarOutline,
           ),
+          label: R.current.calendar,
         ),
         BottomNavigationBarItem(
             icon: Icon(
-              EvaIcons.calendarOutline,
+              EvaIcons.bookOpenOutline,
             ),
-            title: Text(
-              R.current.calendar,
-            )),
+            label: R.current.titleScore),
         BottomNavigationBarItem(
-          icon: Icon(
-            EvaIcons.bookOpenOutline,
-          ),
-          title: Text(
-            R.current.titleScore,
-          ),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            EvaIcons.menu,
-          ),
-          title: Text(
-            R.current.titleOther,
-          ),
-        ),
+            icon: Icon(
+              EvaIcons.menu,
+            ),
+            label: R.current.titleOther),
       ],
     );
   }
 
+  void _onPageChange(int index) {
+    String screenName = _pageList[index].toString();
+    AnalyticsUtils.setScreenName(screenName);
+  }
+
   void _onTap(int index) {
     _pageController.jumpToPage(index);
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentIndex = index;
+      _onPageChange(_currentIndex);
+    });
   }
 }

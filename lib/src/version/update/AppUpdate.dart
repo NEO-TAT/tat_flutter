@@ -1,65 +1,35 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
-import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/costants/AppLink.dart';
-import 'package:flutter_app/src/json/GithubAPIJson.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_app/src/config/AppLink.dart';
+import 'package:flutter_app/src/model/remoteconfig/RemoteConfigVersionInfo.dart';
+import 'package:flutter_app/src/util/RemoteConfigUtil.dart';
+import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:get/get.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-class UpdateDetail {
-  String newVersion;
-  String detail;
-  String url;
-}
+import 'package:version/version.dart';
 
 class AppUpdate {
-  static Future<UpdateDetail> checkUpdate() async {
-    String androidCheckUrl = AppLink.appUpdateCheck;
-    if (Platform.isAndroid) {
-      try {
-        ConnectorParameter parameter = ConnectorParameter(androidCheckUrl);
-        String result = await DioConnector.instance.getDataByGet(parameter);
-        GithubAPIJson githubAPIJson =
-            GithubAPIJson.fromJson(json.decode(result));
-        PackageInfo packageInfo = await PackageInfo.fromPlatform();
-        List<int> nowVersion = List();
-        List<int> newVersion = List();
-        for (String i in packageInfo.version.split(".")) {
-          nowVersion.add(int.parse(i));
-        }
-        for (String i in githubAPIJson.name.split(".")) {
-          //利用name解析版本名稱，如解析失敗不會跳出
-          newVersion.add(int.parse(i));
-        }
-        bool needUpdate = false;
-        for (int i = 0; i < nowVersion.length; i++) {
-          if (newVersion[i] > nowVersion[i]) {
-            needUpdate = true;
-            break;
-          }
-        }
-        if (needUpdate) {
-          UpdateDetail updateDetail = UpdateDetail();
-          updateDetail.newVersion = githubAPIJson.tagName;
-          try {
-            updateDetail.url = githubAPIJson.assets[0].browserDownloadUrl;
-          } catch (e) {
-            updateDetail.url = "";
-          }
-          updateDetail.detail = githubAPIJson.body;
-          return updateDetail;
-        }
-      } catch (e) {
-        return null;
+  static Future<bool> checkUpdate() async {
+    try {
+      RemoteConfigVersionInfo config =
+          await RemoteConfigUtil.getVersionConfig();
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      Version currentVersion = Version.parse(packageInfo.version);
+      Version latestVersion = Version.parse(config.last.version);
+      bool needUpdate = latestVersion > currentVersion;
+      if (needUpdate) {
+        _showUpdateDialog(config);
+        return true;
       }
+    } catch (e) {
+      return false;
     }
-    return null;
+    return false;
   }
 
   static Future<String> getAppVersion() async {
@@ -67,62 +37,51 @@ class AppUpdate {
     return packageInfo.version;
   }
 
-  static void showUpdateDialog(BuildContext context, UpdateDetail value) {
-    showDialog<void>(
-      useRootNavigator: false,
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        String title =
-            sprintf("%s %s", [R.current.findNewVersion, value.newVersion]);
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(value.detail),
+  static void _showUpdateDialog(RemoteConfigVersionInfo value) async {
+    String title =
+        sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
+
+    bool v = await Get.dialog<bool>(
+      AlertDialog(
+        title: Text(title),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              if (value.isFocusUpdate) ...[
+                Text(R.current.isFocusUpdate),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                )
               ],
-            ),
+              Text(value.lastVersionDetail),
+            ],
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(R.current.cancel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FlatButton(
-              child: Text("github"),
-              onPressed: () {
-                launch(AppLink.gitHubReleases);
-              },
-            ),
-            FlatButton(
-              child: Text(R.current.update),
-              onPressed: () {
-                Navigator.of(context).pop();
-                /*
-                FileStore.findLocalPath(context).then(
-                  (filePath) {
-                    FlutterDownloader.enqueue(
-                            url: value.url, savedDir: filePath)
-                        .then(
-                      (id) {
-                        MyDownloader.addCallBack(id, _downloadCompleteCallBack);
-                        downloadTaskId = id;
-                        //FlutterDownloader.open(taskId: id);
-                      },
-                    );
-                  },
-                );
-                 */
-                _openAppStore();
-              },
-            ),
-          ],
-        );
-      },
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(R.current.cancel),
+            onPressed: () {
+              Get.back<bool>(result: false);
+            },
+          ),
+          FlatButton(
+            child: Text(R.current.update),
+            onPressed: () {
+              Get.back<bool>(result: true);
+              _openAppStore();
+            },
+          ),
+        ],
+      ),
+      useRootNavigator: false,
+      barrierDismissible: false, // user must tap button!
     );
+    if (value.isFocusUpdate) {
+      MyToast.show(R.current.appWillClose);
+      await Future.delayed(Duration(seconds: 1));
+      SystemNavigator.pop();
+      exit(0);
+    }
   }
 
   static void _openAppStore() async {
@@ -130,11 +89,5 @@ class AppUpdate {
     if (await canLaunch(url)) {
       await launch(url);
     }
-  }
-
-  static String downloadTaskId;
-
-  static void _downloadCompleteCallBack() {
-    FlutterDownloader.open(taskId: downloadTaskId);
   }
 }

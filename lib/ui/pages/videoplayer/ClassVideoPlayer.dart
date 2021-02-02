@@ -1,39 +1,53 @@
-import 'dart:io';
-
-import 'package:android_intent/android_intent.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/config/AppConfig.dart';
+import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/file/FileDownload.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/util/LanguageUtil.dart';
+import 'package:flutter_app/src/util/MXPlayerUtil.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_ijkplayer/flutter_ijkplayer.dart';
+import 'package:get/get.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
+import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart' as URI;
+import 'package:video_player/video_player.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
-  final String uuid;
+  final String videoUrl;
+  final CourseInfoJson courseInfo;
+  final String name;
 
-  ClassVideoPlayer(this.uuid);
+  ClassVideoPlayer(this.videoUrl, this.courseInfo, this.name);
 
   @override
   _VideoPlayer createState() => _VideoPlayer();
 }
 
+class VideoInfo {
+  String name;
+  String url;
+}
+
 class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
-  IjkMediaController controller;
-  List<String> videoName = List();
+  VideoPlayerController _controller;
+  ChewieController _chewieController;
+  List<VideoInfo> videoName = List();
+  VideoInfo _select;
   int selectIndex = 0;
 
   @override
   void initState() {
-    controller = IjkMediaController();
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
     parseVideo();
@@ -42,35 +56,38 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   @override
   void dispose() {
     BackButtonInterceptor.remove(myInterceptor);
-    controller.dispose();
+    _controller?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
-    Navigator.of(context).pop();
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
+    Get.back();
     return true;
   }
 
   void parseVideo() async {
     isLoading = true;
-    ConnectorParameter parameter = ConnectorParameter(
-        "https://istream.ntut.edu.tw/lecture/api/Search/recordingSearchByUUID");
-    parameter.data = {"type": "xml", "uuid": widget.uuid};
-    String xml = await Connector.getDataByGet(parameter);
-    dom.Document tagNode = parse(xml);
-    dom.Element node = tagNode.getElementsByTagName("item").first;
-    //String title = node.getElementsByTagName("title").first.text;
-    //String description = node.getElementsByTagName("description").first.text;
-    String presenterVideo =
-        node.getElementsByTagName("presenter_video").first.text;
-    String presenterVideo2 =
-        node.getElementsByTagName("presenter2_video").first.text;
-    String presentationVideo =
-        node.getElementsByTagName("presentation_video").first.text;
-
-    for (String name in [presenterVideo, presenterVideo2, presentationVideo]) {
-      if (name != null && name.isNotEmpty) {
-        videoName.add(name);
+    ConnectorParameter parameter = ConnectorParameter(widget.videoUrl);
+    String result = await Connector.getDataByGet(parameter);
+    dom.Document tagNode = parse(result);
+    dom.Element node = tagNode.getElementById("videoplayer");
+    if (node?.children == null) {
+      MyToast.show(R.current.unknownError);
+      Get.back();
+      return;
+    }
+    for (dom.Element child in node.children) {
+      try {
+        if (child.children.first.localName == 'source') {
+          String url = child.children.first.attributes['src'];
+          VideoInfo info = VideoInfo();
+          info.url = url;
+          info.name = child.id;
+          videoName.add(info);
+        }
+      } catch (e, stack) {
+        continue;
       }
     }
     await _buildDialog();
@@ -79,54 +96,65 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     });
   }
 
+  String getVideoUrl(String path) {
+    String url = "https://istream.ntut.edu.tw/videoplayer/$path";
+    return url;
+  }
+
   Future<void> _buildDialog() async {
-    String url = await showDialog<String>(
-      useRootNavigator: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            width: double.minPositive,
-            child: ListView.builder(
-              itemCount: videoName.length,
-              shrinkWrap: true, //使清單最小化
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: FlatButton(
-                    child: Text(videoName[index]),
-                    onPressed: () {
-                      String url = getRTMPUrl(videoName[index]);
-                      Navigator.of(context).pop(url);
-                    },
-                  ),
-                );
-              },
-            ),
+    String url = await Get.dialog<String>(
+      AlertDialog(
+        content: Container(
+          width: double.minPositive,
+          child: ListView.builder(
+            itemCount: videoName.length,
+            shrinkWrap: true, //使清單最小化
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                child: FlatButton(
+                  child: Text(videoName[index].name),
+                  onPressed: () {
+                    String url = getVideoUrl(videoName[index].url);
+                    _select = videoName[index];
+                    Get.back<String>(result: url);
+                  },
+                ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
+      useRootNavigator: false,
+      barrierDismissible: true,
     );
+    bool open = false;
     if (Model.instance.getOtherSetting().useExternalVideoPlayer) {
-      if (Platform.isAndroid) {
-        AndroidIntent intent = AndroidIntent(
-          action: 'action_view',
-          data: url,
-        );
-        try {
-          await intent.launch();
-          Navigator.of(context).pop();
-        } catch (e) {
-          MyToast.show(R.current.noSupportExternalVideoPlayer);
-          controller.setNetworkDataSource(url, autoPlay: true);
-        }
-      }
+      String name = widget.name + "_" + _select.name + ".mp4";
+      open = await MXPlayerUtil.launch(url: url, name: name);
+    }
+    if (!open) {
+      await initController(url);
     } else {
-      controller.setNetworkDataSource(url, autoPlay: true);
+      Get.back();
     }
   }
 
-  String getRTMPUrl(String name) {
-    return "rtmp://istreaming.ntut.edu.tw/lecture/" + widget.uuid + "/" + name;
+  Future<void> initController(String url) async {
+    _controller = VideoPlayerController.network(
+      url,
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    await _controller.initialize();
+    _chewieController = ChewieController(
+      videoPlayerController: _controller,
+      autoPlay: true,
+      //aspectRatio: 3 / 2.0,
+      //customControls: CustomControls(),
+    );
   }
 
   @override
@@ -134,32 +162,57 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget child) {
         return MaterialApp(
-          title: Constants.appName,
+          title: AppConfig.appName,
           theme: appProvider.theme,
-          darkTheme: Constants.darkTheme,
+          darkTheme: AppThemes.darkTheme,
           home: Scaffold(
             appBar: AppBar(
               leading: BackButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => Get.back(),
               ),
               title: Text(R.current.classVideo),
+              actions: [
+                if (!isLoading)
+                  IconButton(
+                    icon: Icon(Icons.file_download),
+                    onPressed: () async {
+                      String url = _controller.dataSource;
+                      String courseName = widget.courseInfo.main.course.name;
+                      String saveName =
+                          widget.name + "_" + _select.name + ".mp4";
+                      String subDir =
+                          (LanguageUtil.getLangIndex() == LangEnum.zh)
+                              ? "上課錄影"
+                              : "video";
+                      String dirName = path.join(courseName, subDir);
+                      FileDownload.download(context, url, dirName, saveName);
+                    },
+                  ),
+                if (!isLoading)
+                  IconButton(
+                    icon: Icon(Icons.open_in_new),
+                    onPressed: () async {
+                      await URI.launch(_controller.dataSource);
+                    },
+                  )
+              ],
             ),
-            body: (isLoading)
+            body: (isLoading || _controller == null)
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : buildIjkPlayer(controller),
+                : buildVideoPlayer(_controller),
           ),
         );
       },
     );
   }
 
-  Widget buildIjkPlayer(IjkMediaController controller) {
+  Widget buildVideoPlayer(VideoPlayerController controller) {
     return Container(
       // height: 400, // 這裡隨意
-      child: IjkPlayer(
-        mediaController: controller,
+      child: Chewie(
+        controller: _chewieController,
       ),
     );
   }

@@ -29,6 +29,7 @@
 ## 貢獻者
 - [morris13579](https://github.com/morris13579)
 - [yaoandy107](https://github.com/yaoandy107)
+- [Xanonymous](https://github.com/Xanonymous-GitHub)
 - [DevilTea](https://github.com/DevilTea)
 
 ## 授權

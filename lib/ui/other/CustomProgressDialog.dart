@@ -1,12 +1,9 @@
-import 'dart:async';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:synchronized/synchronized.dart';
 
 class CustomProgressDialog extends StatelessWidget {
   const CustomProgressDialog({
@@ -78,78 +75,5 @@ class CustomProgressDialog extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-//the code below is writeen by Vikas-Jilla and the above code is from existing material dialog library
-class StyleProgressDialog {
-  bool isDismissed = true;
-  var lock = Lock();
-  Timer _timer;
-  Future<void> dismissProgressDialog(BuildContext context) async {
-    _timer?.cancel();
-    await lock.synchronized(() async {
-      if (isDismissed == null) return; //修正返回後等待窗消失問題
-      if (isDismissed) {
-        return;
-      }
-      isDismissed = true;
-      Navigator.of(context, rootNavigator: true).pop(true);
-    });
-  }
-
-  void showProgressDialog(BuildContext context,
-      {Color barrierColor = const Color(0x55222222),
-      String textToBeDisplayed,
-      Duration dismissAfter = const Duration(seconds: 5),
-      Function onDismiss}) {
-    dismissProgressDialog(context).then((_) {
-      isDismissed = false;
-      showGeneralDialog(
-        context: context,
-        barrierColor: barrierColor,
-        pageBuilder: (context, animation1, animation2) {
-          return CustomProgressDialog(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: const BorderRadius.all(Radius.circular(5))),
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Platform.isIOS
-                      ? CupertinoActivityIndicator(
-                          radius: 15,
-                        )
-                      : CircularProgressIndicator(),
-                  textToBeDisplayed == null
-                      ? Padding(
-                          padding: EdgeInsets.all(0),
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: Text(
-                            textToBeDisplayed,
-                            style: TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                ],
-              ),
-            ),
-          );
-        },
-        barrierDismissible: false,
-        transitionDuration: const Duration(milliseconds: 100),
-      ).then((dismissed) {
-        isDismissed = dismissed;
-      });
-      if (dismissAfter == null) return;
-      _timer = Timer(dismissAfter, () {
-        dismissProgressDialog(context);
-        if (onDismiss != null) onDismiss();
-      });
-    });
   }
 }

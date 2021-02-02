@@ -6,6 +6,8 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
@@ -13,7 +15,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
-import 'package:sprintf/sprintf.dart';
 
 import 'FileStore.dart';
 
@@ -86,7 +87,7 @@ class FileDownload {
         //代表包含.
         List<String> s = name.split(".");
         s.removeLast();
-        if (realFileName.contains(".")) {
+        if (realFileName != null && realFileName.contains(".")) {
           realFileName = s.join() + '.' + realFileName.split(".").last;
         }
       }
@@ -104,7 +105,11 @@ class FileDownload {
         value.id = Notifications.instance.notificationId; //取得新的id
         String filePath = path + '/' + realFileName;
         int id = value.id;
-        value.payload = sprintf(r'{ "path": "%s" , "id" : %d}', [filePath, id]);
+        value.payload = json.encode({
+          "type": "download_complete",
+          "path": filePath,
+          "id": id,
+        });
         await Notifications.instance.showNotification(value); //顯示下載完成
       },
     ).catchError(
@@ -116,8 +121,10 @@ class FileDownload {
         value.body = "下載失敗";
         value.id = Notifications.instance.notificationId; //取得新的id
         int id = value.id;
-        value.payload =
-            sprintf(r'{ "info": "%s" , "id" : %d}', ["downloadFail", id]);
+        value.payload = json.encode({
+          "type": "download_fail",
+          "id": id,
+        });
         await Notifications.instance.showNotification(value); //顯示下載完成
       },
     );

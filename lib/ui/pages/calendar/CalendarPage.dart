@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/json/NTUTCalendarJson.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/TaskModelFunction.dart';
-import 'package:flutter_app/src/taskcontrol/task/CheckCookiesTask.dart';
+import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/ntut/NTUTCalendarTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
-import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyProgressDialog.dart';
+import 'package:flutter_app/ui/pages/calendar/CalendarDetailDialog.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -50,49 +48,42 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   void _addEvent() async {
-    final _selectedDay = DateTime.now();
+    var _selectedDay = DateTime.now();
+    _selectedDay = _selectedDay.add(Duration(hours: 8)); //to TW time
+    print(_selectedDay.toIso8601String());
     await _getEvent(_selectedDay);
+    for (DateTime time in _events.keys) {
+      //顯示當天事件
+      int diffDays = _selectedDay.difference(time).inDays;
+      bool isSame = (diffDays == 0);
+      if (isSame) {
+        _onDaySelected(_selectedDay, _events[time], null);
+        break;
+      }
+    }
   }
 
   Future<void> _getEvent(DateTime time) async {
     DateTime startTime = DateTime(time.year, time.month, 1);
     DateTime endTime = DateTime(time.year, time.month + 1, 1);
     List<NTUTCalendarJson> eventNTUTs;
+
+    TaskFlow taskFlow = TaskFlow();
+    var calendarTask = NTUTCalendarTask(startTime, endTime);
+    taskFlow.addTask(calendarTask);
     _events = Map();
-    TaskHandler.instance.addTask(TaskModelFunction(
-      context,
-      require: [CheckCookiesTask.checkNTUT],
-      taskFunction: () async {
-        MyProgressDialog.showProgressDialog(context, R.current.getCalendar);
-        //查詢已修課程
-        eventNTUTs = await NTUTConnector.getCalendar(startTime, endTime);
-        MyProgressDialog.hideProgressDialog();
-        if (eventNTUTs != null) {
-          return true;
+    if (await taskFlow.start()) {
+      eventNTUTs = calendarTask.result;
+      _events = Map();
+      for (int i = 0; i < eventNTUTs.length; i++) {
+        NTUTCalendarJson eventNTUT = eventNTUTs[i];
+        if (_events.containsKey(eventNTUT.startTime)) {
+          _events[eventNTUT.startTime].add(eventNTUT);
         } else {
-          return false;
+          _events[eventNTUT.startTime] = [eventNTUT];
         }
-      },
-      errorFunction: () {
-        ErrorDialogParameter parameter = ErrorDialogParameter(
-          context: context,
-          desc: R.current.getCalendarError,
-        );
-        ErrorDialog(parameter).show();
-      },
-      successFunction: () async {
-        _events = Map();
-        for (int i = 0; i < eventNTUTs.length; i++) {
-          NTUTCalendarJson eventNTUT = eventNTUTs[i];
-          if (_events.containsKey(eventNTUT.startTime)) {
-            _events[eventNTUT.startTime].add(eventNTUT.calTitle);
-          } else {
-            _events[eventNTUT.startTime] = [eventNTUT.calTitle];
-          }
-        }
-      },
-    ));
-    await TaskHandler.instance.startTaskQueue(context);
+      }
+    }
     setState(() {
       _selectedEvents = [];
     });
@@ -105,7 +96,7 @@ class _CalendarPageState extends State<CalendarPage>
     super.dispose();
   }
 
-  void _onDaySelected(DateTime day, List events) {
+  void _onDaySelected(DateTime day, List events, List holidays) {
     print('CALLBACK: _onDaySelected');
     setState(() {
       _selectedEvents = events;
@@ -356,9 +347,14 @@ class _CalendarPageState extends State<CalendarPage>
                 margin:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                 child: ListTile(
-                  title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
-                ),
+                    title: Text(event.calTitle),
+                    onTap: () {
+                      Get.dialog(
+                        CalendarDetailDialog(calendarDetail: event),
+                        useRootNavigator: false,
+                        barrierDismissible: true,
+                      );
+                    }),
               ))
           .toList(),
     );

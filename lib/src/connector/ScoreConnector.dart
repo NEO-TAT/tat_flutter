@@ -6,28 +6,21 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+
 import 'core/Connector.dart';
 import 'core/ConnectorParameter.dart';
 
-enum ScoreConnectorStatus {
-  LoginSuccess,
-  LoginFail,
-  ConnectTimeOutError,
-  NetworkError,
-  UnknownError
-}
+enum ScoreConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
 class ScoreConnector {
-  static bool _isLogin = false;
   static final String _scoreHost = "https://aps-course.ntut.edu.tw/";
-  static final String _getLoginScoreUrl =
-      "https://nportal.ntut.edu.tw/ssoIndex.do";
+  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static final String _scoreUrl = _scoreHost + "StuQuery/StudentQuery.jsp";
   static final String _scoreRankUrl = _scoreHost + "StuQuery/QryRank.jsp";
   static final String _scoreAllScoreUrl = _scoreHost + "StuQuery/QryScore.jsp";
@@ -46,7 +39,7 @@ class ScoreConnector {
         "sso": "big5",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter(_getLoginScoreUrl);
+      parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
@@ -62,12 +55,26 @@ class ScoreConnector {
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
-      _isLogin = true;
       return ScoreConnectorStatus.LoginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return ScoreConnectorStatus.LoginFail;
     }
+  }
+
+  static String strQ2B(String input) {
+    List<int> newString = List();
+    for (int c in input.codeUnits) {
+      if (c == 12288) {
+        c = 32;
+        continue;
+      }
+      if (c > 65280 && c < 65375) {
+        c = (c - 65248);
+      }
+      newString.add(c);
+    }
+    return String.fromCharCodes(newString);
   }
 
   static Future<List<SemesterCourseScoreJson>> getScoreRankList() async {
@@ -107,14 +114,17 @@ class ScoreConnector {
         courseScore.semester = semester;
         //取得課程名稱與分數
         scoreNodes = tableNode.getElementsByTagName("tr");
-        int offset = (scoreNodes.length >= 5)
-            ? (scoreNodes.reversed.toList()[5].text.replaceAll("\n", "") == "")
-                ? 6
-                : 3
-            : 6;
-        for (int j = 1; j < scoreNodes.length - offset; j++) {
+        int scoreEnd = scoreNodes.length - 5;
+        for (int i = scoreNodes.length - 1; i >= 0; i--) {
+          String text = strQ2B(scoreNodes[i].text).replaceAll("[\n| ]", "");
+          if (text.contains("This Semester Score")) {
+            scoreEnd = i;
+            break;
+          }
+        }
+        for (int j = 1; j < scoreEnd - 1; j++) {
           scoreNode = scoreNodes[j];
-          CourseInfoJson score = CourseInfoJson();
+          CourseScoreInfoJson score = CourseScoreInfoJson();
           score.courseId = scoreNode
               .getElementsByTagName("th")[0]
               .text
@@ -126,7 +136,7 @@ class ScoreConnector {
           score.nameEn = scoreNode
               .getElementsByTagName("th")[3]
               .text
-              .replaceAll(RegExp(r"[\s| ]"), "");
+              .replaceAll(RegExp("\n"), "");
           score.credit =
               double.parse(scoreNode.getElementsByTagName("th")[6].text);
           score.score = scoreNode
@@ -273,34 +283,6 @@ class ScoreConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
-    }
-  }
-
-  static bool get isLogin {
-    return _isLogin;
-  }
-
-  static Future<bool> checkLogin() async {
-    Log.d("Score CheckLogin");
-    ConnectorParameter parameter;
-    _isLogin = false;
-    try {
-      parameter = ConnectorParameter(_scoreUrl);
-      parameter.charsetName = 'big5';
-      Response response = await Connector.getDataByGetResponse(parameter);
-      if (response.statusCode != 200) {
-        return false;
-      } else {
-        if (response.toString().contains("中斷連線")) {
-          return false;
-        }
-        Log.d("Score Is Readly Login");
-        _isLogin = true;
-        return true;
-      }
-    } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
-      return false;
     }
   }
 }

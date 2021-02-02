@@ -1,10 +1,12 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/util/FileUtils.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:get/get.dart';
 import 'package:path/path.dart' as pathLib;
 import 'package:provider/provider.dart';
 
@@ -312,9 +314,8 @@ class _FileViewerPageState extends State<FileViewerPage>
 
   addDialog(BuildContext context, String path) {
     final TextEditingController name = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) => CustomAlert(
+    Get.dialog(
+      CustomAlert(
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -399,6 +400,8 @@ class _FileViewerPageState extends State<FileViewerPage>
           ),
         ),
       ),
+      useRootNavigator: false,
+      barrierDismissible: true,
     );
   }
 
@@ -407,9 +410,8 @@ class _FileViewerPageState extends State<FileViewerPage>
     setState(() {
       name.text = pathLib.basename(path);
     });
-    showDialog(
-      context: context,
-      builder: (context) => CustomAlert(
+    Get.dialog(
+      CustomAlert(
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -523,6 +525,8 @@ class _FileViewerPageState extends State<FileViewerPage>
           ),
         ),
       ),
+      useRootNavigator: false,
+      barrierDismissible: true,
     );
   }
 }

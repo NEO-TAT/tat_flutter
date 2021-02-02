@@ -58,7 +58,7 @@ class Connector {
   static Map<String, String> getLoginHeaders(String url) {
     try {
       PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
-      Map<String, String> headers = DioConnector.instance.headers;
+      Map<String, String> headers = Map.from(DioConnector.instance.headers);
       headers["Cookie"] = cookieJar
           .loadForRequest(Uri.parse(url))
           .toString()

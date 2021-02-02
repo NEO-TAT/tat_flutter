@@ -1,10 +1,12 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/version/hotfix/AppHotFix.dart';
+import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 
-enum onListViewPress { DeletePatch, Exit }
+enum onListViewPress { CloudMessageToken, DioLog, AppLog }
 
 class DevPage extends StatefulWidget {
   @override
@@ -14,16 +16,22 @@ class DevPage extends StatefulWidget {
 class _DevPageState extends State<DevPage> {
   final List<Map> listViewData = [
     {
-      "icon": Icons.delete_outline,
-      "title": R.current.deletePatch,
-      "color": Colors.red,
-      "onPress": onListViewPress.DeletePatch
+      "icon": Icons.vpn_key_outlined,
+      "title": "Cloud Messaging Token",
+      "color": Colors.green,
+      "onPress": onListViewPress.CloudMessageToken
     },
     {
-      "icon": Icons.exit_to_app,
-      "title": R.current.exitDevMode,
+      "icon": Icons.info_outline,
+      "title": "Dio Log",
+      "color": Colors.blue,
+      "onPress": onListViewPress.DioLog
+    },
+    {
+      "icon": Icons.info_outline,
+      "title": "App Log",
       "color": Colors.yellow,
-      "onPress": onListViewPress.Exit
+      "onPress": onListViewPress.AppLog
     },
   ];
 
@@ -36,14 +44,16 @@ class _DevPageState extends State<DevPage> {
 
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
-      case onListViewPress.Exit:
-        AppHotFix.setDevMode(false);
-        AppHotFix.deleteHotFix();
-        Navigator.of(context).pop(false);
+      case onListViewPress.CloudMessageToken:
+        String token = await CloudMessagingUtils.getToken();
+        MyToast.show(token + " copy");
+        FlutterClipboard.copy(token);
         break;
-      case onListViewPress.DeletePatch:
-        MyToast.show(R.current.patchDelete);
-        AppHotFix.deleteHotFix();
+      case onListViewPress.DioLog:
+        RouteUtils.toAliceInspectorPage();
+        break;
+      case onListViewPress.AppLog:
+        RouteUtils.toLogConsolePage();
         break;
       default:
         MyToast.show(R.current.noFunction);
@@ -55,7 +65,7 @@ class _DevPageState extends State<DevPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(R.current.about),
+        title: Text(R.current.developerMode),
       ),
       body: ListView.separated(
         itemCount: listViewData.length,

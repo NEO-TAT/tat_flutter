@@ -7,12 +7,13 @@
 //
 
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/l10n.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/model/setting/SettingJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/SettingJson.dart';
 
 enum LangEnum { en, zh }
 

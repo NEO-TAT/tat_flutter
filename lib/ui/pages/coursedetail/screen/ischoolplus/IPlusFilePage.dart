@@ -6,16 +6,17 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
+import 'package:flutter_app/src/model/ischoolplus/CourseFileJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/object/CourseFileJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
-import 'package:flutter_app/src/taskcontrol/task/ischoolplus/ISchoolPlusCourseFileTask.dart';
+import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/iplus/IPlusCourseFileTask.dart';
+import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/ui/icon/MyIcons.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/MyPageTransition.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
-import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
+import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -54,7 +55,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     super.dispose();
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
     if (selectList.inSelectMode) {
       selectList.leaveSelectMode();
       setState(() {});
@@ -67,10 +68,13 @@ class _IPlusFilePage extends State<IPlusFilePage>
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
     String courseId = widget.courseInfo.main.course.id;
-    TaskHandler.instance.addTask(ISchoolPlusCourseFileTask(context, courseId));
-    await TaskHandler.instance.startTaskQueue(context);
-    courseFileList = Model.instance
-        .getTempData(ISchoolPlusCourseFileTask.courseFileListTempKey);
+
+    TaskFlow taskFlow = TaskFlow();
+    var task = IPlusCourseFileTask(courseId);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      courseFileList = task.result;
+    }
     courseFileList = courseFileList ?? List();
     selectList.addItems(courseFileList.length);
     setState(() {});
@@ -226,6 +230,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     String url;
     String referer;
     List<String> urlList = List();
+    await AnalyticsUtils.logDownloadFileEvent();
     if (showToast) {
       MyToast.show(R.current.downloadWillStart);
     }
@@ -249,16 +254,16 @@ class _IPlusFilePage extends State<IPlusFilePage>
       };
       ErrorDialog(errorDialogParameter).show();
       return;
-    } else if (urlParse.host.contains("istream.ntut.edu.tw") &&
-        urlParse.path.contains("/lecture/player/player2.html")) {
+    } else if (urlParse.host.contains("istream.ntut.edu.tw")) {
       ErrorDialogParameter errorDialogParameter =
           ErrorDialogParameter(context: context, desc: R.current.isVideo);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
-        String uuid = urlParse.queryParameters["vid"]; //影片uuid
-        Navigator.of(context).push(MyPage.transition(ClassVideoPlayer(uuid)));
+        Get.back();
+        RouteUtils.toVideoPlayer(
+            urlParse.toString(), widget.courseInfo, courseFile.name);
       };
       ErrorDialog(errorDialogParameter).show();
     } else {

@@ -6,12 +6,15 @@
 //
 
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 
 class Animator extends StatefulWidget {
   final Widget child;
   final Duration time;
+
   Animator(this.child, this.time);
+
   @override
   _AnimatorState createState() => _AnimatorState();
 }
@@ -21,6 +24,7 @@ class _AnimatorState extends State<Animator>
   Timer timer;
   AnimationController animationController;
   Animation animation;
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +62,7 @@ class _AnimatorState extends State<Animator>
 
 Timer timer;
 Duration duration = Duration();
+
 wait() {
   if (timer == null || !timer.isActive) {
     timer = Timer(Duration(microseconds: 120), () {
@@ -70,7 +75,9 @@ wait() {
 
 class WidgetAnimator extends StatelessWidget {
   final Widget child;
+
   WidgetAnimator(this.child);
+
   @override
   Widget build(BuildContext context) {
     return Animator(child, wait());

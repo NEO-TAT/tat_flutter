@@ -8,7 +8,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/taskcontrol/TaskHandler.dart';
+import 'package:get/get.dart';
 
 class ErrorDialogParameter {
   BuildContext context;
@@ -20,8 +20,11 @@ class ErrorDialogParameter {
   AnimType animType;
   Function btnOkOnPress;
   Function btnCancelOnPress;
+  bool offOkBtn;
+  bool offCancelBtn;
+
   ErrorDialogParameter(
-      {@required this.context,
+      {this.context,
       @required this.desc,
       this.title,
       this.btnOkText,
@@ -29,7 +32,9 @@ class ErrorDialogParameter {
       this.animType,
       this.dialogType,
       this.btnCancelOnPress,
-      this.btnOkOnPress}) {
+      this.btnOkOnPress,
+      this.offOkBtn: false,
+      this.offCancelBtn: false}) {
     title = title ?? R.current.alertError;
     btnOkText = btnOkText ?? R.current.restart;
     btnCancelText = btnCancelText ?? R.current.cancel;
@@ -37,32 +42,40 @@ class ErrorDialogParameter {
     dialogType = dialogType ?? DialogType.ERROR;
     btnCancelOnPress = btnCancelOnPress ??
         () {
-          TaskHandler.instance.giveUpTask();
+          Get.back<bool>(result: false);
         };
     btnOkOnPress = btnOkOnPress ??
         () {
-          TaskHandler.instance.continueTask();
+          Get.back<bool>(result: true);
         };
+    if (offOkBtn) {
+      btnOkOnPress = null;
+    }
+    if (offCancelBtn) {
+      btnCancelOnPress = null;
+    }
   }
 }
 
 class ErrorDialog {
   ErrorDialogParameter parameter;
+
   ErrorDialog(this.parameter);
 
-  void show() {
-    AwesomeDialog(
-            context: parameter.context,
-            dialogType: parameter.dialogType,
-            animType: parameter.animType,
-            title: parameter.title,
-            desc: parameter.desc,
-            btnOkText: parameter.btnOkText,
-            btnCancelText: parameter.btnCancelText,
-            useRootNavigator: true,
-            dismissOnTouchOutside: false,
-            btnCancelOnPress: parameter.btnCancelOnPress,
-            btnOkOnPress: parameter.btnOkOnPress)
-        .show();
+  Future<bool> show() async {
+    return await Get.dialog<bool>(AwesomeDialog(
+                context: Get.key.currentState.context,
+                dialogType: parameter.dialogType,
+                animType: parameter.animType,
+                title: parameter.title,
+                desc: parameter.desc,
+                btnOkText: parameter.btnOkText,
+                btnCancelText: parameter.btnCancelText,
+                useRootNavigator: false,
+                dismissOnTouchOutside: false,
+                btnCancelOnPress: parameter.btnCancelOnPress,
+                btnOkOnPress: parameter.btnOkOnPress)
+            .child) ??
+        false;
   }
 }

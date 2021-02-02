@@ -1,8 +1,9 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/costants/app_colors.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 
 class CourseTableControl {
   bool isHideSaturday = false;
@@ -35,7 +36,6 @@ class CourseTableControl {
     "15:10 - 16:00",
     "16:10 - 17:00",
     "17:10 - 18:00",
-    "18:30 - 19:20",
     "18:30 - 19:20",
     "19:20 - 20:10",
     "20:20 - 21:10",

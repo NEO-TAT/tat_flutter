@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/costants/Constants.dart';
+import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class IPlusAnnouncementDetailPage extends StatefulWidget {
@@ -34,24 +35,25 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
     super.dispose();
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent) {
-    Navigator.of(context).pop();
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
+    Get.back();
     return true;
   }
 
   bool addLink = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Get.back(),
         ),
         title: Text(widget.courseInfo.main.course.name),
         actions: <Widget>[
           PopupMenuButton<int>(
             onSelected: (result) {
-              if( !addLink ) {
+              if (!addLink) {
                 setState(() {
                   addLink = true;
                   widget.data["body"] = HtmlUtils.addLink(widget.data["body"]);
@@ -83,10 +85,12 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(
-                      widget.data["title"],
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
+                    Expanded(
+                      child: Text(
+                        widget.data["title"],
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                   ],
                 ),
@@ -119,7 +123,8 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   Widget _showFileList() {
-    List<String> fileNameList = widget.data['file'].keys.toList();  //key : 文件名稱  value : 文件下載url
+    List<String> fileNameList =
+        widget.data['file'].keys.toList(); //key : 文件名稱  value : 文件下載url
     Map fileUrlMap = widget.data["file"];
     if (fileNameList.length == 0) {
       return Container(
@@ -163,7 +168,8 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
                 return InkWell(
                   child: WidgetAnimator(fileWidget),
                   onTap: () {
-                    _downloadFile(fileUrlMap[fileNameList[index]], fileNameList[index]);
+                    _downloadFile(
+                        fileUrlMap[fileNameList[index]], fileNameList[index]);
                   },
                 );
               },
@@ -187,7 +193,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
       onTapUrl: (url) {
         onUrlTap(url);
       },
-      hyperlinkColor: Constants.hyperlinkColor,
+      hyperlinkColor: AppColors.hyperlinkColor,
     );
   }
 

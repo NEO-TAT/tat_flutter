@@ -8,39 +8,35 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/store/Model.dart';
-import 'package:flutter_app/src/store/json/CourseClassJson.dart';
-import 'package:flutter_app/src/store/json/CourseMainExtraJson.dart';
-import 'package:flutter_app/src/store/json/CourseScoreJson.dart';
-import 'package:flutter_app/src/store/json/CourseTableJson.dart';
+import 'package:flutter_app/src/connector/NTUTConnector.dart';
+import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
+import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
+import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 
-import 'core/Connector.dart';
-import 'core/ConnectorParameter.dart';
+enum CourseConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
-enum CourseConnectorStatus {
-  LoginSuccess,
-  LoginFail,
-  ConnectTimeOutError,
-  NetworkError,
-  UnknownError
+class CourseMainInfo {
+  List<CourseMainInfoJson> json;
+  String studentName;
 }
 
 class CourseConnector {
-  static bool _isLogin = false;
-  static final String _getLoginCourseUrl =
-      "https://nportal.ntut.edu.tw/ssoIndex.do";
+  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
   static final String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
   static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";
+  static final String _postTeacherCourseCNUrl = _courseCNHost + "Teach.jsp";
   static final String _postCourseENUrl = _courseENHost + "Select.jsp";
   static final String _checkLoginUrl = _courseCNHost + "Select.jsp";
   static final String _creditUrl = _courseCNHost + "Cprog.jsp";
 
   static Future<CourseConnectorStatus> login() async {
     String result;
-    _isLogin = false;
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -51,7 +47,7 @@ class CourseConnector {
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter(_getLoginCourseUrl);
+      parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
@@ -67,7 +63,6 @@ class CourseConnector {
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
-      _isLogin = true;
       return CourseConnectorStatus.LoginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -211,8 +206,9 @@ class CourseConnector {
     return String.fromCharCodes(newString);
   }
 
-  static Future<List<CourseMainInfoJson>> getENCourseMainInfoList(
+  static Future<CourseMainInfo> getENCourseMainInfoList(
       String studentId, SemesterJson semester) async {
+    var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -247,7 +243,7 @@ class CourseConnector {
         Log.eWithStack(e.toString(), stack);
         studentName = "";
       }
-      Model.instance.setTempData("studentName", studentName);
+      info.studentName = studentName;
 
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 1; i < courseNodes.length - 1; i++) {
@@ -307,16 +303,17 @@ class CourseConnector {
         }
         courseMainInfoList.add(courseMainInfo);
       }
-
-      return courseMainInfoList;
+      info.json = courseMainInfoList;
+      return info;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
     }
   }
 
-  static Future<List<CourseMainInfoJson>> getTWCourseMainInfoList(
+  static Future<CourseMainInfo> getTWCourseMainInfoList(
       String studentId, SemesterJson semester) async {
+    var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
@@ -352,7 +349,7 @@ class CourseConnector {
       } catch (e) {
         studentName = "";
       }
-      Model.instance.setTempData("studentName", studentName);
+      info.studentName = studentName;
       List<CourseMainInfoJson> courseMainInfoList = List();
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
@@ -422,8 +419,120 @@ class CourseConnector {
 
         courseMainInfoList.add(courseMainInfo);
       }
+      info.json = courseMainInfoList;
+      return info;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
 
-      return courseMainInfoList;
+  static Future<CourseMainInfo> getTWTeacherCourseMainInfoList(
+      String studentId, SemesterJson semester) async {
+    var info = CourseMainInfo();
+    try {
+      ConnectorParameter parameter;
+      Document tagNode;
+      Element node;
+      List<Element> courseNodes, nodesOne, nodes;
+      List<Day> dayEnum = [
+        Day.Sunday,
+        Day.Monday,
+        Day.Tuesday,
+        Day.Wednesday,
+        Day.Thursday,
+        Day.Friday,
+        Day.Saturday
+      ];
+      Map<String, String> data = {
+        "code": studentId,
+        "format": "-3",
+        "year": semester.year,
+        "sem": semester.semester,
+      };
+      parameter = ConnectorParameter(_postTeacherCourseCNUrl);
+      parameter.data = data;
+      parameter.charsetName = 'big5';
+      Response response = await Connector.getDataByPostResponse(parameter);
+      tagNode = parse(response.toString());
+      node = tagNode.getElementsByTagName("table")[0];
+      courseNodes = node.getElementsByTagName("tr");
+      String studentName;
+      try {
+        studentName = courseNodes[0].text.replaceAll("　　", " ").split(" ")[2];
+      } catch (e) {
+        studentName = "";
+      }
+      info.studentName = studentName;
+      List<CourseMainInfoJson> courseMainInfoList = List();
+      for (int i = 2; i < courseNodes.length - 1; i++) {
+        CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
+        CourseMainJson courseMain = CourseMainJson();
+
+        nodesOne = courseNodes[i].getElementsByTagName("td");
+        if (nodesOne[16].text.contains("撤選")) {
+          continue;
+        }
+        //取得課號
+        nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
+        if (nodes.length >= 1) {
+          courseMain.id = nodes[0].text;
+          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
+        }
+        //取的課程名稱/課程連結
+        nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
+        if (nodes.length >= 1) {
+          courseMain.name = nodes[0].text;
+        } else {
+          courseMain.name = nodesOne[1].text;
+        }
+        courseMain.stage = nodesOne[2].text.replaceAll("\n", ""); //階段
+        courseMain.credits = nodesOne[3].text.replaceAll("\n", ""); //學分
+        courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
+        courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
+        if (nodesOne[19].getElementsByTagName("a").length > 0) {
+          courseMain.scheduleHref = _courseCNHost +
+              nodesOne[19]
+                  .getElementsByTagName("a")[0]
+                  .attributes["href"]; //教學進度大綱
+        }
+
+        //時間
+        for (int j = 0; j < 7; j++) {
+          Day day = dayEnum[j]; //要做變換網站是從星期日開始
+          String time = nodesOne[j + 8].text;
+          time = strQ2B(time);
+          courseMain.time[day] = time;
+        }
+
+        courseMainInfo.course = courseMain;
+
+        //取得老師名稱
+        TeacherJson teacher = TeacherJson();
+        teacher.name = "";
+        teacher.href = "";
+        courseMainInfo.teacher.add(teacher);
+
+        //取得教室名稱
+        for (Element node in nodesOne[15].getElementsByTagName("a")) {
+          ClassroomJson classroom = ClassroomJson();
+          classroom.name = node.text;
+          classroom.href = _courseCNHost + node.attributes["href"];
+          courseMainInfo.classroom.add(classroom);
+        }
+
+        //取得開設教室名稱
+        for (Element node in nodesOne[7].getElementsByTagName("a")) {
+          ClassJson classInfo = ClassJson();
+          classInfo.name = node.text;
+          classInfo.href = _courseCNHost + node.attributes["href"];
+          courseMainInfo.openClass.add(classInfo);
+        }
+
+        courseMainInfoList.add(courseMainInfo);
+      }
+      info.json = courseMainInfoList;
+      return info;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
@@ -674,35 +783,6 @@ class CourseConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
-    }
-  }
-
-  static bool get isLogin {
-    return _isLogin;
-  }
-
-  static void loginFalse() {
-    _isLogin = false;
-  }
-
-  static Future<bool> checkLogin() async {
-    Log.d("Course CheckLogin");
-    ConnectorParameter parameter;
-    _isLogin = false;
-    try {
-      parameter = ConnectorParameter(_checkLoginUrl);
-      parameter.charsetName = "big5";
-      String result = await Connector.getDataByGet(parameter);
-      if (result.isEmpty || result.contains("尚未登錄入口網站")) {
-        return false;
-      } else {
-        Log.d("Course Is Readly Login");
-        _isLogin = true;
-        return true;
-      }
-    } catch (e, stack) {
-      //Log.eWithStack(e.toString(), stack);
-      return false;
     }
   }
 }
