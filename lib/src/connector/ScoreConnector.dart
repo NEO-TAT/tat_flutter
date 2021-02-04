@@ -137,6 +137,10 @@ class ScoreConnector {
               .getElementsByTagName("th")[3]
               .text
               .replaceAll(RegExp("\n"), "");
+          score.courseCode = scoreNode
+              .getElementsByTagName("th")[4]
+              .text
+              .replaceAll(RegExp("[\n| ]"), "");
           score.credit =
               double.parse(scoreNode.getElementsByTagName("th")[6].text);
           score.score = scoreNode

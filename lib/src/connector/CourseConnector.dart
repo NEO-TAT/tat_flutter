@@ -735,8 +735,9 @@ class CourseConnector {
   Map Key
   minGraduationCredits
   */
-  static Future<GraduationInformationJson> getCreditInfo(
-      Map code, String select) async {
+  static Future<GraduationInformationJson> getCreditInfo(List arg) async {
+    Map matricCode = arg[0];
+    Map divisionCode = arg[1];
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -745,24 +746,23 @@ class CourseConnector {
     GraduationInformationJson graduationInformation =
         GraduationInformationJson();
     try {
-      Log.d("select is $select");
       parameter = ConnectorParameter(_creditUrl);
-      parameter.data = code;
-      //Log.d( code.toString() );
+      parameter.data = matricCode;
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       trNodes = node.getElementsByTagName("tr");
       trNodes.removeAt(0);
+      Log.d("select $divisionCode");
       bool pass = false;
       for (int i = 0; i < trNodes.length; i++) {
         trNode = trNodes[i];
         anode = trNode.getElementsByTagName("a").first;
-        String name = anode.text.replaceAll(RegExp("[ |\s]"), "");
-        if (name.contains(select)) {
+        String url = anode.attributes["href"];
+        var uri = Uri.parse(url);
+        if (uri.queryParameters['division'] == divisionCode["division"]) {
           tdNodes = trNode.getElementsByTagName("td");
-          Log.d(trNode.innerHtml);
           for (int j = 1; j < tdNodes.length; j++) {
             tdNode = tdNodes[j];
             /*
@@ -814,8 +814,22 @@ class CourseConnector {
           break;
         }
       }
+      parameter = ConnectorParameter(_creditUrl);
+      parameter.data = divisionCode;
+      parameter.charsetName = "big5";
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table").first;
+      trNodes = node.getElementsByTagName("tr");
+      graduationInformation.courseCodeList = List();
+      for (int i = 1; i < trNodes.length; i++) {
+        node = trNodes[i];
+        String courseCode =
+            node.getElementsByTagName("td")[3].text.replaceAll(RegExp('[\n| ]'), "");
+        graduationInformation.courseCodeList.add(courseCode);
+      }
       if (!pass) {
-        Log.d("not find $select");
+        Log.e("not find $divisionCode");
       }
       return graduationInformation;
     } catch (e, stack) {
