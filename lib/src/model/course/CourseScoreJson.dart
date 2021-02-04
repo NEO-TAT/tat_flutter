@@ -201,9 +201,7 @@ class GraduationInformationJson {
   }
 
   bool get isSelect {
-    return !(selectYear.isEmpty |
-        selectDivision.isEmpty |
-        selectMatric.isEmpty);
+    return !(lowCredit == 0);
   }
 
   factory GraduationInformationJson.fromJson(Map<String, dynamic> json) =>
@@ -436,14 +434,15 @@ class CourseScoreInfoJson {
 
   bool isOtherDepartment(String divisionCode) {
     //是否是跨系選修
-    var courseCodeList = Model.instance.getGraduationInformation().courseCodeList;
-    if(category.contains("△")) {
+    var courseCodeList =
+        Model.instance.getGraduationInformation().courseCodeList;
+    if (category.contains("△")) {
       return false;
-    }else if(courseCode.substring(0, 3) == divisionCode){
+    } else if (courseCode.substring(0, 3) == divisionCode) {
       return false;
-    }else if(courseCodeList.contains(courseCode)){
+    } else if (courseCodeList.contains(courseCode)) {
       return false;
-    }else{
+    } else {
       return true;
     }
   }
