@@ -5,7 +5,7 @@
 //  Created by morris13579 on 2020/02/12.
 //  Copyright © 2020 morris13579 All rights reserved.
 //
-
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
@@ -735,9 +735,8 @@ class CourseConnector {
   Map Key
   minGraduationCredits
   */
-  static Future<GraduationInformationJson> getCreditInfo(List arg) async {
-    Map matricCode = arg[0];
-    Map divisionCode = arg[1];
+  static Future<GraduationInformationJson> getCreditInfo(
+      Map matricCode, Map divisionCode) async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -817,17 +816,20 @@ class CourseConnector {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = divisionCode;
       parameter.charsetName = "big5";
-      result = await Connector.getDataByPost(parameter);
+      result = await compute(Connector.getDataByPost, parameter);
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       trNodes = node.getElementsByTagName("tr");
       graduationInformation.courseCodeList = List();
       for (int i = 1; i < trNodes.length; i++) {
         node = trNodes[i];
-        String courseCode =
-            node.getElementsByTagName("td")[3].text.replaceAll(RegExp('[\n| ]'), "");
+        String courseCode = node
+            .getElementsByTagName("td")[3]
+            .text
+            .replaceAll(RegExp('[\n| ]'), "");
         graduationInformation.courseCodeList.add(courseCode);
       }
+
       if (!pass) {
         Log.e("not find $divisionCode");
       }

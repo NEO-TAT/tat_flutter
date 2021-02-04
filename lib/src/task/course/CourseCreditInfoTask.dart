@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
@@ -19,12 +18,7 @@ class CourseCreditInfoTask extends CourseSystemTask<GraduationInformationJson> {
     if (status == TaskStatus.Success) {
       super.onStart(R.current.searchingCreditInfo);
       GraduationInformationJson value =
-          await CourseConnector.getCreditInfo([matricCode, divisionName]);
-      /*
-      GraduationInformationJson value =
-      await compute<List, GraduationInformationJson>(
-          CourseConnector.getCreditInfo, [matricCode, divisionName]);
-       */
+          await CourseConnector.getCreditInfo(matricCode, divisionName);
       super.onEnd();
       if (value != null) {
         result = value;
