@@ -77,11 +77,14 @@ class _CalendarPageState extends State<CalendarPage>
       _events = Map();
       for (int i = 0; i < eventNTUTs.length; i++) {
         NTUTCalendarJson eventNTUT = eventNTUTs[i];
-        if (_events.containsKey(eventNTUT.startTime)) {
-          _events[eventNTUT.startTime].add(eventNTUT);
-        } else {
-          _events[eventNTUT.startTime] = [eventNTUT];
-        }
+        for (var time = eventNTUT.startTime;
+            time.isBefore(eventNTUT.endTime);
+            time = time.add(Duration(days: 1)))
+          if (_events.containsKey(time)) {
+            _events[time].add(eventNTUT);
+          } else {
+            _events[time] = [eventNTUT];
+          }
       }
     }
     setState(() {
@@ -103,10 +106,15 @@ class _CalendarPageState extends State<CalendarPage>
     });
   }
 
+  static var lastUpdateTime;
+
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) async {
     print('CALLBACK: _onVisibleDaysChanged');
-    await _getEvent(first);
+    if (lastUpdateTime != first) {
+      lastUpdateTime = first;
+      await _getEvent(first);
+    }
   }
 
   @override
