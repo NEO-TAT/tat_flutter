@@ -216,8 +216,10 @@ class CourseConnector {
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         String year, semester;
-        year = node.getElementsByTagName("a")[0].text.split(" ")[0];
-        semester = node.getElementsByTagName("a")[0].text.split(" ")[2];
+        String url = node.getElementsByTagName("a")[0].attributes['href'];
+        var uri = Uri.parse(url);
+        year = uri.queryParameters['year'];
+        semester = uri.queryParameters['sem'];
         semesterJsonList.add(SemesterJson(year: year, semester: semester));
       }
       return semesterJsonList;
