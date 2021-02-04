@@ -18,13 +18,13 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       List<SemesterJson> value;
+      super.onStart(R.current.getCourseSemester);
       if (id.length == 5) {
-        value = await _selectSemesterDialog();
+        value = await CourseConnector.getTeacherCourseSemester(id);
       } else {
-        super.onStart(R.current.getCourseSemester);
-        value = await CourseConnector.getCourseSemester(id);
-        super.onEnd();
+        value = await CourseConnector.getStudentCourseSemester(id);
       }
+      super.onEnd();
       if (value != null) {
         result = value;
         return TaskStatus.Success;

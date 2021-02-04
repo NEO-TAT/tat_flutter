@@ -158,7 +158,43 @@ class CourseConnector {
     }
   }
 
-  static Future<List<SemesterJson>> getCourseSemester(String studentId) async {
+  static Future<List<SemesterJson>> getTeacherCourseSemester(
+      String teacherId) async {
+    try {
+      ConnectorParameter parameter;
+      Document tagNode;
+      Element node;
+      List<Element> nodes;
+
+      Map<String, String> data = {
+        "code": teacherId,
+        "format": "-5",
+      };
+      parameter = ConnectorParameter(_postTeacherCourseCNUrl);
+      parameter.data = data;
+      parameter.charsetName = 'big5';
+      Response response = await Connector.getDataByPostResponse(parameter);
+      tagNode = parse(response.toString());
+      nodes = tagNode.getElementsByTagName("a");
+      List<SemesterJson> semesterJsonList = List();
+      for (int i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+        String year, semester;
+        String url = node.attributes['href'];
+        var uri = Uri.parse(url);
+        year = uri.queryParameters['year'];
+        semester = uri.queryParameters['sem'];
+        semesterJsonList.add(SemesterJson(year: year, semester: semester));
+      }
+      return semesterJsonList;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
+  static Future<List<SemesterJson>> getStudentCourseSemester(
+      String studentId) async {
     try {
       ConnectorParameter parameter;
       Document tagNode;
