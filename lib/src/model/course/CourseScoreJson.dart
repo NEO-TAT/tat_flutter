@@ -185,10 +185,10 @@ class GraduationInformationJson {
       this.selectDivision,
       this.selectMatric,
       this.courseCodeList}) {
-    selectYear = selectYear ?? Model.instance.getAccount().substring(0, 3);
+    String studentId = Model.instance.getAccount();
+    selectYear = selectYear ?? studentId ?? studentId.substring(0, 3);
     selectMatric = selectMatric ?? '7';
-    selectDivision =
-        selectDivision ?? Model.instance.getAccount().substring(3, 6);
+    selectDivision = selectDivision ?? studentId ?? studentId.substring(3, 6);
     lowCredit = lowCredit ?? 0;
     outerDepartmentMaxCredit = outerDepartmentMaxCredit ?? 0;
     courseCodeList = courseCodeList ?? List();
