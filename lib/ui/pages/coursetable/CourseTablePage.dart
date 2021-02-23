@@ -11,12 +11,16 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/task/Task.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/course/CourseSearchTask.dart';
 import 'package:flutter_app/src/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/task/course/CourseTableTask.dart';
+import 'package:flutter_app/src/task/course_oads/CourseOadAddCourseTask.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSubscribeNoticeTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
@@ -283,11 +287,110 @@ class _CourseTablePageState extends State<CourseTablePage> {
         _loadFavorite();
         break;
       case 2:
+        _addCustomCourse();
+        break;
+      case 3:
         await screenshot();
         break;
       default:
         break;
     }
+  }
+
+  _addCustomCourse() {
+    final control = TextEditingController();
+    Task<List<CourseMainInfoJson>> task;
+    Get.dialog(
+      StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        return AlertDialog(
+          title: Text(R.current.importCourse),
+          content: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(R.current.importCourseWarning),
+                  TextField(
+                    controller: control,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      labelText: R.current.inputCourseName,
+                    ),
+                    onEditingComplete: () async {
+                      FocusScope.of(context).unfocus();
+                      final taskFlow = TaskFlow();
+                      task = CourseSearchTask(
+                          courseTableData.courseSemester, control.text);
+                      taskFlow.addTask(task);
+                      if (await taskFlow.start()) {
+                        setState(() {});
+                      }
+                    },
+                  ),
+                  if (task != null && task.result != null)
+                    Column(
+                      children: task.result
+                          .map((info) => Container(
+                                height: 70,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            AutoSizeText(
+                                              "${R.current.courseId}: ${info.course.id}",
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            AutoSizeText(
+                                                "${R.current.courseName}: ${info.course.name}"),
+                                            AutoSizeText(
+                                                "${R.current.instructor}: ${info.getTeacherName()}"),
+                                          ]),
+                                    ),
+                                    IconButton(
+                                        icon: Icon(Icons.add),
+                                        onPressed: () {
+                                          CourseInfoJson courseInfo =
+                                              CourseInfoJson();
+                                          bool add = false;
+                                          for (int i = 0; i < 7; i++) {
+                                            Day day = Day.values[i];
+                                            String time = info.course.time[day];
+                                            courseInfo.main = info;
+                                            add |= courseTableData
+                                                .setCourseDetailByTimeString(
+                                                    day, time, courseInfo);
+                                          }
+                                          if (!add) {
+                                            //代表課程沒有時間
+                                            courseTableData
+                                                .setCourseDetailByTime(
+                                                    Day.UnKnown,
+                                                    SectionNumber.T_UnKnown,
+                                                    courseInfo);
+                                          }
+                                          Get.back();
+                                          Model.instance
+                                              .getCourseSetting()
+                                              .info = courseTableData; //儲存課表
+                                          Model.instance.saveCourseSetting();
+                                          _loadSetting();
+                                        })
+                                  ],
+                                ),
+                              ))
+                          .toList(),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
+    );
   }
 
   void _setFavorite(bool like) {
@@ -437,9 +540,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 value: 1,
                 child: Text(R.current.loadFavorite),
               ),
+              PopupMenuItem(
+                value: 2,
+                child: Text(R.current.importCourse),
+              ),
               if (Platform.isAndroid)
                 PopupMenuItem(
-                  value: 2,
+                  value: 3,
                   child: Text(R.current.setAsAndroidWeight),
                 ),
             ],
@@ -685,6 +792,32 @@ class _CourseTablePageState extends State<CourseTablePage> {
           ),
         ),
         actions: <Widget>[
+          if (!course.isSelect)
+            FlatButton(
+              onPressed: () {
+                courseTableData.removeCourseByCourseId(course.id);
+                Model.instance.getCourseSetting().info = courseTableData; //儲存課表
+                Model.instance.saveCourseSetting();
+                _loadSetting();
+                Get.back();
+              },
+              child: new Text(R.current.delete),
+            ),
+          if (!course.isSelect)
+            FlatButton(
+              onPressed: () async {
+                final taskFlow = TaskFlow();
+                taskFlow.addTask(CourseOadAddCourseTask(course.id));
+                if (await taskFlow.start()) {
+                  _getCourseTable(
+                    semesterSetting: courseTableData?.courseSemester,
+                    studentId: _studentIdControl.text,
+                    refresh: true,
+                  );
+                }
+              },
+              child: new Text(R.current.tryAddCourse),
+            ),
           FlatButton(
             onPressed: () {
               _showCourseDetail(courseInfo);

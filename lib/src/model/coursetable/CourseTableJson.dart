@@ -216,6 +216,19 @@ class CourseTableJson {
     }
     return null;
   }
+
+  void removeCourseByCourseId(String courseId) {
+    for (Day day in Day.values) {
+      for (SectionNumber number in SectionNumber.values) {
+        CourseInfoJson courseDetail = courseInfoMap[day][number];
+        if (courseDetail != null) {
+          if (courseDetail.main.course.id == courseId) {
+            courseInfoMap[day][number] = null;
+          }
+        }
+      }
+    }
+  }
 }
 
 @JsonSerializable()

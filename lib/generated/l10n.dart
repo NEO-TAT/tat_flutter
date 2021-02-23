@@ -795,6 +795,36 @@ class S {
     );
   }
 
+  /// `Login course oad...`
+  String get loginCourseOad {
+    return Intl.message(
+      'Login course oad...',
+      name: 'loginCourseOad',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login course oad error`
+  String get loginCourseOadError {
+    return Intl.message(
+      'Login course oad error',
+      name: 'loginCourseOadError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `add course...`
+  String get addCourse {
+    return Intl.message(
+      'add course...',
+      name: 'addCourse',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________CourseTableUi___________________ {
     return Intl.message(
@@ -1070,6 +1100,56 @@ class S {
     return Intl.message(
       'Select semester',
       name: 'selectSemester',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Import course`
+  String get importCourse {
+    return Intl.message(
+      'Import course',
+      name: 'importCourse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Input course name`
+  String get inputCourseName {
+    return Intl.message(
+      'Input course name',
+      name: 'inputCourseName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `注意!導入後並不會真的加入選課，如需加請導入後點選課程的嘗試加選按鈕`
+  String get importCourseWarning {
+    return Intl.message(
+      '注意!導入後並不會真的加入選課，如需加請導入後點選課程的嘗試加選按鈕',
+      name: 'importCourseWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `嘗試加選課程`
+  String get tryAddCourse {
+    return Intl.message(
+      '嘗試加選課程',
+      name: 'tryAddCourse',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not find anything`
+  String get notFindAnything {
+    return Intl.message(
+      'Not find anything',
+      name: 'notFindAnything',
       desc: '',
       args: [],
     );

@@ -9,6 +9,7 @@ import 'package:flutter_app/src/task/score/ScoreSystemTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
 import 'Task.dart';
+import 'course_oads/CourseOadSystemTask.dart';
 
 typedef onSuccessCallBack = Function(Task);
 
@@ -24,6 +25,7 @@ class TaskFlow {
     ScoreSystemTask.isLogin = false;
     IPlusSystemTask.isLogin = false;
     CourseSystemTask.isLogin = false;
+    CourseOadSystemTask.isLogin = false;
   }
 
   int get length {
