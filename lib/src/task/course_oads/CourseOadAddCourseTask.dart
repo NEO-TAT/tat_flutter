@@ -16,11 +16,12 @@ class CourseOadAddCourseTask extends CourseOadSystemTask<String> {
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.addCourse);
-      String value = await CourseOadConnector.queryCourse(id);
+      AddCourseStatus value = await CourseOadConnector.queryCourse(id);
       super.onEnd();
-      if (value != null) {
-        result = value;
+      if (value != null && value.success) {
+        result = value.msg;
         ErrorDialogParameter parameter = ErrorDialogParameter(
+          title: R.current.success,
           desc: result,
           btnCancelOnPress: null,
           btnOkText: R.current.sure,
@@ -30,8 +31,10 @@ class CourseOadAddCourseTask extends CourseOadSystemTask<String> {
         await super.onErrorParameter(parameter);
         return TaskStatus.Success;
       } else {
+        String msg =
+            (value == null || value.msg == null) ? R.current.error : value.msg;
         ErrorDialogParameter parameter = ErrorDialogParameter(
-          desc: R.current.error,
+          desc: msg,
           btnOkText: R.current.sure,
           offCancelBtn: true,
         );

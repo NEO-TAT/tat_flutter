@@ -6,6 +6,11 @@ import 'package:html/parser.dart';
 import 'NTUTConnector.dart';
 import 'core/ConnectorParameter.dart';
 
+class AddCourseStatus {
+  bool success;
+  String msg;
+}
+
 class CourseOadConnector {
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static final String _host = "https://aps-course.ntut.edu.tw/oads/";
@@ -51,12 +56,13 @@ class CourseOadConnector {
     }
   }
 
-  static Future<String> queryCourse(String courseId) async {
+  static Future<AddCourseStatus> queryCourse(String courseId) async {
     String result;
     try {
       ConnectorParameter parameter;
       Document tagNode;
       List<Element> nodes;
+      AddCourseStatus status = AddCourseStatus();
       /*
       String data = "";
       data += "sbj_num=$courseId&";
@@ -80,10 +86,7 @@ class CourseOadConnector {
           .getElementsByTagName("tbody")
           .first
           .getElementsByTagName("tr");
-      print(nodes.first
-          .getElementsByTagName("td")
-          .first
-          .innerHtml);
+      print(nodes.first.getElementsByTagName("td").first.innerHtml);
       if (nodes.first
           .getElementsByTagName("td")
           .first
@@ -96,10 +99,16 @@ class CourseOadConnector {
           "add_reason[]": ""
         };
         result = await Connector.getDataByPost(parameter);
-        var start  = result.indexOf("alert('");
+        var start = result.indexOf("alert('");
         start += 7;
-        var end = result.substring(start,result.length).indexOf("'");
-        return result.substring(start,start+end);
+        var end = result.substring(start, result.length).indexOf("'");
+        status.success = true;
+        status.msg = result.substring(start, start + end);
+        return status;
+      } else {
+        status.success = false;
+        status.msg = nodes.first.getElementsByTagName("td")[17].text;
+        return status;
       }
       return null;
     } catch (e, stack) {

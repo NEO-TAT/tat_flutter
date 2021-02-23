@@ -275,6 +275,16 @@ class S {
     );
   }
 
+  /// `success`
+  String get success {
+    return Intl.message(
+      'success',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________task___________________ {
     return Intl.message(

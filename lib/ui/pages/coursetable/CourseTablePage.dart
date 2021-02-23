@@ -815,6 +815,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     refresh: true,
                   );
                 }
+                Get.back();
               },
               child: new Text(R.current.tryAddCourse),
             ),

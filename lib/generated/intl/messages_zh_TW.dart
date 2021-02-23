@@ -253,6 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "startClass" : MessageLookupByLibrary.simpleMessage("開課班級"),
     "studentList" : MessageLookupByLibrary.simpleMessage("學生清單"),
     "subscribe" : MessageLookupByLibrary.simpleMessage("訂閱"),
+    "success" : MessageLookupByLibrary.simpleMessage("成功"),
     "sure" : MessageLookupByLibrary.simpleMessage("確定"),
     "syllabus" : MessageLookupByLibrary.simpleMessage("教學大綱"),
     "takeCore" : MessageLookupByLibrary.simpleMessage("實得核心"),
