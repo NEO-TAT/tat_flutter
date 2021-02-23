@@ -331,57 +331,42 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   if (task != null && task.result != null)
                     Column(
                       children: task.result
-                          .map((info) => Container(
-                                height: 70,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            AutoSizeText(
-                                              "${R.current.courseId}: ${info.course.id}",
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            AutoSizeText(
-                                                "${R.current.courseName}: ${info.course.name}"),
-                                            AutoSizeText(
-                                                "${R.current.instructor}: ${info.getTeacherName()}"),
-                                          ]),
+                          .map(
+                            (info) => Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: AutoSizeText(
+                                      sprintf("%s\n%s\n%s\n%s\n%s", [
+                                        "${R.current.courseId}: ${info.course.id}",
+                                        "${R.current.courseName}: ${info.course.name}",
+                                        "${R.current.instructor}: ${info.getTeacherName()}",
+                                        "${R.current.classroom}: ${info.getClassroomName()}",
+                                        "${R.current.remarks}: ${info.course.remarks}"
+                                      ]),
                                     ),
-                                    IconButton(
-                                        icon: Icon(Icons.add),
-                                        onPressed: () {
-                                          CourseInfoJson courseInfo =
-                                              CourseInfoJson();
-                                          bool add = false;
-                                          for (int i = 0; i < 7; i++) {
-                                            Day day = Day.values[i];
-                                            String time = info.course.time[day];
-                                            courseInfo.main = info;
-                                            add |= courseTableData
-                                                .setCourseDetailByTimeString(
-                                                    day, time, courseInfo);
-                                          }
-                                          if (!add) {
-                                            //代表課程沒有時間
-                                            courseTableData
-                                                .setCourseDetailByTime(
-                                                    Day.UnKnown,
-                                                    SectionNumber.T_UnKnown,
-                                                    courseInfo);
-                                          }
-                                          Get.back();
-                                          Model.instance
-                                              .getCourseSetting()
-                                              .info = courseTableData; //儲存課表
-                                          Model.instance.saveCourseSetting();
-                                          _loadSetting();
-                                        })
-                                  ],
-                                ),
-                              ))
+                                  ),
+                                  IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () {
+                                        if (!courseTableData
+                                            .addCourseDetailByCourseInfo(
+                                                info)) {
+                                          MyToast.show(
+                                              R.current.addCustomCourseError);
+                                        }
+                                        Get.back();
+                                        Model.instance.getCourseSetting().info =
+                                            courseTableData; //儲存課表
+                                        Model.instance.saveCourseSetting();
+                                        _loadSetting();
+                                      })
+                                ],
+                              ),
+                            ),
+                          )
                           .toList(),
                     ),
                 ],

@@ -6,8 +6,17 @@ import 'package:html/parser.dart';
 import 'NTUTConnector.dart';
 import 'core/ConnectorParameter.dart';
 
-class AddCourseStatus {
+class AddCourseResult {
   bool success;
+  String msg;
+}
+
+class QueryCourseResult {
+  bool success;
+  int up;
+  int down;
+  int now;
+  int sign;
   String msg;
 }
 
@@ -56,13 +65,13 @@ class CourseOadConnector {
     }
   }
 
-  static Future<AddCourseStatus> queryCourse(String courseId) async {
+  static Future<QueryCourseResult> queryCourse(String courseId) async {
     String result;
     try {
       ConnectorParameter parameter;
       Document tagNode;
       List<Element> nodes;
-      AddCourseStatus status = AddCourseStatus();
+      QueryCourseResult status = QueryCourseResult();
       /*
       String data = "";
       data += "sbj_num=$courseId&";
@@ -86,31 +95,39 @@ class CourseOadConnector {
           .getElementsByTagName("tbody")
           .first
           .getElementsByTagName("tr");
-      print(nodes.first.getElementsByTagName("td").first.innerHtml);
-      if (nodes.first
-          .getElementsByTagName("td")
-          .first
-          .innerHtml
-          .contains('checkbox')) {
-        print("select");
-        parameter = ConnectorParameter(_addCourseUrl);
-        parameter.data = <String, String>{
-          "sbj_num": courseId.toString(),
-          "add_reason[]": ""
-        };
-        result = await Connector.getDataByPost(parameter);
-        var start = result.indexOf("alert('");
-        start += 7;
-        var end = result.substring(start, result.length).indexOf("'");
-        status.success = true;
-        status.msg = result.substring(start, start + end);
-        return status;
-      } else {
-        status.success = false;
-        status.msg = nodes.first.getElementsByTagName("td")[17].text;
-        return status;
-      }
+      nodes = nodes.first.getElementsByTagName("td");
+
+      status.success = nodes.first.innerHtml.contains('checkbox');
+
+      status.up = int.parse(nodes[12].text.replaceAll("\n", ""));
+      status.down = int.parse(nodes[13].text.replaceAll("\n", ""));
+      status.now = int.parse(nodes[14].text.replaceAll("\n", ""));
+      status.sign = int.parse(nodes[15].text.replaceAll("\n", ""));
+      status.msg = nodes[17].text;
+      return status;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
       return null;
+    }
+  }
+
+  static Future<AddCourseResult> addCourse(String courseId) async {
+    String result;
+    try {
+      ConnectorParameter parameter;
+      AddCourseResult status = AddCourseResult();
+      parameter = ConnectorParameter(_addCourseUrl);
+      parameter.data = <String, String>{
+        "sbj_num": courseId.toString(),
+        "add_reason[]": ""
+      };
+      result = await Connector.getDataByPost(parameter);
+      var start = result.indexOf("alert('");
+      start += 7;
+      var end = result.substring(start, result.length).indexOf("'");
+      status.success = true;
+      status.msg = result.substring(start, start + end);
+      return status;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;

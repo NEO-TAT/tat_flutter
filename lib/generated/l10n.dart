@@ -1165,6 +1165,26 @@ class S {
     );
   }
 
+  /// `Remarks`
+  String get remarks {
+    return Intl.message(
+      'Remarks',
+      name: 'remarks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `課程衝堂無法加入`
+  String get addCustomCourseError {
+    return Intl.message(
+      '課程衝堂無法加入',
+      name: 'addCustomCourseError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________FileViewerPage___________________ {
     return Intl.message(

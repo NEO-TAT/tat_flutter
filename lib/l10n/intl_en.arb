@@ -113,6 +113,8 @@
   "importCourseWarning": "注意!導入後並不會真的加入選課，如需加請導入後點選課程的嘗試加選按鈕",
   "tryAddCourse": "嘗試加選課程",
   "notFindAnything": "Not find anything",
+  "remarks": "Remarks",
+  "addCustomCourseError": "課程衝堂無法加入",
   "___________________FileViewerPage___________________": "註解",
   "sortBy": "Sort by",
   "createNewFolder": "Create New folder",

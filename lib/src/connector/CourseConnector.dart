@@ -311,7 +311,7 @@ class CourseConnector {
           time = strQ2B(time);
           courseMain.time[day] = time;
         }
-
+        courseMain.remarks = nodesOne[16].text;
         courseMainInfo.course = courseMain;
 
         int length;
@@ -428,7 +428,7 @@ class CourseConnector {
           time = strQ2B(time);
           courseMain.time[day] = time;
         }
-
+        courseMain.remarks = nodesOne[20].text;
         courseMainInfo.course = courseMain;
 
         //取得老師名稱
@@ -825,7 +825,7 @@ class CourseConnector {
   }
 
   static Future<List<CourseMainInfoJson>> searchCourse(
-      SemesterJson semester, String name) async {
+      SemesterJson semester, String name, bool cname) async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -853,9 +853,9 @@ class CourseConnector {
         "matric": "'1','5','6','7','8','9'",
         "sem": semester.semester.toString(),
         "unit": "**",
-        "cname": encodeName,
+        "cname": (cname) ? encodeName : "",
         "ccode": "",
-        "tname": "",
+        "tname": (!cname) ? encodeName : "",
         "D0": "ON",
         "D1": "ON",
         "D2": "ON",
@@ -903,7 +903,7 @@ class CourseConnector {
         if (nodes.length >= 1) {
           courseMain.id = nodes[0].text;
           courseMain.href = _courseCNHost + nodes[0].attributes["href"];
-        }else{
+        } else {
           courseMain.id = nodesOne[0].text.replaceAll("\n", "");
         }
         //取的課程名稱/課程連結
@@ -923,7 +923,7 @@ class CourseConnector {
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
         }
-
+        courseMain.remarks = nodesOne[21].text;
         //時間
         for (int j = 0; j < 7; j++) {
           Day day = dayEnum[j]; //要做變換網站是從星期日開始

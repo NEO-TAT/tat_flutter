@@ -20,6 +20,7 @@ CourseMainJson _$CourseMainJsonFromJson(Map<String, dynamic> json) {
     ),
     scheduleHref: json['scheduleHref'] as String,
     isSelect: json['isSelect'] as bool,
+    remarks: json['remarks'] as String,
   );
 }
 
@@ -34,6 +35,7 @@ Map<String, dynamic> _$CourseMainJsonToJson(CourseMainJson instance) =>
       'hours': instance.hours,
       'scheduleHref': instance.scheduleHref,
       'isSelect': instance.isSelect,
+      'remarks': instance.remarks,
       'time': instance.time?.map((k, e) => MapEntry(_$DayEnumMap[k], e)),
     };
 

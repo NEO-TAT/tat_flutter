@@ -8,15 +8,18 @@ import '../DialogTask.dart';
 import '../Task.dart';
 
 class CourseSearchTask extends DialogTask<List<CourseMainInfoJson>> {
-  String name;
+  String searchName;
   SemesterJson semester;
 
-  CourseSearchTask(this.semester, this.name) : super("CourseSearchTask");
+  CourseSearchTask(this.semester, this.searchName) : super("CourseSearchTask");
 
   @override
   Future<TaskStatus> execute() async {
     super.onStart(R.current.search + "...");
-    result = await CourseConnector.searchCourse(semester, name);
+    result = await CourseConnector.searchCourse(semester, searchName, true);
+    if (result.length == 0) {
+      result = await CourseConnector.searchCourse(semester, searchName, false);
+    }
     super.onEnd();
     if (result == null) {
       MyToast.show(R.current.unknownError);
