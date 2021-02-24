@@ -444,7 +444,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildOtherDepartmentItem() {
-    String divisionCode = Model.instance.getGraduationInformation().selectDivision;
+    String divisionCode =
+        Model.instance.getGraduationInformation().selectDivision;
     int otherDepartmentMaxCredit =
         courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
     Map<String, List<CourseScoreInfoJson>> generalLesson =
