@@ -257,6 +257,11 @@ class CourseOadConnector {
       courseMain.isSelect = false;
       courseMainInfo.course = courseMain;
 
+      //取得教室名稱
+      ClassroomJson classroom = ClassroomJson();
+      classroom.name = timeList.first.split("(").last.split(")").first;
+      courseMainInfo.classroom.add(classroom);
+
       //取得老師名稱
       for (Element node in nodes[9].getElementsByTagName("a")) {
         TeacherJson teacher = TeacherJson();
@@ -265,10 +270,10 @@ class CourseOadConnector {
         courseMainInfo.teacher.add(teacher);
       }
 
-      //取得教室名稱
-      ClassroomJson classroom = ClassroomJson();
-      classroom.name = nodes[8].text.replaceAll("\n", " ");
-      courseMainInfo.classroom.add(classroom);
+      //取得開設教室名稱
+      ClassJson classInfo = ClassJson();
+      classInfo.name = nodes[8].text.replaceAll("\n", " ");
+      courseMainInfo.openClass.add(classInfo);
 
       status.up = int.parse(nodes[12].text.replaceAll("\n", ""));
       status.down = int.parse(nodes[13].text.replaceAll("\n", ""));
