@@ -339,12 +339,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
                                 children: [
                                   Expanded(
                                     child: AutoSizeText(
-                                      sprintf("%s\n%s\n%s\n%s\n%s", [
+                                      sprintf("%s\n%s\n%s\n%s\n%s\n%s", [
                                         "${R.current.courseId}: ${info.course.id}",
                                         "${R.current.courseName}: ${info.course.name}",
                                         "${R.current.instructor}: ${info.getTeacherName()}",
                                         "${R.current.classroom}: ${info.getClassroomName()}",
-                                        "${R.current.remarks}: ${info.course.remarks}"
+                                        "${R.current.time}: ${info.getTime()}"
+                                        "${R.current.remarks}: ${info.course.remarks}",
                                       ]),
                                     ),
                                   ),
