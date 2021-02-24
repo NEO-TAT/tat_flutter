@@ -19,13 +19,13 @@ import 'core/ConnectorParameter.dart';
 enum ScoreConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
 class ScoreConnector {
-  static final String _scoreHost = "https://aps-course.ntut.edu.tw/";
+  static final String host = "https://aps-course.ntut.edu.tw/";
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String _scoreUrl = _scoreHost + "StuQuery/StudentQuery.jsp";
-  static final String _scoreRankUrl = _scoreHost + "StuQuery/QryRank.jsp";
-  static final String _scoreAllScoreUrl = _scoreHost + "StuQuery/QryScore.jsp";
+  static final String _scoreUrl = host + "StuQuery/StudentQuery.jsp";
+  static final String _scoreRankUrl = host + "StuQuery/QryRank.jsp";
+  static final String _scoreAllScoreUrl = host + "StuQuery/QryScore.jsp";
   static final String _generalLessonAllScoreUrl =
-      _scoreHost + "StuQuery/QryLAECourse.jsp";
+      host + "StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
     String result;

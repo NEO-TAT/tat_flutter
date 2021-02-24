@@ -31,7 +31,6 @@ class NTUTConnector {
   static final String host = "https://app.ntut.edu.tw/";
   static final String _loginUrl = host + "login.do";
   static final String _getPictureUrl = host + "photoView.do";
-  static final String _checkLoginUrl = host + "myPortal.do";
   static final String _getTreeUrl = host + "aptreeList.do";
   static final String _getCalendarUrl = host + "calModeApp.do";
   static final String _changePasswordUrl = host + "passwordMdy.do";

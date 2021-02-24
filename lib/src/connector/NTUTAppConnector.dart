@@ -13,9 +13,9 @@ enum NTUTAppConnectorStatus {
 }
 
 class NTUTAppConnector {
-  static final String _host = "https://ntut.app/";
-  static final String _loginUrl = _host + "php/login.php";
-  static final String _countCreditUrl = _host + "pages/credit.php";
+  static final String host = "https://ntut.app/";
+  static final String _loginUrl = host + "php/login.php";
+  static final String _countCreditUrl = host + "pages/credit.php";
 
   static Future<NTUTAppConnectorStatus> login(
       String account, String password) async {

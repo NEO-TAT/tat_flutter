@@ -26,10 +26,10 @@ class QueryCourseResult {
 
 class CourseOadConnector {
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String _host = "https://aps-course.ntut.edu.tw/oads/";
-  static final String _queryUrl = _host + "QueryCourse";
-  static final String _addCourseUrl = _host + "AddCourse";
-  static final String _checkCourseStatusUrl = _host + "Main";
+  static final String host = "https://aps-course.ntut.edu.tw/oads/";
+  static final String _queryUrl = host + "QueryCourse";
+  static final String _addCourseUrl = host + "AddCourse";
+  static final String _checkCourseStatusUrl = host + "Main";
 
   static Future<bool> login() async {
     String result;

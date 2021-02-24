@@ -28,14 +28,13 @@ class CourseMainInfo {
 
 class CourseConnector {
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
-  static final String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
-  static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";
-  static final String _postTeacherCourseCNUrl = _courseCNHost + "Teach.jsp";
-  static final String _postCourseENUrl = _courseENHost + "Select.jsp";
-  static final String _checkLoginUrl = _courseCNHost + "Select.jsp";
-  static final String _creditUrl = _courseCNHost + "Cprog.jsp";
-  static final String _searchCourseUrl = _courseCNHost + "QueryCourse.jsp";
+  static final String cnHost = "https://aps.ntut.edu.tw/course/tw/";
+  static final String enHost = "https://aps.ntut.edu.tw/course/en/";
+  static final String _postCourseCNUrl = cnHost + "Select.jsp";
+  static final String _postTeacherCourseCNUrl = cnHost + "Teach.jsp";
+  static final String _postCourseENUrl = enHost + "Select.jsp";
+  static final String _creditUrl = cnHost + "Cprog.jsp";
+  static final String _searchCourseUrl = cnHost + "QueryCourse.jsp";
 
   static Future<CourseConnectorStatus> login() async {
     String result;
@@ -127,8 +126,8 @@ class CourseConnector {
           .getElementsByTagName("a")[0]
           .attributes
           .containsKey("href")) {
-        courseExtra.href = _courseCNHost +
-            nodes[3].getElementsByTagName("a")[0].attributes["href"];
+        courseExtra.href =
+            cnHost + nodes[3].getElementsByTagName("a")[0].attributes["href"];
       }
       courseExtra.category = nodes[7].text; // 取得類別
       courseExtra.openClass = nodes[9].text;
@@ -146,7 +145,7 @@ class CourseConnector {
         classmate.className = classmateNodes[0].text;
         classmate.studentId =
             classmateNodes[1].getElementsByTagName("a")[0].text;
-        classmate.href = _courseCNHost +
+        classmate.href = cnHost +
             classmateNodes[1].getElementsByTagName("a")[0].attributes["href"];
         classmate.studentName = classmateNodes[2].text;
         classmate.studentEnglishName = classmateNodes[3].text;
@@ -336,7 +335,7 @@ class CourseConnector {
         for (Element node in nodesOne[5].getElementsByTagName("a")) {
           ClassJson classInfo = ClassJson();
           classInfo.name = node.text;
-          classInfo.href = _courseCNHost + node.attributes["href"];
+          classInfo.href = cnHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
         courseMainInfoList.add(courseMainInfo);
@@ -401,7 +400,7 @@ class CourseConnector {
         nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
         if (nodes.length >= 1) {
           courseMain.id = nodes[0].text;
-          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
+          courseMain.href = cnHost + nodes[0].attributes["href"];
         }
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
@@ -415,7 +414,7 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost +
+          courseMain.scheduleHref = cnHost +
               nodesOne[19]
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
@@ -434,7 +433,7 @@ class CourseConnector {
         for (Element node in nodesOne[6].getElementsByTagName("a")) {
           TeacherJson teacher = TeacherJson();
           teacher.name = node.text;
-          teacher.href = _courseCNHost + node.attributes["href"];
+          teacher.href = cnHost + node.attributes["href"];
           courseMainInfo.teacher.add(teacher);
         }
 
@@ -442,7 +441,7 @@ class CourseConnector {
         for (Element node in nodesOne[15].getElementsByTagName("a")) {
           ClassroomJson classroom = ClassroomJson();
           classroom.name = node.text;
-          classroom.href = _courseCNHost + node.attributes["href"];
+          classroom.href = cnHost + node.attributes["href"];
           courseMainInfo.classroom.add(classroom);
         }
 
@@ -450,7 +449,7 @@ class CourseConnector {
         for (Element node in nodesOne[7].getElementsByTagName("a")) {
           ClassJson classInfo = ClassJson();
           classInfo.name = node.text;
-          classInfo.href = _courseCNHost + node.attributes["href"];
+          classInfo.href = cnHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
 
@@ -514,7 +513,7 @@ class CourseConnector {
         nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
         if (nodes.length >= 1) {
           courseMain.id = nodes[0].text;
-          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
+          courseMain.href = cnHost + nodes[0].attributes["href"];
         }
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
@@ -528,7 +527,7 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost +
+          courseMain.scheduleHref = cnHost +
               nodesOne[19]
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
@@ -554,7 +553,7 @@ class CourseConnector {
         for (Element node in nodesOne[15].getElementsByTagName("a")) {
           ClassroomJson classroom = ClassroomJson();
           classroom.name = node.text;
-          classroom.href = _courseCNHost + node.attributes["href"];
+          classroom.href = cnHost + node.attributes["href"];
           courseMainInfo.classroom.add(classroom);
         }
 
@@ -562,7 +561,7 @@ class CourseConnector {
         for (Element node in nodesOne[7].getElementsByTagName("a")) {
           ClassJson classInfo = ClassJson();
           classInfo.name = node.text;
-          classInfo.href = _courseCNHost + node.attributes["href"];
+          classInfo.href = cnHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
 
@@ -901,7 +900,7 @@ class CourseConnector {
         nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
         if (nodes.length >= 1) {
           courseMain.id = nodes[0].text;
-          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
+          courseMain.href = cnHost + nodes[0].attributes["href"];
         } else {
           courseMain.id = nodesOne[0].text.replaceAll("\n", "");
         }
@@ -917,7 +916,7 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[21].text; //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost +
+          courseMain.scheduleHref = cnHost +
               nodesOne[19]
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
@@ -936,7 +935,7 @@ class CourseConnector {
         for (Element node in nodesOne[7].getElementsByTagName("a")) {
           TeacherJson teacher = TeacherJson();
           teacher.name = node.text;
-          teacher.href = _courseCNHost + node.attributes["href"];
+          teacher.href = cnHost + node.attributes["href"];
           courseMainInfo.teacher.add(teacher);
         }
 
@@ -944,7 +943,7 @@ class CourseConnector {
         for (Element node in nodesOne[15].getElementsByTagName("a")) {
           ClassroomJson classroom = ClassroomJson();
           classroom.name = node.text;
-          classroom.href = _courseCNHost + node.attributes["href"];
+          classroom.href = cnHost + node.attributes["href"];
           courseMainInfo.classroom.add(classroom);
         }
 
@@ -952,7 +951,7 @@ class CourseConnector {
         for (Element node in nodesOne[6].getElementsByTagName("a")) {
           ClassJson classInfo = ClassJson();
           classInfo.name = node.text;
-          classInfo.href = _courseCNHost + node.attributes["href"];
+          classInfo.href = cnHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
         courseMainInfoList.add(courseMainInfo);
