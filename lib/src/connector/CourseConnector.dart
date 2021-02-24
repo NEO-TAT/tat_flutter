@@ -29,7 +29,7 @@ class CourseMainInfo {
 
 class CourseConnector {
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String cnHost = "https://aps.ntut.edu.tw/course/tw/";
+  static final String cnHost = "https://aps.ntut.edu.tw/course/tw/1";
   static final String enHost = "https://aps.ntut.edu.tw/course/en/";
   static final String _postCourseCNUrl = cnHost + "Select.jsp";
   static final String _postTeacherCourseCNUrl = cnHost + "Teach.jsp";

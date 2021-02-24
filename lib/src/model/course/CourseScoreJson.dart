@@ -187,12 +187,12 @@ class GraduationInformationJson {
       this.courseCodeList}) {
     String studentId = Model.instance.getAccount();
     selectYear = selectYear ??
-        ((studentId != null || (studentId.length) > 3)
+        ((studentId != null && (studentId.length) > 3)
             ? studentId.substring(0, 3)
             : "");
     selectMatric = selectMatric ?? '7';
     selectDivision = selectDivision ??
-        ((studentId != null || studentId.length > 3)
+        ((studentId != null && studentId.length > 3)
             ? studentId.substring(3, 6)
             : "");
     lowCredit = lowCredit ?? 0;
