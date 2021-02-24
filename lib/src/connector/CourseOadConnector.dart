@@ -17,6 +17,7 @@ class AddCourseResult {
 
 class QueryCourseResult {
   bool success;
+  CourseMainInfoJson info;
   int up;
   int down;
   int now;
@@ -70,6 +71,16 @@ class CourseOadConnector {
     }
   }
 
+  static List<Day> dayEnum = [
+    Day.Monday,
+    Day.Tuesday,
+    Day.Wednesday,
+    Day.Thursday,
+    Day.Friday,
+    Day.Saturday,
+    Day.Sunday,
+  ];
+
   static Future<CourseMainInfo> backupGetCourseMainInfoList() async {
     //課程系統故障時
     var info = CourseMainInfo();
@@ -79,15 +90,6 @@ class CourseOadConnector {
       Document tagNode;
       Element node;
       List<Element> courseNodes, nodesOne, nodes, classNodes;
-      List<Day> dayEnum = [
-        Day.Monday,
-        Day.Tuesday,
-        Day.Wednesday,
-        Day.Thursday,
-        Day.Friday,
-        Day.Saturday,
-        Day.Sunday,
-      ];
       Map<String, String> data = {"func": "CheckCourseStatus"};
       parameter = ConnectorParameter(_checkCourseStatusUrl);
       parameter.data = data;
@@ -205,6 +207,8 @@ class CourseOadConnector {
       Document tagNode;
       List<Element> nodes;
       QueryCourseResult status = QueryCourseResult();
+      CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
+      CourseMainJson courseMain = CourseMainJson();
       /*
       String data = "";
       data += "sbj_num=$courseId&";
@@ -232,11 +236,46 @@ class CourseOadConnector {
 
       status.success = nodes.first.innerHtml.contains('checkbox');
 
+      courseMain.name = nodes[7].getElementsByTagName("a").first.text;
+      courseMain.id = nodes[2].text;
+      courseMain.note = nodes[16].text;
+
+      //時間
+      List<String> timeList =
+          nodes[10].innerHtml.replaceAll(RegExp("[\n|	| ]"), "").split("<br>");
+
+      for (int j = 0; j < 7; j++) {
+        Day day = dayEnum[j];
+        courseMain.time[day] = "";
+      }
+      for (String t in timeList) {
+        int dayInt = int.parse(t.split("(").first.split("_").first);
+        String num = t.split("(").first.split("_").last;
+        Day day = dayEnum[dayInt - 1];
+        courseMain.time[day] += (" " + num);
+      }
+      courseMain.isSelect = false;
+      courseMainInfo.course = courseMain;
+
+      //取得老師名稱
+      for (Element node in nodes[9].getElementsByTagName("a")) {
+        TeacherJson teacher = TeacherJson();
+        teacher.name = node.text;
+        teacher.href = node.attributes["href"];
+        courseMainInfo.teacher.add(teacher);
+      }
+
+      //取得教室名稱
+      ClassroomJson classroom = ClassroomJson();
+      classroom.name = nodes[8].text.replaceAll("\n", " ");
+      courseMainInfo.classroom.add(classroom);
+
       status.up = int.parse(nodes[12].text.replaceAll("\n", ""));
       status.down = int.parse(nodes[13].text.replaceAll("\n", ""));
       status.now = int.parse(nodes[14].text.replaceAll("\n", ""));
       status.sign = int.parse(nodes[15].text.replaceAll("\n", ""));
       status.msg = nodes[17].text;
+      status.info = courseMainInfo;
       return status;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);

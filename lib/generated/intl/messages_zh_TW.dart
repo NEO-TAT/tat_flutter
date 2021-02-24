@@ -151,7 +151,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "importCourse" : MessageLookupByLibrary.simpleMessage("導入其他課程"),
     "importCourseWarning" : MessageLookupByLibrary.simpleMessage("注意!導入後並不會真的加入選課，如需加請導入後點選課程的嘗試加選按鈕"),
     "informationSystem" : MessageLookupByLibrary.simpleMessage("資訊系統"),
-    "inputCourseName" : MessageLookupByLibrary.simpleMessage("請輸入課程或老師名稱"),
+    "inputCourseName" : MessageLookupByLibrary.simpleMessage("請輸入課號課程或老師名稱"),
     "inputNewPassword" : MessageLookupByLibrary.simpleMessage("請輸入新密碼"),
     "inputNewPasswordAgain" : MessageLookupByLibrary.simpleMessage("請再輸入一次"),
     "inputNull" : MessageLookupByLibrary.simpleMessage("輸入為空"),

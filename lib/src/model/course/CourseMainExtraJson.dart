@@ -106,7 +106,6 @@ class CourseMainInfoJson {
     ];
     for (Day day in course.time.keys) {
       if (course.time[day].replaceAll(RegExp('[|\n]'), "").isNotEmpty) {
-        print(course.time[day]);
         time += "${dayStringList[day.index]}_${course.time[day]} ";
       }
     }

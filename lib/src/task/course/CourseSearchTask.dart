@@ -1,5 +1,6 @@
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/connector/CourseOadConnector.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -17,8 +18,17 @@ class CourseSearchTask extends DialogTask<List<CourseMainInfoJson>> {
   Future<TaskStatus> execute() async {
     super.onStart(R.current.search + "...");
     result = await CourseConnector.searchCourse(semester, searchName, true);
-    if (result.length == 0) {
+    if (result == null || result.length == 0) {
       result = await CourseConnector.searchCourse(semester, searchName, false);
+    }
+    if ((result == null || result.length == 0) && searchName.length == 6) {
+      try {
+        await CourseOadConnector.login();
+        QueryCourseResult r = await CourseOadConnector.queryCourse(searchName);
+        result = [r.info];
+      } catch (e) {
+        result = null;
+      }
     }
     super.onEnd();
     if (result == null) {
