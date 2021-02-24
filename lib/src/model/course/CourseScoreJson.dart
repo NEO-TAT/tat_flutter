@@ -186,14 +186,15 @@ class GraduationInformationJson {
       this.selectMatric,
       this.courseCodeList}) {
     String studentId = Model.instance.getAccount();
-    selectYear = selectYear ?? (studentId != null || studentId.length > 3)
-        ? studentId.substring(0, 3)
-        : "";
+    selectYear = selectYear ??
+        ((studentId != null || (studentId.length) > 3)
+            ? studentId.substring(0, 3)
+            : "");
     selectMatric = selectMatric ?? '7';
-    selectDivision =
-        selectDivision ?? (studentId != null || studentId.length > 3)
+    selectDivision = selectDivision ??
+        ((studentId != null || studentId.length > 3)
             ? studentId.substring(3, 6)
-            : "";
+            : "");
     lowCredit = lowCredit ?? 0;
     outerDepartmentMaxCredit = outerDepartmentMaxCredit ?? 0;
     courseCodeList = courseCodeList ?? List();
