@@ -39,7 +39,9 @@ GraduationInformationJson _$GraduationInformationJsonFromJson(
     outerDepartmentMaxCredit: json['outerDepartmentMaxCredit'] as int,
     selectYear: json['selectYear'] as String,
     selectDivision: json['selectDivision'] as String,
-    selectDepartment: json['selectDepartment'] as String,
+    selectMatric: json['selectMatric'] as String,
+    courseCodeList:
+        (json['courseCodeList'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -47,11 +49,12 @@ Map<String, dynamic> _$GraduationInformationJsonToJson(
         GraduationInformationJson instance) =>
     <String, dynamic>{
       'selectYear': instance.selectYear,
+      'selectMatric': instance.selectMatric,
       'selectDivision': instance.selectDivision,
-      'selectDepartment': instance.selectDepartment,
       'lowCredit': instance.lowCredit,
       'outerDepartmentMaxCredit': instance.outerDepartmentMaxCredit,
       'courseTypeMinCredit': instance.courseTypeMinCredit,
+      'courseCodeList': instance.courseCodeList,
     };
 
 SemesterCourseScoreJson _$SemesterCourseScoreJsonFromJson(
@@ -125,6 +128,7 @@ Map<String, dynamic> _$RankItemJsonToJson(RankItemJson instance) =>
 CourseScoreInfoJson _$CourseScoreInfoJsonFromJson(Map<String, dynamic> json) {
   return CourseScoreInfoJson(
     courseId: json['courseId'] as String,
+    courseCode: json['courseCode'] as String,
     nameZh: json['nameZh'] as String,
     nameEn: json['nameEn'] as String,
     score: json['score'] as String,
@@ -138,6 +142,7 @@ Map<String, dynamic> _$CourseScoreInfoJsonToJson(
         CourseScoreInfoJson instance) =>
     <String, dynamic>{
       'courseId': instance.courseId,
+      'courseCode': instance.courseCode,
       'nameZh': instance.nameZh,
       'nameEn': instance.nameEn,
       'score': instance.score,

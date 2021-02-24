@@ -237,7 +237,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchSubscribe" : MessageLookupByLibrary.simpleMessage("查詢訂閱..."),
     "searching" : MessageLookupByLibrary.simpleMessage("查詢中..."),
     "searchingCredit" : MessageLookupByLibrary.simpleMessage("查詢學分..."),
-    "searchingCreditInfo" : MessageLookupByLibrary.simpleMessage("查詢中學分資訊"),
+    "searchingCreditInfo" : MessageLookupByLibrary.simpleMessage("查詢學分資訊中..."),
     "searchingDepartment" : MessageLookupByLibrary.simpleMessage("查詢系所中..."),
     "searchingDivision" : MessageLookupByLibrary.simpleMessage("查詢學制中..."),
     "searchingYear" : MessageLookupByLibrary.simpleMessage("查詢學期中..."),

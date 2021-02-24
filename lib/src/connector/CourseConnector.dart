@@ -7,6 +7,7 @@
 //
 
 import 'package:big5/big5.dart';
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
@@ -217,8 +218,10 @@ class CourseConnector {
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         String year, semester;
-        year = node.getElementsByTagName("a")[0].text.split(" ")[0];
-        semester = node.getElementsByTagName("a")[0].text.split(" ")[2];
+        String url = node.getElementsByTagName("a")[0].attributes['href'];
+        var uri = Uri.parse(url);
+        year = uri.queryParameters['year'];
+        semester = uri.queryParameters['sem'];
         semesterJsonList.add(SemesterJson(year: year, semester: semester));
       }
       return semesterJsonList;
@@ -734,7 +737,7 @@ class CourseConnector {
   minGraduationCredits
   */
   static Future<GraduationInformationJson> getCreditInfo(
-      Map code, String select) async {
+      Map matricCode, Map divisionCode) async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -743,24 +746,23 @@ class CourseConnector {
     GraduationInformationJson graduationInformation =
         GraduationInformationJson();
     try {
-      Log.d("select is $select");
       parameter = ConnectorParameter(_creditUrl);
-      parameter.data = code;
-      //Log.d( code.toString() );
+      parameter.data = matricCode;
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       trNodes = node.getElementsByTagName("tr");
       trNodes.removeAt(0);
+      Log.d("select $divisionCode");
       bool pass = false;
       for (int i = 0; i < trNodes.length; i++) {
         trNode = trNodes[i];
         anode = trNode.getElementsByTagName("a").first;
-        String name = anode.text.replaceAll(RegExp("[ |\s]"), "");
-        if (name.contains(select)) {
+        String url = anode.attributes["href"];
+        var uri = Uri.parse(url);
+        if (uri.queryParameters['division'] == divisionCode["division"]) {
           tdNodes = trNode.getElementsByTagName("td");
-          Log.d(trNode.innerHtml);
           for (int j = 1; j < tdNodes.length; j++) {
             tdNode = tdNodes[j];
             /*
@@ -812,8 +814,25 @@ class CourseConnector {
           break;
         }
       }
+      parameter = ConnectorParameter(_creditUrl);
+      parameter.data = divisionCode;
+      parameter.charsetName = "big5";
+      result = await compute(Connector.getDataByPost, parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table").first;
+      trNodes = node.getElementsByTagName("tr");
+      graduationInformation.courseCodeList = List();
+      for (int i = 1; i < trNodes.length; i++) {
+        node = trNodes[i];
+        String courseCode = node
+            .getElementsByTagName("td")[3]
+            .text
+            .replaceAll(RegExp('[\n| ]'), "");
+        graduationInformation.courseCodeList.add(courseCode);
+      }
+
       if (!pass) {
-        Log.d("not find $select");
+        Log.e("not find $divisionCode");
       }
       return graduationInformation;
     } catch (e, stack) {
