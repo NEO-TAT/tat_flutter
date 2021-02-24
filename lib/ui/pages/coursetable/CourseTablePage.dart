@@ -344,8 +344,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
                                         "${R.current.courseName}: ${info.course.name}",
                                         "${R.current.instructor}: ${info.getTeacherName()}",
                                         "${R.current.classroom}: ${info.getClassroomName()}",
-                                        "${R.current.time}: ${info.getTime()}"
-                                        "${R.current.remarks}: ${info.course.remarks}",
+                                        "${R.current.time}: ${info.getTime()}",
+                                        "${R.current.note}: ${info.course.note}",
                                       ]),
                                     ),
                                   ),
@@ -526,10 +526,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 value: 1,
                 child: Text(R.current.loadFavorite),
               ),
-              PopupMenuItem(
-                value: 2,
-                child: Text(R.current.importCourse),
-              ),
+              if (_studentIdControl.text == Model.instance.getAccount())
+                PopupMenuItem(
+                  value: 2,
+                  child: Text(R.current.importCourse),
+                ),
               if (Platform.isAndroid)
                 PopupMenuItem(
                   value: 3,

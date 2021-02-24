@@ -835,6 +835,16 @@ class S {
     );
   }
 
+  /// `課程系統錯誤，使用後備方式取得最新課表`
+  String get courseSystemFailUseBackupSystem {
+    return Intl.message(
+      '課程系統錯誤，使用後備方式取得最新課表',
+      name: 'courseSystemFailUseBackupSystem',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________CourseTableUi___________________ {
     return Intl.message(
@@ -1166,10 +1176,10 @@ class S {
   }
 
   /// `Remarks`
-  String get remarks {
+  String get note {
     return Intl.message(
       'Remarks',
-      name: 'remarks',
+      name: 'note',
       desc: '',
       args: [],
     );

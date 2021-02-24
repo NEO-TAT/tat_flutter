@@ -303,7 +303,7 @@ class CourseConnector {
         }
         courseMain.credits = nodesOne[2].text.replaceAll("\n", ""); //學分
         courseMain.hours = nodesOne[3].text.replaceAll("\n", ""); //時數
-
+        courseMain.note = nodesOne[16].text; //備註
         //時間
         for (int j = 0; j < 7; j++) {
           Day day = dayEnum[j]; //要做變換網站是從星期日開始
@@ -311,7 +311,7 @@ class CourseConnector {
           time = strQ2B(time);
           courseMain.time[day] = time;
         }
-        courseMain.remarks = nodesOne[16].text;
+
         courseMainInfo.course = courseMain;
 
         int length;
@@ -428,7 +428,6 @@ class CourseConnector {
           time = strQ2B(time);
           courseMain.time[day] = time;
         }
-        courseMain.remarks = nodesOne[20].text;
         courseMainInfo.course = courseMain;
 
         //取得老師名稱
@@ -916,14 +915,13 @@ class CourseConnector {
         courseMain.stage = nodesOne[2].text.replaceAll("\n", ""); //階段
         courseMain.credits = nodesOne[3].text.replaceAll("\n", ""); //學分
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
-        courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
+        courseMain.note = nodesOne[21].text; //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
           courseMain.scheduleHref = _courseCNHost +
               nodesOne[19]
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
         }
-        courseMain.remarks = nodesOne[21].text;
         //時間
         for (int j = 0; j < 7; j++) {
           Day day = dayEnum[j]; //要做變換網站是從星期日開始

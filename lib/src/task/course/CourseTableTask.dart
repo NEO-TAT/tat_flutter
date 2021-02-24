@@ -1,5 +1,6 @@
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/connector/CourseOadConnector.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
@@ -33,6 +34,12 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
           value = await CourseConnector.getENCourseMainInfoList(
               studentId, semester);
         }
+      }
+      super.onEnd();
+      super.onStart(R.current.courseSystemFailUseBackupSystem);
+      if (value == null && studentId == Model.instance.getAccount()) {
+        await CourseOadConnector.login();
+        value = await CourseOadConnector.backupGetCourseMainInfoList();
       }
       super.onEnd();
       if (value != null) {
