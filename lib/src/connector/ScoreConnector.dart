@@ -198,10 +198,16 @@ class ScoreConnector {
             rankNodes[i * 3 + 2].getElementsByTagName("td")[2].text);
         rankItemCourse.total = double.parse(
             rankNodes[i * 3 + 2].getElementsByTagName("td")[3].text);
-        rankItemCourse.percentage = double.parse(rankNodes[i * 3 + 2]
+        String percentage = rankNodes[i * 3 + 2]
             .getElementsByTagName("td")[4]
             .text
-            .replaceAll(RegExp(r"[%|\s]"), ""));
+            .replaceAll(RegExp("[%|\n]"), "");
+        try {
+          rankItemCourse.percentage = double.parse(percentage);
+        } catch (e) {
+          rankItemCourse.percentage =
+              double.parse(percentage.replaceAll("%", ""));
+        }
         rankItemDepartment.rank =
             double.parse(rankNodes[i * 3].getElementsByTagName("td")[1].text);
         rankItemDepartment.total =
