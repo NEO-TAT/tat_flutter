@@ -413,10 +413,10 @@ class ISchoolPlusConnector {
       result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
       nodes = tagNode.getElementsByTagName("tbody");
-      if (nodes.length > 1) {
+      if (nodes != null && (nodes.length > 1)) {
         node = nodes[1];
       } else {
-        return null; //代表無公告
+        return List(); //代表無公告
       }
       nodes = node.getElementsByTagName("tr");
       for (int i = 0; i < nodes.length; i++) {
