@@ -92,7 +92,7 @@
   "UnKnown": "",
   "titleCourse": "課表",
   "refresh": "重新整理",
-  "pleaseEnterStudentId": "請輸入學號",
+  "pleaseEnterStudentId": "請輸入學號或關鍵字",
   "courseId": "課號",
   "time": "時間",
   "instructor": "授課老師",

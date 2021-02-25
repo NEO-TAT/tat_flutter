@@ -72,6 +72,7 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         result = courseTable;
         return TaskStatus.Success;
       } else {
+        return TaskStatus.GiveUp;
         return await super.onError(R.current.getCourseError);
       }
     }

@@ -22,6 +22,7 @@ import 'package:flutter_app/src/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/task/course/CourseTableTask.dart';
 import 'package:flutter_app/src/task/course_oads/CourseOadAddCourseTask.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSubscribeNoticeTask.dart';
+import 'package:flutter_app/src/task/ntut/NTUTOrgtreeSearchTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTableControl.dart';
@@ -223,10 +224,19 @@ class _CourseTablePageState extends State<CourseTablePage> {
     if (courseTable == null) {
       //代表沒有暫存的需要爬蟲
       TaskFlow taskFlow = TaskFlow();
-      var task = CourseTableTask(studentId, semesterJson);
+      final task = CourseTableTask(studentId, semesterJson);
       taskFlow.addTask(task);
       if (await taskFlow.start()) {
         courseTable = task.result;
+      } else {
+        final task = NTUTOrgtreeSearchTask(studentId);
+        taskFlow.addTask(task);
+        if (await taskFlow.start()) {
+          _studentIdControl.text = task.result.id;
+          _getCourseTable(studentId: _studentIdControl.text);
+        } else {
+          MyToast.show(R.current.getCourseError);
+        }
       }
     }
     Model.instance.getCourseSetting().info = courseTable; //儲存課表
