@@ -934,9 +934,9 @@ class CourseConnector {
         courseMain.credits = nodesOne[3].text.replaceAll("\n", ""); //學分
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[21].text; //備註
-        if (nodesOne[19].getElementsByTagName("a").length > 0) {
+        if (nodesOne[20].getElementsByTagName("a").length > 0) {
           courseMain.scheduleHref = cnHost +
-              nodesOne[19]
+              nodesOne[20]
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
         }

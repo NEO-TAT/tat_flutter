@@ -254,8 +254,6 @@ class CourseOadConnector {
         Day day = dayEnum[dayInt - 1];
         courseMain.time[day] += (" " + num);
       }
-      courseMain.isSelect = false;
-      courseMainInfo.course = courseMain;
 
       //取得教室名稱
       ClassroomJson classroom = ClassroomJson();
@@ -267,8 +265,12 @@ class CourseOadConnector {
         TeacherJson teacher = TeacherJson();
         teacher.name = node.text;
         teacher.href = node.attributes["href"];
+        courseMain.scheduleHref = teacher.href;
         courseMainInfo.teacher.add(teacher);
       }
+
+      courseMain.isSelect = false;
+      courseMainInfo.course = courseMain;
 
       //取得開設教室名稱
       ClassJson classInfo = ClassJson();

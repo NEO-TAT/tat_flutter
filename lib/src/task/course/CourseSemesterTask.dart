@@ -25,7 +25,7 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
         value = await CourseConnector.getStudentCourseSemester(id);
       }
       super.onEnd();
-      if (value != null) {
+      if (value != null && value.length != 0) {
         result = value;
         return TaskStatus.Success;
       } else {

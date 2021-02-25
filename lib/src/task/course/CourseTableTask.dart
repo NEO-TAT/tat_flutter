@@ -36,12 +36,12 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         }
       }
       super.onEnd();
-      super.onStart(R.current.courseSystemFailUseBackupSystem);
       if (value == null && studentId == Model.instance.getAccount()) {
+        super.onStart(R.current.courseSystemFailUseBackupSystem);
         await CourseOadConnector.login();
         value = await CourseOadConnector.backupGetCourseMainInfoList();
+        super.onEnd();
       }
-      super.onEnd();
       if (value != null) {
         CourseTableJson courseTable = CourseTableJson();
         courseTable.courseSemester = semester;
