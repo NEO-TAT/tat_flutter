@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseOadConnector.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/pages/password/CheckPasswordDialog.dart';
 import 'package:get/get.dart';
 
 import '../Task.dart';
@@ -14,6 +15,9 @@ class CourseOadAddCourseTask extends CourseOadSystemTask<String> {
 
   @override
   Future<TaskStatus> execute() async {
+    if (!await Get.dialog(CheckPasswordDialog())) {
+      return TaskStatus.GiveUp;
+    }
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.addCourse);
