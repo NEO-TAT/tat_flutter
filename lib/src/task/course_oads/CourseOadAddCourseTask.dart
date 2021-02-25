@@ -34,7 +34,7 @@ class CourseOadAddCourseTask extends CourseOadSystemTask<String> {
         );
         await super.onErrorParameter(parameter);
         return TaskStatus.GiveUp;
-      } else if (queryResult.sign > 0) {
+      } else if (queryResult.sign > 0 || queryResult.now >= queryResult.up) {
         queryResult.success = false;
         ErrorDialogParameter parameter = ErrorDialogParameter(
           title: R.current.warning,
