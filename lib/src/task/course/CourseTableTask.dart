@@ -5,6 +5,7 @@ import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 
 import '../Task.dart';
@@ -72,6 +73,7 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         result = courseTable;
         return TaskStatus.Success;
       } else {
+        NTUTTask.isLogin = false;
         return TaskStatus.GiveUp;
         return await super.onError(R.current.getCourseError);
       }

@@ -95,12 +95,18 @@ class _StoreEditPageState extends State<StoreEditPage> {
                                       ),
                                       FlatButton(
                                         onPressed: () async {
-                                          if (pref.get(key).runtimeType.toString() ==
+                                          if (pref
+                                                  .get(key)
+                                                  .runtimeType
+                                                  .toString() ==
                                               'String') {
                                             await pref.setString(
                                                 key, controller.text);
                                           }
-                                          if (pref.get(key).runtimeType.toString() ==
+                                          if (pref
+                                                  .get(key)
+                                                  .runtimeType
+                                                  .toString() ==
                                               'int') {
                                             await pref.setInt(key,
                                                 int.parse(controller.text));
