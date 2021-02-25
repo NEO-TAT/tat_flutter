@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:get/get.dart';
 import 'package:pretty_json/pretty_json.dart';
@@ -26,6 +27,12 @@ class _StoreEditPageState extends State<StoreEditPage> {
   Future<List<String>> initPref() async {
     pref = await SharedPreferences.getInstance();
     return pref.getKeys().toList();
+  }
+
+  @override
+  void dispose() {
+    Model.instance.getInstance();
+    super.dispose();
   }
 
   @override
@@ -87,15 +94,15 @@ class _StoreEditPageState extends State<StoreEditPage> {
                                         child: Text(R.current.cancel),
                                       ),
                                       FlatButton(
-                                        onPressed: () {
-                                          if (pref.get(key).runtimeType ==
+                                        onPressed: () async {
+                                          if (pref.get(key).runtimeType.toString() ==
                                               'String') {
-                                            pref.setString(
+                                            await pref.setString(
                                                 key, controller.text);
                                           }
-                                          if (pref.get(key).runtimeType ==
+                                          if (pref.get(key).runtimeType.toString() ==
                                               'int') {
-                                            pref.setInt(key,
+                                            await pref.setInt(key,
                                                 int.parse(controller.text));
                                           }
                                           Get.back();
