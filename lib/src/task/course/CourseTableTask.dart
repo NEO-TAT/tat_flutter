@@ -76,6 +76,8 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         return TaskStatus.Success;
       } else {
         //return await super.onError(R.current.getCourseError);
+        NTUTTask.isLogin = false;
+        CourseSystemTask.isLogin = false;
         return TaskStatus.GiveUp;
       }
     }
