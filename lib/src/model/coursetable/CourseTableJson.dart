@@ -257,7 +257,7 @@ class CourseTableJson {
         CourseInfoJson courseDetail = courseInfoMap[day][number];
         if (courseDetail != null) {
           if (courseDetail.main.course.id == courseId) {
-            courseInfoMap[day][number] = null;
+            courseInfoMap[day].remove(number);
           }
         }
       }
