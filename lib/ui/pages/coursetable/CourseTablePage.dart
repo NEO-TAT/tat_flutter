@@ -234,8 +234,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
         if (await taskFlow.start()) {
           _studentIdControl.text = task.result.id;
           _getCourseTable(studentId: _studentIdControl.text);
-        } else {
-          MyToast.show(R.current.getCourseError);
         }
       }
     }

@@ -42,6 +42,8 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         await CourseOadConnector.login();
         value = await CourseOadConnector.backupGetCourseMainInfoList();
         super.onEnd();
+        NTUTTask.isLogin = false;
+        CourseSystemTask.isLogin = false;
       }
       if (value != null) {
         CourseTableJson courseTable = CourseTableJson();
@@ -73,8 +75,6 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         result = courseTable;
         return TaskStatus.Success;
       } else {
-        NTUTTask.isLogin = false;
-        return TaskStatus.GiveUp;
         return await super.onError(R.current.getCourseError);
       }
     }
