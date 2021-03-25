@@ -73,6 +73,8 @@ class Model {
   }
 
   void setFirstUse(String key, bool value) {
+    String wKey = "firstUse$key";
+    _writeInt(wKey, 0);
     _firstRun[key] = value;
   }
 
@@ -128,14 +130,14 @@ class Model {
   }
 
   Future<void> clearCourseTableList() async {
-    _courseTableList = List();
+    _courseTableList = [];
     await saveCourseTableList();
   }
 
   Future<void> loadCourseTableList() async {
-    List<String> readJsonList = List();
+    List<String> readJsonList = [];
     readJsonList = await _readStringList(courseTableJsonKey);
-    _courseTableList = List();
+    _courseTableList = [];
     if (readJsonList != null) {
       for (String readJson in readJsonList) {
         _courseTableList.add(CourseTableJson.fromJson(json.decode(readJson)));
@@ -316,7 +318,7 @@ class Model {
 
   //--------------------List<SemesterJson>--------------------//
   Future<void> clearSemesterJsonList() async {
-    _courseSemesterList = List();
+    _courseSemesterList = [];
   }
 
   Future<void> saveSemesterJsonList() async {
@@ -324,9 +326,9 @@ class Model {
   }
 
   Future<void> loadSemesterJsonList() async {
-    List<String> readJsonList = List();
+    List<String> readJsonList = [];
     readJsonList = await _readStringList(courseSemesterJsonKey);
-    _courseSemesterList = List();
+    _courseSemesterList = [];
     if (readJsonList != null) {
       for (String readJson in readJsonList) {
         _courseSemesterList.add(SemesterJson.fromJson(json.decode(readJson)));
@@ -351,7 +353,7 @@ class Model {
   }
 
   List<String> getSemesterListString() {
-    List<String> stringList = List();
+    List<String> stringList = [];
     if (_courseSemesterList != null) {
       for (SemesterJson value in _courseSemesterList) {
         stringList.add(value.year + "-" + value.semester);
@@ -371,7 +373,7 @@ class Model {
   Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
-    _courseSemesterList = _courseSemesterList ?? List();
+    _courseSemesterList = _courseSemesterList ?? [];
     await loadUserData();
     await loadCourseTableList();
     await loadSetting();
@@ -406,7 +408,7 @@ class Model {
   }
 
   Future<void> _saveJsonList(String key, dynamic saveObj) async {
-    List<String> jsonList = List();
+    List<String> jsonList = [];
     for (dynamic obj in saveObj) {
       jsonList.add(json.encode(obj));
     }

@@ -15,84 +15,84 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  path: ^1.7.0
-  provider: ^4.3.3
-  path_provider: ^1.6.27
-  url_launcher: 5.5.0
+  path: ^1.8.0
+  provider: ^5.0.0
+  path_provider: ^2.0.1
+  url_launcher: ^6.0.2
   #開啟email phone url...
-  logger: ^0.9.4
+  logger: ^1.0.0
   #顯示Log
-  sprintf: ^5.0.0
-  flutter_local_notifications: ^3.0.3
+  sprintf: ^6.0.0
+  flutter_local_notifications: ^5.0.0
   #通知欄  需修改android原始碼
   rxdart: ^0.25.0
   #通知欄有使用到
-  video_player: ^1.0.1
-  chewie: ^0.12.2
+  video_player: ^2.0.2
+  chewie: ^1.0.0
   after_init: 0.1.2
-  android_intent: ^0.3.7+7
-  device_info: ^1.0.0
-  html_unescape: ^1.0.2
+  android_intent: ^2.0.0
+  device_info: ^2.0.0
+  html_unescape: ^2.0.0
   #處理HTML特殊字
-  local_auth: ^0.6.3+4
+  local_auth: ^1.1.0
   #驗證身分指紋
   version: 1.2.0
   #版本比較
-  file_picker: ^2.1.6
+  file_picker: ^3.0.0
   #選擇android資料夾
   #----------store data----------#
-  shared_preferences: ^0.5.12+4
-  flutter_cache_manager: ^2.1.1
+  shared_preferences: ^2.0.5
+  flutter_cache_manager: ^2.1.2
   #----------internet----------#
   dio: ^3.0.10
   #網路get post API
   dio_cookie_manager: 1.0.0
   #用於產生cookie_jar與dio接口
-  cookie_jar: 1.0.1
+  cookie_jar: ^1.0.1
   #可儲存式cookies
-  html: ^0.14.0+4
+  html: ^0.15.0
   #html解析器
-  connectivity: ^2.0.2
-  github: ^7.0.4
-  bloc: ^6.1.1
-  clipboard: ^0.1.2+8
+  connectivity: ^3.0.3
+  github: ^7.0.3
+  bloc: ^7.0.0
+  clipboard: ^0.1.3
   #剪貼簿
   #----------WebView----------#
   flutter_webview_plugin: 0.3.11
-  flutter_inappwebview: ^4.0.0+4
+  flutter_inappwebview: ^5.2.1
   #---------icon----------#
-  eva_icons_flutter: 2.0.1
+  eva_icons_flutter: ^3.0.0
   #https://akveo.github.io/eva-icons/#/
   flutter_icons: 1.1.0
   #https://oblador.github.io/react-native-vector-icons/
   #---------json----------#
-  json_annotation: ^3.1.1
+  json_annotation: ^4.0.1
   #----------other----------#
-  back_button_interceptor: ^4.4.1
+  back_button_interceptor: ^5.0.0
   #攔截返回鍵訊息
   big5:      #big5 decode encode
     path: plugins/big5-dart
-  intl: 0.16.1
+  intl: ^0.17.0
   #DateTime to String
-  package_info: ^0.4.3+4
+  package_info: ^2.0.0
   #檢測app版本用於檢查更新
   #----------html viewer----------#
-  flutter_widget_from_html_core: ^0.5.1+4
+  flutter_widget_from_html_core: ^0.6.0-rc.2021031201
   #----------animation----------#
-  flutter_staggered_animations: 0.1.2
+  flutter_staggered_animations: ^1.0.0
   #listView or gridView動畫
   #----------download----------#
   flutter_downloader: ^1.5.2
   #下載app更新
-  open_file: ^3.0.3
-  permission_handler: 5.0.1+1
-  mime_type: 0.3.2
+  open_file: ^3.1.0
+  permission_handler: ^6.1.1
+  mime_type: ^1.0.0
   #----------Widget----------#
-  get: ^3.24.0
-  bot_toast: ^3.0.5
+  get: ^3.26.0
+  bot_toast: ^4.0.1
   pull_to_refresh: ^1.6.4
   #提供ListView可下拉式更新並且可動態加載
-  cached_network_image: ^2.5.0
+  cached_network_image: ^2.5.1
   #用url顯示圖片
   auto_size_text: 2.1.0
   #課表顯示有用到
@@ -100,26 +100,29 @@ dependencies:
   #顯示行事曆
   flutter_xlider: 3.4.0
   #語言切換用
-  fluttertoast: ^7.1.6
+  fluttertoast: ^8.0.3
   #Toast
   awesome_dialog:
     path: plugins/awesomeDialogs
   #顯示Error時用到
   flutter_slidable: ^0.5.7
   #email使用可左右滑抽屜
-  flutter_spinkit: 4.1.2+1
+  flutter_spinkit: ^5.0.0
   #等待動畫
-  flutter_markdown: ^0.5.2
-  numberpicker: ^1.3.0
+  flutter_markdown: ^0.6.1
+  numberpicker: ^2.0.1
   #選擇學期
-  alice: ^0.1.10
+  alice:
+    git:
+      url: https://github.com/morris13579/alice
+  pretty_json: ^2.0.0
 
   # Firebase
-  firebase_core: ^0.7.0
-  firebase_analytics: ^7.0.1
-  firebase_crashlytics: ^0.4.0+1
-  firebase_remote_config: ^0.6.0
-  firebase_messaging: ^8.0.0-dev.14
+  firebase_core: ^1.0.2
+  firebase_analytics: ^7.1.1
+  firebase_crashlytics: ^1.0.0
+  firebase_remote_config: ^0.9.0-dev.0
+  firebase_messaging: ^9.0.1
 
 dependency_overrides:
   http_parser:
@@ -129,11 +132,11 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.8.1
-  flutter_automation: ^1.4.0
+  flutter_launcher_icons: ^0.9.0
+  #flutter_automation: ^1.4.0
   #---------json----------#
-  build_runner: ^1.11.1
-  json_serializable: ^3.5.1
+  build_runner: ^1.12.2
+  json_serializable: ^4.1.0
 
 
 flutter:

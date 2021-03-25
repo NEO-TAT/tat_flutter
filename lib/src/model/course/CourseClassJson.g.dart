@@ -19,6 +19,7 @@ CourseMainJson _$CourseMainJsonFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(_$enumDecodeNullable(_$DayEnumMap, k), e as String),
     ),
     scheduleHref: json['scheduleHref'] as String,
+    isSelect: json['isSelect'] as bool,
   );
 }
 
@@ -32,6 +33,7 @@ Map<String, dynamic> _$CourseMainJsonToJson(CourseMainJson instance) =>
       'credits': instance.credits,
       'hours': instance.hours,
       'scheduleHref': instance.scheduleHref,
+      'isSelect': instance.isSelect,
       'time': instance.time?.map((k, e) => MapEntry(_$DayEnumMap[k], e)),
     };
 

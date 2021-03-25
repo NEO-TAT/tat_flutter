@@ -6,10 +6,11 @@ import '../Task.dart';
 import 'CourseSystemTask.dart';
 
 class CourseCreditInfoTask extends CourseSystemTask<GraduationInformationJson> {
-  final code;
-  final name;
+  final divisionName;
+  final matricCode;
 
-  CourseCreditInfoTask(this.code, this.name) : super("CourseCreditInfoTask");
+  CourseCreditInfoTask(this.matricCode, this.divisionName)
+      : super("CourseCreditInfoTask");
 
   @override
   Future<TaskStatus> execute() async {
@@ -17,7 +18,7 @@ class CourseCreditInfoTask extends CourseSystemTask<GraduationInformationJson> {
     if (status == TaskStatus.Success) {
       super.onStart(R.current.searchingCreditInfo);
       GraduationInformationJson value =
-          await CourseConnector.getCreditInfo(code, name);
+          await CourseConnector.getCreditInfo(matricCode, divisionName);
       super.onEnd();
       if (value != null) {
         result = value;

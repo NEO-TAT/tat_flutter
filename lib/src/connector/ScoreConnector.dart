@@ -19,13 +19,13 @@ import 'core/ConnectorParameter.dart';
 enum ScoreConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
 class ScoreConnector {
-  static final String _scoreHost = "https://aps-course.ntut.edu.tw/";
+  static final String host = "https://aps-course.ntut.edu.tw/";
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String _scoreUrl = _scoreHost + "StuQuery/StudentQuery.jsp";
-  static final String _scoreRankUrl = _scoreHost + "StuQuery/QryRank.jsp";
-  static final String _scoreAllScoreUrl = _scoreHost + "StuQuery/QryScore.jsp";
+  static final String _scoreUrl = host + "StuQuery/StudentQuery.jsp";
+  static final String _scoreRankUrl = host + "StuQuery/QryRank.jsp";
+  static final String _scoreAllScoreUrl = host + "StuQuery/QryScore.jsp";
   static final String _generalLessonAllScoreUrl =
-      _scoreHost + "StuQuery/QryLAECourse.jsp";
+      host + "StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
     String result;
@@ -63,7 +63,7 @@ class ScoreConnector {
   }
 
   static String strQ2B(String input) {
-    List<int> newString = List();
+    List<int> newString = [];
     for (int c in input.codeUnits) {
       if (c == 12288) {
         c = 32;
@@ -84,7 +84,7 @@ class ScoreConnector {
     Document tagNode;
     Element tableNode, h3Node, scoreNode;
     List<Element> tableNodes, h3Nodes, scoreNodes, rankNodes;
-    List<SemesterCourseScoreJson> courseScoreList = List();
+    List<SemesterCourseScoreJson> courseScoreList = [];
     try {
       Map<String, String> data = {"format": "-2"};
       parameter = ConnectorParameter(_scoreAllScoreUrl);
@@ -137,6 +137,10 @@ class ScoreConnector {
               .getElementsByTagName("th")[3]
               .text
               .replaceAll(RegExp("\n"), "");
+          score.courseCode = scoreNode
+              .getElementsByTagName("th")[4]
+              .text
+              .replaceAll(RegExp("[\n| ]"), "");
           score.credit =
               double.parse(scoreNode.getElementsByTagName("th")[6].text);
           score.score = scoreNode
@@ -198,10 +202,16 @@ class ScoreConnector {
             rankNodes[i * 3 + 2].getElementsByTagName("td")[2].text);
         rankItemCourse.total = double.parse(
             rankNodes[i * 3 + 2].getElementsByTagName("td")[3].text);
-        rankItemCourse.percentage = double.parse(rankNodes[i * 3 + 2]
+        String percentage = rankNodes[i * 3 + 2]
             .getElementsByTagName("td")[4]
             .text
-            .replaceAll(RegExp(r"[%|\s]"), ""));
+            .replaceAll(RegExp("[%|\n]"), "");
+        try {
+          rankItemCourse.percentage = double.parse(percentage);
+        } catch (e) {
+          rankItemCourse.percentage =
+              double.parse(percentage.replaceAll("%", ""));
+        }
         rankItemDepartment.rank =
             double.parse(rankNodes[i * 3].getElementsByTagName("td")[1].text);
         rankItemDepartment.total =
@@ -255,7 +265,7 @@ class ScoreConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<String> coreGeneralLessonList = List();
+    List<String> coreGeneralLessonList = [];
     try {
       parameter = ConnectorParameter(_generalLessonAllScoreUrl);
       parameter.charsetName = "big5";

@@ -6,7 +6,9 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'package:big5/big5.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
@@ -27,13 +29,13 @@ class CourseMainInfo {
 
 class CourseConnector {
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
-  static final String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
-  static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";
-  static final String _postTeacherCourseCNUrl = _courseCNHost + "Teach.jsp";
-  static final String _postCourseENUrl = _courseENHost + "Select.jsp";
-  static final String _checkLoginUrl = _courseCNHost + "Select.jsp";
-  static final String _creditUrl = _courseCNHost + "Cprog.jsp";
+  static final String cnHost = "https://aps.ntut.edu.tw/course/tw/";
+  static final String enHost = "https://aps.ntut.edu.tw/course/en/";
+  static final String _postCourseCNUrl = cnHost + "Select.jsp";
+  static final String _postTeacherCourseCNUrl = cnHost + "Teach.jsp";
+  static final String _postCourseENUrl = enHost + "Select.jsp";
+  static final String _creditUrl = cnHost + "Cprog.jsp";
+  static final String _searchCourseUrl = cnHost + "QueryCourse.jsp";
 
   static Future<CourseConnectorStatus> login() async {
     String result;
@@ -125,8 +127,8 @@ class CourseConnector {
           .getElementsByTagName("a")[0]
           .attributes
           .containsKey("href")) {
-        courseExtra.href = _courseCNHost +
-            nodes[3].getElementsByTagName("a")[0].attributes["href"];
+        courseExtra.href =
+            cnHost + nodes[3].getElementsByTagName("a")[0].attributes["href"];
       }
       courseExtra.category = nodes[7].text; // 取得類別
       courseExtra.openClass = nodes[9].text;
@@ -144,7 +146,7 @@ class CourseConnector {
         classmate.className = classmateNodes[0].text;
         classmate.studentId =
             classmateNodes[1].getElementsByTagName("a")[0].text;
-        classmate.href = _courseCNHost +
+        classmate.href = cnHost +
             classmateNodes[1].getElementsByTagName("a")[0].attributes["href"];
         classmate.studentName = classmateNodes[2].text;
         classmate.studentEnglishName = classmateNodes[3].text;
@@ -176,7 +178,7 @@ class CourseConnector {
       Response response = await Connector.getDataByPostResponse(parameter);
       tagNode = parse(response.toString());
       nodes = tagNode.getElementsByTagName("a");
-      List<SemesterJson> semesterJsonList = List();
+      List<SemesterJson> semesterJsonList = [];
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         String year, semester;
@@ -212,12 +214,14 @@ class CourseConnector {
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[0];
       nodes = node.getElementsByTagName("tr");
-      List<SemesterJson> semesterJsonList = List();
+      List<SemesterJson> semesterJsonList = [];
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         String year, semester;
-        year = node.getElementsByTagName("a")[0].text.split(" ")[0];
-        semester = node.getElementsByTagName("a")[0].text.split(" ")[2];
+        String url = node.getElementsByTagName("a")[0].attributes['href'];
+        var uri = Uri.parse(url);
+        year = uri.queryParameters['year'];
+        semester = uri.queryParameters['sem'];
         semesterJsonList.add(SemesterJson(year: year, semester: semester));
       }
       return semesterJsonList;
@@ -228,7 +232,7 @@ class CourseConnector {
   }
 
   static String strQ2B(String input) {
-    List<int> newString = List();
+    List<int> newString = [];
     for (int c in input.codeUnits) {
       if (c == 12288) {
         c = 32;
@@ -281,7 +285,7 @@ class CourseConnector {
       }
       info.studentName = studentName;
 
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 1; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -301,7 +305,7 @@ class CourseConnector {
         }
         courseMain.credits = nodesOne[2].text.replaceAll("\n", ""); //學分
         courseMain.hours = nodesOne[3].text.replaceAll("\n", ""); //時數
-
+        courseMain.note = nodesOne[16].text; //備註
         //時間
         for (int j = 0; j < 7; j++) {
           Day day = dayEnum[j]; //要做變換網站是從星期日開始
@@ -334,7 +338,7 @@ class CourseConnector {
         for (Element node in nodesOne[5].getElementsByTagName("a")) {
           ClassJson classInfo = ClassJson();
           classInfo.name = node.text;
-          classInfo.href = _courseCNHost + node.attributes["href"];
+          classInfo.href = cnHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
         courseMainInfoList.add(courseMainInfo);
@@ -386,7 +390,7 @@ class CourseConnector {
         studentName = "";
       }
       info.studentName = studentName;
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -399,7 +403,7 @@ class CourseConnector {
         nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
         if (nodes.length >= 1) {
           courseMain.id = nodes[0].text;
-          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
+          courseMain.href = cnHost + nodes[0].attributes["href"];
         }
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
@@ -413,7 +417,7 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost +
+          courseMain.scheduleHref = cnHost +
               nodesOne[19]
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
@@ -426,14 +430,13 @@ class CourseConnector {
           time = strQ2B(time);
           courseMain.time[day] = time;
         }
-
         courseMainInfo.course = courseMain;
 
         //取得老師名稱
         for (Element node in nodesOne[6].getElementsByTagName("a")) {
           TeacherJson teacher = TeacherJson();
           teacher.name = node.text;
-          teacher.href = _courseCNHost + node.attributes["href"];
+          teacher.href = cnHost + node.attributes["href"];
           courseMainInfo.teacher.add(teacher);
         }
 
@@ -441,7 +444,7 @@ class CourseConnector {
         for (Element node in nodesOne[15].getElementsByTagName("a")) {
           ClassroomJson classroom = ClassroomJson();
           classroom.name = node.text;
-          classroom.href = _courseCNHost + node.attributes["href"];
+          classroom.href = cnHost + node.attributes["href"];
           courseMainInfo.classroom.add(classroom);
         }
 
@@ -449,7 +452,7 @@ class CourseConnector {
         for (Element node in nodesOne[7].getElementsByTagName("a")) {
           ClassJson classInfo = ClassJson();
           classInfo.name = node.text;
-          classInfo.href = _courseCNHost + node.attributes["href"];
+          classInfo.href = cnHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
 
@@ -500,7 +503,7 @@ class CourseConnector {
         studentName = "";
       }
       info.studentName = studentName;
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -513,7 +516,7 @@ class CourseConnector {
         nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
         if (nodes.length >= 1) {
           courseMain.id = nodes[0].text;
-          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
+          courseMain.href = cnHost + nodes[0].attributes["href"];
         }
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
@@ -527,7 +530,7 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost +
+          courseMain.scheduleHref = cnHost +
               nodesOne[19]
                   .getElementsByTagName("a")[0]
                   .attributes["href"]; //教學進度大綱
@@ -553,7 +556,7 @@ class CourseConnector {
         for (Element node in nodesOne[15].getElementsByTagName("a")) {
           ClassroomJson classroom = ClassroomJson();
           classroom.name = node.text;
-          classroom.href = _courseCNHost + node.attributes["href"];
+          classroom.href = cnHost + node.attributes["href"];
           courseMainInfo.classroom.add(classroom);
         }
 
@@ -561,7 +564,7 @@ class CourseConnector {
         for (Element node in nodesOne[7].getElementsByTagName("a")) {
           ClassJson classInfo = ClassJson();
           classInfo.name = node.text;
-          classInfo.href = _courseCNHost + node.attributes["href"];
+          classInfo.href = cnHost + node.attributes["href"];
           courseMainInfo.openClass.add(classInfo);
         }
 
@@ -642,7 +645,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<String> resultList = List();
+    List<String> resultList = [];
     try {
       parameter =
           ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
@@ -673,7 +676,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<Map> resultList = List();
+    List<Map> resultList = [];
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = {"format": "-2", "year": year};
@@ -705,7 +708,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<Map> resultList = List();
+    List<Map> resultList = [];
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = code;
@@ -734,7 +737,7 @@ class CourseConnector {
   minGraduationCredits
   */
   static Future<GraduationInformationJson> getCreditInfo(
-      Map code, String select) async {
+      Map matricCode, Map divisionCode) async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
@@ -743,24 +746,23 @@ class CourseConnector {
     GraduationInformationJson graduationInformation =
         GraduationInformationJson();
     try {
-      Log.d("select is $select");
       parameter = ConnectorParameter(_creditUrl);
-      parameter.data = code;
-      //Log.d( code.toString() );
+      parameter.data = matricCode;
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       trNodes = node.getElementsByTagName("tr");
       trNodes.removeAt(0);
+      Log.d("select $divisionCode");
       bool pass = false;
       for (int i = 0; i < trNodes.length; i++) {
         trNode = trNodes[i];
         anode = trNode.getElementsByTagName("a").first;
-        String name = anode.text.replaceAll(RegExp("[ |\s]"), "");
-        if (name.contains(select)) {
+        String url = anode.attributes["href"];
+        var uri = Uri.parse(url);
+        if (uri.queryParameters['division'] == divisionCode["division"]) {
           tdNodes = trNode.getElementsByTagName("td");
-          Log.d(trNode.innerHtml);
           for (int j = 1; j < tdNodes.length; j++) {
             tdNode = tdNodes[j];
             /*
@@ -812,10 +814,168 @@ class CourseConnector {
           break;
         }
       }
+      parameter = ConnectorParameter(_creditUrl);
+      parameter.data = divisionCode;
+      parameter.charsetName = "big5";
+      result = await compute(Connector.getDataByPost, parameter);
+      tagNode = parse(result);
+      node = tagNode.getElementsByTagName("table").first;
+      trNodes = node.getElementsByTagName("tr");
+      graduationInformation.courseCodeList = [];
+      for (int i = 1; i < trNodes.length; i++) {
+        node = trNodes[i];
+        String courseCode = node
+            .getElementsByTagName("td")[3]
+            .text
+            .replaceAll(RegExp('[\n| ]'), "");
+        graduationInformation.courseCodeList.add(courseCode);
+      }
+
       if (!pass) {
-        Log.d("not find $select");
+        Log.e("not find $divisionCode");
       }
       return graduationInformation;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
+  static Future<List<CourseMainInfoJson>> searchCourse(
+      SemesterJson semester, String name, bool cname) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    List<Element> courseNodes, nodesOne, nodes;
+    List<Day> dayEnum = [
+      Day.Sunday,
+      Day.Monday,
+      Day.Tuesday,
+      Day.Wednesday,
+      Day.Thursday,
+      Day.Friday,
+      Day.Saturday
+    ];
+    List<CourseMainInfoJson> courseMainInfoList = [];
+    try {
+      String encodeName = "";
+      final encodeBig5 = big5.encode(name);
+      for (int i = 0; i < encodeBig5.length; i++) {
+        encodeName += "%";
+        encodeName += encodeBig5[i].toRadixString(16).toUpperCase();
+      }
+      Map<String, String> data = {
+        "stime": '0',
+        "year": semester.year.toString(),
+        "matric": "'1','5','6','7','8','9'",
+        "sem": semester.semester.toString(),
+        "unit": "**",
+        "cname": (cname) ? encodeName : "",
+        "ccode": "",
+        "tname": (!cname) ? encodeName : "",
+        "D0": "ON",
+        "D1": "ON",
+        "D2": "ON",
+        "D3": "ON",
+        "D4": "ON",
+        "D5": "ON",
+        "D6": "ON",
+        "P1": "ON",
+        "P2": "ON",
+        "P3": "ON",
+        "P4": "ON",
+        "PN": "ON",
+        "P5": "ON",
+        "P6": "ON",
+        "P7": "ON",
+        "P8": "ON",
+        "P9": "ON",
+        "P10": "ON",
+        "P11": "ON",
+        "P12": "ON",
+        "P13": "ON",
+        "search": "%B6%7D%A9l%ACd%B8%DF"
+      };
+      String d = "";
+      data.forEach((key, value) => d += "&$key=$value");
+      parameter = ConnectorParameter(_searchCourseUrl + "?" + d);
+      parameter.charsetName = 'big5';
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      courseNodes = tagNode
+          .getElementsByTagName("table")
+          .first
+          .getElementsByTagName("tr");
+
+      for (int i = 1; i < courseNodes.length; i++) {
+        CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
+        CourseMainJson courseMain = CourseMainJson();
+        courseMain.isSelect = false;
+        nodesOne = courseNodes[i].getElementsByTagName("td");
+        if (nodesOne[16].text.contains("撤選")) {
+          continue;
+        }
+        //取得課號
+        nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
+        if (nodes.length >= 1) {
+          courseMain.id = nodes[0].text;
+          courseMain.href = cnHost + nodes[0].attributes["href"];
+        } else {
+          courseMain.id = nodesOne[0].text.replaceAll("\n", "");
+        }
+        //取的課程名稱/課程連結
+        nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
+        if (nodes.length >= 1) {
+          courseMain.name = nodes[0].text;
+        } else {
+          courseMain.name = nodesOne[1].text;
+        }
+        courseMain.stage = nodesOne[2].text.replaceAll("\n", ""); //階段
+        courseMain.credits = nodesOne[3].text.replaceAll("\n", ""); //學分
+        courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
+        courseMain.note = nodesOne[21].text; //備註
+        if (nodesOne[20].getElementsByTagName("a").length > 0) {
+          courseMain.scheduleHref = cnHost +
+              nodesOne[20]
+                  .getElementsByTagName("a")[0]
+                  .attributes["href"]; //教學進度大綱
+        }
+        //時間
+        for (int j = 0; j < 7; j++) {
+          Day day = dayEnum[j]; //要做變換網站是從星期日開始
+          String time = nodesOne[j + 8].text;
+          time = strQ2B(time);
+          courseMain.time[day] = time;
+        }
+
+        courseMainInfo.course = courseMain;
+
+        //取得老師名稱
+        for (Element node in nodesOne[7].getElementsByTagName("a")) {
+          TeacherJson teacher = TeacherJson();
+          teacher.name = node.text;
+          teacher.href = cnHost + node.attributes["href"];
+          courseMainInfo.teacher.add(teacher);
+        }
+
+        //取得教室名稱
+        for (Element node in nodesOne[15].getElementsByTagName("a")) {
+          ClassroomJson classroom = ClassroomJson();
+          classroom.name = node.text;
+          classroom.href = cnHost + node.attributes["href"];
+          courseMainInfo.classroom.add(classroom);
+        }
+
+        //取得開設教室名稱
+        for (Element node in nodesOne[6].getElementsByTagName("a")) {
+          ClassJson classInfo = ClassJson();
+          classInfo.name = node.text;
+          classInfo.href = cnHost + node.attributes["href"];
+          courseMainInfo.openClass.add(classInfo);
+        }
+        courseMainInfoList.add(courseMainInfo);
+      }
+      return courseMainInfoList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;

@@ -173,8 +173,42 @@ class CourseTableJson {
     return add;
   }
 
+  SectionNumber string2Time(String sectionNumber) {
+    for (SectionNumber value in SectionNumber.values) {
+      String time = value.toString().split("_")[1];
+      if (sectionNumber.contains(time)) {
+        return value;
+      }
+    }
+    return null;
+  }
+
+  bool addCourseDetailByCourseInfo(CourseMainInfoJson info) {
+    bool add = false;
+    CourseInfoJson courseInfo = CourseInfoJson();
+    for (int i = 0; i < 7; i++) {
+      Day day = Day.values[i];
+      String time = info.course.time[day];
+      courseInfo.main = info;
+      if (courseInfoMap[day][string2Time(time)] != null) {
+        return false;
+      }
+    }
+    for (int i = 0; i < 7; i++) {
+      Day day = Day.values[i];
+      String time = info.course.time[day];
+      courseInfo.main = info;
+      add |= setCourseDetailByTimeString(day, time, courseInfo);
+    }
+    if (!add) {
+      //代表課程沒有時間
+      setCourseDetailByTime(Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
+    }
+    return true;
+  }
+
   List<String> getCourseIdList() {
-    List<String> courseIdList = List();
+    List<String> courseIdList = [];
     for (Day day in Day.values) {
       for (SectionNumber number in SectionNumber.values) {
         CourseInfoJson courseInfo = courseInfoMap[day][number];
@@ -215,6 +249,19 @@ class CourseTableJson {
       }
     }
     return null;
+  }
+
+  void removeCourseByCourseId(String courseId) {
+    for (Day day in Day.values) {
+      for (SectionNumber number in SectionNumber.values) {
+        CourseInfoJson courseDetail = courseInfoMap[day][number];
+        if (courseDetail != null) {
+          if (courseDetail.main.course.id == courseId) {
+            courseInfoMap[day].remove(number);
+          }
+        }
+      }
+    }
   }
 }
 

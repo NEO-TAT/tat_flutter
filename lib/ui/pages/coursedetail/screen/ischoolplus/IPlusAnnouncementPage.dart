@@ -33,7 +33,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   void initState() {
     super.initState();
     isSupport = Model.instance.getAccount() == widget.studentId;
-    items = List();
+    items = [];
     if (isSupport) {
       _addTask();
     }
@@ -52,7 +52,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
       courseBid = getTask.result["courseBid"];
       openNotifications = getTask.result["openNotifications"];
     }
-    items = items ?? List();
+    items = items ?? [];
     setState(() {});
   }
 

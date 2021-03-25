@@ -35,7 +35,7 @@ class LogConsole extends StatefulWidget {
 
   static String getLog() {
     bool error = false;
-    List<OutputEvent> events = List();
+    List<OutputEvent> events = [];
     for (OutputEvent event in _outputEventBuffer) {
       events.add(event);
     }

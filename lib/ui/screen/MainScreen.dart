@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   final _pageController = PageController();
   int _currentIndex = 0;
   int _closeAppCount = 0;
-  List<Widget> _pageList = List<Widget>();
+  List<Widget> _pageList = [];
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
       Log.eWithStack(e.toString(), stack);
     }
     setState(() {
-      _pageList = List();
+      _pageList = [];
       _pageList.add(CourseTablePage());
       _pageList.add(NotificationPage());
       _pageList.add(CalendarPage());
@@ -94,7 +94,6 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
           onWillPop: _onWillPop,
           child: Scaffold(
             backgroundColor: Colors.white,
-            resizeToAvoidBottomPadding: false,
             body: _buildPageView(),
             bottomNavigationBar: _buildBottomNavigationBar(),
           ),

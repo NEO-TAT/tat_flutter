@@ -6,7 +6,7 @@ import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
 
-enum onListViewPress { CloudMessageToken, DioLog, AppLog }
+enum onListViewPress { CloudMessageToken, DioLog, AppLog, StoreEdit }
 
 class DevPage extends StatefulWidget {
   @override
@@ -33,6 +33,12 @@ class _DevPageState extends State<DevPage> {
       "color": Colors.yellow,
       "onPress": onListViewPress.AppLog
     },
+    {
+      "icon": Icons.edit_outlined,
+      "title": "Store Edit",
+      "color": Colors.green,
+      "onPress": onListViewPress.StoreEdit
+    },
   ];
 
   @override
@@ -54,6 +60,9 @@ class _DevPageState extends State<DevPage> {
         break;
       case onListViewPress.AppLog:
         RouteUtils.toLogConsolePage();
+        break;
+      case onListViewPress.StoreEdit:
+        RouteUtils.toStoreEditPage();
         break;
       default:
         MyToast.show(R.current.noFunction);

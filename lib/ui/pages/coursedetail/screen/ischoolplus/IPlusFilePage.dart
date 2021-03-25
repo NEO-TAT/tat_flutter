@@ -32,7 +32,7 @@ class IPlusFilePage extends StatefulWidget {
 
 class _IPlusFilePage extends State<IPlusFilePage>
     with AutomaticKeepAliveClientMixin {
-  List<CourseFileJson> courseFileList = List();
+  List<CourseFileJson> courseFileList = [];
   SelectList selectList = SelectList();
   bool isSupport;
 
@@ -75,7 +75,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     if (await taskFlow.start()) {
       courseFileList = task.result;
     }
-    courseFileList = courseFileList ?? List();
+    courseFileList = courseFileList ?? [];
     selectList.addItems(courseFileList.length);
     setState(() {});
   }
@@ -200,8 +200,8 @@ class _IPlusFilePage extends State<IPlusFilePage>
   }
 
   List<Widget> _buildFileItem(CourseFileJson courseFile) {
-    List<Widget> widgetList = List();
-    List<Widget> iconWidgetList = List();
+    List<Widget> widgetList = [];
+    List<Widget> iconWidgetList = [];
     for (FileType fileType in courseFile.fileType) {
       iconWidgetList.add(iconList[fileType.type.index]);
     }
@@ -229,7 +229,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     String dirName = widget.courseInfo.main.course.name;
     String url;
     String referer;
-    List<String> urlList = List();
+    List<String> urlList = [];
     await AnalyticsUtils.logDownloadFileEvent();
     if (showToast) {
       MyToast.show(R.current.downloadWillStart);
@@ -285,7 +285,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
 }
 
 class SelectList {
-  List<bool> _selectList = List();
+  List<bool> _selectList = [];
 
   void addItem() {
     _selectList.add(false);

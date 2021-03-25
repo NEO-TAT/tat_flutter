@@ -1,9 +1,11 @@
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/CourseConnector.dart';
+import 'package:flutter_app/src/connector/CourseOadConnector.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 
 import '../Task.dart';
@@ -35,6 +37,14 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         }
       }
       super.onEnd();
+      if (value == null && studentId == Model.instance.getAccount()) {
+        super.onStart(R.current.courseSystemFailUseBackupSystem);
+        await CourseOadConnector.login();
+        value = await CourseOadConnector.backupGetCourseMainInfoList();
+        super.onEnd();
+        NTUTTask.isLogin = false;
+        CourseSystemTask.isLogin = false;
+      }
       if (value != null) {
         CourseTableJson courseTable = CourseTableJson();
         courseTable.courseSemester = semester;
@@ -65,7 +75,10 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
         result = courseTable;
         return TaskStatus.Success;
       } else {
-        return await super.onError(R.current.getCourseError);
+        //return await super.onError(R.current.getCourseError);
+        NTUTTask.isLogin = false;
+        CourseSystemTask.isLogin = false;
+        return TaskStatus.GiveUp;
       }
     }
     return status;

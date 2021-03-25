@@ -29,8 +29,8 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   CourseMainInfoJson courseMainInfo;
   CourseExtraInfoJson courseExtraInfo;
   bool isLoading = true;
-  final List<Widget> courseData = List();
-  final List<Widget> listItem = List();
+  final List<Widget> courseData = [];
+  final List<Widget> listItem = [];
   bool canPop = true;
 
   @override
@@ -188,7 +188,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
             ),
           ),
           (url.isNotEmpty)
-              ? RaisedButton(
+              ? ElevatedButton(
                   child: Text(
                     buttonText,
                   ),
@@ -220,7 +220,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   Widget _buildMultiButtonInfo(String title, String buttonText,
       List<String> textList, List<String> urlList) {
     TextStyle textStyle = TextStyle(fontSize: 18);
-    List<Widget> classroomItemList = List();
+    List<Widget> classroomItemList = [];
     for (int i = 0; i < textList.length; i++) {
       String text = textList[i];
       classroomItemList.add(Row(
@@ -231,7 +231,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
             style: textStyle,
           ),
           urlList[i].isNotEmpty
-              ? RaisedButton(
+              ? ElevatedButton(
                   onPressed: () {
                     _launchWebView(buttonText, urlList[i]);
                   },
@@ -289,7 +289,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
             ),
           ),
           Expanded(
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text(R.current.search),
               onPressed: () {
                 Navigator.of(context, rootNavigator: true)

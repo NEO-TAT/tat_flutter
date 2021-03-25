@@ -3,7 +3,7 @@ import 'package:flutter_app/src/connector/core/DioConnector.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class WebViewPage extends StatefulWidget {
-  final String url;
+  final Uri url;
   final String title;
 
   WebViewPage({this.title, this.url});
@@ -16,11 +16,11 @@ class _WebViewPageState extends State<WebViewPage> {
   final cookieManager = CookieManager.instance();
   final cookieJar = DioConnector.instance.cookiesManager;
   InAppWebViewController webView;
-  String url = "";
+  Uri url = Uri();
   double progress = 0;
 
   Future<bool> setCookies() async {
-    final cookies = cookieJar.loadForRequest(Uri.parse(widget.url));
+    final cookies = cookieJar.loadForRequest(widget.url);
     for (var cookie in cookies) {
       await cookieManager.setCookie(
         url: widget.url,
@@ -58,24 +58,22 @@ class _WebViewPageState extends State<WebViewPage> {
                     Expanded(
                       child: Container(
                         child: InAppWebView(
-                          initialUrl: widget.url,
+                          initialUrlRequest: URLRequest(url: widget.url),
                           initialOptions: InAppWebViewGroupOptions(
-                            crossPlatform: InAppWebViewOptions(
-                              debuggingEnabled: true,
-                            ),
+                            crossPlatform: InAppWebViewOptions(),
                           ),
                           onWebViewCreated:
                               (InAppWebViewController controller) {
                             webView = controller;
                           },
                           onLoadStart:
-                              (InAppWebViewController controller, String url) {
+                              (InAppWebViewController controller, Uri url) {
                             setState(() {
                               this.url = url;
                             });
                           },
                           onLoadStop: (InAppWebViewController controller,
-                              String url) async {
+                              Uri url) async {
                             setState(
                               () {
                                 this.url = url;
@@ -96,9 +94,11 @@ class _WebViewPageState extends State<WebViewPage> {
                     ButtonBar(
                       alignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
                           child: Icon(Icons.arrow_back),
                           onPressed: () async {
@@ -107,9 +107,11 @@ class _WebViewPageState extends State<WebViewPage> {
                             }
                           },
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
                           child: Icon(Icons.arrow_forward),
                           onPressed: () async {
@@ -118,9 +120,11 @@ class _WebViewPageState extends State<WebViewPage> {
                             }
                           },
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
                           child: Icon(Icons.refresh),
                           onPressed: () async {

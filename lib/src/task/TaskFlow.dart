@@ -4,11 +4,11 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/task/course/CourseSystemTask.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSystemTask.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
-import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
 import 'package:flutter_app/src/task/score/ScoreSystemTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
 import 'Task.dart';
+import 'course_oads/CourseOadSystemTask.dart';
 
 typedef onSuccessCallBack = Function(Task);
 
@@ -20,10 +20,10 @@ class TaskFlow {
 
   static resetLoginStatus() {
     NTUTTask.isLogin = false;
-    NTUTAppTask.isLogin = false;
     ScoreSystemTask.isLogin = false;
     IPlusSystemTask.isLogin = false;
     CourseSystemTask.isLogin = false;
+    CourseOadSystemTask.isLogin = false;
   }
 
   int get length {
@@ -35,9 +35,9 @@ class TaskFlow {
   }
 
   TaskFlow() {
-    _queue = List();
-    _completeTask = List();
-    _failTask = List();
+    _queue = [];
+    _completeTask = [];
+    _failTask = [];
   }
 
   void addTask(Task task) {
@@ -64,7 +64,7 @@ class TaskFlow {
           break;
         case TaskStatus.GiveUp:
           _failTask.addAll(_queue);
-          _queue = List();
+          _queue = [];
           success = false;
           break;
         case TaskStatus.Restart:
@@ -81,8 +81,8 @@ class TaskFlow {
         log += '\n--' + task.name;
       }
     }
-    _completeTask = List();
-    _failTask = List();
+    _completeTask = [];
+    _failTask = [];
     Log.d(log);
     return success;
   }

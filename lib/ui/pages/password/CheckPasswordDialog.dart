@@ -30,9 +30,8 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
   void checkAuth() async {
     LocalAuthentication localAuthentication = LocalAuthentication();
     try {
-      bool didAuthenticate =
-          await localAuthentication.authenticateWithBiometrics(
-              localizedReason: R.current.checkIdentity, useErrorDialogs: false);
+      bool didAuthenticate = await localAuthentication.authenticate(
+          localizedReason: R.current.checkIdentity, useErrorDialogs: false);
       if (didAuthenticate) {
         Get.back<bool>(result: true);
       }
@@ -117,17 +116,18 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
         ),
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text(R.current.cancel),
           onPressed: () => Get.back<bool>(result: false),
         ),
-        FlatButton(
-            child: Text(R.current.sure),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                Get.back<bool>(result: true);
-              }
-            })
+        TextButton(
+          child: Text(R.current.sure),
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              Get.back<bool>(result: true);
+            }
+          },
+        )
       ],
     );
   }

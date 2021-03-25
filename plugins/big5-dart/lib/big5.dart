@@ -10,11 +10,11 @@ class Big5Codec {
   const Big5Codec();
 
   String decode(List<int> src) {
-    return Big5TransformDecode(src);
+    return big5TransformDecode(src);
   }
 
   List<int> encode(String src) {
-    return Big5TransformEncode(src);
+    return big5TransformEncode(src);
   }
 }
 
@@ -22,12 +22,10 @@ class Big5Codec {
 const int RUNE_ERROR = 0xFFFD;
 const int RUNE_SELF = 0x80;
 
-String Big5TransformDecode(List<int> src) {
+String big5TransformDecode(List<int> src) {
   var r = 0;
   var size = 0;
   var nDst = '';
-
-  var nSrc = 0;
 
   void write(input) => nDst += (new String.fromCharCode(input));
 
@@ -63,7 +61,7 @@ String Big5TransformDecode(List<int> src) {
   return nDst;
 }
 
-List<int> Big5TransformEncode(String src) {
+List<int> big5TransformEncode(String src) {
   var runes = Runes(src).toList();
 
   var r = 0;

@@ -1,4 +1,6 @@
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -12,7 +14,7 @@ class CourseExtraInfoJson {
   List<ClassmateJson> classmate; //修課同學
 
   CourseExtraInfoJson({this.courseSemester, this.course, this.classmate}) {
-    classmate = classmate ?? List();
+    classmate = classmate ?? [];
     courseSemester = courseSemester ?? SemesterJson();
     course = course ?? CourseExtraJson();
   }
@@ -45,9 +47,9 @@ class CourseMainInfoJson {
   CourseMainInfoJson(
       {this.course, this.teacher, this.classroom, this.openClass}) {
     course = course ?? CourseMainJson();
-    teacher = teacher ?? List();
-    classroom = classroom ?? List();
-    openClass = openClass ?? List();
+    teacher = teacher ?? [];
+    classroom = classroom ?? [];
+    openClass = openClass ?? [];
   }
 
   String getOpenClassName() {
@@ -75,7 +77,7 @@ class CourseMainInfoJson {
   }
 
   List<String> getClassroomNameList() {
-    List<String> name = List();
+    List<String> name = [];
     for (ClassroomJson value in classroom) {
       name.add(value.name);
     }
@@ -83,11 +85,31 @@ class CourseMainInfoJson {
   }
 
   List<String> getClassroomHrefList() {
-    List<String> href = List();
+    List<String> href = [];
     for (ClassroomJson value in classroom) {
       href.add(value.href);
     }
     return href;
+  }
+
+  String getTime() {
+    String time = "";
+    List<String> dayStringList = [
+      R.current.Monday,
+      R.current.Tuesday,
+      R.current.Wednesday,
+      R.current.Thursday,
+      R.current.Friday,
+      R.current.Saturday,
+      R.current.Sunday,
+      R.current.UnKnown
+    ];
+    for (Day day in course.time.keys) {
+      if (course.time[day].replaceAll(RegExp('[|\n]'), "").isNotEmpty) {
+        time += "${dayStringList[day.index]}_${course.time[day]} ";
+      }
+    }
+    return time;
   }
 
   bool get isEmpty {

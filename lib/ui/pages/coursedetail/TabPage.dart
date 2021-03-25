@@ -34,7 +34,7 @@ class TabPageList {
   List<TabPage> tabPageList;
 
   TabPageList() {
-    tabPageList = List();
+    tabPageList = [];
   }
 
   void add(TabPage page) {
@@ -42,7 +42,7 @@ class TabPageList {
   }
 
   List<Widget> get getTabPageList {
-    List<Widget> pages = List();
+    List<Widget> pages = [];
     for (TabPage tabPage in tabPageList) {
       pages.add(tabPage.tabPage);
     }
@@ -50,7 +50,7 @@ class TabPageList {
   }
 
   List<Widget> getTabList(BuildContext context) {
-    List<Widget> pages = List();
+    List<Widget> pages = [];
     double width = MediaQuery.of(context).size.width / this.length;
     for (TabPage tabPage in tabPageList) {
       Widget tabNew = Container(

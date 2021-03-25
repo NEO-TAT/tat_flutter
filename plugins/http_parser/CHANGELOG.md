@@ -1,6 +1,14 @@
-## 3.1.5-dev
+## 4.0.1
 
-* Require minimum Dart SDK of `2.7.0`.
+* Remove dependency on `package:charcode`.
+
+## 4.0.0
+
+* Stable null safety stable release.
+
+## 4.0.0-nullsafety
+
+* Migrate to null safety.
 
 ## 3.1.4
 

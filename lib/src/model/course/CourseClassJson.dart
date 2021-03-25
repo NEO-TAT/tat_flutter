@@ -17,6 +17,7 @@ class CourseMainJson {
   String credits; //學分
   String hours; //時數
   String scheduleHref; // 教學進度大綱
+  bool isSelect;
   Map<Day, String> time; //時間
 
   CourseMainJson(
@@ -28,7 +29,8 @@ class CourseMainJson {
       this.stage,
       this.note,
       this.time,
-      this.scheduleHref}) {
+      this.scheduleHref,
+      this.isSelect}) {
     name = JsonInit.stringInit(name);
     id = JsonInit.stringInit(id);
     href = JsonInit.stringInit(href);
@@ -38,6 +40,7 @@ class CourseMainJson {
     hours = JsonInit.stringInit(hours);
     scheduleHref = JsonInit.stringInit(scheduleHref);
     time = time ?? Map();
+    isSelect = isSelect ?? true;
   }
 
   bool get isEmpty {

@@ -107,7 +107,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         ),
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text(R.current.useOldPassword),
           onPressed: () async {
             String password = Model.instance.getPassword();
@@ -124,11 +124,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            FlatButton(
+            TextButton(
               child: Text(R.current.cancel),
               onPressed: () => Get.back<bool>(result: false),
             ),
-            FlatButton(
+            TextButton(
               child: Text(R.current.sure),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
