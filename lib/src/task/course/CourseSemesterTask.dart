@@ -30,19 +30,7 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
         return TaskStatus.Success;
       } else {
         result = [];
-        int year = DateTime.now().year - 1911;
-        int month = DateTime.now().month;
-        int sem = 1;
-        if (month <= 2) {
-          year--;
-          sem = 2;
-        } else if (month >= 7) {
-          sem = 2;
-        }
-        result.add(SemesterJson(
-          year: year.toString(),
-          semester: sem.toString(),
-        ));
+        result.add(await _selectSemesterDialog());
         return TaskStatus.Success;
         //return await super.onError(R.current.getCourseSemesterError);
       }
@@ -50,12 +38,11 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
     return status;
   }
 
-  Future<List<SemesterJson>> _selectSemesterDialog() async {
-    List<SemesterJson> value = [];
+  Future<SemesterJson> _selectSemesterDialog() async {
     DateTime dateTime = DateTime.now();
     int year = dateTime.year - 1911;
     int semester = (dateTime.month <= 8 && dateTime.month >= 1) ? 2 : 1;
-    if (dateTime.month <= 1) {
+    if (dateTime.month <= 8) {
       year--;
     }
     SemesterJson before =
@@ -109,7 +96,6 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
           ),
         ) ??
         before;
-    value.add(select);
-    return value;
+    return select;
   }
 }
