@@ -6,6 +6,8 @@ import 'package:flutter_app/src/version/update/AppUpdate.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
+import 'package:flutter_app/ui/pages/password/CheckPasswordDialog.dart';
+import 'package:get/get.dart';
 
 enum onListViewPress { AppUpdate, Contribution, PrivacyPolicy, Version, Dev }
 
@@ -93,7 +95,7 @@ class _AboutPageState extends State<AboutPage> {
           pressTime = 0;
         });
         if (pressTime > 3) {
-          if (!inDevMode) {
+          if (!inDevMode && await Get.dialog(CheckPasswordDialog())) {
             inDevMode = true;
             _addDevListItem();
           }

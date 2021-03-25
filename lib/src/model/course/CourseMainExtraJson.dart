@@ -1,4 +1,6 @@
+import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -88,6 +90,26 @@ class CourseMainInfoJson {
       href.add(value.href);
     }
     return href;
+  }
+
+  String getTime() {
+    String time = "";
+    List<String> dayStringList = [
+      R.current.Monday,
+      R.current.Tuesday,
+      R.current.Wednesday,
+      R.current.Thursday,
+      R.current.Friday,
+      R.current.Saturday,
+      R.current.Sunday,
+      R.current.UnKnown
+    ];
+    for (Day day in course.time.keys) {
+      if (course.time[day].replaceAll(RegExp('[|\n]'), "").isNotEmpty) {
+        time += "${dayStringList[day.index]}_${course.time[day]} ";
+      }
+    }
+    return time;
   }
 
   bool get isEmpty {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:after_init/after_init.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
@@ -258,6 +259,7 @@ class _SettingPageState extends State<SettingPage>
         ),
         onTap: () async {
           String directory = await FilePicker.platform.getDirectoryPath();
+          Log.d(directory);
           if (directory == "/" || directory == null) {
             if (directory == '/') {
               MyToast.show(R.current.selectDirectoryFail);

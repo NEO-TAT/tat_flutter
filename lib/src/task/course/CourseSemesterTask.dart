@@ -25,10 +25,25 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
         value = await CourseConnector.getStudentCourseSemester(id);
       }
       super.onEnd();
-      if (value != null) {
+      if (value != null && value.length != 0) {
         result = value;
         return TaskStatus.Success;
       } else {
+        result = List();
+        int year = DateTime.now().year - 1911;
+        int month = DateTime.now().month;
+        int sem = 1;
+        if (month <= 2) {
+          year--;
+          sem = 2;
+        } else if (month >= 7) {
+          sem = 2;
+        }
+        result.add(SemesterJson(
+          year: year.toString(),
+          semester: sem.toString(),
+        ));
+        return TaskStatus.Success;
         return await super.onError(R.current.getCourseSemesterError);
       }
     }

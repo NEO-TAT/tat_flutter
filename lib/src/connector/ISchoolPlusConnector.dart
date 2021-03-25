@@ -23,16 +23,13 @@ class ReturnWithStatus<T> {
 }
 
 class ISchoolPlusConnector {
-  static final String _iSchoolPlusUrl = "https://istudy.ntut.edu.tw/";
+  static final String host = "https://istudy.ntut.edu.tw/";
 
   //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
   //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
   //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
-  static final String _iSchoolPlusLearnIndexUrl =
-      _iSchoolPlusUrl + "learn/index.php";
-  static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
-  static final String _getCourseName =
-      _iSchoolPlusUrl + "learn/mooc_sysbar.php";
+  static final String _iSchoolPlusLearnIndexUrl = host + "learn/index.php";
+  static final String _getCourseName = host + "learn/mooc_sysbar.php";
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
@@ -87,13 +84,12 @@ class ISchoolPlusConnector {
         return value;
       }
 
-      parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/launch.php");
+      parameter = ConnectorParameter(host + "learn/path/launch.php");
       result = await Connector.getDataByGet(parameter);
       exp = new RegExp(r"cid=(?<cid>[\w|-]+,)");
       matches = exp.firstMatch(result);
       String cid = matches.group(1);
-      parameter =
-          ConnectorParameter(_iSchoolPlusUrl + "learn/path/pathtree.php");
+      parameter = ConnectorParameter(host + "learn/path/pathtree.php");
       parameter.data = {'cid': cid};
 
       result = await Connector.getDataByGet(parameter);
@@ -120,8 +116,8 @@ class ISchoolPlusConnector {
           downloadPost[key] = node.attributes['value'];
         }
       }
-      parameter = ConnectorParameter(
-          _iSchoolPlusUrl + "learn/path/SCORM_loadCA.php"); //取得下載檔案XML
+      parameter =
+          ConnectorParameter(host + "learn/path/SCORM_loadCA.php"); //取得下載檔案XML
       result = await Connector.getDataByGet(parameter);
       tagNode = html.parse(result);
       itemNodes = tagNode.getElementsByTagName("item");
@@ -174,8 +170,8 @@ class ISchoolPlusConnector {
     String url;
     String result;
     try {
-      parameter = ConnectorParameter(
-          _iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
+      parameter =
+          ConnectorParameter(host + "learn/path/SCORM_fetchResource.php");
       parameter.data = postParameter;
       parameter.charsetName = 'big5';
       parameter.referer =
@@ -203,25 +199,25 @@ class ISchoolPlusConnector {
           matches = exp.firstMatch(result);
           bool pass = (matches?.groupCount == null) ? false : true;
           if (pass) {
-            String realUrl = _iSchoolPlusUrl + matches.group(1);
+            String realUrl = host + matches.group(1);
             return [realUrl, realUrl]; //一般下載連結
           } else {
             exp = new RegExp("\"(?<url>.+)\""); //檢測""內包含字
             matches = exp.firstMatch(result);
-            url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
+            url = host + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
             result = await Connector.getDataByGet(parameter);
             exp =
                 new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
-            String realUrl = _iSchoolPlusUrl + "learn/path/" + matches.group(1);
+            String realUrl = host + "learn/path/" + matches.group(1);
             return [realUrl, url]; //PDF需要有referer不然會無法下載
           }
         }
       } else if (response.isRedirect || result.isEmpty) {
         //發生跳轉 出現檔案下載預覽頁面
         url = response.headers[HttpHeaders.locationHeader][0];
-        url = _iSchoolPlusUrl + "learn/path/" + url;
+        url = host + "learn/path/" + url;
         url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址
         return [url, url];
       }
@@ -361,7 +357,7 @@ class ISchoolPlusConnector {
           if (href[0] == '/') {
             href = href.substring(1, href.length);
           }
-          fileMap[node.text] = _iSchoolPlusUrl + href;
+          fileMap[node.text] = host + href;
         }
       }
       detail["title"] = title;
@@ -417,10 +413,10 @@ class ISchoolPlusConnector {
       result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
       nodes = tagNode.getElementsByTagName("tbody");
-      if (nodes.length > 1) {
+      if (nodes != null && (nodes.length > 1)) {
         node = nodes[1];
       } else {
-        return null; //代表無公告
+        return List(); //代表無公告
       }
       nodes = node.getElementsByTagName("tr");
       for (int i = 0; i < nodes.length; i++) {

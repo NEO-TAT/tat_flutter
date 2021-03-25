@@ -73,6 +73,8 @@ class Model {
   }
 
   void setFirstUse(String key, bool value) {
+    String wKey = "firstUse$key";
+    _writeInt(wKey, 0);
     _firstRun[key] = value;
   }
 

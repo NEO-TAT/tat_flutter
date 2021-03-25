@@ -11,13 +11,18 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
+import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/task/Task.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
+import 'package:flutter_app/src/task/course/CourseSearchTask.dart';
 import 'package:flutter_app/src/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/task/course/CourseTableTask.dart';
+import 'package:flutter_app/src/task/course_oads/CourseOadAddCourseTask.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSubscribeNoticeTask.dart';
+import 'package:flutter_app/src/task/ntut/NTUTOrgtreeSearchTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:flutter_app/ui/pages/coursetable/CourseTableControl.dart';
@@ -219,10 +224,19 @@ class _CourseTablePageState extends State<CourseTablePage> {
     if (courseTable == null) {
       //代表沒有暫存的需要爬蟲
       TaskFlow taskFlow = TaskFlow();
-      var task = CourseTableTask(studentId, semesterJson);
+      final task = CourseTableTask(studentId, semesterJson);
       taskFlow.addTask(task);
       if (await taskFlow.start()) {
         courseTable = task.result;
+      } else {
+        final task = NTUTOrgtreeSearchTask(studentId);
+        taskFlow.addTask(task);
+        if (await taskFlow.start()) {
+          _studentIdControl.text = task.result.id;
+          _getCourseTable(studentId: _studentIdControl.text);
+        } else {
+          MyToast.show(R.current.getCourseError);
+        }
       }
     }
     Model.instance.getCourseSetting().info = courseTable; //儲存課表
@@ -283,11 +297,97 @@ class _CourseTablePageState extends State<CourseTablePage> {
         _loadFavorite();
         break;
       case 2:
+        _addCustomCourse();
+        break;
+      case 3:
         await screenshot();
         break;
       default:
         break;
     }
+  }
+
+  _addCustomCourse() {
+    final control = TextEditingController();
+    Task<List<CourseMainInfoJson>> task;
+    Get.dialog(
+      StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        return AlertDialog(
+          title: Text(R.current.importCourse),
+          content: SingleChildScrollView(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(R.current.importCourseWarning),
+                  TextField(
+                    controller: control,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      labelText: R.current.inputCourseName,
+                    ),
+                    onEditingComplete: () async {
+                      FocusScope.of(context).unfocus();
+                      final taskFlow = TaskFlow();
+                      task = CourseSearchTask(
+                          courseTableData.courseSemester, control.text);
+                      taskFlow.addTask(task);
+                      if (await taskFlow.start()) {
+                        setState(() {});
+                      }
+                    },
+                  ),
+                  if (task != null && task.result != null)
+                    Column(
+                      children: task.result
+                          .map(
+                            (info) => Container(
+                              padding: EdgeInsets.only(top: 10, bottom: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: AutoSizeText(
+                                      sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s", [
+                                        "${R.current.courseId}: ${info.course.id}",
+                                        "${R.current.courseName}: ${info.course.name}",
+                                        "${R.current.instructor}: ${info.getTeacherName()}",
+                                        "${R.current.startClass}: ${info.getOpenClassName()}",
+                                        "${R.current.classroom}: ${info.getClassroomName()}",
+                                        "${R.current.time}: ${info.getTime()}",
+                                        "${R.current.note}: ${info.course.note}",
+                                      ]),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () {
+                                        if (!courseTableData
+                                            .addCourseDetailByCourseInfo(
+                                                info)) {
+                                          MyToast.show(
+                                              R.current.addCustomCourseError);
+                                        }
+                                        Get.back();
+                                        Model.instance.getCourseSetting().info =
+                                            courseTableData; //儲存課表
+                                        Model.instance.saveCourseSetting();
+                                        _loadSetting();
+                                      })
+                                ],
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
+    );
   }
 
   void _setFavorite(bool like) {
@@ -437,9 +537,14 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 value: 1,
                 child: Text(R.current.loadFavorite),
               ),
-              if (Platform.isAndroid)
+              if (_studentIdControl.text == Model.instance.getAccount())
                 PopupMenuItem(
                   value: 2,
+                  child: Text(R.current.importCourse),
+                ),
+              if (Platform.isAndroid)
+                PopupMenuItem(
+                  value: 3,
                   child: Text(R.current.setAsAndroidWeight),
                 ),
             ],
@@ -685,6 +790,33 @@ class _CourseTablePageState extends State<CourseTablePage> {
           ),
         ),
         actions: <Widget>[
+          if (!course.isSelect)
+            FlatButton(
+              onPressed: () {
+                courseTableData.removeCourseByCourseId(course.id);
+                Model.instance.getCourseSetting().info = courseTableData; //儲存課表
+                Model.instance.saveCourseSetting();
+                _loadSetting();
+                Get.back();
+              },
+              child: new Text(R.current.delete),
+            ),
+          if (!course.isSelect)
+            FlatButton(
+              onPressed: () async {
+                final taskFlow = TaskFlow();
+                taskFlow.addTask(CourseOadAddCourseTask(course.id));
+                if (await taskFlow.start()) {
+                  _getCourseTable(
+                    semesterSetting: courseTableData?.courseSemester,
+                    studentId: _studentIdControl.text,
+                    refresh: true,
+                  );
+                }
+                Get.back();
+              },
+              child: new Text(R.current.tryAddCourse),
+            ),
           FlatButton(
             onPressed: () {
               _showCourseDetail(courseInfo);

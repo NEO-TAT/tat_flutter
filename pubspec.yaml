@@ -23,7 +23,7 @@ dependencies:
   logger: ^0.9.4
   #顯示Log
   sprintf: ^5.0.0
-  flutter_local_notifications: ^3.0.3
+  flutter_local_notifications: ^4.0.1+1
   #通知欄  需修改android原始碼
   rxdart: ^0.25.0
   #通知欄有使用到
@@ -48,7 +48,7 @@ dependencies:
   #網路get post API
   dio_cookie_manager: 1.0.0
   #用於產生cookie_jar與dio接口
-  cookie_jar: 1.0.1
+  cookie_jar: ^1.0.1
   #可儲存式cookies
   html: ^0.14.0+4
   #html解析器
@@ -68,7 +68,7 @@ dependencies:
   #---------json----------#
   json_annotation: ^3.1.1
   #----------other----------#
-  back_button_interceptor: ^4.4.1
+  back_button_interceptor: ^4.4.2
   #攔截返回鍵訊息
   big5:      #big5 decode encode
     path: plugins/big5-dart
@@ -77,7 +77,7 @@ dependencies:
   package_info: ^0.4.3+4
   #檢測app版本用於檢查更新
   #----------html viewer----------#
-  flutter_widget_from_html_core: ^0.5.1+4
+  flutter_widget_from_html_core: ^0.5.2+1
   #----------animation----------#
   flutter_staggered_animations: 0.1.2
   #listView or gridView動畫
@@ -85,10 +85,10 @@ dependencies:
   flutter_downloader: ^1.5.2
   #下載app更新
   open_file: ^3.0.3
-  permission_handler: 5.0.1+1
+  permission_handler: ^5.1.0+2
   mime_type: 0.3.2
   #----------Widget----------#
-  get: ^3.24.0
+  get: ^3.25.4
   bot_toast: ^3.0.5
   pull_to_refresh: ^1.6.4
   #提供ListView可下拉式更新並且可動態加載
@@ -100,7 +100,7 @@ dependencies:
   #顯示行事曆
   flutter_xlider: 3.4.0
   #語言切換用
-  fluttertoast: ^7.1.6
+  fluttertoast: ^7.1.8
   #Toast
   awesome_dialog:
     path: plugins/awesomeDialogs
@@ -112,7 +112,8 @@ dependencies:
   flutter_markdown: ^0.5.2
   numberpicker: ^1.3.0
   #選擇學期
-  alice: ^0.1.10
+  alice: ^0.1.11
+  pretty_json: ^1.1.0
 
   # Firebase
   firebase_core: ^0.7.0

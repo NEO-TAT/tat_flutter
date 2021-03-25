@@ -10,7 +10,9 @@ class APPVersion {
     if (!config.isFocusUpdate) {
       if (!Model.instance.autoCheckAppUpdate ||
           !Model.instance.getFirstUse(Model.appCheckUpdate) ||
-          Model.instance.getAccount().isEmpty) return;
+          Model.instance
+              .getAccount()
+              .isEmpty) return;
     }
     Model.instance.setAlreadyUse(Model.appCheckUpdate);
     await check();

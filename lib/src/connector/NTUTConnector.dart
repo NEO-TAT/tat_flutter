@@ -16,6 +16,8 @@ import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
 import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
+import 'package:html/dom.dart';
+import 'package:html/parser.dart';
 import 'package:intl/intl.dart';
 
 enum NTUTConnectorStatus {
@@ -27,14 +29,20 @@ enum NTUTConnectorStatus {
   UnknownError
 }
 
+class orgtreeSearchResult {
+  String id;
+  String name;
+  String msg;
+}
+
 class NTUTConnector {
   static final String host = "https://app.ntut.edu.tw/";
   static final String _loginUrl = host + "login.do";
   static final String _getPictureUrl = host + "photoView.do";
-  static final String _checkLoginUrl = host + "myPortal.do";
   static final String _getTreeUrl = host + "aptreeList.do";
   static final String _getCalendarUrl = host + "calModeApp.do";
   static final String _changePasswordUrl = host + "passwordMdy.do";
+  static final String _orgtreeSearchUrl = host + "orgtreeSearch.do";
 
   static Future<NTUTConnectorStatus> login(
       String account, String password) async {
@@ -160,6 +168,40 @@ class NTUTConnector {
       } else {
         return jsonResult["returnMsg"];
       }
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
+  static Future<List<orgtreeSearchResult>> orgtreeSearch(String keyword) async {
+    ConnectorParameter parameter;
+    String result;
+    Document tagNode;
+    List<Element> nodes;
+    List<orgtreeSearchResult> orgtreeSearchList = List();
+    try {
+      parameter = ConnectorParameter(_orgtreeSearchUrl);
+      parameter.data = {
+        "searchType": '1',
+        "excuteFunction": "orgtreeEntryShow",
+        "submitFunction": "",
+        "searchKeyword": keyword
+      };
+      result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      nodes = tagNode
+          .getElementsByClassName("eipOrgTreeDisplay")
+          .first
+          .getElementsByTagName("div");
+      for (Element node in nodes) {
+        orgtreeSearchResult r = orgtreeSearchResult();
+        r.id = node.getElementsByTagName("input").last.attributes["value"];
+        r.name = node.getElementsByTagName("span").first.text;
+        r.msg = node.text;
+        orgtreeSearchList.add(r);
+      }
+      return orgtreeSearchList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;

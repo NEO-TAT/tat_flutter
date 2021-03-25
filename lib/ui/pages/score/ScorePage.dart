@@ -444,16 +444,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildOtherDepartmentItem() {
-    String department =
-        Model.instance.getGraduationInformation().selectDepartment;
+    String divisionCode =
+        Model.instance.getGraduationInformation().selectDivision;
     int otherDepartmentMaxCredit =
         courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
-    try {
-      department = department.substring(0, 2);
-      Log.d(department);
-    } catch (e) {}
     Map<String, List<CourseScoreInfoJson>> generalLesson =
-        courseScoreCredit.getOtherDepartmentCourse(department);
+        courseScoreCredit.getOtherDepartmentCourse(divisionCode);
     List<Widget> widgetList = List();
     int otherDepartmentCredit = 0;
     for (String key in generalLesson.keys) {

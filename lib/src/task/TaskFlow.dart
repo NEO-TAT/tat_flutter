@@ -4,11 +4,11 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/task/course/CourseSystemTask.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSystemTask.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
-import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
 import 'package:flutter_app/src/task/score/ScoreSystemTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
 import 'Task.dart';
+import 'course_oads/CourseOadSystemTask.dart';
 
 typedef onSuccessCallBack = Function(Task);
 
@@ -20,10 +20,10 @@ class TaskFlow {
 
   static resetLoginStatus() {
     NTUTTask.isLogin = false;
-    NTUTAppTask.isLogin = false;
     ScoreSystemTask.isLogin = false;
     IPlusSystemTask.isLogin = false;
     CourseSystemTask.isLogin = false;
+    CourseOadSystemTask.isLogin = false;
   }
 
   int get length {
