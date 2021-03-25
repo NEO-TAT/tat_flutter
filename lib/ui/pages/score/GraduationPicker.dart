@@ -89,9 +89,9 @@ class GraduationPickerWidget extends StatefulWidget {
 
 class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   GraduationInformationJson graduationInformation = GraduationInformationJson();
-  List<String> yearList = List();
-  List<Map> matricList = List();
-  List<Map> divisionList = List();
+  List<String> yearList = [];
+  List<Map> matricList = [];
+  List<Map> divisionList = [];
   double width;
   String _selectedYear;
   Map _selectedMatric;
@@ -301,13 +301,13 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text(R.current.cancel),
                     onPressed: () {
                       _cancel();
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text(R.current.save),
                     onPressed: () {
                       _save();

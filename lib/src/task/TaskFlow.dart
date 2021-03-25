@@ -35,9 +35,9 @@ class TaskFlow {
   }
 
   TaskFlow() {
-    _queue = List();
-    _completeTask = List();
-    _failTask = List();
+    _queue = [];
+    _completeTask = [];
+    _failTask = [];
   }
 
   void addTask(Task task) {
@@ -64,7 +64,7 @@ class TaskFlow {
           break;
         case TaskStatus.GiveUp:
           _failTask.addAll(_queue);
-          _queue = List();
+          _queue = [];
           success = false;
           break;
         case TaskStatus.Restart:
@@ -81,8 +81,8 @@ class TaskFlow {
         log += '\n--' + task.name;
       }
     }
-    _completeTask = List();
-    _failTask = List();
+    _completeTask = [];
+    _failTask = [];
     Log.d(log);
     return success;
   }

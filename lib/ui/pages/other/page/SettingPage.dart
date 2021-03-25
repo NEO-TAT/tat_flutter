@@ -49,7 +49,7 @@ class _SettingPageState extends State<SettingPage>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listViewData = List();
+    List<Widget> listViewData = [];
     listViewData.add(_buildLanguageSetting());
     if (Platform.isAndroid) {
       listViewData.add(_buildOpenExternalVideoSetting());

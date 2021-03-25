@@ -10,7 +10,7 @@ class CourseFileJson {
 
   CourseFileJson({this.name, this.fileType, this.time}) {
     name = JsonInit.stringInit(name);
-    fileType = fileType ?? List();
+    fileType = fileType ?? [];
     time = time ?? DateTime.now();
   }
 

@@ -28,7 +28,7 @@ class ISchoolPlusConnector {
   //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
   //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
   //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
-  static final String _iSchoolPlusLearnIndexUrl = host + "learn/index.php";
+  //static final String _iSchoolPlusLearnIndexUrl = host + "learn/index.php";
   static final String _getCourseName = host + "learn/mooc_sysbar.php";
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
@@ -78,7 +78,7 @@ class ISchoolPlusConnector {
     List<html.Element> nodes, itemNodes, resourceNodes;
     var value = ReturnWithStatus<List<CourseFileJson>>();
     try {
-      List<CourseFileJson> courseFileList = List();
+      List<CourseFileJson> courseFileList = [];
       if (!await _selectCourse(courseId)) {
         value.status = IPlusReturnStatus.NoPermission;
         return value;
@@ -249,7 +249,7 @@ class ISchoolPlusConnector {
         "bid": "",
         "nid": "",
       };
-      List<ISchoolPlusAnnouncementJson> announcementList = List();
+      List<ISchoolPlusAnnouncementJson> announcementList = [];
 
       parameter = ConnectorParameter(
           "https://istudy.ntut.edu.tw/forum/m_node_list.php");
@@ -406,7 +406,7 @@ class ISchoolPlusConnector {
     html.Element node;
     List<html.Element> nodes;
     String result;
-    List<String> courseNameList = List();
+    List<String> courseNameList = [];
     try {
       parameter =
           ConnectorParameter("https://istudy.ntut.edu.tw/learn/my_forum.php");
@@ -416,7 +416,7 @@ class ISchoolPlusConnector {
       if (nodes != null && (nodes.length > 1)) {
         node = nodes[1];
       } else {
-        return List(); //代表無公告
+        return []; //代表無公告
       }
       nodes = node.getElementsByTagName("tr");
       for (int i = 0; i < nodes.length; i++) {

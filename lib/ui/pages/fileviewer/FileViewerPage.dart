@@ -33,9 +33,9 @@ class FileViewerPage extends StatefulWidget {
 class _FileViewerPageState extends State<FileViewerPage>
     with WidgetsBindingObserver {
   String path;
-  List<String> paths = List();
+  List<String> paths = [];
 
-  List<FileSystemEntity> files = List();
+  List<FileSystemEntity> files = [];
   bool showHidden = false;
 
   @override
@@ -343,12 +343,12 @@ class _FileViewerPageState extends State<FileViewerPage>
                   Container(
                     height: 40,
                     width: 130,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor),
                       child: Text(
                         R.current.cancel,
                         style: TextStyle(
@@ -356,15 +356,16 @@ class _FileViewerPageState extends State<FileViewerPage>
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
-                      color: Colors.white,
                     ),
                   ),
                   Container(
                     height: 40,
                     width: 130,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
                       child: Text(
                         R.current.createFolder,
@@ -390,7 +391,6 @@ class _FileViewerPageState extends State<FileViewerPage>
                           getFiles();
                         }
                       },
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ],
@@ -439,12 +439,12 @@ class _FileViewerPageState extends State<FileViewerPage>
                   Container(
                     height: 40,
                     width: 130,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
-                      borderSide:
-                          BorderSide(color: Theme.of(context).accentColor),
                       child: Text(
                         R.current.cancel,
                         style: TextStyle(
@@ -452,15 +452,16 @@ class _FileViewerPageState extends State<FileViewerPage>
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
-                      color: Colors.white,
                     ),
                   ),
                   Container(
                     height: 40,
                     width: 130,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
                       child: Text(
                         R.current.rename,
@@ -515,7 +516,6 @@ class _FileViewerPageState extends State<FileViewerPage>
                           getFiles();
                         }
                       },
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ],

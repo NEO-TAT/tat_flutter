@@ -115,7 +115,7 @@ class CourseOadConnector {
           .getElementsByTagName("tr");
       classNodes.removeAt(11);
       classNodes.removeAt(4);
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 0; i < courseNodes.length; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();

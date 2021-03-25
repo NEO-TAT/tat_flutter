@@ -17,7 +17,7 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  List<Map> listViewData = List();
+  List<Map> listViewData = [];
 
   static bool inDevMode = false;
 
@@ -28,7 +28,7 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   void initList() {
-    listViewData = List();
+    listViewData = [];
     listViewData.addAll([
       {
         "icon": EvaIcons.refreshOutline,

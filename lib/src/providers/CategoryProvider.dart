@@ -13,14 +13,14 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   bool loading = false;
-  List<FileSystemEntity> downloads = List();
-  List<String> downloadTabs = List();
+  List<FileSystemEntity> downloads = [];
+  List<String> downloadTabs = [];
 
-  List<FileSystemEntity> images = List();
-  List<String> imageTabs = List();
+  List<FileSystemEntity> images = [];
+  List<String> imageTabs = [];
 
-  List<FileSystemEntity> audio = List();
-  List<String> audioTabs = List();
+  List<FileSystemEntity> audio = [];
+  List<String> audioTabs = [];
 
   bool showHidden = false;
   int sort = 0;

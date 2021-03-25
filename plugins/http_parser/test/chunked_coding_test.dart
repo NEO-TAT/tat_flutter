@@ -5,8 +5,9 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:charcode/charcode.dart';
 import 'package:http_parser/http_parser.dart';
+
+import 'package:charcode/charcode.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -29,8 +30,8 @@ void main() {
     });
 
     group('with chunked conversion', () {
-      List<List<int>> results;
-      ByteConversionSink sink;
+      late List<List<int>> results;
+      late ByteConversionSink sink;
       setUp(() {
         results = [];
         final controller = StreamController<List<int>>(sync: true);
@@ -254,8 +255,8 @@ void main() {
     });
 
     group('with chunked conversion', () {
-      List<List<int>> results;
-      ByteConversionSink sink;
+      late List<List<int>> results;
+      late ByteConversionSink sink;
       setUp(() {
         results = [];
         final controller = StreamController<List<int>>(sync: true);

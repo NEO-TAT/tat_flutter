@@ -63,7 +63,7 @@ class ScoreConnector {
   }
 
   static String strQ2B(String input) {
-    List<int> newString = List();
+    List<int> newString = [];
     for (int c in input.codeUnits) {
       if (c == 12288) {
         c = 32;
@@ -84,7 +84,7 @@ class ScoreConnector {
     Document tagNode;
     Element tableNode, h3Node, scoreNode;
     List<Element> tableNodes, h3Nodes, scoreNodes, rankNodes;
-    List<SemesterCourseScoreJson> courseScoreList = List();
+    List<SemesterCourseScoreJson> courseScoreList = [];
     try {
       Map<String, String> data = {"format": "-2"};
       parameter = ConnectorParameter(_scoreAllScoreUrl);
@@ -265,7 +265,7 @@ class ScoreConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<String> coreGeneralLessonList = List();
+    List<String> coreGeneralLessonList = [];
     try {
       parameter = ConnectorParameter(_generalLessonAllScoreUrl);
       parameter.charsetName = "big5";

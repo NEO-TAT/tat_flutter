@@ -80,7 +80,7 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
         ],
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text(R.current.sure),
           onPressed: () async {
             Get.back();

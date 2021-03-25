@@ -14,7 +14,7 @@ class CourseExtraInfoJson {
   List<ClassmateJson> classmate; //修課同學
 
   CourseExtraInfoJson({this.courseSemester, this.course, this.classmate}) {
-    classmate = classmate ?? List();
+    classmate = classmate ?? [];
     courseSemester = courseSemester ?? SemesterJson();
     course = course ?? CourseExtraJson();
   }
@@ -47,9 +47,9 @@ class CourseMainInfoJson {
   CourseMainInfoJson(
       {this.course, this.teacher, this.classroom, this.openClass}) {
     course = course ?? CourseMainJson();
-    teacher = teacher ?? List();
-    classroom = classroom ?? List();
-    openClass = openClass ?? List();
+    teacher = teacher ?? [];
+    classroom = classroom ?? [];
+    openClass = openClass ?? [];
   }
 
   String getOpenClassName() {
@@ -77,7 +77,7 @@ class CourseMainInfoJson {
   }
 
   List<String> getClassroomNameList() {
-    List<String> name = List();
+    List<String> name = [];
     for (ClassroomJson value in classroom) {
       name.add(value.name);
     }
@@ -85,7 +85,7 @@ class CourseMainInfoJson {
   }
 
   List<String> getClassroomHrefList() {
-    List<String> href = List();
+    List<String> href = [];
     for (ClassroomJson value in classroom) {
       href.add(value.href);
     }

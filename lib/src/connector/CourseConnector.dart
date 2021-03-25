@@ -178,7 +178,7 @@ class CourseConnector {
       Response response = await Connector.getDataByPostResponse(parameter);
       tagNode = parse(response.toString());
       nodes = tagNode.getElementsByTagName("a");
-      List<SemesterJson> semesterJsonList = List();
+      List<SemesterJson> semesterJsonList = [];
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         String year, semester;
@@ -214,7 +214,7 @@ class CourseConnector {
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[0];
       nodes = node.getElementsByTagName("tr");
-      List<SemesterJson> semesterJsonList = List();
+      List<SemesterJson> semesterJsonList = [];
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         String year, semester;
@@ -232,7 +232,7 @@ class CourseConnector {
   }
 
   static String strQ2B(String input) {
-    List<int> newString = List();
+    List<int> newString = [];
     for (int c in input.codeUnits) {
       if (c == 12288) {
         c = 32;
@@ -285,7 +285,7 @@ class CourseConnector {
       }
       info.studentName = studentName;
 
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 1; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -390,7 +390,7 @@ class CourseConnector {
         studentName = "";
       }
       info.studentName = studentName;
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -503,7 +503,7 @@ class CourseConnector {
         studentName = "";
       }
       info.studentName = studentName;
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -645,7 +645,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<String> resultList = List();
+    List<String> resultList = [];
     try {
       parameter =
           ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
@@ -676,7 +676,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<Map> resultList = List();
+    List<Map> resultList = [];
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = {"format": "-2", "year": year};
@@ -708,7 +708,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<Map> resultList = List();
+    List<Map> resultList = [];
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = code;
@@ -821,7 +821,7 @@ class CourseConnector {
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       trNodes = node.getElementsByTagName("tr");
-      graduationInformation.courseCodeList = List();
+      graduationInformation.courseCodeList = [];
       for (int i = 1; i < trNodes.length; i++) {
         node = trNodes[i];
         String courseCode = node
@@ -856,7 +856,7 @@ class CourseConnector {
       Day.Friday,
       Day.Saturday
     ];
-    List<CourseMainInfoJson> courseMainInfoList = List();
+    List<CourseMainInfoJson> courseMainInfoList = [];
     try {
       String encodeName = "";
       final encodeBig5 = big5.encode(name);

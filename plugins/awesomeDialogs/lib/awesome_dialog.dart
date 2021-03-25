@@ -194,6 +194,7 @@ class AwesomeDialog {
               (btnCancelOnPress != null ? _buildFancyButtonCancel : null),
           showCloseIcon: this.showCloseIcon,
           closeIcon: closeIcon,
+          onClose: () {},
         ),
       );
 

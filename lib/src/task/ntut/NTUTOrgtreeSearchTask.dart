@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../Task.dart';
 import 'NTUTTask.dart';
 
-class NTUTOrgtreeSearchTask extends NTUTTask<orgtreeSearchResult> {
+class NTUTOrgtreeSearchTask extends NTUTTask<OrgtreeSearchResult> {
   final String keyword;
 
   NTUTOrgtreeSearchTask(this.keyword) : super("NTUTOrgtreeSearchTask");
@@ -16,7 +16,7 @@ class NTUTOrgtreeSearchTask extends NTUTTask<orgtreeSearchResult> {
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.search);
-      List<orgtreeSearchResult> value =
+      List<OrgtreeSearchResult> value =
           await NTUTConnector.orgtreeSearch(keyword);
       super.onEnd();
       if (value != null && value.length != 0) {

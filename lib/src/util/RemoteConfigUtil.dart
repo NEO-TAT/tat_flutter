@@ -9,12 +9,17 @@ class RemoteConfigUtil {
   static String versionConfigKey = "version_config";
 
   static Future<void> init() async {
-    _remoteConfig = await RemoteConfig.instance;
+    _remoteConfig = RemoteConfig.instance;
+    _remoteConfig.setConfigSettings(
+      RemoteConfigSettings(
+        fetchTimeout: Duration(hours: 1),
+        minimumFetchInterval: Duration(hours: 1),
+      ),
+    );
   }
 
   static Future<RemoteConfigVersionInfo> getVersionConfig() async {
-    await _remoteConfig.fetch(expiration: Duration(hours: 1));
-    await _remoteConfig.activateFetched();
+    await _remoteConfig.fetchAndActivate();
     String result = _remoteConfig.getString(versionConfigKey);
     return RemoteConfigVersionInfo.fromJson(json.decode(result));
   }

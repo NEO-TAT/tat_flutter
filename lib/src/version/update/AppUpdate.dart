@@ -41,7 +41,7 @@ class AppUpdate {
     String title =
         sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
 
-    bool v = await Get.dialog<bool>(
+    Get.dialog<bool>(
       AlertDialog(
         title: Text(title),
         content: SingleChildScrollView(
@@ -58,13 +58,13 @@ class AppUpdate {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(R.current.cancel),
             onPressed: () {
               Get.back<bool>(result: false);
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text(R.current.update),
             onPressed: () {
               Get.back<bool>(result: true);

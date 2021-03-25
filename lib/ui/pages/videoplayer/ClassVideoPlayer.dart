@@ -42,7 +42,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
   VideoPlayerController _controller;
   ChewieController _chewieController;
-  List<VideoInfo> videoName = List();
+  List<VideoInfo> videoName = [];
   VideoInfo _select;
   int selectIndex = 0;
 
@@ -86,7 +86,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
           info.name = child.id;
           videoName.add(info);
         }
-      } catch (e, stack) {
+      } catch (e) {
         continue;
       }
     }
@@ -111,7 +111,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
             shrinkWrap: true, //使清單最小化
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                child: FlatButton(
+                child: TextButton(
                   child: Text(videoName[index].name),
                   onPressed: () {
                     String url = getVideoUrl(videoName[index].url);

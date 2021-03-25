@@ -25,7 +25,7 @@ class CourseScoreCreditJson {
       {this.graduationInformation, this.semesterCourseScoreList}) {
     graduationInformation =
         graduationInformation ?? GraduationInformationJson();
-    semesterCourseScoreList = semesterCourseScoreList ?? List();
+    semesterCourseScoreList = semesterCourseScoreList ?? [];
   }
 
   //利用學期取得課程資訊
@@ -40,7 +40,7 @@ class CourseScoreCreditJson {
 
   //取得所有課程資訊
   List<CourseScoreInfoJson> getCourseInfoList() {
-    List<CourseScoreInfoJson> courseInfoList = List();
+    List<CourseScoreInfoJson> courseInfoList = [];
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       courseInfoList.addAll(i.courseScoreList);
     }
@@ -61,7 +61,7 @@ class CourseScoreCreditJson {
 
   //取得所有課程id
   List<String> getCourseIdList() {
-    List<String> courseIdList = List();
+    List<String> courseIdList = [];
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       for (CourseScoreInfoJson j in i.courseScoreList) {
         courseIdList.add(j.courseId);
@@ -99,7 +99,7 @@ class CourseScoreCreditJson {
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester =
           sprintf("%s-%s", [i.semester.year, i.semester.semester]);
-      result[semester] = List();
+      result[semester] = [];
       for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.category.contains(type) && j.isPass) {
           result[semester].add(j);
@@ -121,7 +121,7 @@ class CourseScoreCreditJson {
     Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester = getSemesterString(i.semester);
-      result[semester] = List();
+      result[semester] = [];
       for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.isGeneralLesson && j.isPass) {
           result[semester].add(j);
@@ -139,7 +139,7 @@ class CourseScoreCreditJson {
     Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester = getSemesterString(i.semester);
-      result[semester] = List();
+      result[semester] = [];
       for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.isOtherDepartment(divisionCode) && j.isPass) {
           result[semester].add(j);
@@ -197,7 +197,7 @@ class GraduationInformationJson {
             : "");
     lowCredit = lowCredit ?? 0;
     outerDepartmentMaxCredit = outerDepartmentMaxCredit ?? 0;
-    courseCodeList = courseCodeList ?? List();
+    courseCodeList = courseCodeList ?? [];
     if (courseTypeMinCredit == null) {
       courseTypeMinCredit = Map();
       for (String type in constCourseType) {
@@ -257,7 +257,7 @@ class SemesterCourseScoreJson {
       this.totalCredit}) {
     now = now ?? RankJson();
     history = history ?? RankJson();
-    courseScoreList = courseScoreList ?? List();
+    courseScoreList = courseScoreList ?? [];
     semester = semester ?? SemesterJson();
     averageScore = averageScore ?? 0;
     performanceScore = performanceScore ?? 0;

@@ -97,8 +97,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       List<String> v = task.result;
-      List<String> value = List();
-      v = v ?? List();
+      List<String> value = [];
+      v = v ?? [];
       for (int i = 0; i < v.length; i++) {
         String courseName = v[i];
         CourseInfoJson courseInfo =
@@ -118,7 +118,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 shrinkWrap: true, //使清單最小化
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-                    child: FlatButton(
+                    child: TextButton(
                       child: Text(value[index]),
                       onPressed: () {
                         String courseName = value[index];
@@ -137,7 +137,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               ),
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text(R.current.sure),
                 onPressed: () {
                   Get.back();
@@ -246,7 +246,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Widget _getSemesterItem(SemesterJson semester) {
     String semesterString = semester.year + "-" + semester.semester;
-    return FlatButton(
+    return TextButton(
       child: Text(semesterString),
       onPressed: () {
         Get.back();
@@ -421,7 +421,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     actionExtentRatio: 0.25,
                     child: Container(
                       height: 50,
-                      child: FlatButton(
+                      child: TextButton(
                         child: Container(
                           child: Text(sprintf("%s %s %s-%s", [
                             value[index].studentId,
@@ -588,7 +588,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                      */
                   ),
                 ),
-                FlatButton(
+                TextButton(
                   child: Container(
                     child: Row(
                       children: <Widget>[
@@ -671,7 +671,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   Widget _buildDay() {
-    List<Widget> widgetList = List();
+    List<Widget> widgetList = [];
     widgetList.add(Container(
       width: sectionWidth,
     ));
@@ -701,7 +701,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         ? Theme.of(context).backgroundColor
         : Theme.of(context).dividerColor;
     color = color.withAlpha(courseTableWithAlpha);
-    List<Widget> widgetList = List();
+    List<Widget> widgetList = [];
     widgetList.add(
       Container(
         width: sectionWidth,
@@ -723,8 +723,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
               ? Container()
               : Container(
                   padding: EdgeInsets.all(1),
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(0),
+                      primary: color,
+                    ),
                     child: AutoSizeText(
                       courseInfo.main.course.name,
                       style: TextStyle(
@@ -738,7 +741,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     onPressed: () {
                       showCourseDetailDialog(section, courseInfo);
                     },
-                    color: color,
                   ),
                 ),
         ),
@@ -791,7 +793,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         ),
         actions: <Widget>[
           if (!course.isSelect)
-            FlatButton(
+            TextButton(
               onPressed: () {
                 courseTableData.removeCourseByCourseId(course.id);
                 Model.instance.getCourseSetting().info = courseTableData; //儲存課表
@@ -802,7 +804,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               child: new Text(R.current.delete),
             ),
           if (!course.isSelect)
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 final taskFlow = TaskFlow();
                 taskFlow.addTask(CourseOadAddCourseTask(course.id));
@@ -817,7 +819,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               },
               child: new Text(R.current.tryAddCourse),
             ),
-          FlatButton(
+          TextButton(
             onPressed: () {
               _showCourseDetail(courseInfo);
             },
@@ -849,12 +851,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
           ],
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
               child: Text(R.current.cancel),
               onPressed: () {
                 Get.back(result: null);
               }),
-          FlatButton(
+          TextButton(
               child: Text(R.current.sure),
               onPressed: () {
                 Get.back<String>(result: controller.text);

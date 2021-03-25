@@ -22,7 +22,7 @@ class Notifications {
   final String downloadChannelId = "Download";
   final String downloadChannelName = "Download";
   final String downloadChannelDescription = "Show Download Progress";
-  List<int> idList = List(); //紀錄以點擊id
+  List<int> idList = []; //紀錄以點擊id
 
   Future<void> init() async {
 // needed if you intend to initialize in the `main` function

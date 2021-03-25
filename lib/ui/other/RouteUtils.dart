@@ -108,7 +108,7 @@ class RouteUtils {
     return await Get.to(
       () => WebViewPage(
         title: title,
-        url: url,
+        url: Uri.parse(url),
       ),
       transition: transition,
     );

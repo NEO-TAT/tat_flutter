@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:get/get.dart';
@@ -169,20 +168,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: FlatButton(
+                      child: TextButton(
                         child: Text(
                           R.current.login,
                           style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(32.0),
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(32.0),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 16),
                         ),
-                        color: AppColors.mainColor,
-                        textColor: AppColors.lightFontColor,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         onPressed: () => _loginPress(context),
                       ),
                     ),

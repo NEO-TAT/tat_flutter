@@ -87,13 +87,13 @@ class _StoreEditPageState extends State<StoreEditPage> {
                                       maxLines: 20,
                                     ),
                                     actions: [
-                                      FlatButton(
+                                      TextButton(
                                         onPressed: () {
                                           Get.back();
                                         },
                                         child: Text(R.current.cancel),
                                       ),
-                                      FlatButton(
+                                      TextButton(
                                         onPressed: () async {
                                           if (pref
                                                   .get(key)

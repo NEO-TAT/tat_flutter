@@ -208,7 +208,7 @@ class CourseTableJson {
   }
 
   List<String> getCourseIdList() {
-    List<String> courseIdList = List();
+    List<String> courseIdList = [];
     for (Day day in Day.values) {
       for (SectionNumber number in SectionNumber.values) {
         CourseInfoJson courseInfo = courseInfoMap[day][number];

@@ -44,10 +44,6 @@ class CustomProgressDialog extends StatelessWidget {
     return Theme.of(context).dialogBackgroundColor;
   }
 
-  static const RoundedRectangleBorder _defaultDialogShape =
-      RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(2.0)));
-
   @override
   Widget build(BuildContext context) {
     return AnimatedPadding(

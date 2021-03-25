@@ -29,7 +29,7 @@ enum NTUTConnectorStatus {
   UnknownError
 }
 
-class orgtreeSearchResult {
+class OrgtreeSearchResult {
   String id;
   String name;
   String msg;
@@ -174,12 +174,12 @@ class NTUTConnector {
     }
   }
 
-  static Future<List<orgtreeSearchResult>> orgtreeSearch(String keyword) async {
+  static Future<List<OrgtreeSearchResult>> orgtreeSearch(String keyword) async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
     List<Element> nodes;
-    List<orgtreeSearchResult> orgtreeSearchList = List();
+    List<OrgtreeSearchResult> orgtreeSearchList = [];
     try {
       parameter = ConnectorParameter(_orgtreeSearchUrl);
       parameter.data = {
@@ -195,7 +195,7 @@ class NTUTConnector {
           .first
           .getElementsByTagName("div");
       for (Element node in nodes) {
-        orgtreeSearchResult r = orgtreeSearchResult();
+        OrgtreeSearchResult r = OrgtreeSearchResult();
         r.id = node.getElementsByTagName("input").last.attributes["value"];
         r.name = node.getElementsByTagName("span").first.text;
         r.msg = node.text;

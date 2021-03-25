@@ -79,7 +79,7 @@ class CourseTableControl {
   }
 
   List<int> get getDayIntList {
-    List<int> intList = List();
+    List<int> intList = [];
     for (int i = 0; i < dayLength; i++) {
       if (isHideSaturday && i == 5) continue;
       if (isHideSunday && i == 6) continue;
@@ -122,7 +122,7 @@ class CourseTableControl {
   }
 
   List<int> get getSectionIntList {
-    List<int> intList = List();
+    List<int> intList = [];
     for (int i = 0; i < sectionLength; i++) {
       if (isHideN && i == 4) continue;
       if (isHideA && i == 10) continue;

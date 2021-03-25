@@ -29,7 +29,7 @@ class FileUtils {
   /// Return all available Storage path
   static Future<List<Directory>> getStorageList() async {
     List<Directory> paths = await getExternalStorageDirectories();
-    List<Directory> filteredPaths = List<Directory>();
+    List<Directory> filteredPaths = [];
     for (Directory dir in paths) {
       filteredPaths.add(removeDataDirectory(dir.path));
     }
@@ -47,7 +47,7 @@ class FileUtils {
 
   static Future<List<FileSystemEntity>> getAllFiles({bool showHidden}) async {
     List<Directory> storages = await getStorageList();
-    List<FileSystemEntity> files = List<FileSystemEntity>();
+    List<FileSystemEntity> files = [];
     for (Directory dir in storages) {
       files.addAll(await getAllFilesInPath(dir.path, showHidden: showHidden));
     }
@@ -66,7 +66,7 @@ class FileUtils {
   static Future<List<FileSystemEntity>> searchFiles(String query,
       {bool showHidden}) async {
     List<Directory> storage = await getStorageList();
-    List<FileSystemEntity> files = List<FileSystemEntity>();
+    List<FileSystemEntity> files = [];
     for (Directory dir in storage) {
       List fs = await getAllFilesInPath(dir.path, showHidden: showHidden);
       for (FileSystemEntity fs in fs) {
@@ -81,7 +81,7 @@ class FileUtils {
   /// Get all files
   static Future<List<FileSystemEntity>> getAllFilesInPath(String path,
       {bool showHidden}) async {
-    List<FileSystemEntity> files = List<FileSystemEntity>();
+    List<FileSystemEntity> files = [];
     Directory d = Directory(path);
     List<FileSystemEntity> l = d.listSync();
     for (FileSystemEntity file in l) {

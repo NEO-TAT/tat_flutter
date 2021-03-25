@@ -9,12 +9,26 @@ class AppThemes {
     backgroundColor: AppColors.lightBG,
     primaryColor: AppColors.mainColor,
     accentColor: AppColors.lightAccent,
-    cursorColor: AppColors.lightAccent,
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: AppColors.lightAccent,
+    ),
     toggleableActiveColor: Colors.blue,
     dividerColor: Color(0xFFF8F8F8),
     scaffoldBackgroundColor: AppColors.lightBG,
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: AppColors.mainColor,
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.black,
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.black12,
+        shadowColor: Colors.black12,
+        onPrimary: Colors.black,
+      ),
     ),
   );
 
@@ -25,12 +39,26 @@ class AppThemes {
     primaryColor: AppColors.darkPrimary,
     accentColor: AppColors.darkAccent,
     scaffoldBackgroundColor: AppColors.darkBG,
-    cursorColor: AppColors.darkAccent,
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: AppColors.darkAccent,
+    ),
     toggleableActiveColor: Colors.blueAccent,
     dividerColor: Color(0xFF2F2F2F),
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: AppColors.darkAccent,
     ),
     buttonColor: AppColors.darkAccent,
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        primary: Colors.white,
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white12,
+        shadowColor: Colors.white12,
+        onPrimary: Colors.white,
+      ),
+    ),
   );
 }

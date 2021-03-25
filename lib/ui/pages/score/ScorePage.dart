@@ -27,12 +27,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     with TickerProviderStateMixin {
   TabController _tabController;
   bool isLoading = true;
-  List<SemesterCourseScoreJson> courseScoreList = List();
+  List<SemesterCourseScoreJson> courseScoreList = [];
   CourseScoreCreditJson courseScoreCredit;
   ScrollController _scrollController = ScrollController();
   int _currentTabIndex = 0;
-  List<Widget> tabLabelList = List();
-  List<Widget> tabChildList = List();
+  List<Widget> tabLabelList = [];
+  List<Widget> tabChildList = [];
   static bool appExpansionInitiallyExpanded = false;
 
   @override
@@ -51,7 +51,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   void _addScoreRankTask() async {
-    courseScoreList = List();
+    courseScoreList = [];
     setState(() {
       isLoading = true;
     });
@@ -104,7 +104,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     } else {
       MyToast.show(R.current.searchCreditIsNullWarning);
     }
-    courseScoreList = courseScoreList ?? List();
+    courseScoreList = courseScoreList ?? [];
     _buildTabBar();
     setState(() {
       isLoading = false;
@@ -210,8 +210,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   void _buildTabBar() {
-    tabLabelList = List();
-    tabChildList = List();
+    tabLabelList = [];
+    tabChildList = [];
     try {
       if (courseScoreCredit.graduationInformation.isSelect) {
         tabLabelList.add(_buildTabLabel(R.current.creditSummary));
@@ -307,7 +307,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildSummary() {
-    List<Widget> widgetList = List();
+    List<Widget> widgetList = [];
     GraduationInformationJson graduationInformation =
         courseScoreCredit.graduationInformation;
     Widget widget = _buildTile(sprintf("%s %d/%d", [
@@ -353,7 +353,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       onTap: () {
         Map<String, List<CourseScoreInfoJson>> result =
             courseScoreCredit.getCourseByType(type);
-        List<String> courseInfo = List();
+        List<String> courseInfo = [];
         for (String key in result.keys.toList()) {
           courseInfo.add(key);
           for (CourseScoreInfoJson course in result[key]) {
@@ -379,7 +379,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () {
                     Get.back();
                   },
@@ -412,7 +412,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   Widget _buildGeneralLessonItem() {
     Map<String, List<CourseScoreInfoJson>> generalLesson =
         courseScoreCredit.getGeneralLesson();
-    List<Widget> widgetList = List();
+    List<Widget> widgetList = [];
     int selectCredit = 0;
     int coreCredit = 0;
     for (String key in generalLesson.keys) {
@@ -450,7 +450,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
     Map<String, List<CourseScoreInfoJson>> generalLesson =
         courseScoreCredit.getOtherDepartmentCourse(divisionCode);
-    List<Widget> widgetList = List();
+    List<Widget> widgetList = [];
     int otherDepartmentCredit = 0;
     for (String key in generalLesson.keys) {
       for (CourseScoreInfoJson course in generalLesson[key]) {
