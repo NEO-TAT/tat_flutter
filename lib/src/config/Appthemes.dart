@@ -25,8 +25,8 @@ class AppThemes {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        elevation: 0,
         primary: Colors.black12,
-        shadowColor: Colors.black12,
         onPrimary: Colors.black,
       ),
     ),
@@ -55,8 +55,8 @@ class AppThemes {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
+        elevation: 0,
         primary: Colors.white12,
-        shadowColor: Colors.white12,
         onPrimary: Colors.white,
       ),
     ),
