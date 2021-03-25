@@ -57,9 +57,7 @@ class _SettingPageState extends State<SettingPage>
     listViewData.add(_buildLoadIPlusNewsSetting());
     listViewData.add(_buildAutoCheckAppVersionSetting());
     listViewData.add(_buildDarkModeSetting());
-    if (Platform.isAndroid) {
-      listViewData.add(_buildFolderPathSetting());
-    }
+    listViewData.add(_buildFolderPathSetting());
     return Scaffold(
       appBar: AppBar(
         title: Text(R.current.setting),
@@ -258,17 +256,19 @@ class _SettingPageState extends State<SettingPage>
           ),
         ),
         onTap: () async {
-          String directory = await FilePicker.platform.getDirectoryPath();
-          Log.d(directory);
-          if (directory == "/" || directory == null) {
-            if (directory == '/') {
-              MyToast.show(R.current.selectDirectoryFail);
+          if (Platform.isAndroid) {
+            String directory = await FilePicker.platform.getDirectoryPath();
+            Log.d(directory);
+            if (directory == "/" || directory == null) {
+              if (directory == '/') {
+                MyToast.show(R.current.selectDirectoryFail);
+              }
+            } else {
+              await FileStore.setFilePath(directory);
+              setState(() {
+                downloadPath = directory;
+              });
             }
-          } else {
-            await FileStore.setFilePath(directory);
-            setState(() {
-              downloadPath = directory;
-            });
           }
         },
       );
