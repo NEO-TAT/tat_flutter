@@ -915,7 +915,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  static const platform = const MethodChannel(AppConfig.methodChannelName);
+  static const platform = const MethodChannel(AppConfig.method_channel_widget_name);
 
   Future screenshot() async {
     double originHeight = courseHeight;

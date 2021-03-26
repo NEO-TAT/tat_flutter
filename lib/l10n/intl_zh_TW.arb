@@ -156,7 +156,7 @@
   "openExternalVideoHint": "推薦使用MX player",
   "noSupportExternalVideoPlayer": "沒有支持的外置播放器",
   "checkIPlusNew": "檢查IPlus最新公告",
-  "selectDirectoryFail": "路徑錯誤，請不要選擇包含Download目錄的資料夾",
+  "selectDirectoryFail": "無法將此路徑設定為下載路徑",
   "informationSystem": "資訊系統",
   "___________________iSchoolUi___________________": "註解",
   "course": "課程",

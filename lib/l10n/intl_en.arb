@@ -155,7 +155,7 @@
   "openExternalVideo": "Open with external video player",
   "openExternalVideoHint": "Recommend use MX player",
   "checkIPlusNew": "Check IPlus new",
-  "selectDirectoryFail": "The path is wrong, please do not select the folder containing the Download directory",
+  "selectDirectoryFail": "Cannot set this path as download path",
   "informationSystem": "Information System",
   "___________________iSchoolUi___________________": "註解",
   "course": "Course",

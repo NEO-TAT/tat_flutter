@@ -242,7 +242,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchingDepartment" : MessageLookupByLibrary.simpleMessage("Searching department"),
     "searchingDivision" : MessageLookupByLibrary.simpleMessage("Searching division"),
     "searchingYear" : MessageLookupByLibrary.simpleMessage("Searching year"),
-    "selectDirectoryFail" : MessageLookupByLibrary.simpleMessage("The path is wrong, please do not select the folder containing the Download directory"),
+    "selectDirectoryFail" : MessageLookupByLibrary.simpleMessage("Cannot set this path as download path"),
     "selectSemester" : MessageLookupByLibrary.simpleMessage("Select semester"),
     "semesterGrades" : MessageLookupByLibrary.simpleMessage("Semester grades"),
     "semesterRanking" : MessageLookupByLibrary.simpleMessage("Semester ranking"),
