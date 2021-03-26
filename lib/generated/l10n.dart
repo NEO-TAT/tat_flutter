@@ -1585,10 +1585,10 @@ class S {
     );
   }
 
-  /// `The path is wrong, please do not select the folder containing the Download directory`
+  /// `Cannot set this path as download path`
   String get selectDirectoryFail {
     return Intl.message(
-      'The path is wrong, please do not select the folder containing the Download directory',
+      'Cannot set this path as download path',
       name: 'selectDirectoryFail',
       desc: '',
       args: [],

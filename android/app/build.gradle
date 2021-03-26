@@ -97,4 +97,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
     implementation "androidx.multidex:multidex:2.0.1"
+    implementation "com.anggrayudi:storage:0.5.2"
 }
