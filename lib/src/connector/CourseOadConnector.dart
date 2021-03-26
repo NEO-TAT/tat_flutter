@@ -23,6 +23,7 @@ class QueryCourseResult {
   int now;
   int sign;
   String msg;
+  bool error = false;
 }
 
 class CourseOadConnector {
@@ -284,9 +285,19 @@ class CourseOadConnector {
       status.msg = nodes[17].text;
       status.info = courseMainInfo;
       return status;
-    } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
-      return null;
+    } catch (e) {
+      try {
+        Document tagNode;
+        tagNode = parse(result);
+        QueryCourseResult status = QueryCourseResult();
+        status.error = true;
+        status.success = false;
+        status.msg = tagNode.getElementsByClassName("errmsg_text").first.text;
+        return status;
+      } catch (e, stack) {
+        Log.eWithStack(e.toString(), stack);
+        return null;
+      }
     }
   }
 

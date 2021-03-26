@@ -23,12 +23,10 @@ class CourseOadAddCourseTask extends CourseOadSystemTask<String> {
       super.onStart(R.current.addCourse);
       QueryCourseResult queryResult = await CourseOadConnector.queryCourse(id);
       super.onEnd();
-      print(
-          "${queryResult.up} ${queryResult.down} ${queryResult.now} ${queryResult.sign}");
-      if (!queryResult.success) {
+      if (queryResult == null || !queryResult.success) {
         ErrorDialogParameter parameter = ErrorDialogParameter(
           title: R.current.error,
-          desc: queryResult.msg,
+          desc: queryResult.msg ?? R.current.unknownError,
           btnOkOnPress: () {
             Get.back();
           },

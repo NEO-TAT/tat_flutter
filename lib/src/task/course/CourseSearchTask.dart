@@ -25,7 +25,11 @@ class CourseSearchTask extends DialogTask<List<CourseMainInfoJson>> {
       try {
         await CourseOadConnector.login();
         QueryCourseResult r = await CourseOadConnector.queryCourse(searchName);
-        result = [r.info];
+        if (r != null && !r.error) {
+          result = [r.info];
+        } else {
+          result = null;
+        }
       } catch (e) {
         result = null;
       }
