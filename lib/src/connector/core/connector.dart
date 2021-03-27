@@ -1,5 +1,5 @@
 //
-//  Connector.dart
+//  connector.dart
 //  北科課程助手
 //
 //  Created by morris13579 on 2020/02/12.

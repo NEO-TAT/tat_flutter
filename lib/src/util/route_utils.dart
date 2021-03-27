@@ -118,10 +118,12 @@ class RouteUtils {
       transition: transition,
     );
   }
-
+/*
   static Future toAliceInspectorPage() async {
     DioConnector.instance.alice.showInspector();
   }
+
+ */
 
   static Future toIPlusAnnouncementDetailPage(
       CourseInfoJson courseInfo, Map detail) async {

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart';
 
@@ -26,18 +26,18 @@ class FileIcon extends StatelessWidget {
       );
     } else if (_extension == ".crdownload") {
       return Icon(
-        Feather.download,
+        Icons.file_download,
         color: Colors.lightBlue,
       );
     } else if (_extension == ".zip" || _extension.contains("tar")) {
       return Icon(
-        Feather.archive,
+        FontAwesome5.file_archive,
       );
     } else if (_extension == ".epub" ||
         _extension == ".pdf" ||
         _extension == ".mobi") {
       return Icon(
-        Feather.file_text,
+        FontAwesome5.file_alt,
         color: Colors.orangeAccent,
       );
     } else {
@@ -73,7 +73,7 @@ class FileIcon extends StatelessWidget {
         case "audio":
           {
             return Icon(
-              Feather.music,
+              FontAwesome5.file_audio,
               color: Colors.blue,
             );
           }
@@ -82,7 +82,7 @@ class FileIcon extends StatelessWidget {
         case "text":
           {
             return Icon(
-              Feather.file_text,
+              FontAwesome5.file_alt,
               color: Colors.orangeAccent,
             );
           }
@@ -91,7 +91,7 @@ class FileIcon extends StatelessWidget {
         default:
           {
             return Icon(
-              Feather.file,
+              FontAwesome5.file,
             );
           }
           break;

@@ -5,7 +5,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
 import 'package:flutter_app/src/util/file_utils.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart' as pathLib;
 import 'package:provider/provider.dart';
@@ -157,7 +156,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                         ? IconButton(
                             icon: Icon(
                               widget.path.toString().contains("emulated")
-                                  ? Feather.smartphone
+                                  ? Icons.smartphone
                                   : Icons.sd_card,
                               color: index == paths.length - 1
                                   ? Theme.of(context).accentColor
@@ -305,7 +304,7 @@ class _FileViewerPageState extends State<FileViewerPage>
               ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => addDialog(context, path),
-          child: Icon(Feather.plus),
+          child: Icon(Icons.add),
           tooltip: "Add Folder",
         ),
       ),

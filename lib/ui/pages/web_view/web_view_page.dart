@@ -22,7 +22,7 @@ class _WebViewPageState extends State<WebViewPage> {
   double progress = 0;
 
   Future<bool> setCookies() async {
-    final cookies = cookieJar.loadForRequest(widget.url);
+    final cookies = await cookieJar.loadForRequest(widget.url);
     for (var cookie in cookies) {
       await cookieManager.setCookie(
         url: widget.url,

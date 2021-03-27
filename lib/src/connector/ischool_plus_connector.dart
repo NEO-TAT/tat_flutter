@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/core/Connector.dart';
+import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/model/ischool_plus/course_file_json.dart';
 import 'package:flutter_app/src/model/ischool_plus/ischool_plus_announcement_json.dart';
 import 'package:flutter_app/src/util/html_utils.dart';

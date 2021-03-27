@@ -8,7 +8,7 @@
 
 import 'dart:io';
 
-import 'package:alice/alice.dart';
+//import 'package:alice/alice.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -16,8 +16,9 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
-import 'package:get/get.dart' as getUtils;
 import 'package:path_provider/path_provider.dart';
+
+//import 'package:get/get.dart' as getUtils;
 
 import 'connector_parameter.dart';
 
@@ -28,10 +29,14 @@ class DioConnector {
     HttpHeaders.userAgentHeader: presetUserAgent,
     "Upgrade-Insecure-Requests": "1",
   };
+
+  /*
   Alice alice = Alice(
     darkTheme: true,
     showNotification: false,
   );
+
+   */
   static final BaseOptions dioOptions = new BaseOptions(
       connectTimeout: 5000,
       receiveTimeout: 10000,
@@ -65,17 +70,18 @@ class DioConnector {
     String result = Utf8Codec().decode(responseBytes);
     return result;
   }
-   */
+  */
 
   Future<void> init() async {
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
-      _cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
-      alice.setNavigatorKey(getUtils.Get.key);
+      Storage storage = FileStorage(appDocPath + "/.cookies/");
+      _cookieJar = PersistCookieJar(storage: storage);
+      //alice.setNavigatorKey(getUtils.Get.key);
       dio.interceptors.add(CookieManager(_cookieJar));
       dio.interceptors.add(RequestInterceptors());
-      dio.interceptors.add(alice.getDioInterceptor());
+      //dio.interceptors.add(alice.getDioInterceptor());
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
     }

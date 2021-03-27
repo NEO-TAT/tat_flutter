@@ -9,7 +9,7 @@ import 'package:flutter_app/src/store/model.dart';
 import 'package:flutter_app/src/util/document_utils.dart';
 import 'package:flutter_app/src/util/language_utils.dart';
 import 'package:flutter_app/ui/other/listview_animator.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -144,7 +144,7 @@ class _SettingPageState extends State<SettingPage> {
                   padding: EdgeInsets.only(left: 10),
                 ),
                 Icon(
-                  Feather.moon,
+                  FontAwesome5.moon,
                 ),
               ],
             ),
