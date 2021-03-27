@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
@@ -23,18 +22,12 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage>
-    with AfterInitMixin<SettingPage> {
-  String downloadPath;
+class _SettingPageState extends State<SettingPage> {
+  String downloadPath = "";
 
   @override
   void initState() {
-    downloadPath = "";
     super.initState();
-  }
-
-  @override
-  void didInitState() {
     _getDownloadPath();
   }
 

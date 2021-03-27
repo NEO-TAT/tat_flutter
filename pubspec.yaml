@@ -29,7 +29,6 @@ dependencies:
   #通知欄有使用到
   video_player: ^2.0.2
   chewie: ^1.0.0
-  after_init: 0.1.2
   android_intent: ^2.0.0
   device_info: ^2.0.0
   html_unescape: ^2.0.0
