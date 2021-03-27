@@ -6,18 +6,18 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/config/AppConfig.dart';
-import 'package:flutter_app/src/config/Appthemes.dart';
-import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/providers/CategoryProvider.dart';
-import 'package:flutter_app/src/util/AnalyticsUtils.dart';
-import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
-import 'package:flutter_app/ui/screen/MainScreen.dart';
+import 'package:flutter_app/src/config/app_config.dart';
+import 'package:flutter_app/src/config/app_themes.dart';
+import 'package:flutter_app/src/providers/app_provider.dart';
+import 'package:flutter_app/src/providers/category_provider.dart';
+import 'package:flutter_app/src/util/analytics_utils.dart';
+import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
+import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import 'debug/log/Log.dart';
+import 'debug/log/log.dart';
 import 'generated/l10n.dart';
 
 Future<Null> main() async {

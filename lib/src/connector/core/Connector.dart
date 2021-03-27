@@ -11,8 +11,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:sprintf/sprintf.dart';
 
-import 'ConnectorParameter.dart';
-import 'DioConnector.dart';
+import 'connector_parameter.dart';
+import 'dio_connector.dart';
 
 class Connector {
   static Future<String> getDataByPost(ConnectorParameter parameter) async {

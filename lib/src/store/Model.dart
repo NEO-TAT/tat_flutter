@@ -1,4 +1,4 @@
-//  Model.dart
+//  model.dart
 //  北科課程助手
 //  用於儲存資料與得取資料
 //  Created by morris13579 on 2020/02/12.
@@ -7,15 +7,15 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_app/src/connector/core/DioConnector.dart';
-import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
-import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
-import 'package:flutter_app/src/model/setting/SettingJson.dart';
-import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
+import 'package:flutter_app/src/connector/core/dio_connector.dart';
+import 'package:flutter_app/src/model/course/course_score_json.dart';
+import 'package:flutter_app/src/model/course_table/course_table_json.dart';
+import 'package:flutter_app/src/model/setting/setting_json.dart';
+import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/course/CourseClassJson.dart';
+import '../model/course/course_class_json.dart';
 
 //flutter packages pub run build_runner build 創建Json
 //flutter packages pub run build_runner build --delete-conflicting-outputs
