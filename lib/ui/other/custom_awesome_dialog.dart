@@ -1,20 +1,10 @@
 library awesome_dialog;
 
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:awesome_dialog/src/vertical_stack_header_dialog.dart';
 import 'package:flutter/material.dart';
 
-import 'src/animated_button.dart';
-import 'src/anims/anims.dart';
-import 'src/anims/flare_header.dart';
-import 'src/vertical_stack_header_dialog.dart';
-
-export 'src/animated_button.dart';
-export 'src/anims/anims.dart';
-export 'src/anims/flare_header.dart';
-
-enum DialogType { INFO, WARNING, ERROR, SUCCES, QUESTION, NO_HEADER }
-enum AnimType { SCALE, LEFTSLIDE, RIGHSLIDE, BOTTOMSLIDE, TOPSLIDE }
-
-class AwesomeDialog {
+class CustomAwesomeDialog {
   /// [@required]
   final BuildContext context;
 
@@ -102,7 +92,7 @@ class AwesomeDialog {
   /// Set BorderSide of DialogShape
   final BorderSide borderSide;
 
-  AwesomeDialog({
+  CustomAwesomeDialog({
     @required this.context,
     this.dialogType = DialogType.INFO,
     this.customHeader,

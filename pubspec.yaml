@@ -102,8 +102,7 @@ dependencies:
   #語言切換用
   fluttertoast: ^8.0.3
   #Toast
-  awesome_dialog:
-    path: plugins/awesomeDialogs
+  awesome_dialog: ^1.3.2
   #顯示Error時用到
   flutter_slidable: ^0.5.7
   #email使用可左右滑抽屜

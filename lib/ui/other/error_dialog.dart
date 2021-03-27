@@ -9,6 +9,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:get/get.dart';
+import 'custom_awesome_dialog.dart';
 
 class ErrorDialogParameter {
   BuildContext context;
@@ -63,19 +64,20 @@ class ErrorDialog {
   ErrorDialog(this.parameter);
 
   Future<bool> show() async {
-    return await Get.dialog<bool>(AwesomeDialog(
-                context: Get.key.currentState.context,
-                dialogType: parameter.dialogType,
-                animType: parameter.animType,
-                title: parameter.title,
-                desc: parameter.desc,
-                btnOkText: parameter.btnOkText,
-                btnCancelText: parameter.btnCancelText,
-                useRootNavigator: false,
-                dismissOnTouchOutside: false,
-                btnCancelOnPress: parameter.btnCancelOnPress,
-                btnOkOnPress: parameter.btnOkOnPress)
-            .child) ??
+    return await Get.dialog<bool>(CustomAwesomeDialog(
+        context: Get.key.currentState.context,
+        dialogType: parameter.dialogType,
+        animType: parameter.animType,
+        title: parameter.title,
+        desc: parameter.desc,
+        btnOkText: parameter.btnOkText,
+        btnCancelText: parameter.btnCancelText,
+        useRootNavigator: false,
+        dismissOnTouchOutside: false,
+        btnCancelOnPress: parameter.btnCancelOnPress,
+        btnOkOnPress: parameter.btnOkOnPress)
+        .child) ??
         false;
   }
 }
+
