@@ -16,7 +16,6 @@ import 'package:flutter_app/ui/pages/other/page/store_edit_page.dart';
 import 'package:flutter_app/ui/pages/other/page/sub_system_page.dart';
 import 'package:flutter_app/ui/pages/video_player/class_video_player.dart';
 import 'package:flutter_app/ui/pages/web_view/web_view_page.dart';
-import 'package:flutter_app/ui/pages/web_view/web_view_plugin_page.dart';
 import 'package:flutter_app/ui/screen/login_screen.dart';
 import 'package:get/get.dart';
 
@@ -94,21 +93,13 @@ class RouteUtils {
     );
   }
 
-  static Future toWebViewPluginPage(String title, String url) async {
-    return await Get.to(
-      () => WebViewPluginPage(
-        title: title,
-        url: url,
-      ),
-      transition: transition,
-    );
-  }
-
-  static Future toWebViewPage(String title, String url) async {
+  static Future toWebViewPage(String title, String url,
+      [bool openWithExternalWebView = true]) async {
     return await Get.to(
       () => WebViewPage(
         title: title,
         url: Uri.parse(url),
+        openWithExternalWebView: openWithExternalWebView,
       ),
       transition: transition,
     );

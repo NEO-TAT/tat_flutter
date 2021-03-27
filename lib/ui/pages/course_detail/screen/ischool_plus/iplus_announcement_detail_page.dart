@@ -7,10 +7,10 @@ import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/file/file_download.dart';
 import 'package:flutter_app/src/model/course_table/course_table_json.dart';
 import 'package:flutter_app/src/util/html_utils.dart';
+import 'package:flutter_app/src/util/open_utils.dart';
 import 'package:flutter_app/ui/other/listview_animator.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class IPlusAnnouncementDetailPage extends StatefulWidget {
   final Map data;
@@ -206,15 +206,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
     Log.d(url);
     if (Uri.parse(url).host.contains("istudy")) {
     } else {
-      _launchURL(url);
-    }
-  }
-
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+      OpenUtils.launchURL(url);
     }
   }
 }

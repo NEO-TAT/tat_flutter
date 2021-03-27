@@ -4,8 +4,9 @@ import 'package:android_intent/android_intent.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:url_launcher/url_launcher.dart' as URI;
+import 'package:url_launcher/url_launcher.dart';
 
-class MXPlayerUtils {
+class OpenUtils {
   static String mxPlayerFreePackageName = "com.mxtech.videoplayer.ad";
   static String mxPlayerProPackageName = "com.mxtech.videoplayer.pro";
 
@@ -36,7 +37,7 @@ class MXPlayerUtils {
     return true;
   }
 
-  static Future<bool> launch({String url, String name}) async {
+  static Future<bool> launchMXPlayer({String url, String name}) async {
     bool open = true;
     if (Platform.isAndroid) {
       open = await _androidLaunch(url, name);
@@ -47,5 +48,14 @@ class MXPlayerUtils {
       MyToast.show(R.current.noSupportExternalVideoPlayer);
     }
     return open;
+  }
+
+  static Future<bool> launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+      return true;
+    } else {
+      return false;
+    }
   }
 }

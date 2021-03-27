@@ -170,7 +170,7 @@ class _CourseInfoPageState extends State<CourseInfoPage>
 
   void _launchWebView(String title, String url) {
     canPop = false;
-    RouteUtils.toWebViewPluginPage(title, url).then((value) => canPop = true);
+    RouteUtils.toWebViewPage(title, url).then((value) => canPop = true);
   }
 
   Widget _buildCourseInfoWithButton(

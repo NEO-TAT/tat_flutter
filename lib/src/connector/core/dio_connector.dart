@@ -47,14 +47,15 @@ class DioConnector {
   Dio dio = Dio(dioOptions);
   PersistCookieJar _cookieJar;
   static final Exception connectorError =
-  Exception("Connector statusCode is not 200");
+      Exception("Connector statusCode is not 200");
 
   DioConnector._privateConstructor();
 
   static final DioConnector instance = DioConnector._privateConstructor();
 
   static Future<String> _big5Decoder(List<int> responseBytes) async {
-    String result = await CharsetConverter.decode(AppConfig.big5Decode, responseBytes);
+    String result =
+        await CharsetConverter.decode(AppConfig.big5Decode, responseBytes);
     return result;
   }
 
@@ -182,13 +183,13 @@ class DioConnector {
 
   Future<void> download(String url, SavePathCallback savePath,
       {ProgressCallback progressCallback,
-        CancelToken cancelToken,
-        Map<String, dynamic> header}) async {
+      CancelToken cancelToken,
+      Map<String, dynamic> header}) async {
     await dio
         .downloadUri(Uri.parse(url), savePath,
-        onReceiveProgress: progressCallback,
-        cancelToken: cancelToken,
-        options: Options(receiveTimeout: 0, headers: header)) //設置不超時
+            onReceiveProgress: progressCallback,
+            cancelToken: cancelToken,
+            options: Options(receiveTimeout: 0, headers: header)) //設置不超時
         .catchError((onError, stack) {
       Log.eWithStack(onError.toString(), stack);
       throw onError;

@@ -81,7 +81,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
           onTap: () async {
             if (ap.type == 'link') {
               String url = "${NTUTConnector.host}${ap.urlLink}";
-              RouteUtils.toWebViewPage(ap.description, url);
+              RouteUtils.toWebViewPage(ap.description, url, false);
             } else {
               RouteUtils.toSubSystemPage(ap.description, ap.apDn);
             }

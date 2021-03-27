@@ -12,7 +12,7 @@ import 'package:flutter_app/src/model/course_table/course_table_json.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/store/model.dart';
 import 'package:flutter_app/src/util/language_utils.dart';
-import 'package:flutter_app/src/util/mx_player_utils.dart';
+import 'package:flutter_app/src/util/open_utils.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:get/get.dart';
 import 'package:html/dom.dart' as dom;
@@ -130,7 +130,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     bool open = false;
     if (Model.instance.getOtherSetting().useExternalVideoPlayer) {
       String name = widget.name + "_" + _select.name + ".mp4";
-      open = await MXPlayerUtils.launch(url: url, name: name);
+      open = await OpenUtils.launchMXPlayer(url: url, name: name);
     }
     if (!open) {
       await initController(url);

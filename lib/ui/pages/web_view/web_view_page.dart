@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
+import 'package:flutter_app/src/util/open_utils.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class WebViewPage extends StatefulWidget {
   final Uri url;
   final String title;
+  final bool openWithExternalWebView;
 
-  WebViewPage({this.title, this.url});
+  WebViewPage({this.title, this.url, this.openWithExternalWebView});
 
   @override
   _WebViewPageState createState() => _WebViewPageState();
@@ -41,6 +43,51 @@ class _WebViewPageState extends State<WebViewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          Container(
+            width: 50,
+            child: InkWell(
+              onTap: () async {
+                if (webView != null) {
+                  await webView.goBack();
+                }
+              },
+              child: Icon(Icons.arrow_back, color: Colors.white),
+            ),
+          ),
+          Container(
+            width: 50,
+            child: InkWell(
+              onTap: () async {
+                if (webView != null) {
+                  await webView.goForward();
+                }
+              },
+              child: Icon(Icons.arrow_forward, color: Colors.white),
+            ),
+          ),
+          Container(
+            width: 50,
+            child: InkWell(
+              onTap: () async {
+                if (webView != null) {
+                  await webView.reload();
+                }
+              },
+              child: Icon(Icons.refresh, color: Colors.white),
+            ),
+          ),
+          if (widget.openWithExternalWebView)
+            Container(
+              width: 50,
+              child: InkWell(
+                onTap: () async {
+                  OpenUtils.launchURL(widget.url.toString());
+                },
+                child: Icon(Icons.open_in_new, color: Colors.white),
+              ),
+            ),
+        ],
       ),
       body: FutureBuilder<bool>(
         future: setCookies(),
@@ -90,50 +137,6 @@ class _WebViewPageState extends State<WebViewPage> {
                           },
                         ),
                       ),
-                    ),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          child: Icon(Icons.arrow_back),
-                          onPressed: () async {
-                            if (webView != null) {
-                              await webView.goBack();
-                            }
-                          },
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          child: Icon(Icons.arrow_forward),
-                          onPressed: () async {
-                            if (webView != null) {
-                              await webView.goForward();
-                            }
-                          },
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          child: Icon(Icons.refresh),
-                          onPressed: () async {
-                            if (webView != null) {
-                              await webView.reload();
-                            }
-                          },
-                        ),
-                      ],
                     ),
                   ],
                 ),

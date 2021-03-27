@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/app_link.dart';
 import 'package:flutter_app/src/model/remote_config/remote_config_version_info.dart';
+import 'package:flutter_app/src/util/open_utils.dart';
 import 'package:flutter_app/src/util/remote_config_utils.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:get/get.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 class AppUpdate {
@@ -86,8 +86,6 @@ class AppUpdate {
 
   static void _openAppStore() async {
     String url = AppLink.storeLink;
-    if (await canLaunch(url)) {
-      await launch(url);
-    }
+    await OpenUtils.launchURL(url);
   }
 }

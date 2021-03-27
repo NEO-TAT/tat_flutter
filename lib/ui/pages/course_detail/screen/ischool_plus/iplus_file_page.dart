@@ -12,13 +12,13 @@ import 'package:flutter_app/src/store/model.dart';
 import 'package:flutter_app/src/task/iplus/iplus_course_file_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
+import 'package:flutter_app/src/util/open_utils.dart';
 import 'package:flutter_app/src/util/route_utils.dart';
 import 'package:flutter_app/ui/icon/my_icons.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class IPlusFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -250,7 +250,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
-        _launchURL(url);
+        OpenUtils.launchURL(url);
       };
       ErrorDialog(errorDialogParameter).show();
       return;
@@ -269,14 +269,6 @@ class _IPlusFilePage extends State<IPlusFilePage>
     } else {
       await FileDownload.download(
           context, url, dirName, courseFile.name, referer);
-    }
-  }
-
-  _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
     }
   }
 

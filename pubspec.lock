@@ -606,13 +606,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_webview_plugin:
-    dependency: "direct main"
-    description:
-      name: flutter_webview_plugin
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.11"
   flutter_widget_from_html_core:
     dependency: "direct main"
     description:
@@ -620,13 +613,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0-rc.2021031201"
-  flutter_xlider:
-    dependency: "direct main"
-    description:
-      name: flutter_xlider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.4.0"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -963,13 +949,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  pull_to_refresh:
-    dependency: "direct main"
-    description:
-      name: pull_to_refresh
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.4"
   quiver:
     dependency: transitive
     description:
