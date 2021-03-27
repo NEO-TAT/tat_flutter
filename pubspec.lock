@@ -211,7 +211,7 @@ packages:
     description:
       path: chopper
       ref: "v4.0.0-nullsafety.0"
-      resolved-ref: "6bcd922d497b7c59c4f855c74bab0c6db012e656"
+      resolved-ref: "480e0c228cfb7481de7b1d95b08592be31e32137"
       url: "https://github.com/lejard-h/chopper"
     source: git
     version: "4.0.0-nullsafety.0"

@@ -63,6 +63,7 @@ dependencies:
   #---------icon----------#
   eva_icons_flutter: ^3.0.0
   #https://akveo.github.io/eva-icons/#/
+  #https://akveo.github.io/eva-icons/#/
   flutter_icons: 1.1.0
   #https://oblador.github.io/react-native-vector-icons/
   #---------json----------#

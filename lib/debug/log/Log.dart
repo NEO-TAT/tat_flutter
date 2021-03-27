@@ -1,5 +1,5 @@
 //
-//  Log.dart
+//  log.dart
 //  北科課程助手
 //
 //  Created by morris13579 on 2020/02/12.
@@ -7,7 +7,7 @@
 //
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
+import 'package:flutter_app/ui/pages/log_console/log_console.dart';
 import 'package:logger/logger.dart';
 
 enum LogMode { LogError, LogDebug }
