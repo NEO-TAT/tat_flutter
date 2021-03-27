@@ -70,8 +70,7 @@ dependencies:
   #----------other----------#
   back_button_interceptor: ^5.0.0
   #攔截返回鍵訊息
-  big5:      #big5 decode encode
-    path: plugins/big5-dart
+  charset_converter: ^2.0.0      #big5 decode encode
   intl: ^0.17.0
   #DateTime to String
   package_info: ^2.0.0

@@ -9,11 +9,12 @@
 import 'dart:io';
 
 import 'package:alice/alice.dart';
-import 'package:big5/big5.dart';
+import 'package:charset_converter/charset_converter.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
 import 'package:get/get.dart' as getUtils;
 import 'package:path_provider/path_provider.dart';
@@ -46,15 +47,14 @@ class DioConnector {
   Dio dio = Dio(dioOptions);
   PersistCookieJar _cookieJar;
   static final Exception connectorError =
-      Exception("Connector statusCode is not 200");
+  Exception("Connector statusCode is not 200");
 
   DioConnector._privateConstructor();
 
   static final DioConnector instance = DioConnector._privateConstructor();
 
-  static String _big5Decoder(List<int> responseBytes, RequestOptions options,
-      ResponseBody responseBody) {
-    String result = big5.decode(responseBytes);
+  static Future<String> _big5Decoder(List<int> responseBytes) async {
+    String result = await CharsetConverter.decode(AppConfig.big5Decode, responseBytes);
     return result;
   }
 
@@ -138,6 +138,9 @@ class DioConnector {
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
       response = await dio.get(url, queryParameters: data);
+      if (parameter.charsetName == 'big5') {
+        response.data = await _big5Decoder(response.data);
+      }
       return response;
     } catch (e) {
       throw e;
@@ -151,6 +154,9 @@ class DioConnector {
       _handleCharsetName(parameter.charsetName);
       _handleHeaders(parameter);
       response = await dio.post(url, data: parameter.data);
+      if (parameter.charsetName == 'big5') {
+        response.data = await _big5Decoder(response.data);
+      }
       return response;
     } catch (e) {
       throw e;
@@ -166,23 +172,23 @@ class DioConnector {
 
   void _handleCharsetName(String charsetName) {
     if (charsetName == presetCharsetName) {
-      dio.options.responseDecoder = null;
+      dio.options.responseType = ResponseType.json;
     } else if (charsetName == 'big5') {
-      dio.options.responseDecoder = _big5Decoder;
+      dio.options.responseType = ResponseType.bytes;
     } else {
-      dio.options.responseDecoder = null;
+      dio.options.responseType = ResponseType.json;
     }
   }
 
   Future<void> download(String url, SavePathCallback savePath,
       {ProgressCallback progressCallback,
-      CancelToken cancelToken,
-      Map<String, dynamic> header}) async {
+        CancelToken cancelToken,
+        Map<String, dynamic> header}) async {
     await dio
         .downloadUri(Uri.parse(url), savePath,
-            onReceiveProgress: progressCallback,
-            cancelToken: cancelToken,
-            options: Options(receiveTimeout: 0, headers: header)) //設置不超時
+        onReceiveProgress: progressCallback,
+        cancelToken: cancelToken,
+        options: Options(receiveTimeout: 0, headers: header)) //設置不超時
         .catchError((onError, stack) {
       Log.eWithStack(onError.toString(), stack);
       throw onError;

@@ -6,10 +6,11 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-import 'package:big5/big5.dart';
+import 'package:charset_converter/charset_converter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/connector/core/Connector.dart';
 import 'package:flutter_app/src/model/course/course_class_json.dart';
 import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
@@ -860,7 +861,7 @@ class CourseConnector {
     List<CourseMainInfoJson> courseMainInfoList = [];
     try {
       String encodeName = "";
-      final encodeBig5 = big5.encode(name);
+      final encodeBig5 = await CharsetConverter.encode(AppConfig.big5Decode, name);
       for (int i = 0; i < encodeBig5.length; i++) {
         encodeName += "%";
         encodeName += encodeBig5[i].toRadixString(16).toUpperCase();
