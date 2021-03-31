@@ -7,7 +7,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/app_link.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/file/file_store.dart';
-import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_app/src/store/model.dart';
 import 'package:flutter_app/src/task/ntut/ntut_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
@@ -164,7 +163,66 @@ class _OtherPageState extends State<OtherPage> {
       body: Column(children: <Widget>[
         if (Model.instance.getAccount().isNotEmpty)
           Container(
-            child: _buildHeader(),
+            padding: EdgeInsets.only(
+                top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: 60,
+                  height: 60,
+                  child: InkWell(
+                    child: FutureBuilder<Widget>(
+                      future: _buildImage(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Widget> snapshot) {
+                        if (snapshot.hasData) {
+                          return snapshot.data;
+                        } else {
+                          return SpinKitPouringHourglass(
+                            color: Theme.of(context).accentColor,
+                          );
+                        }
+                      },
+                    ),
+                    onTap: () {
+                      Model.instance.cacheManager.emptyCache(); //清除圖片暫存
+                      Log.d("clear image cache");
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 16.0,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      Model.instance.getUserInfo().givenName ??
+                          R.current.pleaseLogin,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    MediaQuery(
+                      data:
+                          MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                      child: Text(
+                        Model.instance.getUserInfo().userMail ?? "",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         SizedBox(
           height: 16,
@@ -191,15 +249,17 @@ class _OtherPageState extends State<OtherPage> {
     );
   }
 
-  Widget _buildHeader() {
-    UserInfoJson userInfo = Model.instance.getUserInfo();
-    String givenName = userInfo.givenName;
-    String userMail = userInfo.userMail;
-    Map userImageInfo = NTUTConnector.getUserImage();
-    Widget userImage = CachedNetworkImage(
+  Future<Widget> _buildImage() async {
+    UserImageInfo userImageInfo = await NTUTConnector.getUserImage();
+    TaskFlow taskFlow = TaskFlow();
+    var task = NTUTTask("ImageTask");
+    task.openLoadingDialog = false;
+    taskFlow.addTask(task);
+    await taskFlow.start();
+    return CachedNetworkImage(
       cacheManager: Model.instance.cacheManager,
-      imageUrl: userImageInfo["url"],
-      httpHeaders: userImageInfo["header"],
+      imageUrl: userImageInfo.url,
+      httpHeaders: userImageInfo.header,
       imageBuilder: (context, imageProvider) => CircleAvatar(
         radius: 40.0,
         backgroundImage: imageProvider,
@@ -209,77 +269,9 @@ class _OtherPageState extends State<OtherPage> {
           SpinKitPouringHourglass(color: Colors.white),
       errorWidget: (context, url, error) {
         Log.e(error.toString());
+        print(userImageInfo);
         return Icon(Icons.error);
       },
-    );
-    List<Widget> columnItem = [];
-    final MediaQueryData data = MediaQuery.of(context);
-    if (givenName.isNotEmpty) {
-      columnItem
-        ..add(Text(
-          givenName,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ))
-        ..add(SizedBox(
-          height: 5.0,
-        ))
-        ..add(MediaQuery(
-          data: data.copyWith(textScaleFactor: 1.0),
-          child: Text(
-            userMail,
-            style: TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ));
-    } else {
-      givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
-      userMail = (userMail.isEmpty) ? "" : userMail;
-    }
-    TaskFlow taskFlow = TaskFlow();
-    var task = NTUTTask("ImageTask");
-    task.openLoadingDialog = false;
-    taskFlow.addTask(task);
-    return Container(
-      padding:
-          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            width: 60,
-            height: 60,
-            child: InkWell(
-              child: FutureBuilder<bool>(
-                future: taskFlow.start(),
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.data == true) {
-                    return userImage;
-                  } else {
-                    return SpinKitPouringHourglass(
-                        color: Theme.of(context).accentColor);
-                  }
-                },
-              ),
-              onTap: () {
-                Model.instance.cacheManager.emptyCache(); //清除圖片暫存
-              },
-            ),
-          ),
-          SizedBox(
-            width: 16.0,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: columnItem,
-          ),
-        ],
-      ),
     );
   }
 

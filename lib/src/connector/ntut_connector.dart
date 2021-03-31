@@ -35,6 +35,19 @@ class OrgtreeSearchResult {
   String msg;
 }
 
+class UserImageInfo {
+  UserImageInfo({this.url, this.header});
+
+  String url;
+  Map header;
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "url:$url\nheader:${header.toString()}";
+  }
+}
+
 class NTUTConnector {
   static final String host = "https://app.ntut.edu.tw/";
   static final String _loginUrl = host + "login.do";
@@ -135,8 +148,8 @@ class NTUTConnector {
   url
   header
    */
-  static Map getUserImage() {
-    Map imageInfo = Map();
+
+  static Future<UserImageInfo> getUserImage() async {
     String userPhoto = Model.instance.getUserInfo().userPhoto;
     Log.d("getUserImage");
     String url = _getPictureUrl;
@@ -145,8 +158,10 @@ class NTUTConnector {
       url =
           Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
     }
-    imageInfo["url"] = url;
-    imageInfo["header"] = Connector.getLoginHeaders(url);
+    UserImageInfo imageInfo = UserImageInfo(
+      url: url,
+      header: await Connector.getLoginHeaders(url),
+    );
     return imageInfo;
   }
 

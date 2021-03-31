@@ -55,15 +55,13 @@ class Connector {
     }
   }
 
-  static Map<String, String> getLoginHeaders(String url) {
+  static Future<Map<String, String>> getLoginHeaders(String url) async {
     try {
       PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
       Map<String, String> headers = Map.from(DioConnector.instance.headers);
-      headers["Cookie"] = cookieJar
-          .loadForRequest(Uri.parse(url))
-          .toString()
-          .replaceAll("[", "")
-          .replaceAll("]", "");
+      var cookies = await cookieJar.loadForRequest(Uri.parse(url));
+      headers["Cookie"] =
+          cookies.toString().replaceAll("[", "").replaceAll("]", "");
       headers.remove("content-type");
       //Log.d(headers.toString());
       return headers;
