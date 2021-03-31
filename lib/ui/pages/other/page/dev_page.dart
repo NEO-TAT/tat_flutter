@@ -56,7 +56,7 @@ class _DevPageState extends State<DevPage> {
         FlutterClipboard.copy(token);
         break;
       case onListViewPress.DioLog:
-        //RouteUtils.toAliceInspectorPage();
+        RouteUtils.toAliceInspectorPage();
         break;
       case onListViewPress.AppLog:
         RouteUtils.toLogConsolePage();

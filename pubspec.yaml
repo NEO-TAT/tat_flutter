@@ -33,7 +33,7 @@ dependencies:
   device_info: ^2.0.0
   html_unescape: ^2.0.0
   #處理HTML特殊字
-  local_auth: ^1.1.0
+  local_auth: ^1.1.1
   #驗證身分指紋
   version: ^2.0.0
   #版本比較
@@ -41,23 +41,23 @@ dependencies:
   #選擇android資料夾
   #----------store data----------#
   shared_preferences: ^2.0.5
-  flutter_cache_manager: ^3.0.0-nullsafety.3
+  flutter_cache_manager: ^3.0.1
   #----------internet----------#
-  dio: ^4.0.0-prev3
+  dio: ^4.0.0
   #網路get post API
-  dio_cookie_manager: ^2.0.0-prev1
+  dio_cookie_manager: ^2.0.0
   #用於產生cookie_jar與dio接口
-  cookie_jar: ^3.0.0-beta2
+  cookie_jar: ^3.0.0
   #可儲存式cookies
   html: ^0.15.0
   #html解析器
   connectivity: ^3.0.3
-  github: ^7.0.3
+  github: ^8.0.1
   bloc: ^7.0.0
   clipboard: ^0.1.3
   #剪貼簿
   #----------WebView----------#
-  flutter_inappwebview: ^5.2.1+1
+  flutter_inappwebview: ^5.3.0
   #---------icon----------#
   eva_icons_flutter: ^3.0.0
   #https://akveo.github.io/eva-icons/#/
@@ -89,7 +89,7 @@ dependencies:
   get: ^4.1.1
   bot_toast: ^4.0.1
   #提供ListView可下拉式更新並且可動態加載
-  cached_network_image: ^3.0.0-nullsafety
+  cached_network_image: ^3.0.0
   #用url顯示圖片
   auto_size_text: ^3.0.0-nullsafety.0
   #課表顯示有用到
@@ -107,9 +107,7 @@ dependencies:
   flutter_markdown: ^0.6.1
   numberpicker: ^2.0.1
   #選擇學期
-  #alice:
-  #  git:
-  #    url: https://github.com/morris13579/alice
+  alice: ^0.2.0
   pretty_json: ^2.0.0
 
   # Firebase
@@ -117,7 +115,7 @@ dependencies:
   firebase_analytics: ^7.1.1
   firebase_crashlytics: ^1.0.0
   firebase_remote_config: ^0.9.0-dev.0
-  firebase_messaging: ^9.0.1
+  firebase_messaging: ^9.1.0
 
 dependency_overrides:
   http_parser:
