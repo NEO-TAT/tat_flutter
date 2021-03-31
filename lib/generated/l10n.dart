@@ -1605,6 +1605,16 @@ class S {
     );
   }
 
+  /// `Expired day`
+  String get passwordExpiredDay {
+    return Intl.message(
+      'Expired day',
+      name: 'passwordExpiredDay',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `註解`
   String get ___________________iSchoolUi___________________ {
     return Intl.message(

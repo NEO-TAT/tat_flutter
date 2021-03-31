@@ -203,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "openSubscribe" : MessageLookupByLibrary.simpleMessage("Open subscribe"),
     "originPassword" : MessageLookupByLibrary.simpleMessage("Origin password"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
+    "passwordExpiredDay" : MessageLookupByLibrary.simpleMessage("Expired day"),
     "passwordExpiredWarning" : MessageLookupByLibrary.simpleMessage("Password is about to expire, please update password as soon as possible"),
     "passwordLengthError" : MessageLookupByLibrary.simpleMessage("The password length must be between 8 characters and 14 characters"),
     "passwordNotSame" : MessageLookupByLibrary.simpleMessage("Different from the original password"),

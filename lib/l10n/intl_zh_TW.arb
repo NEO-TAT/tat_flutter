@@ -158,6 +158,7 @@
   "checkIPlusNew": "檢查IPlus最新公告",
   "selectDirectoryFail": "無法將此路徑設定為下載路徑",
   "informationSystem": "資訊系統",
+  "passwordExpiredDay": "剩餘天數",
   "___________________iSchoolUi___________________": "註解",
   "course": "課程",
   "announcement": "公告",

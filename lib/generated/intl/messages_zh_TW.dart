@@ -202,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "openSubscribe" : MessageLookupByLibrary.simpleMessage("開啟訂閱"),
     "originPassword" : MessageLookupByLibrary.simpleMessage("請輸入原始密碼"),
     "password" : MessageLookupByLibrary.simpleMessage("密碼"),
+    "passwordExpiredDay" : MessageLookupByLibrary.simpleMessage("剩餘天數"),
     "passwordExpiredWarning" : MessageLookupByLibrary.simpleMessage("密碼即將過期，請盡快更新密碼"),
     "passwordLengthError" : MessageLookupByLibrary.simpleMessage("密碼長度須介於8個字元，至14個字元之間"),
     "passwordNotSame" : MessageLookupByLibrary.simpleMessage("與原始密碼不一致"),

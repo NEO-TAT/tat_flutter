@@ -48,6 +48,19 @@ class UserImageInfo {
   }
 }
 
+class MainProfile {
+  String givenName;
+  String mail;
+  String direkDivisionName;
+  String title;
+  DateTime direkMobileValidDate;
+
+  @override
+  String toString() {
+    return "givenName:$givenName\nemail:$mail\ndirekDivisionName:$direkDivisionName\ntitle:$title\ndirekModileValidDate:$direkMobileValidDate";
+  }
+}
+
 class NTUTConnector {
   static final String host = "https://app.ntut.edu.tw/";
   static final String _loginUrl = host + "login.do";
@@ -56,6 +69,8 @@ class NTUTConnector {
   static final String _getCalendarUrl = host + "calModeApp.do";
   static final String _changePasswordUrl = host + "passwordMdy.do";
   static final String _orgtreeSearchUrl = host + "orgtreeSearch.do";
+  static final String _mainProfileUrl = host + "profileMain.do";
+  static final String _getPasswordExpiredUrl = host + "securityInfoShow.do";
 
   static Future<NTUTConnectorStatus> login(
       String account, String password) async {
@@ -183,6 +198,63 @@ class NTUTConnector {
       } else {
         return jsonResult["returnMsg"];
       }
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
+  static Future<MainProfile> mainProFile() async {
+    ConnectorParameter parameter;
+    String result;
+    MainProfile profile = MainProfile();
+    try {
+      parameter = ConnectorParameter(_mainProfileUrl);
+      result = await Connector.getDataByPost(parameter);
+      for (Map d in json.decode(result)) {
+        String tag = d["realName"];
+        String value = d["ldapValue"];
+        if (tag == "givenName") {
+          profile.givenName = value;
+        } else if (d["realName"] == "title") {
+          profile.title = value;
+        } else if (d["realName"] == "direkDivisionName") {
+          profile.direkDivisionName = value;
+        } else if (d["realName"] == "direkMobileValidDate") {
+          print(value);
+          profile.direkMobileValidDate =
+              DateTime.parse(value.replaceAll("/", "-"));
+        } else if (d["realName"] == "mail") {
+          profile.mail = value;
+        }
+      }
+      return profile;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return null;
+    }
+  }
+
+  static Future<DateTime> getPasswordExpired() async {
+    ConnectorParameter parameter;
+    Document tagNode;
+    String result;
+    try {
+      parameter = ConnectorParameter(_getPasswordExpiredUrl);
+      result = await Connector.getDataByGet(parameter);
+      tagNode = parse(result);
+      result = tagNode
+          .getElementsByClassName("profileButton")
+          .first
+          .attributes["value"];
+      var s = result.replaceAll("上次變更於 ", "");
+      int year = s.indexOf("年");
+      int month = s.indexOf("月");
+      int day = s.indexOf("日");
+      return DateTime(
+          int.parse(s.substring(0, year)),
+          int.parse(s.substring(year+1, month)),
+          int.parse(s.substring(month+1, day)));
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;

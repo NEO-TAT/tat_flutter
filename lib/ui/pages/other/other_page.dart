@@ -8,6 +8,7 @@ import 'package:flutter_app/src/config/app_link.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/file/file_store.dart';
 import 'package:flutter_app/src/store/model.dart';
+import 'package:flutter_app/src/task/ntut/ntut_get_password_expired_task.dart';
 import 'package:flutter_app/src/task/ntut/ntut_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/src/util/route_utils.dart';
@@ -276,6 +277,10 @@ class _OtherPageState extends State<OtherPage> {
   }
 
   Widget _buildSetting(Map data) {
+    final task = NTUTGetPasswordExpiredTask();
+    final TaskFlow taskFlow = TaskFlow();
+    task.openLoadingDialog = false;
+    taskFlow.addTask(task);
     return InkWell(
       onTap: () {
         _onListViewPress(data['onPress']);
@@ -293,10 +298,33 @@ class _OtherPageState extends State<OtherPage> {
             SizedBox(
               width: 20.0,
             ),
-            Text(
-              data['title'],
-              style: TextStyle(fontSize: 18),
+            Expanded(
+              child: Text(
+                data['title'],
+                style: TextStyle(fontSize: 18),
+              ),
             ),
+            if (data["onPress"] == onListViewPress.ChangePassword)
+              FutureBuilder<bool>(
+                future: Future.delayed(Duration(seconds: 1)).then((value) => taskFlow.start()),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  if (snapshot.hasData && snapshot.data) {
+                    return Row(
+                      children: [
+                        Text(
+                          "${R.current.passwordExpiredDay}:${task.result}",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w100,
+                              color: Colors.grey),
+                        )
+                      ],
+                    );
+                  } else {
+                    return Text("");
+                  }
+                },
+              ),
           ],
         ),
       ),
