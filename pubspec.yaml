@@ -18,6 +18,7 @@ dependencies:
   path: ^1.8.0
   provider: ^5.0.0
   path_provider: ^2.0.1
+  quiver: ^3.0.0
   url_launcher: ^6.0.2
   #開啟email phone url...
   logger: ^1.0.0
@@ -112,7 +113,7 @@ dependencies:
 
   # Firebase
   firebase_core: ^1.0.2
-  firebase_analytics: ^7.1.1
+  firebase_analytics: ^8.0.0-dev.0
   firebase_crashlytics: ^1.0.0
   firebase_remote_config: ^0.9.0-dev.0
   firebase_messaging: ^9.1.0
