@@ -28,7 +28,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void initState() {
     super.initState();
-    _getDownloadPath();
+    Future.delayed(Duration.zero).then((value) => _getDownloadPath());
   }
 
   void _getDownloadPath() async {
