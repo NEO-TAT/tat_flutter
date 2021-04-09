@@ -18,27 +18,27 @@ dependencies:
   path: ^1.8.0
   provider: ^5.0.0
   path_provider: ^2.0.1
-  quiver: ^3.0.0
+  quiver: ^3.0.1
   url_launcher: ^6.0.2
   #開啟email phone url...
   logger: ^1.0.0
   #顯示Log
   sprintf: ^6.0.0
-  flutter_local_notifications: ^5.0.0
+  flutter_local_notifications: ^5.0.0+1
   #通知欄  需修改android原始碼
   rxdart: ^0.26.0
   #通知欄有使用到
-  video_player: ^2.1.0
+  video_player: ^2.1.1
   chewie: ^1.0.0
   android_intent: ^2.0.0
   device_info: ^2.0.0
   html_unescape: ^2.0.0
   #處理HTML特殊字
-  local_auth: ^1.1.1
+  local_auth: ^1.1.3
   #驗證身分指紋
   version: ^2.0.0
   #版本比較
-  file_picker: ^3.0.0
+  file_picker: ^3.0.1
   #選擇android資料夾
   #----------store data----------#
   shared_preferences: ^2.0.5
@@ -48,20 +48,19 @@ dependencies:
   #網路get post API
   dio_cookie_manager: ^2.0.0
   #用於產生cookie_jar與dio接口
-  cookie_jar: ^3.0.0
+  cookie_jar: ^3.0.1
   #可儲存式cookies
   html: ^0.15.0
   #html解析器
   connectivity: ^3.0.3
-  github: ^8.0.1
+  github: ^8.1.0
   bloc: ^7.0.0
   clipboard: ^0.1.3
   #剪貼簿
   #----------WebView----------#
-  flutter_inappwebview: ^5.3.0
+  flutter_inappwebview: ^5.3.2
   #---------icon----------#
   eva_icons_flutter: ^3.0.0
-  #https://akveo.github.io/eva-icons/#/
   #https://akveo.github.io/eva-icons/#/
   fluttericon: ^2.0.0
   #https://oblador.github.io/react-native-vector-icons/
@@ -76,7 +75,7 @@ dependencies:
   package_info: ^2.0.0
   #檢測app版本用於檢查更新
   #----------html viewer----------#
-  flutter_widget_from_html_core: ^0.6.0-rc.2021031201
+  flutter_widget_from_html_core: ^0.6.0
   #----------animation----------#
   flutter_staggered_animations: ^1.0.0
   #listView or gridView動畫
@@ -87,14 +86,14 @@ dependencies:
   permission_handler: ^6.1.1
   mime_type: ^1.0.0
   #----------Widget----------#
-  get: ^4.1.1
+  get: ^4.1.3
   bot_toast: ^4.0.1
   #提供ListView可下拉式更新並且可動態加載
   cached_network_image: ^3.0.0
   #用url顯示圖片
   auto_size_text: ^3.0.0-nullsafety.0
   #課表顯示有用到
-  table_calendar: ^3.0.0-nullsafety.1
+  table_calendar: ^3.0.0
   #顯示行事曆
   #語言切換用
   fluttertoast: ^8.0.3
@@ -112,11 +111,11 @@ dependencies:
   pretty_json: ^2.0.0
 
   # Firebase
-  firebase_core: ^1.0.2
-  firebase_analytics: ^8.0.0-dev.0
-  firebase_crashlytics: ^1.0.0
-  firebase_remote_config: ^0.9.0-dev.0
-  firebase_messaging: ^9.1.0
+  firebase_core: ^1.0.3
+  firebase_analytics: ^8.0.0-dev.2
+  firebase_crashlytics: ^2.0.0
+  firebase_remote_config: ^0.9.0-dev.2
+  firebase_messaging: ^9.1.1
 
 dependency_overrides:
   http_parser:
