@@ -8,7 +8,6 @@
 
 import 'package:charset_converter/charset_converter.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
@@ -819,7 +818,8 @@ class CourseConnector {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = divisionCode;
       parameter.charsetName = "big5";
-      result = await compute(Connector.getDataByPost, parameter);
+      //result = await compute(Connector.getDataByPost, parameter);
+      result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       trNodes = node.getElementsByTagName("tr");
@@ -861,7 +861,8 @@ class CourseConnector {
     List<CourseMainInfoJson> courseMainInfoList = [];
     try {
       String encodeName = "";
-      final encodeBig5 = await CharsetConverter.encode(AppConfig.big5Decode, name);
+      final encodeBig5 =
+          await CharsetConverter.encode(AppConfig.big5Decode, name);
       for (int i = 0; i < encodeBig5.length; i++) {
         encodeName += "%";
         encodeName += encodeBig5[i].toRadixString(16).toUpperCase();
