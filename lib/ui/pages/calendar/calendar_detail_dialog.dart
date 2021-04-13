@@ -41,9 +41,11 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
                 width: 4,
               ),
               Expanded(
-                child: Text(sprintf("%s-%s", [
+                child: Text(sprintf("%s %s-\n%s %s", [
                   DateFormat.yMMMd().format(widget.calendarDetail.startTime),
-                  DateFormat.yMMMd().format(widget.calendarDetail.endTime)
+                  DateFormat.Hms().format(widget.calendarDetail.startTime),
+                  DateFormat.yMMMd().format(widget.calendarDetail.endTime),
+                  DateFormat.Hms().format(widget.calendarDetail.endTime),
                 ])),
               )
             ],

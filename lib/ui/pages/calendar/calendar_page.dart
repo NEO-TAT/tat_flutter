@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/ntut/ntut_calendar_json.dart';
 import 'package:flutter_app/src/task/ntut/ntut_calendar_task.dart';
@@ -75,15 +76,16 @@ class _CalendarPageState extends State<CalendarPage> {
       _events = Map();
       for (int i = 0; i < eventNTUTs.length; i++) {
         NTUTCalendarJson eventNTUT = eventNTUTs[i];
-        for (var time = DateTime(eventNTUT.startTime.year,
-                eventNTUT.startTime.month, eventNTUT.startTime.day).toUtc();
+        for (var time = DateTime.utc(eventNTUT.startTime.year,
+                eventNTUT.startTime.month, eventNTUT.startTime.day);
             time.isBefore(eventNTUT.endTime);
-            time = time.add(Duration(days: 1)))
+            time = time.add(Duration(days: 1))) {
           if (_events.containsKey(time)) {
             _events[time].add(eventNTUT);
           } else {
             _events[time] = [eventNTUT];
           }
+        }
       }
     }
     setState(() {
@@ -97,14 +99,14 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_selectedDay, selectedDay)) {
+    if (!isSameDay(_focusedDay, focusedDay)) {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
         _rangeStart = null; // Important to clean those
         _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
-        _selectedEvents = _getEventsForDay(selectedDay);
+        _selectedEvents = _getEventsForDay(focusedDay);
       });
     }
   }
