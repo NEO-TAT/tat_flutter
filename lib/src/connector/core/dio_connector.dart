@@ -8,7 +8,7 @@
 
 import 'dart:io';
 
-import 'package:alice/alice.dart';
+import 'package:alice_lightweight/alice.dart';
 import 'package:charset_converter/charset_converter.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
@@ -31,7 +31,6 @@ class DioConnector {
 
   Alice alice = Alice(
     darkTheme: true,
-    showNotification: false,
   );
 
   static final BaseOptions dioOptions = new BaseOptions(

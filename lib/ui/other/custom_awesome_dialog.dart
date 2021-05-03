@@ -175,7 +175,7 @@ class CustomAwesomeDialog {
           desc: this.desc,
           body: this.body,
           isDense: isDense,
-          aligment: aligment,
+          alignment: aligment,
           keyboardAware: keyboardAware,
           width: width,
           padding: padding ?? EdgeInsets.only(left: 5, right: 5),
