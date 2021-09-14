@@ -23,9 +23,9 @@ dependencies:
   logger: ^1.0.0
   #顯示Log
   sprintf: ^6.0.0
-  flutter_local_notifications: ^5.0.0
+  flutter_local_notifications: ^8.2.0
   #通知欄  需修改android原始碼
-  rxdart: ^0.25.0
+  rxdart: ^0.27.2
   #通知欄有使用到
   video_player: ^2.0.2
   chewie: ^1.0.0
@@ -42,13 +42,13 @@ dependencies:
   #選擇android資料夾
   #----------store data----------#
   shared_preferences: ^2.0.5
-  flutter_cache_manager: ^2.1.2
+  flutter_cache_manager: ^3.1.2
   #----------internet----------#
-  dio: ^3.0.10
+  dio: ^4.0.0
   #網路get post API
-  dio_cookie_manager: 1.0.0
+  dio_cookie_manager: ^2.0.0
   #用於產生cookie_jar與dio接口
-  cookie_jar: ^1.0.1
+  cookie_jar: ^3.0.1
   #可儲存式cookies
   html: ^0.15.0
   #html解析器
@@ -86,14 +86,14 @@ dependencies:
   flutter_downloader: ^1.5.2
   #下載app更新
   open_file: ^3.1.0
-  permission_handler: ^6.1.1
+  permission_handler: ^8.1.6
   mime_type: ^1.0.0
   #----------Widget----------#
   get: ^3.26.0
   bot_toast: ^4.0.1
   pull_to_refresh: ^1.6.4
   #提供ListView可下拉式更新並且可動態加載
-  cached_network_image: ^2.5.1
+  cached_network_image: ^3.1.0
   #用url顯示圖片
   auto_size_text: 2.1.0
   #課表顯示有用到
@@ -113,9 +113,6 @@ dependencies:
   flutter_markdown: ^0.6.1
   numberpicker: ^2.0.1
   #選擇學期
-  alice:
-    git:
-      url: https://github.com/morris13579/alice
   pretty_json: ^2.0.0
 
   # Firebase
@@ -128,6 +125,7 @@ dependencies:
 dependency_overrides:
   http_parser:
     path: plugins/http_parser
+  alice: ^0.2.4
 
 
 dev_dependencies:
