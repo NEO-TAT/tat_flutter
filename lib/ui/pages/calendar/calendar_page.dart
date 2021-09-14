@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/model/ntut/ntut_calendar_json.dart';
-import 'package:flutter_app/src/task/ntut/ntut_calendar_task.dart';
-import 'package:flutter_app/src/task/task_flow.dart';
-import 'package:flutter_app/src/util/language_utils.dart';
-import 'package:flutter_app/ui/pages/calendar/calendar_detail_dialog.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/model/ntut/ntut_calendar_json.dart';
+import 'package:tat/src/task/ntut/ntut_calendar_task.dart';
+import 'package:tat/src/task/task_flow.dart';
+import 'package:tat/src/util/language_utils.dart';
+import 'package:tat/ui/pages/calendar/calendar_detail_dialog.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 

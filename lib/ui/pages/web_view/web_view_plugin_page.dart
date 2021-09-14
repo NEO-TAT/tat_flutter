@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/core/connector_parameter.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/core/connector_parameter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:url_launcher/url_launcher.dart';

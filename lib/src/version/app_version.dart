@@ -1,8 +1,8 @@
-import 'package:flutter_app/debug/log/log.dart';
-import 'package:flutter_app/src/model/remote_config/remote_config_version_info.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/src/util/remote_config_utils.dart';
-import 'package:flutter_app/src/version/update/app_update.dart';
+import 'package:tat/debug/log/log.dart';
+import 'package:tat/src/model/remote_config/remote_config_version_info.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/src/util/remote_config_utils.dart';
+import 'package:tat/src/version/update/app_update.dart';
 
 class APPVersion {
   static void initAndCheck() async {

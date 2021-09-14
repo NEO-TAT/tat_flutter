@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/course_connector.dart';
+import 'package:tat/src/model/course/course_class_json.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
 

@@ -1,4 +1,4 @@
-import 'package:flutter_app/src/model/json_init.dart';
+import 'package:tat/src/model/json_init.dart';
 //part 'CourseAnnouncementDetailJson.g.dart';
 
 //@JsonSerializable()

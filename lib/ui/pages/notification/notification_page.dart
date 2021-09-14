@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
+import 'package:tat/src/R.dart';
 
 class NotificationPage extends StatefulWidget {
   @override

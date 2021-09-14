@@ -9,12 +9,12 @@
 import 'package:big5/big5.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/core/Connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
-import 'package:flutter_app/src/model/course/course_score_json.dart';
-import 'package:flutter_app/src/model/course_table/course_table_json.dart';
+import 'package:tat/debug/log/Log.dart';
+import 'package:tat/src/connector/core/Connector.dart';
+import 'package:tat/src/model/course/course_class_json.dart';
+import 'package:tat/src/model/course/course_main_extra_json.dart';
+import 'package:tat/src/model/course/course_score_json.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 

@@ -1,6 +1,6 @@
-import 'package:flutter_app/src/connector/course_oad_connector.dart';
-import 'package:flutter_app/src/task/ntut/ntut_task.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:tat/src/connector/course_oad_connector.dart';
+import 'package:tat/src/task/ntut/ntut_task.dart';
+import 'package:tat/ui/other/error_dialog.dart';
 
 import '../../R.dart';
 import '../task.dart';

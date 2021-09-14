@@ -1,8 +1,8 @@
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/task/ntut/ntut_task.dart';
-import 'package:flutter_app/src/task/task.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/course_connector.dart';
+import 'package:tat/src/task/ntut/ntut_task.dart';
+import 'package:tat/src/task/task.dart';
+import 'package:tat/ui/other/error_dialog.dart';
 
 class CourseSystemTask<T> extends NTUTTask<T> {
   CourseSystemTask(String name) : super(name);

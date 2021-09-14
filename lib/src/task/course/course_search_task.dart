@@ -1,9 +1,9 @@
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/connector/course_oad_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/course_connector.dart';
+import 'package:tat/src/connector/course_oad_connector.dart';
+import 'package:tat/src/model/course/course_class_json.dart';
+import 'package:tat/src/model/course/course_main_extra_json.dart';
+import 'package:tat/ui/other/my_toast.dart';
 
 import '../dialog_task.dart';
 import '../task.dart';

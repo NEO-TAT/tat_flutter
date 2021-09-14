@@ -13,8 +13,8 @@ import 'package:big5/big5.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
+import 'package:tat/debug/log/Log.dart';
+import 'package:tat/src/connector/interceptors/request_interceptor.dart';
 import 'package:get/get.dart' as getUtils;
 import 'package:path_provider/path_provider.dart';
 

@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/debug/log/log.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/app_config.dart';
-import 'package:flutter_app/src/file/file_store.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/debug/log/log.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/config/app_config.dart';
+import 'package:tat/src/file/file_store.dart';
+import 'package:tat/ui/other/my_toast.dart';
 
 class DocumentUtils {
   static const platform =

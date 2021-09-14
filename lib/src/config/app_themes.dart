@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/config/app_colors.dart';
+import 'package:tat/src/config/app_colors.dart';
 
 class AppThemes {
   static ThemeData lightTheme = ThemeData(

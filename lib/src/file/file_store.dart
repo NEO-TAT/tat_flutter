@@ -10,9 +10,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/util/permissions_utils.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/util/permissions_utils.dart';
+import 'package:tat/ui/other/my_toast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

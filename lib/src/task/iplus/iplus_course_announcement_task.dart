@@ -1,8 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
-import 'package:flutter_app/src/model/ischool_plus/ischool_plus_announcement_json.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/ischool_plus_connector.dart';
+import 'package:tat/src/model/ischool_plus/ischool_plus_announcement_json.dart';
+import 'package:tat/ui/other/error_dialog.dart';
 import 'package:get/get.dart';
 
 import '../task.dart';

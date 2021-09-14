@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/util/file_utils.dart';
+import 'package:tat/src/util/file_utils.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 

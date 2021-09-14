@@ -6,10 +6,10 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
-import 'package:flutter_app/debug/log/log.dart';
-import 'package:flutter_app/src/connector/ntut_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/course/course_score_json.dart';
+import 'package:tat/debug/log/log.dart';
+import 'package:tat/src/connector/ntut_connector.dart';
+import 'package:tat/src/model/course/course_class_json.dart';
+import 'package:tat/src/model/course/course_score_json.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/model/ntut/ntut_calendar_json.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/model/ntut/ntut_calendar_json.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
