@@ -1,5 +1,5 @@
-import 'package:flutter_app/src/model/course_table/course_table_json.dart';
-import 'package:flutter_app/src/model/json_init.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
+import 'package:tat/src/model/json_init.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 

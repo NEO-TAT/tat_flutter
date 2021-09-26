@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/app_colors.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/config/app_colors.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/ui/other/my_toast.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {

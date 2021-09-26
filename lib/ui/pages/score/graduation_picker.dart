@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/model/course/course_score_json.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/src/task/course/course_credit_info_task.dart';
-import 'package:flutter_app/src/task/course/course_department_task.dart';
-import 'package:flutter_app/src/task/course/course_division_task.dart';
-import 'package:flutter_app/src/task/course/course_year_task.dart';
-import 'package:flutter_app/src/task/task_flow.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/model/course/course_score_json.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/src/task/course/course_credit_info_task.dart';
+import 'package:tat/src/task/course/course_department_task.dart';
+import 'package:tat/src/task/course/course_division_task.dart';
+import 'package:tat/src/task/course/course_year_task.dart';
+import 'package:tat/src/task/task_flow.dart';
 import 'package:get/get.dart';
 
 class GraduationPicker {

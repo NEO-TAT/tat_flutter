@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_app/src/notifications/notifications.dart';
+import 'package:tat/src/notifications/notifications.dart';
 
 class CloudMessagingUtils {
   static Future<void> init() async {

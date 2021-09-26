@@ -1,8 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/course_oad_connector.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
-import 'package:flutter_app/ui/pages/password/check_password_dialog.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/course_oad_connector.dart';
+import 'package:tat/ui/other/error_dialog.dart';
+import 'package:tat/ui/pages/password/check_password_dialog.dart';
 import 'package:get/get.dart';
 
 import '../task.dart';

@@ -1,5 +1,5 @@
-import 'package:flutter_app/ui/pages/password/change_password_dialog.dart';
-import 'package:flutter_app/ui/pages/password/check_password_dialog.dart';
+import 'package:tat/ui/pages/password/change_password_dialog.dart';
+import 'package:tat/ui/pages/password/check_password_dialog.dart';
 import 'package:get/get.dart';
 
 class ChangePassword {

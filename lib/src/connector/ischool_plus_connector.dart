@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/connector/core/Connector.dart';
-import 'package:flutter_app/src/model/ischool_plus/course_file_json.dart';
-import 'package:flutter_app/src/model/ischool_plus/ischool_plus_announcement_json.dart';
-import 'package:flutter_app/src/util/html_utils.dart';
+import 'package:tat/debug/log/Log.dart';
+import 'package:tat/src/connector/core/Connector.dart';
+import 'package:tat/src/model/ischool_plus/course_file_json.dart';
+import 'package:tat/src/model/ischool_plus/ischool_plus_announcement_json.dart';
+import 'package:tat/src/util/html_utils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 

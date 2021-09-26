@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/debug/log/log.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/store/model.dart';
+import 'package:tat/debug/log/log.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/store/model.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/error_codes.dart' as errorCode;
 import 'package:local_auth/local_auth.dart';

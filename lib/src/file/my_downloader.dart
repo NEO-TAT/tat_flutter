@@ -1,7 +1,7 @@
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:flutter_app/debug/log/log.dart';
+import 'package:tat/debug/log/log.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 
 class MyDownloader {

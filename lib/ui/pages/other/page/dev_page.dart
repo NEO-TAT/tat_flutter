@@ -1,10 +1,10 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
-import 'package:flutter_app/src/util/route_utils.dart';
-import 'package:flutter_app/ui/other/listview_animator.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/util/cloud_messaging_utils.dart';
+import 'package:tat/src/util/route_utils.dart';
+import 'package:tat/ui/other/listview_animator.dart';
+import 'package:tat/ui/other/my_toast.dart';
 
 enum onListViewPress { CloudMessageToken, DioLog, AppLog, StoreEdit }
 

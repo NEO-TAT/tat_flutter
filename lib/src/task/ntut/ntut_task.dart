@@ -1,11 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/ntut_connector.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/src/task/task.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
-import 'package:flutter_app/ui/pages/password/change_password.dart';
-import 'package:flutter_app/ui/screen/login_screen.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/ntut_connector.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/src/task/task.dart';
+import 'package:tat/ui/other/error_dialog.dart';
+import 'package:tat/ui/pages/password/change_password.dart';
+import 'package:tat/ui/screen/login_screen.dart';
 import 'package:get/get.dart';
 
 import '../dialog_task.dart';

@@ -1,6 +1,6 @@
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
-import 'package:flutter_app/src/model/json_init.dart';
+import 'package:tat/src/model/course/course_class_json.dart';
+import 'package:tat/src/model/course/course_main_extra_json.dart';
+import 'package:tat/src/model/json_init.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 

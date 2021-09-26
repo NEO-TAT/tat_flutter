@@ -1,6 +1,6 @@
-import 'package:flutter_app/src/model/course_table/course_table_json.dart';
-import 'package:flutter_app/src/model/json_init.dart';
-import 'package:flutter_app/src/util/language_utils.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
+import 'package:tat/src/model/json_init.dart';
+import 'package:tat/src/util/language_utils.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';

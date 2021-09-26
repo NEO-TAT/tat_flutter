@@ -10,11 +10,11 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/debug/log/log.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/core/dio_connector.dart';
-import 'package:flutter_app/src/notifications/notifications.dart';
-import 'package:flutter_app/src/util/file_utils.dart';
+import 'package:tat/debug/log/log.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/core/dio_connector.dart';
+import 'package:tat/src/notifications/notifications.dart';
+import 'package:tat/src/util/file_utils.dart';
 
 import 'file_store.dart';
 

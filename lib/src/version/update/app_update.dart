@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/app_link.dart';
-import 'package:flutter_app/src/model/remote_config/remote_config_version_info.dart';
-import 'package:flutter_app/src/util/remote_config_utils.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/config/app_link.dart';
+import 'package:tat/src/model/remote_config/remote_config_version_info.dart';
+import 'package:tat/src/util/remote_config_utils.dart';
+import 'package:tat/ui/other/my_toast.dart';
 import 'package:get/get.dart';
 import 'package:package_info/package_info.dart';
 import 'package:sprintf/sprintf.dart';

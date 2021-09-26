@@ -8,7 +8,7 @@
 
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_app/debug/log/Log.dart';
+import 'package:tat/debug/log/Log.dart';
 import 'package:sprintf/sprintf.dart';
 
 import 'connector_parameter.dart';

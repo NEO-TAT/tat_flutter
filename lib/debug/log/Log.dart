@@ -7,7 +7,7 @@
 //
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_app/ui/pages/log_console/log_console.dart';
+import 'package:tat/ui/pages/log_console/log_console.dart';
 import 'package:logger/logger.dart';
 
 enum LogMode { LogError, LogDebug }

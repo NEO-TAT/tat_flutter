@@ -1,7 +1,7 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
-import 'package:flutter_app/ui/other/my_progress_dialog.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/ui/other/error_dialog.dart';
+import 'package:tat/ui/other/my_progress_dialog.dart';
 
 import 'task.dart';
 

@@ -1,23 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/connector/core/dio_connector.dart';
-import 'package:flutter_app/src/model/course_table/course_table_json.dart';
-import 'package:flutter_app/ui/pages/course_detail/course_detail_page.dart';
-import 'package:flutter_app/ui/pages/course_detail/screen/ischool_plus/iplus_announcement_detail_page.dart';
-import 'package:flutter_app/ui/pages/file_viewer/file_viewer_page.dart';
-import 'package:flutter_app/ui/pages/log_console/log_console.dart';
-import 'package:flutter_app/ui/pages/other/page/about_page.dart';
-import 'package:flutter_app/ui/pages/other/page/contributors_page.dart';
-import 'package:flutter_app/ui/pages/other/page/dev_page.dart';
-import 'package:flutter_app/ui/pages/other/page/privacy_policy_page.dart';
-import 'package:flutter_app/ui/pages/other/page/setting_page.dart';
-import 'package:flutter_app/ui/pages/other/page/store_edit_page.dart';
-import 'package:flutter_app/ui/pages/other/page/sub_system_page.dart';
-import 'package:flutter_app/ui/pages/video_player/class_video_player.dart';
-import 'package:flutter_app/ui/pages/web_view/web_view_page.dart';
-import 'package:flutter_app/ui/pages/web_view/web_view_plugin_page.dart';
-import 'package:flutter_app/ui/screen/login_screen.dart';
+import 'package:tat/src/connector/core/dio_connector.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
+import 'package:tat/ui/pages/course_detail/course_detail_page.dart';
+import 'package:tat/ui/pages/course_detail/screen/ischool_plus/iplus_announcement_detail_page.dart';
+import 'package:tat/ui/pages/file_viewer/file_viewer_page.dart';
+import 'package:tat/ui/pages/log_console/log_console.dart';
+import 'package:tat/ui/pages/other/page/about_page.dart';
+import 'package:tat/ui/pages/other/page/contributors_page.dart';
+import 'package:tat/ui/pages/other/page/dev_page.dart';
+import 'package:tat/ui/pages/other/page/privacy_policy_page.dart';
+import 'package:tat/ui/pages/other/page/setting_page.dart';
+import 'package:tat/ui/pages/other/page/store_edit_page.dart';
+import 'package:tat/ui/pages/other/page/sub_system_page.dart';
+import 'package:tat/ui/pages/video_player/class_video_player.dart';
+import 'package:tat/ui/pages/web_view/web_view_page.dart';
+import 'package:tat/ui/pages/web_view/web_view_plugin_page.dart';
+import 'package:tat/ui/screen/login_screen.dart';
 import 'package:get/get.dart';
 
 class RouteUtils {

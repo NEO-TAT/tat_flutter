@@ -1,12 +1,12 @@
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/connector/course_oad_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
-import 'package:flutter_app/src/model/course_table/course_table_json.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/src/task/ntut/ntut_task.dart';
-import 'package:flutter_app/src/util/language_utils.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/course_connector.dart';
+import 'package:tat/src/connector/course_oad_connector.dart';
+import 'package:tat/src/model/course/course_class_json.dart';
+import 'package:tat/src/model/course/course_main_extra_json.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/src/task/ntut/ntut_task.dart';
+import 'package:tat/src/util/language_utils.dart';
 
 import '../task.dart';
 import 'course_system_task.dart';

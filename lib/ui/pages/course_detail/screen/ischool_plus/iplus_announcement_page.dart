@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/model/course_table/course_table_json.dart';
-import 'package:flutter_app/src/model/ischool_plus/ischool_plus_announcement_json.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/src/task/iplus/iplus_course_announcement_detail_task.dart';
-import 'package:flutter_app/src/task/iplus/iplus_course_announcement_task.dart';
-import 'package:flutter_app/src/task/iplus/iplus_get_course_subscribe_task.dart';
-import 'package:flutter_app/src/task/iplus/iplus_set_course_subscribe_task.dart';
-import 'package:flutter_app/src/task/task_flow.dart';
-import 'package:flutter_app/src/util/route_utils.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
+import 'package:tat/src/model/ischool_plus/ischool_plus_announcement_json.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/src/task/iplus/iplus_course_announcement_detail_task.dart';
+import 'package:tat/src/task/iplus/iplus_course_announcement_task.dart';
+import 'package:tat/src/task/iplus/iplus_get_course_subscribe_task.dart';
+import 'package:tat/src/task/iplus/iplus_set_course_subscribe_task.dart';
+import 'package:tat/src/task/task_flow.dart';
+import 'package:tat/src/util/route_utils.dart';
 
 class IPlusAnnouncementPage extends StatefulWidget {
   final CourseInfoJson courseInfo;

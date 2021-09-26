@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/config/app_colors.dart';
-import 'package:flutter_app/src/config/app_themes.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/src/config/app_colors.dart';
+import 'package:tat/src/config/app_themes.dart';
+import 'package:tat/ui/other/my_toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {

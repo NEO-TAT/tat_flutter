@@ -1,11 +1,11 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter_app/debug/log/log.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/task/course/course_system_task.dart';
-import 'package:flutter_app/src/task/iplus/iplus_system_task.dart';
-import 'package:flutter_app/src/task/ntut/ntut_task.dart';
-import 'package:flutter_app/src/task/score/score_system_task.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:tat/debug/log/log.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/task/course/course_system_task.dart';
+import 'package:tat/src/task/iplus/iplus_system_task.dart';
+import 'package:tat/src/task/ntut/ntut_task.dart';
+import 'package:tat/src/task/score/score_system_task.dart';
+import 'package:tat/ui/other/my_toast.dart';
 
 import 'course_oads/course_oad_system_task.dart';
 import 'task.dart';

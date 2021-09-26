@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/ui/other/listview_animator.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/ui/other/listview_animator.dart';
 import 'package:get/get.dart';
 import 'package:pretty_json/pretty_json.dart';
 import 'package:shared_preferences/shared_preferences.dart';

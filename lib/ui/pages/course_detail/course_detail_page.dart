@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/app_config.dart';
-import 'package:flutter_app/src/config/app_themes.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/course_table/course_table_json.dart';
-import 'package:flutter_app/src/providers/app_provider.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/ui/pages/course_detail/screen/course_info_page.dart';
-import 'package:flutter_app/ui/pages/course_detail/screen/ischool_plus/iplus_announcement_page.dart';
-import 'package:flutter_app/ui/pages/course_detail/screen/ischool_plus/iplus_file_page.dart';
-import 'package:flutter_app/ui/pages/course_detail/tab_page.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/config/app_config.dart';
+import 'package:tat/src/config/app_themes.dart';
+import 'package:tat/src/model/course/course_class_json.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
+import 'package:tat/src/providers/app_provider.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/ui/pages/course_detail/screen/course_info_page.dart';
+import 'package:tat/ui/pages/course_detail/screen/ischool_plus/iplus_announcement_page.dart';
+import 'package:tat/ui/pages/course_detail/screen/ischool_plus/iplus_file_page.dart';
+import 'package:tat/ui/pages/course_detail/tab_page.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 

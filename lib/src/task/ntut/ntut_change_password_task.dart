@@ -1,6 +1,6 @@
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/connector/ntut_connector.dart';
-import 'package:flutter_app/src/store/model.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/connector/ntut_connector.dart';
+import 'package:tat/src/store/model.dart';
 
 import '../task.dart';
 import 'ntut_task.dart';

@@ -1,10 +1,10 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/store/model.dart';
-import 'package:flutter_app/src/task/ntut/ntut_change_password_task.dart';
-import 'package:flutter_app/src/task/task_flow.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/src/task/ntut/ntut_change_password_task.dart';
+import 'package:tat/src/task/task_flow.dart';
 import 'package:get/get.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
