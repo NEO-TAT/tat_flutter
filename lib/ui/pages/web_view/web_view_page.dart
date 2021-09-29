@@ -14,7 +14,7 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   final cookieManager = CookieManager.instance();
-  final cookieJar = DioConnector.instance.cookiesManager;
+  final cookieJar = DioConnector.dioInstance.cookiesManager;
   InAppWebViewController webView;
   Uri url = Uri();
   double progress = 0;

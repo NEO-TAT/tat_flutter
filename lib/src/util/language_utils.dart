@@ -19,7 +19,7 @@ enum LangEnum { en, zh }
 
 class LanguageUtils {
   static Future<void> init(BuildContext context) async {
-    OtherSettingJson otherSetting = Model.instance.getOtherSetting();
+    OtherSettingJson otherSetting = Model.dioInstance.getOtherSetting();
     if (otherSetting.lang.isEmpty || !otherSetting.lang.contains("_")) {
       //如果沒有設定語言使用手機目前語言
       Locale locale = Localizations.localeOf(context);
@@ -37,14 +37,14 @@ class LanguageUtils {
     if (getSupportLocale.contains(locale)) {
       await R.load(locale);
       String lang = locale2String(locale);
-      OtherSettingJson otherSetting = Model.instance.getOtherSetting();
+      OtherSettingJson otherSetting = Model.dioInstance.getOtherSetting();
       if (otherSetting.lang != lang) {
         //只有不相同時可以載入
         otherSetting.lang = lang;
-        Model.instance.setOtherSetting(otherSetting);
-        await Model.instance.saveOtherSetting();
-        await Model.instance.clearCourseTableList();
-        await Model.instance.clearCourseSetting();
+        Model.dioInstance.setOtherSetting(otherSetting);
+        await Model.dioInstance.saveOtherSetting();
+        await Model.dioInstance.clearCourseTableList();
+        await Model.dioInstance.clearCourseSetting();
       }
     } else {
       Log.e("no any locale load");
@@ -78,7 +78,7 @@ class LanguageUtils {
   }
 
   static LangEnum getLangIndex() {
-    OtherSettingJson otherSetting = Model.instance.getOtherSetting();
+    OtherSettingJson otherSetting = Model.dioInstance.getOtherSetting();
     int index = getSupportLocale.indexOf(string2Locale(otherSetting.lang));
     switch (index) {
       case 0:

@@ -52,7 +52,7 @@ class FileDownload {
       }
     };
     //開始下載檔案
-    DioConnector.instance.download(url, (Headers responseHeaders) {
+    DioConnector.dioInstance.download(url, (Headers responseHeaders) {
       Map<String, List<String>> headers = responseHeaders.map;
       if (headers.containsKey("content-disposition")) {
         //代表有名字

@@ -129,7 +129,7 @@ class RouteUtils {
   }
 
   static Future toAliceInspectorPage() async {
-    DioConnector.instance.alice.showInspector();
+    DioConnector.dioInstance.alice.showInspector();
   }
 
   static Future toIPlusAnnouncementDetailPage(

@@ -1,15 +1,9 @@
-//
-//  DioConnector.dart
 //  北科課程助手
-//
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
 
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:alice/alice.dart';
-import 'package:big5/big5.dart';
+import 'package:charset_converter/charset_converter.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
@@ -23,54 +17,64 @@ import 'connector_parameter.dart';
 typedef SavePathCallback = String Function(Headers responseHeaders);
 
 class DioConnector {
-  static Map<String, String> _headers = {
-    HttpHeaders.userAgentHeader: presetUserAgent,
-    "Upgrade-Insecure-Requests": "1",
-  };
-  Alice alice = Alice(
+  DioConnector._privateConstructor();
+
+  static final DioConnector dioInstance = DioConnector._privateConstructor();
+  late PersistCookieJar _cookieJar;
+
+  final dio = Dio(dioOptions);
+
+  final alice = Alice(
     darkTheme: true,
     showNotification: false,
   );
-  static final BaseOptions dioOptions = new BaseOptions(
-      connectTimeout: 5000,
-      receiveTimeout: 10000,
-      sendTimeout: 5000,
-      headers: _headers,
-      responseType: ResponseType.json,
-      contentType: "application/x-www-form-urlencoded",
-      validateStatus: (status) {
-        // 關閉狀態檢測
+
+  static final _headers = {
+    HttpHeaders.userAgentHeader: presetUserAgent,
+    "Upgrade-Insecure-Requests": "1",
+  };
+
+  static final dioOptions = BaseOptions(
+    connectTimeout: 5000,
+    receiveTimeout: 10000,
+    sendTimeout: 5000,
+    headers: _headers,
+    responseType: ResponseType.json,
+    contentType: "application/x-www-form-urlencoded",
+    validateStatus: (status) {
+      // disable status detection.
+      if (status != null) {
         return status <= 500;
-      },
-      responseDecoder: null);
-  Dio dio = Dio(dioOptions);
-  PersistCookieJar _cookieJar;
+      }
+
+      // enable status detection if status is null.
+      return true;
+    },
+    responseDecoder: null,
+  );
+
   static final Exception connectorError =
       Exception("Connector statusCode is not 200");
 
-  DioConnector._privateConstructor();
-
-  static final DioConnector instance = DioConnector._privateConstructor();
-
-  static String _big5Decoder(List<int> responseBytes, RequestOptions options,
-      ResponseBody responseBody) {
-    String result = big5.decode(responseBytes);
-    return result;
+  // FIXME change return type to `Future<String?>`
+  static String _big5Decoder(
+    List<int> responseBytes,
+    RequestOptions options,
+    ResponseBody responseBody,
+  ) {
+    String? decodedBig5Result;
+    CharsetConverter.decode(
+      'big5',
+      Uint8List.fromList(responseBytes),
+    ).then((value) => decodedBig5Result = value);
+    return decodedBig5Result.toString();
   }
-
-  /*
-  static String _utf8Decoder(List<int> responseBytes, RequestOptions options,
-      ResponseBody responseBody) {
-    String result = Utf8Codec().decode(responseBytes);
-    return result;
-  }
-   */
 
   Future<void> init() async {
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
-      _cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
+      _cookieJar = PersistCookieJar(storage: FileStorage(appDocPath + "/.cookies/"));
       alice.setNavigatorKey(getUtils.Get.key);
       dio.interceptors.add(CookieManager(_cookieJar));
       dio.interceptors.add(RequestInterceptors());
@@ -112,14 +116,16 @@ class DioConnector {
   }
 
   Future<Map<String, List<String>>> getHeadersByGet(
-      ConnectorParameter parameter) async {
+    ConnectorParameter parameter,
+  ) async {
     Response<ResponseBody> response;
     try {
       response = await dio.get<ResponseBody>(
         parameter.url,
         options: Options(
-            responseType: ResponseType.stream), // set responseType to `stream`
-      ); //使速度更快
+          responseType: ResponseType.stream,
+        ), // set responseType to `stream`
+      ); // make the speed faster.
       if (response.statusCode == HttpStatus.ok) {
         return response.headers.map;
       } else {
@@ -174,15 +180,24 @@ class DioConnector {
     }
   }
 
-  Future<void> download(String url, SavePathCallback savePath,
-      {ProgressCallback progressCallback,
-      CancelToken cancelToken,
-      Map<String, dynamic> header}) async {
+  Future<void> download(
+    String url,
+    SavePathCallback savePath, {
+    ProgressCallback? progressCallback,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? header,
+  }) async {
     await dio
-        .downloadUri(Uri.parse(url), savePath,
-            onReceiveProgress: progressCallback,
-            cancelToken: cancelToken,
-            options: Options(receiveTimeout: 0, headers: header)) //設置不超時
+        .downloadUri(
+      Uri.parse(url),
+      savePath,
+      onReceiveProgress: progressCallback,
+      cancelToken: cancelToken,
+      options: Options(
+        receiveTimeout: 0,
+        headers: header,
+      ),
+    )
         .catchError((onError, stack) {
       Log.eWithStack(onError.toString(), stack);
       throw onError;

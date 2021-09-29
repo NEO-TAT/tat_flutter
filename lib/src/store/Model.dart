@@ -372,7 +372,7 @@ class Model {
 
   Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
-    await DioConnector.instance.init();
+    await DioConnector.dioInstance.init();
     _courseSemesterList = _courseSemesterList ?? [];
     await loadUserData();
     await loadCourseTableList();
@@ -389,7 +389,7 @@ class Model {
     await clearCourseScoreCredit();
     await clearAnnouncementSetting();
     await clearCourseSetting();
-    DioConnector.instance.deleteCookies();
+    DioConnector.dioInstance.deleteCookies();
     await cacheManager.emptyCache(); //clears all data in cache.
     setFirstUse(courseNotice, true);
     await getInstance();

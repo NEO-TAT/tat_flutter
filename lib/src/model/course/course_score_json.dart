@@ -185,7 +185,7 @@ class GraduationInformationJson {
       this.selectDivision,
       this.selectMatric,
       this.courseCodeList}) {
-    String studentId = Model.instance.getAccount();
+    String studentId = Model.dioInstance.getAccount();
     selectYear = selectYear ??
         ((studentId != null && (studentId.length) > 3)
             ? studentId.substring(0, 3)
@@ -441,7 +441,7 @@ class CourseScoreInfoJson {
   bool isOtherDepartment(String divisionCode) {
     //是否是跨系選修
     var courseCodeList =
-        Model.instance.getGraduationInformation().courseCodeList;
+        Model.dioInstance.getGraduationInformation().courseCodeList;
     if (category.contains("△")) {
       return false;
     } else if (courseCode.substring(0, 3) == divisionCode) {

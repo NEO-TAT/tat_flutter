@@ -10,7 +10,7 @@ import 'dio_connector.dart';
 class Connector {
   static Future<String> getDataByPost(ConnectorParameter parameter) async {
     try {
-      String result = await DioConnector.instance.getDataByPost(parameter);
+      String result = await DioConnector.dioInstance.getDataByPost(parameter);
       return result;
     } catch (e) {
       throw e;
@@ -19,7 +19,7 @@ class Connector {
 
   static Future<String> getDataByGet(ConnectorParameter parameter) async {
     try {
-      String result = await DioConnector.instance.getDataByGet(parameter);
+      String result = await DioConnector.dioInstance.getDataByGet(parameter);
       return result;
     } catch (e) {
       throw e;
@@ -30,7 +30,7 @@ class Connector {
       ConnectorParameter parameter) async {
     Response result;
     try {
-      result = await DioConnector.instance.getDataByGetResponse(parameter);
+      result = await DioConnector.dioInstance.getDataByGetResponse(parameter);
       return result;
     } catch (e) {
       throw e;
@@ -41,7 +41,7 @@ class Connector {
       ConnectorParameter parameter) async {
     Response result;
     try {
-      result = await DioConnector.instance.getDataByPostResponse(parameter);
+      result = await DioConnector.dioInstance.getDataByPostResponse(parameter);
       return result;
     } catch (e) {
       throw e;
@@ -50,8 +50,8 @@ class Connector {
 
   static Map<String, String> getLoginHeaders(String url) {
     try {
-      PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
-      Map<String, String> headers = Map.from(DioConnector.instance.headers);
+      PersistCookieJar cookieJar = DioConnector.dioInstance.cookiesManager;
+      Map<String, String> headers = Map.from(DioConnector.dioInstance.headers);
       headers["Cookie"] = cookieJar
           .loadForRequest(Uri.parse(url))
           .toString()
@@ -71,7 +71,7 @@ class Connector {
     try {
       ConnectorParameter parameter = ConnectorParameter(url);
       Map<String, List<String>> headers =
-          await DioConnector.instance.getHeadersByGet(parameter);
+          await DioConnector.dioInstance.getHeadersByGet(parameter);
       if (headers.containsKey("content-disposition")) {
         // means name is exist.
         final name = headers["content-disposition"]!;
