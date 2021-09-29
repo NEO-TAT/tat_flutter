@@ -40,7 +40,7 @@ dependencies:
   #驗證身分指紋
   version: 1.2.0
   #版本比較
-  file_picker: ^4.1.1
+  file_picker: ^4.1.3
   #選擇android資料夾
   #----------store data----------#
   shared_preferences: ^2.0.8
@@ -55,7 +55,7 @@ dependencies:
   html: ^0.15.0
   #html解析器
   connectivity: ^3.0.6
-  github: ^8.1.1
+  github: ^8.1.2
   bloc: ^7.2.1
   clipboard: ^0.1.3
   #剪貼簿
@@ -73,7 +73,7 @@ dependencies:
   #----------other----------#
   back_button_interceptor: ^5.0.2
   #攔截返回鍵訊息
-  big5: ^0.0.4
+  charset_converter: ^2.0.0
   intl: ^0.17.0
   #DateTime to String
   package_info: ^2.0.2
@@ -114,11 +114,11 @@ dependencies:
   pretty_json: ^2.0.0
 
   # Firebase
-  firebase_core: ^1.6.0
-  firebase_analytics: ^8.3.2
-  firebase_crashlytics: ^2.2.1
-  firebase_remote_config: ^0.11.0
-  firebase_messaging: ^10.0.7
+  firebase_core: ^1.7.0
+  firebase_analytics: ^8.3.3
+  firebase_crashlytics: ^2.2.2
+  firebase_remote_config: ^0.11.0+1
+  firebase_messaging: ^10.0.8
 
   better_player: ^0.0.76
 
