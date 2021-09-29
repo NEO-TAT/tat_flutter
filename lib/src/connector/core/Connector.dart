@@ -1,11 +1,4 @@
-//
-//  Connector.dart
 //  北科課程助手
-//
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
-
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:tat/debug/log/Log.dart';
@@ -73,27 +66,27 @@ class Connector {
     }
   }
 
-  static Future<String> getFileName(String url) async {
-    String fileName;
+  static Future<String?> getFileName(String url) async {
+    String? fileName;
     try {
       ConnectorParameter parameter = ConnectorParameter(url);
       Map<String, List<String>> headers =
           await DioConnector.instance.getHeadersByGet(parameter);
       if (headers.containsKey("content-disposition")) {
-        //代表有名字
-        List<String> name = headers["content-disposition"];
-        RegExp exp = RegExp("['|\"](?<name>.+)['|\"]");
-        RegExpMatch matches = exp.firstMatch(name[0]);
+        // means name is exist.
+        final name = headers["content-disposition"]!;
+        final exp = RegExp("['|\"](?<name>.+)['|\"]");
+        final matches = exp.firstMatch(name[0])!;
         fileName = matches.group(1);
       } else if (headers.containsKey("content-type")) {
-        List<String> name = headers["content-type"];
+        final name = headers["content-type"]!;
         if (name[0].toLowerCase().contains("pdf")) {
-          //是application/pdf
+          // request type is application/pdf
           fileName = '.pdf';
         }
       }
       if (headers.containsKey("content-length")) {
-        String size = headers["content-length"][0];
+        final size = headers["content-length"]![0];
         Log.d("file size = $size");
       }
       Log.d("getFileName $fileName");
