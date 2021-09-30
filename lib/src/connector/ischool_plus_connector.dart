@@ -1,65 +1,61 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
+import 'package:html/dom.dart';
+import 'package:html/parser.dart';
 import 'package:tat/debug/log/Log.dart';
 import 'package:tat/src/connector/core/Connector.dart';
 import 'package:tat/src/model/ischool_plus/course_file_json.dart';
 import 'package:tat/src/model/ischool_plus/ischool_plus_announcement_json.dart';
 import 'package:tat/src/util/html_utils.dart';
-import 'package:html/dom.dart' as html;
-import 'package:html/parser.dart' as html;
 
 import 'core/connector_parameter.dart';
 import 'ntut_connector.dart';
 
 enum ISchoolPlusConnectorStatus { LoginSuccess, LoginFail, UnknownError }
-
 enum IPlusReturnStatus { Success, Fail, NoPermission }
 
 class ReturnWithStatus<T> {
-  IPlusReturnStatus status;
-  T result;
+  ReturnWithStatus({this.status, this.result});
+
+  IPlusReturnStatus? status;
+  T? result;
 }
 
 class ISchoolPlusConnector {
-  static final String host = "https://istudy.ntut.edu.tw/";
-
-  //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
-  //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
-  //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
-  //static final String _iSchoolPlusLearnIndexUrl = host + "learn/index.php";
-  static final String _getCourseName = host + "learn/mooc_sysbar.php";
+  static const host = "https://istudy.ntut.edu.tw/";
+  static const _getCourseName = host + "learn/mooc_sysbar.php";
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
-  static Future<ISchoolPlusConnectorStatus> login(String account) async {
-    String result;
+  static Future<ISchoolPlusConnectorStatus?> login(String account) async {
     try {
       ConnectorParameter parameter;
-      html.Document tagNode;
-      List<html.Element> nodes;
-      Map<String, String> data = {
+      final data = {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
         "apOu": "ischool_plus_",
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter(_ssoLoginUrl);
-      parameter.data = data;
-      result = await Connector.getDataByGet(parameter);
-      tagNode = html.parse(result);
-      nodes = tagNode.getElementsByTagName("input");
-      data = Map();
-      for (html.Element node in nodes) {
-        String name = node.attributes['name'];
-        String value = node.attributes['value'];
+      parameter = ConnectorParameter(_ssoLoginUrl)..data = data;
+
+      final result = await Connector.getDataByGet(parameter);
+      final tagNode = parse(result);
+      final nodes = tagNode.getElementsByTagName("input");
+
+      data.clear();
+
+      for (final node in nodes) {
+        final name = node.attributes['name']!;
+        final value = node.attributes['value']!;
         data[name] = value;
       }
-      String jumpUrl =
-          tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter(jumpUrl);
-      parameter.data = data;
+
+      final jumpUrl =
+          tagNode.getElementsByTagName("form")[0].attributes["action"]!;
+      parameter = ConnectorParameter(jumpUrl)..data = data;
+
       await Connector.getDataByPostResponse(parameter);
+
       return ISchoolPlusConnectorStatus.LoginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -68,17 +64,18 @@ class ISchoolPlusConnector {
   }
 
   static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(
-      String courseId) async {
+    String courseId,
+  ) async {
     ConnectorParameter parameter;
     String result;
-    html.Document tagNode;
-    html.Element node, itemNode, resourceNode;
-    RegExp exp;
-    RegExpMatch matches;
-    List<html.Element> nodes, itemNodes, resourceNodes;
-    var value = ReturnWithStatus<List<CourseFileJson>>();
+    Document tagNode;
+    Element resourceNode = Element.tag('a');
+
+    final value = ReturnWithStatus<List<CourseFileJson>>();
+
     try {
-      List<CourseFileJson> courseFileList = [];
+      final List<CourseFileJson> courseFileList = [];
+
       if (!await _selectCourse(courseId)) {
         value.status = IPlusReturnStatus.NoPermission;
         return value;
@@ -86,18 +83,22 @@ class ISchoolPlusConnector {
 
       parameter = ConnectorParameter(host + "learn/path/launch.php");
       result = await Connector.getDataByGet(parameter);
-      exp = new RegExp(r"cid=(?<cid>[\w|-]+,)");
-      matches = exp.firstMatch(result);
-      String cid = matches.group(1);
-      parameter = ConnectorParameter(host + "learn/path/pathtree.php");
-      parameter.data = {'cid': cid};
+      final matches = RegExp(r"cid=\(?<cid>[\w|-]+,\)").firstMatch(result)!;
+
+      final cid = matches.group(1)!;
+      final data = {'cid': cid};
+
+      parameter = ConnectorParameter(host + "learn/path/pathtree.php")
+        ..data = data;
 
       result = await Connector.getDataByGet(parameter);
-      tagNode = html.parse(result);
-      node = tagNode.getElementById("fetchResourceForm");
-      nodes = node.getElementsByTagName("input");
+      tagNode = parse(result);
 
-      Map<String, String> downloadPost = {
+      final nodes = tagNode
+          .getElementById("fetchResourceForm")!
+          .getElementsByTagName("input");
+
+      final downloadPost = {
         'is_player': '',
         'href': '',
         'prev_href': '',
@@ -109,52 +110,57 @@ class ISchoolPlusConnector {
         'read_key': ''
       };
 
-      for (html.Element node in nodes) {
-        //將資料團入上方Map
-        String key = node.attributes['name'];
+      for (final node in nodes) {
+        final key = node.attributes['name']!;
         if (downloadPost.containsKey(key)) {
-          downloadPost[key] = node.attributes['value'];
+          downloadPost[key] = node.attributes['value']!;
         }
       }
-      parameter =
-          ConnectorParameter(host + "learn/path/SCORM_loadCA.php"); //取得下載檔案XML
+
+      // get the xml file for the file to be downloaded.
+      parameter = ConnectorParameter(host + "learn/path/SCORM_loadCA.php");
       result = await Connector.getDataByGet(parameter);
-      tagNode = html.parse(result);
-      itemNodes = tagNode.getElementsByTagName("item");
-      resourceNodes = tagNode.getElementsByTagName("resource");
+      tagNode = parse(result);
+      final itemNodes = tagNode.getElementsByTagName("item");
+      final resourceNodes = tagNode.getElementsByTagName("resource");
+
       for (int i = 0; i < itemNodes.length; i++) {
-        itemNode = itemNodes[i];
-        String iref;
+        final itemNode = itemNodes[i];
+
         if (!itemNode.attributes.containsKey("identifierref")) {
-          //代表是目錄不是一個檔案
           continue;
         }
-        iref = itemNode.attributes["identifierref"];
+
+        final iref = itemNode.attributes["identifierref"];
+
         for (int i = 0; i < resourceNodes.length; i++) {
           resourceNode = resourceNodes[i];
           if (resourceNode.attributes["identifier"] == iref) {
             break;
           }
         }
-        String base = resourceNode.attributes["xml:base"];
-        String href = ((base != null) ? base : '') +
-            '@' +
-            resourceNode.attributes["href"];
 
-        CourseFileJson courseFile = CourseFileJson();
+        final base = resourceNode.attributes["xml:base"];
+        final href =
+            '${((base != null) ? base : '')}@${resourceNode.attributes["href"]}';
+
+        final courseFile = CourseFileJson();
         courseFile.name = itemNodes[i]
             .text
             .split("\t")[0]
             .replaceAll(RegExp(r"[\s|\n| ]"), "");
-        FileType fileType = FileType();
+
+        final fileType = FileType();
         downloadPost['href'] = href;
-        fileType.postData = Map.of(downloadPost); //紀錄  需要使用Map.of不一個改全部都改
+        fileType.postData = Map.of(downloadPost);
         fileType.type = CourseFileType.Unknown;
         courseFile.fileType = [fileType];
         courseFileList.add(courseFile);
       }
+
       value.status = IPlusReturnStatus.Success;
       value.result = courseFileList;
+
       return value;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -163,62 +169,69 @@ class ISchoolPlusConnector {
     }
   }
 
-  //List[0] RealUrl , List[1] referer
-  static Future<List<String>> getRealFileUrl(
-      Map<String, String> postParameter) async {
+  static Future<List<String>?> getRealFileUrl(
+    Map<String, String> postParameter,
+  ) async {
     ConnectorParameter parameter;
     String url;
-    String result;
+    String result = '';
+
     try {
-      parameter =
-          ConnectorParameter(host + "learn/path/SCORM_fetchResource.php");
-      parameter.data = postParameter;
-      parameter.charsetName = 'big5';
-      parameter.referer =
-          "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
-      Response response;
-      response = await Connector.getDataByPostResponse(parameter);
+      parameter = ConnectorParameter(
+        host + "learn/path/SCORM_fetchResource.php",
+      )
+        ..data = postParameter
+        ..charsetName = 'big5'
+        ..referer =
+            "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
+
+      final response = await Connector.getDataByPostResponse(parameter);
       result = response.toString();
-      RegExp exp;
-      RegExpMatch matches;
+
+      RegExpMatch? matches;
+
       if (response.statusCode == HttpStatus.ok) {
-        exp = new RegExp("[\"\'](?<url>https?:\/\/.+)[\"\']");
-        //檢測網址 "http://....." or 'https://.....' or "http://..." or 'http://...'
-        matches = exp.firstMatch(result);
-        bool pass = (matches?.groupCount == null)
+        matches =
+            RegExp("[\"\'](?<url>https?:\/\/.+)[\"\']").firstMatch(result);
+        final pass = (matches?.groupCount == null)
             ? false
-            : matches.group(1).toLowerCase().contains("http")
+            : matches!.group(1)!.toLowerCase().contains("http")
                 ? true
                 : false;
+
         if (pass) {
-          url = matches.group(1);
-          //已經是完整連結
+          url = matches!.group(1)!;
           return [url, url];
         } else {
-          exp = new RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
-          matches = exp.firstMatch(result);
-          bool pass = (matches?.groupCount == null) ? false : true;
+          matches = RegExp("\"(?<url>\/.+)\"").firstMatch(result);
+          final pass = (matches?.groupCount == null) ? false : true;
+
           if (pass) {
-            String realUrl = host + matches.group(1);
-            return [realUrl, realUrl]; //一般下載連結
+            final realUrl = host + matches!.group(1)!;
+            return [realUrl, realUrl];
           } else {
-            exp = new RegExp("\"(?<url>.+)\""); //檢測""內包含字
-            matches = exp.firstMatch(result);
-            url = host + "learn/path/" + matches.group(1); //是PDF預覽畫面
-            parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
+            matches = RegExp("\"(?<url>.+)\"").firstMatch(result);
+            url = host +
+                "learn/path/" +
+                matches!.group(1)!; // is a PDF preview page
+            parameter = ConnectorParameter(
+                url); // get the real download link from the PDF preview page
             result = await Connector.getDataByGet(parameter);
-            exp =
-                new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
-            matches = exp.firstMatch(result);
-            String realUrl = host + "learn/path/" + matches.group(1);
-            return [realUrl, url]; //PDF需要有referer不然會無法下載
+            matches = RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]")
+                .firstMatch(result); // get PDF real download location
+            final realUrl = host + "learn/path/" + matches!.group(1)!;
+
+            return [
+              realUrl,
+              url
+            ]; // it is necessary to add `referer` when downloading a PDF file
           }
         }
-      } else if (response.isRedirect || result.isEmpty) {
-        //發生跳轉 出現檔案下載預覽頁面
-        url = response.headers[HttpHeaders.locationHeader][0];
+      } else if (response.isRedirect! || result.isEmpty) {
+        url = response.headers[HttpHeaders.locationHeader]![0];
         url = host + "learn/path/" + url;
-        url = url.replaceAll("download_preview", "download"); //下載預覽頁面換成真實下載網址
+        url = url.replaceAll("download_preview",
+            "download"); // replace download preview page to real download page url
         return [url, url];
       }
     } catch (e, stack) {
@@ -229,80 +242,90 @@ class ISchoolPlusConnector {
     return null;
   }
 
-  static String bid;
+  static String bid = '';
+
+  static getBid() => bid;
 
   static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>>
       getCourseAnnouncement(String courseId) async {
     String result;
-    var value = ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>();
+    final value = ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>();
+
     try {
       if (!await _selectCourse(courseId)) {
         value.status = IPlusReturnStatus.NoPermission;
         return value;
       }
+
       ConnectorParameter parameter;
-      html.Document tagNode;
-      List<html.Element> nodes;
-      html.Element node;
+
       Map<String, String> data = {
         "cid": "",
         "bid": "",
         "nid": "",
       };
-      List<ISchoolPlusAnnouncementJson> announcementList = [];
+
+      final List<ISchoolPlusAnnouncementJson> announcementList = [];
 
       parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/forum/m_node_list.php");
-      parameter.data = data;
-      result = await Connector.getDataByPost(parameter);
-      tagNode = html.parse(result);
-      bid = tagNode.getElementById("bid").attributes["value"];
+        "https://istudy.ntut.edu.tw/forum/m_node_list.php",
+      )..data = data;
 
-      node = tagNode.getElementById("formSearch");
-      nodes = node.getElementsByTagName("input");
-      String selectPage =
-          tagNode.getElementById("selectPage").attributes['value'];
-      String inputPerPage =
-          tagNode.getElementById("inputPerPage").attributes['value'];
+      result = await Connector.getDataByPost(parameter);
+      final tagNode = parse(result);
+      bid = tagNode.getElementById("bid")!.attributes["value"]!;
+      final node = tagNode.getElementById("formSearch");
+      final nodes = node!.getElementsByTagName("input");
+      final selectPage =
+          tagNode.getElementById("selectPage")!.attributes['value'];
+      final inputPerPage =
+          tagNode.getElementById("inputPerPage")!.attributes['value'];
+
       data = {
         "token": "",
         "bid": "",
         "curtab": "",
         "action": "getNews",
         "tpc": "1",
-        "selectPage": selectPage,
-        "inputPerPage": inputPerPage
+        "selectPage": selectPage.toString(),
+        "inputPerPage": inputPerPage.toString(),
       };
-      for (html.Element node in nodes) {
-        String name = node.attributes['name'];
+
+      for (final node in nodes) {
+        final name = node.attributes['name']!;
         if (data.containsKey(name)) {
-          data[name] = node.attributes['value'];
+          data[name] = node.attributes['value']!;
         }
       }
+
       parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/mooc/controllers/forum_ajax.php");
-      parameter.data = data;
+        "https://istudy.ntut.edu.tw/mooc/controllers/forum_ajax.php",
+      )..data = data;
+
       result = await Connector.getDataByPost(parameter);
-      //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
       Map<String, dynamic> jsonData = Map();
-      Map j = json.decode(result);
+      final j = json.decode(result);
+
       if (j["code"] == 0) {
         jsonData = j['data'];
-        int totalRows = int.parse(json.decode(result)['total_rows']);
+        final totalRows = int.parse(json.decode(result)['total_rows']);
+
         if (totalRows > 0) {
-          for (String keyName in json.decode(result)['data'].keys.toList()) {
-            ISchoolPlusAnnouncementJson courseInfo =
+          for (final keyName in json.decode(result)['data'].keys.toList()) {
+            final courseInfo =
                 ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
-            courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
-            courseInfo.token = data['token'];
+            courseInfo.subject = HtmlUtils.clean(courseInfo.subject);
+            courseInfo.token = data['token']!;
             courseInfo.bid = keyName.split("|").first;
             courseInfo.nid = keyName.split("|").last;
             announcementList.add(courseInfo);
           }
         }
       }
+
       value.status = IPlusReturnStatus.Success;
       value.result = announcementList;
+
       return value;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -311,15 +334,11 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<Map> getCourseAnnouncementDetail(
+  static Future<Map?> getCourseAnnouncementDetail(
       ISchoolPlusAnnouncementJson value) async {
-    String result;
     try {
-      ConnectorParameter parameter;
-      html.Document tagNode;
-      List<html.Element> nodes;
-      html.Element node;
-      Map<String, String> data = {
+      Element node;
+      final data = {
         'token': value.token,
         'cid': value.cid,
         'bid': value.bid,
@@ -330,36 +349,47 @@ class ISchoolPlusConnector {
         'awppathre': '',
         'nowpage': '1'
       };
-      parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/forum/m_node_chain.php");
-      parameter.data = data;
-      result = await Connector.getDataByPost(parameter);
-      tagNode = html.parse(result);
-      node = tagNode.getElementsByClassName("main node-info").first;
-      Map detail = Map();
 
-      String title = node.attributes["data-title"];
+      final parameter = ConnectorParameter(
+        "https://istudy.ntut.edu.tw/forum/m_node_chain.php",
+      )..data = data;
+
+      final result = await Connector.getDataByPost(parameter);
+      final tagNode = parse(result);
+      node = tagNode.getElementsByClassName("main node-info").first;
+      final detail = Map();
+
+      String title = node.attributes["data-title"]!;
       node = tagNode.getElementsByClassName("author-name").first;
+
       String sender = node.text;
       node = tagNode.getElementsByClassName("post-time").first;
+
       String postTime = node.text;
       node = tagNode.getElementsByClassName("bottom-tmp").first;
       node = node.getElementsByClassName("content").first;
+
       String body = node.innerHtml;
       node = tagNode.getElementsByClassName("bottom-tmp").first;
-      nodes = node.getElementsByClassName("file");
-      Map<String, String> fileMap = Map(); // name , url
+
+      List<Element> nodes = node.getElementsByClassName("file");
+      final fileMap = Map();
+
       if (nodes.length >= 1) {
         node = nodes.first;
         nodes = node.getElementsByTagName("a");
-        for (html.Element node in nodes) {
-          String href = node.attributes["href"];
-          if (href[0] == '/') {
+
+        for (final node in nodes) {
+          String? href = node.attributes["href"];
+
+          if (href![0] == '/') {
             href = href.substring(1, href.length);
           }
+
           fileMap[node.text] = host + href;
         }
       }
+
       detail["title"] = title;
       detail["sender"] = sender;
       detail["postTime"] = postTime;
@@ -373,58 +403,54 @@ class ISchoolPlusConnector {
   }
 
   static Future<bool> courseSubscribe(String bid, bool subscribe) async {
-    ConnectorParameter parameter;
-    html.Document tagNode;
-    String title;
-    String result;
     try {
-      parameter =
-          ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
-      parameter.data = {"bid": bid};
+      final data = {"bid": bid};
+      final parameter = ConnectorParameter(
+        "https://istudy.ntut.edu.tw/forum/subscribe.php",
+      )..data = data;
+
       int time = 0;
+      String title = '';
+
       do {
-        result = await Connector.getDataByPost(parameter);
-        tagNode = html.parse(result);
-        title = tagNode.getElementsByTagName("title").first.text;
+        final result = await Connector.getDataByPost(parameter);
+        title = parse(result).getElementsByTagName("title").first.text;
         Log.d(title);
         time++;
       } while (title.contains("取消") == subscribe && time < 2);
-      if (time >= 2) {
-        return false;
-      } else {
-        return true;
-      }
+
+      return time < 2;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return false;
     }
   }
 
-  static Future<List<String>> getSubscribeNotice() async {
-    ConnectorParameter parameter;
-    html.Document tagNode;
-    html.Element node;
-    List<html.Element> nodes;
-    String result;
-    List<String> courseNameList = [];
+  static Future<List<String>?> getSubscribeNotice() async {
+    Element node;
+    List<Element> nodes;
+    final List<String> courseNameList = [];
+
     try {
-      parameter =
+      final parameter =
           ConnectorParameter("https://istudy.ntut.edu.tw/learn/my_forum.php");
-      result = await Connector.getDataByPost(parameter);
-      tagNode = html.parse(result);
-      nodes = tagNode.getElementsByTagName("tbody");
-      if (nodes != null && (nodes.length > 1)) {
+      final result = await Connector.getDataByPost(parameter);
+
+      nodes = parse(result).getElementsByTagName("tbody");
+      if (nodes.length > 1) {
         node = nodes[1];
       } else {
-        return []; //代表無公告
+        return [];
       }
+
       nodes = node.getElementsByTagName("tr");
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
-        String courseName =
+        final courseName =
             node.getElementsByTagName("td")[1].text.split("_")[1];
         courseNameList.add(courseName);
       }
+
       return courseNameList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -433,76 +459,55 @@ class ISchoolPlusConnector {
   }
 
   static Future<bool> getCourseSubscribe(String bid) async {
-    ConnectorParameter parameter;
-    html.Document tagNode;
-    String title;
-    String result;
     try {
-      parameter =
-          ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
-      parameter.data = {"bid": bid};
+      final data = {"bid": bid};
+      final parameter = ConnectorParameter(
+        "https://istudy.ntut.edu.tw/forum/subscribe.php",
+      )..data = data;
+
       await Connector.getDataByPost(parameter);
-      result = await Connector.getDataByPost(parameter);
-      tagNode = html.parse(result);
-      title = tagNode.getElementsByTagName("title").first.text;
+      final result = await Connector.getDataByPost(parameter);
+      final title = parse(result).getElementsByTagName("title").first.text;
+
       return !title.contains("取消");
     } catch (e) {
       return false;
     }
   }
 
-  static Future<String> getBid(String courseId) async {
-    /*
-    ConnectorParameter parameter;
-    html.Document tagNode;
-    String result;
-    try {
-      await _selectCourse(courseId);
-      parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/forum/m_node_list.php");
-      result = await RequestsConnector.getDataByPost(parameter);
-      tagNode = html.parse(result);
-      return tagNode
-          .getElementById("bid")
-          .attributes["value"];
-    } catch (e) {
-      throw e;
-    }
-     */
-    return bid;
-  }
-
   static Future<bool> _selectCourse(String courseId) async {
     ConnectorParameter parameter;
-    html.Document tagNode;
-    html.Element node;
-    List<html.Element> nodes;
-    String result;
+
     try {
       parameter = ConnectorParameter(_getCourseName);
-      result = await Connector.getDataByGet(parameter);
-      tagNode = html.parse(result);
-      node = tagNode.getElementById("selcourse");
-      nodes = node.getElementsByTagName("option");
-      String courseValue;
+      final result = await Connector.getDataByGet(parameter);
+      final nodes = parse(result)
+          .getElementById("selcourse")!
+          .getElementsByTagName("option");
+
+      String? courseValue;
+
       for (int i = 1; i < nodes.length; i++) {
-        node = nodes[i];
-        String name = node.text.split("_").last;
+        final node = nodes[i];
+        final name = node.text.split("_").last;
         if (name == courseId) {
-          courseValue = node.attributes["value"];
+          courseValue = node.attributes["value"]!;
           break;
         }
       }
+
       if (courseValue == null) {
         return false;
       }
-      String xml =
+
+      final xml =
           "<manifest><ticket/><course_id>$courseValue</course_id><env/></manifest>";
       parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/learn/goto_course.php");
-      parameter.data = xml;
-      await Connector.getDataByPost(
-          parameter); //因為RequestsConnector無法傳送XML但是 DioConnector無法解析 Content-Type: text/html;;charset=UTF-8
+        "https://istudy.ntut.edu.tw/learn/goto_course.php",
+      )..data = xml;
+
+      await Connector.getDataByPost(parameter);
+
       return true;
     } catch (e, stack) {
       Log.eWithStack(e, stack);
