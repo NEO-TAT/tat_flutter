@@ -1,5 +1,5 @@
 class Constants {
-  static List sortList = [
+  static const sortList = [
     "File name (A to Z)",
     "File name (Z to A)",
     "Date (oldest first)",
