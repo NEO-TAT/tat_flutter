@@ -39,18 +39,20 @@ class CourseConnector {
   static Future<CourseConnectorStatus> login() async {
     try {
       ConnectorParameter parameter;
-      Map<String, String> data = {
+
+      final data = {
         "apUrl": "https://aps.ntut.edu.tw/course/tw/courseSID.jsp",
         "apOu": "aa_0010-",
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
+
       parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       final result = await Connector.getDataByGet(parameter);
       final tagNode = parse(result);
       final nodes = tagNode.getElementsByTagName("input");
-      data = Map();
+      data.clear();
 
       for (final node in nodes) {
         final name = node.attributes['name'] ?? 'Unknown name';
