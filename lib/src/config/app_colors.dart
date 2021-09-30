@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // color
-  static const Color mainColor = Colors.blue;
+  static const mainColor = Colors.blue;
 
   // font color
-  static const Color darkFontColor = Colors.black87;
-  static const Color lightFontColor = Colors.white;
-  static final Color greyFontColor = Colors.grey;
+  static const darkFontColor = Colors.black87;
+  static const lightFontColor = Colors.white;
+  static const greyFontColor = Colors.grey;
 
   //Colors for theme
-  static Color lightPrimary = Colors.white;
-  static Color darkPrimary = Color(0xff2B2B2B);
-  static Color lightAccent = Color(0xff597ef7);
-  static Color darkAccent = Color(0xff4F4F4f);
-  static Color lightBG = Colors.white;
-  static Color darkBG = Color(0xFF2B2B2B);
-  static Color hyperlinkColor = Colors.blue;
+  static const lightPrimary = Colors.white;
+  static const darkPrimary = Color(0xff2B2B2B);
+  static const lightAccent = Color(0xff597ef7);
+  static const darkAccent = Color(0xff4F4F4f);
+  static const lightBG = Colors.white;
+  static const darkBG = Color(0xFF2B2B2B);
+  static const hyperlinkColor = Colors.blue;
 
-  static const List<Color> courseTableColors = [
+  static const courseTableColors = [
     const Color(0xffffccbc),
     const Color(0xffffe0b2),
     const Color(0xffffecb3),
