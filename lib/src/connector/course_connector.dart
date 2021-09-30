@@ -30,11 +30,11 @@ class CourseConnector {
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static const cnHost = "https://aps.ntut.edu.tw/course/tw/";
   static const enHost = "https://aps.ntut.edu.tw/course/en/";
-  static final String _postCourseCNUrl = cnHost + "Select.jsp";
-  static final String _postTeacherCourseCNUrl = cnHost + "Teach.jsp";
-  static final String _postCourseENUrl = enHost + "Select.jsp";
-  static final String _creditUrl = cnHost + "Cprog.jsp";
-  static final String _searchCourseUrl = cnHost + "QueryCourse.jsp";
+  static const _postCourseCNUrl = cnHost + "Select.jsp";
+  static const _postTeacherCourseCNUrl = cnHost + "Teach.jsp";
+  static const _postCourseENUrl = enHost + "Select.jsp";
+  static const _creditUrl = cnHost + "Cprog.jsp";
+  static const _searchCourseUrl = cnHost + "QueryCourse.jsp";
 
   static Future<CourseConnectorStatus> login() async {
     try {
