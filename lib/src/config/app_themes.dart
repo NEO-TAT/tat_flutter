@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:tat/src/config/app_colors.dart';
 
 class AppThemes {
-  static ThemeData lightTheme = ThemeData(
+  static final lightTheme = ThemeData(
     fontFamily: 'MyFont',
     brightness: Brightness.light,
     backgroundColor: AppColors.lightBG,
     primaryColor: AppColors.mainColor,
-    accentColor: AppColors.lightAccent,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColors.lightAccent,
     ),
@@ -30,6 +29,8 @@ class AppThemes {
         onPrimary: Colors.black,
       ),
     ),
+    colorScheme:
+        ColorScheme.fromSwatch().copyWith(secondary: AppColors.lightAccent),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -37,7 +38,6 @@ class AppThemes {
     brightness: Brightness.dark,
     backgroundColor: AppColors.darkBG,
     primaryColor: AppColors.darkPrimary,
-    accentColor: AppColors.darkAccent,
     scaffoldBackgroundColor: AppColors.darkBG,
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppColors.darkAccent,
@@ -47,7 +47,6 @@ class AppThemes {
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: AppColors.darkAccent,
     ),
-    buttonColor: AppColors.darkAccent,
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         primary: Colors.white,
@@ -60,5 +59,7 @@ class AppThemes {
         onPrimary: Colors.white,
       ),
     ),
+    colorScheme:
+        ColorScheme.fromSwatch().copyWith(secondary: AppColors.darkAccent),
   );
 }
