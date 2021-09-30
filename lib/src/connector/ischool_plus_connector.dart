@@ -25,7 +25,7 @@ class ReturnWithStatus<T> {
 class ISchoolPlusConnector {
   static const host = "https://istudy.ntut.edu.tw/";
   static const _getCourseName = host + "learn/mooc_sysbar.php";
-  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
+  static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
   static Future<ISchoolPlusConnectorStatus?> login(String account) async {
     try {

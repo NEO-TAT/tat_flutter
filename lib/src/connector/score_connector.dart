@@ -1,17 +1,11 @@
-//
-//  score_connector.dart
 //  北科課程助手
-//
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
 
+import 'package:html/dom.dart';
+import 'package:html/parser.dart';
 import 'package:tat/debug/log/log.dart';
 import 'package:tat/src/connector/ntut_connector.dart';
 import 'package:tat/src/model/course/course_class_json.dart';
 import 'package:tat/src/model/course/course_score_json.dart';
-import 'package:html/dom.dart';
-import 'package:html/parser.dart';
 
 import 'core/connector.dart';
 import 'core/connector_parameter.dart';
@@ -19,13 +13,12 @@ import 'core/connector_parameter.dart';
 enum ScoreConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 
 class ScoreConnector {
-  static final String host = "https://aps-course.ntut.edu.tw/";
-  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String _scoreUrl = host + "StuQuery/StudentQuery.jsp";
-  static final String _scoreRankUrl = host + "StuQuery/QryRank.jsp";
-  static final String _scoreAllScoreUrl = host + "StuQuery/QryScore.jsp";
-  static final String _generalLessonAllScoreUrl =
-      host + "StuQuery/QryLAECourse.jsp";
+  static const host = "https://aps-course.ntut.edu.tw/";
+  static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
+  static const _scoreUrl = host + "StuQuery/StudentQuery.jsp";
+  static const _scoreRankUrl = host + "StuQuery/QryRank.jsp";
+  static const _scoreAllScoreUrl = host + "StuQuery/QryScore.jsp";
+  static const _generalLessonAllScoreUrl = host + "StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
     String result;

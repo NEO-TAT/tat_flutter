@@ -36,7 +36,7 @@ class QueryCourseResult {
 }
 
 class CourseOadConnector {
-  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
+  static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static const host = "https://aps-course.ntut.edu.tw/oads/";
   static const _queryUrl = host + "QueryCourse";
   static const _addCourseUrl = host + "AddCourse";

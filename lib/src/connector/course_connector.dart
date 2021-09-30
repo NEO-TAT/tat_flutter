@@ -27,7 +27,7 @@ class CourseMainInfo {
 }
 
 class CourseConnector {
-  static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
+  static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
   static const cnHost = "https://aps.ntut.edu.tw/course/tw/";
   static const enHost = "https://aps.ntut.edu.tw/course/en/";
   static const _postCourseCNUrl = cnHost + "Select.jsp";
