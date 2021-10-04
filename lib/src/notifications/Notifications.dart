@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tat/debug/log/log.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:open_file/open_file.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tat/debug/log/log.dart';
 
 class Notifications {
   Notifications._privateConstructor();
@@ -181,14 +181,15 @@ class ReceivedNotification {
   int id;
   String _showTitle;
   String body;
-  String payload;
-  final _titleLong = 26;
+  String? payload;
+  const _titleLong = 26;
 
-  ReceivedNotification(
-      {this.id,
-      @required String title,
-      @required this.body,
-      @required this.payload}) {
+  ReceivedNotification({
+    this.id,
+    @required String title,
+    @required this.body,
+    this.payload,
+  }) {
     id = Notifications.instance.notificationId;
     this.title = title;
   }
