@@ -1,4 +1,3 @@
-import 'package:tat/src/model/json_init.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -6,15 +5,11 @@ part 'user_data_json.g.dart';
 
 @JsonSerializable()
 class UserDataJson {
-  String account;
-  String password;
-  UserInfoJson info;
+  final String account;
+  final String password;
+  UserInfoJson? info = UserInfoJson();
 
-  UserDataJson({this.account, this.password, this.info}) {
-    this.account = JsonInit.stringInit(this.account);
-    this.password = JsonInit.stringInit(this.password);
-    this.info = (this.info != null) ? this.info : UserInfoJson();
-  }
+  UserDataJson({this.account = '', this.password = '', this.info});
 
   factory UserDataJson.fromJson(Map<String, dynamic> json) =>
       _$UserDataJsonFromJson(json);
@@ -22,7 +17,7 @@ class UserDataJson {
   Map<String, dynamic> toJson() => _$UserDataJsonToJson(this);
 
   bool get isEmpty {
-    return account.isEmpty && password.isEmpty && info.isEmpty;
+    return account.isEmpty && password.isEmpty && info!.isEmpty;
   }
 
   @override
@@ -43,19 +38,13 @@ class UserInfoJson {
   String passwordExpiredRemind;
   String userDn;
 
-  UserInfoJson(
-      {this.givenName,
-      this.userMail,
-      this.userPhoto,
-      this.passwordExpiredRemind,
-      this.userDn}) {
-    this.givenName = JsonInit.stringInit(this.givenName);
-    this.userMail = JsonInit.stringInit(this.userMail);
-    this.userPhoto = JsonInit.stringInit(this.userPhoto);
-    this.userDn = JsonInit.stringInit(this.userDn);
-    this.passwordExpiredRemind =
-        JsonInit.stringInit(this.passwordExpiredRemind);
-  }
+  UserInfoJson({
+    this.givenName = '',
+    this.userMail = '',
+    this.userPhoto = '',
+    this.passwordExpiredRemind = '',
+    this.userDn = '',
+  });
 
   factory UserInfoJson.fromJson(Map<String, dynamic> json) =>
       _$UserInfoJsonFromJson(json);
