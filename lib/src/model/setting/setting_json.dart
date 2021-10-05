@@ -1,33 +1,32 @@
-import 'package:tat/src/model/course_table/course_table_json.dart';
-import 'package:tat/src/model/json_init.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:tat/src/model/course_table/course_table_json.dart';
 
 part 'setting_json.g.dart';
 
 @JsonSerializable()
 class SettingJson {
-  CourseSettingJson course;
-  OtherSettingJson other;
-  AnnouncementSettingJson announcement;
+  CourseSettingJson? course = CourseSettingJson();
+  OtherSettingJson? other = OtherSettingJson();
+  AnnouncementSettingJson? announcement = AnnouncementSettingJson();
 
-  SettingJson({this.course, this.other, this.announcement}) {
-    course = course ?? CourseSettingJson();
-    other = other ?? OtherSettingJson();
-    announcement = announcement ?? AnnouncementSettingJson();
-  }
+  SettingJson({this.course, this.other, this.announcement});
 
-  bool get isEmpty {
-    return course.isEmpty && other.isEmpty && announcement.isEmpty;
-  }
+  bool get isEmpty =>
+      course!.isEmpty && other!.isEmpty && announcement!.isEmpty;
 
   @override
   String toString() {
     return sprintf(
-        "---------course--------        \n%s \n" +
-            "---------other--------         \n%s \n" +
-            "---------announcement--------  \n%s \n",
-        [course.toString(), other.toString(), announcement.toString()]);
+      "---------course--------        \n%s \n" +
+          "---------other--------         \n%s \n" +
+          "---------announcement--------  \n%s \n",
+      [
+        course.toString(),
+        other.toString(),
+        announcement.toString(),
+      ],
+    );
   }
 
   factory SettingJson.fromJson(Map<String, dynamic> json) =>
@@ -38,15 +37,11 @@ class SettingJson {
 
 @JsonSerializable()
 class CourseSettingJson {
-  CourseTableJson info;
+  CourseTableJson? info = CourseTableJson();
 
-  CourseSettingJson({this.info}) {
-    info = info ?? CourseTableJson();
-  }
+  CourseSettingJson({this.info});
 
-  bool get isEmpty {
-    return info.isEmpty;
-  }
+  bool get isEmpty => info!.isEmpty;
 
   @override
   String toString() {
@@ -62,17 +57,12 @@ class CourseSettingJson {
 
 @JsonSerializable()
 class AnnouncementSettingJson {
-  int page;
-  int maxPage;
+  final int page;
+  final int maxPage;
 
-  AnnouncementSettingJson({this.page, this.maxPage}) {
-    page = page ?? 0;
-    maxPage = maxPage ?? 0;
-  }
+  AnnouncementSettingJson({this.page = 0, this.maxPage = 0});
 
-  bool get isEmpty {
-    return page == 0 && maxPage == 0;
-  }
+  bool get isEmpty => page == 0 && maxPage == 0;
 
   @override
   String toString() {
@@ -88,25 +78,19 @@ class AnnouncementSettingJson {
 
 @JsonSerializable()
 class OtherSettingJson {
-  String lang;
-  bool autoCheckAppUpdate;
-  bool useExternalVideoPlayer;
-  bool checkIPlusNew;
+  final String lang;
+  final bool autoCheckAppUpdate;
+  final bool useExternalVideoPlayer;
+  final bool checkIPlusNew;
 
-  OtherSettingJson(
-      {this.lang,
-      this.autoCheckAppUpdate,
-      this.useExternalVideoPlayer,
-      this.checkIPlusNew}) {
-    lang = JsonInit.stringInit(lang);
-    autoCheckAppUpdate = autoCheckAppUpdate ?? true;
-    useExternalVideoPlayer = useExternalVideoPlayer ?? false;
-    checkIPlusNew = checkIPlusNew ?? true;
-  }
+  OtherSettingJson({
+    this.lang = '',
+    this.autoCheckAppUpdate = true,
+    this.useExternalVideoPlayer = false,
+    this.checkIPlusNew = true,
+  });
 
-  bool get isEmpty {
-    return lang.isEmpty;
-  }
+  bool get isEmpty => lang.isEmpty;
 
   @override
   String toString() {
