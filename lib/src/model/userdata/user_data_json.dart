@@ -5,8 +5,8 @@ part 'user_data_json.g.dart';
 
 @JsonSerializable()
 class UserDataJson {
-  final String account;
-  final String password;
+  late final String account;
+  late final String password;
   UserInfoJson? info = UserInfoJson();
 
   UserDataJson({this.account = '', this.password = '', this.info});

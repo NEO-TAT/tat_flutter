@@ -34,7 +34,7 @@ class Model {
   final Map<String, bool> _firstRun = Map();
   final DefaultCacheManager cacheManager = new DefaultCacheManager();
 
-  bool get autoCheckAppUpdate => _setting.other.autoCheckAppUpdate;
+  bool get autoCheckAppUpdate => _setting.other!.autoCheckAppUpdate;
 
   // timeOut seconds
   bool getFirstUse(String key, {int? timeOut}) {
@@ -90,7 +90,7 @@ class Model {
 
   void setUserInfo(UserInfoJson value) => _userData.info = value;
 
-  UserInfoJson getUserInfo() => _userData.info;
+  UserInfoJson? getUserInfo() => _userData.info;
 
   UserDataJson getUserData() => _userData;
 
@@ -234,7 +234,7 @@ class Model {
 
   void setCourseSetting(CourseSettingJson value) => _setting.course = value;
 
-  CourseSettingJson getCourseSetting() => _setting.course;
+  CourseSettingJson? getCourseSetting() => _setting.course;
 
   // --------------------OtherSettingJson-------------------- //
   Future<void> saveOtherSetting() async => await saveSetting();
@@ -246,7 +246,7 @@ class Model {
 
   void setOtherSetting(OtherSettingJson value) => _setting.other = value;
 
-  OtherSettingJson getOtherSetting() => _setting.other;
+  OtherSettingJson? getOtherSetting() => _setting.other;
 
   // --------------------AnnouncementSettingJson-------------------- //
   Future<void> saveAnnouncementSetting() async => await saveSetting();
@@ -259,7 +259,7 @@ class Model {
   void setAnnouncementSetting(AnnouncementSettingJson value) =>
       _setting.announcement = value;
 
-  AnnouncementSettingJson getAnnouncementSetting() => _setting.announcement;
+  AnnouncementSettingJson? getAnnouncementSetting() => _setting.announcement;
 
   // --------------------List<SemesterJson>-------------------- //
   Future<void> clearSemesterJsonList() async => _courseSemesterList = [];
