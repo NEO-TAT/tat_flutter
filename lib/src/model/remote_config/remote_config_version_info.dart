@@ -7,16 +7,19 @@ part 'remote_config_version_info.g.dart';
 @JsonSerializable()
 class RemoteConfigVersionInfo {
   @JsonKey(name: "is_focus_update")
-  bool isFocusUpdate;
+  late final bool? isFocusUpdate;
 
   @JsonKey(name: "last_version")
-  AndroidIosVersionInfo last;
+  late final AndroidIosVersionInfo? last;
 
   @JsonKey(name: "last_version_detail")
-  String lastVersionDetail;
+  late final String lastVersionDetail;
 
-  RemoteConfigVersionInfo(
-      {this.last, this.lastVersionDetail, this.isFocusUpdate});
+  RemoteConfigVersionInfo({
+    this.last,
+    this.lastVersionDetail = '',
+    this.isFocusUpdate,
+  });
 
   factory RemoteConfigVersionInfo.fromJson(Map<String, dynamic> srcJson) =>
       _$RemoteConfigVersionInfoFromJson(srcJson);
@@ -25,12 +28,12 @@ class RemoteConfigVersionInfo {
 @JsonSerializable()
 class AndroidIosVersionInfo {
   @JsonKey(name: "android")
-  String android;
+  late final String android;
 
   @JsonKey(name: "ios")
-  String ios;
+  late final String ios;
 
-  AndroidIosVersionInfo({this.android, this.ios});
+  AndroidIosVersionInfo({this.android = '', this.ios = ''});
 
   factory AndroidIosVersionInfo.fromJson(Map<String, dynamic> srcJson) =>
       _$AndroidIosVersionInfoFromJson(srcJson);
