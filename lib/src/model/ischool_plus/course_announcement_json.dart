@@ -1,13 +1,6 @@
-import 'package:tat/src/model/json_init.dart';
-//part 'CourseAnnouncementDetailJson.g.dart';
-
-//@JsonSerializable()
 class CourseAnnouncementJson {
-  String title;
-  String detail;
+  final String title;
+  final String detail;
 
-  CourseAnnouncementJson({this.title, this.detail}) {
-    title = JsonInit.stringInit(title);
-    detail = JsonInit.stringInit(detail);
-  }
+  CourseAnnouncementJson({this.title = '', this.detail = ''});
 }

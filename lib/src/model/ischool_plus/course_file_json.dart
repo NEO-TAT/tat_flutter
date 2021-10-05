@@ -1,37 +1,30 @@
-import 'package:tat/src/model/json_init.dart';
 import 'package:intl/intl.dart';
 
 enum CourseFileType { PDF, Word, PowerPoint, Excel, Rar, Link, Unknown }
 
 class CourseFileJson {
   String name;
-  DateTime time;
-  List<FileType> fileType;
+  DateTime? time = DateTime.now();
+  List<FileType>? fileType = [];
 
-  CourseFileJson({this.name, this.fileType, this.time}) {
-    name = JsonInit.stringInit(name);
-    fileType = fileType ?? [];
-    time = time ?? DateTime.now();
-  }
+  CourseFileJson({
+    this.name = '',
+    this.fileType,
+    this.time,
+  });
 
-  String get timeString {
-    var formatter = DateFormat.yMd();
-    String formatted = formatter.format(time);
-    return formatted;
-  }
+  String get timeString => DateFormat.yMd().format(time!);
 }
 
 class FileType {
-  CourseFileType type;
-  String href;
-  dynamic postData; //ISchoolPlus取得真實連結會使用
+  late final CourseFileType type;
+  final String href;
+  dynamic postData;
 
-  FileType({this.type, this.href}) {
-    type = type ?? CourseFileType.Unknown;
-    href = JsonInit.stringInit(href);
-  }
+  FileType({
+    this.type = CourseFileType.Unknown,
+    this.href = '',
+  });
 
-  String get fileUrl {
-    return href;
-  }
+  String get fileUrl => href;
 }

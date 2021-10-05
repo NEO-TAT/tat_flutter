@@ -5,28 +5,35 @@ part 'ischool_plus_announcement_json.g.dart';
 @JsonSerializable()
 class ISchoolPlusAnnouncementInfoJson {
   @JsonKey(name: 'total')
-  int total;
+  late final int total;
 
   @JsonKey(name: 'code')
-  int code;
+  late final int code;
 
   @JsonKey(name: 'total_rows')
-  String totalRows;
+  late final String totalRows;
 
   @JsonKey(name: 'limit_rows')
-  int limitRows;
+  late final int limitRows;
 
   @JsonKey(name: 'current_page')
-  String currentPage;
+  late final String currentPage;
 
   @JsonKey(name: 'editEnable')
-  String editEnable;
+  late final String editEnable;
 
   @JsonKey(name: 'data')
-  String data;
+  late final String data;
 
-  ISchoolPlusAnnouncementInfoJson(this.total, this.code, this.totalRows,
-      this.limitRows, this.currentPage, this.editEnable, this.data);
+  ISchoolPlusAnnouncementInfoJson(
+    this.total,
+    this.code,
+    this.totalRows,
+    this.limitRows,
+    this.currentPage,
+    this.editEnable,
+    this.data,
+  );
 
   factory ISchoolPlusAnnouncementInfoJson.fromJson(
           Map<String, dynamic> srcJson) =>
@@ -35,81 +42,81 @@ class ISchoolPlusAnnouncementInfoJson {
 
 @JsonSerializable()
 class ISchoolPlusAnnouncementJson {
-  String token;
-  String bid;
-  String nid;
+  late final String token;
+  late final String bid;
+  late final String nid;
 
   @JsonKey(name: 'boardid')
-  String boardid;
+  late final String boardid;
 
   @JsonKey(name: 'encbid')
-  String encbid;
+  late final String encbid;
 
   @JsonKey(name: 'node')
-  String node;
+  late final String node;
 
   @JsonKey(name: 'encnid')
-  String encnid;
+  late final String encnid;
 
   @JsonKey(name: 'cid')
-  String cid;
+  late final String cid;
 
   @JsonKey(name: 'enccid')
-  String enccid;
+  late final String enccid;
 
   @JsonKey(name: 'poster')
-  String poster;
+  late final String poster;
 
   @JsonKey(name: 'realname')
-  String realname;
+  late final String realname;
 
   @JsonKey(name: 'cpic')
-  String cpic;
+  late final String cpic;
 
   @JsonKey(name: 'subject')
-  String subject;
+  late final String subject;
 
   @JsonKey(name: 'postdate')
-  String postdate;
+  late final String postdate;
 
   @JsonKey(name: 'postdatelen')
-  String postdatelen;
+  late final String postdatelen;
 
   @JsonKey(name: 'postcontent')
-  String postcontent;
+  late final String postcontent;
 
   @JsonKey(name: 'postcontenttext')
-  String postcontenttext;
+  late final String postcontenttext;
 
   @JsonKey(name: 'hit')
-  String hit;
+  late final String hit;
 
   @JsonKey(name: 'qrcode_url')
-  String qrcodeUrl;
+  late final String qrcodeUrl;
 
   @JsonKey(name: 'floor')
-  int floor;
+  late final int floor;
 
   @JsonKey(name: 'attach')
-  String attach;
+  late final String attach;
 
   @JsonKey(name: 'postfilelink')
-  String postfilelink;
+  late final String postfilelink;
 
   @JsonKey(name: 'attachment')
-  String attachment;
+  late final String attachment;
 
   @JsonKey(name: 'n')
-  String n;
+  late final String n;
 
   @JsonKey(name: 's')
-  String s;
+  late final String s;
 
   @JsonKey(name: 'readflag')
-  int readflag;
+  late final int readflag;
 
   @JsonKey(name: 'postRoles')
-  String postRoles;
+  late final String postRoles;
 
   ISchoolPlusAnnouncementJson(
     this.boardid,
@@ -136,6 +143,9 @@ class ISchoolPlusAnnouncementJson {
     this.s,
     this.readflag,
     this.postRoles,
+    this.bid,
+    this.nid,
+    this.token,
   );
 
   factory ISchoolPlusAnnouncementJson.fromJson(Map<String, dynamic> srcJson) =>
