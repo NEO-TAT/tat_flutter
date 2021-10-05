@@ -5,10 +5,10 @@ part 'ap_tree_json.g.dart';
 @JsonSerializable()
 class APTreeJson {
   @JsonKey(name: 'apList')
-  List<APListJson> apList;
+  late final List<APListJson> apList;
 
   @JsonKey(name: 'parentDn')
-  String parentDn;
+  late final String parentDn;
 
   APTreeJson(this.apList, this.parentDn);
 
@@ -19,20 +19,26 @@ class APTreeJson {
 @JsonSerializable()
 class APListJson {
   @JsonKey(name: 'apDn')
-  String apDn;
+  late final String apDn;
   @JsonKey(name: 'icon')
-  String icon;
+  late final String icon;
   @JsonKey(name: 'urlSource')
-  String urlSource;
+  late final String urlSource;
   @JsonKey(name: 'description')
-  String description;
+  late final String description;
   @JsonKey(name: 'type')
-  String type;
+  late final String type;
   @JsonKey(name: 'urlLink')
-  String urlLink;
+  late final String urlLink;
 
-  APListJson(this.apDn, this.description, this.icon, this.type, this.urlLink,
-      this.urlSource);
+  APListJson(
+    this.apDn,
+    this.description,
+    this.icon,
+    this.type,
+    this.urlLink,
+    this.urlSource,
+  );
 
   factory APListJson.fromJson(Map<String, dynamic> srcJson) =>
       _$APListJsonFromJson(srcJson);
