@@ -118,7 +118,7 @@ class FileDownload {
         header: {"referer": referer}).whenComplete(
       () async {
         // shoe the download finish notification
-        await Notifications.instance.cancelNotification(value.id);
+        await Notifications.instance.cancelNotification(value.id!);
         value.body = R.current.downloadComplete;
         value.id = Notifications.instance.notificationId; // get new id
         final filePath = path + '/' + realFileName.toString();
@@ -137,7 +137,7 @@ class FileDownload {
         // shoe the download finish notification
         Log.d(onError.toString());
         await Future.delayed(Duration(milliseconds: 100));
-        Notifications.instance.cancelNotification(value.id);
+        Notifications.instance.cancelNotification(value.id!);
         value.body = "下載失敗";
         value.id = Notifications.instance.notificationId; // get new id
         final id = value.id;
