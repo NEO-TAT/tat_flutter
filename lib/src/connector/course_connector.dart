@@ -151,7 +151,7 @@ class CourseConnector {
         classmate.studentName = classmateNodes[2].text;
         classmate.studentEnglishName = classmateNodes[3].text;
         classmate.isSelect = !classmateNodes[4].text.contains("撤選");
-        courseExtraInfo.classmate.add(classmate);
+        courseExtraInfo.classmate!.add(classmate);
       }
       return courseExtraInfo;
     } catch (e, stack) {
@@ -321,7 +321,7 @@ class CourseConnector {
         for (int j = 0; j < 7; j++) {
           final day = dayEnum[j];
           final time = strQ2B(nodesOne[j + 6].text);
-          courseMain.time[day] = time;
+          courseMain.time![day] = time;
         }
 
         courseMainInfo.course = courseMain;
@@ -333,7 +333,7 @@ class CourseConnector {
         for (final name in nodesOne[4].innerHtml.split("<br>")) {
           final teacher = TeacherJson();
           teacher.name = name.replaceAll("\n", "");
-          courseMainInfo.teacher.add(teacher);
+          courseMainInfo.teacher!.add(teacher);
         }
 
         // get classroom name.
@@ -342,7 +342,7 @@ class CourseConnector {
             in nodesOne[13].innerHtml.split("<br>").getRange(0, length - 1)) {
           final classroom = ClassroomJson();
           classroom.name = name.replaceAll("\n", "");
-          courseMainInfo.classroom.add(classroom);
+          courseMainInfo.classroom!.add(classroom);
         }
 
         // get available classroom name.
@@ -350,7 +350,7 @@ class CourseConnector {
           final classInfo = ClassJson();
           classInfo.name = node.text;
           classInfo.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.openClass.add(classInfo);
+          courseMainInfo.openClass!.add(classInfo);
         }
 
         courseMainInfoList.add(courseMainInfo);
@@ -450,7 +450,7 @@ class CourseConnector {
         for (int j = 0; j < 7; j++) {
           final day = dayEnum[j];
           final time = strQ2B(nodesOne[j + 8].text);
-          courseMain.time[day] = time;
+          courseMain.time![day] = time;
         }
 
         courseMainInfo.course = courseMain;
@@ -460,7 +460,7 @@ class CourseConnector {
           final teacher = TeacherJson();
           teacher.name = node.text;
           teacher.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.teacher.add(teacher);
+          courseMainInfo.teacher!.add(teacher);
         }
 
         // get classroom name
@@ -468,7 +468,7 @@ class CourseConnector {
           final classroom = ClassroomJson();
           classroom.name = node.text;
           classroom.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.classroom.add(classroom);
+          courseMainInfo.classroom!.add(classroom);
         }
 
         // get the name of the opened classroom
@@ -476,7 +476,7 @@ class CourseConnector {
           final classInfo = ClassJson();
           classInfo.name = node.text;
           classInfo.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.openClass.add(classInfo);
+          courseMainInfo.openClass!.add(classInfo);
         }
 
         courseMainInfoList.add(courseMainInfo);
@@ -575,7 +575,7 @@ class CourseConnector {
         for (int j = 0; j < 7; j++) {
           final day = dayEnum[j];
           final time = strQ2B(nodesOne[j + 8].text);
-          courseMain.time[day] = time;
+          courseMain.time![day] = time;
         }
 
         courseMainInfo.course = courseMain;
@@ -584,14 +584,14 @@ class CourseConnector {
         final teacher = TeacherJson();
         teacher.name = "";
         teacher.href = "";
-        courseMainInfo.teacher.add(teacher);
+        courseMainInfo.teacher!.add(teacher);
 
         // get classroom name.
         for (final node in nodesOne[15].getElementsByTagName("a")) {
           final classroom = ClassroomJson();
           classroom.name = node.text;
           classroom.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.classroom.add(classroom);
+          courseMainInfo.classroom!.add(classroom);
         }
 
         // get the name of the opened classroom.
@@ -599,7 +599,7 @@ class CourseConnector {
           final classInfo = ClassJson();
           classInfo.name = node.text;
           classInfo.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.openClass.add(classInfo);
+          courseMainInfo.openClass!.add(classInfo);
         }
 
         courseMainInfoList.add(courseMainInfo);
@@ -788,27 +788,27 @@ class CourseConnector {
 
             switch (j - 1) {
               case 0:
-                graduationInformation.courseTypeMinCredit["○"] =
+                graduationInformation.courseTypeMinCredit!["○"] =
                     int.parse(creditString);
                 break;
               case 1:
-                graduationInformation.courseTypeMinCredit["△"] =
+                graduationInformation.courseTypeMinCredit!["△"] =
                     int.parse(creditString);
                 break;
               case 2:
-                graduationInformation.courseTypeMinCredit["☆"] =
+                graduationInformation.courseTypeMinCredit!["☆"] =
                     int.parse(creditString);
                 break;
               case 3:
-                graduationInformation.courseTypeMinCredit["●"] =
+                graduationInformation.courseTypeMinCredit!["●"] =
                     int.parse(creditString);
                 break;
               case 4:
-                graduationInformation.courseTypeMinCredit["▲"] =
+                graduationInformation.courseTypeMinCredit!["▲"] =
                     int.parse(creditString);
                 break;
               case 5:
-                graduationInformation.courseTypeMinCredit["★"] =
+                graduationInformation.courseTypeMinCredit!["★"] =
                     int.parse(creditString);
                 break;
               case 6:
@@ -845,7 +845,7 @@ class CourseConnector {
             .getElementsByTagName("td")[3]
             .text
             .replaceAll(RegExp('[\n| ]'), "");
-        graduationInformation.courseCodeList.add(courseCode);
+        graduationInformation.courseCodeList!.add(courseCode);
       }
 
       if (!pass) {
@@ -981,7 +981,7 @@ class CourseConnector {
         for (int j = 0; j < 7; j++) {
           final day = dayEnum[j];
           final time = strQ2B(nodesOne[j + 8].text);
-          courseMain.time[day] = time;
+          courseMain.time![day] = time;
         }
 
         courseMainInfo.course = courseMain;
@@ -991,7 +991,7 @@ class CourseConnector {
           final teacher = TeacherJson();
           teacher.name = node.text;
           teacher.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.teacher.add(teacher);
+          courseMainInfo.teacher!.add(teacher);
         }
 
         // get classroom name.
@@ -999,7 +999,7 @@ class CourseConnector {
           final classroom = ClassroomJson();
           classroom.name = node.text;
           classroom.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.classroom.add(classroom);
+          courseMainInfo.classroom!.add(classroom);
         }
 
         // get the name of the opened classroom.
@@ -1007,7 +1007,7 @@ class CourseConnector {
           final classInfo = ClassJson();
           classInfo.name = node.text;
           classInfo.href = cnHost + node.attributes["href"]!;
-          courseMainInfo.openClass.add(classInfo);
+          courseMainInfo.openClass!.add(classInfo);
         }
 
         courseMainInfoList.add(courseMainInfo);

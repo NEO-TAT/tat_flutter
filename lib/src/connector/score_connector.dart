@@ -155,7 +155,7 @@ class ScoreConnector {
               .text
               .replaceAll(RegExp(r"[\s| ]"), "");
 
-          courseScore.courseScoreList.add(score);
+          courseScore.courseScoreList!.add(score);
         }
 
         try {

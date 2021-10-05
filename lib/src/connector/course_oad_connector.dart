@@ -160,14 +160,14 @@ class CourseOadConnector {
 
         for (int j = 0; j < 7; j++) {
           final day = dayEnum[j];
-          courseMain.time[day] = "";
+          courseMain.time![day] = "";
         }
 
         for (final t in timeList) {
           final dayInt = int.parse(t.split("_").first);
           final day = dayEnum[dayInt - 1];
           final time = t.split("_").last;
-          courseMain.time[day] = courseMain.time[day]! + (" " + time);
+          courseMain.time![day] = courseMain.time![day]! + (" " + time);
 
           for (final e in classNodes) {
             nodes = e.getElementsByTagName("td");
@@ -177,7 +177,7 @@ class CourseOadConnector {
                   nodes[dayInt + 1].innerHtml.split("<br>").last;
               bool add = false;
 
-              for (ClassroomJson c in courseMainInfo.classroom) {
+              for (ClassroomJson c in courseMainInfo.classroom!) {
                 if (c.name == classroomName) {
                   add = true;
                   break;
@@ -187,7 +187,7 @@ class CourseOadConnector {
               if (!add) {
                 final classroom = ClassroomJson();
                 classroom.name = classroomName.replaceAll("\n", "");
-                courseMainInfo.classroom.add(classroom);
+                courseMainInfo.classroom!.add(classroom);
               }
 
               break;
@@ -202,13 +202,13 @@ class CourseOadConnector {
           final teacher = TeacherJson();
           teacher.name = node.text;
           teacher.href = node.attributes["href"]!;
-          courseMainInfo.teacher.add(teacher);
+          courseMainInfo.teacher!.add(teacher);
         }
 
         // get the name of the opened classroom
         final classInfo = ClassJson();
         classInfo.name = nodesOne[10].text;
-        courseMainInfo.openClass.add(classInfo);
+        courseMainInfo.openClass!.add(classInfo);
         courseMainInfoList.add(courseMainInfo);
       }
 
@@ -252,20 +252,20 @@ class CourseOadConnector {
 
       for (int j = 0; j < 7; j++) {
         final day = dayEnum[j];
-        courseMain.time[day] = "";
+        courseMain.time![day] = "";
       }
 
       for (final t in timeList) {
         final dayInt = int.parse(t.split("(").first.split("_").first);
         final num = t.split("(").first.split("_").last;
         final day = dayEnum[dayInt - 1];
-        courseMain.time[day] = courseMain.time[day]! + (" " + num);
+        courseMain.time![day] = courseMain.time![day]! + (" " + num);
       }
 
       // get classroom name
       final classroom = ClassroomJson();
       classroom.name = timeList.first.split("(").last.split(")").first;
-      courseMainInfo.classroom.add(classroom);
+      courseMainInfo.classroom!.add(classroom);
 
       // get teacher name
       for (final node in nodes[9].getElementsByTagName("a")) {
@@ -273,7 +273,7 @@ class CourseOadConnector {
         teacher.name = node.text;
         teacher.href = node.attributes["href"]!;
         courseMain.scheduleHref = teacher.href;
-        courseMainInfo.teacher.add(teacher);
+        courseMainInfo.teacher!.add(teacher);
       }
 
       courseMain.isSelect = false;
@@ -282,7 +282,7 @@ class CourseOadConnector {
       // get the name of the opened classroom
       final classInfo = ClassJson();
       classInfo.name = nodes[8].text.replaceAll("\n", " ");
-      courseMainInfo.openClass.add(classInfo);
+      courseMainInfo.openClass!.add(classInfo);
 
       status.up = int.parse(nodes[12].text.replaceAll("\n", ""));
       status.down = int.parse(nodes[13].text.replaceAll("\n", ""));
