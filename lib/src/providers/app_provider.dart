@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tat/src/config/app_colors.dart';
 import 'package:tat/src/config/app_themes.dart';
 import 'package:tat/ui/other/my_toast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
   AppProvider() {
@@ -12,24 +12,28 @@ class AppProvider extends ChangeNotifier {
   }
 
   ThemeData theme = AppThemes.darkTheme;
-  Key key = UniqueKey();
+  UniqueKey key = UniqueKey();
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  void setKey(value) {
+  void setKey(UniqueKey value) {
     key = value;
     notifyListeners();
   }
 
-  void setNavigatorKey(value) {
+  void setNavigatorKey(GlobalKey<NavigatorState> value) {
     navigatorKey = value;
     notifyListeners();
   }
 
-  void setTheme(value, c) {
+  void setTheme(ThemeData value, String c) {
     theme = value;
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("theme", c).then((val) {
-        SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+        SystemChrome.setEnabledSystemUIMode(
+          SystemUiMode.manual,
+          overlays: SystemUiOverlay.values,
+        );
+
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
           statusBarColor:
               c == "dark" ? AppColors.darkPrimary : AppColors.mainColor,
@@ -41,14 +45,12 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ThemeData getTheme(value) {
-    return theme;
-  }
+  ThemeData getTheme() => theme;
 
   Future<ThemeData> checkTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
     ThemeData t;
-    String r =
+    final String? r =
         prefs.getString("theme") == null ? "dark" : prefs.getString("theme");
 
     if (r == "light") {
