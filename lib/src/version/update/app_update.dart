@@ -2,26 +2,26 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:package_info/package_info.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_link.dart';
 import 'package:tat/src/model/remote_config/remote_config_version_info.dart';
 import 'package:tat/src/util/remote_config_utils.dart';
 import 'package:tat/ui/other/my_toast.dart';
-import 'package:get/get.dart';
-import 'package:package_info/package_info.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 class AppUpdate {
   static Future<bool> checkUpdate() async {
     try {
-      RemoteConfigVersionInfo config =
-          await RemoteConfigUtils.getVersionConfig();
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      Version currentVersion = Version.parse(packageInfo.version);
-      Version latestVersion = Version.parse(config.last.version);
-      bool needUpdate = latestVersion > currentVersion;
+      final config = await RemoteConfigUtils.getVersionConfig();
+      final packageInfo = await PackageInfo.fromPlatform();
+      final currentVersion = Version.parse(packageInfo.version);
+      final latestVersion = Version.parse(config.last!.version);
+      final needUpdate = latestVersion > currentVersion;
+
       if (needUpdate) {
         _showUpdateDialog(config);
         return true;
@@ -33,13 +33,13 @@ class AppUpdate {
   }
 
   static Future<String> getAppVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
   }
 
   static void _showUpdateDialog(RemoteConfigVersionInfo value) async {
-    String title =
-        sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
+    final title =
+        sprintf("%s %s", [R.current.findNewVersion, value.last!.version]);
 
     Get.dialog<bool>(
       AlertDialog(
@@ -47,7 +47,7 @@ class AppUpdate {
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              if (value.isFocusUpdate) ...[
+              if (value.isFocusUpdate!) ...[
                 Text(R.current.isFocusUpdate),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
@@ -73,10 +73,9 @@ class AppUpdate {
           ),
         ],
       ),
-      useRootNavigator: false,
       barrierDismissible: false, // user must tap button!
     );
-    if (value.isFocusUpdate) {
+    if (value.isFocusUpdate!) {
       MyToast.show(R.current.appWillClose);
       await Future.delayed(Duration(seconds: 1));
       SystemNavigator.pop();
@@ -85,7 +84,7 @@ class AppUpdate {
   }
 
   static void _openAppStore() async {
-    String url = AppLink.storeLink;
+    final url = AppLink.storeLink;
     if (await canLaunch(url)) {
       await launch(url);
     }
