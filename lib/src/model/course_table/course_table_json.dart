@@ -37,8 +37,8 @@ enum SectionNumber {
 @JsonSerializable()
 class CourseTableJson {
   SemesterJson? courseSemester = SemesterJson(); //課程學期資料
-  final String studentId;
-  final String studentName;
+  late final String studentId;
+  late final String studentName;
   late final Map<Day, Map<SectionNumber, CourseInfoJson>>? courseInfoMap;
 
   CourseTableJson({

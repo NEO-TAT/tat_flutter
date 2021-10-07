@@ -5,17 +5,18 @@ import '../task.dart';
 import 'course_system_task.dart';
 
 class CourseDivisionTask extends CourseSystemTask<List<Map>> {
-  final year;
+  final String year;
 
   CourseDivisionTask(this.year) : super("CourseDivisionTask");
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.searchingDivision);
-      List<Map> value = await CourseConnector.getDivisionList(year);
+      final value = await CourseConnector.getDivisionList(year);
       super.onEnd();
+
       if (value != null) {
         result = value;
         return TaskStatus.Success;

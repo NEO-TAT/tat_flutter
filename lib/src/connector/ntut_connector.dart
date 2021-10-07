@@ -134,7 +134,7 @@ class NTUTConnector {
 
   static Map getUserImage() {
     final imageInfo = Map();
-    final userPhoto = Model.instance.getUserInfo().userPhoto;
+    final userPhoto = Model.instance.getUserInfo()!.userPhoto;
 
     Log.d("getUserImage");
 

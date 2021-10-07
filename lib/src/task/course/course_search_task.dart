@@ -9,24 +9,27 @@ import '../dialog_task.dart';
 import '../task.dart';
 
 class CourseSearchTask extends DialogTask<List<CourseMainInfoJson>> {
-  String searchName;
-  SemesterJson semester;
+  final String searchName;
+  final SemesterJson semester;
 
   CourseSearchTask(this.semester, this.searchName) : super("CourseSearchTask");
 
   @override
   Future<TaskStatus> execute() async {
     super.onStart(R.current.search + "...");
-    result = await CourseConnector.searchCourse(semester, searchName, true);
+    List<CourseMainInfoJson>? result =
+        await CourseConnector.searchCourse(semester, searchName, true);
+
     if (result == null || result.length == 0) {
       result = await CourseConnector.searchCourse(semester, searchName, false);
     }
+
     if ((result == null || result.length == 0) && searchName.length == 6) {
       try {
         await CourseOadConnector.login();
-        QueryCourseResult r = await CourseOadConnector.queryCourse(searchName);
+        final r = await CourseOadConnector.queryCourse(searchName);
         if (r != null && !r.error) {
-          result = [r.info];
+          result = [r.info!];
         } else {
           result = null;
         }
@@ -34,7 +37,9 @@ class CourseSearchTask extends DialogTask<List<CourseMainInfoJson>> {
         result = null;
       }
     }
+
     super.onEnd();
+
     if (result == null) {
       MyToast.show(R.current.unknownError);
       return TaskStatus.GiveUp;
@@ -42,6 +47,7 @@ class CourseSearchTask extends DialogTask<List<CourseMainInfoJson>> {
       MyToast.show(R.current.notFindAnything);
       return TaskStatus.GiveUp;
     }
+
     return TaskStatus.Success;
   }
 }
