@@ -11,14 +11,16 @@ class ScoreSystemTask<T> extends NTUTTask<T> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (isLogin) return TaskStatus.Success;
     name = "ScoreSystemTask " + name;
+
     if (status == TaskStatus.Success) {
       isLogin = true;
       super.onStart(R.current.loginScore);
-      ScoreConnectorStatus value = await ScoreConnector.login();
+      final value = await ScoreConnector.login();
       super.onEnd();
+      
       if (value != ScoreConnectorStatus.LoginSuccess) {
         return await onError(R.current.loginScoreError);
       }

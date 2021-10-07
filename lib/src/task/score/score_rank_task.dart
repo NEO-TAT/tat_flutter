@@ -10,12 +10,13 @@ class ScoreRankTask extends ScoreSystemTask<List<SemesterCourseScoreJson>> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
+
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getScoreRank);
-      List<SemesterCourseScoreJson> value =
-          await ScoreConnector.getScoreRankList();
+      final value = await ScoreConnector.getScoreRankList();
       super.onEnd();
+
       if (value != null) {
         result = value;
         return TaskStatus.Success;
