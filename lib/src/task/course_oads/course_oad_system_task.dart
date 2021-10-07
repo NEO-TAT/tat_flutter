@@ -11,16 +11,19 @@ class CourseOadSystemTask<T> extends NTUTTask<T> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (isLogin) return TaskStatus.Success;
+
     name = "CourseOadSystemTask " + name;
+
     if (status == TaskStatus.Success) {
       isLogin = true;
       super.onStart(R.current.loginCourseOad);
-      bool value = await CourseOadConnector.login();
-      if (!value) {
+
+      if (!await CourseOadConnector.login()) {
         return await onError(R.current.loginCourseOadError);
       }
+
       super.onEnd();
     }
     return status;
