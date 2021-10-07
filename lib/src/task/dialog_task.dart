@@ -7,7 +7,7 @@ import 'task.dart';
 
 class DialogTask<T> extends Task<T> {
   DialogTask(String name) : super(name);
-  bool openLoadingDialog = true;
+  final bool openLoadingDialog = true;
 
   @override
   Future<TaskStatus> execute() async {
@@ -27,21 +27,22 @@ class DialogTask<T> extends Task<T> {
   }
 
   Future<TaskStatus> onError(String message) async {
-    ErrorDialogParameter parameter = ErrorDialogParameter(
+    final parameter = ErrorDialogParameter(
       desc: message,
     );
     return await onErrorParameter(parameter);
   }
 
   Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) async {
-    //可自定義處理Error
     try {
-      var connectivityResult = await (new Connectivity().checkConnectivity());
+      final connectivityResult = await (new Connectivity().checkConnectivity());
+
       if (connectivityResult == ConnectivityResult.none) {
         parameter = ErrorDialogParameter(
           desc: R.current.networkError,
         );
       }
+
       return (await ErrorDialog(parameter).show())
           ? TaskStatus.Restart
           : TaskStatus.GiveUp;

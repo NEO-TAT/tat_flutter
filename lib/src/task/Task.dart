@@ -1,14 +1,10 @@
 enum TaskStatus { Success, GiveUp, Restart }
 
 abstract class Task<T> {
-  T result; //執行結果
-  Map<String, dynamic> _arg;
-  String name;
+  late final T result;
+  final String name;
 
-  Task(this.name, {Map<String, dynamic> arg}) {
-    _arg = arg;
-  }
+  Task(this.name, {Map<String, dynamic>? arg});
 
-  Future<TaskStatus> execute(); //true 繼續 false 結束
-
+  Future<TaskStatus> execute();
 }

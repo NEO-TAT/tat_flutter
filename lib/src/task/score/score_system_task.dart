@@ -20,7 +20,7 @@ class ScoreSystemTask<T> extends NTUTTask<T> {
       super.onStart(R.current.loginScore);
       final value = await ScoreConnector.login();
       super.onEnd();
-      
+
       if (value != ScoreConnectorStatus.LoginSuccess) {
         return await onError(R.current.loginScoreError);
       }
