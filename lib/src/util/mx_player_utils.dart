@@ -6,22 +6,23 @@ import 'package:tat/ui/other/my_toast.dart';
 import 'package:url_launcher/url_launcher.dart' as URI;
 
 class MXPlayerUtils {
-  static String mxPlayerFreePackageName = "com.mxtech.videoplayer.ad";
-  static String mxPlayerProPackageName = "com.mxtech.videoplayer.pro";
+  static const String mxPlayerFreePackageName = "com.mxtech.videoplayer.ad";
+  static const String mxPlayerProPackageName = "com.mxtech.videoplayer.pro";
 
-  static Future<bool> _androidLaunch(String url, [String name]) async {
-    AndroidIntent intent;
-    intent = AndroidIntent(
+  static Future<bool> _androidLaunch(String url, [String? name]) async {
+    final intent = AndroidIntent(
       action: 'action_view',
       data: url,
       type: "application/mpegurl",
       arguments: {"title": name ?? "video"},
     );
+
     try {
       await intent.launch();
     } catch (e) {
       return false;
     }
+
     return true;
   }
 
@@ -36,16 +37,19 @@ class MXPlayerUtils {
     return true;
   }
 
-  static Future<bool> launch({String url, String name}) async {
+  static Future<bool> launch({String url = '', String name = ''}) async {
     bool open = true;
+
     if (Platform.isAndroid) {
       open = await _androidLaunch(url, name);
     } else {
       open = await _iosLaunch(url);
     }
+
     if (!open) {
       MyToast.show(R.current.noSupportExternalVideoPlayer);
     }
+
     return open;
   }
 }

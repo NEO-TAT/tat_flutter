@@ -28,24 +28,24 @@ class HtmlUtils {
   ∇		倒三角型符號	&nabla;		↵	ENTER符號			&crarr;		Ω	Omega符號、歐姆符號		&Omega;
    */
   static String clean(String html) {
-    String result;
-    var unescape = new HtmlUnescape();
-    result = unescape.convert(html);
-    return result;
+    return HtmlUnescape().convert(html);
   }
 
   static String addLink(String html) {
-    RegExp exp = RegExp(
+    final exp = RegExp(
         r'\"?(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\"?');
-    List<RegExpMatch> matchList = exp.allMatches(html).toList();
-    for (RegExpMatch match in matchList) {
-      String url = match.group(0);
+    final matchList = exp.allMatches(html).toList();
+
+    for (final match in matchList) {
+      final url = match.group(0);
       print(url);
-      if (!url.contains("\"")) {
+
+      if (!url!.contains("\"")) {
         html = html.replaceAll(
             url, r'<a href="' + url + '" target="_blank">' + url + '</a>');
       }
     }
+
     return html;
   }
 }

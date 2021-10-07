@@ -78,7 +78,7 @@ class AnnouncementSettingJson {
 
 @JsonSerializable()
 class OtherSettingJson {
-  final String lang;
+  late final String lang;
   final bool autoCheckAppUpdate;
   final bool useExternalVideoPlayer;
   final bool checkIPlusNew;

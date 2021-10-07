@@ -13,17 +13,20 @@ class DocumentUtils {
   static const platform =
       const MethodChannel(AppConfig.method_channel_save_name);
 
-  static Future<String> _getPath() => platform.invokeMethod<String>("get_path");
+  static Future<String?>? _getPath() =>
+      platform.invokeMethod<String>("get_path");
 
-  static Future<bool> _choiceFolder() => platform.invokeMethod("choice_folder");
+  static Future<bool?>? _choiceFolder() =>
+      platform.invokeMethod("choice_folder");
 
-  static Future<dynamic> choiceFolder({int saveMode}) async {
+  static Future<dynamic> choiceFolder() async {
     if (Platform.isAndroid) {
-      String directory;
+      final String? directory;
+
       if (await _isSupportSAF()) {
         MyToast.show("SAF");
-        bool result = await _choiceFolder();
-        if (result) {
+        final result = await _choiceFolder();
+        if (result != null && result) {
           directory = await _getPath();
         } else {
           return null;
@@ -31,7 +34,9 @@ class DocumentUtils {
       } else {
         directory = await FilePicker.platform.getDirectoryPath();
       }
+
       Log.d(directory);
+
       if (directory == "/" || directory == null) {
         MyToast.show(R.current.selectDirectoryFail);
         return null;
@@ -47,6 +52,7 @@ class DocumentUtils {
         }
       }
     }
+
     return null;
   }
 
