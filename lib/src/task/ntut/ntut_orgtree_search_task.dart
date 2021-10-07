@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/connector/ntut_connector.dart';
-import 'package:get/get.dart';
 
 import '../task.dart';
 import 'ntut_task.dart';
@@ -13,14 +13,15 @@ class NTUTOrgtreeSearchTask extends NTUTTask<OrgtreeSearchResult> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
+
     if (status == TaskStatus.Success) {
       super.onStart(R.current.search);
-      List<OrgtreeSearchResult> value =
-          await NTUTConnector.orgtreeSearch(keyword);
+      final value = await NTUTConnector.orgtreeSearch(keyword);
       super.onEnd();
+
       if (value != null && value.length != 0) {
-        result = await Get.dialog(
+        final result = await Get.dialog(
           AlertDialog(
             title: Text("請選澤"),
             content: SingleChildScrollView(
@@ -30,7 +31,7 @@ class NTUTOrgtreeSearchTask extends NTUTTask<OrgtreeSearchResult> {
                       (e) => InkWell(
                         child: Container(
                           padding: EdgeInsets.only(top: 5, bottom: 5),
-                          child: Text(e.msg),
+                          child: Text(e.msg ?? ''),
                         ),
                         onTap: () {
                           Get.back(result: e);
@@ -42,6 +43,7 @@ class NTUTOrgtreeSearchTask extends NTUTTask<OrgtreeSearchResult> {
             ),
           ),
         );
+
         if (result != null) {
           return TaskStatus.Success;
         } else {

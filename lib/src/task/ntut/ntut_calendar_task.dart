@@ -6,19 +6,18 @@ import '../task.dart';
 import 'ntut_task.dart';
 
 class NTUTCalendarTask extends NTUTTask<List<NTUTCalendarJson>> {
-  final DateTime startTime;
-  final DateTime endTime;
+  final DateTime startTime, endTime;
 
   NTUTCalendarTask(this.startTime, this.endTime) : super("NTUTCalendarTask");
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.Success) {
-      List<NTUTCalendarJson> value;
       super.onStart(R.current.getCalendar);
-      value = await NTUTConnector.getCalendar(startTime, endTime);
+      final value = await NTUTConnector.getCalendar(startTime, endTime);
       super.onEnd();
+
       if (value != null) {
         result = value;
         return TaskStatus.Success;

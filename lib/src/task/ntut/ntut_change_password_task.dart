@@ -12,12 +12,14 @@ class NTUTChangePasswordTask extends NTUTTask {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
+
     if (status == TaskStatus.Success) {
       super.onStart(R.current.changingPassword);
-      String value = await NTUTConnector.changePassword(password);
+      final value = await NTUTConnector.changePassword(password);
       super.onEnd();
-      if (value.isEmpty) {
+
+      if (value != null && value.isEmpty) {
         Model.instance.setPassword(password);
         await Model.instance.saveUserData();
         return TaskStatus.Success;

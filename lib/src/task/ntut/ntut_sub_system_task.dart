@@ -12,9 +12,10 @@ class NTUTSubSystemTask extends NTUTTask<APTreeJson> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.Success) {
-      APTreeJson value = await NTUTConnector.getTree(arg);
+      final value = await NTUTConnector.getTree(arg);
+
       if (value != null) {
         result = value;
         return TaskStatus.Success;
