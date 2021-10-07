@@ -13,11 +13,13 @@ class IPlusCourseAnnouncementDetailTask extends IPlusSystemTask<Map> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getISchoolPlusCourseAnnouncementDetail);
-      Map value = await ISchoolPlusConnector.getCourseAnnouncementDetail(data);
+      final value =
+          await ISchoolPlusConnector.getCourseAnnouncementDetail(data);
       super.onEnd();
+
       if (value != null) {
         result = value;
         return TaskStatus.Success;

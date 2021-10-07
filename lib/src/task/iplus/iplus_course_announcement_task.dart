@@ -1,9 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:get/get.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/connector/ischool_plus_connector.dart';
 import 'package:tat/src/model/ischool_plus/ischool_plus_announcement_json.dart';
 import 'package:tat/ui/other/error_dialog.dart';
-import 'package:get/get.dart';
 
 import '../task.dart';
 import 'iplus_system_task.dart';
@@ -16,21 +16,23 @@ class IPlusCourseAnnouncementTask
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getISchoolPlusCourseAnnouncement);
-      ReturnWithStatus<List<ISchoolPlusAnnouncementJson>> value =
-          await ISchoolPlusConnector.getCourseAnnouncement(id);
+      final value = await ISchoolPlusConnector.getCourseAnnouncement(id);
       super.onEnd();
-      switch (value.status) {
+
+      switch (value.status!) {
         case IPlusReturnStatus.Success:
-          result = value.result;
+          result = value.result!;
           return TaskStatus.Success;
+
         case IPlusReturnStatus.Fail:
           return await super
               .onError(R.current.getISchoolPlusCourseAnnouncementError);
+
         case IPlusReturnStatus.NoPermission:
-          ErrorDialogParameter parameter = ErrorDialogParameter(
+          final parameter = ErrorDialogParameter(
             title: R.current.warning,
             dialogType: DialogType.INFO,
             desc: R.current.iPlusNoThisClass,
@@ -41,7 +43,6 @@ class IPlusCourseAnnouncementTask
             offCancelBtn: true,
           );
           return await super.onErrorParameter(parameter);
-          break;
       }
     }
     return status;

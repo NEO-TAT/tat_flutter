@@ -1,9 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:get/get.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/connector/ischool_plus_connector.dart';
 import 'package:tat/src/model/ischool_plus/course_file_json.dart';
 import 'package:tat/ui/other/error_dialog.dart';
-import 'package:get/get.dart';
 
 import '../task.dart';
 import 'iplus_system_task.dart';
@@ -15,20 +15,22 @@ class IPlusCourseFileTask extends IPlusSystemTask<List<CourseFileJson>> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getISchoolPlusCourseFile);
-      ReturnWithStatus<List<CourseFileJson>> value =
-          await ISchoolPlusConnector.getCourseFile(id);
+      final value = await ISchoolPlusConnector.getCourseFile(id);
       super.onEnd();
-      switch (value.status) {
+
+      switch (value.status!) {
         case IPlusReturnStatus.Success:
-          result = value.result;
+          result = value.result!;
           return TaskStatus.Success;
+
         case IPlusReturnStatus.Fail:
           return await super.onError(R.current.getISchoolPlusCourseFileError);
+
         case IPlusReturnStatus.NoPermission:
-          ErrorDialogParameter parameter = ErrorDialogParameter(
+          final parameter = ErrorDialogParameter(
             title: R.current.warning,
             dialogType: DialogType.INFO,
             desc: R.current.iPlusNoThisClass,
@@ -39,7 +41,6 @@ class IPlusCourseFileTask extends IPlusSystemTask<List<CourseFileJson>> {
             offCancelBtn: true,
           );
           return await super.onErrorParameter(parameter);
-          break;
       }
     }
     return status;

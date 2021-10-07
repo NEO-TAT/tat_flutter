@@ -8,9 +8,11 @@ class IPlusSubscribeNoticeTask extends IPlusSystemTask<List<String>> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
+
     if (status == TaskStatus.Success) {
-      List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
+      final value = await ISchoolPlusConnector.getSubscribeNotice();
+
       if (value != null) {
         result = value;
         return TaskStatus.Success;
@@ -18,6 +20,7 @@ class IPlusSubscribeNoticeTask extends IPlusSystemTask<List<String>> {
         return TaskStatus.GiveUp;
       }
     }
+
     return status;
   }
 }
