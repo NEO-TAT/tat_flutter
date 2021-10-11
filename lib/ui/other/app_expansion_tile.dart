@@ -5,9 +5,9 @@ const Duration _kExpand = const Duration(milliseconds: 200);
 
 class AppExpansionTile extends StatefulWidget {
   const AppExpansionTile({
-    Key key,
+    Key? key,
     this.leading,
-    @required this.title,
+    required this.title,
     this.backgroundColor,
     this.onExpansionChanged,
     this.children: const <Widget>[],
@@ -16,54 +16,50 @@ class AppExpansionTile extends StatefulWidget {
   })  : assert(initiallyExpanded != null),
         super(key: key);
 
-  final Widget leading;
+  final Widget? leading;
   final Widget title;
-  final ValueChanged<bool> onExpansionChanged;
+  final ValueChanged<bool>? onExpansionChanged;
   final List<Widget> children;
-  final Color backgroundColor;
-  final Widget trailing;
-  final bool initiallyExpanded;
+  final Color? backgroundColor;
+  final Widget? trailing;
+  final bool? initiallyExpanded;
 
   @override
-  AppExpansionTileState createState() => new AppExpansionTileState();
+  AppExpansionTileState createState() => AppExpansionTileState();
 }
 
 class AppExpansionTileState extends State<AppExpansionTile>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  CurvedAnimation _easeOutAnimation;
-  CurvedAnimation _easeInAnimation;
-  ColorTween _borderColor;
-  ColorTween _headerColor;
-  ColorTween _iconColor;
-  ColorTween _backgroundColor;
-  Animation<double> _iconTurns;
+  late final AnimationController? _controller;
+  late final CurvedAnimation? _easeOutAnimation, _easeInAnimation;
+  late final ColorTween _borderColor,
+      _headerColor,
+      _iconColor,
+      _backgroundColor;
 
   bool _isExpanded = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = new AnimationController(duration: _kExpand, vsync: this);
+    _controller = AnimationController(duration: _kExpand, vsync: this);
     _easeOutAnimation =
-        new CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+        CurvedAnimation(parent: _controller!, curve: Curves.easeOut);
     _easeInAnimation =
-        new CurvedAnimation(parent: _controller, curve: Curves.easeIn);
-    _borderColor = new ColorTween();
-    _headerColor = new ColorTween();
-    _iconColor = new ColorTween();
-    _iconTurns =
-        new Tween<double>(begin: 0.0, end: 0.5).animate(_easeInAnimation);
-    _backgroundColor = new ColorTween();
+        CurvedAnimation(parent: _controller!, curve: Curves.easeIn);
+    _borderColor = ColorTween();
+    _headerColor = ColorTween();
+    _iconColor = ColorTween();
+    _backgroundColor = ColorTween();
 
     _isExpanded =
         PageStorage.of(context)?.readState(context) ?? widget.initiallyExpanded;
-    if (_isExpanded) _controller.value = 1.0;
+    if (_isExpanded) _controller!.value = 1.0;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -83,63 +79,54 @@ class AppExpansionTileState extends State<AppExpansionTile>
     if (_isExpanded != isExpanded) {
       setState(() {
         _isExpanded = isExpanded;
-        if (_isExpanded)
-          _controller.forward();
-        else
-          _controller.reverse().then<void>((_) {
-            setState(() {
-              // Rebuild without widget.children.
-            });
+        if (_isExpanded) {
+          _controller!.forward();
+        } else {
+          _controller!.reverse().then<void>((_) {
+            setState(() {});
           });
+        }
         PageStorage.of(context)?.writeState(context, _isExpanded);
       });
       if (widget.onExpansionChanged != null) {
-        widget.onExpansionChanged(_isExpanded);
+        widget.onExpansionChanged!(_isExpanded);
       }
     }
   }
 
-  Widget _buildChildren(BuildContext context, Widget child) {
+  Widget _buildChildren(BuildContext context, Widget? child) {
     final Color borderSideColor =
-        _borderColor.evaluate(_easeOutAnimation) ?? Colors.transparent;
-    final Color titleColor = _headerColor.evaluate(_easeInAnimation);
+        _borderColor.evaluate(_easeOutAnimation!) ?? Colors.transparent;
+    final Color? titleColor = _headerColor.evaluate(_easeInAnimation!);
 
-    return new Container(
-      decoration: new BoxDecoration(
-          color: _backgroundColor.evaluate(_easeOutAnimation) ??
-              Colors.transparent,
-          border: new Border(
-            top: new BorderSide(color: borderSideColor),
-            bottom: new BorderSide(color: borderSideColor),
-          )),
-      child: new Column(
+    return Container(
+      decoration: BoxDecoration(
+        color:
+            _backgroundColor.evaluate(_easeOutAnimation!) ?? Colors.transparent,
+        border: Border(
+          top: BorderSide(color: borderSideColor),
+          bottom: BorderSide(color: borderSideColor),
+        ),
+      ),
+      child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           IconTheme.merge(
-            data:
-                new IconThemeData(color: _iconColor.evaluate(_easeInAnimation)),
-            child: new ListTile(
+            data: IconThemeData(color: _iconColor.evaluate(_easeInAnimation!)),
+            child: ListTile(
               onTap: toggle,
               leading: widget.leading,
-              title: new DefaultTextStyle(
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle1
-                    .copyWith(color: titleColor),
+              title: DefaultTextStyle(
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                      color: titleColor,
+                    ),
                 child: widget.title,
               ),
-              /*
-              trailing: widget.trailing ?? new RotationTransition(
-                turns: _iconTurns,
-                child: const Icon(Icons.expand_more),
-              ),
-
-               */
             ),
           ),
-          new ClipRect(
-            child: new Align(
-              heightFactor: _easeInAnimation.value,
+          ClipRect(
+            child: Align(
+              heightFactor: _easeInAnimation!.value,
               child: child,
             ),
           ),
@@ -153,18 +140,18 @@ class AppExpansionTileState extends State<AppExpansionTile>
     final ThemeData theme = Theme.of(context);
     _borderColor.end = theme.dividerColor;
     _headerColor
-      ..begin = theme.textTheme.subtitle1.color
-      ..end = theme.accentColor;
+      ..begin = theme.textTheme.subtitle1!.color
+      ..end = theme.colorScheme.secondary;
     _iconColor
       ..begin = theme.unselectedWidgetColor
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     _backgroundColor.end = widget.backgroundColor;
 
-    final bool closed = !_isExpanded && _controller.isDismissed;
-    return new AnimatedBuilder(
-      animation: _controller.view,
+    final bool closed = !_isExpanded && _controller!.isDismissed;
+    return AnimatedBuilder(
+      animation: _controller!.view,
       builder: _buildChildren,
-      child: closed ? null : new Column(children: widget.children),
+      child: closed ? null : Column(children: widget.children),
     );
   }
 }

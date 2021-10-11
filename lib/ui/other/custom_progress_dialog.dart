@@ -1,14 +1,11 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CustomProgressDialog extends StatelessWidget {
   const CustomProgressDialog({
-    Key key,
-    this.child,
+    Key? key,
+    required this.child,
     this.insetAnimationDuration = const Duration(milliseconds: 100),
     this.insetAnimationCurve = Curves.decelerate,
     this.shape,
@@ -38,7 +35,7 @@ class CustomProgressDialog extends StatelessWidget {
   ///
   /// The default shape is a [RoundedRectangleBorder] with a radius of 2.0.
   /// {@endtemplate}
-  final ShapeBorder shape;
+  final ShapeBorder? shape;
 
   Color _getColor(BuildContext context) {
     return Theme.of(context).dialogBackgroundColor;
@@ -48,7 +45,10 @@ class CustomProgressDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedPadding(
       padding: MediaQuery.of(context).viewInsets +
-          const EdgeInsets.symmetric(horizontal: 40.0, vertical: 24.0),
+          const EdgeInsets.symmetric(
+            horizontal: 40.0,
+            vertical: 24.0,
+          ),
       duration: insetAnimationDuration,
       curve: insetAnimationCurve,
       child: MediaQuery.removeViewInsets(

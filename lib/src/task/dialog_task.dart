@@ -43,9 +43,8 @@ class DialogTask<T> extends Task<T> {
         );
       }
 
-      return (await ErrorDialog(parameter).show())
-          ? TaskStatus.Restart
-          : TaskStatus.GiveUp;
+      ErrorDialog(parameter).show();
+      return TaskStatus.Restart;
     } catch (e) {
       return TaskStatus.GiveUp;
     }

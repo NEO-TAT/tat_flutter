@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'custom_progress_dialog.dart';
 
 class MyProgressDialog {
-  static void showProgressDialogOld(
-      BuildContext context, String message) async {}
-
-  static void progressDialog(String message) async {
+  static void progressDialog(String? message) async {
     BotToast.showCustomLoading(toastBuilder: (cancel) {
       return CustomProgressDialog(
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: const BorderRadius.all(Radius.circular(5))),
+            color: Colors.black,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(5),
+            ),
+          ),
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,

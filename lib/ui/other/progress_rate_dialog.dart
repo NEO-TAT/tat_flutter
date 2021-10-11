@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:sprintf/sprintf.dart';
 
 bool _isShowing = false;
-BuildContext _context, _dismissingContext;
+late BuildContext _context, _dismissingContext;
 bool _barrierDismissible = true;
 String _dialogMessage = "Loading...";
 String _progressString = "0/100";
 double _progress = 0;
 
 class ProgressRateDialog {
-  _Body _dialog;
+  late _Body _dialog;
 
-  ProgressRateDialog(BuildContext context, {bool isDismissible}) {
+  ProgressRateDialog(BuildContext context, {bool? isDismissible}) {
     _context = context;
     _barrierDismissible = isDismissible ?? true;
   }
 
-  void update({String message, double nowProgress, String progressString}) {
+  void update({String? message, double? nowProgress, String? progressString}) {
     _progress = nowProgress ?? _progress;
     _dialogMessage = message ?? _dialogMessage;
     _progressString = progressString ?? _progressString;
@@ -63,7 +63,9 @@ class ProgressRateDialog {
           builder: (BuildContext context) {
             _dismissingContext = context;
             return WillPopScope(
-                onWillPop: () async => _barrierDismissible, child: _dialog);
+              onWillPop: () async => _barrierDismissible,
+              child: _dialog,
+            );
           },
         );
         // Delaying the function for 200 milliseconds
@@ -115,9 +117,11 @@ class _BodyState extends State<_Body> {
           padding: EdgeInsets.all(15.0),
           height: 100.0,
           decoration: ShapeDecoration(
-              color: Colors.black87,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0))),
+            color: Colors.black87,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+          ),
           child: Column(
             children: <Widget>[
               Expanded(
@@ -146,14 +150,18 @@ class _BodyState extends State<_Body> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
-                      child: Text(sprintf("%d%", [(_progress * 100).toInt()]),
-                          textAlign: TextAlign.left,
-                          style: TextStyle(color: Colors.white)),
+                      child: Text(
+                        sprintf("%d%", [(_progress * 100).toInt()]),
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                     Expanded(
-                      child: Text(_progressString,
-                          textAlign: TextAlign.right,
-                          style: TextStyle(color: Colors.white)),
+                      child: Text(
+                        _progressString,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),

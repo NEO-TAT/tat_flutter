@@ -1,10 +1,3 @@
-//  listview_animator.dart
-//  北科課程助手
-//  用於顯示動畫
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
-
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
@@ -21,25 +14,32 @@ class Animator extends StatefulWidget {
 
 class _AnimatorState extends State<Animator>
     with SingleTickerProviderStateMixin {
-  Timer timer;
-  AnimationController animationController;
-  Animation animation;
+  late final Timer timer;
+  late final AnimationController animationController;
+  late final Animation animation;
 
   @override
   void initState() {
     super.initState();
-    animationController =
-        AnimationController(duration: Duration(milliseconds: 290), vsync: this);
-    animation =
-        CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
-    timer = Timer(widget.time, animationController.forward);
+    animationController = AnimationController(
+      duration: Duration(milliseconds: 290),
+      vsync: this,
+    );
+    animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOut,
+    );
+    timer = Timer(
+      widget.time,
+      animationController.forward,
+    );
   }
 
   @override
   void dispose() {
     timer.cancel();
     animationController.dispose();
-    super.dispose(); //需要先dispose上面兩個才不會出錯
+    super.dispose();
   }
 
   @override
@@ -47,7 +47,7 @@ class _AnimatorState extends State<Animator>
     return AnimatedBuilder(
       animation: animation,
       child: widget.child,
-      builder: (BuildContext context, Widget child) {
+      builder: (BuildContext context, Widget? child) {
         return Opacity(
           opacity: animation.value,
           child: Transform.translate(
@@ -60,11 +60,11 @@ class _AnimatorState extends State<Animator>
   }
 }
 
-Timer timer;
+late final Timer? timer;
 Duration duration = Duration();
 
 wait() {
-  if (timer == null || !timer.isActive) {
+  if (timer == null || !timer!.isActive) {
     timer = Timer(Duration(microseconds: 120), () {
       duration = Duration();
     });
