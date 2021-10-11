@@ -6,26 +6,23 @@ part of 'course_table_json.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) {
-  return CourseTableJson(
-    courseSemester: json['courseSemester'] == null
-        ? null
-        : SemesterJson.fromJson(json['courseSemester'] as Map<String, dynamic>),
-    courseInfoMap: (json['courseInfoMap'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(
-          _$enumDecodeNullable(_$DayEnumMap, k),
-          (e as Map<String, dynamic>)?.map(
-            (k, e) => MapEntry(
-                _$enumDecodeNullable(_$SectionNumberEnumMap, k),
-                e == null
-                    ? null
-                    : CourseInfoJson.fromJson(e as Map<String, dynamic>)),
-          )),
-    ),
-    studentId: json['studentId'] as String,
-    studentName: json['studentName'] as String,
-  );
-}
+CourseTableJson _$CourseTableJsonFromJson(Map<String, dynamic> json) =>
+    CourseTableJson(
+      courseSemester: json['courseSemester'] == null
+          ? null
+          : SemesterJson.fromJson(
+              json['courseSemester'] as Map<String, dynamic>),
+      courseInfoMap: (json['courseInfoMap'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(
+            _$enumDecode(_$DayEnumMap, k),
+            (e as Map<String, dynamic>).map(
+              (k, e) => MapEntry(_$enumDecode(_$SectionNumberEnumMap, k),
+                  CourseInfoJson.fromJson(e as Map<String, dynamic>)),
+            )),
+      ),
+      studentId: json['studentId'] as String? ?? '',
+      studentName: json['studentName'] as String? ?? '',
+    );
 
 Map<String, dynamic> _$CourseTableJsonToJson(CourseTableJson instance) =>
     <String, dynamic>{
@@ -34,39 +31,33 @@ Map<String, dynamic> _$CourseTableJsonToJson(CourseTableJson instance) =>
       'studentName': instance.studentName,
       'courseInfoMap': instance.courseInfoMap?.map((k, e) => MapEntry(
           _$DayEnumMap[k],
-          e?.map((k, e) => MapEntry(_$SectionNumberEnumMap[k], e)))),
+          e.map((k, e) => MapEntry(_$SectionNumberEnumMap[k], e)))),
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$SectionNumberEnumMap = {
@@ -98,16 +89,15 @@ const _$DayEnumMap = {
   Day.UnKnown: 'UnKnown',
 };
 
-CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) {
-  return CourseInfoJson(
-    main: json['main'] == null
-        ? null
-        : CourseMainInfoJson.fromJson(json['main'] as Map<String, dynamic>),
-    extra: json['extra'] == null
-        ? null
-        : CourseExtraInfoJson.fromJson(json['extra'] as Map<String, dynamic>),
-  );
-}
+CourseInfoJson _$CourseInfoJsonFromJson(Map<String, dynamic> json) =>
+    CourseInfoJson(
+      main: json['main'] == null
+          ? null
+          : CourseMainInfoJson.fromJson(json['main'] as Map<String, dynamic>),
+      extra: json['extra'] == null
+          ? null
+          : CourseExtraInfoJson.fromJson(json['extra'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$CourseInfoJsonToJson(CourseInfoJson instance) =>
     <String, dynamic>{
