@@ -81,7 +81,7 @@ dependencies:
   flutter_staggered_animations: ^1.0.0
   #listView or gridView動畫
   #----------download----------#
-  flutter_downloader: ^1.7.0
+  flutter_downloader: ^1.7.1
   #下載app更新
   open_file: ^3.2.1
   permission_handler: ^8.2.2
@@ -107,7 +107,7 @@ dependencies:
   #email使用可左右滑抽屜
   flutter_spinkit: ^5.1.0
   #等待動畫
-  flutter_markdown: ^0.6.6
+  flutter_markdown: ^0.6.7
   numberpicker: ^2.1.1
   #選擇學期
   pretty_json: ^2.0.0
@@ -115,7 +115,7 @@ dependencies:
   # Firebase
   firebase_core: ^1.7.0
   firebase_analytics: ^8.3.3
-  firebase_crashlytics: ^2.2.2
+  firebase_crashlytics: ^2.2.3
   firebase_remote_config: ^0.11.0+1
   firebase_messaging: ^10.0.8
 
