@@ -8,7 +8,7 @@ import 'package:sprintf/sprintf.dart';
 class CalendarDetailDialog extends StatefulWidget {
   final NTUTCalendarJson calendarDetail;
 
-  CalendarDetailDialog({Key key, this.calendarDetail}) : super(key: key);
+  CalendarDetailDialog({Key? key, required this.calendarDetail}) : super(key: key);
 
   @override
   _CalendarDetailDialogState createState() => _CalendarDetailDialogState();
@@ -29,8 +29,7 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
           textAlign: TextAlign.center,
         ),
       ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -82,7 +81,7 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
       actions: [
         TextButton(
           child: Text(R.current.sure),
-          onPressed: () async {
+          onPressed: () {
             Get.back();
           },
         ),
