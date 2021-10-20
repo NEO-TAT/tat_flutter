@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_config.dart';
 import 'package:tat/src/config/app_themes.dart';
-import 'package:tat/src/model/course/course_class_json.dart';
 import 'package:tat/src/model/course_table/course_table_json.dart';
 import 'package:tat/src/providers/app_provider.dart';
 import 'package:tat/src/store/model.dart';
@@ -11,8 +12,6 @@ import 'package:tat/ui/pages/course_detail/screen/course_info_page.dart';
 import 'package:tat/ui/pages/course_detail/screen/ischool_plus/iplus_announcement_page.dart';
 import 'package:tat/ui/pages/course_detail/screen/ischool_plus/iplus_file_page.dart';
 import 'package:tat/ui/pages/course_detail/tab_page.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class ISchoolPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -26,22 +25,46 @@ class ISchoolPage extends StatefulWidget {
 
 class _ISchoolPageState extends State<ISchoolPage>
     with SingleTickerProviderStateMixin {
-  TabPageList tabPageList;
-  TabController _tabController;
-  PageController _pageController = PageController();
+  late final TabPageList tabPageList;
+  late final TabController _tabController;
+  final _pageController = PageController();
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(R.current.course, Icons.info,
-        CourseInfoPage(widget.studentId, widget.courseInfo)));
+    tabPageList.add(
+      TabPage(
+        R.current.course,
+        Icons.info,
+        CourseInfoPage(
+          widget.studentId,
+          widget.courseInfo,
+        ),
+      ),
+    );
     if (widget.studentId == Model.instance.getAccount()) {
-      tabPageList.add(TabPage(R.current.announcement, Icons.announcement,
-          IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
-      tabPageList.add(TabPage(R.current.fileAndVideo, Icons.file_download,
-          IPlusFilePage(widget.studentId, widget.courseInfo)));
+      tabPageList.add(
+        TabPage(
+          R.current.announcement,
+          Icons.announcement,
+          IPlusAnnouncementPage(
+            widget.studentId,
+            widget.courseInfo,
+          ),
+        ),
+      );
+      tabPageList.add(
+        TabPage(
+          R.current.fileAndVideo,
+          Icons.file_download,
+          IPlusFilePage(
+            widget.studentId,
+            widget.courseInfo,
+          ),
+        ),
+      );
     }
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
@@ -50,12 +73,11 @@ class _ISchoolPageState extends State<ISchoolPage>
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider appProvider, Widget child) {
+      builder: (BuildContext context, AppProvider appProvider, Widget? child) {
         return WillPopScope(
           onWillPop: () async {
-            var currentState = tabPageList.getKey(_currentIndex).currentState;
-            bool pop = (currentState == null) ? true : currentState.canPop();
-            return pop;
+            final currentState = tabPageList.getKey(_currentIndex).currentState;
+            return (currentState == null) ? true : currentState.canPop();
           },
           child: MaterialApp(
             title: AppConfig.appName,
@@ -69,7 +91,7 @@ class _ISchoolPageState extends State<ISchoolPage>
   }
 
   Widget tabPageView() {
-    CourseMainJson course = widget.courseInfo.main.course;
+    final course = widget.courseInfo.main!.course;
 
     return DefaultTabController(
       length: tabPageList.length,
@@ -78,7 +100,7 @@ class _ISchoolPageState extends State<ISchoolPage>
           leading: BackButton(
             onPressed: () => Get.back(),
           ),
-          title: Text(course.name),
+          title: Text(course!.name),
           bottom: TabBar(
             indicatorPadding: EdgeInsets.all(0),
             labelPadding: EdgeInsets.all(0),
@@ -96,7 +118,7 @@ class _ISchoolPageState extends State<ISchoolPage>
           controller: _pageController,
           children: tabPageList.getTabPageList,
           onPageChanged: (index) {
-            _tabController.animateTo(index); //與上面tab同步
+            _tabController.animateTo(index);
             _currentIndex = index;
           },
         ),

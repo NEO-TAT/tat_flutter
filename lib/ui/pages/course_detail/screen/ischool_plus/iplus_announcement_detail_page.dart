@@ -1,22 +1,21 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:get/get.dart';
 import 'package:tat/debug/log/log.dart';
 import 'package:tat/src/R.dart';
-import 'package:tat/src/config/app_colors.dart';
 import 'package:tat/src/file/file_download.dart';
 import 'package:tat/src/model/course_table/course_table_json.dart';
 import 'package:tat/src/util/html_utils.dart';
 import 'package:tat/ui/other/listview_animator.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class IPlusAnnouncementDetailPage extends StatefulWidget {
   final Map data;
   final CourseInfoJson courseInfo;
 
-  IPlusAnnouncementDetailPage(this.courseInfo, this.data);
+  const IPlusAnnouncementDetailPage(this.courseInfo, this.data);
 
   @override
   _IPlusAnnouncementDetailPage createState() => _IPlusAnnouncementDetailPage();
@@ -49,8 +48,8 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
         leading: BackButton(
           onPressed: () => Get.back(),
         ),
-        title: Text(widget.courseInfo.main.course.name),
-        actions: <Widget>[
+        title: Text(widget.courseInfo.main!.course!.name),
+        actions: [
           PopupMenuButton<int>(
             onSelected: (result) {
               if (!addLink) {
@@ -78,13 +77,13 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   Widget _showAnnouncementDetail() {
     return Container(
       child: Column(
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
-              children: <Widget>[
+              children: [
                 Row(
-                  children: <Widget>[
+                  children: [
                     Expanded(
                       child: Text(
                         widget.data["title"],
@@ -94,9 +93,9 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
                     ),
                   ],
                 ),
-                // 顯示格線
+                // show lines
                 Row(
-                  children: <Widget>[
+                  children: [
                     Expanded(
                       child: Text(widget.data["sender"]),
                     ),
@@ -123,9 +122,8 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   Widget _showFileList() {
-    List<String> fileNameList =
-        widget.data['file'].keys.toList(); //key : 文件名稱  value : 文件下載url
-    Map fileUrlMap = widget.data["file"];
+    final List<String> fileNameList = widget.data['file'].keys.toList();
+    final Map fileUrlMap = widget.data["file"];
     if (fileNameList.length == 0) {
       return Container(
         color: Colors.black12,
@@ -134,13 +132,13 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
     } else {
       return Container(
         child: Column(
-          children: <Widget>[
+          children: [
             Container(
               color: Colors.black12,
               height: 1,
             ),
             Row(
-              children: <Widget>[
+              children: [
                 Text(
                   R.current.file,
                   textAlign: TextAlign.start,
@@ -151,12 +149,11 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
               shrinkWrap: true,
               itemCount: fileNameList.length,
               itemBuilder: (context, index) {
-                Widget fileWidget;
-                fileWidget = Container(
+                final fileWidget = Container(
                   child: Padding(
                     padding: EdgeInsets.only(top: 10, bottom: 10),
                     child: Row(
-                      children: <Widget>[
+                      children: [
                         Text(
                           fileNameList[index],
                           style: TextStyle(fontSize: 15, color: Colors.blue),
@@ -169,12 +166,14 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
                   child: WidgetAnimator(fileWidget),
                   onTap: () {
                     _downloadFile(
-                        fileUrlMap[fileNameList[index]], fileNameList[index]);
+                      fileUrlMap[fileNameList[index]],
+                      fileNameList[index],
+                    );
                   },
                 );
               },
               separatorBuilder: (context, index) {
-                // 顯示格線
+                // show cell lines
                 return Container(
                   color: Colors.black12,
                   height: 1,
@@ -192,13 +191,13 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
       widget.data["body"],
       onTapUrl: (url) {
         onUrlTap(url);
+        return true;
       },
-      hyperlinkColor: AppColors.hyperlinkColor,
     );
   }
 
   void _downloadFile(String url, String name) async {
-    String courseName = widget.courseInfo.main.course.name;
+    final courseName = widget.courseInfo.main!.course!.name;
     await FileDownload.download(context, url, courseName, name);
   }
 

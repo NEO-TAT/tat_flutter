@@ -23,10 +23,10 @@ class IPlusAnnouncementPage extends StatefulWidget {
 
 class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
     with AutomaticKeepAliveClientMixin {
-  List<ISchoolPlusAnnouncementJson> items;
-  String courseBid;
-  bool needRefresh = false;
-  bool isSupport;
+  late final List<ISchoolPlusAnnouncementJson>? items;
+  late final String courseBid;
+  final needRefresh = false;
+  late final bool isSupport;
   bool openNotifications = false;
 
   @override
@@ -40,30 +40,33 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   }
 
   void _addTask() async {
-    //第一次
-    String courseId = widget.courseInfo.main.course.id;
-    TaskFlow taskFlow = TaskFlow();
-    var task = IPlusCourseAnnouncementTask(courseId);
-    var getTask = IPlusGetCourseSubscribeTask(courseId);
+    final courseId = widget.courseInfo.main!.course!.id;
+    final taskFlow = TaskFlow();
+    final task = IPlusCourseAnnouncementTask(courseId);
+    final getTask = IPlusGetCourseSubscribeTask();
     taskFlow.addTask(task);
     taskFlow.addTask(getTask);
+
     if (await taskFlow.start()) {
       items = task.result;
       courseBid = getTask.result["courseBid"];
       openNotifications = getTask.result["openNotifications"];
     }
-    items = items ?? [];
+
+    items ??= [];
     setState(() {});
   }
 
   void _getAnnouncementDetail(ISchoolPlusAnnouncementJson value) async {
-    TaskFlow taskFlow = TaskFlow();
-    var task = IPlusCourseAnnouncementDetailTask(value);
+    final taskFlow = TaskFlow();
+    final task = IPlusCourseAnnouncementDetailTask(value);
     taskFlow.addTask(task);
-    Map detail;
+    late Map detail;
+
     if (await taskFlow.start()) {
       detail = task.result;
     }
+
     RouteUtils.toIPlusAnnouncementDetailPage(widget.courseInfo, detail);
   }
 
@@ -71,33 +74,36 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-        body: (items.length > 0)
-            ? _buildMailList()
-            : isSupport
-                ? Center(
-                    child: Text(R.current.noAnyAnnouncement),
-                  )
-                : Center(
-                    child: Text(R.current.notSupport),
-                  ),
-        floatingActionButton: FloatingActionButton(
-          // FloatingActionButton: 浮動按鈕
-          onPressed: () async {
-            TaskFlow taskFlow = TaskFlow();
-            taskFlow.addTask(
-                IPlusSetCourseSubscribeTask(courseBid, !openNotifications));
-            if (await taskFlow.start()) {
-              setState(() {
-                openNotifications = !openNotifications;
-              });
-            }
-          },
-          tooltip: R.current.subscribe,
-          // 按住按鈕時出現的提示字
-          child: (openNotifications)
-              ? Icon(Icons.notifications_active)
-              : Icon(Icons.notifications_off),
-        ));
+      body: (items!.length > 0)
+          ? _buildMailList()
+          : isSupport
+              ? Center(
+                  child: Text(R.current.noAnyAnnouncement),
+                )
+              : Center(
+                  child: Text(R.current.notSupport),
+                ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final taskFlow = TaskFlow();
+          taskFlow.addTask(
+            IPlusSetCourseSubscribeTask(
+              courseBid,
+              !openNotifications,
+            ),
+          );
+          if (await taskFlow.start()) {
+            setState(() {
+              openNotifications = !openNotifications;
+            });
+          }
+        },
+        tooltip: R.current.subscribe,
+        child: (openNotifications)
+            ? Icon(Icons.notifications_active)
+            : Icon(Icons.notifications_off),
+      ),
+    );
   }
 
   Widget _buildMailList() {
@@ -106,15 +112,15 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
       padding: const EdgeInsets.all(0.0),
       scrollDirection: Axis.vertical,
       primary: true,
-      itemCount: items.length,
+      itemCount: items!.length,
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            ISchoolPlusAnnouncementJson value = items[index];
+            ISchoolPlusAnnouncementJson value = items![index];
             _getAnnouncementDetail(value);
           },
           child: _listItem(
-            items[index],
+            items![index],
           ),
         );
       },
@@ -122,17 +128,17 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   }
 
   Widget _listItem(ISchoolPlusAnnouncementJson data) {
-    FontWeight fontWeight =
+    final fontWeight =
         (data.readflag != 1) ? FontWeight.bold : FontWeight.normal;
     return Container(
       child: Column(
-        children: <Widget>[
+        children: [
           Padding(
             padding:
                 EdgeInsets.only(left: 14.0, right: 14.0, top: 5.0, bottom: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 Icon(
                   Icons.account_circle,
                   size: 55.0,
@@ -142,32 +148,38 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10.0),
                     child: Column(
-                      children: <Widget>[
+                      children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
+                          children: [
                             Expanded(
                               child: Text(
                                 data.subject,
                                 overflow: TextOverflow.visible,
                                 style: TextStyle(
-                                    fontWeight: fontWeight, fontSize: 17.0),
+                                  fontWeight: fontWeight,
+                                  fontSize: 17.0,
+                                ),
                               ),
                             ),
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                          children: [
                             Text(
                               data.realname,
                               style: TextStyle(
-                                  fontWeight: fontWeight, fontSize: 15.5),
+                                fontWeight: fontWeight,
+                                fontSize: 15.5,
+                              ),
                             ),
                             Text(
                               data.postdate,
                               style: TextStyle(
-                                  fontWeight: fontWeight, fontSize: 13.5),
+                                fontWeight: fontWeight,
+                                fontSize: 13.5,
+                              ),
                             ),
                           ],
                         )

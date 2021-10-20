@@ -2,6 +2,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/connector/ischool_plus_connector.dart';
 import 'package:tat/src/file/file_download.dart';
@@ -16,8 +18,6 @@ import 'package:tat/src/util/route_utils.dart';
 import 'package:tat/ui/icon/my_icons.dart';
 import 'package:tat/ui/other/error_dialog.dart';
 import 'package:tat/ui/other/my_toast.dart';
-import 'package:get/get.dart';
-import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class IPlusFilePage extends StatefulWidget {
@@ -32,9 +32,9 @@ class IPlusFilePage extends StatefulWidget {
 
 class _IPlusFilePage extends State<IPlusFilePage>
     with AutomaticKeepAliveClientMixin {
-  List<CourseFileJson> courseFileList = [];
-  SelectList selectList = SelectList();
-  bool isSupport;
+  late List<CourseFileJson>? courseFileList = [];
+  final selectList = SelectList();
+  late bool isSupport;
 
   @override
   void initState() {
@@ -67,47 +67,47 @@ class _IPlusFilePage extends State<IPlusFilePage>
 
   void _addTask() async {
     await Future.delayed(Duration(microseconds: 500));
-    String courseId = widget.courseInfo.main.course.id;
+    final courseId = widget.courseInfo.main!.course!.id;
 
-    TaskFlow taskFlow = TaskFlow();
-    var task = IPlusCourseFileTask(courseId);
+    final taskFlow = TaskFlow();
+    final task = IPlusCourseFileTask(courseId);
     taskFlow.addTask(task);
+
     if (await taskFlow.start()) {
       courseFileList = task.result;
     }
-    courseFileList = courseFileList ?? [];
-    selectList.addItems(courseFileList.length);
+
+    courseFileList ??= [];
+    selectList.addItems(courseFileList!.length);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
+    super.build(context);
     return Scaffold(
-        body: (courseFileList.length > 0)
-            ? _buildFileList()
-            : (isSupport)
-                ? Center(
-                    child: Text(R.current.noAnyFile),
-                  )
-                : Center(
-                    child: Text(R.current.notSupport),
-                  ),
-        floatingActionButton: (selectList.inSelectMode)
-            ? FloatingActionButton(
-                // FloatingActionButton: 浮動按鈕
-                onPressed: _floatingDownloadPress,
-                // 按下觸發的方式名稱: void _incrementCounter()
-                tooltip: R.current.download,
-                // 按住按鈕時出現的提示字
-                child: Icon(Icons.file_download),
-              )
-            : null);
+      body: (courseFileList!.length > 0)
+          ? _buildFileList()
+          : (isSupport)
+              ? Center(
+                  child: Text(R.current.noAnyFile),
+                )
+              : Center(
+                  child: Text(R.current.notSupport),
+                ),
+      floatingActionButton: (selectList.inSelectMode)
+          ? FloatingActionButton(
+              onPressed: _floatingDownloadPress,
+              tooltip: R.current.download,
+              child: Icon(Icons.file_download),
+            )
+          : null,
+    );
   }
 
   Future<void> _floatingDownloadPress() async {
     MyToast.show(R.current.downloadWillStart);
-    for (int i = 0; i < courseFileList.length; i++) {
+    for (int i = 0; i < courseFileList!.length; i++) {
       if (selectList.getItemSelect(i)) {
         await _downloadOneFile(i, false);
       }
@@ -119,14 +119,14 @@ class _IPlusFilePage extends State<IPlusFilePage>
   Widget _buildFileList() {
     return Container(
       child: Column(
-        children: <Widget>[
+        children: [
           Expanded(
             child: ListView.separated(
-              itemCount: courseFileList.length,
+              itemCount: courseFileList!.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                  child: _buildCourseFile(index, courseFileList[index]),
+                  behavior: HitTestBehavior.opaque,
+                  child: _buildCourseFile(index, courseFileList![index]),
                   onTap: () {
                     if (selectList.inSelectMode) {
                       selectList.setItemReverse(index);
@@ -144,7 +144,6 @@ class _IPlusFilePage extends State<IPlusFilePage>
                 );
               },
               separatorBuilder: (context, index) {
-                // 顯示格線
                 return Container(
                   color: Colors.black12,
                   height: 1,
@@ -200,9 +199,9 @@ class _IPlusFilePage extends State<IPlusFilePage>
   }
 
   List<Widget> _buildFileItem(CourseFileJson courseFile) {
-    List<Widget> widgetList = [];
-    List<Widget> iconWidgetList = [];
-    for (FileType fileType in courseFile.fileType) {
+    final List<Widget> widgetList = [];
+    final List<Widget> iconWidgetList = [];
+    for (final fileType in courseFile.fileType!) {
       iconWidgetList.add(iconList[fileType.type.index]);
     }
     widgetList.add(
@@ -224,16 +223,18 @@ class _IPlusFilePage extends State<IPlusFilePage>
   }
 
   Future<void> _downloadOneFile(int index, [showToast = true]) async {
-    CourseFileJson courseFile = courseFileList[index];
-    FileType fileType = courseFile.fileType[0];
-    String dirName = widget.courseInfo.main.course.name;
-    String url;
-    String referer;
-    List<String> urlList = [];
+    final courseFile = courseFileList![index];
+    final fileType = courseFile.fileType![0];
+    final dirName = widget.courseInfo.main!.course!.name;
+    final String url;
+    final String referer;
+    late List<String>? urlList = [];
     await AnalyticsUtils.logDownloadFileEvent();
+
     if (showToast) {
       MyToast.show(R.current.downloadWillStart);
     }
+
     urlList = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
     if (urlList == null) {
       MyToast.show(sprintf("%s%s", [courseFile.name, R.current.downloadError]));
@@ -241,11 +242,12 @@ class _IPlusFilePage extends State<IPlusFilePage>
     }
     url = urlList[0];
     referer = urlList[1];
-    Uri urlParse = Uri.parse(url);
+    final urlParse = Uri.parse(url);
     if (!urlParse.host.toLowerCase().contains("ntut.edu.tw")) {
-      //代表可能是一個連結
-      ErrorDialogParameter errorDialogParameter =
-          ErrorDialogParameter(context: context, desc: R.current.isALink);
+      final errorDialogParameter = ErrorDialogParameter(
+        context: context,
+        desc: R.current.isALink,
+      );
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
@@ -255,20 +257,30 @@ class _IPlusFilePage extends State<IPlusFilePage>
       ErrorDialog(errorDialogParameter).show();
       return;
     } else if (urlParse.host.contains("istream.ntut.edu.tw")) {
-      ErrorDialogParameter errorDialogParameter =
-          ErrorDialogParameter(context: context, desc: R.current.isVideo);
+      final errorDialogParameter = ErrorDialogParameter(
+        context: context,
+        desc: R.current.isVideo,
+      );
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
         Get.back();
         RouteUtils.toVideoPlayer(
-            urlParse.toString(), widget.courseInfo, courseFile.name);
+          urlParse.toString(),
+          widget.courseInfo,
+          courseFile.name,
+        );
       };
       ErrorDialog(errorDialogParameter).show();
     } else {
       await FileDownload.download(
-          context, url, dirName, courseFile.name, referer);
+        context,
+        url,
+        dirName,
+        courseFile.name,
+        referer,
+      );
     }
   }
 
@@ -285,7 +297,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
 }
 
 class SelectList {
-  List<bool> _selectList = [];
+  final List<bool> _selectList = [];
 
   void addItem() {
     _selectList.add(false);
@@ -323,7 +335,7 @@ class SelectList {
 
   bool get inSelectMode {
     bool select = false;
-    for (bool value in _selectList) {
+    for (final value in _selectList) {
       select |= value;
     }
     return select;

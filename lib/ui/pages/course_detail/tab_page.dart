@@ -3,15 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TabPage {
-  GlobalKey<NavigatorState> navigatorKey;
-  Widget tab;
-  Widget tabPage;
+  late final GlobalKey<NavigatorState> navigatorKey;
+  late Widget tab;
+  late Widget tabPage;
 
   TabPage(String title, IconData icons, Widget initPage,
       {useNavigatorKey: false}) {
     navigatorKey = GlobalKey();
     tab = Column(
-      children: <Widget>[
+      children: [
         Icon(icons),
         AutoSizeText(
           title,
@@ -31,29 +31,27 @@ class TabPage {
 }
 
 class TabPageList {
-  List<TabPage> tabPageList;
+  List<TabPage> tabPageList = [];
 
-  TabPageList() {
-    tabPageList = [];
-  }
+  TabPageList();
 
   void add(TabPage page) {
     tabPageList.add(page);
   }
 
   List<Widget> get getTabPageList {
-    List<Widget> pages = [];
-    for (TabPage tabPage in tabPageList) {
+    final List<Widget> pages = [];
+    for (final tabPage in tabPageList) {
       pages.add(tabPage.tabPage);
     }
     return pages;
   }
 
   List<Widget> getTabList(BuildContext context) {
-    List<Widget> pages = [];
-    double width = MediaQuery.of(context).size.width / this.length;
-    for (TabPage tabPage in tabPageList) {
-      Widget tabNew = Container(
+    final List<Widget> pages = [];
+    final width = MediaQuery.of(context).size.width / this.length;
+    for (final tabPage in tabPageList) {
+      final tabNew = Container(
         width: width,
         child: tabPage.tab,
       );
@@ -62,15 +60,10 @@ class TabPageList {
     return pages;
   }
 
-  Widget getPage(int index) {
-    return tabPageList[index].tabPage;
-  }
+  Widget getPage(int index) => tabPageList[index].tabPage;
 
-  GlobalKey<NavigatorState> getKey(int index) {
-    return tabPageList[index].navigatorKey;
-  }
+  GlobalKey<NavigatorState> getKey(int index) =>
+      tabPageList[index].navigatorKey;
 
-  int get length {
-    return tabPageList.length;
-  }
+  int get length => tabPageList.length;
 }

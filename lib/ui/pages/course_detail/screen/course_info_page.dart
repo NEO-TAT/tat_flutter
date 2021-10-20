@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/model/course/course_class_json.dart';
 import 'package:tat/src/model/course/course_main_extra_json.dart';
@@ -10,9 +13,6 @@ import 'package:tat/src/model/course_table/course_table_json.dart';
 import 'package:tat/src/task/course/course_extra_info_task.dart';
 import 'package:tat/src/task/task_flow.dart';
 import 'package:tat/src/util/route_utils.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:get/get.dart';
-import 'package:sprintf/sprintf.dart';
 
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -26,8 +26,8 @@ class CourseInfoPage extends StatefulWidget {
 
 class _CourseInfoPageState extends State<CourseInfoPage>
     with AutomaticKeepAliveClientMixin {
-  CourseMainInfoJson courseMainInfo;
-  CourseExtraInfoJson courseExtraInfo;
+  late CourseMainInfoJson courseMainInfo;
+  late CourseExtraInfoJson courseExtraInfo;
   bool isLoading = true;
   final List<Widget> courseData = [];
   final List<Widget> listItem = [];
@@ -57,49 +57,139 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   }
 
   void _addTask() async {
-    courseMainInfo = widget.courseInfo.main;
-    String courseId = courseMainInfo.course.id;
-    TaskFlow taskFlow = TaskFlow();
-    var task = CourseExtraInfoTask(courseId);
+    courseMainInfo = widget.courseInfo.main!;
+    final taskFlow = TaskFlow();
+    final courseId = courseMainInfo.course!.id;
+    final task = CourseExtraInfoTask(courseId);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       courseExtraInfo = task.result;
     }
     widget.courseInfo.extra = courseExtraInfo;
-    courseData.add(_buildCourseInfo(
-        sprintf("%s: %s", [R.current.courseId, courseMainInfo.course.id])));
-    courseData.add(_buildCourseInfo(
-        sprintf("%s: %s", [R.current.courseName, courseMainInfo.course.name])));
-    courseData.add(_buildCourseInfo(sprintf(
-        "%s: %s    ", [R.current.credit, courseMainInfo.course.credits])));
-    courseData.add(_buildCourseInfo(sprintf(
-        "%s: %s    ", [R.current.category, courseExtraInfo.course.category])));
-    courseData.add(_buildCourseInfoWithButton(
+    courseData.add(
+      _buildCourseInfo(
         sprintf(
-            "%s: %s", [R.current.instructor, courseMainInfo.getTeacherName()]),
+          "%s: %s",
+          [
+            R.current.courseId,
+            courseMainInfo.course!.id,
+          ],
+        ),
+      ),
+    );
+    courseData.add(
+      _buildCourseInfo(
+        sprintf(
+          "%s: %s",
+          [
+            R.current.courseName,
+            courseMainInfo.course!.name,
+          ],
+        ),
+      ),
+    );
+    courseData.add(
+      _buildCourseInfo(
+        sprintf(
+          "%s: %s    ",
+          [
+            R.current.credit,
+            courseMainInfo.course!.credits,
+          ],
+        ),
+      ),
+    );
+    courseData.add(
+      _buildCourseInfo(
+        sprintf(
+          "%s: %s    ",
+          [
+            R.current.category,
+            courseExtraInfo.course!.category,
+          ],
+        ),
+      ),
+    );
+    courseData.add(
+      _buildCourseInfoWithButton(
+        sprintf(
+          "%s: %s",
+          [
+            R.current.instructor,
+            courseMainInfo.getTeacherName(),
+          ],
+        ),
         R.current.syllabus,
-        courseMainInfo.course.scheduleHref));
-    courseData.add(_buildCourseInfo(sprintf(
-        "%s: %s", [R.current.startClass, courseMainInfo.getOpenClassName()])));
-    courseData.add(_buildMultiButtonInfo(
-      sprintf("%s: ", [R.current.classroom]),
-      R.current.classroomUse,
-      courseMainInfo.getClassroomNameList(),
-      courseMainInfo.getClassroomHrefList(),
-    ));
+        courseMainInfo.course!.scheduleHref,
+      ),
+    );
+    courseData.add(
+      _buildCourseInfo(
+        sprintf(
+          "%s: %s",
+          [
+            R.current.startClass,
+            courseMainInfo.getOpenClassName(),
+          ],
+        ),
+      ),
+    );
+    courseData.add(
+      _buildMultiButtonInfo(
+        sprintf(
+          "%s: ",
+          [
+            R.current.classroom,
+          ],
+        ),
+        R.current.classroomUse,
+        courseMainInfo.getClassroomNameList(),
+        courseMainInfo.getClassroomHrefList(),
+      ),
+    );
 
-    courseData.add(_buildCourseInfo(sprintf("%s: %s",
-        [R.current.numberOfStudent, courseExtraInfo.course.selectNumber])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s",
-        [R.current.numberOfWithdraw, courseExtraInfo.course.withdrawNumber])));
+    courseData.add(
+      _buildCourseInfo(
+        sprintf(
+          "%s: %s",
+          [
+            R.current.numberOfStudent,
+            courseExtraInfo.course!.selectNumber,
+          ],
+        ),
+      ),
+    );
+    courseData.add(
+      _buildCourseInfo(
+        sprintf(
+          "%s: %s",
+          [
+            R.current.numberOfWithdraw,
+            courseExtraInfo.course!.withdrawNumber,
+          ],
+        ),
+      ),
+    );
 
     listItem.removeRange(0, listItem.length);
-    listItem.add(_buildInfoTitle(R.current.courseData));
+    listItem.add(
+      _buildInfoTitle(
+        R.current.courseData,
+      ),
+    );
     listItem.addAll(courseData);
-    listItem.add(_buildInfoTitle(R.current.studentList));
-    for (int i = 0; i < courseExtraInfo.classmate.length; i++) {
-      listItem
-          .add(_buildClassmateInfo(i, widget.courseInfo.extra.classmate[i]));
+    listItem.add(
+      _buildInfoTitle(
+        R.current.studentList,
+      ),
+    );
+    for (int i = 0; i < courseExtraInfo.classmate!.length; i++) {
+      listItem.add(
+        _buildClassmateInfo(
+          i,
+          widget.courseInfo.extra!.classmate![i],
+        ),
+      );
     }
     isLoading = false;
     setState(() {});
@@ -107,11 +197,11 @@ class _CourseInfoPageState extends State<CourseInfoPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
+    super.build(context);
     return Container(
       padding: EdgeInsets.only(top: 20),
       child: Column(
-        children: <Widget>[
+        children: [
           (isLoading)
               ? Center(
                   child: CircularProgressIndicator(),
@@ -136,10 +226,11 @@ class _CourseInfoPageState extends State<CourseInfoPage>
               verticalOffset: 50.0,
               child: FadeInAnimation(
                 child: GestureDetector(
-                  behavior: HitTestBehavior.opaque, //讓透明部分有反應
+                  behavior: HitTestBehavior.opaque,
                   child: Container(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: listItem[index]),
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: listItem[index],
+                  ),
                   onTap: () {},
                 ),
               ),
@@ -151,11 +242,11 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   }
 
   Widget _buildCourseInfo(String text) {
-    TextStyle textStyle = TextStyle(fontSize: 18);
+    final textStyle = TextStyle(fontSize: 18);
     return Container(
       padding: EdgeInsets.only(bottom: 5),
       child: Row(
-        children: <Widget>[
+        children: [
           Icon(Icons.details),
           Expanded(
             child: Text(
@@ -174,12 +265,15 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   }
 
   Widget _buildCourseInfoWithButton(
-      String text, String buttonText, String url) {
-    TextStyle textStyle = TextStyle(fontSize: 18);
+    String text,
+    String buttonText,
+    String url,
+  ) {
+    final textStyle = TextStyle(fontSize: 18);
     return Container(
       padding: EdgeInsets.only(bottom: 5),
       child: Row(
-        children: <Widget>[
+        children: [
           Icon(Icons.details),
           Expanded(
             child: Text(
@@ -203,11 +297,11 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   }
 
   Widget _buildInfoTitle(String title) {
-    TextStyle textStyle = TextStyle(fontSize: 24);
+    final textStyle = TextStyle(fontSize: 24);
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 5),
       child: Row(
-        children: <Widget>[
+        children: [
           Text(
             title,
             style: textStyle,
@@ -217,15 +311,19 @@ class _CourseInfoPageState extends State<CourseInfoPage>
     );
   }
 
-  Widget _buildMultiButtonInfo(String title, String buttonText,
-      List<String> textList, List<String> urlList) {
-    TextStyle textStyle = TextStyle(fontSize: 18);
-    List<Widget> classroomItemList = [];
+  Widget _buildMultiButtonInfo(
+    String title,
+    String buttonText,
+    List<String> textList,
+    List<String> urlList,
+  ) {
+    final textStyle = TextStyle(fontSize: 18);
+    final List<Widget> classroomItemList = [];
     for (int i = 0; i < textList.length; i++) {
-      String text = textList[i];
+      final text = textList[i];
       classroomItemList.add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           Text(
             text,
             style: textStyle,
@@ -241,13 +339,13 @@ class _CourseInfoPageState extends State<CourseInfoPage>
         ],
       ));
     }
-    Widget classroomWidget = Column(
+    final Widget classroomWidget = Column(
       children: classroomItemList,
     );
     return Container(
       padding: EdgeInsets.only(bottom: 5),
       child: Row(
-        children: <Widget>[
+        children: [
           Icon(Icons.details),
           Text(
             title,
@@ -262,15 +360,14 @@ class _CourseInfoPageState extends State<CourseInfoPage>
   }
 
   Widget _buildClassmateInfo(int index, ClassmateJson classmate) {
-    Color color;
-    color = (index % 2 == 1)
+    final color = (index % 2 == 1)
         ? Theme.of(context).backgroundColor
         : Theme.of(context).dividerColor;
     return Container(
       color: color,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           Expanded(
               child: Text(
             classmate.className,
