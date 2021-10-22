@@ -14,8 +14,8 @@ class CourseTableControl {
   bool isHideB = false;
   bool isHideC = false;
   bool isHideD = false;
-  CourseTableJson courseTable;
-  List<String> dayStringList = [
+  late final CourseTableJson courseTable;
+  final dayStringList = [
     R.current.Monday,
     R.current.Tuesday,
     R.current.Wednesday,
@@ -25,7 +25,7 @@ class CourseTableControl {
     R.current.Sunday,
     R.current.UnKnown
   ];
-  List<String> timeList = [
+  final timeList = [
     "08:10 - 09:00",
     "09:10 - 10:00",
     "10:10 - 11:00",
@@ -42,25 +42,10 @@ class CourseTableControl {
     "21:10 - 22:00"
   ];
 
-  List<String> sectionStringList = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "N",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "A",
-    "B",
-    "C",
-    "D"
-  ];
-  static int dayLength = 8;
-  static int sectionLength = 14;
-  Map<String, Color> colorMap;
+  final sectionStringList = ["1", "2", "3", "4", "N", "5", "6", "7", "8", "9", "A", "B", "C", "D"];
+  static const dayLength = 8;
+  static const sectionLength = 14;
+  late Map<String, Color> colorMap;
 
   void set(CourseTableJson value) {
     courseTable = value;
@@ -79,7 +64,7 @@ class CourseTableControl {
   }
 
   List<int> get getDayIntList {
-    List<int> intList = [];
+    final List<int> intList = [];
     for (int i = 0; i < dayLength; i++) {
       if (isHideSaturday && i == 5) continue;
       if (isHideSunday && i == 6) continue;
@@ -89,18 +74,17 @@ class CourseTableControl {
     return intList;
   }
 
-  CourseInfoJson getCourseInfo(int intDay, int intNumber) {
-    Day day = Day.values[intDay];
-    SectionNumber number = SectionNumber.values[intNumber];
-    //Log.d( day.toString()  + " " + number.toString() );
-    return courseTable.courseInfoMap[day][number];
+  CourseInfoJson? getCourseInfo(int intDay, int intNumber) {
+    final day = Day.values[intDay];
+    final number = SectionNumber.values[intNumber];
+    return courseTable.courseInfoMap![day]![number];
   }
 
-  Color getCourseInfoColor(int intDay, int intNumber) {
-    CourseInfoJson courseInfo = getCourseInfo(intDay, intNumber);
-    for (String key in colorMap.keys) {
+  Color? getCourseInfoColor(int intDay, int intNumber) {
+    final courseInfo = getCourseInfo(intDay, intNumber);
+    for (final key in colorMap.keys) {
       if (courseInfo != null) {
-        if (key == courseInfo.main.course.id) {
+        if (key == courseInfo.main!.course!.id) {
           return colorMap[key];
         }
       }
@@ -110,9 +94,8 @@ class CourseTableControl {
 
   void _initColorList() {
     colorMap = Map();
-    List<String> courseInfoList = courseTable.getCourseIdList();
-    int colorCount = courseInfoList.length;
-    colorCount = (colorCount == 0) ? 1 : colorCount;
+    final courseInfoList = courseTable.getCourseIdList();
+    final colorCount = (courseInfoList.length == 0) ? 1 : courseInfoList.length;
 
     final colors = AppColors.courseTableColors.toList()..shuffle();
 
@@ -122,7 +105,7 @@ class CourseTableControl {
   }
 
   List<int> get getSectionIntList {
-    List<int> intList = [];
+    final List<int> intList = [];
     for (int i = 0; i < sectionLength; i++) {
       if (isHideN && i == 4) continue;
       if (isHideA && i == 10) continue;
@@ -134,15 +117,9 @@ class CourseTableControl {
     return intList;
   }
 
-  String getDayString(int day) {
-    return dayStringList[day];
-  }
+  String getDayString(int day) => dayStringList[day];
 
-  String getTimeString(int time) {
-    return timeList[time];
-  }
+  String getTimeString(int time) => timeList[time];
 
-  String getSectionString(int section) {
-    return sectionStringList[section];
-  }
+  String getSectionString(int section) => sectionStringList[section];
 }

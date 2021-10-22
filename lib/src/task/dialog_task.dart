@@ -7,7 +7,7 @@ import 'task.dart';
 
 class DialogTask<T> extends Task<T> {
   DialogTask(String name) : super(name);
-  final bool openLoadingDialog = true;
+  late bool openLoadingDialog = true;
 
   @override
   Future<TaskStatus> execute() async {

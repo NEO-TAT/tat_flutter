@@ -1,13 +1,14 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:tat/debug/log/log.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_config.dart';
 import 'package:tat/src/model/course/course_class_json.dart';
@@ -25,11 +26,6 @@ import 'package:tat/src/task/task.dart';
 import 'package:tat/src/task/task_flow.dart';
 import 'package:tat/src/util/route_utils.dart';
 import 'package:tat/ui/other/my_toast.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sprintf/sprintf.dart';
 
 import 'course_table_control.dart';
 import 'over_repaint_boundary.dart';
@@ -42,16 +38,16 @@ class CourseTablePage extends StatefulWidget {
 class _CourseTablePageState extends State<CourseTablePage> {
   final TextEditingController _studentIdControl = TextEditingController();
   final FocusNode _studentFocus = new FocusNode();
-  GlobalKey _key = GlobalKey();
+  final _key = GlobalKey();
   bool isLoading = true;
-  CourseTableJson courseTableData;
-  static double dayHeight = 25;
-  static double studentIdHeight = 40;
-  static double courseHeight = 60;
-  static double sectionWidth = 20;
-  static int courseTableWithAlpha = 0xDF;
-  static int showCourseTableNum = 9;
-  CourseTableControl courseTableControl = CourseTableControl();
+  late CourseTableJson? courseTableData;
+  static double? dayHeight = 25;
+  static double? studentIdHeight = 40;
+  static double? courseHeight = 60;
+  static double? sectionWidth = 20;
+  static const courseTableWithAlpha = 0xDF;
+  static const showCourseTableNum = 9;
+  final courseTableControl = CourseTableControl();
   bool favorite = false;
   bool loadCourseNotice = true;
 
@@ -59,14 +55,14 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void initState() {
     super.initState();
     _studentIdControl.text = " ";
-    UserDataJson userData = Model.instance.getUserData();
+    final userData = Model.instance.getUserData();
     Future.delayed(Duration(milliseconds: 200)).then((_) {
       if (userData.account.isEmpty || userData.password.isEmpty) {
         RouteUtils.toLoginScreen().then((value) {
           if (value != null && value) {
             _loadSetting();
           }
-        }); //尚未登入
+        });
       } else {
         _loadSetting();
       }
@@ -77,38 +73,35 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       loadCourseNotice = false;
     });
-    if (!Model.instance.getOtherSetting().checkIPlusNew) {
+    if (!Model.instance.getOtherSetting()!.checkIPlusNew) {
       return;
     }
     if (!Model.instance.getFirstUse(Model.courseNotice, timeOut: 15 * 60)) {
       return;
     }
-    if (Model.instance.getAccount() !=
-        Model.instance.getCourseSetting().info.studentId) {
-      //只有顯示自己的課表時才會檢查新公告
+    if (Model.instance.getAccount() != Model.instance.getCourseSetting()!.info!.studentId) {
       return;
     }
     setState(() {
       loadCourseNotice = true;
     });
 
-    TaskFlow taskFlow = TaskFlow();
-    var task = IPlusSubscribeNoticeTask();
+    final taskFlow = TaskFlow();
+    final task = IPlusSubscribeNoticeTask();
     task.openLoadingDialog = false;
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
-      List<String> v = task.result;
-      List<String> value = [];
-      v = v ?? [];
+      // FIXME remove unnecessary null check (the right operand)
+      final List<String?> v = task.result ?? [];
+      final List<String> value = [];
       for (int i = 0; i < v.length; i++) {
-        String courseName = v[i];
-        CourseInfoJson courseInfo =
-            courseTableData.getCourseInfoByCourseName(courseName);
+        final courseName = v[i];
+        final courseInfo = courseTableData!.getCourseInfoByCourseName(courseName!);
         if (courseInfo != null) {
           value.add(courseName);
         }
       }
-      if (value != null && value.length > 0) {
+      if (value.length > 0) {
         Get.dialog(
           AlertDialog(
             title: Text(R.current.findNewMessage),
@@ -116,15 +109,14 @@ class _CourseTablePageState extends State<CourseTablePage> {
               width: double.minPositive,
               child: ListView.builder(
                 itemCount: value.length,
-                shrinkWrap: true, //使清單最小化
+                shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
                     child: TextButton(
                       child: Text(value[index]),
                       onPressed: () {
-                        String courseName = value[index];
-                        CourseInfoJson courseInfo = courseTableData
-                            .getCourseInfoByCourseName(courseName);
+                        final courseName = value[index];
+                        final courseInfo = courseTableData!.getCourseInfoByCourseName(courseName);
                         if (courseInfo != null) {
                           _showCourseDetail(courseInfo);
                         } else {
@@ -137,7 +129,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 },
               ),
             ),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 child: Text(R.current.sure),
                 onPressed: () {
@@ -147,7 +139,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
             ],
           ),
           barrierDismissible: true,
-          useRootNavigator: false,
         );
       }
     }
@@ -159,9 +150,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   @override
   void setState(fn) {
-    if (context != null) {
-      super.setState(fn);
-    }
+    super.setState(fn);
   }
 
   @override
@@ -171,13 +160,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _loadSetting() {
-    //Log.d(MediaQuery.of(context).size.height.toString());
-    RenderObject renderObject = _key.currentContext.findRenderObject();
-    courseHeight = (renderObject.semanticBounds.size.height -
-            studentIdHeight -
-            dayHeight) /
-        showCourseTableNum; //計算高度
-    CourseTableJson courseTable = Model.instance.getCourseSetting().info;
+    final renderObject = _key.currentContext!.findRenderObject();
+    courseHeight =
+        (renderObject!.semanticBounds.size.height - studentIdHeight! - dayHeight!) / showCourseTableNum; //計算高度
+    final courseTable = Model.instance.getCourseSetting()!.info;
     if (courseTable == null || courseTable.isEmpty) {
       _getCourseTable();
     } else {
@@ -186,26 +172,23 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   Future<void> _getSemesterList(String studentId) async {
-    TaskFlow taskFlow = TaskFlow();
-    var task = CourseSemesterTask(studentId);
+    final taskFlow = TaskFlow();
+    final task = CourseSemesterTask(studentId);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       Model.instance.setSemesterJsonList(task.result);
     }
   }
 
-  void _getCourseTable(
-      {SemesterJson semesterSetting,
-      String studentId,
-      bool refresh: false}) async {
-    await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
+  void _getCourseTable({SemesterJson? semesterSetting, String? studentId, bool refresh: false}) async {
+    await Future.delayed(Duration(microseconds: 100));
     UserDataJson userData = Model.instance.getUserData();
-    studentId = studentId ?? userData.account;
+    studentId ??= userData.account;
     studentId = studentId.replaceAll(" ", "");
     if (courseTableData?.studentId != studentId) {
-      Model.instance.clearSemesterJsonList(); //需重設因為更換了studentId
+      Model.instance.clearSemesterJsonList();
     }
-    SemesterJson semesterJson;
+    SemesterJson? semesterJson;
     if (semesterSetting == null) {
       await _getSemesterList(studentId);
       semesterJson = Model.instance.getSemesterJsonItem(0);
@@ -216,15 +199,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
       return;
     }
 
-    CourseTableJson courseTable;
+    CourseTableJson? courseTable;
     if (!refresh) {
-      //是否要去找暫存的
-      courseTable =
-          Model.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
+      courseTable = Model.instance.getCourseTable(studentId, semesterSetting);
     }
     if (courseTable == null) {
-      //代表沒有暫存的需要爬蟲
-      TaskFlow taskFlow = TaskFlow();
+      final taskFlow = TaskFlow();
       final task = CourseTableTask(studentId, semesterJson);
       taskFlow.addTask(task);
       if (await taskFlow.start()) {
@@ -233,75 +213,68 @@ class _CourseTablePageState extends State<CourseTablePage> {
         final task = NTUTOrgtreeSearchTask(studentId);
         taskFlow.addTask(task);
         if (await taskFlow.start()) {
-          _studentIdControl.text = task.result.id;
+          _studentIdControl.text = task.result.id!;
           _getCourseTable(studentId: _studentIdControl.text);
         } else {
           MyToast.show(R.current.getCourseError);
         }
       }
     }
-    Model.instance.getCourseSetting().info = courseTable; //儲存課表
+    Model.instance.getCourseSetting()!.info = courseTable;
     Model.instance.saveCourseSetting();
-    _showCourseTable(courseTable);
+    _showCourseTable(courseTable!);
   }
 
   Widget _getSemesterItem(SemesterJson semester) {
-    String semesterString = semester.year + "-" + semester.semester;
+    final semesterString = semester.year + "-" + semester.semester;
     return TextButton(
       child: Text(semesterString),
       onPressed: () {
         Get.back();
-        _getCourseTable(
-            semesterSetting: semester,
-            studentId: _studentIdControl.text); //取得課表
+        _getCourseTable(semesterSetting: semester, studentId: _studentIdControl.text);
       },
     );
   }
 
   void _showSemesterList() async {
-    //顯示選擇學期
     _unFocusStudentInput();
     if (Model.instance.getSemesterList().length == 0) {
-      TaskFlow taskFlow = TaskFlow();
-      var task = CourseSemesterTask(_studentIdControl.text);
+      final taskFlow = TaskFlow();
+      final task = CourseSemesterTask(_studentIdControl.text);
       taskFlow.addTask(task);
       if (await taskFlow.start()) {
         Model.instance.setSemesterJsonList(task.result);
       }
     }
-    List<SemesterJson> semesterList = Model.instance.getSemesterList();
+    final semesterList = Model.instance.getSemesterList();
     //Model.instance.saveSemesterJsonList();
     Get.dialog(
-        AlertDialog(
-          content: Container(
-            width: double.minPositive,
-            child: ListView.builder(
-              itemCount: semesterList.length,
-              shrinkWrap: true, //使清單最小化
-              itemBuilder: (BuildContext context, int index) {
-                return _getSemesterItem(semesterList[index]);
-              },
-            ),
+      AlertDialog(
+        content: Container(
+          width: double.minPositive,
+          child: ListView.builder(
+            itemCount: semesterList.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return _getSemesterItem(semesterList[index]);
+            },
           ),
         ),
-        useRootNavigator: false,
-        barrierDismissible: true);
+      ),
+      barrierDismissible: true,
+    );
   }
 
   _onPopupMenuSelect(int value) async {
     switch (value) {
       case 0:
-        MyToast.show(sprintf("%s:%s",
-            [R.current.credit, courseTableData.getTotalCredit().toString()]));
+        MyToast.show(sprintf("%s:%s", [R.current.credit, courseTableData!.getTotalCredit().toString()]));
         break;
       case 1:
         _loadFavorite();
         break;
       case 2:
         _addCustomCourse();
-        break;
-      case 3:
-        await screenshot();
         break;
       default:
         break;
@@ -310,7 +283,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   _addCustomCourse() {
     final control = TextEditingController();
-    Task<List<CourseMainInfoJson>> task;
+    late Task<List<CourseMainInfoJson>>? task;
     Get.dialog(
       StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
         return AlertDialog(
@@ -320,7 +293,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
+                children: [
                   Text(R.current.importCourseWarning),
                   TextField(
                     controller: control,
@@ -331,17 +304,16 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     onEditingComplete: () async {
                       FocusScope.of(context).unfocus();
                       final taskFlow = TaskFlow();
-                      task = CourseSearchTask(
-                          courseTableData.courseSemester, control.text);
-                      taskFlow.addTask(task);
+                      task = CourseSearchTask(courseTableData!.courseSemester!, control.text);
+                      taskFlow.addTask(task!);
                       if (await taskFlow.start()) {
                         setState(() {});
                       }
                     },
                   ),
-                  if (task != null && task.result != null)
+                  if (task != null && task?.result != null)
                     Column(
-                      children: task.result
+                      children: task!.result
                           .map(
                             (info) => Container(
                               padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -351,31 +323,28 @@ class _CourseTablePageState extends State<CourseTablePage> {
                                   Expanded(
                                     child: AutoSizeText(
                                       sprintf("%s\n%s\n%s\n%s\n%s\n%s\n%s", [
-                                        "${R.current.courseId}: ${info.course.id}",
-                                        "${R.current.courseName}: ${info.course.name}",
+                                        "${R.current.courseId}: ${info.course!.id}",
+                                        "${R.current.courseName}: ${info.course!.name}",
                                         "${R.current.instructor}: ${info.getTeacherName()}",
                                         "${R.current.startClass}: ${info.getOpenClassName()}",
                                         "${R.current.classroom}: ${info.getClassroomName()}",
                                         "${R.current.time}: ${info.getTime()}",
-                                        "${R.current.note}: ${info.course.note}",
+                                        "${R.current.note}: ${info.course!.note}",
                                       ]),
                                     ),
                                   ),
                                   IconButton(
-                                      icon: Icon(Icons.add),
-                                      onPressed: () {
-                                        if (!courseTableData
-                                            .addCourseDetailByCourseInfo(
-                                                info)) {
-                                          MyToast.show(
-                                              R.current.addCustomCourseError);
-                                        }
-                                        Get.back();
-                                        Model.instance.getCourseSetting().info =
-                                            courseTableData; //儲存課表
-                                        Model.instance.saveCourseSetting();
-                                        _loadSetting();
-                                      })
+                                    icon: Icon(Icons.add),
+                                    onPressed: () {
+                                      if (!courseTableData!.addCourseDetailByCourseInfo(info)) {
+                                        MyToast.show(R.current.addCustomCourseError);
+                                      }
+                                      Get.back();
+                                      Model.instance.getCourseSetting()!.info = courseTableData;
+                                      Model.instance.saveCourseSetting();
+                                      _loadSetting();
+                                    },
+                                  ),
                                 ],
                               ),
                             ),
@@ -393,9 +362,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   void _setFavorite(bool like) {
     if (like) {
-      Model.instance.addCourseTable(courseTableData);
+      Model.instance.addCourseTable(courseTableData!);
     } else {
-      Model.instance.removeCourseTable(courseTableData);
+      Model.instance.removeCourseTable(courseTableData!);
     }
     Model.instance.saveCourseTableList();
   }
@@ -408,14 +377,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
     Get.dialog(
       StatefulBuilder(
-        builder:
-            (BuildContext context, void Function(void Function()) setState) {
+        builder: (BuildContext context, void Function(void Function()) setState) {
           return AlertDialog(
             content: Container(
               width: double.minPositive,
               child: ListView.builder(
                 itemCount: value.length,
-                shrinkWrap: true, //使清單最小化
+                shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return Slidable(
                     actionPane: SlidableDrawerActionPane(),
@@ -427,21 +395,20 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           child: Text(sprintf("%s %s %s-%s", [
                             value[index].studentId,
                             value[index].studentName,
-                            value[index].courseSemester.year,
-                            value[index].courseSemester.semester
+                            value[index].courseSemester!.year,
+                            value[index].courseSemester!.semester
                           ])),
                         ),
                         onPressed: () {
-                          Model.instance.getCourseSetting().info =
-                              value[index]; //儲存課表
+                          Model.instance.getCourseSetting()!.info = value[index];
                           Model.instance.saveCourseSetting();
                           _showCourseTable(value[index]);
-                          Model.instance.clearSemesterJsonList(); //須清除已儲存學期
+                          Model.instance.clearSemesterJsonList();
                           Get.back();
                         },
                       ),
                     ),
-                    secondaryActions: <Widget>[
+                    secondaryActions: [
                       IconSlideAction(
                         caption: R.current.delete,
                         color: Colors.red,
@@ -461,21 +428,17 @@ class _CourseTablePageState extends State<CourseTablePage> {
           );
         },
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
     setState(() {
-      favorite =
-          (Model.instance.getCourseTableList().contains(courseTableData));
+      favorite = (Model.instance.getCourseTableList().contains(courseTableData));
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    SemesterJson semesterSetting =
-        courseTableData?.courseSemester ?? SemesterJson();
-    String semesterString =
-        semesterSetting.year + "-" + semesterSetting.semester;
+    final semesterSetting = courseTableData?.courseSemester ?? SemesterJson();
+    final semesterString = semesterSetting.year + "-" + semesterSetting.semester;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -490,8 +453,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   ),
                 )
               : Container(),
-          (!isLoading &&
-                  Model.instance.getAccount() != courseTableData.studentId)
+          (!isLoading && Model.instance.getAccount() != courseTableData!.studentId)
               ? Padding(
                   padding: EdgeInsets.only(
                     right: 20,
@@ -503,8 +465,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       });
                       _setFavorite(favorite);
                     },
-                    child: Icon(Icons.favorite,
-                        color: (favorite) ? Colors.pinkAccent : Colors.white),
+                    child: Icon(
+                      Icons.favorite,
+                      color: (favorite) ? Colors.pinkAccent : Colors.white,
+                    ),
                   ),
                 )
               : Container(),
@@ -566,7 +530,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     scrollPadding: EdgeInsets.all(0),
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
-                      // 關閉框線
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(10),
                       hintText: R.current.pleaseEnterStudentId,
@@ -581,12 +544,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     },
                     controller: _studentIdControl,
                     focusNode: _studentFocus,
-                    /*
-                    toolbarOptions: ToolbarOptions(
-                      copy: true,
-                      paste: true,
-                    ),
-                     */
                   ),
                 ),
                 TextButton(
@@ -636,7 +593,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                         Expanded(
                           //makes the red row full width
                           child: Container(
-                            height: courseHeight * showCourseTableNum,
+                            height: courseHeight! * showCourseTableNum,
                             child: Center(
                               child: CircularProgressIndicator(),
                             ),
@@ -650,10 +607,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   children: List.generate(
                     1 + courseTableControl.getSectionIntList.length,
                     (index) {
-                      Widget widget;
-                      widget = (index == 0)
-                          ? _buildDay()
-                          : _buildCourseTable(index - 1);
+                      final widget = (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         duration: const Duration(milliseconds: 375),
@@ -698,9 +652,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   Widget _buildCourseTable(int index) {
     int section = courseTableControl.getSectionIntList[index];
     Color color;
-    color = (index % 2 == 1)
-        ? Theme.of(context).backgroundColor
-        : Theme.of(context).dividerColor;
+    color = (index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor;
     color = color.withAlpha(courseTableWithAlpha);
     List<Widget> widgetList = [];
     widgetList.add(
@@ -713,11 +665,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
         ),
       ),
     );
-    for (int day in courseTableControl.getDayIntList) {
-      CourseInfoJson courseInfo =
-          courseTableControl.getCourseInfo(day, section);
-      Color color = courseTableControl.getCourseInfoColor(day, section);
-      courseInfo = courseInfo ?? CourseInfoJson();
+    for (final day in courseTableControl.getDayIntList) {
+      final color = courseTableControl.getCourseInfoColor(day, section);
+      final courseInfo = CourseInfoJson();
       widgetList.add(
         Expanded(
           child: (courseInfo.isEmpty)
@@ -730,7 +680,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       primary: color,
                     ),
                     child: AutoSizeText(
-                      courseInfo.main.course.name,
+                      courseInfo.main!.course!.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 14,
@@ -757,47 +707,44 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-  //顯示課程對話框
   void showCourseDetailDialog(int section, CourseInfoJson courseInfo) {
     _unFocusStudentInput();
-    CourseMainJson course = courseInfo.main.course;
-    String classroomName = courseInfo.main.getClassroomName();
-    String teacherName = courseInfo.main.getTeacherName();
-    String studentId = Model.instance.getCourseSetting().info.studentId;
+    final course = courseInfo.main!.course;
+    final classroomName = courseInfo.main!.getClassroomName();
+    final teacherName = courseInfo.main!.getTeacherName();
+    final studentId = Model.instance.getCourseSetting()!.info!.studentId;
     setState(() {
       _studentIdControl.text = studentId;
     });
     Get.dialog(
       AlertDialog(
         contentPadding: EdgeInsets.fromLTRB(24.0, 20.0, 10.0, 10.0),
-        title: Text(course.name),
+        title: Text(course!.name),
         content: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               GestureDetector(
-                child:
-                    Text(sprintf("%s : %s", [R.current.courseId, course.id])),
+                child: Text(sprintf("%s : %s", [R.current.courseId, course.id])),
                 onLongPress: () async {
                   course.id = await _showEditDialog(course.id);
                   Model.instance.saveOtherSetting();
                   setState(() {});
                 },
               ),
-              Text(sprintf("%s : %s",
-                  [R.current.time, courseTableControl.getTimeString(section)])),
+              Text(sprintf("%s : %s", [R.current.time, courseTableControl.getTimeString(section)])),
               Text(sprintf("%s : %s", [R.current.location, classroomName])),
               Text(sprintf("%s : %s", [R.current.instructor, teacherName])),
             ],
           ),
         ),
-        actions: <Widget>[
+        actions: [
           if (!course.isSelect)
             TextButton(
               onPressed: () {
-                courseTableData.removeCourseByCourseId(course.id);
-                Model.instance.getCourseSetting().info = courseTableData; //儲存課表
+                courseTableData!.removeCourseByCourseId(course.id);
+                Model.instance.getCourseSetting()!.info = courseTableData;
                 Model.instance.saveCourseSetting();
                 _loadSetting();
                 Get.back();
@@ -828,7 +775,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
           ),
         ],
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
   }
@@ -836,7 +782,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   Future<String> _showEditDialog(String value) async {
     final TextEditingController controller = TextEditingController();
     controller.text = value;
-    String v = await Get.dialog<String>(
+    final v = await Get.dialog<String>(
       AlertDialog(
         contentPadding: const EdgeInsets.all(16.0),
         title: Text('Edit'),
@@ -851,7 +797,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
             )
           ],
         ),
-        actions: <Widget>[
+        actions: [
           TextButton(
               child: Text(R.current.cancel),
               onPressed: () {
@@ -864,23 +810,21 @@ class _CourseTablePageState extends State<CourseTablePage> {
               })
         ],
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
     return v ?? value;
   }
 
   void _showCourseDetail(CourseInfoJson courseInfo) {
-    CourseMainJson course = courseInfo.main.course;
+    final course = courseInfo.main!.course;
     Get.back();
-    String studentId = Model.instance.getCourseSetting().info.studentId;
-    if (course.id.isEmpty) {
+    final studentId = Model.instance.getCourseSetting()!.info!.studentId;
+    if (course!.id.isEmpty) {
       MyToast.show(course.name + R.current.noSupport);
     } else {
       RouteUtils.toISchoolPage(studentId, courseInfo).then((value) {
         if (value != null) {
-          SemesterJson semesterSetting =
-              Model.instance.getCourseSetting().info.courseSemester;
+          final semesterSetting = Model.instance.getCourseSetting()!.info!.courseSemester;
           _getCourseTable(semesterSetting: semesterSetting, studentId: value);
         }
       });
@@ -888,69 +832,31 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _unFocusStudentInput() {
-    FocusScope.of(context).requestFocus(FocusNode()); //失焦使鍵盤關閉
+    FocusScope.of(context).requestFocus(FocusNode());
     _studentFocus.unfocus();
   }
 
-  void _showCourseTable(CourseTableJson courseTable) async {
+  void _showCourseTable(CourseTableJson? courseTable) async {
     if (courseTable == null) {
       return;
     }
-    getCourseNotice(); //查詢訂閱的課程是否有公告
+    getCourseNotice();
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
     _unFocusStudentInput();
     setState(() {
       isLoading = true;
     });
-    courseTableControl.set(courseTable); //設定課表顯示狀態
+    courseTableControl.set(courseTable);
     await Future.delayed(Duration(milliseconds: 50));
     setState(() {
       isLoading = false;
     });
-    favorite = (Model.instance.getCourseTable(
-            courseTable.studentId, courseTable.courseSemester) !=
-        null);
+    favorite = (Model.instance.getCourseTable(courseTable.studentId, courseTable.courseSemester) != null);
     if (favorite) {
-      Model.instance.addCourseTable(courseTableData);
+      Model.instance.addCourseTable(courseTableData!);
     }
   }
 
-  static const platform =
-      const MethodChannel(AppConfig.method_channel_widget_name);
-
-  Future screenshot() async {
-    double originHeight = courseHeight;
-    RenderObject renderObject = _key.currentContext.findRenderObject();
-    double height =
-        renderObject.semanticBounds.size.height - studentIdHeight - dayHeight;
-    Directory directory = await getApplicationSupportDirectory();
-    String path = directory.path;
-    setState(() {
-      courseHeight = height / courseTableControl.getSectionIntList.length;
-    });
-    await Future.delayed(Duration(milliseconds: 100));
-    setState(() {
-      isLoading = true;
-    });
-    Log.d(path);
-    RenderRepaintBoundary boundary =
-        overRepaintKey.currentContext.findRenderObject();
-    ui.Image image = await boundary.toImage(pixelRatio: 2);
-    setState(() {
-      courseHeight = originHeight;
-      isLoading = false;
-    });
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    File imgFile = new File('$path/course_widget.png');
-    await imgFile.writeAsBytes(pngBytes);
-    final bool result = await platform.invokeMethod('update_weight');
-    Log.d("complete $result");
-    if (result) {
-      MyToast.show(R.current.settingComplete);
-    } else {
-      MyToast.show(R.current.settingCompleteWithError);
-    }
-  }
+  static const platform = const MethodChannel(AppConfig.method_channel_widget_name);
 }
