@@ -7,8 +7,7 @@ class NotificationPage extends StatefulWidget {
   _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage>
-    with AutomaticKeepAliveClientMixin {
+class _NotificationPageState extends State<NotificationPage> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
