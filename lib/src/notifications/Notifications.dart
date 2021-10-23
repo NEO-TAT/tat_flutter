@@ -13,8 +13,7 @@ class Notifications {
   static int idCount = 0;
   static final Notifications instance = Notifications._privateConstructor();
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final didReceiveLocalNotificationSubject =
-      BehaviorSubject<ReceivedNotification>();
+  final didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
   final selectNotificationSubject = BehaviorSubject<String>();
   static const downloadChannelId = "Download";
   static const downloadChannelName = "Download";
@@ -29,16 +28,14 @@ class Notifications {
     // var notificationAppLaunchDetails =
     //     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-    final initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
+    final initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
     // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
     // of the `IOSFlutterLocalNotificationsPlugin` class
     final initializationSettingsIOS = IOSInitializationSettings(
         requestAlertPermission: false,
         requestBadgePermission: false,
         requestSoundPermission: false,
-        onDidReceiveLocalNotification:
-            (int id, String? title, String? body, String? payload) {
+        onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) async {
           didReceiveLocalNotificationSubject.add(ReceivedNotification(
             id: id,
             title: title ?? '',
@@ -46,12 +43,12 @@ class Notifications {
             payload: payload,
           ));
         });
-    var initializationSettings = InitializationSettings(
+    final initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String? payload) {
+        onSelectNotification: (String? payload) async {
       selectNotificationSubject.add(payload ?? '');
     });
 
@@ -62,8 +59,7 @@ class Notifications {
 
   void _requestIOSPermissions() {
     flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
         ?.requestPermissions(
           alert: true,
           badge: true,
@@ -74,8 +70,7 @@ class Notifications {
   // the process after ios received a notification
   // FIXME remove empty function
   void _configureDidReceiveLocalNotificationSubject() {
-    didReceiveLocalNotificationSubject.stream
-        .listen((ReceivedNotification receivedNotification) async {});
+    didReceiveLocalNotificationSubject.stream.listen((ReceivedNotification receivedNotification) async {});
   }
 
   // the callback of notification clicked
@@ -115,7 +110,7 @@ class Notifications {
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       downloadChannelId,
       downloadChannelName,
-      channelDescription: downloadChannelDescription,
+      downloadChannelDescription,
       channelShowBadge: false,
       importance: Importance.max,
       priority: Priority.high,
@@ -149,7 +144,7 @@ class Notifications {
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       downloadChannelId,
       downloadChannelName,
-      channelDescription: downloadChannelDescription,
+      downloadChannelDescription,
       channelShowBadge: false,
       importance: Importance.max,
       priority: Priority.high,
@@ -179,7 +174,7 @@ class Notifications {
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
       downloadChannelId,
       downloadChannelName,
-      channelDescription: downloadChannelDescription,
+      downloadChannelDescription,
       importance: Importance.max,
       priority: Priority.high,
       onlyAlertOnce: true,

@@ -92,7 +92,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       // FIXME remove unnecessary null check (the right operand)
-      final List<String?> v = task.result ?? [];
+      final List<String?> v = task.result;
       final List<String> value = [];
       for (int i = 0; i < v.length; i++) {
         final courseName = v[i];

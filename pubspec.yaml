@@ -6,6 +6,9 @@ version: 2.0.0-Nightly+5008
 environment:
   sdk: ">=2.14.4 <3.0.0"
 
+module:
+  androidX: true
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -37,7 +40,7 @@ dependencies:
   #處理HTML特殊字
   local_auth: ^1.1.8
   #驗證身分指紋
-  version: 1.2.0
+  version: ^2.0.0
   #版本比較
   file_picker: ^4.1.6
   #選擇android資料夾
@@ -120,15 +123,14 @@ dependencies:
   firebase_messaging: ^10.0.9
 
   better_player: ^0.0.77
+  alice: ^0.2.4
+  http_parser: ^4.0.0
+  flutter_local_notifications: ^8.1.1
 
 dependency_overrides:
-  http_parser: ^4.0.0
-  alice: ^0.2.4
-  provider: ^6.0.1
   #----------html viewer----------#
   flutter_widget_from_html_core: ^0.8.1
-  flutter_local_notifications: ^9.0.0
-
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:

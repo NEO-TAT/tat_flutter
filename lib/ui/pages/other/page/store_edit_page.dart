@@ -49,8 +49,6 @@ class _StoreEditPageState extends State<StoreEditPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-            // FIXME remove unneeded null check.
-            keyList ??= snapshot.data!;
             return ListView.separated(
               itemCount: keyList.length,
               itemBuilder: (context, index) {
