@@ -15,7 +15,7 @@ class IPlusAnnouncementPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  IPlusAnnouncementPage(this.studentId, this.courseInfo);
+  const IPlusAnnouncementPage(this.studentId, this.courseInfo);
 
   @override
   _IPlusAnnouncementPage createState() => _IPlusAnnouncementPage();

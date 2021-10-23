@@ -1,20 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:tat/src/util/file_utils.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
+import 'package:tat/src/util/file_utils.dart';
 
 import 'file_icon.dart';
 import 'file_popup.dart';
 
 class FileItem extends StatelessWidget {
   final FileSystemEntity file;
-  final Function popTap;
+  final void Function(int)? popTap;
 
-  FileItem({
-    Key key,
-    @required this.file,
+  const FileItem({
+    Key? key,
+    required this.file,
     this.popTap,
   }) : super(key: key);
 
@@ -34,6 +34,7 @@ class FileItem extends StatelessWidget {
         maxLines: 2,
       ),
       subtitle: Text(
+        // FIXME remove unneeded null check for the non-null values.
         "${FileUtils.formatBytes(file == null ? 678476 : File(file.path).lengthSync(), 2)},"
         " ${file == null ? "Test" : FileUtils.formatTime(File(file.path).lastModifiedSync().toIso8601String())}",
       ),
@@ -41,7 +42,7 @@ class FileItem extends StatelessWidget {
           ? null
           : FilePopup(
               path: file.path,
-              popTap: popTap,
+              popTap: popTap!,
             ),
     );
   }

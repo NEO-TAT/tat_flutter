@@ -6,7 +6,7 @@ class Animator extends StatefulWidget {
   final Widget child;
   final Duration time;
 
-  Animator(this.child, this.time);
+  const Animator(this.child, this.time);
 
   @override
   _AnimatorState createState() => _AnimatorState();

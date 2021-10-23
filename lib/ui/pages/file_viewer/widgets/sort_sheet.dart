@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/constants.dart';
 import 'package:tat/src/providers/category_provider.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:provider/provider.dart';
 
 class SortSheet extends StatelessWidget {
   @override
@@ -14,7 +13,7 @@ class SortSheet extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             SizedBox(
               height: 15,
             ),
@@ -33,18 +32,16 @@ class SortSheet extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     onTap: () async {
-                      await Provider.of<CategoryProvider>(context,
-                              listen: false)
-                          .setSort(index);
+                      await Provider.of<CategoryProvider>(
+                        context,
+                        listen: false,
+                      ).setSort(index);
                       Navigator.pop(context);
                     },
                     contentPadding: EdgeInsets.all(0),
-                    trailing: index ==
-                            Provider.of<CategoryProvider>(context,
-                                    listen: false)
-                                .sort
+                    trailing: index == Provider.of<CategoryProvider>(context, listen: false).sort
                         ? Icon(
-                            Feather.check,
+                            Icons.check,
                             color: Colors.blue,
                             size: 16,
                           )
@@ -54,11 +51,12 @@ class SortSheet extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14.0,
                         color: index ==
-                                Provider.of<CategoryProvider>(context,
-                                        listen: false)
-                                    .sort
+                                Provider.of<CategoryProvider>(
+                                  context,
+                                  listen: false,
+                                ).sort
                             ? Colors.blue
-                            : Theme.of(context).textTheme.headline6.color,
+                            : Theme.of(context).textTheme.headline6!.color,
                       ),
                     ),
                   );

@@ -3,12 +3,12 @@ import 'package:tat/src/R.dart';
 
 class DirPopup extends StatelessWidget {
   final String path;
-  final Function popTap;
+  final void Function(int)? popTap;
 
-  DirPopup({
-    Key key,
-    @required this.path,
-    @required this.popTap,
+  const DirPopup({
+    Key? key,
+    required this.path,
+    required this.popTap,
   }) : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class DirPopup extends StatelessWidget {
       ],
       icon: Icon(
         Icons.arrow_drop_down,
-        color: Theme.of(context).textTheme.headline6.color,
+        color: Theme.of(context).textTheme.headline6!.color,
       ),
       color: Theme.of(context).scaffoldBackgroundColor,
       offset: Offset(0, 30),

@@ -46,9 +46,9 @@ class ErrorDialogParameter {
 }
 
 class ErrorDialog {
-  ErrorDialogParameter parameter;
+  final ErrorDialogParameter parameter;
 
-  ErrorDialog(this.parameter);
+  const ErrorDialog(this.parameter);
 
   void show() {
     AwesomeDialog(

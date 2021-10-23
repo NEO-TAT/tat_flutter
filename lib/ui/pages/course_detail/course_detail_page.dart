@@ -17,7 +17,7 @@ class ISchoolPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  ISchoolPage(this.studentId, this.courseInfo);
+  const ISchoolPage(this.studentId, this.courseInfo);
 
   @override
   _ISchoolPageState createState() => _ISchoolPageState();

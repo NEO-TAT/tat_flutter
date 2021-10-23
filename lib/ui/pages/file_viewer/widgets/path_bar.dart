@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class PathBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget child;
 
-  PathBar({
-    Key key,
-    @required this.child,
+  const PathBar({
+    Key? key,
+    required this.child,
   }) : super(key: key);
 
   @override

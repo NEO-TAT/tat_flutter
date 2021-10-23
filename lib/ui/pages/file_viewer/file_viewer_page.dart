@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:path/path.dart' as pathLib;
+import 'package:provider/provider.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/providers/category_provider.dart';
 import 'package:tat/src/util/file_utils.dart';
 import 'package:tat/ui/other/my_toast.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:get/get.dart';
-import 'package:path/path.dart' as pathLib;
-import 'package:provider/provider.dart';
 
 import 'widgets/custom_alert.dart';
 import 'widgets/dir_item.dart';
@@ -20,20 +19,19 @@ class FileViewerPage extends StatefulWidget {
   final String title;
   final String path;
 
-  FileViewerPage({
-    Key key,
-    @required this.title,
-    @required this.path,
+  const FileViewerPage({
+    Key? key,
+    required this.title,
+    required this.path,
   }) : super(key: key);
 
   @override
   _FileViewerPageState createState() => _FileViewerPageState();
 }
 
-class _FileViewerPageState extends State<FileViewerPage>
-    with WidgetsBindingObserver {
-  String path;
-  List<String> paths = [];
+class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObserver {
+  late String path;
+  final List<String> paths = [];
 
   List<FileSystemEntity> files = [];
   bool showHidden = false;
@@ -46,14 +44,13 @@ class _FileViewerPageState extends State<FileViewerPage>
   }
 
   getFiles() async {
-    Directory dir = Directory(path);
-    List<FileSystemEntity> l = dir.listSync();
+    final dir = Directory(path);
+    final l = dir.listSync();
     files.clear();
     setState(() {
-      showHidden =
-          Provider.of<CategoryProvider>(context, listen: false).showHidden;
+      showHidden = Provider.of<CategoryProvider>(context, listen: false).showHidden;
     });
-    for (FileSystemEntity file in l) {
+    for (final file in l) {
       if (!showHidden) {
         if (!pathLib.basename(file.path).startsWith(".")) {
           setState(() {
@@ -67,14 +64,7 @@ class _FileViewerPageState extends State<FileViewerPage>
       }
     }
 
-    files = FileUtils.sortList(
-        files, Provider.of<CategoryProvider>(context, listen: false).sort);
-//    files.sort((f1, f2) => pathlib.basename(f1.path).toLowerCase().compareTo(pathlib.basename(f2.path).toLowerCase()));
-//    files.sort((f1, f2) => f1.toString().split(":")[0].toLowerCase().compareTo(f2.toString().split(":")[0].toLowerCase()));
-//    files.sort((f1, f2) => FileSystemEntity.isDirectorySync(f1.path) ==
-//        FileSystemEntity.isDirectorySync(f2.path)
-//        ? 0
-//        : 1);
+    files = FileUtils.sortList(files, Provider.of<CategoryProvider>(context, listen: false).sort);
   }
 
   @override
@@ -83,13 +73,13 @@ class _FileViewerPageState extends State<FileViewerPage>
     path = widget.path;
     getFiles();
     paths.add(widget.path);
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
   }
 
   @override
@@ -129,7 +119,7 @@ class _FileViewerPageState extends State<FileViewerPage>
           title: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Text(
                 "${widget.title}",
               ),
@@ -151,17 +141,15 @@ class _FileViewerPageState extends State<FileViewerPage>
                   shrinkWrap: true,
                   itemCount: paths.length,
                   itemBuilder: (BuildContext context, int index) {
-                    String i = paths[index];
-                    List splited = i.split("/");
+                    final i = paths[index];
+                    final split = i.split("/");
                     return index == 0
                         ? IconButton(
                             icon: Icon(
-                              widget.path.toString().contains("emulated")
-                                  ? Feather.smartphone
-                                  : Icons.sd_card,
+                              widget.path.toString().contains("emulated") ? Icons.smartphone : Icons.sd_card,
                               color: index == paths.length - 1
                                   ? Theme.of(context).accentColor
-                                  : Theme.of(context).textTheme.headline6.color,
+                                  : Theme.of(context).textTheme.headline6!.color,
                             ),
                             onPressed: () {
                               print(paths[index]);
@@ -187,16 +175,13 @@ class _FileViewerPageState extends State<FileViewerPage>
                                 child: Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 5),
                                   child: Text(
-                                    "${splited[splited.length - 1]}",
+                                    "${split[split.length - 1]}",
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                       color: index == paths.length - 1
                                           ? Theme.of(context).accentColor
-                                          : Theme.of(context)
-                                              .textTheme
-                                              .headline6
-                                              .color,
+                                          : Theme.of(context).textTheme.headline6!.color,
                                     ),
                                   ),
                                 ),
@@ -213,7 +198,7 @@ class _FileViewerPageState extends State<FileViewerPage>
               ),
             ),
           ),
-          actions: <Widget>[
+          actions: [
             IconButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -238,20 +223,17 @@ class _FileViewerPageState extends State<FileViewerPage>
                 padding: EdgeInsets.only(left: 20),
                 itemCount: files.length,
                 itemBuilder: (BuildContext context, int index) {
-                  FileSystemEntity file = files[index];
+                  final file = files[index];
                   return file.toString().split(":")[0] == "Directory"
                       ? DirectoryItem(
                           popTap: (v) async {
                             if (v == 0) {
                               renameDialog(context, file.path, "dir");
                             } else if (v == 1) {
-                              await Directory(file.path)
-                                  .delete(recursive: true) //將會刪除資料夾內所有東西
+                              await Directory(file.path).delete(recursive: true) //將會刪除資料夾內所有東西
                                   .catchError((e) {
                                 print(e.toString());
-                                if (e
-                                    .toString()
-                                    .contains("Permission denied")) {
+                                if (e.toString().contains("Permission denied")) {
                                   MyToast.show(R.current.cannotWrite);
                                 }
                               });
@@ -275,9 +257,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                             } else if (v == 1) {
                               await File(file.path).delete().catchError((e) {
                                 print(e.toString());
-                                if (e
-                                    .toString()
-                                    .contains("Permission denied")) {
+                                if (e.toString().contains("Permission denied")) {
                                   MyToast.show(R.current.cannotWrite);
                                 }
                               });
@@ -290,7 +270,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return Stack(
-                    children: <Widget>[
+                    children: [
                       Align(
                         alignment: Alignment.centerRight,
                         child: Container(
@@ -305,7 +285,7 @@ class _FileViewerPageState extends State<FileViewerPage>
               ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => addDialog(context, path),
-          child: Icon(Feather.plus),
+          child: Icon(Icons.add),
           tooltip: "Add Folder",
         ),
       ),
@@ -313,7 +293,7 @@ class _FileViewerPageState extends State<FileViewerPage>
   }
 
   addDialog(BuildContext context, String path) {
-    final TextEditingController name = TextEditingController();
+    final name = TextEditingController();
     Get.dialog(
       CustomAlert(
         child: Padding(
@@ -322,7 +302,7 @@ class _FileViewerPageState extends State<FileViewerPage>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               SizedBox(height: 15),
               Text(
                 R.current.createNewFolder,
@@ -339,7 +319,7 @@ class _FileViewerPageState extends State<FileViewerPage>
               SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: [
                   Container(
                     height: 40,
                     width: 130,
@@ -376,9 +356,7 @@ class _FileViewerPageState extends State<FileViewerPage>
                       onPressed: () async {
                         if (name.text.isNotEmpty) {
                           if (!Directory(path + "/${name.text}").existsSync()) {
-                            await Directory(path + "/${name.text}")
-                                .create()
-                                .catchError((e) {
+                            await Directory(path + "/${name.text}").create().catchError((e) {
                               print(e.toString());
                               if (e.toString().contains("Permission denied")) {
                                 MyToast.show(R.current.cannotWrite);
@@ -400,7 +378,6 @@ class _FileViewerPageState extends State<FileViewerPage>
           ),
         ),
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
   }
@@ -472,19 +449,12 @@ class _FileViewerPageState extends State<FileViewerPage>
                       onPressed: () async {
                         if (name.text.isNotEmpty) {
                           if (type == "file") {
-                            if (!File(path.replaceAll(
-                                        pathLib.basename(path), "") +
-                                    "${name.text}")
-                                .existsSync()) {
+                            if (!File(path.replaceAll(pathLib.basename(path), "") + "${name.text}").existsSync()) {
                               await File(path)
-                                  .rename(path.replaceAll(
-                                          pathLib.basename(path), "") +
-                                      "${name.text}")
+                                  .rename(path.replaceAll(pathLib.basename(path), "") + "${name.text}")
                                   .catchError((e) {
                                 print(e.toString());
-                                if (e
-                                    .toString()
-                                    .contains("Permission denied")) {
+                                if (e.toString().contains("Permission denied")) {
                                   MyToast.show(R.current.cannotWrite);
                                 }
                               });
@@ -492,21 +462,14 @@ class _FileViewerPageState extends State<FileViewerPage>
                               MyToast.show(R.current.fileNameAlreadyExists);
                             }
                           } else {
-                            if (Directory(path.replaceAll(
-                                        pathLib.basename(path), "") +
-                                    "${name.text}")
-                                .existsSync()) {
+                            if (Directory(path.replaceAll(pathLib.basename(path), "") + "${name.text}").existsSync()) {
                               MyToast.show(R.current.fileNameAlreadyExists);
                             } else {
                               await Directory(path)
-                                  .rename(path.replaceAll(
-                                          pathLib.basename(path), "") +
-                                      "${name.text}")
+                                  .rename(path.replaceAll(pathLib.basename(path), "") + "${name.text}")
                                   .catchError((e) {
                                 print(e.toString());
-                                if (e
-                                    .toString()
-                                    .contains("Permission denied")) {
+                                if (e.toString().contains("Permission denied")) {
                                   MyToast.show(R.current.cannotWrite);
                                 }
                               });
@@ -525,7 +488,6 @@ class _FileViewerPageState extends State<FileViewerPage>
           ),
         ),
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
   }

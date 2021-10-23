@@ -24,7 +24,7 @@ class IPlusFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  IPlusFilePage(this.studentId, this.courseInfo);
+  const IPlusFilePage(this.studentId, this.courseInfo);
 
   @override
   _IPlusFilePage createState() => _IPlusFilePage();

@@ -8,7 +8,7 @@ import 'package:sprintf/sprintf.dart';
 class CalendarDetailDialog extends StatefulWidget {
   final NTUTCalendarJson calendarDetail;
 
-  CalendarDetailDialog({Key? key, required this.calendarDetail}) : super(key: key);
+  const CalendarDetailDialog({Key? key, required this.calendarDetail}) : super(key: key);
 
   @override
   _CalendarDetailDialogState createState() => _CalendarDetailDialogState();

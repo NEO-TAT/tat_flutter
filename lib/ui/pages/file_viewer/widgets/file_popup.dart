@@ -3,12 +3,12 @@ import 'package:tat/src/R.dart';
 
 class FilePopup extends StatelessWidget {
   final String path;
-  final Function popTap;
+  final void Function(int)? popTap;
 
-  FilePopup({
-    Key key,
-    @required this.path,
-    @required this.popTap,
+  const FilePopup({
+    Key? key,
+    required this.path,
+    required this.popTap,
   }) : super(key: key);
 
   @override
@@ -28,16 +28,10 @@ class FilePopup extends StatelessWidget {
             R.current.delete,
           ),
         ),
-//        PopupMenuItem(
-//          value: 2,
-//          child: Text(
-//            "Info",
-//          ),
-//        ),
       ],
       icon: Icon(
         Icons.arrow_drop_down,
-        color: Theme.of(context).textTheme.headline6.color,
+        color: Theme.of(context).textTheme.headline6!.color,
       ),
       color: Theme.of(context).scaffoldBackgroundColor,
       offset: Offset(0, 30),

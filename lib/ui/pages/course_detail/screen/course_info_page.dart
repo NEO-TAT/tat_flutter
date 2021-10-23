@@ -18,7 +18,7 @@ class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  CourseInfoPage(this.studentId, this.courseInfo);
+  const CourseInfoPage(this.studentId, this.courseInfo);
 
   @override
   _CourseInfoPageState createState() => _CourseInfoPageState();
