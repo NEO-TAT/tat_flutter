@@ -1,23 +1,23 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/store/model.dart';
 import 'package:tat/src/task/ntut/ntut_change_password_task.dart';
 import 'package:tat/src/task/task_flow.dart';
-import 'package:get/get.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
-  ChangePasswordDialog({Key key}) : super(key: key);
+  const ChangePasswordDialog({Key? key}) : super(key: key);
 
   @override
   _ChangePasswordDialogState createState() => _ChangePasswordDialogState();
 }
 
 class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
-  final TextEditingController _passwordController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final FocusNode _passwordFocus = new FocusNode();
+  final _passwordFocus = new FocusNode();
   bool passwordShow = false;
   String _passwordErrorMessage = "";
 
@@ -35,13 +35,12 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           textAlign: TextAlign.center,
         ),
       ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+          children: [
             Material(
               elevation: 2,
               child: Row(
@@ -56,7 +55,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                         _passwordFocus.unfocus();
                       },
                       obscureText: !passwordShow,
-                      validator: (value) => _validatorSamePassword(value),
+                      validator: (value) => _validatorSamePassword(value!),
                       decoration: InputDecoration(
                         hintText: R.current.inputNewPassword,
                         errorStyle: TextStyle(
@@ -67,9 +66,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                     ),
                   ),
                   IconButton(
-                    icon: (passwordShow)
-                        ? Icon(EvaIcons.eyeOutline)
-                        : Icon(EvaIcons.eyeOffOutline),
+                    icon: (passwordShow) ? Icon(EvaIcons.eyeOutline) : Icon(EvaIcons.eyeOffOutline),
                     onPressed: () {
                       setState(() {
                         passwordShow = !passwordShow;
@@ -110,12 +107,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         TextButton(
           child: Text(R.current.useOldPassword),
           onPressed: () async {
-            String password = Model.instance.getPassword();
-            TaskFlow taskFlow = TaskFlow();
-            taskFlow.addTask(
-                NTUTChangePasswordTask(password.split('').reversed.join()));
+            final password = Model.instance.getPassword();
+            final taskFlow = TaskFlow();
+            taskFlow.addTask(NTUTChangePasswordTask(password.split('').reversed.join()));
             taskFlow.addTask(NTUTChangePasswordTask(password));
-            bool success = await taskFlow.start();
+            final success = await taskFlow.start();
             if (success) {
               Get.back<bool>(result: true);
             }
@@ -131,11 +127,10 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
             TextButton(
               child: Text(R.current.sure),
               onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  TaskFlow taskFlow = TaskFlow();
-                  taskFlow.addTask(
-                      NTUTChangePasswordTask(_passwordController.text));
-                  bool success = await taskFlow.start();
+                if (_formKey.currentState!.validate()) {
+                  final taskFlow = TaskFlow();
+                  taskFlow.addTask(NTUTChangePasswordTask(_passwordController.text));
+                  final success = await taskFlow.start();
                   if (success) {
                     Get.back<bool>(result: true);
                   }
@@ -148,12 +143,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     );
   }
 
-  String _validatorSamePassword(String value) {
+  String? _validatorSamePassword(String value) {
     _passwordErrorMessage = "";
     if (_passwordController.text.isEmpty) {
       _passwordErrorMessage = R.current.inputNull;
-    } else if (_passwordController.text.length < 8 ||
-        _passwordController.text.length > 14) {
+    } else if (_passwordController.text.length < 8 || _passwordController.text.length > 14) {
       _passwordErrorMessage = R.current.passwordLengthError;
     } else if (_passwordController.text == Model.instance.getPassword()) {
       _passwordErrorMessage = R.current.sameOldPassword;

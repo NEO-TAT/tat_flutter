@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tat/debug/log/log.dart';
-import 'package:tat/src/R.dart';
-import 'package:tat/src/store/model.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/error_codes.dart' as errorCode;
 import 'package:local_auth/local_auth.dart';
+import 'package:tat/debug/log/log.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/store/model.dart';
 
 class CheckPasswordDialog extends StatefulWidget {
-  CheckPasswordDialog({Key key}) : super(key: key);
+  const CheckPasswordDialog({Key? key}) : super(key: key);
 
   @override
   _CheckPasswordDialogState createState() => _CheckPasswordDialogState();
 }
 
 class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
-  final TextEditingController _originPasswordController =
-      TextEditingController();
+  final _originPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final FocusNode _originPasswordFocus = new FocusNode();
+  final _originPasswordFocus = new FocusNode();
   String _originPasswordErrorMessage = "";
 
   @override
@@ -28,10 +27,10 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
   }
 
   void checkAuth() async {
-    LocalAuthentication localAuthentication = LocalAuthentication();
+    final localAuthentication = LocalAuthentication();
     try {
-      bool didAuthenticate = await localAuthentication.authenticate(
-          localizedReason: R.current.checkIdentity, useErrorDialogs: false);
+      final didAuthenticate =
+          await localAuthentication.authenticate(localizedReason: R.current.checkIdentity, useErrorDialogs: false);
       if (didAuthenticate) {
         Get.back<bool>(result: true);
       }
@@ -63,13 +62,12 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
           textAlign: TextAlign.center,
         ),
       ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+          children: [
             Material(
               elevation: 2,
               child: TextFormField(
@@ -81,7 +79,7 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
                   _originPasswordFocus.unfocus();
                 },
                 obscureText: true,
-                validator: (value) => _validatorOriginPassword(value),
+                validator: (value) => _validatorOriginPassword(value!),
                 decoration: InputDecoration(
                   hintText: R.current.originPassword,
                   errorStyle: TextStyle(
@@ -123,7 +121,7 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
         TextButton(
           child: Text(R.current.sure),
           onPressed: () {
-            if (_formKey.currentState.validate()) {
+            if (_formKey.currentState!.validate()) {
               Get.back<bool>(result: true);
             }
           },
@@ -132,7 +130,7 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
     );
   }
 
-  String _validatorOriginPassword(String value) {
+  String? _validatorOriginPassword(String value) {
     if (value == Model.instance.getPassword()) {
       _originPasswordErrorMessage = '';
     } else {
@@ -140,8 +138,6 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
         _originPasswordErrorMessage = R.current.passwordNotSame;
       });
     }
-    return _originPasswordErrorMessage.isNotEmpty
-        ? _originPasswordErrorMessage
-        : null;
+    return _originPasswordErrorMessage.isNotEmpty ? _originPasswordErrorMessage : null;
   }
 }
