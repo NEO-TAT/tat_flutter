@@ -6,7 +6,7 @@ import 'package:logger/logger.dart';
 
 import 'ansi_parser.dart';
 
-ListQueue<OutputEvent> _outputEventBuffer = ListQueue();
+final _outputEventBuffer = ListQueue<OutputEvent>();
 int _bufferSize = 50;
 bool _initialized = false;
 
@@ -24,8 +24,7 @@ class MyConsoleOutput extends LogOutput {
 class LogConsole extends StatefulWidget {
   final bool dark;
 
-  LogConsole({this.dark = false})
-      : assert(_initialized, "Please call LogConsole.init() first.");
+  const LogConsole({this.dark = false});
 
   static void init({int bufferSize = 50}) {
     if (_initialized) return;
@@ -35,30 +34,27 @@ class LogConsole extends StatefulWidget {
 
   static String getLog() {
     bool error = false;
-    List<OutputEvent> events = [];
-    for (OutputEvent event in _outputEventBuffer) {
+    final List<OutputEvent> events = [];
+    for (final event in _outputEventBuffer) {
       events.add(event);
     }
     String log = "";
     for (int i = 0; i < events.length; i++) {
-      OutputEvent event = events[i];
+      final event = events[i];
       if (event.level == Level.error) {
         error = true;
         log += event.lines.join("\n");
       }
     }
     if (error) {
-      log = log.replaceAll(
-          "┌───────────────────────────────────────────────────────────", "");
-      log = log.replaceAll(
-          "└───────────────────────────────────────────────────────────", "");
-      log = log.replaceAll(
-          "├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄", "");
+      log = log.replaceAll("┌───────────────────────────────────────────────────────────", "");
+      log = log.replaceAll("└───────────────────────────────────────────────────────────", "");
+      log = log.replaceAll("├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄", "");
       log = log.replaceAll("├", "");
       log = log.replaceAll("│", "");
       return log.substring(0, (log.length > 2000) ? 2000 : log.length);
     } else {
-      return "沒有任何錯誤";
+      return "No error founded.";
     }
   }
 
@@ -72,20 +68,20 @@ class RenderedEvent {
   final TextSpan span;
   final String lowerCaseText;
 
-  RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
+  const RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
 }
 
 class _LogConsoleState extends State<LogConsole> {
-  ListQueue<RenderedEvent> _renderedBuffer = ListQueue();
-  List<RenderedEvent> _filteredBuffer = [];
+  final _renderedBuffer = ListQueue<RenderedEvent>();
+  late List<RenderedEvent> _filteredBuffer = [];
 
-  var _scrollController = ScrollController();
-  var _filterController = TextEditingController();
+  final _scrollController = ScrollController();
+  final _filterController = TextEditingController();
 
   Level _filterLevel = Level.verbose;
-  double _logFontSize = 14;
+  int _logFontSize = 14;
 
-  var _currentId = 0;
+  int _currentId = 0;
   bool _scrollListenerEnabled = true;
   bool _followBottom = true;
 
@@ -94,8 +90,7 @@ class _LogConsoleState extends State<LogConsole> {
     super.initState();
     _scrollController.addListener(() {
       if (!_scrollListenerEnabled) return;
-      var scrolledToBottom = _scrollController.offset >=
-          _scrollController.position.maxScrollExtent;
+      final scrolledToBottom = _scrollController.offset >= _scrollController.position.maxScrollExtent;
       setState(() {
         _followBottom = scrolledToBottom;
       });
@@ -107,19 +102,19 @@ class _LogConsoleState extends State<LogConsole> {
     super.didChangeDependencies();
 
     _renderedBuffer.clear();
-    for (var event in _outputEventBuffer) {
+    for (final event in _outputEventBuffer) {
       _renderedBuffer.add(_renderEvent(event));
     }
     _refreshFilter();
   }
 
   void _refreshFilter() {
-    var newFilteredBuffer = _renderedBuffer.where((it) {
-      var logLevelMatches = it.level.index >= _filterLevel.index;
+    final newFilteredBuffer = _renderedBuffer.where((it) {
+      final logLevelMatches = it.level.index >= _filterLevel.index;
       if (!logLevelMatches) {
         return false;
       } else if (_filterController.text.isNotEmpty) {
-        var filterText = _filterController.text.toLowerCase();
+        final filterText = _filterController.text.toLowerCase();
         return it.lowerCaseText.contains(filterText);
       } else {
         return true;
@@ -141,11 +136,11 @@ class _LogConsoleState extends State<LogConsole> {
       theme: widget.dark
           ? ThemeData(
               brightness: Brightness.dark,
-              accentColor: Colors.blueGrey,
+              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueGrey),
             )
           : ThemeData(
               brightness: Brightness.light,
-              accentColor: Colors.lightBlueAccent,
+              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.lightBlueAccent),
             ),
       home: Scaffold(
         appBar: AppBar(
@@ -226,7 +221,7 @@ class _LogConsoleState extends State<LogConsole> {
               return Text.rich(
                 logEntry.span,
                 key: Key(logEntry.id.toString()),
-                style: TextStyle(fontSize: _logFontSize),
+                style: TextStyle(fontSize: _logFontSize.toDouble()),
               );
             },
             itemCount: _filteredBuffer.length,
@@ -287,7 +282,7 @@ class _LogConsoleState extends State<LogConsole> {
               )
             ],
             onChanged: (value) {
-              _filterLevel = value;
+              _filterLevel = value as Level;
               _refreshFilter();
             },
           )
@@ -303,7 +298,7 @@ class _LogConsoleState extends State<LogConsole> {
       _followBottom = true;
     });
 
-    var scrollPosition = _scrollController.position;
+    final scrollPosition = _scrollController.position;
     await _scrollController.animateTo(
       scrollPosition.maxScrollExtent,
       duration: new Duration(milliseconds: 400),
@@ -314,8 +309,8 @@ class _LogConsoleState extends State<LogConsole> {
   }
 
   RenderedEvent _renderEvent(OutputEvent event) {
-    var parser = AnsiParser(widget.dark);
-    var text = event.lines.join('\n');
+    final parser = AnsiParser(widget.dark);
+    final text = event.lines.join('\n');
     parser.parse(text);
     return RenderedEvent(
       _currentId++,
@@ -335,7 +330,7 @@ class LogBar extends StatelessWidget {
   final bool dark;
   final Widget child;
 
-  LogBar({this.dark, this.child});
+  const LogBar({required this.dark, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +341,7 @@ class LogBar extends StatelessWidget {
           boxShadow: [
             if (!dark)
               BoxShadow(
-                color: Colors.grey[400],
+                color: Colors.grey,
                 blurRadius: 3,
               ),
           ],

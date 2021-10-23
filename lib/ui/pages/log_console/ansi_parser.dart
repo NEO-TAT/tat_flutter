@@ -7,17 +7,17 @@ class AnsiParser {
 
   AnsiParser(this.dark);
 
-  Color foreground;
-  Color background;
-  List<TextSpan> spans;
+  late Color foreground;
+  late Color background;
+  late List<TextSpan> spans;
 
   void parse(String s) {
     spans = [];
-    var state = TEXT;
-    StringBuffer buffer;
-    var text = StringBuffer();
-    var code = 0;
-    List<int> codes;
+    int state = TEXT;
+    late StringBuffer buffer;
+    final text = StringBuffer();
+    int code = 0;
+    late List<int> codes;
 
     for (var i = 0, n = s.length; i < n; i++) {
       var c = s[i];
@@ -82,24 +82,24 @@ class AnsiParser {
 
     switch (codes[0]) {
       case 0:
-        foreground = getColor(0, true);
-        background = getColor(0, false);
+        foreground = getColor(0, true)!;
+        background = getColor(0, false)!;
         break;
       case 38:
-        foreground = getColor(codes[2], true);
+        foreground = getColor(codes[2], true)!;
         break;
       case 39:
-        foreground = getColor(0, true);
+        foreground = getColor(0, true)!;
         break;
       case 48:
-        background = getColor(codes[2], false);
+        background = getColor(codes[2], false)!;
         break;
       case 49:
-        background = getColor(0, false);
+        background = getColor(0, false)!;
     }
   }
 
-  Color getColor(int colorCode, bool foreground) {
+  Color? getColor(int colorCode, bool foreground) {
     switch (colorCode) {
       case 0:
         return foreground ? Colors.black : Colors.transparent;

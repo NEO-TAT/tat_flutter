@@ -19,27 +19,27 @@ class ShakeDetector {
 
   int lastShakeTimestamp = DateTime.now().millisecondsSinceEpoch;
 
-  StreamSubscription streamSubscription;
+  StreamSubscription? streamSubscription;
 
   ShakeDetector({
-    this.onPhoneShake,
+    required this.onPhoneShake,
     this.shakeThresholdGravity = 1.25,
     this.minTimeBetweenShakes = 160,
     this.shakeCountResetTime = 1500,
     this.minShakeCount = 2,
   });
 
-  /// Starts listening to accerelometer events
+  /// Starts listening to accelerometer events
   void startListening() {
     streamSubscription = accelerometerEvents.listen((event) {
-      var gX = event.x / 9.81;
-      var gY = event.y / 9.81;
-      var gZ = event.z / 9.81;
+      final gX = event.x / 9.81;
+      final gY = event.y / 9.81;
+      final gZ = event.z / 9.81;
 
       // gForce will be close to 1 when there is no movement.
-      var gForce = sqrt(gX * gX + gY * gY + gZ * gZ);
+      final gForce = sqrt(gX * gX + gY * gY + gZ * gZ);
       if (gForce > shakeThresholdGravity) {
-        var now = DateTime.now().millisecondsSinceEpoch;
+        final now = DateTime.now().millisecondsSinceEpoch;
         // ignore shake events too close to each other
         if (lastShakeTimestamp + minTimeBetweenShakes > now) {
           return;
@@ -62,7 +62,7 @@ class ShakeDetector {
   /// Stops listening to accelerometer events
   void stopListening() {
     if (streamSubscription != null) {
-      streamSubscription.cancel();
+      streamSubscription!.cancel();
     }
   }
 }
