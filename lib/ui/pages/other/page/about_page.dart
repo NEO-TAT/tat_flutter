@@ -1,5 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/util/route_utils.dart';
 import 'package:tat/src/version/app_version.dart';
@@ -7,7 +8,6 @@ import 'package:tat/src/version/update/app_update.dart';
 import 'package:tat/ui/other/listview_animator.dart';
 import 'package:tat/ui/other/my_toast.dart';
 import 'package:tat/ui/pages/password/check_password_dialog.dart';
-import 'package:get/get.dart';
 
 enum onListViewPress { AppUpdate, Contribution, PrivacyPolicy, Version, Dev }
 
@@ -77,7 +77,7 @@ class _AboutPageState extends State<AboutPage> {
     switch (value) {
       case onListViewPress.AppUpdate:
         MyToast.show(R.current.checkingVersion);
-        bool result = await APPVersion.check();
+        final result = await APPVersion.check();
         if (!result) {
           MyToast.show(R.current.isNewVersion);
         }
@@ -86,7 +86,7 @@ class _AboutPageState extends State<AboutPage> {
         RouteUtils.toContributorsPage();
         break;
       case onListViewPress.Version:
-        String mainVersion = await AppUpdate.getAppVersion();
+        final mainVersion = await AppUpdate.getAppVersion();
         if (pressTime == 0) {
           MyToast.show(mainVersion);
         }
@@ -122,8 +122,7 @@ class _AboutPageState extends State<AboutPage> {
       body: ListView.separated(
         itemCount: listViewData.length,
         itemBuilder: (context, index) {
-          Widget widget;
-          widget = _buildAbout(listViewData[index]);
+          final widget = _buildAbout(listViewData[index]);
           return InkWell(
             child: WidgetAnimator(widget),
             onTap: () {
@@ -145,11 +144,10 @@ class _AboutPageState extends State<AboutPage> {
   Container _buildAbout(Map data) {
     return Container(
       //color: Colors.yellow,
-      padding:
-          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Icon(
             data['icon'],
             color: data['color'],

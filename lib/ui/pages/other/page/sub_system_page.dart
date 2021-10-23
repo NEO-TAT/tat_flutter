@@ -9,7 +9,7 @@ class SubSystemPage extends StatefulWidget {
   final title;
   final arg;
 
-  SubSystemPage({this.title, this.arg});
+  const SubSystemPage({this.title, this.arg});
 
   @override
   _SubSystemPageState createState() => _SubSystemPageState();
@@ -17,7 +17,7 @@ class SubSystemPage extends StatefulWidget {
 
 class _SubSystemPageState extends State<SubSystemPage> {
   bool isLoading = true;
-  APTreeJson apTree;
+  late APTreeJson apTree;
 
   @override
   void initState() {
@@ -29,8 +29,8 @@ class _SubSystemPageState extends State<SubSystemPage> {
     setState(() {
       isLoading = true;
     });
-    TaskFlow taskFlow = TaskFlow();
-    var task = NTUTSubSystemTask(arg);
+    final taskFlow = TaskFlow();
+    final task = NTUTSubSystemTask(arg);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       apTree = task.result;
@@ -59,7 +59,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
       shrinkWrap: true,
       itemCount: apTree.apList.length,
       itemBuilder: (BuildContext context, int index) {
-        APListJson ap = apTree.apList[index];
+        final ap = apTree.apList[index];
         return InkWell(
           child: Container(
             height: 50,
@@ -67,9 +67,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Icon((ap.type == 'link')
-                      ? Icons.link_outlined
-                      : Icons.folder_outlined),
+                  child: Icon((ap.type == 'link') ? Icons.link_outlined : Icons.folder_outlined),
                 ),
                 Expanded(
                   flex: 8,
@@ -80,7 +78,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
           ),
           onTap: () async {
             if (ap.type == 'link') {
-              String url = "${NTUTConnector.host}${ap.urlLink}";
+              final url = "${NTUTConnector.host}${ap.urlLink}";
               RouteUtils.toWebViewPage(ap.description, url);
             } else {
               RouteUtils.toSubSystemPage(ap.description, ap.apDn);

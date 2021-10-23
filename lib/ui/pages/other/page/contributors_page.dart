@@ -1,17 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:github/github.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_colors.dart';
 import 'package:tat/src/config/app_link.dart';
 import 'package:tat/ui/other/listview_animator.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:github/github.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsPage extends StatelessWidget {
   final github = GitHub();
-  final repositorySlug =
-      RepositorySlug(AppLink.githubOwner, AppLink.githubName);
+  final repositorySlug = RepositorySlug(AppLink.githubOwner, AppLink.githubName);
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +40,7 @@ class ContributorsPage extends StatelessWidget {
                   height: 50,
                   child: InkWell(
                     onTap: () {
-                      final url = AppLink.gitHub;
-                      launch(url);
+                      launch(AppLink.gitHub);
                     },
                     child: Container(
                       padding: EdgeInsets.only(left: 20),
@@ -82,20 +80,18 @@ class ContributorsPage extends StatelessWidget {
             ],
           ),
           FutureBuilder<List<Contributor>>(
-            future:
-                github.repositories.listContributors(repositorySlug).toList(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<Contributor>> snapshot) {
+            future: github.repositories.listContributors(repositorySlug).toList(),
+            builder: (BuildContext context, AsyncSnapshot<List<Contributor>> snapshot) {
               if (snapshot.hasData) {
-                List<Contributor> contributorList = snapshot.data;
+                final contributorList = snapshot.data;
                 return ListView.builder(
-                  itemCount: contributorList.length,
+                  itemCount: contributorList!.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
-                    Contributor contributor = contributorList[index];
+                    final contributor = contributorList[index];
                     return InkWell(
                       onTap: () {
-                        launch(contributor.htmlUrl);
+                        launch(contributor.htmlUrl!);
                       },
                       child: WidgetAnimator(
                         Container(
@@ -106,9 +102,8 @@ class ContributorsPage extends StatelessWidget {
                                 height: 50,
                                 width: 50,
                                 child: CachedNetworkImage(
-                                  imageUrl: contributor.avatarUrl,
-                                  imageBuilder: (context, imageProvider) =>
-                                      CircleAvatar(
+                                  imageUrl: contributor.avatarUrl!,
+                                  imageBuilder: (context, imageProvider) => CircleAvatar(
                                     radius: 15.0,
                                     backgroundImage: imageProvider,
                                   ),
@@ -117,7 +112,7 @@ class ContributorsPage extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.only(left: 10),
                               ),
-                              Text(contributor.login)
+                              Text(contributor.login!)
                             ],
                           ),
                         ),

@@ -2,12 +2,13 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'package:tat/debug/log/log.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_link.dart';
 import 'package:tat/src/connector/ntut_connector.dart';
 import 'package:tat/src/file/file_store.dart';
-import 'package:tat/src/model/userdata/user_data_json.dart';
 import 'package:tat/src/store/model.dart';
 import 'package:tat/src/task/ntut/ntut_task.dart';
 import 'package:tat/src/task/task_flow.dart';
@@ -17,31 +18,20 @@ import 'package:tat/ui/other/error_dialog.dart';
 import 'package:tat/ui/other/my_toast.dart';
 import 'package:tat/ui/pages/log_console/log_console.dart';
 import 'package:tat/ui/pages/password/change_password.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:get/get.dart';
 
-enum onListViewPress {
-  Setting,
-  FileViewer,
-  Logout,
-  Report,
-  About,
-  Login,
-  SubSystem,
-  ChangePassword
-}
+enum onListViewPress { Setting, FileViewer, Logout, Report, About, Login, SubSystem, ChangePassword }
 
 class OtherPage extends StatefulWidget {
   final PageController pageController;
 
-  OtherPage(this.pageController);
+  const OtherPage(this.pageController);
 
   @override
   _OtherPageState createState() => _OtherPageState();
 }
 
 class _OtherPageState extends State<OtherPage> {
-  List<Map> optionList = [
+  final optionList = [
     {
       "icon": EvaIcons.settings2Outline,
       "color": Colors.orange,
@@ -75,12 +65,7 @@ class _OtherPageState extends State<OtherPage> {
         "onPress": onListViewPress.Logout
       },
     if (Model.instance.getPassword().isEmpty)
-      {
-        "icon": EvaIcons.logIn,
-        "color": Colors.teal[400],
-        "title": R.current.login,
-        "onPress": onListViewPress.Login
-      },
+      {"icon": EvaIcons.logIn, "color": Colors.teal[400], "title": R.current.login, "onPress": onListViewPress.Login},
     {
       "icon": EvaIcons.messageSquareOutline,
       "color": Colors.cyan,
@@ -103,10 +88,10 @@ class _OtherPageState extends State<OtherPage> {
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.SubSystem:
-        RouteUtils.toSubSystemPage(R.current.informationSystem, null);
+        RouteUtils.toSubSystemPage(R.current.informationSystem, '');
         break;
       case onListViewPress.Logout:
-        ErrorDialogParameter parameter = ErrorDialogParameter(
+        final parameter = ErrorDialogParameter(
             context: context,
             desc: R.current.logoutWarning,
             dialogType: DialogType.WARNING,
@@ -160,7 +145,7 @@ class _OtherPageState extends State<OtherPage> {
       appBar: AppBar(
         title: Text(R.current.titleOther),
       ),
-      body: Column(children: <Widget>[
+      body: Column(children: [
         if (Model.instance.getAccount().isNotEmpty)
           Container(
             child: _buildHeader(),
@@ -191,11 +176,11 @@ class _OtherPageState extends State<OtherPage> {
   }
 
   Widget _buildHeader() {
-    UserInfoJson userInfo = Model.instance.getUserInfo();
-    String givenName = userInfo.givenName;
+    final userInfo = Model.instance.getUserInfo();
+    String givenName = userInfo!.givenName;
     String userMail = userInfo.userMail;
-    Map userImageInfo = NTUTConnector.getUserImage();
-    Widget userImage = CachedNetworkImage(
+    final userImageInfo = NTUTConnector.getUserImage();
+    final userImage = CachedNetworkImage(
       cacheManager: Model.instance.cacheManager,
       imageUrl: userImageInfo["url"],
       httpHeaders: userImageInfo["header"],
@@ -204,15 +189,13 @@ class _OtherPageState extends State<OtherPage> {
         backgroundImage: imageProvider,
       ),
       useOldImageOnUrlChange: true,
-      placeholder: (context, url) =>
-          SpinKitPouringHourglass(color: Colors.white),
       errorWidget: (context, url, error) {
         Log.e(error.toString());
         return Icon(Icons.error);
       },
     );
-    List<Widget> columnItem = [];
-    final MediaQueryData data = MediaQuery.of(context);
+    final List<Widget> columnItem = [];
+    final data = MediaQuery.of(context);
     if (givenName.isNotEmpty) {
       columnItem
         ..add(Text(
@@ -243,11 +226,10 @@ class _OtherPageState extends State<OtherPage> {
     task.openLoadingDialog = false;
     taskFlow.addTask(task);
     return Container(
-      padding:
-          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+      padding: EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Container(
             width: 60,
             height: 60,
@@ -255,12 +237,10 @@ class _OtherPageState extends State<OtherPage> {
               child: FutureBuilder<bool>(
                 future: taskFlow.start(),
                 builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.data == true) {
+                  if (snapshot.connectionState == ConnectionState.done && snapshot.data == true) {
                     return userImage;
                   } else {
-                    return SpinKitPouringHourglass(
-                        color: Theme.of(context).accentColor);
+                    return Container(color: Theme.of(context).accentColor);
                   }
                 },
               ),
@@ -288,8 +268,7 @@ class _OtherPageState extends State<OtherPage> {
         _onListViewPress(data['onPress']);
       },
       child: Container(
-        padding:
-            EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+        padding: EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:tat/src/R.dart';
-import 'package:tat/src/store/model.dart';
-import 'package:tat/ui/other/listview_animator.dart';
 import 'package:get/get.dart';
 import 'package:pretty_json/pretty_json.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tat/src/R.dart';
+import 'package:tat/src/store/model.dart';
+import 'package:tat/ui/other/listview_animator.dart';
 
 class StoreEditPage extends StatefulWidget {
   StoreEditPage();
@@ -16,8 +16,8 @@ class StoreEditPage extends StatefulWidget {
 }
 
 class _StoreEditPageState extends State<StoreEditPage> {
-  SharedPreferences pref;
-  List<String> keyList;
+  late final SharedPreferences pref;
+  late final List<String> keyList;
 
   @override
   void initState() {
@@ -49,17 +49,15 @@ class _StoreEditPageState extends State<StoreEditPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-            keyList = keyList ?? snapshot.data;
+            // FIXME remove unneeded null check.
+            keyList ??= snapshot.data!;
             return ListView.separated(
               itemCount: keyList.length,
               itemBuilder: (context, index) {
-                String key = keyList[index];
-                final TextEditingController controller =
-                    TextEditingController();
+                final key = keyList[index];
+                final TextEditingController controller = TextEditingController();
                 try {
-                  controller.text = prettyJson(
-                      json.decode(pref.get(key).toString()),
-                      indent: 2);
+                  controller.text = prettyJson(json.decode(pref.get(key).toString()), indent: 2);
                 } catch (e) {
                   controller.text = pref.get(key).toString();
                 }
@@ -95,21 +93,11 @@ class _StoreEditPageState extends State<StoreEditPage> {
                                       ),
                                       TextButton(
                                         onPressed: () async {
-                                          if (pref
-                                                  .get(key)
-                                                  .runtimeType
-                                                  .toString() ==
-                                              'String') {
-                                            await pref.setString(
-                                                key, controller.text);
+                                          if (pref.get(key).runtimeType.toString() == 'String') {
+                                            await pref.setString(key, controller.text);
                                           }
-                                          if (pref
-                                                  .get(key)
-                                                  .runtimeType
-                                                  .toString() ==
-                                              'int') {
-                                            await pref.setInt(key,
-                                                int.parse(controller.text));
+                                          if (pref.get(key).runtimeType.toString() == 'int') {
+                                            await pref.setInt(key, int.parse(controller.text));
                                           }
                                           Get.back();
                                         },
@@ -134,7 +122,6 @@ class _StoreEditPageState extends State<StoreEditPage> {
                 );
               },
               separatorBuilder: (context, index) {
-                // 顯示格線
                 return Container(
                   color: Colors.black12,
                   height: 1,

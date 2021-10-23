@@ -14,31 +14,16 @@ class DevPage extends StatefulWidget {
 }
 
 class _DevPageState extends State<DevPage> {
-  final List<Map> listViewData = [
+  final listViewData = [
     {
       "icon": Icons.vpn_key_outlined,
       "title": "Cloud Messaging Token",
       "color": Colors.green,
       "onPress": onListViewPress.CloudMessageToken
     },
-    {
-      "icon": Icons.info_outline,
-      "title": "Dio Log",
-      "color": Colors.blue,
-      "onPress": onListViewPress.DioLog
-    },
-    {
-      "icon": Icons.info_outline,
-      "title": "App Log",
-      "color": Colors.yellow,
-      "onPress": onListViewPress.AppLog
-    },
-    {
-      "icon": Icons.edit_outlined,
-      "title": "Store Edit",
-      "color": Colors.green,
-      "onPress": onListViewPress.StoreEdit
-    },
+    {"icon": Icons.info_outline, "title": "Dio Log", "color": Colors.blue, "onPress": onListViewPress.DioLog},
+    {"icon": Icons.info_outline, "title": "App Log", "color": Colors.yellow, "onPress": onListViewPress.AppLog},
+    {"icon": Icons.edit_outlined, "title": "Store Edit", "color": Colors.green, "onPress": onListViewPress.StoreEdit},
   ];
 
   @override
@@ -51,8 +36,8 @@ class _DevPageState extends State<DevPage> {
   void _onListViewPress(onListViewPress value) async {
     switch (value) {
       case onListViewPress.CloudMessageToken:
-        String token = await CloudMessagingUtils.getToken();
-        MyToast.show(token + " copy");
+        final token = await CloudMessagingUtils.getToken();
+        MyToast.show(token! + " copy");
         FlutterClipboard.copy(token);
         break;
       case onListViewPress.DioLog:
@@ -79,12 +64,11 @@ class _DevPageState extends State<DevPage> {
       body: ListView.separated(
         itemCount: listViewData.length,
         itemBuilder: (context, index) {
-          Widget widget;
-          widget = _buildAbout(listViewData[index]);
+          final widget = _buildAbout(listViewData[index]);
           return InkWell(
             child: WidgetAnimator(widget),
             onTap: () {
-              _onListViewPress(listViewData[index]['onPress']);
+              _onListViewPress(listViewData[index]['onPress'] as onListViewPress);
             },
           );
         },
@@ -102,8 +86,7 @@ class _DevPageState extends State<DevPage> {
   Container _buildAbout(Map data) {
     return Container(
       //color: Colors.yellow,
-      padding:
-          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

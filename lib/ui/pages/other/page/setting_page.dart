@@ -1,7 +1,9 @@
 import 'dart:io';
 
-import 'package:after_init/after_init.dart';
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_themes.dart';
 import 'package:tat/src/file/file_store.dart';
@@ -10,9 +12,6 @@ import 'package:tat/src/store/model.dart';
 import 'package:tat/src/util/document_utils.dart';
 import 'package:tat/src/util/language_utils.dart';
 import 'package:tat/ui/other/listview_animator.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class SettingPage extends StatefulWidget {
   final PageController pageController;
@@ -23,9 +22,8 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage>
-    with AfterInitMixin<SettingPage> {
-  String downloadPath;
+class _SettingPageState extends State<SettingPage> with AfterLayoutMixin<SettingPage> {
+  late String downloadPath;
 
   @override
   void initState() {
@@ -33,13 +31,8 @@ class _SettingPageState extends State<SettingPage>
     super.initState();
   }
 
-  @override
-  void didInitState() {
-    _getDownloadPath();
-  }
-
   void _getDownloadPath() async {
-    String path = await FileStore.findLocalPath(context);
+    final path = await FileStore.findLocalPath(context);
     setState(() {
       downloadPath = path;
     });
@@ -47,7 +40,7 @@ class _SettingPageState extends State<SettingPage>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listViewData = [];
+    final List<Widget> listViewData = [];
     listViewData.add(_buildLanguageSetting());
     if (Platform.isAndroid) {
       listViewData.add(_buildOpenExternalVideoSetting());
@@ -63,15 +56,13 @@ class _SettingPageState extends State<SettingPage>
       body: ListView.separated(
         itemCount: listViewData.length,
         itemBuilder: (context, index) {
-          Widget widget;
-          widget = listViewData[index];
+          final widget = listViewData[index];
           return Container(
             padding: EdgeInsets.only(top: 5, left: 20, right: 20),
             child: WidgetAnimator(widget),
           );
         },
         separatorBuilder: (context, index) {
-          // 顯示格線
           return Container(
             color: Colors.black12,
             height: 1,
@@ -81,15 +72,15 @@ class _SettingPageState extends State<SettingPage>
     );
   }
 
-  final TextStyle textTitle = TextStyle(fontSize: 24);
-  final TextStyle textBody = TextStyle(fontSize: 16, color: Color(0xFF808080));
+  final textTitle = TextStyle(fontSize: 24);
+  final textBody = TextStyle(fontSize: 16, color: Color(0xFF808080));
 
   Widget _buildLanguageSetting() {
     return SwitchListTile.adaptive(
       contentPadding: EdgeInsets.all(0),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Text(
             R.current.languageSwitch,
             style: textTitle,
@@ -103,9 +94,8 @@ class _SettingPageState extends State<SettingPage>
       value: (LanguageUtils.getLangIndex() == LangEnum.en),
       onChanged: (value) {
         setState(() {
-          int langIndex = 1 - LanguageUtils.getLangIndex().index;
-          LanguageUtils.setLangByIndex(LangEnum.values.toList()[langIndex])
-              .then((_) {
+          final langIndex = 1 - LanguageUtils.getLangIndex().index;
+          LanguageUtils.setLangByIndex(LangEnum.values.toList()[langIndex]).then((_) {
             widget.pageController.jumpToPage(0);
             Get.back();
           });
@@ -119,17 +109,17 @@ class _SettingPageState extends State<SettingPage>
       contentPadding: EdgeInsets.all(0),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Text(
             R.current.autoAppCheck,
             style: textTitle,
           ),
         ],
       ),
-      value: Model.instance.getOtherSetting().autoCheckAppUpdate,
+      value: Model.instance.getOtherSetting()!.autoCheckAppUpdate,
       onChanged: (value) {
         setState(() {
-          Model.instance.getOtherSetting().autoCheckAppUpdate = value;
+          Model.instance.getOtherSetting()!.autoCheckAppUpdate = value;
           Model.instance.saveOtherSetting();
         });
       },
@@ -137,12 +127,11 @@ class _SettingPageState extends State<SettingPage>
   }
 
   Widget _buildDarkModeSetting() {
-    return (MediaQuery.of(context).platformBrightness !=
-            AppThemes.darkTheme.brightness)
+    return (MediaQuery.of(context).platformBrightness != AppThemes.darkTheme.brightness)
         ? SwitchListTile.adaptive(
             contentPadding: EdgeInsets.all(0),
             title: Row(
-              children: <Widget>[
+              children: [
                 Text(
                   R.current.darkMode,
                   style: textTitle,
@@ -151,21 +140,16 @@ class _SettingPageState extends State<SettingPage>
                   padding: EdgeInsets.only(left: 10),
                 ),
                 Icon(
-                  Feather.moon,
+                  Icons.dark_mode_outlined,
                 ),
               ],
             ),
-            value:
-                Provider.of<AppProvider>(context).theme == AppThemes.lightTheme
-                    ? false
-                    : true,
+            value: Provider.of<AppProvider>(context).theme == AppThemes.lightTheme ? false : true,
             onChanged: (v) {
               if (v) {
-                Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(AppThemes.darkTheme, "dark");
+                Provider.of<AppProvider>(context, listen: false).setTheme(AppThemes.darkTheme, "dark");
               } else {
-                Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(AppThemes.lightTheme, "light");
+                Provider.of<AppProvider>(context, listen: false).setTheme(AppThemes.lightTheme, "light");
               }
             },
           )
@@ -177,17 +161,17 @@ class _SettingPageState extends State<SettingPage>
       contentPadding: EdgeInsets.all(0),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Text(
             R.current.checkIPlusNew,
             style: textTitle,
           ),
         ],
       ),
-      value: Model.instance.getOtherSetting().checkIPlusNew,
+      value: Model.instance.getOtherSetting()!.checkIPlusNew,
       onChanged: (value) {
         setState(() {
-          Model.instance.getOtherSetting().checkIPlusNew = value;
+          Model.instance.getOtherSetting()!.checkIPlusNew = value;
           Model.instance.saveOtherSetting();
         });
       },
@@ -199,7 +183,7 @@ class _SettingPageState extends State<SettingPage>
       contentPadding: EdgeInsets.all(0),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Text(
             R.current.openExternalVideo,
             style: textTitle,
@@ -210,10 +194,10 @@ class _SettingPageState extends State<SettingPage>
           ),
         ],
       ),
-      value: Model.instance.getOtherSetting().useExternalVideoPlayer,
+      value: Model.instance.getOtherSetting()!.useExternalVideoPlayer,
       onChanged: (value) {
         setState(() {
-          Model.instance.getOtherSetting().useExternalVideoPlayer = value;
+          Model.instance.getOtherSetting()!.useExternalVideoPlayer = value;
           Model.instance.saveOtherSetting();
         });
       },
@@ -229,9 +213,9 @@ class _SettingPageState extends State<SettingPage>
           padding: EdgeInsets.only(top: 10, bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+            children: [
               Row(
-                children: <Widget>[
+                children: [
                   Expanded(
                     child: Text(
                       R.current.downloadPath,
@@ -241,7 +225,7 @@ class _SettingPageState extends State<SettingPage>
                 ],
               ),
               Row(
-                children: <Widget>[
+                children: [
                   Expanded(
                     child: Text(
                       downloadPath,
@@ -254,7 +238,7 @@ class _SettingPageState extends State<SettingPage>
           ),
         ),
         onTap: () async {
-          String directory = await DocumentUtils.choiceFolder();
+          final directory = await DocumentUtils.choiceFolder();
           if (directory != null) {
             setState(() {
               downloadPath = directory;
@@ -263,5 +247,10 @@ class _SettingPageState extends State<SettingPage>
         },
       );
     }
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    _getDownloadPath();
   }
 }
