@@ -1,6 +1,8 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:tat/debug/log/log.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/file/my_downloader.dart';
@@ -17,8 +19,6 @@ import 'package:tat/ui/pages/course_table/course_table_page.dart';
 import 'package:tat/ui/pages/notification/notification_page.dart';
 import 'package:tat/ui/pages/other/other_page.dart';
 import 'package:tat/ui/pages/score/score_page.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   final _pageController = PageController();
   int _currentIndex = 0;
   int _closeAppCount = 0;
-  List<Widget> _pageList = [];
+  final List<Widget> _pageList = [];
 
   @override
   void initState() {
@@ -40,7 +40,6 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    AnalyticsUtils.observer.subscribe(this, ModalRoute.of(context));
   }
 
   @override
@@ -51,7 +50,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
 
   void appInit() async {
     R.set(context);
-    await Model.instance.getInstance(); //一定要先getInstance()不然無法取得資料
+    await Model.instance.getInstance();
     try {
       await RemoteConfigUtils.init();
       await initLanguage();
@@ -63,7 +62,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
       Log.eWithStack(e.toString(), stack);
     }
     setState(() {
-      _pageList = [];
+      _pageList.clear();
       _pageList.add(CourseTablePage());
       _pageList.add(NotificationPage());
       _pageList.add(CalendarPage());
@@ -88,7 +87,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider appProvider, Widget child) {
+      builder: (BuildContext context, AppProvider appProvider, Widget? child) {
         appProvider.navigatorKey = Get.key;
         return WillPopScope(
           onWillPop: _onWillPop,
@@ -103,8 +102,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   }
 
   Future<bool> _onWillPop() async {
-    var canPop = Navigator.of(context).canPop();
-    //Log.d(canPop.toString());
+    final canPop = Navigator.of(context).canPop();
     if (canPop) {
       Navigator.of(context).pop();
       _closeAppCount = 0;
@@ -166,7 +164,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   }
 
   void _onPageChange(int index) {
-    String screenName = _pageList[index].toString();
+    final screenName = _pageList[index].toString();
     AnalyticsUtils.setScreenName(screenName);
   }
 

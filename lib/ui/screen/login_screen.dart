@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_colors.dart';
 import 'package:tat/src/store/model.dart';
 import 'package:tat/ui/other/my_toast.dart';
-import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loginPress(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
       Model.instance.setAccount(_accountControl.text.toString());
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  String _validatorAccount(String value) {
+  String? _validatorAccount(String value) {
     if (value.isNotEmpty) {
       _accountErrorMessage = '';
     } else {
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return _accountErrorMessage.isNotEmpty ? _accountErrorMessage : null;
   }
 
-  String _validatorPassword(String value) {
+  String? _validatorPassword(String value) {
     if (value.isNotEmpty) {
       _passwordErrorMessage = '';
     } else {
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             _buildTopDecoration(),
             Padding(
               padding: EdgeInsets.all(32),
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
+                  children: [
                     Material(
                       elevation: 2,
                       borderRadius: BorderRadius.all(Radius.circular(32)),
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _accountFocus.unfocus();
                           FocusScope.of(context).requestFocus(_passwordFocus);
                         },
-                        validator: (value) => _validatorAccount(value),
+                        validator: (value) => _validatorAccount(value!),
                         decoration: InputDecoration(
                           hintText: R.current.account,
                           errorStyle: TextStyle(
@@ -131,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onEditingComplete: () {
                           _passwordFocus.unfocus();
                         },
-                        validator: (value) => _validatorPassword(value),
+                        validator: (value) => _validatorPassword(value!),
                         decoration: InputDecoration(
                           hintText: R.current.password,
                           errorStyle: TextStyle(
@@ -187,8 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(32.0),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 16),
+                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         ),
                         onPressed: () => _loginPress(context),
                       ),
@@ -205,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildTopDecoration() {
     return Stack(
-      children: <Widget>[
+      children: [
         ClipPath(
           clipper: WaveClipper1(),
           child: Container(
@@ -244,8 +243,7 @@ class _LoginScreenState extends State<LoginScreen> {
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.4,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Color(0x222196f3), Color(0x2203a9f4)]),
+              gradient: LinearGradient(colors: [Color(0x222196f3), Color(0x2203a9f4)]),
             ),
           ),
         ),
@@ -269,15 +267,13 @@ class WaveClipper1 extends CustomClipper<Path> {
     final path = Path();
     path.lineTo(0.0, size.height - 50);
 
-    var firstEndPoint = Offset(size.width * 0.6, size.height - 29 - 50);
-    var firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
+    final firstEndPoint = Offset(size.width * 0.6, size.height - 29 - 50);
+    final firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
 
-    var secondEndPoint = Offset(size.width, size.height - 60);
-    var secondControlPoint = Offset(size.width * 0.84, size.height - 50);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondEndPoint.dx, secondEndPoint.dy);
+    final secondEndPoint = Offset(size.width, size.height - 60);
+    final secondControlPoint = Offset(size.width * 0.84, size.height - 50);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
@@ -285,9 +281,7 @@ class WaveClipper1 extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 class WaveClipper2 extends CustomClipper<Path> {
@@ -296,15 +290,13 @@ class WaveClipper2 extends CustomClipper<Path> {
     final path = Path();
     path.lineTo(0.0, size.height - 50);
 
-    var firstEndPoint = Offset(size.width * 0.6, size.height - 15 - 50);
-    var firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
+    final firstEndPoint = Offset(size.width * 0.6, size.height - 15 - 50);
+    final firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
 
-    var secondEndPoint = Offset(size.width, size.height - 40);
-    var secondControlPoint = Offset(size.width * 0.84, size.height - 30);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondEndPoint.dx, secondEndPoint.dy);
+    final secondEndPoint = Offset(size.width, size.height - 40);
+    final secondControlPoint = Offset(size.width * 0.84, size.height - 30);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
@@ -312,9 +304,7 @@ class WaveClipper2 extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 class WaveClipper3 extends CustomClipper<Path> {
@@ -323,15 +313,13 @@ class WaveClipper3 extends CustomClipper<Path> {
     final path = Path();
     path.lineTo(0.0, size.height - 50);
 
-    var firstEndPoint = Offset(size.width * .7, size.height - 40);
-    var firstControlPoint = Offset(size.width * .25, size.height);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
+    final firstEndPoint = Offset(size.width * .7, size.height - 40);
+    final firstControlPoint = Offset(size.width * .25, size.height);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
 
-    var secondEndPoint = Offset(size.width, size.height - 45);
-    var secondControlPoint = Offset(size.width * 0.84, size.height - 50);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondEndPoint.dx, secondEndPoint.dy);
+    final secondEndPoint = Offset(size.width, size.height - 45);
+    final secondControlPoint = Offset(size.width * 0.84, size.height - 50);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
@@ -339,7 +327,5 @@ class WaveClipper3 extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return false;
-  }
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tat/src/connector/core/dio_connector.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tat/src/connector/core/dio_connector.dart';
 
 class WebViewPage extends StatefulWidget {
   final Uri url;
   final String title;
 
-  WebViewPage({this.title, this.url});
+  const WebViewPage({required this.title, required this.url});
 
   @override
   _WebViewPageState createState() => _WebViewPageState();
@@ -15,19 +15,19 @@ class WebViewPage extends StatefulWidget {
 class _WebViewPageState extends State<WebViewPage> {
   final cookieManager = CookieManager.instance();
   final cookieJar = DioConnector.dioInstance.cookiesManager;
-  InAppWebViewController webView;
-  Uri url = Uri();
+  late InAppWebViewController? webView;
+  late Uri url = Uri();
   double progress = 0;
 
   Future<bool> setCookies() async {
     final cookies = cookieJar.loadForRequest(widget.url);
-    for (var cookie in cookies) {
+    for (final cookie in await cookies) {
       await cookieManager.setCookie(
         url: widget.url,
         name: cookie.name,
         value: cookie.value,
         domain: cookie.domain,
-        path: cookie.path,
+        path: cookie.path ?? '',
         maxAge: cookie.maxAge,
         isSecure: cookie.secure,
         isHttpOnly: cookie.httpOnly,
@@ -49,11 +49,9 @@ class _WebViewPageState extends State<WebViewPage> {
             return SafeArea(
               child: Container(
                 child: Column(
-                  children: <Widget>[
+                  children: [
                     Container(
-                      child: progress < 1.0
-                          ? LinearProgressIndicator(value: progress)
-                          : Container(),
+                      child: progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
                     ),
                     Expanded(
                       child: Container(
@@ -62,26 +60,22 @@ class _WebViewPageState extends State<WebViewPage> {
                           initialOptions: InAppWebViewGroupOptions(
                             crossPlatform: InAppWebViewOptions(),
                           ),
-                          onWebViewCreated:
-                              (InAppWebViewController controller) {
+                          onWebViewCreated: (InAppWebViewController controller) {
                             webView = controller;
                           },
-                          onLoadStart:
-                              (InAppWebViewController controller, Uri url) {
+                          onLoadStart: (InAppWebViewController controller, Uri? url) {
                             setState(() {
-                              this.url = url;
+                              this.url = url ?? Uri();
                             });
                           },
-                          onLoadStop: (InAppWebViewController controller,
-                              Uri url) async {
+                          onLoadStop: (InAppWebViewController controller, Uri? url) async {
                             setState(
                               () {
-                                this.url = url;
+                                this.url = url ?? Uri();
                               },
                             );
                           },
-                          onProgressChanged: (InAppWebViewController controller,
-                              int progress) {
+                          onProgressChanged: (InAppWebViewController controller, int progress) {
                             setState(
                               () {
                                 this.progress = progress / 100;
@@ -103,7 +97,7 @@ class _WebViewPageState extends State<WebViewPage> {
                           child: Icon(Icons.arrow_back),
                           onPressed: () async {
                             if (webView != null) {
-                              await webView.goBack();
+                              await webView!.goBack();
                             }
                           },
                         ),
@@ -116,7 +110,7 @@ class _WebViewPageState extends State<WebViewPage> {
                           child: Icon(Icons.arrow_forward),
                           onPressed: () async {
                             if (webView != null) {
-                              await webView.goForward();
+                              await webView!.goForward();
                             }
                           },
                         ),
@@ -129,7 +123,7 @@ class _WebViewPageState extends State<WebViewPage> {
                           child: Icon(Icons.refresh),
                           onPressed: () async {
                             if (webView != null) {
-                              await webView.reload();
+                              await webView!.reload();
                             }
                           },
                         ),

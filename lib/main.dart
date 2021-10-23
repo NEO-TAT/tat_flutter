@@ -6,6 +6,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:tat/src/config/app_config.dart';
 import 'package:tat/src/config/app_themes.dart';
 import 'package:tat/src/providers/app_provider.dart';
@@ -13,9 +16,6 @@ import 'package:tat/src/providers/category_provider.dart';
 import 'package:tat/src/util/analytics_utils.dart';
 import 'package:tat/src/util/cloud_messaging_utils.dart';
 import 'package:tat/ui/screen/main_screen.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import 'debug/log/log.dart';
 import 'generated/l10n.dart';
@@ -51,8 +51,7 @@ Future<Null> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppProvider>(
-        builder: (BuildContext context, AppProvider appProvider, Widget child) {
+    return Consumer<AppProvider>(builder: (BuildContext context, AppProvider appProvider, Widget? child) {
       appProvider.navigatorKey = Get.key;
       return GetMaterialApp(
         title: AppConfig.appName,
@@ -65,13 +64,10 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate
         ],
         builder: BotToastInit(),
-        navigatorObservers: [
-          BotToastNavigatorObserver(),
-          AnalyticsUtils.observer
-        ],
+        navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
         supportedLocales: S.delegate.supportedLocales,
         home: MainScreen(),
-        logWriterCallback: (String text, {bool isError}) {
+        logWriterCallback: (String text, {bool? isError}) {
           Log.d(text);
         },
       );
