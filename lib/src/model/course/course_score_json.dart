@@ -159,7 +159,7 @@ class CourseScoreCreditJson {
 @JsonSerializable()
 class GraduationInformationJson {
   late final String? selectYear;
-  final String selectMatric;
+  late String selectMatrix;
   late final String? selectDivision;
   late final int lowCredit; // the lowest credit limit to graduate
   late final int outerDepartmentMaxCredit; // max recognized credits
@@ -172,7 +172,7 @@ class GraduationInformationJson {
     this.outerDepartmentMaxCredit = 0,
     this.selectYear,
     this.selectDivision,
-    this.selectMatric = '7',
+    this.selectMatrix = '7',
     this.courseCodeList,
   }) {
     final String? studentId = Model.instance.getAccount();
@@ -214,7 +214,7 @@ class GraduationInformationJson {
       [
         selectYear,
         selectDivision,
-        selectMatric,
+        selectMatrix,
         lowCredit.toString(),
         outerDepartmentMaxCredit.toString(),
         courseTypeMinCredit.toString(),
@@ -374,8 +374,8 @@ class CourseScoreInfoJson {
   late final String nameEn;
   late final String score;
   late final double credit;
-  final String openClass;
-  final String category;
+  late final String openClass;
+  late final String category;
 
   String get name =>
       (LanguageUtils.getLangIndex() == LangEnum.en) ? nameEn : nameZh;

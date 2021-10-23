@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/model/course/course_score_json.dart';
 import 'package:tat/src/store/model.dart';
@@ -8,18 +9,15 @@ import 'package:tat/src/task/course/course_department_task.dart';
 import 'package:tat/src/task/course/course_division_task.dart';
 import 'package:tat/src/task/course/course_year_task.dart';
 import 'package:tat/src/task/task_flow.dart';
-import 'package:get/get.dart';
 
 class GraduationPicker {
-  GraduationPickerWidget _dialog;
-  BuildContext _context;
-  BuildContext _dismissingContext;
+  late final GraduationPickerWidget _dialog;
+  late final BuildContext _dismissingContext;
   bool _barrierDismissible = true;
   bool _isShowing = false;
 
-  GraduationPicker(BuildContext context, {bool isDismissible}) {
-    _context = context;
-    _barrierDismissible = isDismissible ?? _barrierDismissible; //是否之支援返回關閉
+  GraduationPicker(BuildContext context, {bool? isDismissible}) {
+    _barrierDismissible = isDismissible ?? _barrierDismissible;
   }
 
   bool isShowing() {
@@ -56,18 +54,23 @@ class GraduationPicker {
       try {
         _dialog = GraduationPickerWidget();
         Get.dialog<GraduationInformationJson>(
-                WillPopScope(
-                    onWillPop: () async => _barrierDismissible,
-                    child: Dialog(
-                        insetAnimationDuration: Duration(milliseconds: 100),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
-                        child: _dialog)),
-                barrierDismissible: false,
-                useRootNavigator: false)
-            .then((value) {
-          finishCallBack(value);
-        });
+          WillPopScope(
+            onWillPop: () async => _barrierDismissible,
+            child: Dialog(
+                insetAnimationDuration: Duration(milliseconds: 100),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8),
+                  ),
+                ),
+                child: _dialog),
+          ),
+          barrierDismissible: false,
+        ).then(
+          (value) {
+            finishCallBack(value!);
+          },
+        );
         // Delaying the function for 200 milliseconds
         // [Default transitionDuration of DialogRoute]
         await Future.delayed(Duration(milliseconds: 200));
@@ -88,14 +91,14 @@ class GraduationPickerWidget extends StatefulWidget {
 }
 
 class _GraduationPickerWidget extends State<GraduationPickerWidget> {
-  GraduationInformationJson graduationInformation = GraduationInformationJson();
-  List<String> yearList = [];
-  List<Map> matricList = [];
-  List<Map> divisionList = [];
-  double width;
-  String _selectedYear;
-  Map _selectedMatric;
-  Map _selectedDivision;
+  late GraduationInformationJson graduationInformation = GraduationInformationJson();
+  late List<String> yearList = [];
+  late List<Map> matrixList = [];
+  late List<Map> divisionList = [];
+  late double width;
+  late String _selectedYear;
+  late Map _selectedMatrix;
+  late Map _selectedDivision;
 
   @override
   void initState() {
@@ -105,21 +108,21 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
 
   Future<void> _addSelectTask() async {
     await _getYearList();
-    for (String v in yearList) {
-      if (v.contains(graduationInformation.selectYear)) {
+    for (final v in yearList) {
+      if (v.contains(RegExp.escape(graduationInformation.selectYear!))) {
         _selectedYear = v;
         break;
       }
     }
-    await _getMatricList();
-    for (Map v in matricList) {
-      if (v["code"]["matric"] == graduationInformation.selectMatric) {
-        _selectedMatric = v;
+    await _getMatrixList();
+    for (final v in matrixList) {
+      if (v["code"]["matric"] == graduationInformation.selectMatrix) {
+        _selectedMatrix = v;
         break;
       }
     }
     await _getDivisionList();
-    for (Map v in divisionList) {
+    for (final v in divisionList) {
       if (v["code"]["division"] == graduationInformation.selectDivision) {
         _selectedDivision = v;
         break;
@@ -132,7 +135,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   Widget buildText(String title) {
     return Row(
       mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
+      children: [
         Expanded(
           child: Text(title, overflow: TextOverflow.ellipsis),
         ),
@@ -140,7 +143,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     );
   }
 
-  List<DropdownMenuItem> buildYearList() {
+  List<DropdownMenuItem<String>> buildYearList() {
     return yearList
         .map(
           (val) => DropdownMenuItem(
@@ -152,11 +155,11 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   List<DropdownMenuItem> buildDivisionList() {
-    return matricList
+    return matrixList
         .map(
           (val) => DropdownMenuItem(
             value: val,
-            child: buildText(val["name"]),
+            child: buildText(val["name"]!),
           ),
         )
         .toList();
@@ -174,8 +177,8 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getYearList() async {
-    TaskFlow taskFlow = TaskFlow();
-    var task = CourseYearTask();
+    final taskFlow = TaskFlow();
+    final task = CourseYearTask();
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       yearList = task.result;
@@ -185,22 +188,22 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     setState(() {});
   }
 
-  Future<void> _getMatricList() async {
-    TaskFlow taskFlow = TaskFlow();
-    String year = _selectedYear.split(" ")[1];
-    var task = CourseDivisionTask(year);
+  Future<void> _getMatrixList() async {
+    final taskFlow = TaskFlow();
+    final year = _selectedYear.split(" ")[1];
+    final task = CourseDivisionTask(year);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
-      matricList = task.result;
-      _selectedMatric = matricList.first;
+      matrixList = task.result;
+      _selectedMatrix = matrixList.first;
     }
     setState(() {});
   }
 
   Future<void> _getDivisionList() async {
-    TaskFlow taskFlow = TaskFlow();
-    Map<String, String> code = _selectedMatric["code"];
-    var task = CourseDepartmentTask(code);
+    final taskFlow = TaskFlow();
+    final code = _selectedMatrix["code"];
+    final task = CourseDepartmentTask(code);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       divisionList = task.result;
@@ -210,33 +213,31 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   Future<void> _getCreditInfo() async {
-    TaskFlow taskFlow = TaskFlow();
-    Map matricCode = _selectedMatric["code"];
-    Map divisionName = _selectedDivision["code"];
-    var task = CourseCreditInfoTask(matricCode, divisionName);
+    final taskFlow = TaskFlow();
+    final matricCode = _selectedMatrix["code"];
+    final divisionName = _selectedDivision["code"];
+    final task = CourseCreditInfoTask(matricCode, divisionName);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       graduationInformation = task.result;
       graduationInformation.selectYear = _selectedYear;
-      graduationInformation.selectMatric = _selectedMatric["code"]['matric'];
-      graduationInformation.selectDivision =
-          _selectedDivision["code"]['division'];
+      graduationInformation.selectMatrix = _selectedMatrix["code"]['matric'];
+      graduationInformation.selectDivision = _selectedDivision["code"]['division'];
     }
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width;
-    width = width * 0.8;
+    width = MediaQuery.of(context).size.width * 0.8;
     return Container(
       width: width,
       padding: EdgeInsets.all(10),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           Row(
-            children: <Widget>[
+            children: [
               Expanded(
                 child: Text(
                   R.current.graduationSetting,
@@ -247,32 +248,32 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: [
                   Expanded(
-                    child: DropdownButton(
-                      isExpanded: true, //裡面元素是否要Expanded
+                    child: DropdownButton<String>(
+                      isExpanded: true,
                       value: _selectedYear,
                       items: buildYearList(),
                       onChanged: (value) {
                         setState(() {
-                          _selectedYear = value;
-                          _getMatricList();
+                          _selectedYear = value as String;
+                          _getMatrixList();
                         });
                       },
                     ),
                   ),
                   Expanded(
-                    child: DropdownButton(
+                    child: DropdownButton<dynamic>(
                       isExpanded: true,
-                      value: _selectedMatric,
+                      value: _selectedMatrix,
                       items: buildDivisionList(),
                       onChanged: (value) {
                         setState(() {
-                          _selectedMatric = value;
+                          _selectedMatrix = value;
                           _getDivisionList();
                         });
                       },
@@ -282,9 +283,9 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
               ),
               Row(
                 mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
+                children: [
                   Expanded(
-                    child: DropdownButton(
+                    child: DropdownButton<dynamic>(
                       isExpanded: true,
                       value: _selectedDivision,
                       items: buildDepartmentList(),
@@ -300,7 +301,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
+                children: [
                   TextButton(
                     child: Text(R.current.cancel),
                     onPressed: () {

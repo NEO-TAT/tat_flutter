@@ -38,7 +38,7 @@ GraduationInformationJson _$GraduationInformationJsonFromJson(
       outerDepartmentMaxCredit: json['outerDepartmentMaxCredit'] as int? ?? 0,
       selectYear: json['selectYear'] as String?,
       selectDivision: json['selectDivision'] as String?,
-      selectMatric: json['selectMatric'] as String? ?? '7',
+      selectMatrix: json['selectMatric'] as String? ?? '7',
       courseCodeList: (json['courseCodeList'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -48,7 +48,7 @@ Map<String, dynamic> _$GraduationInformationJsonToJson(
         GraduationInformationJson instance) =>
     <String, dynamic>{
       'selectYear': instance.selectYear,
-      'selectMatric': instance.selectMatric,
+      'selectMatric': instance.selectMatrix,
       'selectDivision': instance.selectDivision,
       'lowCredit': instance.lowCredit,
       'outerDepartmentMaxCredit': instance.outerDepartmentMaxCredit,

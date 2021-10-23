@@ -1,10 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
+import 'package:sprintf/sprintf.dart';
 import 'package:tat/debug/log/log.dart';
 import 'package:tat/src/R.dart';
 import 'package:tat/src/config/app_colors.dart';
-import 'package:tat/src/model/course/course_main_extra_json.dart';
 import 'package:tat/src/model/course/course_score_json.dart';
 import 'package:tat/src/store/model.dart';
 import 'package:tat/src/task/course/course_extra_info_task.dart';
@@ -14,22 +16,18 @@ import 'package:tat/ui/other/app_expansion_tile.dart';
 import 'package:tat/ui/other/my_toast.dart';
 import 'package:tat/ui/other/progress_rate_dialog.dart';
 import 'package:tat/ui/pages/score/graduation_picker.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:get/get.dart';
-import 'package:sprintf/sprintf.dart';
 
 class ScoreViewerPage extends StatefulWidget {
   @override
   _ScoreViewerPageState createState() => _ScoreViewerPageState();
 }
 
-class _ScoreViewerPageState extends State<ScoreViewerPage>
-    with TickerProviderStateMixin {
-  TabController _tabController;
+class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderStateMixin {
+  late TabController? _tabController;
   bool isLoading = true;
-  List<SemesterCourseScoreJson> courseScoreList = [];
-  CourseScoreCreditJson courseScoreCredit;
-  ScrollController _scrollController = ScrollController();
+  List<SemesterCourseScoreJson>? courseScoreList = [];
+  late CourseScoreCreditJson courseScoreCredit;
+  final _scrollController = ScrollController();
   int _currentTabIndex = 0;
   List<Widget> tabLabelList = [];
   List<Widget> tabChildList = [];
@@ -40,7 +38,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     super.initState();
     courseScoreCredit = Model.instance.getCourseScoreCredit();
     courseScoreList = Model.instance.getSemesterCourseScore();
-    if (courseScoreList.length == 0) {
+    if (courseScoreList!.length == 0) {
       _addScoreRankTask();
     } else {
       _buildTabBar();
@@ -55,29 +53,24 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     setState(() {
       isLoading = true;
     });
-    TaskFlow taskFlow = TaskFlow();
-    var scoreTask = ScoreRankTask();
+    final taskFlow = TaskFlow();
+    final scoreTask = ScoreRankTask();
     taskFlow.addTask(scoreTask);
     if (await taskFlow.start()) {
       courseScoreList = scoreTask.result;
     }
-    if (courseScoreList != null && courseScoreList.isNotEmpty) {
-      await Model.instance.setSemesterCourseScore(courseScoreList);
+    if (courseScoreList != null && courseScoreList!.isNotEmpty) {
+      await Model.instance.setSemesterCourseScore(courseScoreList!);
       int total = courseScoreCredit.getCourseInfoList().length;
-      List<CourseScoreInfoJson> courseInfoList =
-          courseScoreCredit.getCourseInfoList();
-      ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
-      progressRateDialog.update(
-          message: R.current.searchingCredit,
-          nowProgress: 0,
-          progressString: "0/0");
+      final courseInfoList = courseScoreCredit.getCourseInfoList();
+      final progressRateDialog = ProgressRateDialog(context);
+      progressRateDialog.update(message: R.current.searchingCredit, nowProgress: 0, progressString: "0/0");
       progressRateDialog.show();
       for (int i = 0; i < total; i++) {
-        CourseScoreInfoJson courseInfo = courseInfoList[i];
-        String courseId = courseInfo.courseId;
+        final courseInfo = courseInfoList[i];
+        final courseId = courseInfo.courseId;
         if (courseInfo.category.isEmpty) {
-          //沒有類別才尋找
-          var task = CourseExtraInfoTask(courseId);
+          final task = CourseExtraInfoTask(courseId);
           task.openLoadingDialog = false;
           if (courseId.isNotEmpty) {
             taskFlow.addTask(task);
@@ -88,18 +81,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       int rate = 0;
       taskFlow.callback = (task) {
         rate++;
-        progressRateDialog.update(
-            nowProgress: rate / total,
-            progressString: sprintf("%d/%d", [rate, total]));
-        CourseExtraInfoJson extraInfo = task.result;
-        CourseScoreInfoJson courseScoreInfo =
-            courseScoreCredit.getCourseByCourseId(extraInfo.course.id);
-        courseScoreInfo.category = extraInfo.course.category;
-        courseScoreInfo.openClass =
-            extraInfo.course.openClass.replaceAll("\n", " ");
+        progressRateDialog.update(nowProgress: rate / total, progressString: sprintf("%d/%d", [rate, total]));
+        final extraInfo = task.result;
+        final courseScoreInfo = courseScoreCredit.getCourseByCourseId(extraInfo.course.id);
+        courseScoreInfo!.category = extraInfo.course.category;
+        courseScoreInfo.openClass = extraInfo.course.openClass.replaceAll("\n", " ");
       };
       await taskFlow.start();
-      await Model.instance.setSemesterCourseScore(courseScoreList);
+      await Model.instance.setSemesterCourseScore(courseScoreList!);
       progressRateDialog.hide();
     } else {
       MyToast.show(R.current.searchCreditIsNullWarning);
@@ -111,7 +100,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     });
   }
 
-  void _onSelectFinish(GraduationInformationJson value) {
+  void _onSelectFinish(GraduationInformationJson? value) {
     Log.d(value.toString());
     if (value != null) {
       courseScoreCredit.graduationInformation = value;
@@ -121,8 +110,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     _buildTabBar();
   }
 
-  void _addSearchCourseTypeTask() async {
-    GraduationPicker picker = GraduationPicker(context);
+  void _addSearchCourseTypeTask() {
+    final picker = GraduationPicker(context);
     picker.show(_onSelectFinish);
     _buildTabBar();
   }
@@ -130,11 +119,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   @override
   void dispose() {
     _scrollController.dispose();
-    _tabController.dispose();
+    _tabController!.dispose();
     super.dispose();
   }
 
-  _onPopupMenuSelect(int value) async {
+  _onPopupMenuSelect(int value) {
     switch (value) {
       case 0:
         _addScoreRankTask();
@@ -155,7 +144,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         appBar: AppBar(
           title: Text(R.current.searchScore),
           actions: [
-            if (courseScoreList.length > 0)
+            if (courseScoreList!.length > 0)
               PopupMenuButton<int>(
                 onSelected: (result) {
                   setState(() {
@@ -179,7 +168,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             labelColor: AppColors.mainColor,
             unselectedLabelColor: Colors.white,
             indicatorSize: TabBarIndicatorSize.label,
-//      labelPadding: EdgeInsets.symmetric(horizontal: 8),
             indicator: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
@@ -197,11 +185,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: <Widget>[
-              if (!isLoading)
-                (tabChildList.length > 0)
-                    ? tabChildList[_currentTabIndex]
-                    : Container(),
+            children: [
+              if (!isLoading) (tabChildList.length > 0) ? tabChildList[_currentTabIndex] : Container(),
             ],
           ),
         ),
@@ -213,11 +198,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     tabLabelList = [];
     tabChildList = [];
     try {
-      if (courseScoreCredit.graduationInformation.isSelect) {
+      if (courseScoreCredit.graduationInformation!.isSelect) {
         tabLabelList.add(_buildTabLabel(R.current.creditSummary));
         tabChildList.add(StatefulBuilder(
-          builder:
-              (BuildContext context, void Function(void Function()) setState) {
+          builder: (BuildContext context, void Function(void Function()) setState) {
             return AnimationLimiter(
               child: Column(
                 children: AnimationConfiguration.toStaggeredList(
@@ -225,7 +209,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                     verticalOffset: 50.0,
                     child: FadeInAnimation(child: widget),
                   ),
-                  children: <Widget>[
+                  children: [
                     _buildSummary(),
                     _buildGeneralLessonItem(),
                     _buildOtherDepartmentItem(),
@@ -240,23 +224,21 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
     }
-    for (int i = 0; i < courseScoreList.length; i++) {
-      SemesterCourseScoreJson courseScore = courseScoreList[i];
-      tabLabelList.add(_buildTabLabel(
-          "${courseScore.semester.year}-${courseScore.semester.semester}"));
+    for (int i = 0; i < courseScoreList!.length; i++) {
+      final courseScore = courseScoreList![i];
+      tabLabelList.add(_buildTabLabel("${courseScore.semester!.year}-${courseScore.semester!.semester}"));
       tabChildList.add(_buildSemesterScores(courseScore));
     }
     if (_tabController != null) {
-      if (tabChildList.length != _tabController.length) {
-        _tabController.dispose();
-        _tabController =
-            TabController(length: tabChildList.length, vsync: this);
+      if (tabChildList.length != _tabController!.length) {
+        _tabController!.dispose();
+        _tabController = TabController(length: tabChildList.length, vsync: this);
       }
     } else {
       _tabController = TabController(length: tabChildList.length, vsync: this);
     }
     _currentTabIndex = 0;
-    _tabController.animateTo(_currentTabIndex);
+    _tabController!.animateTo(_currentTabIndex);
     setState(() {});
   }
 
@@ -275,23 +257,15 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   Widget _buildTile(String title) {
     return Container(
       padding: EdgeInsets.only(top: 10, bottom: 10),
-      child: new Material(
-        //INK可以實現裝飾容器
-        child: new Ink(
-          //用ink圓角矩形
-          // color: Colors.red,
-          decoration: new BoxDecoration(
-            //設置四周圓角 角度
+      child: Material(
+        child: Ink(
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(25.0)),
-            //設置四周邊框
-            border: new Border.all(width: 1, color: Colors.red),
+            border: Border.all(width: 1, color: Colors.red),
           ),
-          child: new InkWell(
-            //圓角設置,給水波紋也設置同樣的圓角
-            //如果這裡不設置就會出現矩形的水波紋效果
-            borderRadius: new BorderRadius.circular(25.0),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(25.0),
             child: Container(
-              //設置 child 居中
               alignment: Alignment(0, 0),
               height: 50,
               width: 300,
@@ -307,14 +281,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildSummary() {
-    List<Widget> widgetList = [];
-    GraduationInformationJson graduationInformation =
-        courseScoreCredit.graduationInformation;
-    Widget widget = _buildTile(sprintf("%s %d/%d", [
-      R.current.creditSummary,
-      courseScoreCredit.getTotalCourseCredit(),
-      graduationInformation.lowCredit
-    ]));
+    final List<Widget> widgetList = [];
+    final graduationInformation = courseScoreCredit.graduationInformation;
+    final widget = _buildTile(sprintf("%s %d/%d",
+        [R.current.creditSummary, courseScoreCredit.getTotalCourseCredit(), graduationInformation!.lowCredit]));
     widgetList
       ..add(_buildType(constCourseType[0], R.current.compulsoryCompulsory))
       ..add(_buildType(constCourseType[1], R.current.revisedCommonCompulsory))
@@ -332,14 +302,13 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildType(String type, String title) {
-    int nowCredit = courseScoreCredit.getCreditByType(type);
-    int minCredit =
-        courseScoreCredit.graduationInformation.courseTypeMinCredit[type];
+    final nowCredit = courseScoreCredit.getCreditByType(type);
+    final minCredit = courseScoreCredit.graduationInformation!.courseTypeMinCredit![type];
     return InkWell(
       child: Container(
         padding: EdgeInsets.all(5),
         child: Row(
-          children: <Widget>[
+          children: [
             Expanded(
               child: Text(sprintf("%s%s :", [
                 type,
@@ -351,12 +320,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
         ),
       ),
       onTap: () {
-        Map<String, List<CourseScoreInfoJson>> result =
-            courseScoreCredit.getCourseByType(type);
-        List<String> courseInfo = [];
-        for (String key in result.keys.toList()) {
+        final result = courseScoreCredit.getCourseByType(type);
+        final List<String> courseInfo = [];
+        for (final key in result.keys.toList()) {
           courseInfo.add(key);
-          for (CourseScoreInfoJson course in result[key]) {
+          for (final course in result[key]!) {
             courseInfo.add(sprintf("     %s", [course.name]));
           }
         }
@@ -378,7 +346,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                   },
                 ),
               ),
-              actions: <Widget>[
+              actions: [
                 TextButton(
                   onPressed: () {
                     Get.back();
@@ -387,7 +355,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                 ),
               ],
             ),
-            useRootNavigator: false,
             barrierDismissible: true,
           );
         }
@@ -399,7 +366,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     return Container(
       padding: EdgeInsets.all(5),
       child: Row(
-        children: <Widget>[
+        children: [
           Expanded(
             child: Text(name),
           ),
@@ -410,30 +377,23 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildGeneralLessonItem() {
-    Map<String, List<CourseScoreInfoJson>> generalLesson =
-        courseScoreCredit.getGeneralLesson();
-    List<Widget> widgetList = [];
+    final generalLesson = courseScoreCredit.getGeneralLesson();
+    final List<Widget> widgetList = [];
     int selectCredit = 0;
     int coreCredit = 0;
-    for (String key in generalLesson.keys) {
-      for (CourseScoreInfoJson course in generalLesson[key]) {
+    for (final key in generalLesson.keys) {
+      for (final course in generalLesson[key]!) {
         if (course.isCoreGeneralLesson) {
           coreCredit += course.credit.toInt();
         } else {
           selectCredit += course.credit.toInt();
         }
-        Widget courseItemWidget;
-        courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
+        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d", [
-      R.current.generalLessonSummary,
-      R.current.takeCore,
-      coreCredit,
-      R.current.takeSelect,
-      selectCredit
-    ]));
+    final titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d",
+        [R.current.generalLessonSummary, R.current.takeCore, coreCredit, R.current.takeSelect, selectCredit]));
     return Container(
       child: AppExpansionTile(
         title: titleWidget,
@@ -444,24 +404,19 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   Widget _buildOtherDepartmentItem() {
-    String divisionCode =
-        Model.instance.getGraduationInformation().selectDivision;
-    int otherDepartmentMaxCredit =
-        courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
-    Map<String, List<CourseScoreInfoJson>> generalLesson =
-        courseScoreCredit.getOtherDepartmentCourse(divisionCode);
-    List<Widget> widgetList = [];
+    final divisionCode = Model.instance.getGraduationInformation().selectDivision;
+    final otherDepartmentMaxCredit = courseScoreCredit.graduationInformation!.outerDepartmentMaxCredit;
+    final generalLesson = courseScoreCredit.getOtherDepartmentCourse(divisionCode!);
+    final List<Widget> widgetList = [];
     int otherDepartmentCredit = 0;
-    for (String key in generalLesson.keys) {
-      for (CourseScoreInfoJson course in generalLesson[key]) {
+    for (final key in generalLesson.keys) {
+      for (final course in generalLesson[key]!) {
         otherDepartmentCredit += course.credit.toInt();
-        Widget courseItemWidget;
-        courseItemWidget = courseItemWidget =
-            _buildOneLineCourse(course.name, course.openClass);
+        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
         widgetList.add(courseItemWidget);
       }
     }
-    Widget titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
+    final titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
       R.current.takeForeignDepartmentCredits,
       otherDepartmentCredit,
       R.current.takeForeignDepartmentCreditsLimit,
@@ -480,7 +435,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     return Container(
       padding: EdgeInsets.all(5),
       child: Row(
-        children: <Widget>[
+        children: [
           Expanded(
             child: Text(
               R.current.scoreCalculationWarring,
@@ -505,7 +460,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                 child: widget,
               ),
             ),
-            children: <Widget>[
+            children: [
               ..._buildCourseScores(courseScore),
               SizedBox(height: 16),
               ..._buildSemesterScore(courseScore),
@@ -520,24 +475,23 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
   }
 
   List<Widget> _buildCourseScores(SemesterCourseScoreJson courseScore) {
-    List<CourseScoreInfoJson> scoreList = courseScore.courseScoreList;
+    final scoreList = courseScore.courseScoreList;
     return [
       _buildTitle(R.current.resultsOfVariousSubjects),
-      for (CourseScoreInfoJson score in scoreList) _buildScoreItem(score),
+      for (final score in scoreList!) _buildScoreItem(score),
     ];
   }
 
   Widget _buildScoreItem(CourseScoreInfoJson score) {
-    return StatefulBuilder(builder:
-        (BuildContext context, void Function(void Function()) setState) {
+    return StatefulBuilder(builder: (BuildContext context, void Function(void Function()) setState) {
       int typeSelect = constCourseType.indexOf(score.category);
       return Column(
-        children: <Widget>[
+        children: [
           Container(
             height: 25,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+              children: [
                 Expanded(
                   child: AutoSizeText(
                     score.name,
@@ -545,7 +499,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                   ),
                 ),
                 if (score.category.isNotEmpty)
-                  DropdownButton(
+                  DropdownButton<int>(
                       underline: Container(),
                       value: typeSelect,
                       items: constCourseType
@@ -559,26 +513,19 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
                           .toList(),
                       onChanged: (value) {
                         setState(() {
-                          typeSelect = value;
+                          typeSelect = value as int;
                           score.category = constCourseType[typeSelect];
-                          /*
-                        print(courseScoreList
-                            .map((e) => e.courseScoreList
-                                .map((k) => k.category)
-                                .toList())
-                            .toList());
-                         */
-                          //存檔
-                          Model.instance
-                              .setCourseScoreCredit(courseScoreCredit);
+                          Model.instance.setCourseScoreCredit(courseScoreCredit);
                           Model.instance.saveCourseScoreCredit();
                         });
                       }),
                 Container(
                   width: 40,
-                  child: Text(score.score,
-                      style: TextStyle(fontSize: 16.0),
-                      textAlign: TextAlign.end),
+                  child: Text(
+                    score.score,
+                    style: TextStyle(fontSize: 16.0),
+                    textAlign: TextAlign.end,
+                  ),
                 ),
               ],
             ),
@@ -596,23 +543,17 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       _buildTitle(R.current.semesterGrades),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           Expanded(
             child: AutoSizeText(
-              sprintf("%s: %s", [
-                R.current.totalAverage,
-                courseScore.getAverageScoreString()
-              ]),
+              sprintf("%s: %s", [R.current.totalAverage, courseScore.getAverageScoreString()]),
               style: TextStyle(fontSize: 16),
               maxLines: 1,
             ),
           ),
           Expanded(
             child: AutoSizeText(
-              sprintf("%s: %s", [
-                R.current.performanceScores,
-                courseScore.getPerformanceScoreString()
-              ]),
+              sprintf("%s: %s", [R.current.performanceScores, courseScore.getPerformanceScoreString()]),
               textAlign: TextAlign.end,
               style: TextStyle(fontSize: 16),
               maxLines: 1,
@@ -625,7 +566,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
+        children: [
           Expanded(
             child: AutoSizeText(
               sprintf(
@@ -638,8 +579,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
           ),
           Expanded(
             child: AutoSizeText(
-              sprintf("%s: %s",
-                  [R.current.creditsEarned, courseScore.getTakeCreditString()]),
+              sprintf("%s: %s", [R.current.creditsEarned, courseScore.getTakeCreditString()]),
               textAlign: TextAlign.end,
               style: TextStyle(fontSize: 16),
               maxLines: 1,
@@ -664,22 +604,22 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
             )
           ]
         : [
-            _buildRankItems(courseScore.now, R.current.semesterRanking),
+            _buildRankItems(courseScore.now!, R.current.semesterRanking),
             SizedBox(
               height: 16,
             ),
-            _buildRankItems(courseScore.history, R.current.previousRankings),
+            _buildRankItems(courseScore.history!, R.current.previousRankings),
           ];
   }
 
   Widget _buildRankItems(RankJson rank, String title) {
-    double fontSize = 16;
-    TextStyle textStyle = TextStyle(fontSize: fontSize);
+    const fontSize = 16.0;
+    final textStyle = TextStyle(fontSize: fontSize);
     return Column(
-      children: <Widget>[
+      children: [
         _buildTitle(title),
-        _buildRankPart(rank.course, textStyle),
-        _buildRankPart(rank.department, textStyle),
+        _buildRankPart(rank.course!, textStyle),
+        _buildRankPart(rank.department!, textStyle),
         SizedBox(
           height: 8,
         ),
@@ -687,10 +627,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage>
     );
   }
 
-  Widget _buildRankPart(RankItemJson rankItem, [TextStyle textStyle]) {
+  Widget _buildRankPart(RankItemJson rankItem, [TextStyle? textStyle]) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+      children: [
         Expanded(
           child: AutoSizeText(
             sprintf("%s: %s    %s: %s    %s: %s% ", [
