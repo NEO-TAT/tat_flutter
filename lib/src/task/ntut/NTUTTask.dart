@@ -5,14 +5,12 @@ import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/Task.dart';
 import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:get/get.dart';
 
 import '../DialogTask.dart';
 
 class NTUTTask<T> extends DialogTask<T> {
-  static bool _remindPasswordExpiredWarning = false;
   static bool _isLogin = false;
 
   NTUTTask(name) : super(name);
@@ -27,7 +25,7 @@ class NTUTTask<T> extends DialogTask<T> {
     name = "NTUTTask " + name;
     String account = Model.instance.getAccount();
     String password = Model.instance.getPassword();
-    if(account.isEmpty || password.isEmpty){
+    if (account.isEmpty || password.isEmpty) {
       return TaskStatus.GiveUp;
     }
     super.onStart(R.current.loginNTUT);
@@ -36,8 +34,10 @@ class NTUTTask<T> extends DialogTask<T> {
     NTUTAppTask.isLogin = false;
     if (value == NTUTConnectorStatus.LoginSuccess) {
       _isLogin = true;
+      print('#########################');
       return TaskStatus.Success;
     } else {
+      print('@@@@@@@@@@@@@@@@@@@@@@@@@@');
       return await _onError(value);
     }
   }
@@ -47,22 +47,6 @@ class NTUTTask<T> extends DialogTask<T> {
       desc: "",
     );
     switch (value) {
-      case NTUTConnectorStatus.PasswordExpiredWarning:
-        if (_remindPasswordExpiredWarning)
-          return TaskStatus.Success; //只執行一次避免進入無限迴圈
-        _remindPasswordExpiredWarning = true;
-        parameter.dialogType = DialogType.INFO;
-        parameter.title = R.current.warning;
-        parameter.desc = R.current.passwordExpiredWarning;
-        parameter.btnOkText = R.current.update;
-        parameter.btnOkOnPress = () async {
-          await ChangePassword.show();
-          Get.back<bool>(result: false);
-        };
-        parameter.btnCancelOnPress = () {
-          Get.back<bool>(result: true);
-        };
-        break;
       case NTUTConnectorStatus.AccountLockWarning:
         parameter.dialogType = DialogType.INFO;
         parameter.desc = R.current.accountLock;

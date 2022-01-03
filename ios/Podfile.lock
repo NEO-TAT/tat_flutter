@@ -68,7 +68,7 @@ PODS:
   - firebase_crashlytics (0.4.0-1):
     - Firebase/Crashlytics (= 7.3.0)
     - firebase_core
-  - firebase_messaging (8.0.0-dev.14):
+  - firebase_messaging (8.0.0-dev.15):
     - Firebase/Messaging (= 7.3.0)
     - firebase_core
     - Flutter
@@ -127,8 +127,6 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 7.0)"
   - Flutter (1.0.0)
   - flutter_downloader (0.0.1):
-    - Flutter
-  - flutter_hls_parser (0.0.1):
     - Flutter
   - flutter_inappwebview (0.0.1):
     - Flutter
@@ -225,7 +223,6 @@ DEPENDENCIES:
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
   - flutter_downloader (from `.symlinks/plugins/flutter_downloader/ios`)
-  - flutter_hls_parser (from `.symlinks/plugins/flutter_hls_parser/ios`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
@@ -294,8 +291,6 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_downloader:
     :path: ".symlinks/plugins/flutter_downloader/ios"
-  flutter_hls_parser:
-    :path: ".symlinks/plugins/flutter_hls_parser/ios"
   flutter_inappwebview:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_local_notifications:
@@ -341,7 +336,7 @@ SPEC CHECKSUMS:
   firebase_analytics: 41043f6e14fc9bc27c3f05217ab7f2b0ad9b41eb
   firebase_core: 91b27774a52f41f8b58484a75edf71197ac01c59
   firebase_crashlytics: e6ecb908f6249ce3757d18a812819a41495bf1cb
-  firebase_messaging: d039d8279704fc1e3d05e0a2bb2ce7dc29ee6be8
+  firebase_messaging: caf0273c76e54f0a10dfe5048ac47b89e75bb78a
   firebase_remote_config: 1c56b7b8caa840aa2e9432e66bf606d10f492fc9
   FirebaseABTesting: 9d9c21ed27a1ac7213fe377cde655434da9c16d2
   FirebaseAnalytics: 2580c2d62535ae7b644143d48941fcc239ea897a
@@ -354,7 +349,6 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfig: 826fad8bec5ce1912ef97a124d6ec0ce4dcf6ec1
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_downloader: 058b9c41564a90500f67f3e432e3524613a7fd83
-  flutter_hls_parser: be41df963ec4f909fb5c318d483c4483556553e0
   flutter_inappwebview: 69dfbac46157b336ffbec19ca6dfd4638c7bf189
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
@@ -386,4 +380,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 8b541a76507f680279d394a3d6fb96365572f7c5
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.2
