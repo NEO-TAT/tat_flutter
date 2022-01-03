@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
@@ -17,7 +16,6 @@ import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
-import 'package:flutter_app/ui/pages/password/ChangePassword.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
@@ -30,7 +28,6 @@ enum onListViewPress {
   About,
   Login,
   SubSystem,
-  ChangePassword
 }
 
 class OtherPage extends StatefulWidget {
@@ -64,13 +61,6 @@ class _OtherPageState extends State<OtherPage> {
     },
     if (Model.instance.getPassword().isNotEmpty)
       {
-        "icon": EvaIcons.syncOutline,
-        "color": Colors.lightGreen,
-        "title": R.current.changePassword,
-        "onPress": onListViewPress.ChangePassword
-      },
-    if (Model.instance.getPassword().isNotEmpty)
-      {
         "icon": EvaIcons.undoOutline,
         "color": Colors.teal[400],
         "title": R.current.logout,
@@ -81,7 +71,7 @@ class _OtherPageState extends State<OtherPage> {
         "icon": EvaIcons.logIn,
         "color": Colors.teal[400],
         "title": R.current.login,
-        "onPress": onListViewPress.Login
+        "onPress": onListViewPress.Login,
       },
     {
       "icon": EvaIcons.messageSquareOutline,
@@ -147,9 +137,6 @@ class _OtherPageState extends State<OtherPage> {
         } catch (e) {}
         RouteUtils.toWebViewPluginPage(R.current.feedback, link);
         break;
-      case onListViewPress.ChangePassword:
-        ChangePassword.show();
-        break;
       default:
         MyToast.show(R.current.noFunction);
         break;
@@ -206,8 +193,7 @@ class _OtherPageState extends State<OtherPage> {
         backgroundImage: imageProvider,
       ),
       useOldImageOnUrlChange: true,
-      placeholder: (context, url) =>
-          SpinKitPouringHourglass(color: Colors.white),
+      placeholder: (context, url) => SpinKitPouringHourglass(color: Colors.white),
       errorWidget: (context, url, error) {
         Log.e(error.toString());
         return Icon(Icons.error);
@@ -245,8 +231,7 @@ class _OtherPageState extends State<OtherPage> {
     task.openLoadingDialog = false;
     taskFlow.addTask(task);
     return Container(
-      padding:
-          EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+      padding: EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -257,12 +242,10 @@ class _OtherPageState extends State<OtherPage> {
               child: FutureBuilder<bool>(
                 future: taskFlow.start(),
                 builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.data == true) {
+                  if (snapshot.connectionState == ConnectionState.done && snapshot.data == true) {
                     return userImage;
                   } else {
-                    return SpinKitPouringHourglass(
-                        color: Theme.of(context).accentColor);
+                    return SpinKitPouringHourglass(color: Theme.of(context).accentColor);
                   }
                 },
               ),
@@ -290,8 +273,7 @@ class _OtherPageState extends State<OtherPage> {
         _onListViewPress(data['onPress']);
       },
       child: Container(
-        padding:
-            EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
+        padding: EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

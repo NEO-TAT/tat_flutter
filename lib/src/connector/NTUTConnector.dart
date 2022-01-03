@@ -20,7 +20,6 @@ import 'package:intl/intl.dart';
 
 enum NTUTConnectorStatus {
   LoginSuccess,
-  PasswordExpiredWarning,
   AccountLockWarning, //帳號鎖住
   AccountPasswordIncorrect,
   AuthCodeFailError, //驗證碼錯誤
@@ -60,9 +59,7 @@ class NTUTConnector {
         UserInfoJson userInfo = UserInfoJson.fromJson(jsonMap);
         Model.instance.setUserInfo(userInfo);
         Model.instance.saveUserData();
-        if (userInfo.passwordExpiredRemind.isNotEmpty) {
-          return NTUTConnectorStatus.PasswordExpiredWarning;
-        }
+        // if the user's password is nearly to expired, `userInfo.passwordExpiredRemind.isNotEmpty` will be true.
         return NTUTConnectorStatus.LoginSuccess;
       } else {
         String errorMsg = jsonMap["errorMsg"];
