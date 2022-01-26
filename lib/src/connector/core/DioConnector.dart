@@ -15,6 +15,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
+import 'package:flutter_app/src/connector/interceptors/response_cookie_filter.dart';
 import 'package:get/get.dart' as getUtils;
 import 'package:path_provider/path_provider.dart';
 
@@ -67,11 +68,23 @@ class DioConnector {
    */
 
   Future<void> init() async {
+    final List<RegExp> _blockedCookieNamePatterns = [
+      // The school backend added a cookie to the response header,
+      // and its name style is BIGipServerVPFl/...........,
+      // and in this name, there are characters that do not meet the requirements (/),
+      // which will cause dio parsing errors, so it needs to be filtered out.
+      // Please refer to this article
+      // https://juejin.cn/post/6844903934042046472
+      // for more details.
+      RegExp('BIGipServer')
+    ];
+
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
       _cookieJar = PersistCookieJar(dir: appDocPath + "/.cookies/");
       alice.setNavigatorKey(getUtils.Get.key);
+      dio.interceptors.add(ResponseCookieFilter(blockedCookieNamePatterns: _blockedCookieNamePatterns));
       dio.interceptors.add(CookieManager(_cookieJar));
       dio.interceptors.add(RequestInterceptors());
       dio.interceptors.add(alice.getDioInterceptor());
