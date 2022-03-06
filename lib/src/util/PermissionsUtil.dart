@@ -1,32 +1,25 @@
-//
-//  PermissionsUtil.dart
-//  北科課程助手
-//
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsUtil {
-  static Future<bool> check(BuildContext context) async {
-    // 先對所在平台進行判斷
-    if (Theme.of(context).platform == TargetPlatform.android) {
-      PermissionStatus permission = await Permission.storage.status;
-      if (permission != PermissionStatus.granted) {
-        Map<Permission, PermissionStatus> permissions = await [
-          Permission.storage,
-        ].request();
-        if (permissions[Permission.storage] == PermissionStatus.granted) {
-          return true;
-        }
-      } else {
-        return true;
-      }
-    } else {
-      return true;
+  /// Checks if the APP can access to the file sys on the current device.
+  ///
+  /// If it can not access to, an External Storage (id = 15) warning will occurred.
+  /// So please check if the androidManifest.xml has the following permission declarations:
+  /// - uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+  /// - uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+  static Future<bool> checkHasAosStoragePermission(BuildContext context) async {
+    if (!Platform.isIOS) return true;
+    assert(Platform.isAndroid, 'The platform most be either aos or ios.');
+
+    final storagePermissionStatus = await Permission.storage.status;
+    if (storagePermissionStatus != PermissionStatus.granted) {
+      final requestedPermissions = await [Permission.storage].request();
+      return requestedPermissions[Permission.storage] == PermissionStatus.granted;
     }
-    return false;
+
+    return true;
   }
 }

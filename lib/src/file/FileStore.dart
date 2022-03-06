@@ -20,7 +20,7 @@ class FileStore {
   static String storeKey = "downloadPath";
 
   static Future<String> findLocalPath(BuildContext context) async {
-    bool checkPermission = await PermissionsUtil.check(context);
+    bool checkPermission = await PermissionsUtil.checkHasAosStoragePermission(context);
     if (!checkPermission) {
       MyToast.show(R.current.noPermission);
       return "";
