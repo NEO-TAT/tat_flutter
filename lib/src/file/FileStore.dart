@@ -30,7 +30,14 @@ class FileStore {
     final directory = await _getFilePath() ?? Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationSupportDirectory();
-    return directory.path;
+
+    final targetDir = Directory(directory.path + '/TAT');
+    final hasExisted = await targetDir.exists();
+    if (!hasExisted) {
+      targetDir.create();
+    }
+
+    return targetDir.path;
   }
 
   static Future<String> getDownloadDir(BuildContext context, String name) async {
