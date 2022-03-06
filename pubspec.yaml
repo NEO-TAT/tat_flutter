@@ -8,6 +8,7 @@ description: NTUT Life TAT, convenient, concise, fast, powerful, enrich your NTU
 version: 1.3.3+5010
 
 environment:
+  flutter: ">=2.2.3 <3.0.0"
   sdk: ">=2.10.4 <3.0.0"
 
 dependencies:
@@ -17,88 +18,88 @@ dependencies:
     sdk: flutter
   path: ^1.7.0
   provider: ^4.3.3
-  path_provider: ^1.6.28
-  url_launcher: 5.5.0
+  path_provider: ^2.0.4
+  url_launcher: ^6.0.20
   #開啟email phone url...
   logger: ^0.9.4
   #顯示Log
   sprintf: ^5.0.0
-  flutter_local_notifications: ^3.0.3
+  flutter_local_notifications: ^9.4.0
   #通知欄  需修改android原始碼
-  rxdart: ^0.25.0
+  rxdart: ^0.27.3
   #通知欄有使用到
-  video_player: ^1.0.1
-  chewie: ^0.12.2
-  after_init: 0.1.2
+  video_player: ^2.2.3
+  chewie: ^1.1.0
+  after_init: ^0.1.2
   android_intent: ^0.3.7+7
-  device_info: ^1.0.0
+  device_info: ^2.0.3
   html_unescape: ^1.0.2
   #處理HTML特殊字
-  local_auth: ^0.6.3+4
+  local_auth: ^1.1.6
   #驗證身分指紋
-  version: 1.2.0
+  version: ^1.2.0
   #版本比較
-  file_picker: ^2.1.5+1
+  file_picker: ^3.0.4
   #選擇android資料夾
   #----------store data----------#
-  shared_preferences: ^0.5.12+4
-  flutter_cache_manager: ^2.1.1
+  shared_preferences: ^2.0.7
+  flutter_cache_manager: ^3.3.0
   #----------internet----------#
-  dio: ^3.0.10
+  dio: ^4.0.4
   #網路get post API
-  dio_cookie_manager: 1.0.0
+  dio_cookie_manager: ^2.0.0
   #用於產生cookie_jar與dio接口
-  cookie_jar: 1.0.1
+  cookie_jar: ^3.0.1
   #可儲存式cookies
-  html: ^0.14.0+4
+  html: ^0.15.0
   #html解析器
-  connectivity: ^2.0.2
-  github: ^7.0.4
+  connectivity: ^3.0.6
+  github: ^8.2.1
   bloc: ^6.1.1
   clipboard: ^0.1.2+8
   #剪貼簿
   #----------WebView----------#
-  flutter_webview_plugin: 0.3.11
-  flutter_inappwebview: ^4.0.0+4
+  flutter_webview_plugin: ^0.3.11
+  flutter_inappwebview: ^5.3.2
   #---------icon----------#
-  eva_icons_flutter: 2.0.1
+  eva_icons_flutter: ^2.0.1
   #https://akveo.github.io/eva-icons/#/
-  flutter_icons: 1.1.0
+  flutter_icons: ^1.1.0
   #https://oblador.github.io/react-native-vector-icons/
   #---------json----------#
-  json_annotation: ^3.1.1
+  json_annotation: ^4.1.0
   #----------other----------#
   back_button_interceptor: ^4.4.1
   #攔截返回鍵訊息
   big5:      #big5 decode encode
     path: plugins/big5-dart
-  intl: 0.16.1
+  intl: ^0.17.0
   #DateTime to String
-  package_info: ^0.4.3+2
+  package_info: ^2.0.2
   #檢測app版本用於檢查更新
   #----------html viewer----------#
-  flutter_widget_from_html_core: ^0.5.1+4
+  flutter_widget_from_html_core: ^0.8.5+1
   #----------animation----------#
-  flutter_staggered_animations: 0.1.2
+  flutter_staggered_animations: ^0.1.2
   #listView or gridView動畫
   #----------download----------#
   flutter_downloader: ^1.5.2
   #下載app更新
   open_file: ^3.0.3
-  permission_handler: ^5.1.0+2
-  mime_type: 0.3.2
+  permission_handler: ^8.2.6
+  mime_type: ^0.3.2
   #----------Widget----------#
   get: ^3.24.0
   bot_toast: ^3.0.5
   pull_to_refresh: ^1.6.4
   #提供ListView可下拉式更新並且可動態加載
-  cached_network_image: ^2.5.0
+  cached_network_image: ^3.2.0
   #用url顯示圖片
-  auto_size_text: 2.1.0
+  auto_size_text: ^2.1.0
   #課表顯示有用到
   table_calendar: ^2.3.3
   #顯示行事曆
-  flutter_xlider: 3.4.0
+  flutter_xlider: ^3.4.0
   #語言切換用
   fluttertoast: ^7.1.6
   #Toast
@@ -107,19 +108,19 @@ dependencies:
   #顯示Error時用到
   flutter_slidable: ^0.5.7
   #email使用可左右滑抽屜
-  flutter_spinkit: 4.1.2+1
+  flutter_spinkit: ^4.1.2+1
   #等待動畫
-  flutter_markdown: ^0.5.2
+  flutter_markdown: ^0.6.9
   numberpicker: ^1.3.0
   #選擇學期
-  alice: ^0.1.9
+  alice: ^0.2.5
 
   # Firebase
-  firebase_core: ^0.7.0
-  firebase_analytics: ^7.0.1
-  firebase_crashlytics: ^0.4.0+1
-  firebase_remote_config: ^0.6.0
-  firebase_messaging: ^8.0.0-dev.14
+  firebase_core: ^1.12.0
+  firebase_analytics: ^9.1.1
+  firebase_crashlytics: ^2.5.2
+  firebase_remote_config: ^2.0.1
+  firebase_messaging: ^11.2.7
 
 dependency_overrides:
   http_parser:
@@ -129,11 +130,10 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.8.1
-  flutter_automation: ^1.4.0
+  flutter_launcher_icons: ^0.9.2
   #---------json----------#
   build_runner: ^1.10.13
-  json_serializable: ^3.5.1
+  json_serializable: ^4.1.4
 
 
 flutter:
