@@ -94,7 +94,6 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
           onWillPop: _onWillPop,
           child: Scaffold(
             backgroundColor: Colors.white,
-            resizeToAvoidBottomPadding: false,
             body: _buildPageView(),
             bottomNavigationBar: _buildBottomNavigationBar(),
           ),

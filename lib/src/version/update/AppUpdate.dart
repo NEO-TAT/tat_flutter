@@ -16,8 +16,7 @@ import 'package:version/version.dart';
 class AppUpdate {
   static Future<bool> checkUpdate() async {
     try {
-      RemoteConfigVersionInfo config =
-          await RemoteConfigUtil.getVersionConfig();
+      RemoteConfigVersionInfo config = await RemoteConfigUtil.getVersionConfig();
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       Version currentVersion = Version.parse(packageInfo.version);
       Version latestVersion = Version.parse(config.last.version);
@@ -38,10 +37,9 @@ class AppUpdate {
   }
 
   static void _showUpdateDialog(RemoteConfigVersionInfo value) async {
-    String title =
-        sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
+    String title = sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
 
-    bool v = await Get.dialog<bool>(
+    await Get.dialog<bool>(
       AlertDialog(
         title: Text(title),
         content: SingleChildScrollView(
@@ -58,13 +56,13 @@ class AppUpdate {
           ),
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(R.current.cancel),
             onPressed: () {
               Get.back<bool>(result: false);
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text(R.current.update),
             onPressed: () {
               Get.back<bool>(result: true);
@@ -73,7 +71,6 @@ class AppUpdate {
           ),
         ],
       ),
-      useRootNavigator: false,
       barrierDismissible: false, // user must tap button!
     );
     if (value.isFocusUpdate) {

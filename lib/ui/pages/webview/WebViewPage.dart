@@ -6,7 +6,7 @@ class WebViewPage extends StatefulWidget {
   final String url;
   final String title;
 
-  WebViewPage({this.title, this.url});
+  const WebViewPage({this.title, this.url});
 
   @override
   _WebViewPageState createState() => _WebViewPageState();
@@ -16,14 +16,14 @@ class _WebViewPageState extends State<WebViewPage> {
   final cookieManager = CookieManager.instance();
   final cookieJar = DioConnector.instance.cookiesManager;
   InAppWebViewController webView;
-  String url = "";
+  Uri url = Uri.parse('');
   double progress = 0;
 
   Future<bool> setCookies() async {
-    final cookies = cookieJar.loadForRequest(Uri.parse(widget.url));
-    for (var cookie in cookies) {
+    final cookies = await cookieJar.loadForRequest(Uri.parse(widget.url));
+    for (final cookie in cookies) {
       await cookieManager.setCookie(
-        url: widget.url,
+        url: Uri.parse(widget.url),
         name: cookie.name,
         value: cookie.value,
         domain: cookie.domain,
@@ -51,39 +51,31 @@ class _WebViewPageState extends State<WebViewPage> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      child: progress < 1.0
-                          ? LinearProgressIndicator(value: progress)
-                          : Container(),
+                      child: progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
                     ),
                     Expanded(
                       child: Container(
                         child: InAppWebView(
-                          initialUrl: widget.url,
+                          initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
                           initialOptions: InAppWebViewGroupOptions(
-                            crossPlatform: InAppWebViewOptions(
-                              debuggingEnabled: true,
-                            ),
+                            crossPlatform: InAppWebViewOptions(),
                           ),
-                          onWebViewCreated:
-                              (InAppWebViewController controller) {
+                          onWebViewCreated: (InAppWebViewController controller) {
                             webView = controller;
                           },
-                          onLoadStart:
-                              (InAppWebViewController controller, String url) {
+                          onLoadStart: (InAppWebViewController controller, Uri url) {
                             setState(() {
                               this.url = url;
                             });
                           },
-                          onLoadStop: (InAppWebViewController controller,
-                              String url) async {
+                          onLoadStop: (InAppWebViewController controller, Uri url) async {
                             setState(
                               () {
                                 this.url = url;
                               },
                             );
                           },
-                          onProgressChanged: (InAppWebViewController controller,
-                              int progress) {
+                          onProgressChanged: (InAppWebViewController controller, int progress) {
                             setState(
                               () {
                                 this.progress = progress / 100;
@@ -96,9 +88,13 @@ class _WebViewPageState extends State<WebViewPage> {
                     ButtonBar(
                       alignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
                           ),
                           child: Icon(Icons.arrow_back),
                           onPressed: () async {
@@ -107,9 +103,13 @@ class _WebViewPageState extends State<WebViewPage> {
                             }
                           },
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
                           ),
                           child: Icon(Icons.arrow_forward),
                           onPressed: () async {
@@ -118,9 +118,13 @@ class _WebViewPageState extends State<WebViewPage> {
                             }
                           },
                         ),
-                        RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
                           ),
                           child: Icon(Icons.refresh),
                           onPressed: () async {

@@ -32,8 +32,8 @@ class FileViewerPage extends StatefulWidget {
 
 class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObserver {
   String path;
-  final List<String> paths = List();
-  List<FileSystemEntity> files = List();
+  final List<String> paths = [];
+  List<FileSystemEntity> files = [];
   bool showHidden = false;
 
   @override
@@ -141,7 +141,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                               icon: Icon(
                                 widget.path.toString().contains("emulated") ? Feather.smartphone : Icons.sd_card,
                                 color: index == paths.length - 1
-                                    ? Theme.of(context).accentColor
+                                    ? Theme.of(context).colorScheme.secondary
                                     : Theme.of(context).textTheme.headline6.color,
                               ),
                               onPressed: () {
@@ -173,7 +173,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: index == paths.length - 1
-                                            ? Theme.of(context).accentColor
+                                            ? Theme.of(context).colorScheme.secondary
                                             : Theme.of(context).textTheme.headline6.color,
                                       ),
                                     ),
@@ -315,27 +315,32 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                   Container(
                     height: 40,
                     width: 130,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                        backgroundColor: Colors.white,
                       ),
-                      borderSide: BorderSide(color: Theme.of(context).accentColor),
                       child: Text(
                         R.current.cancel,
                         style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
-                      color: Colors.white,
                     ),
                   ),
                   Container(
                     height: 40,
                     width: 130,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
                       child: Text(
                         R.current.createFolder,
@@ -359,7 +364,6 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                           getFiles();
                         }
                       },
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ],
@@ -369,7 +373,6 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
           ),
         ),
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
   }
@@ -408,27 +411,32 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                   Container(
                     height: 40,
                     width: 130,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                        backgroundColor: Colors.white,
                       ),
-                      borderSide: BorderSide(color: Theme.of(context).accentColor),
                       child: Text(
                         R.current.cancel,
                         style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
-                      color: Colors.white,
                     ),
                   ),
                   Container(
                     height: 40,
                     width: 130,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        primary: Theme.of(context).colorScheme.secondary,
                       ),
                       child: Text(
                         R.current.rename,
@@ -469,7 +477,6 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                           getFiles();
                         }
                       },
-                      color: Theme.of(context).accentColor,
                     ),
                   ),
                 ],
@@ -479,7 +486,6 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
           ),
         ),
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
   }

@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/util/HtmlUtils.dart';
@@ -123,8 +122,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   Widget _showFileList() {
-    List<String> fileNameList =
-        widget.data['file'].keys.toList(); //key : 文件名稱  value : 文件下載url
+    List<String> fileNameList = widget.data['file'].keys.toList(); //key : 文件名稱  value : 文件下載url
     Map fileUrlMap = widget.data["file"];
     if (fileNameList.length == 0) {
       return Container(
@@ -168,8 +166,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
                 return InkWell(
                   child: WidgetAnimator(fileWidget),
                   onTap: () {
-                    _downloadFile(
-                        fileUrlMap[fileNameList[index]], fileNameList[index]);
+                    _downloadFile(fileUrlMap[fileNameList[index]], fileNameList[index]);
                   },
                 );
               },
@@ -192,8 +189,8 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
       widget.data["body"],
       onTapUrl: (url) {
         onUrlTap(url);
+        return true;
       },
-      hyperlinkColor: AppColors.hyperlinkColor,
     );
   }
 

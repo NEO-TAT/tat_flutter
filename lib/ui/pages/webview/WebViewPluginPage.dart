@@ -18,8 +18,7 @@ class WebViewPluginPage extends StatefulWidget {
   _WebViewPluginPageState createState() => _WebViewPluginPageState();
 }
 
-class _WebViewPluginPageState extends State<WebViewPluginPage>
-    with AutomaticKeepAliveClientMixin {
+class _WebViewPluginPageState extends State<WebViewPluginPage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String initUrl;
 
@@ -32,8 +31,7 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
   @override
   void initState() {
     super.initState();
-    onStateChanged =
-        flutterWebViewPlugin.onStateChanged.listen((WebViewStateChanged state) {
+    onStateChanged = flutterWebViewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       _handleStateChange(state);
     });
     onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((url) {

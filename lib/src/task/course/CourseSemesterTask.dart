@@ -36,15 +36,14 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
   }
 
   Future<List<SemesterJson>> _selectSemesterDialog() async {
-    List<SemesterJson> value = List();
+    List<SemesterJson> value = [];
     DateTime dateTime = DateTime.now();
     int year = dateTime.year - 1911;
     int semester = (dateTime.month <= 8 && dateTime.month >= 1) ? 2 : 1;
     if (dateTime.month <= 1) {
       year--;
     }
-    SemesterJson before =
-        SemesterJson(semester: semester.toString(), year: year.toString());
+    SemesterJson before = SemesterJson(semester: semester.toString(), year: year.toString());
     SemesterJson select = await Get.dialog<SemesterJson>(
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
@@ -57,20 +56,20 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
                       Row(
                         children: [
                           Expanded(
-                            child: NumberPicker.integer(
-                                initialValue: year,
-                                minValue: 100,
-                                maxValue: 120,
-                                onChanged: (value) =>
-                                    setState(() => year = value)),
+                            child: NumberPicker(
+                              value: year,
+                              minValue: 100,
+                              maxValue: 120,
+                              onChanged: (value) => setState(() => year = value),
+                            ),
                           ),
                           Expanded(
-                            child: NumberPicker.integer(
-                                initialValue: semester,
-                                minValue: 1,
-                                maxValue: 2,
-                                onChanged: (value) =>
-                                    setState(() => semester = value)),
+                            child: NumberPicker(
+                              value: semester,
+                              minValue: 1,
+                              maxValue: 2,
+                              onChanged: (value) => setState(() => semester = value),
+                            ),
                           ),
                         ],
                       )

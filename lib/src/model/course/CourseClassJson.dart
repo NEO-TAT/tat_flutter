@@ -2,7 +2,6 @@ import 'package:flutter_app/src/model/JsonInit.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:quiver/core.dart';
 import 'package:sprintf/sprintf.dart';
 
 part 'CourseClassJson.g.dart';
@@ -20,15 +19,7 @@ class CourseMainJson {
   Map<Day, String> time; //時間
 
   CourseMainJson(
-      {this.name,
-      this.href,
-      this.id,
-      this.credits,
-      this.hours,
-      this.stage,
-      this.note,
-      this.time,
-      this.scheduleHref}) {
+      {this.name, this.href, this.id, this.credits, this.hours, this.stage, this.note, this.time, this.scheduleHref}) {
     name = JsonInit.stringInit(name);
     id = JsonInit.stringInit(id);
     href = JsonInit.stringInit(href);
@@ -64,8 +55,7 @@ class CourseMainJson {
         [name, id, href, stage, credits, hours, scheduleHref, note]);
   }
 
-  factory CourseMainJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseMainJsonFromJson(json);
+  factory CourseMainJson.fromJson(Map<String, dynamic> json) => _$CourseMainJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseMainJsonToJson(this);
 }
@@ -80,12 +70,7 @@ class CourseExtraJson {
   String withdrawNumber; //徹選人數
   String openClass; //開課班級(計算學分用)
 
-  CourseExtraJson(
-      {this.name,
-      this.category,
-      this.selectNumber,
-      this.withdrawNumber,
-      this.href}) {
+  CourseExtraJson({this.name, this.category, this.selectNumber, this.withdrawNumber, this.href}) {
     id = JsonInit.stringInit(id);
     name = JsonInit.stringInit(name);
     href = JsonInit.stringInit(href);
@@ -116,8 +101,7 @@ class CourseExtraJson {
         [id, name, category, selectNumber, withdrawNumber, openClass]);
   }
 
-  factory CourseExtraJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseExtraJsonFromJson(json);
+  factory CourseExtraJson.fromJson(Map<String, dynamic> json) => _$CourseExtraJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseExtraJsonToJson(this);
 }
@@ -141,8 +125,7 @@ class ClassJson {
     return sprintf("name : %s \n" + "href : %s \n", [name, href]);
   }
 
-  factory ClassJson.fromJson(Map<String, dynamic> json) =>
-      _$ClassJsonFromJson(json);
+  factory ClassJson.fromJson(Map<String, dynamic> json) => _$ClassJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$ClassJsonToJson(this);
 }
@@ -165,12 +148,10 @@ class ClassroomJson {
 
   @override
   String toString() {
-    return sprintf("name    : %s \n" + "href    : %s \n" + "mainUse : %s \n",
-        [name, href, mainUse.toString()]);
+    return sprintf("name    : %s \n" + "href    : %s \n" + "mainUse : %s \n", [name, href, mainUse.toString()]);
   }
 
-  factory ClassroomJson.fromJson(Map<String, dynamic> json) =>
-      _$ClassroomJsonFromJson(json);
+  factory ClassroomJson.fromJson(Map<String, dynamic> json) => _$ClassroomJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$ClassroomJsonToJson(this);
 }
@@ -194,8 +175,7 @@ class TeacherJson {
     return sprintf("name : %s \n" + "href : %s \n", [name, href]);
   }
 
-  factory TeacherJson.fromJson(Map<String, dynamic> json) =>
-      _$TeacherJsonFromJson(json);
+  factory TeacherJson.fromJson(Map<String, dynamic> json) => _$TeacherJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$TeacherJsonToJson(this);
 }
@@ -210,8 +190,7 @@ class SemesterJson {
     semester = JsonInit.stringInit(semester);
   }
 
-  factory SemesterJson.fromJson(Map<String, dynamic> json) =>
-      _$SemesterJsonFromJson(json);
+  factory SemesterJson.fromJson(Map<String, dynamic> json) => _$SemesterJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$SemesterJsonToJson(this);
 
@@ -226,12 +205,10 @@ class SemesterJson {
 
   @override
   bool operator ==(dynamic o) {
-    return (int.parse(o.semester) == int.parse(semester) &&
-        int.parse(o.year) == int.parse(year) &&
-        o is SemesterJson);
+    return (int.parse(o.semester) == int.parse(semester) && int.parse(o.year) == int.parse(year) && o is SemesterJson);
   }
 
-  int get hashCode => hash2(semester.hashCode, year.hashCode);
+  int get hashCode => Object.hashAll([semester.hashCode, year.hashCode]);
 }
 
 @JsonSerializable()
@@ -243,13 +220,7 @@ class ClassmateJson {
   String href;
   bool isSelect; //是否撤選
 
-  ClassmateJson(
-      {this.className,
-      this.studentEnglishName,
-      this.studentName,
-      this.studentId,
-      this.isSelect,
-      this.href}) {
+  ClassmateJson({this.className, this.studentEnglishName, this.studentName, this.studentId, this.isSelect, this.href}) {
     className = JsonInit.stringInit(className);
     studentEnglishName = JsonInit.stringInit(studentEnglishName);
     studentName = JsonInit.stringInit(studentName);
@@ -259,11 +230,7 @@ class ClassmateJson {
   }
 
   bool get isEmpty {
-    return className.isEmpty &&
-        studentEnglishName.isEmpty &&
-        studentName.isEmpty &&
-        studentId.isEmpty &&
-        href.isEmpty;
+    return className.isEmpty && studentEnglishName.isEmpty && studentName.isEmpty && studentId.isEmpty && href.isEmpty;
   }
 
   @override
@@ -275,14 +242,7 @@ class ClassmateJson {
             "studentId           : %s \n" +
             "href                : %s \n" +
             "isSelect            : %s \n",
-        [
-          className,
-          studentEnglishName,
-          studentName,
-          studentId,
-          href,
-          isSelect.toString()
-        ]);
+        [className, studentEnglishName, studentName, studentId, href, isSelect.toString()]);
   }
 
   String getName() {
@@ -295,8 +255,7 @@ class ClassmateJson {
     return name;
   }
 
-  factory ClassmateJson.fromJson(Map<String, dynamic> json) =>
-      _$ClassmateJsonFromJson(json);
+  factory ClassmateJson.fromJson(Map<String, dynamic> json) => _$ClassmateJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$ClassmateJsonToJson(this);
 }
