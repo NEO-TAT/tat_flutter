@@ -22,7 +22,7 @@ dependencies:
   path_provider: ^2.0.4
   url_launcher: ^6.0.20
   #開啟email phone url...
-  logger: ^0.9.4
+  logger: ^1.1.0
   #顯示Log
   sprintf: ^5.0.0
   flutter_local_notifications: ^9.4.0
