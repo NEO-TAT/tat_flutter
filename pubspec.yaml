@@ -24,7 +24,7 @@ dependencies:
   #開啟email phone url...
   logger: ^1.1.0
   #顯示Log
-  sprintf: ^5.0.0
+  sprintf: ^6.0.0
   flutter_local_notifications: ^9.4.0
   #通知欄  需修改android原始碼
   rxdart: ^0.27.3
@@ -32,9 +32,9 @@ dependencies:
   video_player: ^2.2.3
   chewie: ^1.1.0
   after_init: ^0.1.2
-  android_intent: ^0.3.7+7
+  android_intent: ^2.0.2
   device_info: ^2.0.3
-  html_unescape: ^1.0.2
+  html_unescape: ^2.0.0
   #處理HTML特殊字
   local_auth: ^1.1.6
   #驗證身分指紋
@@ -63,7 +63,7 @@ dependencies:
   flutter_webview_plugin: ^0.4.0
   flutter_inappwebview: ^5.3.2
   #---------icon----------#
-  eva_icons_flutter: ^2.0.1
+  eva_icons_flutter: ^3.1.0
   #https://akveo.github.io/eva-icons/#/
   flutter_icons: ^1.1.0
   #https://oblador.github.io/react-native-vector-icons/
@@ -83,7 +83,7 @@ dependencies:
   flutter_staggered_animations: ^0.1.2
   #listView or gridView動畫
   #----------download----------#
-  flutter_downloader: ^1.5.2
+  flutter_downloader: ^1.7.2
   #下載app更新
   open_file: ^3.0.3
   permission_handler: ^8.2.6

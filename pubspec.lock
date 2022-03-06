@@ -35,7 +35,7 @@ packages:
       name: android_intent
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.7+7"
+    version: "2.0.2"
   archive:
     dependency: transitive
     description:
@@ -371,7 +371,7 @@ packages:
       name: eva_icons_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "3.1.0"
   fake_async:
     dependency: transitive
     description:
@@ -713,7 +713,7 @@ packages:
       name: html_unescape
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "2.0.0"
   http:
     dependency: transitive
     description:
@@ -1201,7 +1201,7 @@ packages:
       name: sprintf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "6.0.0"
   sqflite:
     dependency: transitive
     description:
