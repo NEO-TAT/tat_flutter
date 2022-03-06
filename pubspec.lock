@@ -678,7 +678,7 @@ packages:
       name: github
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.5.0"
+    version: "9.0.0"
   glob:
     dependency: transitive
     description:
@@ -1042,7 +1042,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.3.3"
+    version: "6.0.2"
   pub_semver:
     dependency: transitive
     description:
