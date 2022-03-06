@@ -11,7 +11,7 @@ class PermissionsUtil {
   /// - uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
   /// - uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
   static Future<bool> checkHasAosStoragePermission(BuildContext context) async {
-    if (!Platform.isIOS) return true;
+    if (Platform.isIOS) return true;
     assert(Platform.isAndroid, 'The platform most be either aos or ios.');
 
     final storagePermissionStatus = await Permission.storage.status;
