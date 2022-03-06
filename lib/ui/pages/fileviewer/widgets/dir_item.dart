@@ -11,7 +11,7 @@ class DirectoryItem extends StatelessWidget {
   final Function tap;
   final Function popTap;
 
-  DirectoryItem({
+  const DirectoryItem({
     Key key,
     @required this.file,
     @required this.tap,
@@ -19,28 +19,25 @@ class DirectoryItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: tap,
-      contentPadding: EdgeInsets.all(0),
-      leading: Container(
-        height: 40,
-        width: 40,
-        child: Center(
-          child: Icon(
-            Feather.folder,
+  Widget build(BuildContext context) => ListTile(
+        onTap: tap,
+        contentPadding: EdgeInsets.all(0),
+        leading: Container(
+          height: 40,
+          width: 40,
+          child: Center(
+            child: Icon(
+              Feather.folder,
+            ),
           ),
         ),
-      ),
-      title: Text(
-        "${basename(file.path)}",
-        style: TextStyle(
-          fontSize: 14,
+        title: Text(
+          "${basename(file.path)}",
+          style: TextStyle(
+            fontSize: 14,
+          ),
+          maxLines: 2,
         ),
-        maxLines: 2,
-      ),
-      trailing:
-          popTap == null ? null : DirPopup(path: file.path, popTap: popTap),
-    );
-  }
+        trailing: popTap == null ? null : DirPopup(path: file.path, popTap: popTap),
+      );
 }
