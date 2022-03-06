@@ -34,10 +34,8 @@ class NTUTTask<T> extends DialogTask<T> {
     NTUTAppTask.isLogin = false;
     if (value == NTUTConnectorStatus.LoginSuccess) {
       _isLogin = true;
-      print('#########################');
       return TaskStatus.Success;
     } else {
-      print('@@@@@@@@@@@@@@@@@@@@@@@@@@');
       return await _onError(value);
     }
   }
