@@ -9,6 +9,7 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
 import 'package:flutter_app/src/connector/interceptors/response_cookie_filter.dart';
 import 'package:get/get.dart' as getUtils;
+import 'package:path_provider/path_provider.dart';
 
 import 'ConnectorParameter.dart';
 
@@ -48,14 +49,6 @@ class DioConnector {
     return result;
   }
 
-  /*
-  static String _utf8Decoder(List<int> responseBytes, RequestOptions options,
-      ResponseBody responseBody) {
-    String result = Utf8Codec().decode(responseBytes);
-    return result;
-  }
-   */
-
   Future<void> init() async {
     final List<RegExp> _blockedCookieNamePatterns = [
       // The school backend added a cookie to the response header,
@@ -69,7 +62,8 @@ class DioConnector {
     ];
 
     try {
-      _cookieJar = PersistCookieJar();
+      final appDocDir = (await getApplicationDocumentsDirectory()).path;
+      _cookieJar = PersistCookieJar(storage: FileStorage('$appDocDir/.cookies'));
       alice.setNavigatorKey(getUtils.Get.key);
       dio.interceptors.add(ResponseCookieFilter(blockedCookieNamePatterns: _blockedCookieNamePatterns));
       dio.interceptors.add(CookieManager(_cookieJar));
