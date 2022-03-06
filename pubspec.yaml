@@ -85,13 +85,13 @@ dependencies:
   #----------download----------#
   flutter_downloader: ^1.7.2
   #下載app更新
-  open_file: ^3.0.3
+  open_file: ^3.2.1
   permission_handler: ^8.2.6
-  mime_type: ^0.3.2
+  mime_type: ^1.0.0
   #----------Widget----------#
   get: ^3.24.0
-  bot_toast: ^3.0.5
-  pull_to_refresh: ^1.6.4
+  bot_toast: ^4.0.1
+  pull_to_refresh: ^2.0.0
   #提供ListView可下拉式更新並且可動態加載
   cached_network_image: ^3.2.0
   #用url顯示圖片
