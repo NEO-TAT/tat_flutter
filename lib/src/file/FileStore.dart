@@ -6,6 +6,7 @@
 //  Copyright © 2020 morris13579 All rights reserved.
 //
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -17,51 +18,57 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FileStore {
-  static String storeKey = "downloadPath";
+  static const storeKey = "downloadPath";
 
   static Future<String> findLocalPath(BuildContext context) async {
-    bool checkPermission = await PermissionsUtil.check(context);
-    if (!checkPermission) {
+    final hasStoragePermission = await PermissionsUtil.checkHasAosStoragePermission(context);
+    if (!hasStoragePermission) {
       MyToast.show(R.current.noPermission);
-      return "";
+      return '';
     }
-    Directory directory = await _getFilePath();
-    if (directory == null) {
-      directory = Theme.of(context).platform == TargetPlatform.android
-          ? await getExternalStorageDirectory()
-          : await getApplicationSupportDirectory();
+
+    final directory = await _getFilePath() ?? Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationSupportDirectory();
+
+    final targetDir = Directory(directory.path + '/TAT');
+    final hasExisted = await targetDir.exists();
+    if (!hasExisted) {
+      targetDir.create();
     }
-    return directory.path;
+
+    return targetDir.path;
   }
 
-  static Future<String> getDownloadDir(
-      BuildContext context, String name) async {
-    var _localPath = (await findLocalPath(context)) + '/$name';
+  static Future<String> getDownloadDir(BuildContext context, String name) async {
+    final _localPath = (await findLocalPath(context)) + '/$name';
     final savedDir = Directory(_localPath);
-    bool hasExisted = await savedDir.exists();
+    final hasExisted = await savedDir.exists();
+
     if (!hasExisted) {
       savedDir.create();
     }
+
     return savedDir.path;
   }
 
   static Future<bool> setFilePath(String directory) async {
     if (directory != null) {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString(storeKey, directory);
+      final pref = await SharedPreferences.getInstance();
+      pref.setString(storeKey, base64Encode(directory.codeUnits));
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   static Future<Directory> _getFilePath() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String path = pref.getString(storeKey);
+    final pref = await SharedPreferences.getInstance();
+    final path = pref.getString(storeKey);
     if (path != null && path.isNotEmpty) {
-      return Directory(path);
-    } else {
-      return null;
+      return Directory(base64Decode(path).toString());
     }
+
+    return null;
   }
 }

@@ -675,6 +675,26 @@ class S {
     );
   }
 
+  /// `Changing password...`
+  String get changingPassword {
+    return Intl.message(
+      'Changing password...',
+      name: 'changingPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Changing password Error`
+  String get changingPasswordError {
+    return Intl.message(
+      'Changing password Error',
+      name: 'changingPasswordError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Check identity`
   String get checkIdentity {
     return Intl.message(
