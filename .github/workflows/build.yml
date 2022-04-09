@@ -72,7 +72,7 @@ jobs:
       run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
 
     - name: Add Key property
-      run: echo '${{ secrets.ANDROID_KEY_PROPERTIES }}' > android/key.properties
+      run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" > android/key.properties
 
     # Get packages.
     - name: Get dependencies
