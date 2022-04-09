@@ -15,7 +15,7 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  List<Map> listViewData = List();
+  List<Map> listViewData = [];
 
   static bool inDevMode = false;
 
@@ -26,7 +26,7 @@ class _AboutPageState extends State<AboutPage> {
   }
 
   void initList() {
-    listViewData = List();
+    listViewData = [];
     listViewData.addAll([
       {
         "icon": EvaIcons.refreshOutline,
@@ -143,8 +143,7 @@ class _AboutPageState extends State<AboutPage> {
   Container _buildAbout(Map data) {
     return Container(
       //color: Colors.yellow,
-      padding:
-          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

@@ -112,6 +112,8 @@ class AnsiParser {
       case 199:
         return dark ? Colors.pink[300] : Colors.pink[700];
     }
+
+    return Colors.transparent;
   }
 
   TextSpan createSpan(String text) {

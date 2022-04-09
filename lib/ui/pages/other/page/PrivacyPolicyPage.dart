@@ -15,8 +15,7 @@ class PrivacyPolicyPage extends StatelessWidget {
         title: Text(R.current.PrivacyPolicy),
       ),
       body: FutureBuilder<String>(
-        future: Connector.getDataByGet(
-            ConnectorParameter(AppLink.privacyPolicyUrl)),
+        future: Connector.getDataByGet(ConnectorParameter(AppLink.privacyPolicyUrl)),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             return Markdown(

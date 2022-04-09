@@ -1,13 +1,3 @@
-//
-//  LanguageUtil.dart
-//  北科課程助手
-//  切換語言用
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
-
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/l10n.dart';
@@ -63,8 +53,7 @@ class LanguageUtil {
       String countryCode = lang.split("_")[0];
       String languageCode = lang.split("_")[1];
       for (Locale locale in getSupportLocale) {
-        if (locale.languageCode == languageCode &&
-            locale.countryCode == countryCode) {
+        if (locale.languageCode == languageCode && locale.countryCode == countryCode) {
           return locale;
         }
       }

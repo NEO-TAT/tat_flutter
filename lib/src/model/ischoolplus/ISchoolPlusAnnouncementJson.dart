@@ -25,11 +25,10 @@ class ISchoolPlusAnnouncementInfoJson {
   @JsonKey(name: 'data')
   String data;
 
-  ISchoolPlusAnnouncementInfoJson(this.total, this.code, this.totalRows,
-      this.limitRows, this.currentPage, this.editEnable, this.data);
+  ISchoolPlusAnnouncementInfoJson(
+      this.total, this.code, this.totalRows, this.limitRows, this.currentPage, this.editEnable, this.data);
 
-  factory ISchoolPlusAnnouncementInfoJson.fromJson(
-          Map<String, dynamic> srcJson) =>
+  factory ISchoolPlusAnnouncementInfoJson.fromJson(Map<String, dynamic> srcJson) =>
       _$ISchoolPlusAnnouncementInfoJsonFromJson(srcJson);
 }
 

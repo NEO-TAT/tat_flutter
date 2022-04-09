@@ -15,10 +15,9 @@ class CheckPasswordDialog extends StatefulWidget {
 }
 
 class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
-  final TextEditingController _originPasswordController =
-      TextEditingController();
+  final TextEditingController _originPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final FocusNode _originPasswordFocus = new FocusNode();
+  final FocusNode _originPasswordFocus = FocusNode();
   String _originPasswordErrorMessage = "";
 
   @override
@@ -30,9 +29,11 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
   void checkAuth() async {
     LocalAuthentication localAuthentication = LocalAuthentication();
     try {
-      bool didAuthenticate =
-          await localAuthentication.authenticateWithBiometrics(
-              localizedReason: R.current.checkIdentity, useErrorDialogs: false);
+      bool didAuthenticate = await localAuthentication.authenticate(
+        localizedReason: R.current.checkIdentity,
+        useErrorDialogs: false,
+        biometricOnly: true,
+      );
       if (didAuthenticate) {
         Get.back<bool>(result: true);
       }
@@ -64,8 +65,7 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
           textAlign: TextAlign.center,
         ),
       ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Form(
         key: _formKey,
         child: Column(
@@ -117,11 +117,11 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
         ),
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text(R.current.cancel),
           onPressed: () => Get.back<bool>(result: false),
         ),
-        FlatButton(
+        TextButton(
             child: Text(R.current.sure),
             onPressed: () {
               if (_formKey.currentState.validate()) {
@@ -140,8 +140,6 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
         _originPasswordErrorMessage = R.current.passwordNotSame;
       });
     }
-    return _originPasswordErrorMessage.isNotEmpty
-        ? _originPasswordErrorMessage
-        : null;
+    return _originPasswordErrorMessage.isNotEmpty ? _originPasswordErrorMessage : null;
   }
 }

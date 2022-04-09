@@ -30,13 +30,11 @@ class NTUTConnector {
   static final String host = "https://app.ntut.edu.tw/";
   static final String _loginUrl = host + "login.do";
   static final String _getPictureUrl = host + "photoView.do";
-  static final String _checkLoginUrl = host + "myPortal.do";
   static final String _getTreeUrl = host + "aptreeList.do";
   static final String _getCalendarUrl = host + "calModeApp.do";
   static final String _changePasswordUrl = host + "passwordMdy.do";
 
-  static Future<NTUTConnectorStatus> login(
-      String account, String password) async {
+  static Future<NTUTConnectorStatus> login(String account, String password) async {
     try {
       ConnectorParameter parameter;
       Map<String, String> data = {
@@ -79,8 +77,7 @@ class NTUTConnector {
     }
   }
 
-  static Future<List<NTUTCalendarJson>> getCalendar(
-      DateTime startTime, DateTime endTime) async {
+  static Future<List<NTUTCalendarJson>> getCalendar(DateTime startTime, DateTime endTime) async {
     //暫無用到 取得學校行事曆
     ConnectorParameter parameter;
     var formatter = DateFormat("yyyy/MM/dd");
@@ -94,8 +91,7 @@ class NTUTConnector {
       parameter = ConnectorParameter(_getCalendarUrl);
       parameter.data = data;
       String result = await Connector.getDataByGet(parameter);
-      List<NTUTCalendarJson> calendarList =
-          getNTUTCalendarJsonList(json.decode(result));
+      List<NTUTCalendarJson> calendarList = getNTUTCalendarJsonList(json.decode(result));
       return calendarList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -131,8 +127,7 @@ class NTUTConnector {
     String url = _getPictureUrl;
     Map<String, String> data = {"realname": userPhoto};
     if (userPhoto.isNotEmpty) {
-      url =
-          Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
+      url = Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
     }
     imageInfo["url"] = url;
     imageInfo["header"] = Connector.getLoginHeaders(url);

@@ -12,8 +12,7 @@ class MyDownloader {
   static init() async {
     if (!isInit) {
       await FlutterDownloader.initialize();
-      IsolateNameServer.registerPortWithName(
-          _port.sendPort, 'downloader_send_port');
+      IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
       _port.listen((dynamic data) {
         String id = data[0];
         DownloadTaskStatus status = data[1];
@@ -49,10 +48,8 @@ class MyDownloader {
     isInit = false;
   }
 
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
+  static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+    final SendPort send = IsolateNameServer.lookupPortByName('downloader_send_port');
     send.send([id, status, progress]);
   }
 

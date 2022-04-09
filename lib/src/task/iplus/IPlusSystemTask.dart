@@ -18,8 +18,7 @@ class IPlusSystemTask<T> extends NTUTTask<T> {
       isLogin = true;
       super.onStart(R.current.loginISchoolPlus);
       String studentId = Model.instance.getAccount();
-      ISchoolPlusConnectorStatus value =
-          await ISchoolPlusConnector.login(studentId);
+      ISchoolPlusConnectorStatus value = await ISchoolPlusConnector.login(studentId);
       super.onEnd();
       if (value != ISchoolPlusConnectorStatus.LoginSuccess) {
         return await onError(R.current.loginISchoolPlusError);

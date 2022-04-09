@@ -1,17 +1,10 @@
-//  ErrorDialog.dart
-//  北科課程助手
-//  用於顯示錯誤視窗
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:get/get.dart';
 
 class ErrorDialogParameter {
-  BuildContext context;
+  final BuildContext context;
   String title;
   String desc;
   String btnOkText;
@@ -20,34 +13,29 @@ class ErrorDialogParameter {
   AnimType animType;
   Function btnOkOnPress;
   Function btnCancelOnPress;
-  bool offOkBtn;
-  bool offCancelBtn;
+  final bool offOkBtn;
+  final bool offCancelBtn;
 
-  ErrorDialogParameter(
-      {this.context,
-      @required this.desc,
-      this.title,
-      this.btnOkText,
-      this.btnCancelText,
-      this.animType,
-      this.dialogType,
-      this.btnCancelOnPress,
-      this.btnOkOnPress,
-      this.offOkBtn: false,
-      this.offCancelBtn: false}) {
-    title = title ?? R.current.alertError;
-    btnOkText = btnOkText ?? R.current.restart;
-    btnCancelText = btnCancelText ?? R.current.cancel;
-    animType = animType ?? AnimType.BOTTOMSLIDE;
-    dialogType = dialogType ?? DialogType.ERROR;
-    btnCancelOnPress = btnCancelOnPress ??
-        () {
-          Get.back<bool>(result: false);
-        };
-    btnOkOnPress = btnOkOnPress ??
-        () {
-          Get.back<bool>(result: true);
-        };
+  ErrorDialogParameter({
+    this.context,
+    @required this.desc,
+    this.title,
+    this.btnOkText,
+    this.btnCancelText,
+    this.animType,
+    this.dialogType,
+    this.btnCancelOnPress,
+    this.btnOkOnPress,
+    this.offOkBtn = false,
+    this.offCancelBtn = false,
+  }) {
+    title ??= R.current.alertError;
+    btnOkText ??= R.current.restart;
+    btnCancelText ??= R.current.cancel;
+    animType ??= AnimType.BOTTOMSLIDE;
+    dialogType ??= DialogType.ERROR;
+    btnCancelOnPress ??= () => Navigator.of(context).pop();
+    btnOkOnPress ??= () => Navigator.of(context).pop();
     if (offOkBtn) {
       btnOkOnPress = null;
     }
@@ -58,24 +46,23 @@ class ErrorDialogParameter {
 }
 
 class ErrorDialog {
-  ErrorDialogParameter parameter;
+  final ErrorDialogParameter parameter;
 
-  ErrorDialog(this.parameter);
+  const ErrorDialog(this.parameter);
 
-  Future<bool> show() async {
-    return await Get.dialog<bool>(AwesomeDialog(
-                context: Get.key.currentState.context,
-                dialogType: parameter.dialogType,
-                animType: parameter.animType,
-                title: parameter.title,
-                desc: parameter.desc,
-                btnOkText: parameter.btnOkText,
-                btnCancelText: parameter.btnCancelText,
-                useRootNavigator: false,
-                dismissOnTouchOutside: false,
-                btnCancelOnPress: parameter.btnCancelOnPress,
-                btnOkOnPress: parameter.btnOkOnPress)
-            .child) ??
-        false;
+  void show() {
+    AwesomeDialog(
+      context: Get.key.currentState.context,
+      dialogType: parameter.dialogType,
+      animType: parameter.animType,
+      title: parameter.title,
+      desc: parameter.desc,
+      btnOkText: parameter.btnOkText,
+      btnCancelText: parameter.btnCancelText,
+      useRootNavigator: false,
+      dismissOnTouchOutside: false,
+      btnCancelOnPress: parameter.btnCancelOnPress,
+      btnOkOnPress: parameter.btnOkOnPress,
+    ).show();
   }
 }

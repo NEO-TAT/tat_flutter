@@ -1,6 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
@@ -30,9 +29,8 @@ class IPlusFilePage extends StatefulWidget {
   _IPlusFilePage createState() => _IPlusFilePage();
 }
 
-class _IPlusFilePage extends State<IPlusFilePage>
-    with AutomaticKeepAliveClientMixin {
-  List<CourseFileJson> courseFileList = List();
+class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientMixin {
+  List<CourseFileJson> courseFileList = [];
   SelectList selectList = SelectList();
   bool isSupport;
 
@@ -75,7 +73,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     if (await taskFlow.start()) {
       courseFileList = task.result;
     }
-    courseFileList = courseFileList ?? List();
+    courseFileList = courseFileList ?? [];
     selectList.addItems(courseFileList.length);
     setState(() {});
   }
@@ -190,9 +188,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
 
   Widget _buildCourseFile(int index, CourseFileJson courseFile) {
     return Container(
-        color: selectList.getItemSelect(index)
-            ? Colors.grey
-            : Theme.of(context).backgroundColor,
+        color: selectList.getItemSelect(index) ? Colors.grey : Theme.of(context).backgroundColor,
         padding: EdgeInsets.all(10),
         child: Column(
           children: _buildFileItem(courseFile),
@@ -200,8 +196,8 @@ class _IPlusFilePage extends State<IPlusFilePage>
   }
 
   List<Widget> _buildFileItem(CourseFileJson courseFile) {
-    List<Widget> widgetList = List();
-    List<Widget> iconWidgetList = List();
+    List<Widget> widgetList = [];
+    List<Widget> iconWidgetList = [];
     for (FileType fileType in courseFile.fileType) {
       iconWidgetList.add(iconList[fileType.type.index]);
     }
@@ -229,7 +225,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     String dirName = widget.courseInfo.main.course.name;
     String url;
     String referer;
-    List<String> urlList = List();
+    List<String> urlList = [];
     await AnalyticsUtils.logDownloadFileEvent();
     if (showToast) {
       MyToast.show(R.current.downloadWillStart);
@@ -244,8 +240,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
     Uri urlParse = Uri.parse(url);
     if (!urlParse.host.toLowerCase().contains("ntut.edu.tw")) {
       //代表可能是一個連結
-      ErrorDialogParameter errorDialogParameter =
-          ErrorDialogParameter(context: context, desc: R.current.isALink);
+      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter(context: context, desc: R.current.isALink);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
@@ -255,20 +250,17 @@ class _IPlusFilePage extends State<IPlusFilePage>
       ErrorDialog(errorDialogParameter).show();
       return;
     } else if (urlParse.host.contains("istream.ntut.edu.tw")) {
-      ErrorDialogParameter errorDialogParameter =
-          ErrorDialogParameter(context: context, desc: R.current.isVideo);
+      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter(context: context, desc: R.current.isVideo);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
         Get.back();
-        RouteUtils.toVideoPlayer(
-            urlParse.toString(), widget.courseInfo, courseFile.name);
+        RouteUtils.toVideoPlayer(urlParse.toString(), widget.courseInfo, courseFile.name);
       };
       ErrorDialog(errorDialogParameter).show();
     } else {
-      await FileDownload.download(
-          context, url, dirName, courseFile.name, referer);
+      await FileDownload.download(context, url, dirName, courseFile.name, referer);
     }
   }
 
@@ -285,7 +277,7 @@ class _IPlusFilePage extends State<IPlusFilePage>
 }
 
 class SelectList {
-  List<bool> _selectList = List();
+  List<bool> _selectList = [];
 
   void addItem() {
     _selectList.add(false);

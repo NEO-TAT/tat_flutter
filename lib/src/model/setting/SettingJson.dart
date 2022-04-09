@@ -30,8 +30,7 @@ class SettingJson {
         [course.toString(), other.toString(), announcement.toString()]);
   }
 
-  factory SettingJson.fromJson(Map<String, dynamic> json) =>
-      _$SettingJsonFromJson(json);
+  factory SettingJson.fromJson(Map<String, dynamic> json) => _$SettingJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$SettingJsonToJson(this);
 }
@@ -50,12 +49,10 @@ class CourseSettingJson {
 
   @override
   String toString() {
-    return sprintf(
-        "---------courseInfo--------       :\n%s \n", [info.toString()]);
+    return sprintf("---------courseInfo--------       :\n%s \n", [info.toString()]);
   }
 
-  factory CourseSettingJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseSettingJsonFromJson(json);
+  factory CourseSettingJson.fromJson(Map<String, dynamic> json) => _$CourseSettingJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseSettingJsonToJson(this);
 }
@@ -76,12 +73,10 @@ class AnnouncementSettingJson {
 
   @override
   String toString() {
-    return sprintf("page      :%s \n " + "maxPage   :%s \n ",
-        [page.toString(), maxPage.toString()]);
+    return sprintf("page      :%s \n " + "maxPage   :%s \n ", [page.toString(), maxPage.toString()]);
   }
 
-  factory AnnouncementSettingJson.fromJson(Map<String, dynamic> json) =>
-      _$AnnouncementSettingJsonFromJson(json);
+  factory AnnouncementSettingJson.fromJson(Map<String, dynamic> json) => _$AnnouncementSettingJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$AnnouncementSettingJsonToJson(this);
 }
@@ -93,11 +88,7 @@ class OtherSettingJson {
   bool useExternalVideoPlayer;
   bool checkIPlusNew;
 
-  OtherSettingJson(
-      {this.lang,
-      this.autoCheckAppUpdate,
-      this.useExternalVideoPlayer,
-      this.checkIPlusNew}) {
+  OtherSettingJson({this.lang, this.autoCheckAppUpdate, this.useExternalVideoPlayer, this.checkIPlusNew}) {
     lang = JsonInit.stringInit(lang);
     autoCheckAppUpdate = autoCheckAppUpdate ?? true;
     useExternalVideoPlayer = useExternalVideoPlayer ?? false;
@@ -113,8 +104,7 @@ class OtherSettingJson {
     return sprintf("lang      :%s \n ", [lang]);
   }
 
-  factory OtherSettingJson.fromJson(Map<String, dynamic> json) =>
-      _$OtherSettingJsonFromJson(json);
+  factory OtherSettingJson.fromJson(Map<String, dynamic> json) => _$OtherSettingJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$OtherSettingJsonToJson(this);
 }

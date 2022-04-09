@@ -6,8 +6,7 @@ part of 'ISchoolPlusAnnouncementJson.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ISchoolPlusAnnouncementInfoJson _$ISchoolPlusAnnouncementInfoJsonFromJson(
-    Map<String, dynamic> json) {
+ISchoolPlusAnnouncementInfoJson _$ISchoolPlusAnnouncementInfoJsonFromJson(Map<String, dynamic> json) {
   return ISchoolPlusAnnouncementInfoJson(
     json['total'] as int,
     json['code'] as int,
@@ -19,20 +18,7 @@ ISchoolPlusAnnouncementInfoJson _$ISchoolPlusAnnouncementInfoJsonFromJson(
   );
 }
 
-Map<String, dynamic> _$ISchoolPlusAnnouncementInfoJsonToJson(
-        ISchoolPlusAnnouncementInfoJson instance) =>
-    <String, dynamic>{
-      'total': instance.total,
-      'code': instance.code,
-      'total_rows': instance.totalRows,
-      'limit_rows': instance.limitRows,
-      'current_page': instance.currentPage,
-      'editEnable': instance.editEnable,
-      'data': instance.data,
-    };
-
-ISchoolPlusAnnouncementJson _$ISchoolPlusAnnouncementJsonFromJson(
-    Map<String, dynamic> json) {
+ISchoolPlusAnnouncementJson _$ISchoolPlusAnnouncementJsonFromJson(Map<String, dynamic> json) {
   return ISchoolPlusAnnouncementJson(
     json['boardid'] as String,
     json['encbid'] as String,
@@ -63,35 +49,3 @@ ISchoolPlusAnnouncementJson _$ISchoolPlusAnnouncementJsonFromJson(
     ..bid = json['bid'] as String
     ..nid = json['nid'] as String;
 }
-
-Map<String, dynamic> _$ISchoolPlusAnnouncementJsonToJson(
-        ISchoolPlusAnnouncementJson instance) =>
-    <String, dynamic>{
-      'token': instance.token,
-      'bid': instance.bid,
-      'nid': instance.nid,
-      'boardid': instance.boardid,
-      'encbid': instance.encbid,
-      'node': instance.node,
-      'encnid': instance.encnid,
-      'cid': instance.cid,
-      'enccid': instance.enccid,
-      'poster': instance.poster,
-      'realname': instance.realname,
-      'cpic': instance.cpic,
-      'subject': instance.subject,
-      'postdate': instance.postdate,
-      'postdatelen': instance.postdatelen,
-      'postcontent': instance.postcontent,
-      'postcontenttext': instance.postcontenttext,
-      'hit': instance.hit,
-      'qrcode_url': instance.qrcodeUrl,
-      'floor': instance.floor,
-      'attach': instance.attach,
-      'postfilelink': instance.postfilelink,
-      'attachment': instance.attachment,
-      'n': instance.n,
-      's': instance.s,
-      'readflag': instance.readflag,
-      'postRoles': instance.postRoles,
-    };

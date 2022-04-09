@@ -15,11 +15,9 @@ class RemoteConfigVersionInfo {
   @JsonKey(name: "last_version_detail")
   String lastVersionDetail;
 
-  RemoteConfigVersionInfo(
-      {this.last, this.lastVersionDetail, this.isFocusUpdate});
+  RemoteConfigVersionInfo({this.last, this.lastVersionDetail, this.isFocusUpdate});
 
-  factory RemoteConfigVersionInfo.fromJson(Map<String, dynamic> srcJson) =>
-      _$RemoteConfigVersionInfoFromJson(srcJson);
+  factory RemoteConfigVersionInfo.fromJson(Map<String, dynamic> srcJson) => _$RemoteConfigVersionInfoFromJson(srcJson);
 }
 
 @JsonSerializable()
@@ -32,8 +30,7 @@ class AndroidIosVersionInfo {
 
   AndroidIosVersionInfo({this.android, this.ios});
 
-  factory AndroidIosVersionInfo.fromJson(Map<String, dynamic> srcJson) =>
-      _$AndroidIosVersionInfoFromJson(srcJson);
+  factory AndroidIosVersionInfo.fromJson(Map<String, dynamic> srcJson) => _$AndroidIosVersionInfoFromJson(srcJson);
 
   String get version {
     return (Platform.isIOS) ? ios : android;

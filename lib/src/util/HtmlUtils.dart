@@ -29,21 +29,19 @@ class HtmlUtils {
    */
   static String clean(String html) {
     String result;
-    var unescape = new HtmlUnescape();
+    var unescape = HtmlUnescape();
     result = unescape.convert(html);
     return result;
   }
 
   static String addLink(String html) {
-    RegExp exp = RegExp(
-        r'\"?(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\"?');
+    RegExp exp = RegExp(r'\"?(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\"?');
     List<RegExpMatch> matchList = exp.allMatches(html).toList();
     for (RegExpMatch match in matchList) {
       String url = match.group(0);
       print(url);
       if (!url.contains("\"")) {
-        html = html.replaceAll(
-            url, r'<a href="' + url + '" target="_blank">' + url + '</a>');
+        html = html.replaceAll(url, r'<a href="' + url + '" target="_blank">' + url + '</a>');
       }
     }
     return html;

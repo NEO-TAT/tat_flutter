@@ -3,7 +3,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/Task.dart';
-import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:get/get.dart';
@@ -31,7 +30,6 @@ class NTUTTask<T> extends DialogTask<T> {
     super.onStart(R.current.loginNTUT);
     NTUTConnectorStatus value = await NTUTConnector.login(account, password);
     super.onEnd();
-    NTUTAppTask.isLogin = false;
     if (value == NTUTConnectorStatus.LoginSuccess) {
       _isLogin = true;
       return TaskStatus.Success;

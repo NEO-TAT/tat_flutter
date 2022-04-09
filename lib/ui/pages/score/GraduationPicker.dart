@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
@@ -8,18 +7,15 @@ import 'package:flutter_app/src/task/course/CourseCreditInfoTask.dart';
 import 'package:flutter_app/src/task/course/CourseDepartmentTask.dart';
 import 'package:flutter_app/src/task/course/CourseDivisionTask.dart';
 import 'package:flutter_app/src/task/course/CourseYearTask.dart';
-import 'package:flutter_app/src/task/ntutapp/NTUTAPPDepartmentTask.dart';
 import 'package:get/get.dart';
 
 class GraduationPicker {
   GraduationPickerWidget _dialog;
-  BuildContext _context;
   BuildContext _dismissingContext;
   bool _barrierDismissible = true;
   bool _isShowing = false;
 
   GraduationPicker(BuildContext context, {bool isDismissible}) {
-    _context = context;
     _barrierDismissible = isDismissible ?? _barrierDismissible; //是否之支援返回關閉
   }
 
@@ -57,16 +53,14 @@ class GraduationPicker {
       try {
         _dialog = GraduationPickerWidget();
         Get.dialog<GraduationInformationJson>(
-                WillPopScope(
-                    onWillPop: () async => _barrierDismissible,
-                    child: Dialog(
-                        insetAnimationDuration: Duration(milliseconds: 100),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
-                        child: _dialog)),
-                barrierDismissible: false,
-                useRootNavigator: false)
-            .then((value) {
+          WillPopScope(
+              onWillPop: () async => _barrierDismissible,
+              child: Dialog(
+                  insetAnimationDuration: Duration(milliseconds: 100),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: _dialog)),
+          barrierDismissible: false,
+        ).then((value) {
           finishCallBack(value);
         });
         // Delaying the function for 200 milliseconds
@@ -90,9 +84,9 @@ class GraduationPickerWidget extends StatefulWidget {
 
 class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   GraduationInformationJson graduationInformation = GraduationInformationJson();
-  List<String> yearList = List();
-  List<Map> divisionList = List();
-  List<Map> departmentList = List();
+  List<String> yearList = [];
+  List<Map> divisionList = [];
+  List<Map> departmentList = [];
   double width;
   String _selectedYear;
   Map _selectedDivision;
@@ -103,18 +97,8 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero).then((_) {
-      _addPresetTask();
+      _addSelectTask();
     });
-  }
-
-  Future<void> _addPresetTask() async {
-    TaskFlow taskFlow = TaskFlow();
-    var task = NTUTAPPDepartmentTask();
-    taskFlow.addTask(task);
-    if (await taskFlow.start()) {
-      _presetDepartment = task.result;
-    }
-    _addSelectTask();
   }
 
   Future<void> _addSelectTask() async {
@@ -124,8 +108,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     await _getYearList();
     //利用學號預設學年度
     if (graduationInformation.selectYear.isEmpty) {
-      graduationInformation.selectYear =
-          Model.instance.getAccount().substring(0, 3);
+      graduationInformation.selectYear = Model.instance.getAccount().substring(0, 3);
     }
     for (String v in yearList) {
       if (v.contains(graduationInformation.selectYear)) {
@@ -329,13 +312,13 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text(R.current.cancel),
                     onPressed: () {
                       _cancel();
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text(R.current.save),
                     onPressed: () {
                       _save();

@@ -19,11 +19,13 @@ class ResponseCookieFilter extends Interceptor {
   final List<RegExp> _blockedCookieNamePatterns;
 
   @override
-  Future onResponse(Response response) async {
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
     try {
-      return _removeCookiesFrom(response);
-    } on Exception catch (e) {
-      return DioError(request: response.request, error: e);
+      final _clearedResponse = _removeCookiesFrom(response);
+      handler.next(_clearedResponse);
+    } on Exception catch (e, _stackTrace) {
+      final err = DioError(requestOptions: response.requestOptions, error: e)..stackTrace = _stackTrace;
+      handler.reject(err, true);
     }
   }
 

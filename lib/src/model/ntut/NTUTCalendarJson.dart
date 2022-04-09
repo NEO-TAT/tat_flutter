@@ -90,8 +90,7 @@ class NTUTCalendarJson {
     this.calAlertList,
   );
 
-  factory NTUTCalendarJson.fromJson(Map<String, dynamic> srcJson) =>
-      _$NTUTCalendarJsonFromJson(srcJson);
+  factory NTUTCalendarJson.fromJson(Map<String, dynamic> srcJson) => _$NTUTCalendarJsonFromJson(srcJson);
 
   @override
   String toString() {
@@ -99,12 +98,10 @@ class NTUTCalendarJson {
   }
 
   DateTime get startTime {
-    return DateTime.fromMillisecondsSinceEpoch(calStart, isUtc: true)
-        .add(new Duration(hours: 8));
+    return DateTime.fromMillisecondsSinceEpoch(calStart, isUtc: true).add(Duration(hours: 8));
   }
 
   DateTime get endTime {
-    return DateTime.fromMillisecondsSinceEpoch(calEnd, isUtc: true)
-        .add(new Duration(hours: 8));
+    return DateTime.fromMillisecondsSinceEpoch(calEnd, isUtc: true).add(Duration(hours: 8));
   }
 }

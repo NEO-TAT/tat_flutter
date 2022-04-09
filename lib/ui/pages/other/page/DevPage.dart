@@ -21,18 +21,8 @@ class _DevPageState extends State<DevPage> {
       "color": Colors.green,
       "onPress": onListViewPress.CloudMessageToken
     },
-    {
-      "icon": Icons.info_outline,
-      "title": "Dio Log",
-      "color": Colors.blue,
-      "onPress": onListViewPress.DioLog
-    },
-    {
-      "icon": Icons.info_outline,
-      "title": "App Log",
-      "color": Colors.yellow,
-      "onPress": onListViewPress.AppLog
-    },
+    {"icon": Icons.info_outline, "title": "Dio Log", "color": Colors.blue, "onPress": onListViewPress.DioLog},
+    {"icon": Icons.info_outline, "title": "App Log", "color": Colors.yellow, "onPress": onListViewPress.AppLog},
   ];
 
   @override
@@ -93,8 +83,7 @@ class _DevPageState extends State<DevPage> {
   Container _buildAbout(Map data) {
     return Container(
       //color: Colors.yellow,
-      padding:
-          EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+      padding: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

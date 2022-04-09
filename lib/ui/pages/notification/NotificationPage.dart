@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 
@@ -7,8 +6,7 @@ class NotificationPage extends StatefulWidget {
   _NotificationPageState createState() => _NotificationPageState();
 }
 
-class _NotificationPageState extends State<NotificationPage>
-    with AutomaticKeepAliveClientMixin {
+class _NotificationPageState extends State<NotificationPage> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
