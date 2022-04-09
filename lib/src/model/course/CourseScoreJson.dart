@@ -20,11 +20,9 @@ class CourseScoreCreditJson {
   GraduationInformationJson graduationInformation;
   List<SemesterCourseScoreJson> semesterCourseScoreList;
 
-  CourseScoreCreditJson(
-      {this.graduationInformation, this.semesterCourseScoreList}) {
-    graduationInformation =
-        graduationInformation ?? GraduationInformationJson();
-    semesterCourseScoreList = semesterCourseScoreList ?? List();
+  CourseScoreCreditJson({this.graduationInformation, this.semesterCourseScoreList}) {
+    graduationInformation = graduationInformation ?? GraduationInformationJson();
+    semesterCourseScoreList = semesterCourseScoreList ?? [];
   }
 
   //利用學期取得課程資訊
@@ -39,7 +37,7 @@ class CourseScoreCreditJson {
 
   //取得所有課程資訊
   List<CourseScoreInfoJson> getCourseInfoList() {
-    List<CourseScoreInfoJson> courseInfoList = List();
+    List<CourseScoreInfoJson> courseInfoList = [];
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       courseInfoList.addAll(i.courseScoreList);
     }
@@ -60,7 +58,7 @@ class CourseScoreCreditJson {
 
   //取得所有課程id
   List<String> getCourseIdList() {
-    List<String> courseIdList = List();
+    List<String> courseIdList = [];
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       for (CourseScoreInfoJson j in i.courseScoreList) {
         courseIdList.add(j.courseId);
@@ -96,9 +94,8 @@ class CourseScoreCreditJson {
   Map<String, List<CourseScoreInfoJson>> getCourseByType(String type) {
     Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
-      String semester =
-          sprintf("%s-%s", [i.semester.year, i.semester.semester]);
-      result[semester] = List();
+      String semester = sprintf("%s-%s", [i.semester.year, i.semester.semester]);
+      result[semester] = [];
       for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.category.contains(type) && j.isPass) {
           result[semester].add(j);
@@ -120,7 +117,7 @@ class CourseScoreCreditJson {
     Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester = getSemesterString(i.semester);
-      result[semester] = List();
+      result[semester] = [];
       for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.isGeneralLesson && j.isPass) {
           result[semester].add(j);
@@ -133,12 +130,11 @@ class CourseScoreCreditJson {
   /*
   計算外系學分
   */
-  Map<String, List<CourseScoreInfoJson>> getOtherDepartmentCourse(
-      String department) {
+  Map<String, List<CourseScoreInfoJson>> getOtherDepartmentCourse(String department) {
     Map<String, List<CourseScoreInfoJson>> result = Map();
     for (SemesterCourseScoreJson i in semesterCourseScoreList) {
       String semester = getSemesterString(i.semester);
-      result[semester] = List();
+      result[semester] = [];
       for (CourseScoreInfoJson j in i.courseScoreList) {
         if (j.isOtherDepartment(department) && j.isPass) {
           result[semester].add(j);
@@ -160,8 +156,7 @@ class CourseScoreCreditJson {
     return credit;
   }
 
-  factory CourseScoreCreditJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseScoreCreditJsonFromJson(json);
+  factory CourseScoreCreditJson.fromJson(Map<String, dynamic> json) => _$CourseScoreCreditJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseScoreCreditJsonToJson(this);
 }
@@ -196,13 +191,10 @@ class GraduationInformationJson {
   }
 
   bool get isSelect {
-    return !(selectYear.isEmpty |
-        selectDivision.isEmpty |
-        selectDepartment.isEmpty);
+    return !(selectYear.isEmpty | selectDivision.isEmpty | selectDepartment.isEmpty);
   }
 
-  factory GraduationInformationJson.fromJson(Map<String, dynamic> json) =>
-      _$GraduationInformationJsonFromJson(json);
+  factory GraduationInformationJson.fromJson(Map<String, dynamic> json) => _$GraduationInformationJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$GraduationInformationJsonToJson(this);
 
@@ -248,7 +240,7 @@ class SemesterCourseScoreJson {
       this.totalCredit}) {
     now = now ?? RankJson();
     history = history ?? RankJson();
-    courseScoreList = courseScoreList ?? List();
+    courseScoreList = courseScoreList ?? [];
     semester = semester ?? SemesterJson();
     averageScore = averageScore ?? 0;
     performanceScore = performanceScore ?? 0;
@@ -314,8 +306,7 @@ class SemesterCourseScoreJson {
         ]);
   }
 
-  factory SemesterCourseScoreJson.fromJson(Map<String, dynamic> json) =>
-      _$SemesterCourseScoreJsonFromJson(json);
+  factory SemesterCourseScoreJson.fromJson(Map<String, dynamic> json) => _$SemesterCourseScoreJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$SemesterCourseScoreJsonToJson(this);
 }
@@ -336,14 +327,11 @@ class RankJson {
 
   @override
   String toString() {
-    return sprintf(
-        "---------course--------     \n%s \n" +
-            "---------department--------          \n%s \n",
+    return sprintf("---------course--------     \n%s \n" + "---------department--------          \n%s \n",
         [course.toString(), department.toString()]);
   }
 
-  factory RankJson.fromJson(Map<String, dynamic> json) =>
-      _$RankJsonFromJson(json);
+  factory RankJson.fromJson(Map<String, dynamic> json) => _$RankJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$RankJsonToJson(this);
 }
@@ -366,19 +354,14 @@ class RankItemJson {
 
   @override
   String toString() {
-    return sprintf(
-        "percentage     :%s \n" +
-            "rank           :%s \n" +
-            "total          :%s \n",
-        [
-          percentage.toString(),
-          rank.toString(),
-          total.toString(),
-        ]);
+    return sprintf("percentage     :%s \n" + "rank           :%s \n" + "total          :%s \n", [
+      percentage.toString(),
+      rank.toString(),
+      total.toString(),
+    ]);
   }
 
-  factory RankItemJson.fromJson(Map<String, dynamic> json) =>
-      _$RankItemJsonFromJson(json);
+  factory RankItemJson.fromJson(Map<String, dynamic> json) => _$RankItemJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$RankItemJsonToJson(this);
 }
@@ -398,13 +381,7 @@ class CourseScoreInfoJson {
   }
 
   CourseScoreInfoJson(
-      {this.courseId,
-      this.nameZh,
-      this.nameEn,
-      this.score,
-      this.credit,
-      this.category,
-      this.openClass}) {
+      {this.courseId, this.nameZh, this.nameEn, this.score, this.credit, this.category, this.openClass}) {
     courseId = JsonInit.stringInit(courseId);
     nameZh = JsonInit.stringInit(nameZh);
     nameEn = JsonInit.stringInit(nameEn);
@@ -453,19 +430,14 @@ class CourseScoreInfoJson {
 
   @override
   String toString() {
-    return sprintf(
-        "name           :%s \n" +
-            "score           :%s \n" +
-            "credit          :%s \n",
-        [
-          nameZh.toString(),
-          score.toString(),
-          credit.toString(),
-        ]);
+    return sprintf("name           :%s \n" + "score           :%s \n" + "credit          :%s \n", [
+      nameZh.toString(),
+      score.toString(),
+      credit.toString(),
+    ]);
   }
 
-  factory CourseScoreInfoJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseScoreInfoJsonFromJson(json);
+  factory CourseScoreInfoJson.fromJson(Map<String, dynamic> json) => _$CourseScoreInfoJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseScoreInfoJsonToJson(this);
 }

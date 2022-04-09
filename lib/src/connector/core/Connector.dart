@@ -33,8 +33,7 @@ class Connector {
     }
   }
 
-  static Future<Response> getDataByGetResponse(
-      ConnectorParameter parameter) async {
+  static Future<Response> getDataByGetResponse(ConnectorParameter parameter) async {
     Response result;
     try {
       result = await DioConnector.instance.getDataByGetResponse(parameter);
@@ -44,8 +43,7 @@ class Connector {
     }
   }
 
-  static Future<Response> getDataByPostResponse(
-      ConnectorParameter parameter) async {
+  static Future<Response> getDataByPostResponse(ConnectorParameter parameter) async {
     Response result;
     try {
       result = await DioConnector.instance.getDataByPostResponse(parameter);
@@ -59,11 +57,7 @@ class Connector {
     try {
       PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
       Map<String, String> headers = Map.from(DioConnector.instance.headers);
-      headers["Cookie"] = cookieJar
-          .loadForRequest(Uri.parse(url))
-          .toString()
-          .replaceAll("[", "")
-          .replaceAll("]", "");
+      headers["Cookie"] = cookieJar.loadForRequest(Uri.parse(url)).toString().replaceAll("[", "").replaceAll("]", "");
       headers.remove("content-type");
       //Log.d(headers.toString());
       return headers;
@@ -77,8 +71,7 @@ class Connector {
     String fileName;
     try {
       ConnectorParameter parameter = ConnectorParameter(url);
-      Map<String, List<String>> headers =
-          await DioConnector.instance.getHeadersByGet(parameter);
+      Map<String, List<String>> headers = await DioConnector.instance.getHeadersByGet(parameter);
       if (headers.containsKey("content-disposition")) {
         //代表有名字
         List<String> name = headers["content-disposition"];

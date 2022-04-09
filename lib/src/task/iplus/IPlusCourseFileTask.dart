@@ -18,8 +18,7 @@ class IPlusCourseFileTask extends IPlusSystemTask<List<CourseFileJson>> {
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getISchoolPlusCourseFile);
-      ReturnWithStatus<List<CourseFileJson>> value =
-          await ISchoolPlusConnector.getCourseFile(id);
+      ReturnWithStatus<List<CourseFileJson>> value = await ISchoolPlusConnector.getCourseFile(id);
       super.onEnd();
       switch (value.status) {
         case IPlusReturnStatus.Success:

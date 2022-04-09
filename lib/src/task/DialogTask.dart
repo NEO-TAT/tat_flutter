@@ -34,7 +34,7 @@ class DialogTask<T> extends Task<T> {
   }
 
   Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) async {
-    final connectivityResult = await (new Connectivity().checkConnectivity());
+    final connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       parameter = ErrorDialogParameter(
         desc: R.current.networkError,

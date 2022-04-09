@@ -32,7 +32,6 @@ class CourseConnector {
   static final String _postCourseCNUrl = _courseCNHost + "Select.jsp";
   static final String _postTeacherCourseCNUrl = _courseCNHost + "Teach.jsp";
   static final String _postCourseENUrl = _courseENHost + "Select.jsp";
-  static final String _checkLoginUrl = _courseCNHost + "Select.jsp";
   static final String _creditUrl = _courseCNHost + "Cprog.jsp";
 
   static Future<CourseConnectorStatus> login() async {
@@ -58,8 +57,7 @@ class CourseConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
-      String jumpUrl =
-          tagNode.getElementsByTagName("form")[0].attributes["action"];
+      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
@@ -81,10 +79,7 @@ class CourseConnector {
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
       node = node.getElementsByTagName("tr")[1];
-      return node
-          .getElementsByTagName("td")[2]
-          .text
-          .replaceAll(RegExp(r"\n"), "");
+      return node.getElementsByTagName("td")[2].text.replaceAll(RegExp(r"\n"), "");
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
@@ -121,12 +116,8 @@ class CourseConnector {
       CourseExtraJson courseExtra = CourseExtraJson();
 
       courseExtra.name = nodes[3].getElementsByTagName("a")[0].text;
-      if (nodes[3]
-          .getElementsByTagName("a")[0]
-          .attributes
-          .containsKey("href")) {
-        courseExtra.href = _courseCNHost +
-            nodes[3].getElementsByTagName("a")[0].attributes["href"];
+      if (nodes[3].getElementsByTagName("a")[0].attributes.containsKey("href")) {
+        courseExtra.href = _courseCNHost + nodes[3].getElementsByTagName("a")[0].attributes["href"];
       }
       courseExtra.category = nodes[7].text; // 取得類別
       courseExtra.openClass = nodes[9].text;
@@ -142,10 +133,8 @@ class CourseConnector {
         classmateNodes = node.getElementsByTagName("td");
         ClassmateJson classmate = ClassmateJson();
         classmate.className = classmateNodes[0].text;
-        classmate.studentId =
-            classmateNodes[1].getElementsByTagName("a")[0].text;
-        classmate.href = _courseCNHost +
-            classmateNodes[1].getElementsByTagName("a")[0].attributes["href"];
+        classmate.studentId = classmateNodes[1].getElementsByTagName("a")[0].text;
+        classmate.href = _courseCNHost + classmateNodes[1].getElementsByTagName("a")[0].attributes["href"];
         classmate.studentName = classmateNodes[2].text;
         classmate.studentEnglishName = classmateNodes[3].text;
         classmate.isSelect = !classmateNodes[4].text.contains("撤選");
@@ -176,7 +165,7 @@ class CourseConnector {
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[0];
       nodes = node.getElementsByTagName("tr");
-      List<SemesterJson> semesterJsonList = List();
+      List<SemesterJson> semesterJsonList = [];
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         String year, semester;
@@ -192,7 +181,7 @@ class CourseConnector {
   }
 
   static String strQ2B(String input) {
-    List<int> newString = List();
+    List<int> newString = [];
     for (int c in input.codeUnits) {
       if (c == 12288) {
         c = 32;
@@ -206,22 +195,13 @@ class CourseConnector {
     return String.fromCharCodes(newString);
   }
 
-  static Future<CourseMainInfo> getENCourseMainInfoList(
-      String studentId, SemesterJson semester) async {
+  static Future<CourseMainInfo> getENCourseMainInfoList(String studentId, SemesterJson semester) async {
     var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
       List<Element> courseNodes, nodesOne, nodes;
-      List<Day> dayEnum = [
-        Day.Sunday,
-        Day.Monday,
-        Day.Tuesday,
-        Day.Wednesday,
-        Day.Thursday,
-        Day.Friday,
-        Day.Saturday
-      ];
+      List<Day> dayEnum = [Day.Sunday, Day.Monday, Day.Tuesday, Day.Wednesday, Day.Thursday, Day.Friday, Day.Saturday];
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -237,15 +217,14 @@ class CourseConnector {
       courseNodes = nodes[1].getElementsByTagName("tr");
       String studentName;
       try {
-        studentName = strQ2B(nodes[0].getElementsByTagName("td")[4].text)
-            .replaceAll(RegExp(r"[\n| ]"), "");
+        studentName = strQ2B(nodes[0].getElementsByTagName("td")[4].text).replaceAll(RegExp(r"[\n| ]"), "");
       } catch (e, stack) {
         Log.eWithStack(e.toString(), stack);
         studentName = "";
       }
       info.studentName = studentName;
 
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 1; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -254,8 +233,7 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        courseMain.id =
-            strQ2B(nodesOne[0].text).replaceAll(RegExp(r"[\n| ]"), "");
+        courseMain.id = strQ2B(nodesOne[0].text).replaceAll(RegExp(r"[\n| ]"), "");
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.length >= 1) {
@@ -287,8 +265,7 @@ class CourseConnector {
 
         //取得教室名稱
         length = nodesOne[13].innerHtml.split("<br>").length;
-        for (String name
-            in nodesOne[13].innerHtml.split("<br>").getRange(0, length - 1)) {
+        for (String name in nodesOne[13].innerHtml.split("<br>").getRange(0, length - 1)) {
           ClassroomJson classroom = ClassroomJson();
           classroom.name = name.replaceAll("\n", "");
           courseMainInfo.classroom.add(classroom);
@@ -311,23 +288,14 @@ class CourseConnector {
     }
   }
 
-  static Future<CourseMainInfo> getTWCourseMainInfoList(
-      String studentId, SemesterJson semester) async {
+  static Future<CourseMainInfo> getTWCourseMainInfoList(String studentId, SemesterJson semester) async {
     var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
       Element node;
       List<Element> courseNodes, nodesOne, nodes;
-      List<Day> dayEnum = [
-        Day.Sunday,
-        Day.Monday,
-        Day.Tuesday,
-        Day.Wednesday,
-        Day.Thursday,
-        Day.Friday,
-        Day.Saturday
-      ];
+      List<Day> dayEnum = [Day.Sunday, Day.Monday, Day.Tuesday, Day.Wednesday, Day.Thursday, Day.Friday, Day.Saturday];
       Map<String, String> data = {
         "code": studentId,
         "format": "-2",
@@ -343,14 +311,12 @@ class CourseConnector {
       courseNodes = node.getElementsByTagName("tr");
       String studentName;
       try {
-        studentName = RegExp(r"姓名：([\u4E00-\u9FA5]+)")
-            .firstMatch(courseNodes[0].text)
-            .group(1);
+        studentName = RegExp(r"姓名：([\u4E00-\u9FA5]+)").firstMatch(courseNodes[0].text).group(1);
       } catch (e) {
         studentName = "";
       }
       info.studentName = studentName;
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -377,10 +343,8 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost +
-              nodesOne[19]
-                  .getElementsByTagName("a")[0]
-                  .attributes["href"]; //教學進度大綱
+          courseMain.scheduleHref =
+              _courseCNHost + nodesOne[19].getElementsByTagName("a")[0].attributes["href"]; //教學進度大綱
         }
 
         //時間
@@ -427,23 +391,14 @@ class CourseConnector {
     }
   }
 
-  static Future<CourseMainInfo> getTWTeacherCourseMainInfoList(
-      String studentId, SemesterJson semester) async {
+  static Future<CourseMainInfo> getTWTeacherCourseMainInfoList(String studentId, SemesterJson semester) async {
     var info = CourseMainInfo();
     try {
       ConnectorParameter parameter;
       Document tagNode;
       Element node;
       List<Element> courseNodes, nodesOne, nodes;
-      List<Day> dayEnum = [
-        Day.Sunday,
-        Day.Monday,
-        Day.Tuesday,
-        Day.Wednesday,
-        Day.Thursday,
-        Day.Friday,
-        Day.Saturday
-      ];
+      List<Day> dayEnum = [Day.Sunday, Day.Monday, Day.Tuesday, Day.Wednesday, Day.Thursday, Day.Friday, Day.Saturday];
       Map<String, String> data = {
         "code": studentId,
         "format": "-3",
@@ -464,7 +419,7 @@ class CourseConnector {
         studentName = "";
       }
       info.studentName = studentName;
-      List<CourseMainInfoJson> courseMainInfoList = List();
+      List<CourseMainInfoJson> courseMainInfoList = [];
       for (int i = 2; i < courseNodes.length - 1; i++) {
         CourseMainInfoJson courseMainInfo = CourseMainInfoJson();
         CourseMainJson courseMain = CourseMainJson();
@@ -491,10 +446,8 @@ class CourseConnector {
         courseMain.hours = nodesOne[4].text.replaceAll("\n", ""); //時數
         courseMain.note = nodesOne[20].text.replaceAll("\n", ""); //備註
         if (nodesOne[19].getElementsByTagName("a").length > 0) {
-          courseMain.scheduleHref = _courseCNHost +
-              nodesOne[19]
-                  .getElementsByTagName("a")[0]
-                  .attributes["href"]; //教學進度大綱
+          courseMain.scheduleHref =
+              _courseCNHost + nodesOne[19].getElementsByTagName("a")[0].attributes["href"]; //教學進度大綱
         }
 
         //時間
@@ -549,8 +502,7 @@ class CourseConnector {
     RegExpMatch matches;
     Map graduationMap = Map();
     try {
-      parameter =
-          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
       parameter.charsetName = "big5";
       parameter.data = {"format": "-3", "year": year, "matric": "7"};
       result = await Connector.getDataByGet(parameter);
@@ -606,10 +558,9 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<String> resultList = List();
+    List<String> resultList = [];
     try {
-      parameter =
-          ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
       parameter.data = {"format": "-1"};
       parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
@@ -637,7 +588,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<Map> resultList = List();
+    List<Map> resultList = [];
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = {"format": "-2", "year": year};
@@ -647,8 +598,7 @@ class CourseConnector {
       nodes = tagNode.getElementsByTagName("a");
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
-        Map<String, String> code =
-            Uri.parse(node.attributes["href"]).queryParameters;
+        Map<String, String> code = Uri.parse(node.attributes["href"]).queryParameters;
         resultList.add({"name": node.text, "code": code});
       }
       return resultList;
@@ -669,7 +619,7 @@ class CourseConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<Map> resultList = List();
+    List<Map> resultList = [];
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = code;
@@ -681,8 +631,7 @@ class CourseConnector {
       nodes = node.getElementsByTagName("a");
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
-        Map<String, String> code =
-            Uri.parse(node.attributes["href"]).queryParameters;
+        Map<String, String> code = Uri.parse(node.attributes["href"]).queryParameters;
         String name = node.text.replaceAll(RegExp("[ |\s]"), "");
         resultList.add({"name": name, "code": code});
       }
@@ -697,15 +646,13 @@ class CourseConnector {
   Map Key
   minGraduationCredits
   */
-  static Future<GraduationInformationJson> getCreditInfo(
-      Map code, String select) async {
+  static Future<GraduationInformationJson> getCreditInfo(Map code, String select) async {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
     Element anode, trNode, node, tdNode;
     List<Element> trNodes, tdNodes;
-    GraduationInformationJson graduationInformation =
-        GraduationInformationJson();
+    GraduationInformationJson graduationInformation = GraduationInformationJson();
     try {
       Log.d("select is $select");
       parameter = ConnectorParameter(_creditUrl);
@@ -735,36 +682,28 @@ class CourseConnector {
               "▲", //	  必	校訂專業必修
               "★" //	  選	專業選修
              */
-            String creditString =
-                tdNode.text.replaceAll(RegExp(r"[\s|\n]"), "");
+            String creditString = tdNode.text.replaceAll(RegExp(r"[\s|\n]"), "");
             switch (j - 1) {
               case 0:
-                graduationInformation.courseTypeMinCredit["○"] =
-                    int.parse(creditString);
+                graduationInformation.courseTypeMinCredit["○"] = int.parse(creditString);
                 break;
               case 1:
-                graduationInformation.courseTypeMinCredit["△"] =
-                    int.parse(creditString);
+                graduationInformation.courseTypeMinCredit["△"] = int.parse(creditString);
                 break;
               case 2:
-                graduationInformation.courseTypeMinCredit["☆"] =
-                    int.parse(creditString);
+                graduationInformation.courseTypeMinCredit["☆"] = int.parse(creditString);
                 break;
               case 3:
-                graduationInformation.courseTypeMinCredit["●"] =
-                    int.parse(creditString);
+                graduationInformation.courseTypeMinCredit["●"] = int.parse(creditString);
                 break;
               case 4:
-                graduationInformation.courseTypeMinCredit["▲"] =
-                    int.parse(creditString);
+                graduationInformation.courseTypeMinCredit["▲"] = int.parse(creditString);
                 break;
               case 5:
-                graduationInformation.courseTypeMinCredit["★"] =
-                    int.parse(creditString);
+                graduationInformation.courseTypeMinCredit["★"] = int.parse(creditString);
                 break;
               case 6:
-                graduationInformation.outerDepartmentMaxCredit =
-                    int.parse(creditString);
+                graduationInformation.outerDepartmentMaxCredit = int.parse(creditString);
                 break;
               case 7:
                 graduationInformation.lowCredit = int.parse(creditString);

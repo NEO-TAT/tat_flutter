@@ -29,8 +29,7 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
           textAlign: TextAlign.center,
         ),
       ),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -80,7 +79,7 @@ class _CalendarDetailDialogState extends State<CalendarDetailDialog> {
         ],
       ),
       actions: [
-        FlatButton(
+        TextButton(
           child: Text(R.current.sure),
           onPressed: () async {
             Get.back();

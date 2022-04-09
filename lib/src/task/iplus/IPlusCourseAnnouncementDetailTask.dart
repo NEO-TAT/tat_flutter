@@ -8,8 +8,7 @@ import 'IPlusSystemTask.dart';
 class IPlusCourseAnnouncementDetailTask extends IPlusSystemTask<Map> {
   final ISchoolPlusAnnouncementJson data;
 
-  IPlusCourseAnnouncementDetailTask(this.data)
-      : super("lPlusCourseAnnouncementDetailTask");
+  IPlusCourseAnnouncementDetailTask(this.data) : super("lPlusCourseAnnouncementDetailTask");
 
   @override
   Future<TaskStatus> execute() async {
@@ -22,8 +21,7 @@ class IPlusCourseAnnouncementDetailTask extends IPlusSystemTask<Map> {
         result = value;
         return TaskStatus.Success;
       } else {
-        return await super
-            .onError(R.current.getISchoolPlusCourseAnnouncementDetailError);
+        return await super.onError(R.current.getISchoolPlusCourseAnnouncementDetailError);
       }
     }
     return status;

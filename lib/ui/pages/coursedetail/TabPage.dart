@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TabPage {
@@ -7,8 +6,7 @@ class TabPage {
   Widget tab;
   Widget tabPage;
 
-  TabPage(String title, IconData icons, Widget initPage,
-      {useNavigatorKey: false}) {
+  TabPage(String title, IconData icons, Widget initPage, {useNavigatorKey = false}) {
     navigatorKey = GlobalKey();
     tab = Column(
       children: <Widget>[
@@ -34,7 +32,7 @@ class TabPageList {
   List<TabPage> tabPageList;
 
   TabPageList() {
-    tabPageList = List();
+    tabPageList = [];
   }
 
   void add(TabPage page) {
@@ -42,7 +40,7 @@ class TabPageList {
   }
 
   List<Widget> get getTabPageList {
-    List<Widget> pages = List();
+    List<Widget> pages = [];
     for (TabPage tabPage in tabPageList) {
       pages.add(tabPage.tabPage);
     }
@@ -50,7 +48,7 @@ class TabPageList {
   }
 
   List<Widget> getTabList(BuildContext context) {
-    List<Widget> pages = List();
+    List<Widget> pages = [];
     double width = MediaQuery.of(context).size.width / this.length;
     for (TabPage tabPage in tabPageList) {
       Widget tabNew = Container(

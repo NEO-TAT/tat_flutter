@@ -24,8 +24,7 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage>
-    with AfterInitMixin<SettingPage> {
+class _SettingPageState extends State<SettingPage> with AfterInitMixin<SettingPage> {
   String downloadPath;
 
   @override
@@ -48,7 +47,7 @@ class _SettingPageState extends State<SettingPage>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> listViewData = List();
+    List<Widget> listViewData = [];
     listViewData.add(_buildLanguageSetting());
     if (Platform.isAndroid) {
       listViewData.add(_buildOpenExternalVideoSetting());
@@ -107,8 +106,7 @@ class _SettingPageState extends State<SettingPage>
       onChanged: (value) {
         setState(() {
           int langIndex = 1 - LanguageUtil.getLangIndex().index;
-          LanguageUtil.setLangByIndex(LangEnum.values.toList()[langIndex])
-              .then((_) {
+          LanguageUtil.setLangByIndex(LangEnum.values.toList()[langIndex]).then((_) {
             widget.pageController.jumpToPage(0);
             Get.back();
           });
@@ -140,8 +138,7 @@ class _SettingPageState extends State<SettingPage>
   }
 
   Widget _buildDarkModeSetting() {
-    return (MediaQuery.of(context).platformBrightness !=
-            AppThemes.darkTheme.brightness)
+    return (MediaQuery.of(context).platformBrightness != AppThemes.darkTheme.brightness)
         ? SwitchListTile.adaptive(
             contentPadding: EdgeInsets.all(0),
             title: Row(
@@ -158,17 +155,12 @@ class _SettingPageState extends State<SettingPage>
                 ),
               ],
             ),
-            value:
-                Provider.of<AppProvider>(context).theme == AppThemes.lightTheme
-                    ? false
-                    : true,
+            value: Provider.of<AppProvider>(context).theme == AppThemes.lightTheme ? false : true,
             onChanged: (v) {
               if (v) {
-                Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(AppThemes.darkTheme, "dark");
+                Provider.of<AppProvider>(context, listen: false).setTheme(AppThemes.darkTheme, "dark");
               } else {
-                Provider.of<AppProvider>(context, listen: false)
-                    .setTheme(AppThemes.lightTheme, "light");
+                Provider.of<AppProvider>(context, listen: false).setTheme(AppThemes.lightTheme, "light");
               }
             },
           )

@@ -35,7 +35,7 @@ class CourseTablePage extends StatefulWidget {
 
 class _CourseTablePageState extends State<CourseTablePage> {
   final TextEditingController _studentIdControl = TextEditingController();
-  final FocusNode _studentFocus = new FocusNode();
+  final FocusNode _studentFocus = FocusNode();
   GlobalKey _key = GlobalKey();
   bool isLoading = true;
   CourseTableJson courseTableData;
@@ -181,7 +181,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  void _getCourseTable({SemesterJson semesterSetting, String studentId, bool refresh: false}) async {
+  void _getCourseTable({SemesterJson semesterSetting, String studentId, bool refresh = false}) async {
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
     UserDataJson userData = Model.instance.getUserData();
     studentId = studentId ?? userData.account;
@@ -666,7 +666,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
             onPressed: () {
               _showCourseDetail(courseInfo);
             },
-            child: new Text(R.current.details),
+            child: Text(R.current.details),
           ),
         ],
       ),
@@ -684,7 +684,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         content: Row(
           children: <Widget>[
             Expanded(
-              child: new TextField(
+              child: TextField(
                 controller: controller,
                 autofocus: true,
                 decoration: InputDecoration(hintText: value),
@@ -753,7 +753,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
   }
 
-  static const platform = const MethodChannel(AppConfig.methodChannelName);
+  static const platform = MethodChannel(AppConfig.methodChannelName);
 
   Future screenshot() async {
     double originHeight = courseHeight;
@@ -777,7 +777,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     });
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
-    File imgFile = new File('$path/course_widget.png');
+    File imgFile = File('$path/course_widget.png');
     await imgFile.writeAsBytes(pngBytes);
     final bool result = await platform.invokeMethod('update_weight');
     Log.d("complete $result");

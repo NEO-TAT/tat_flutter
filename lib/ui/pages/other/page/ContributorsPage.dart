@@ -10,8 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsPage extends StatelessWidget {
   final github = GitHub();
-  final repositorySlug =
-      RepositorySlug(AppLink.githubOwner, AppLink.githubName);
+  final repositorySlug = RepositorySlug(AppLink.githubOwner, AppLink.githubName);
 
   @override
   Widget build(BuildContext context) {
@@ -82,10 +81,8 @@ class ContributorsPage extends StatelessWidget {
             ],
           ),
           FutureBuilder<List<Contributor>>(
-            future:
-                github.repositories.listContributors(repositorySlug).toList(),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<Contributor>> snapshot) {
+            future: github.repositories.listContributors(repositorySlug).toList(),
+            builder: (BuildContext context, AsyncSnapshot<List<Contributor>> snapshot) {
               if (snapshot.hasData) {
                 List<Contributor> contributorList = snapshot.data;
                 return ListView.builder(
@@ -107,8 +104,7 @@ class ContributorsPage extends StatelessWidget {
                                 width: 50,
                                 child: CachedNetworkImage(
                                   imageUrl: contributor.avatarUrl,
-                                  imageBuilder: (context, imageProvider) =>
-                                      CircleAvatar(
+                                  imageBuilder: (context, imageProvider) => CircleAvatar(
                                     radius: 15.0,
                                     backgroundImage: imageProvider,
                                   ),

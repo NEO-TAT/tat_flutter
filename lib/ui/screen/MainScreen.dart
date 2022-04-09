@@ -1,5 +1,4 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
@@ -29,7 +28,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   final _pageController = PageController();
   int _currentIndex = 0;
   int _closeAppCount = 0;
-  List<Widget> _pageList = List<Widget>();
+  List<Widget> _pageList = [];
 
   @override
   void initState() {
@@ -63,7 +62,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
       Log.eWithStack(e.toString(), stack);
     }
     setState(() {
-      _pageList = List();
+      _pageList = [];
       _pageList.add(CourseTablePage());
       _pageList.add(NotificationPage());
       _pageList.add(CalendarPage());

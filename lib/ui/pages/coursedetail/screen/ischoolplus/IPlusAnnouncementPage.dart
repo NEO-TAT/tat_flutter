@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
@@ -21,8 +20,7 @@ class IPlusAnnouncementPage extends StatefulWidget {
   _IPlusAnnouncementPage createState() => _IPlusAnnouncementPage();
 }
 
-class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
-    with AutomaticKeepAliveClientMixin {
+class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage> with AutomaticKeepAliveClientMixin {
   List<ISchoolPlusAnnouncementJson> items;
   String courseBid;
   bool needRefresh = false;
@@ -33,7 +31,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   void initState() {
     super.initState();
     isSupport = Model.instance.getAccount() == widget.studentId;
-    items = List();
+    items = [];
     if (isSupport) {
       _addTask();
     }
@@ -52,7 +50,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
       courseBid = getTask.result["courseBid"];
       openNotifications = getTask.result["openNotifications"];
     }
-    items = items ?? List();
+    items = items ?? [];
     setState(() {});
   }
 
@@ -84,8 +82,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
           // FloatingActionButton: 浮動按鈕
           onPressed: () async {
             TaskFlow taskFlow = TaskFlow();
-            taskFlow.addTask(
-                IPlusSetCourseSubscribeTask(courseBid, !openNotifications));
+            taskFlow.addTask(IPlusSetCourseSubscribeTask(courseBid, !openNotifications));
             if (await taskFlow.start()) {
               setState(() {
                 openNotifications = !openNotifications;
@@ -94,9 +91,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
           },
           tooltip: R.current.subscribe,
           // 按住按鈕時出現的提示字
-          child: (openNotifications)
-              ? Icon(Icons.notifications_active)
-              : Icon(Icons.notifications_off),
+          child: (openNotifications) ? Icon(Icons.notifications_active) : Icon(Icons.notifications_off),
         ));
   }
 
@@ -122,14 +117,12 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
   }
 
   Widget _listItem(ISchoolPlusAnnouncementJson data) {
-    FontWeight fontWeight =
-        (data.readflag != 1) ? FontWeight.bold : FontWeight.normal;
+    FontWeight fontWeight = (data.readflag != 1) ? FontWeight.bold : FontWeight.normal;
     return Container(
       child: Column(
         children: <Widget>[
           Padding(
-            padding:
-                EdgeInsets.only(left: 14.0, right: 14.0, top: 5.0, bottom: 5.0),
+            padding: EdgeInsets.only(left: 14.0, right: 14.0, top: 5.0, bottom: 5.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -150,8 +143,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
                               child: Text(
                                 data.subject,
                                 overflow: TextOverflow.visible,
-                                style: TextStyle(
-                                    fontWeight: fontWeight, fontSize: 17.0),
+                                style: TextStyle(fontWeight: fontWeight, fontSize: 17.0),
                               ),
                             ),
                           ],
@@ -161,13 +153,11 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage>
                           children: <Widget>[
                             Text(
                               data.realname,
-                              style: TextStyle(
-                                  fontWeight: fontWeight, fontSize: 15.5),
+                              style: TextStyle(fontWeight: fontWeight, fontSize: 15.5),
                             ),
                             Text(
                               data.postdate,
-                              style: TextStyle(
-                                  fontWeight: fontWeight, fontSize: 13.5),
+                              style: TextStyle(fontWeight: fontWeight, fontSize: 13.5),
                             ),
                           ],
                         )

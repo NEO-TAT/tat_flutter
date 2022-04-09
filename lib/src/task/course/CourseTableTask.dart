@@ -22,16 +22,13 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
       super.onStart(R.current.getCourse);
       CourseMainInfo value;
       if (studentId.length == 5) {
-        value = await CourseConnector.getTWTeacherCourseMainInfoList(
-            studentId, semester);
+        value = await CourseConnector.getTWTeacherCourseMainInfoList(studentId, semester);
       } else {
         if (LanguageUtil.getLangIndex() == LangEnum.zh) {
           //根據語言選擇課表
-          value = await CourseConnector.getTWCourseMainInfoList(
-              studentId, semester);
+          value = await CourseConnector.getTWCourseMainInfoList(studentId, semester);
         } else {
-          value = await CourseConnector.getENCourseMainInfoList(
-              studentId, semester);
+          value = await CourseConnector.getENCourseMainInfoList(studentId, semester);
         }
       }
       super.onEnd();
@@ -48,13 +45,11 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
             Day day = Day.values[i];
             String time = courseMainInfo.course.time[day];
             courseInfo.main = courseMainInfo;
-            add |=
-                courseTable.setCourseDetailByTimeString(day, time, courseInfo);
+            add |= courseTable.setCourseDetailByTimeString(day, time, courseInfo);
           }
           if (!add) {
             //代表課程沒有時間
-            courseTable.setCourseDetailByTime(
-                Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
+            courseTable.setCourseDetailByTime(Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
           }
         }
         if (studentId == Model.instance.getAccount()) {

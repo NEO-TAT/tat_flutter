@@ -9,13 +9,13 @@ import 'package:flutter_app/ui/other/MyToast.dart';
 
 import 'Task.dart';
 
-typedef onSuccessCallBack = Function(Task);
+typedef OnSuccessCallBack = Function(Task);
 
 class TaskFlow {
   List<Task> _queue;
   List<Task> _completeTask;
   List<Task> _failTask;
-  onSuccessCallBack callback;
+  OnSuccessCallBack callback;
 
   static resetLoginStatus() {
     NTUTTask.isLogin = false;
@@ -33,9 +33,9 @@ class TaskFlow {
   }
 
   TaskFlow() {
-    _queue = List();
-    _completeTask = List();
-    _failTask = List();
+    _queue = [];
+    _completeTask = [];
+    _failTask = [];
   }
 
   void addTask(Task task) {
@@ -43,7 +43,7 @@ class TaskFlow {
   }
 
   Future<bool> start() async {
-    var connectivityResult = await (new Connectivity().checkConnectivity());
+    var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       MyToast.show(R.current.pleaseConnectToNetwork);
       return false;
@@ -62,7 +62,7 @@ class TaskFlow {
           break;
         case TaskStatus.GiveUp:
           _failTask.addAll(_queue);
-          _queue = List();
+          _queue = [];
           success = false;
           break;
         case TaskStatus.Restart:
@@ -79,8 +79,8 @@ class TaskFlow {
         log += '\n--' + task.name;
       }
     }
-    _completeTask = List();
-    _failTask = List();
+    _completeTask = [];
+    _failTask = [];
     Log.d(log);
     return success;
   }

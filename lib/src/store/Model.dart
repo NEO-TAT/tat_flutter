@@ -42,7 +42,7 @@ class Model {
   Map<String, bool> _firstRun = Map();
   static String courseNotice = "CourseNotice";
   static String appCheckUpdate = "AppCheckUpdate";
-  DefaultCacheManager cacheManager = new DefaultCacheManager();
+  DefaultCacheManager cacheManager = DefaultCacheManager();
 
   bool get autoCheckAppUpdate {
     return _setting.other.autoCheckAppUpdate;
@@ -89,9 +89,7 @@ class Model {
   Future<void> loadUserData() async {
     String readJson;
     readJson = await _readString(userDataJsonKey);
-    _userData = (readJson != null)
-        ? UserDataJson.fromJson(json.decode(readJson))
-        : UserDataJson();
+    _userData = (readJson != null) ? UserDataJson.fromJson(json.decode(readJson)) : UserDataJson();
   }
 
   void setAccount(String account) {
@@ -128,14 +126,14 @@ class Model {
   }
 
   Future<void> clearCourseTableList() async {
-    _courseTableList = List();
+    _courseTableList = [];
     await saveCourseTableList();
   }
 
   Future<void> loadCourseTableList() async {
-    List<String> readJsonList = List();
+    List<String> readJsonList = [];
     readJsonList = await _readStringList(courseTableJsonKey);
-    _courseTableList = List();
+    _courseTableList = [];
     if (readJsonList != null) {
       for (String readJson in readJsonList) {
         _courseTableList.add(CourseTableJson.fromJson(json.decode(readJson)));
@@ -159,8 +157,7 @@ class Model {
     List<CourseTableJson> tableList = _courseTableList;
     for (int i = 0; i < tableList.length; i++) {
       CourseTableJson table = tableList[i];
-      if (table.courseSemester == addCourseTable.courseSemester &&
-          table.studentId == addCourseTable.studentId) {
+      if (table.courseSemester == addCourseTable.courseSemester && table.studentId == addCourseTable.studentId) {
         tableList.removeAt(i);
       }
     }
@@ -175,25 +172,21 @@ class Model {
   List<CourseTableJson> getCourseTableList() {
     _courseTableList.sort((a, b) {
       if (a.studentId == b.studentId) {
-        return b.courseSemester
-            .toString()
-            .compareTo(a.courseSemester.toString());
+        return b.courseSemester.toString().compareTo(a.courseSemester.toString());
       }
       return a.studentId.compareTo(b.studentId);
     });
     return _courseTableList;
   }
 
-  CourseTableJson getCourseTable(
-      String studentId, SemesterJson courseSemester) {
+  CourseTableJson getCourseTable(String studentId, SemesterJson courseSemester) {
     List<CourseTableJson> tableList = _courseTableList;
     if (courseSemester == null || studentId.isEmpty) {
       return null;
     }
     for (int i = 0; i < tableList.length; i++) {
       CourseTableJson table = tableList[i];
-      if (table.courseSemester == courseSemester &&
-          table.studentId == studentId) {
+      if (table.courseSemester == courseSemester && table.studentId == studentId) {
         return table;
       }
     }
@@ -213,9 +206,7 @@ class Model {
   Future<void> loadSetting() async {
     String readJson;
     readJson = await _readString(settingJsonKey);
-    _setting = (readJson != null)
-        ? SettingJson.fromJson(json.decode(readJson))
-        : SettingJson();
+    _setting = (readJson != null) ? SettingJson.fromJson(json.decode(readJson)) : SettingJson();
   }
 
   //--------------------CourseScoreCreditJson--------------------//
@@ -245,8 +236,7 @@ class Model {
     await saveCourseScoreCredit();
   }
 
-  Future<void> setSemesterCourseScore(
-      List<SemesterCourseScoreJson> value) async {
+  Future<void> setSemesterCourseScore(List<SemesterCourseScoreJson> value) async {
     _courseScoreList.graduationInformation = GraduationInformationJson();
     _courseScoreList.semesterCourseScoreList = value;
     await saveCourseScoreCredit();
@@ -255,9 +245,8 @@ class Model {
   Future<void> loadCourseScoreCredit() async {
     String readJson;
     readJson = await _readString(scoreCreditJsonKey);
-    _courseScoreList = (readJson != null)
-        ? CourseScoreCreditJson.fromJson(json.decode(readJson))
-        : CourseScoreCreditJson();
+    _courseScoreList =
+        (readJson != null) ? CourseScoreCreditJson.fromJson(json.decode(readJson)) : CourseScoreCreditJson();
   }
 
   //--------------------CourseSettingJson--------------------//
@@ -316,7 +305,7 @@ class Model {
 
   //--------------------List<SemesterJson>--------------------//
   Future<void> clearSemesterJsonList() async {
-    _courseSemesterList = List();
+    _courseSemesterList = [];
   }
 
   Future<void> saveSemesterJsonList() async {
@@ -324,9 +313,9 @@ class Model {
   }
 
   Future<void> loadSemesterJsonList() async {
-    List<String> readJsonList = List();
+    List<String> readJsonList = [];
     readJsonList = await _readStringList(courseSemesterJsonKey);
-    _courseSemesterList = List();
+    _courseSemesterList = [];
     if (readJsonList != null) {
       for (String readJson in readJsonList) {
         _courseSemesterList.add(SemesterJson.fromJson(json.decode(readJson)));
@@ -351,7 +340,7 @@ class Model {
   }
 
   List<String> getSemesterListString() {
-    List<String> stringList = List();
+    List<String> stringList = [];
     if (_courseSemesterList != null) {
       for (SemesterJson value in _courseSemesterList) {
         stringList.add(value.year + "-" + value.semester);
@@ -371,13 +360,12 @@ class Model {
   Future<void> getInstance() async {
     pref = await SharedPreferences.getInstance();
     await DioConnector.instance.init();
-    _courseSemesterList = _courseSemesterList ?? List();
+    _courseSemesterList = _courseSemesterList ?? [];
     await loadUserData();
     await loadCourseTableList();
     await loadSetting();
     await loadCourseScoreCredit();
     await loadSemesterJsonList();
-    //DioConnector.instance.deleteCookies();
   }
 
   Future<void> logout() async {
@@ -406,18 +394,12 @@ class Model {
   }
 
   Future<void> _saveJsonList(String key, dynamic saveObj) async {
-    List<String> jsonList = List();
+    List<String> jsonList = [];
     for (dynamic obj in saveObj) {
       jsonList.add(json.encode(obj));
     }
     await _writeStringList(key, jsonList);
   }
-
-  Future<void> _clear(String key) async {
-    await _clearSetting(key);
-  }
-
-  //基本讀寫
 
   Future<void> _writeString(String key, String value) async {
     await pref.setString(key, value);
@@ -441,9 +423,5 @@ class Model {
 
   Future<List<String>> _readStringList(String key) async {
     return pref.getStringList(key);
-  }
-
-  Future<void> _clearSetting(String key) async {
-    await pref.remove(key);
   }
 }

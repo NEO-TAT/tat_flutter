@@ -28,25 +28,3 @@ NTUTCalendarJson _$NTUTCalendarJsonFromJson(Map<String, dynamic> json) {
     json['calAlertList'] as List,
   );
 }
-
-Map<String, dynamic> _$NTUTCalendarJsonToJson(NTUTCalendarJson instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'calStart': instance.calStart,
-      'calEnd': instance.calEnd,
-      'allDay': instance.allDay,
-      'calTitle': instance.calTitle,
-      'calPlace': instance.calPlace,
-      'calContent': instance.calContent,
-      'calColor': instance.calColor,
-      'ownerId': instance.ownerId,
-      'ownerName': instance.ownerName,
-      'creatorId': instance.creatorId,
-      'creatorName': instance.creatorName,
-      'modifierId': instance.modifierId,
-      'modifierName': instance.modifierName,
-      'modifyDate': instance.modifyDate,
-      'hasBeenDeleted': instance.hasBeenDeleted,
-      'calInviteeList': instance.calInviteeList,
-      'calAlertList': instance.calAlertList,
-    };

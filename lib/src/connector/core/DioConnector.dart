@@ -24,7 +24,7 @@ class DioConnector {
     darkTheme: true,
     showNotification: false,
   );
-  static final BaseOptions dioOptions = new BaseOptions(
+  static final BaseOptions dioOptions = BaseOptions(
       connectTimeout: 5000,
       receiveTimeout: 10000,
       sendTimeout: 5000,

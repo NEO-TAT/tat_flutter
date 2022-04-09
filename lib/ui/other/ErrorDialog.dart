@@ -26,8 +26,8 @@ class ErrorDialogParameter {
     this.dialogType,
     this.btnCancelOnPress,
     this.btnOkOnPress,
-    this.offOkBtn: false,
-    this.offCancelBtn: false,
+    this.offOkBtn = false,
+    this.offCancelBtn = false,
   }) {
     title ??= R.current.alertError;
     btnOkText ??= R.current.restart;
@@ -63,6 +63,6 @@ class ErrorDialog {
       dismissOnTouchOutside: false,
       btnCancelOnPress: parameter.btnCancelOnPress,
       btnOkOnPress: parameter.btnOkOnPress,
-    )..show();
+    ).show();
   }
 }

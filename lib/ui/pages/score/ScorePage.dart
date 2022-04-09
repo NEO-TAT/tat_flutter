@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
@@ -260,21 +259,21 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   Widget _buildTile(String title) {
     return Container(
       padding: EdgeInsets.only(top: 10, bottom: 10),
-      child: new Material(
+      child: Material(
         //INK可以實現裝飾容器
-        child: new Ink(
+        child: Ink(
           //用ink圓角矩形
           // color: Colors.red,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             //設置四周圓角 角度
             borderRadius: BorderRadius.all(Radius.circular(25.0)),
             //設置四周邊框
-            border: new Border.all(width: 1, color: Colors.red),
+            border: Border.all(width: 1, color: Colors.red),
           ),
-          child: new InkWell(
+          child: InkWell(
             //圓角設置,給水波紋也設置同樣的圓角
             //如果這裡不設置就會出現矩形的水波紋效果
-            borderRadius: new BorderRadius.circular(25.0),
+            borderRadius: BorderRadius.circular(25.0),
             child: Container(
               //設置 child 居中
               alignment: Alignment(0, 0),

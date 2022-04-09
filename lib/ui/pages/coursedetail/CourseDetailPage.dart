@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
@@ -24,8 +23,7 @@ class ISchoolPage extends StatefulWidget {
   _ISchoolPageState createState() => _ISchoolPageState();
 }
 
-class _ISchoolPageState extends State<ISchoolPage>
-    with SingleTickerProviderStateMixin {
+class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStateMixin {
   TabPageList tabPageList;
   TabController _tabController;
   PageController _pageController = PageController();
@@ -35,13 +33,12 @@ class _ISchoolPageState extends State<ISchoolPage>
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(R.current.course, Icons.info,
-        CourseInfoPage(widget.studentId, widget.courseInfo)));
+    tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.courseInfo)));
     if (widget.studentId == Model.instance.getAccount()) {
-      tabPageList.add(TabPage(R.current.announcement, Icons.announcement,
-          IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
-      tabPageList.add(TabPage(R.current.fileAndVideo, Icons.file_download,
-          IPlusFilePage(widget.studentId, widget.courseInfo)));
+      tabPageList.add(TabPage(
+          R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
+      tabPageList.add(
+          TabPage(R.current.fileAndVideo, Icons.file_download, IPlusFilePage(widget.studentId, widget.courseInfo)));
     }
 
     _tabController = TabController(vsync: this, length: tabPageList.length);

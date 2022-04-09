@@ -21,11 +21,9 @@ enum ScoreConnectorStatus { LoginSuccess, LoginFail, UnknownError }
 class ScoreConnector {
   static final String _scoreHost = "https://aps-course.ntut.edu.tw/";
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
-  static final String _scoreUrl = _scoreHost + "StuQuery/StudentQuery.jsp";
   static final String _scoreRankUrl = _scoreHost + "StuQuery/QryRank.jsp";
   static final String _scoreAllScoreUrl = _scoreHost + "StuQuery/QryScore.jsp";
-  static final String _generalLessonAllScoreUrl =
-      _scoreHost + "StuQuery/QryLAECourse.jsp";
+  static final String _generalLessonAllScoreUrl = _scoreHost + "StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
     String result;
@@ -50,8 +48,7 @@ class ScoreConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
-      String jumpUrl =
-          tagNode.getElementsByTagName("form")[0].attributes["action"];
+      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
@@ -63,7 +60,7 @@ class ScoreConnector {
   }
 
   static String strQ2B(String input) {
-    List<int> newString = List();
+    List<int> newString = [];
     for (int c in input.codeUnits) {
       if (c == 12288) {
         c = 32;
@@ -84,7 +81,7 @@ class ScoreConnector {
     Document tagNode;
     Element tableNode, h3Node, scoreNode;
     List<Element> tableNodes, h3Nodes, scoreNodes, rankNodes;
-    List<SemesterCourseScoreJson> courseScoreList = List();
+    List<SemesterCourseScoreJson> courseScoreList = [];
     try {
       Map<String, String> data = {"format": "-2"};
       parameter = ConnectorParameter(_scoreAllScoreUrl);
@@ -125,43 +122,19 @@ class ScoreConnector {
         for (int j = 1; j < scoreEnd - 1; j++) {
           scoreNode = scoreNodes[j];
           CourseScoreInfoJson score = CourseScoreInfoJson();
-          score.courseId = scoreNode
-              .getElementsByTagName("th")[0]
-              .text
-              .replaceAll(RegExp(r"[\s| ]"), "");
-          score.nameZh = scoreNode
-              .getElementsByTagName("th")[2]
-              .text
-              .replaceAll(RegExp(r"[\s| ]"), "");
-          score.nameEn = scoreNode
-              .getElementsByTagName("th")[3]
-              .text
-              .replaceAll(RegExp("\n"), "");
-          score.credit =
-              double.parse(scoreNode.getElementsByTagName("th")[6].text);
-          score.score = scoreNode
-              .getElementsByTagName("th")[7]
-              .text
-              .replaceAll(RegExp(r"[\s| ]"), "");
+          score.courseId = scoreNode.getElementsByTagName("th")[0].text.replaceAll(RegExp(r"[\s| ]"), "");
+          score.nameZh = scoreNode.getElementsByTagName("th")[2].text.replaceAll(RegExp(r"[\s| ]"), "");
+          score.nameEn = scoreNode.getElementsByTagName("th")[3].text.replaceAll(RegExp("\n"), "");
+          score.credit = double.parse(scoreNode.getElementsByTagName("th")[6].text);
+          score.score = scoreNode.getElementsByTagName("th")[7].text.replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);
         }
         try {
-          courseScore.averageScore = double.parse(
-              scoreNodes[scoreNodes.length - 4]
-                  .getElementsByTagName("td")[0]
-                  .text);
-          courseScore.performanceScore = double.parse(
-              scoreNodes[scoreNodes.length - 3]
-                  .getElementsByTagName("td")[0]
-                  .text);
-          courseScore.totalCredit = double.parse(
-              scoreNodes[scoreNodes.length - 2]
-                  .getElementsByTagName("td")[0]
-                  .text);
-          courseScore.takeCredit = double.parse(
-              scoreNodes[scoreNodes.length - 1]
-                  .getElementsByTagName("td")[0]
-                  .text);
+          courseScore.averageScore = double.parse(scoreNodes[scoreNodes.length - 4].getElementsByTagName("td")[0].text);
+          courseScore.performanceScore =
+              double.parse(scoreNodes[scoreNodes.length - 3].getElementsByTagName("td")[0].text);
+          courseScore.totalCredit = double.parse(scoreNodes[scoreNodes.length - 2].getElementsByTagName("td")[0].text);
+          courseScore.takeCredit = double.parse(scoreNodes[scoreNodes.length - 1].getElementsByTagName("td")[0].text);
         } catch (e) {
           continue;
         } finally {
@@ -174,17 +147,11 @@ class ScoreConnector {
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      rankNodes =
-          tagNode.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-      rankNodes =
-          rankNodes.getRange(2, rankNodes.length).toList().reversed.toList();
+      rankNodes = tagNode.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+      rankNodes = rankNodes.getRange(2, rankNodes.length).toList().reversed.toList();
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
         SemesterJson semester = SemesterJson();
-        String semesterString = rankNodes[i * 3 + 2]
-            .getElementsByTagName("td")[0]
-            .innerHtml
-            .split("<br>")
-            .first;
+        String semesterString = rankNodes[i * 3 + 2].getElementsByTagName("td")[0].innerHtml.split("<br>").first;
         semester.year = semesterString.split(" ")[0];
         semester.semester = semesterString.split(" ").reversed.toList()[0];
 
@@ -194,22 +161,14 @@ class ScoreConnector {
         RankItemJson rankItemDepartment = RankItemJson();
         rankNow.course = rankItemCourse;
         rankNow.department = rankItemDepartment;
-        rankItemCourse.rank = double.parse(
-            rankNodes[i * 3 + 2].getElementsByTagName("td")[2].text);
-        rankItemCourse.total = double.parse(
-            rankNodes[i * 3 + 2].getElementsByTagName("td")[3].text);
-        rankItemCourse.percentage = double.parse(rankNodes[i * 3 + 2]
-            .getElementsByTagName("td")[4]
-            .text
-            .replaceAll(RegExp(r"[%|\s]"), ""));
-        rankItemDepartment.rank =
-            double.parse(rankNodes[i * 3].getElementsByTagName("td")[1].text);
-        rankItemDepartment.total =
-            double.parse(rankNodes[i * 3].getElementsByTagName("td")[2].text);
-        rankItemDepartment.percentage = double.parse(rankNodes[i * 3]
-            .getElementsByTagName("td")[3]
-            .text
-            .replaceAll(RegExp(r"[%|\s]"), ""));
+        rankItemCourse.rank = double.parse(rankNodes[i * 3 + 2].getElementsByTagName("td")[2].text);
+        rankItemCourse.total = double.parse(rankNodes[i * 3 + 2].getElementsByTagName("td")[3].text);
+        rankItemCourse.percentage =
+            double.parse(rankNodes[i * 3 + 2].getElementsByTagName("td")[4].text.replaceAll(RegExp(r"[%|\s]"), ""));
+        rankItemDepartment.rank = double.parse(rankNodes[i * 3].getElementsByTagName("td")[1].text);
+        rankItemDepartment.total = double.parse(rankNodes[i * 3].getElementsByTagName("td")[2].text);
+        rankItemDepartment.percentage =
+            double.parse(rankNodes[i * 3].getElementsByTagName("td")[3].text.replaceAll(RegExp(r"[%|\s]"), ""));
 
         //取得歷年成績排名
         RankJson rankHistory = RankJson();
@@ -217,22 +176,14 @@ class ScoreConnector {
         rankItemDepartment = RankItemJson();
         rankHistory.course = rankItemCourse;
         rankHistory.department = rankItemDepartment;
-        rankItemCourse.rank = double.parse(
-            rankNodes[i * 3 + 2].getElementsByTagName("td")[5].text);
-        rankItemCourse.total = double.parse(
-            rankNodes[i * 3 + 2].getElementsByTagName("td")[6].text);
-        rankItemCourse.percentage = double.parse(rankNodes[i * 3 + 2]
-            .getElementsByTagName("td")[7]
-            .text
-            .replaceAll("%", ""));
-        rankItemDepartment.rank =
-            double.parse(rankNodes[i * 3].getElementsByTagName("td")[4].text);
-        rankItemDepartment.total =
-            double.parse(rankNodes[i * 3].getElementsByTagName("td")[5].text);
-        rankItemDepartment.percentage = double.parse(rankNodes[i * 3]
-            .getElementsByTagName("td")[6]
-            .text
-            .replaceAll("%", ""));
+        rankItemCourse.rank = double.parse(rankNodes[i * 3 + 2].getElementsByTagName("td")[5].text);
+        rankItemCourse.total = double.parse(rankNodes[i * 3 + 2].getElementsByTagName("td")[6].text);
+        rankItemCourse.percentage =
+            double.parse(rankNodes[i * 3 + 2].getElementsByTagName("td")[7].text.replaceAll("%", ""));
+        rankItemDepartment.rank = double.parse(rankNodes[i * 3].getElementsByTagName("td")[4].text);
+        rankItemDepartment.total = double.parse(rankNodes[i * 3].getElementsByTagName("td")[5].text);
+        rankItemDepartment.percentage =
+            double.parse(rankNodes[i * 3].getElementsByTagName("td")[6].text.replaceAll("%", ""));
 
         for (SemesterCourseScoreJson score in courseScoreList) {
           if (score.semester == semester) {
@@ -255,7 +206,7 @@ class ScoreConnector {
     Document tagNode;
     Element node;
     List<Element> nodes;
-    List<String> coreGeneralLessonList = List();
+    List<String> coreGeneralLessonList = [];
     try {
       parameter = ConnectorParameter(_generalLessonAllScoreUrl);
       parameter.charsetName = "big5";
@@ -267,10 +218,7 @@ class ScoreConnector {
         node = nodes[i];
         if (node.innerHtml.contains("＊")) {
           String name;
-          if (node
-              .getElementsByTagName("td")[0]
-              .attributes
-              .containsKey("rowspan")) {
+          if (node.getElementsByTagName("td")[0].attributes.containsKey("rowspan")) {
             name = node.getElementsByTagName("td")[7].text;
           } else {
             name = node.getElementsByTagName("td")[3].text;

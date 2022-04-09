@@ -16,8 +16,7 @@ class UserDataJson {
     this.info = (this.info != null) ? this.info : UserInfoJson();
   }
 
-  factory UserDataJson.fromJson(Map<String, dynamic> json) =>
-      _$UserDataJsonFromJson(json);
+  factory UserDataJson.fromJson(Map<String, dynamic> json) => _$UserDataJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserDataJsonToJson(this);
 
@@ -43,22 +42,15 @@ class UserInfoJson {
   String passwordExpiredRemind;
   String userDn;
 
-  UserInfoJson(
-      {this.givenName,
-      this.userMail,
-      this.userPhoto,
-      this.passwordExpiredRemind,
-      this.userDn}) {
+  UserInfoJson({this.givenName, this.userMail, this.userPhoto, this.passwordExpiredRemind, this.userDn}) {
     this.givenName = JsonInit.stringInit(this.givenName);
     this.userMail = JsonInit.stringInit(this.userMail);
     this.userPhoto = JsonInit.stringInit(this.userPhoto);
     this.userDn = JsonInit.stringInit(this.userDn);
-    this.passwordExpiredRemind =
-        JsonInit.stringInit(this.passwordExpiredRemind);
+    this.passwordExpiredRemind = JsonInit.stringInit(this.passwordExpiredRemind);
   }
 
-  factory UserInfoJson.fromJson(Map<String, dynamic> json) =>
-      _$UserInfoJsonFromJson(json);
+  factory UserInfoJson.fromJson(Map<String, dynamic> json) => _$UserInfoJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserInfoJsonToJson(this);
 
