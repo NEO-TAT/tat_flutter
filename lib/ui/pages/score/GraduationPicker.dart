@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_app/src/task/course/CourseCreditInfoTask.dart';
 import 'package:flutter_app/src/task/course/CourseDepartmentTask.dart';
 import 'package:flutter_app/src/task/course/CourseDivisionTask.dart';
 import 'package:flutter_app/src/task/course/CourseYearTask.dart';
-import 'package:flutter_app/src/task/ntutapp/NTUTAPPDepartmentTask.dart';
 import 'package:get/get.dart';
 
 class GraduationPicker {
@@ -99,18 +97,8 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero).then((_) {
-      _addPresetTask();
+      _addSelectTask();
     });
-  }
-
-  Future<void> _addPresetTask() async {
-    TaskFlow taskFlow = TaskFlow();
-    var task = NTUTAPPDepartmentTask();
-    taskFlow.addTask(task);
-    if (await taskFlow.start()) {
-      _presetDepartment = task.result;
-    }
-    _addSelectTask();
   }
 
   Future<void> _addSelectTask() async {
