@@ -34,10 +34,8 @@ class NTUTTask<T> extends DialogTask<T> {
     NTUTAppTask.isLogin = false;
     if (value == NTUTConnectorStatus.LoginSuccess) {
       _isLogin = true;
-      print('#########################');
       return TaskStatus.Success;
     } else {
-      print('@@@@@@@@@@@@@@@@@@@@@@@@@@');
       return await _onError(value);
     }
   }
@@ -56,7 +54,7 @@ class NTUTTask<T> extends DialogTask<T> {
         parameter.desc = R.current.accountPasswordError;
         parameter.btnOkText = R.current.setting;
         parameter.btnOkOnPress = () {
-          Get.to(LoginScreen()).then((value) => Get.back<bool>(result: true));
+          Get.to(() => LoginScreen()).then((value) => Get.back<bool>(result: true));
         };
         break;
       case NTUTConnectorStatus.AuthCodeFailError:
