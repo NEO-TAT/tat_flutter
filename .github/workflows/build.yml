@@ -27,7 +27,10 @@ jobs:
 
     # checkout codebase.
     - name: Checkout codebase
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Add firebase cofigs
+      run: echo "${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}" > ios/Runner/GoogleService-Info.plist
 
     # Get packages.
     - name: Get dependencies
@@ -63,7 +66,10 @@ jobs:
 
     # checkout codebase.
     - name: Checkout codebase
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Add firebase cofigs
+      run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > android/app/google-services.json
 
     # Get packages.
     - name: Get dependencies
