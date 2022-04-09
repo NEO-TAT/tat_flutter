@@ -23,7 +23,7 @@ jobs:
     - name: Clone Flutter repository with stable channel
       uses: subosito/flutter-action@v2
       with:
-        channel: 'stable'
+        flutter-version: '2.10.x'
 
     # checkout codebase.
     - name: Checkout codebase
@@ -62,7 +62,7 @@ jobs:
     - name: Clone Flutter repository with stable channel
       uses: subosito/flutter-action@v2
       with:
-        channel: 'stable'
+        flutter-version: '2.10.x'
 
     # checkout codebase.
     - name: Checkout codebase
