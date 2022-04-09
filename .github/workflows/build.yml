@@ -38,7 +38,7 @@ jobs:
 
     # Build ios app
     - name: Build app
-      run: flutter build ios --no-codesign --split-debug-info=build/app/outputs/symbols --obfuscate
+      run: flutter build ios --no-codesign
 
   build-aos:
 
@@ -47,7 +47,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ macos-latest ]
+        os: [ ubuntu-latest ]
 
     steps:
 
@@ -77,4 +77,4 @@ jobs:
 
     # Build aos app
     - name: Build appbundle
-      run: flutter build appbundle --split-debug-info=build/app/outputs/symbols --obfuscate
+      run: flutter build appbundle --debug
