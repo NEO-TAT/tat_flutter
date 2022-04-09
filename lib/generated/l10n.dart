@@ -44,6 +44,16 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________loginUi___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________loginUi___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Login`
   String get login {
     return Intl.message(
@@ -259,6 +269,16 @@ class S {
     return Intl.message(
       'isFocusUpdate',
       name: 'isFocusUpdate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________task___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________task___________________',
       desc: '',
       args: [],
     );
@@ -774,6 +794,16 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________CourseTableUi___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________CourseTableUi___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `MON`
   String get Monday {
     return Intl.message(
@@ -1044,6 +1074,16 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________FileViewerPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________FileViewerPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Sort by`
   String get sortBy {
     return Intl.message(
@@ -1134,6 +1174,16 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________NotificationPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________NotificationPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Notification`
   String get titleNotification {
     return Intl.message(
@@ -1189,6 +1239,16 @@ class S {
     return Intl.message(
       'Are you sure you want to download the file',
       name: 'areYouSureToDownload',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________OtherUi___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________OtherUi___________________',
       desc: '',
       args: [],
     );
@@ -1419,6 +1479,16 @@ class S {
     return Intl.message(
       'Information System',
       name: 'informationSystem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________iSchoolUi___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________iSchoolUi___________________',
       desc: '',
       args: [],
     );
@@ -1734,11 +1804,31 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________FileStore___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________FileStore___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Permission denied`
   String get noPermission {
     return Intl.message(
       'Permission denied',
       name: 'noPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________AboutPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________AboutPage___________________',
       desc: '',
       args: [],
     );
@@ -1824,6 +1914,16 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________ContributorsPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________ContributorsPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Project link`
   String get projectLink {
     return Intl.message(
@@ -1854,11 +1954,31 @@ class S {
     );
   }
 
+  /// `註解`
+  String get ___________________PrivacyPolicyPage___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________PrivacyPolicyPage___________________',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Privacy policy`
   String get PrivacyPolicy {
     return Intl.message(
       'Privacy policy',
       name: 'PrivacyPolicy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________ScoreUI___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________ScoreUI___________________',
       desc: '',
       args: [],
     );
@@ -2259,6 +2379,16 @@ class S {
     return Intl.message(
       'Credit info',
       name: 'creditInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `註解`
+  String get ___________________GraduationPicker___________________ {
+    return Intl.message(
+      '註解',
+      name: '___________________GraduationPicker___________________',
       desc: '',
       args: [],
     );
