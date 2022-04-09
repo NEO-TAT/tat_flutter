@@ -12,8 +12,7 @@ class APTreeJson {
 
   APTreeJson(this.apList, this.parentDn);
 
-  factory APTreeJson.fromJson(Map<String, dynamic> srcJson) =>
-      _$APTreeJsonFromJson(srcJson);
+  factory APTreeJson.fromJson(Map<String, dynamic> srcJson) => _$APTreeJsonFromJson(srcJson);
 }
 
 @JsonSerializable()
@@ -31,9 +30,7 @@ class APListJson {
   @JsonKey(name: 'urlLink')
   String urlLink;
 
-  APListJson(this.apDn, this.description, this.icon, this.type, this.urlLink,
-      this.urlSource);
+  APListJson(this.apDn, this.description, this.icon, this.type, this.urlLink, this.urlSource);
 
-  factory APListJson.fromJson(Map<String, dynamic> srcJson) =>
-      _$APListJsonFromJson(srcJson);
+  factory APListJson.fromJson(Map<String, dynamic> srcJson) => _$APListJsonFromJson(srcJson);
 }

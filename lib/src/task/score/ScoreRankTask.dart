@@ -13,8 +13,7 @@ class ScoreRankTask extends ScoreSystemTask<List<SemesterCourseScoreJson>> {
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getScoreRank);
-      List<SemesterCourseScoreJson> value =
-          await ScoreConnector.getScoreRankList();
+      List<SemesterCourseScoreJson> value = await ScoreConnector.getScoreRankList();
       super.onEnd();
       if (value != null) {
         result = value;

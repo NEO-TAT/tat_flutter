@@ -29,7 +29,7 @@ class FileUtils {
   /// Return all available Storage path
   static Future<List<Directory>> getStorageList() async {
     List<Directory> paths = await getExternalStorageDirectories();
-    List<Directory> filteredPaths = List<Directory>();
+    List<Directory> filteredPaths = [];
     for (Directory dir in paths) {
       filteredPaths.add(removeDataDirectory(dir.path));
     }
@@ -47,26 +47,22 @@ class FileUtils {
 
   static Future<List<FileSystemEntity>> getAllFiles({bool showHidden}) async {
     List<Directory> storages = await getStorageList();
-    List<FileSystemEntity> files = List<FileSystemEntity>();
+    List<FileSystemEntity> files = [];
     for (Directory dir in storages) {
       files.addAll(await getAllFilesInPath(dir.path, showHidden: showHidden));
     }
     return files;
   }
 
-  static Future<List<FileSystemEntity>> getRecentFiles(
-      {bool showHidden}) async {
+  static Future<List<FileSystemEntity>> getRecentFiles({bool showHidden}) async {
     List<FileSystemEntity> files = await getAllFiles(showHidden: showHidden);
-    files.sort((a, b) => File(a.path)
-        .lastAccessedSync()
-        .compareTo(File(b.path).lastAccessedSync()));
+    files.sort((a, b) => File(a.path).lastAccessedSync().compareTo(File(b.path).lastAccessedSync()));
     return files.reversed.toList();
   }
 
-  static Future<List<FileSystemEntity>> searchFiles(String query,
-      {bool showHidden}) async {
+  static Future<List<FileSystemEntity>> searchFiles(String query, {bool showHidden}) async {
     List<Directory> storage = await getStorageList();
-    List<FileSystemEntity> files = List<FileSystemEntity>();
+    List<FileSystemEntity> files = [];
     for (Directory dir in storage) {
       List fs = await getAllFilesInPath(dir.path, showHidden: showHidden);
       for (FileSystemEntity fs in fs) {
@@ -79,9 +75,8 @@ class FileUtils {
   }
 
   /// Get all files
-  static Future<List<FileSystemEntity>> getAllFilesInPath(String path,
-      {bool showHidden}) async {
-    List<FileSystemEntity> files = List<FileSystemEntity>();
+  static Future<List<FileSystemEntity>> getAllFilesInPath(String path, {bool showHidden}) async {
+    List<FileSystemEntity> files = [];
     Directory d = Directory(path);
     List<FileSystemEntity> l = d.listSync();
     for (FileSystemEntity file in l) {
@@ -98,12 +93,10 @@ class FileUtils {
 //          print(file.path);
           if (!showHidden) {
             if (!basename(file.path).startsWith(".")) {
-              files.addAll(
-                  await getAllFilesInPath(file.path, showHidden: showHidden));
+              files.addAll(await getAllFilesInPath(file.path, showHidden: showHidden));
             }
           } else {
-            files.addAll(
-                await getAllFilesInPath(file.path, showHidden: showHidden));
+            files.addAll(await getAllFilesInPath(file.path, showHidden: showHidden));
           }
         }
       }
@@ -132,78 +125,52 @@ class FileUtils {
     }
   }
 
-  static List<FileSystemEntity> sortList(
-      List<FileSystemEntity> list, int sort) {
+  static List<FileSystemEntity> sortList(List<FileSystemEntity> list, int sort) {
     switch (sort) {
       case 0:
         if (list.toString().contains("Directory")) {
-          list
-            ..sort((f1, f2) => basename(f1.path)
-                .toLowerCase()
-                .compareTo(basename(f2.path).toLowerCase()));
+          list.sort((f1, f2) => basename(f1.path).toLowerCase().compareTo(basename(f2.path).toLowerCase()));
           return list
-            ..sort((f1, f2) => f1
-                .toString()
-                .split(":")[0]
-                .toLowerCase()
-                .compareTo(f2.toString().split(":")[0].toLowerCase()));
+            ..sort((f1, f2) =>
+                f1.toString().split(":")[0].toLowerCase().compareTo(f2.toString().split(":")[0].toLowerCase()));
         } else {
-          return list
-            ..sort((f1, f2) => basename(f1.path)
-                .toLowerCase()
-                .compareTo(basename(f2.path).toLowerCase()));
+          return list..sort((f1, f2) => basename(f1.path).toLowerCase().compareTo(basename(f2.path).toLowerCase()));
         }
         break;
 
       case 1:
-        list.sort((f1, f2) => basename(f1.path)
-            .toLowerCase()
-            .compareTo(basename(f2.path).toLowerCase()));
+        list.sort((f1, f2) => basename(f1.path).toLowerCase().compareTo(basename(f2.path).toLowerCase()));
         if (list.toString().contains("Directory")) {
-          list
-            ..sort((f1, f2) => f1
-                .toString()
-                .split(":")[0]
-                .toLowerCase()
-                .compareTo(f2.toString().split(":")[0].toLowerCase()));
+          list.sort((f1, f2) =>
+              f1.toString().split(":")[0].toLowerCase().compareTo(f2.toString().split(":")[0].toLowerCase()));
         }
         return list.reversed.toList();
         break;
 
       case 2:
         return list
-          ..sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) &&
-                  FileSystemEntity.isFileSync(f2.path)
-              ? File(f1.path)
-                  .lastModifiedSync()
-                  .compareTo(File(f2.path).lastModifiedSync())
+          ..sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) && FileSystemEntity.isFileSync(f2.path)
+              ? File(f1.path).lastModifiedSync().compareTo(File(f2.path).lastModifiedSync())
               : 1);
         break;
 
       case 3:
-        list
-          ..sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) &&
-                  FileSystemEntity.isFileSync(f2.path)
-              ? File(f1.path)
-                  .lastModifiedSync()
-                  .compareTo(File(f2.path).lastModifiedSync())
-              : 1);
+        list.sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) && FileSystemEntity.isFileSync(f2.path)
+            ? File(f1.path).lastModifiedSync().compareTo(File(f2.path).lastModifiedSync())
+            : 1);
         return list.reversed.toList();
         break;
 
       case 4:
-        list
-          ..sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) &&
-                  FileSystemEntity.isFileSync(f2.path)
-              ? File(f1.path).lengthSync().compareTo(File(f2.path).lengthSync())
-              : 0);
+        list.sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) && FileSystemEntity.isFileSync(f2.path)
+            ? File(f1.path).lengthSync().compareTo(File(f2.path).lengthSync())
+            : 0);
         return list.reversed.toList();
         break;
 
       case 5:
         return list
-          ..sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) &&
-                  FileSystemEntity.isFileSync(f2.path)
+          ..sort((f1, f2) => FileSystemEntity.isFileSync(f1.path) && FileSystemEntity.isFileSync(f2.path)
               ? File(f1.path).lengthSync().compareTo(File(f2.path).lengthSync())
               : 0);
         break;

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppColors.dart';
@@ -42,22 +40,7 @@ class CourseTableControl {
     "21:10 - 22:00"
   ];
 
-  List<String> sectionStringList = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "N",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "A",
-    "B",
-    "C",
-    "D"
-  ];
+  List<String> sectionStringList = ["1", "2", "3", "4", "N", "5", "6", "7", "8", "9", "A", "B", "C", "D"];
   static int dayLength = 8;
   static int sectionLength = 14;
   Map<String, Color> colorMap;
@@ -79,7 +62,7 @@ class CourseTableControl {
   }
 
   List<int> get getDayIntList {
-    List<int> intList = List();
+    List<int> intList = [];
     for (int i = 0; i < dayLength; i++) {
       if (isHideSaturday && i == 5) continue;
       if (isHideSunday && i == 6) continue;
@@ -122,7 +105,7 @@ class CourseTableControl {
   }
 
   List<int> get getSectionIntList {
-    List<int> intList = List();
+    List<int> intList = [];
     for (int i = 0; i < sectionLength; i++) {
       if (isHideN && i == 4) continue;
       if (isHideA && i == 10) continue;

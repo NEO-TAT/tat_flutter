@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/config/AppColors.dart';
@@ -29,12 +28,10 @@ class AppProvider extends ChangeNotifier {
     theme = value;
     SharedPreferences.getInstance().then((prefs) {
       prefs.setString("theme", c).then((val) {
-        SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor:
-              c == "dark" ? AppColors.darkPrimary : AppColors.mainColor,
-          statusBarIconBrightness:
-              c == "dark" ? Brightness.light : Brightness.dark,
+          statusBarColor: c == "dark" ? AppColors.darkPrimary : AppColors.mainColor,
+          statusBarIconBrightness: c == "dark" ? Brightness.light : Brightness.dark,
         ));
       });
     });
@@ -48,8 +45,7 @@ class AppProvider extends ChangeNotifier {
   Future<ThemeData> checkTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     ThemeData t;
-    String r =
-        prefs.getString("theme") == null ? "dark" : prefs.getString("theme");
+    String r = prefs.getString("theme") == null ? "dark" : prefs.getString("theme");
 
     if (r == "light") {
       t = AppThemes.lightTheme;

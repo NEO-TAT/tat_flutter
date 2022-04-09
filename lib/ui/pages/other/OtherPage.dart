@@ -193,13 +193,13 @@ class _OtherPageState extends State<OtherPage> {
         backgroundImage: imageProvider,
       ),
       useOldImageOnUrlChange: true,
-      placeholder: (context, url) => SpinKitPouringHourglass(color: Colors.white),
+      placeholder: (context, url) => SpinKitRotatingCircle(color: Colors.white),
       errorWidget: (context, url, error) {
         Log.e(error.toString());
         return Icon(Icons.error);
       },
     );
-    List<Widget> columnItem = List();
+    List<Widget> columnItem = [];
     final MediaQueryData data = MediaQuery.of(context);
     if (givenName.isNotEmpty) {
       columnItem
@@ -245,7 +245,7 @@ class _OtherPageState extends State<OtherPage> {
                   if (snapshot.connectionState == ConnectionState.done && snapshot.data == true) {
                     return userImage;
                   } else {
-                    return SpinKitPouringHourglass(color: Theme.of(context).accentColor);
+                    return SpinKitRotatingCircle(color: Theme.of(context).colorScheme.secondary);
                   }
                 },
               ),

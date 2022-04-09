@@ -4,23 +4,21 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/task/course/CourseSystemTask.dart';
 import 'package:flutter_app/src/task/iplus/IPlusSystemTask.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
-import 'package:flutter_app/src/task/ntutapp/NTUTAppTask.dart';
 import 'package:flutter_app/src/task/score/ScoreSystemTask.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 
 import 'Task.dart';
 
-typedef onSuccessCallBack = Function(Task);
+typedef OnSuccessCallBack = Function(Task);
 
 class TaskFlow {
   List<Task> _queue;
   List<Task> _completeTask;
   List<Task> _failTask;
-  onSuccessCallBack callback;
+  OnSuccessCallBack callback;
 
   static resetLoginStatus() {
     NTUTTask.isLogin = false;
-    NTUTAppTask.isLogin = false;
     ScoreSystemTask.isLogin = false;
     IPlusSystemTask.isLogin = false;
     CourseSystemTask.isLogin = false;
@@ -35,9 +33,9 @@ class TaskFlow {
   }
 
   TaskFlow() {
-    _queue = List();
-    _completeTask = List();
-    _failTask = List();
+    _queue = [];
+    _completeTask = [];
+    _failTask = [];
   }
 
   void addTask(Task task) {
@@ -45,7 +43,7 @@ class TaskFlow {
   }
 
   Future<bool> start() async {
-    var connectivityResult = await (new Connectivity().checkConnectivity());
+    var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
       MyToast.show(R.current.pleaseConnectToNetwork);
       return false;
@@ -64,7 +62,7 @@ class TaskFlow {
           break;
         case TaskStatus.GiveUp:
           _failTask.addAll(_queue);
-          _queue = List();
+          _queue = [];
           success = false;
           break;
         case TaskStatus.Restart:
@@ -81,8 +79,8 @@ class TaskFlow {
         log += '\n--' + task.name;
       }
     }
-    _completeTask = List();
-    _failTask = List();
+    _completeTask = [];
+    _failTask = [];
     Log.d(log);
     return success;
   }

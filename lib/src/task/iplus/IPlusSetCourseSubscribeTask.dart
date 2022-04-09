@@ -8,15 +8,13 @@ class IPlusSetCourseSubscribeTask extends IPlusSystemTask<bool> {
   final bid;
   final open;
 
-  IPlusSetCourseSubscribeTask(this.bid, this.open)
-      : super("IPlusSetCourseSubscribeTask");
+  IPlusSetCourseSubscribeTask(this.bid, this.open) : super("IPlusSetCourseSubscribeTask");
 
   @override
   Future<TaskStatus> execute() async {
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
-      super
-          .onStart((open) ? R.current.closeSubscribe : R.current.openSubscribe);
+      super.onStart((open) ? R.current.closeSubscribe : R.current.openSubscribe);
       bool value = await ISchoolPlusConnector.courseSubscribe(bid, open);
       super.onEnd();
       if (value) {

@@ -67,9 +67,7 @@ class _SubSystemPageState extends State<SubSystemPage> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Icon((ap.type == 'link')
-                      ? Icons.link_outlined
-                      : Icons.folder_outlined),
+                  child: Icon((ap.type == 'link') ? Icons.link_outlined : Icons.folder_outlined),
                 ),
                 Expanded(
                   flex: 8,

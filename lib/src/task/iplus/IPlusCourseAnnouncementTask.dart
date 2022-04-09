@@ -8,8 +8,7 @@ import 'package:get/get.dart';
 import '../Task.dart';
 import 'IPlusSystemTask.dart';
 
-class IPlusCourseAnnouncementTask
-    extends IPlusSystemTask<List<ISchoolPlusAnnouncementJson>> {
+class IPlusCourseAnnouncementTask extends IPlusSystemTask<List<ISchoolPlusAnnouncementJson>> {
   final String id;
 
   IPlusCourseAnnouncementTask(this.id) : super("IPlusCourseAnnouncementTask");
@@ -19,16 +18,14 @@ class IPlusCourseAnnouncementTask
     TaskStatus status = await super.execute();
     if (status == TaskStatus.Success) {
       super.onStart(R.current.getISchoolPlusCourseAnnouncement);
-      ReturnWithStatus<List<ISchoolPlusAnnouncementJson>> value =
-          await ISchoolPlusConnector.getCourseAnnouncement(id);
+      ReturnWithStatus<List<ISchoolPlusAnnouncementJson>> value = await ISchoolPlusConnector.getCourseAnnouncement(id);
       super.onEnd();
       switch (value.status) {
         case IPlusReturnStatus.Success:
           result = value.result;
           return TaskStatus.Success;
         case IPlusReturnStatus.Fail:
-          return await super
-              .onError(R.current.getISchoolPlusCourseAnnouncementError);
+          return await super.onError(R.current.getISchoolPlusCourseAnnouncementError);
         case IPlusReturnStatus.NoPermission:
           ErrorDialogParameter parameter = ErrorDialogParameter(
             title: R.current.warning,

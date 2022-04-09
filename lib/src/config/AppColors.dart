@@ -19,18 +19,18 @@ class AppColors {
   static Color hyperlinkColor = Colors.blue;
 
   static const List<Color> courseTableColors = [
-    const Color(0xffffccbc),
-    const Color(0xffffe0b2),
-    const Color(0xffffecb3),
-    const Color(0xfffff9c4),
-    const Color(0xfff0f4c3),
-    const Color(0xffdcedc8),
-    const Color(0xffc8e6c9),
-    const Color(0xffb2dfdb),
-    const Color(0xffb3e5fc),
-    const Color(0xffbbdefb),
-    const Color(0xffe1bee7),
-    const Color(0xfff8bbd0),
-    const Color(0xffffcdd2),
+    Color(0xffffccbc),
+    Color(0xffffe0b2),
+    Color(0xffffecb3),
+    Color(0xfffff9c4),
+    Color(0xfff0f4c3),
+    Color(0xffdcedc8),
+    Color(0xffc8e6c9),
+    Color(0xffb2dfdb),
+    Color(0xffb3e5fc),
+    Color(0xffbbdefb),
+    Color(0xffe1bee7),
+    Color(0xfff8bbd0),
+    Color(0xffffcdd2),
   ];
 }

@@ -22,8 +22,7 @@ CourseMainJson _$CourseMainJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CourseMainJsonToJson(CourseMainJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CourseMainJsonToJson(CourseMainJson instance) => <String, dynamic>{
       'name': instance.name,
       'id': instance.id,
       'href': instance.href,
@@ -45,9 +44,7 @@ T _$enumDecode<T>(
         '${enumValues.values.join(', ')}');
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
+  final value = enumValues.entries.singleWhere((e) => e.value == source, orElse: () => null)?.key;
 
   if (value == null && unknownValue == null) {
     throw ArgumentError('`$source` is not one of the supported values: '
@@ -90,8 +87,7 @@ CourseExtraJson _$CourseExtraJsonFromJson(Map<String, dynamic> json) {
     ..openClass = json['openClass'] as String;
 }
 
-Map<String, dynamic> _$CourseExtraJsonToJson(CourseExtraJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CourseExtraJsonToJson(CourseExtraJson instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'href': instance.href,
@@ -121,8 +117,7 @@ ClassroomJson _$ClassroomJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ClassroomJsonToJson(ClassroomJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ClassroomJsonToJson(ClassroomJson instance) => <String, dynamic>{
       'name': instance.name,
       'href': instance.href,
       'mainUse': instance.mainUse,
@@ -135,8 +130,7 @@ TeacherJson _$TeacherJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TeacherJsonToJson(TeacherJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$TeacherJsonToJson(TeacherJson instance) => <String, dynamic>{
       'name': instance.name,
       'href': instance.href,
     };
@@ -148,8 +142,7 @@ SemesterJson _$SemesterJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SemesterJsonToJson(SemesterJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$SemesterJsonToJson(SemesterJson instance) => <String, dynamic>{
       'year': instance.year,
       'semester': instance.semester,
     };
@@ -165,8 +158,7 @@ ClassmateJson _$ClassmateJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ClassmateJsonToJson(ClassmateJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ClassmateJsonToJson(ClassmateJson instance) => <String, dynamic>{
       'className': instance.className,
       'studentEnglishName': instance.studentEnglishName,
       'studentName': instance.studentName,

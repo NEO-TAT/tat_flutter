@@ -6,17 +6,11 @@ class RequestInterceptors extends InterceptorsWrapper {
   String referer = "https://nportal.ntut.edu.tw";
 
   @override
-  onRequest(RequestOptions options) async {
+  onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     if (!options.headers.containsKey(HttpHeaders.refererHeader)) {
       options.headers[HttpHeaders.refererHeader] = referer;
     }
     referer = options.uri.toString();
-    return options;
+    handler.next(options);
   }
-
-  @override
-  onResponse(Response response) async {}
-
-  @override
-  onError(DioError err) async {}
 }

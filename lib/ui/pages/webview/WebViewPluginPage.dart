@@ -18,8 +18,7 @@ class WebViewPluginPage extends StatefulWidget {
   _WebViewPluginPageState createState() => _WebViewPluginPageState();
 }
 
-class _WebViewPluginPageState extends State<WebViewPluginPage>
-    with AutomaticKeepAliveClientMixin {
+class _WebViewPluginPageState extends State<WebViewPluginPage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   String initUrl;
 
@@ -27,13 +26,12 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
   bool loading = true;
   StreamSubscription<String> onUrlChanged;
   StreamSubscription<WebViewStateChanged> onStateChanged;
-  FlutterWebviewPlugin flutterWebViewPlugin = new FlutterWebviewPlugin();
+  FlutterWebviewPlugin flutterWebViewPlugin = FlutterWebviewPlugin();
 
   @override
   void initState() {
     super.initState();
-    onStateChanged =
-        flutterWebViewPlugin.onStateChanged.listen((WebViewStateChanged state) {
+    onStateChanged = flutterWebViewPlugin.onStateChanged.listen((WebViewStateChanged state) {
       _handleStateChange(state);
     });
     onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((url) {
@@ -64,18 +62,18 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
   }
 
   renderLoading() {
-    return new Center(
-      child: new Container(
+    return Center(
+      child: Container(
         width: 200.0,
         height: 200.0,
-        padding: new EdgeInsets.all(4.0),
-        child: new Row(
+        padding: EdgeInsets.all(4.0),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
-            new Container(width: 10.0),
-            new Container(
-              child: new Text(R.current.loading),
+            SpinKitDoubleBounce(color: Theme.of(context).primaryColor),
+            Container(width: 10.0),
+            Container(
+              child: Text(R.current.loading),
             ),
           ],
         ),
@@ -101,18 +99,18 @@ class _WebViewPluginPageState extends State<WebViewPluginPage>
     }
     titleContent.add(Container(width: 50.0));
 
-    return new WebviewScaffold(
+    return WebviewScaffold(
       url: initUrl,
       userAgent: presetUserAgent,
       key: scaffoldKey,
       //clearCache: true,
       //clearCookies: true,
-      appBar: new AppBar(
-        title: new Row(
+      appBar: AppBar(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: titleContent,
         ),
-        iconTheme: new IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.white),
         actions: <Widget>[
           Container(
             width: 50,

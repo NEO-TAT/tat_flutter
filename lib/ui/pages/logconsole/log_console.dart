@@ -24,8 +24,7 @@ class MyConsoleOutput extends LogOutput {
 class LogConsole extends StatefulWidget {
   final bool dark;
 
-  LogConsole({this.dark = false})
-      : assert(_initialized, "Please call LogConsole.init() first.");
+  LogConsole({this.dark = false}) : assert(_initialized, "Please call LogConsole.init() first.");
 
   static void init({int bufferSize = 50}) {
     if (_initialized) return;
@@ -35,7 +34,7 @@ class LogConsole extends StatefulWidget {
 
   static String getLog() {
     bool error = false;
-    List<OutputEvent> events = List();
+    List<OutputEvent> events = [];
     for (OutputEvent event in _outputEventBuffer) {
       events.add(event);
     }
@@ -48,12 +47,9 @@ class LogConsole extends StatefulWidget {
       }
     }
     if (error) {
-      log = log.replaceAll(
-          "┌───────────────────────────────────────────────────────────", "");
-      log = log.replaceAll(
-          "└───────────────────────────────────────────────────────────", "");
-      log = log.replaceAll(
-          "├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄", "");
+      log = log.replaceAll("┌───────────────────────────────────────────────────────────", "");
+      log = log.replaceAll("└───────────────────────────────────────────────────────────", "");
+      log = log.replaceAll("├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄", "");
       log = log.replaceAll("├", "");
       log = log.replaceAll("│", "");
       return log.substring(0, (log.length > 2000) ? 2000 : log.length);
@@ -94,8 +90,7 @@ class _LogConsoleState extends State<LogConsole> {
     super.initState();
     _scrollController.addListener(() {
       if (!_scrollListenerEnabled) return;
-      var scrolledToBottom = _scrollController.offset >=
-          _scrollController.position.maxScrollExtent;
+      var scrolledToBottom = _scrollController.offset >= _scrollController.position.maxScrollExtent;
       setState(() {
         _followBottom = scrolledToBottom;
       });
@@ -141,11 +136,11 @@ class _LogConsoleState extends State<LogConsole> {
       theme: widget.dark
           ? ThemeData(
               brightness: Brightness.dark,
-              accentColor: Colors.blueGrey,
+              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueGrey),
             )
           : ThemeData(
               brightness: Brightness.light,
-              accentColor: Colors.lightBlueAccent,
+              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.lightBlueAccent),
             ),
       home: Scaffold(
         appBar: AppBar(
@@ -306,7 +301,7 @@ class _LogConsoleState extends State<LogConsole> {
     var scrollPosition = _scrollController.position;
     await _scrollController.animateTo(
       scrollPosition.maxScrollExtent,
-      duration: new Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 400),
       curve: Curves.easeOut,
     );
 

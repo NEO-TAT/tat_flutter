@@ -19,16 +19,15 @@ import 'package:flutter_app/src/util/FileUtils.dart';
 import 'FileStore.dart';
 
 class FileDownload {
-  static Future<void> download(BuildContext context, String url, dirName,
-      [String name = "", String referer]) async {
+  static Future<void> download(BuildContext context, String url, dirName, [String name = "", String referer]) async {
     String path = await FileStore.getDownloadDir(context, dirName); //取得下載路徑
     String realFileName;
     String fileExtension;
     referer = referer ?? url;
     Log.d("file download \n url: $url \n referer: $referer");
     //顯示下載通知窗
-    ReceivedNotification value = ReceivedNotification(
-        title: name, body: R.current.prepareDownload, payload: null); //通知窗訊息
+    ReceivedNotification value =
+        ReceivedNotification(title: name, body: R.current.prepareDownload, payload: null); //通知窗訊息
     CancelToken cancelToken; //取消下載用
     ProgressCallback onReceiveProgress; //下載進度回調
     await Notifications.instance.showIndeterminateProgressNotification(value);
@@ -44,11 +43,9 @@ class FileDownload {
       }
       nowSize = count;
       if (count < total) {
-        Notifications.instance.showProgressNotification(
-            value, 100, (count * 100 / total).round()); //顯示下載進度
+        Notifications.instance.showProgressNotification(value, 100, (count * 100 / total).round()); //顯示下載進度
       } else {
-        Notifications.instance
-            .showIndeterminateProgressNotification(value); //顯示下載進度
+        Notifications.instance.showIndeterminateProgressNotification(value); //顯示下載進度
       }
     };
     //開始下載檔案
@@ -57,8 +54,7 @@ class FileDownload {
       if (headers.containsKey("content-disposition")) {
         //代表有名字
         List<String> name = headers["content-disposition"];
-        RegExp exp =
-            RegExp("['|\"](?<name>.+)['|\"]"); //尋找 'name' , "name" 的name
+        RegExp exp = RegExp("['|\"](?<name>.+)['|\"]"); //尋找 'name' , "name" 的name
         RegExpMatch matches = exp.firstMatch(name[0]);
         realFileName = matches.group(1);
       } else if (headers.containsKey("content-type")) {
@@ -94,10 +90,7 @@ class FileDownload {
       realFileName = realFileName ?? name; //如果還是沒有找到副檔名直接使用原始名稱
       //print(path + "/" + realFileName);
       return path + "/" + realFileName;
-    },
-        progressCallback: onReceiveProgress,
-        cancelToken: cancelToken,
-        header: {"referer": referer}).whenComplete(
+    }, progressCallback: onReceiveProgress, cancelToken: cancelToken, header: {"referer": referer}).whenComplete(
       () async {
         //顯示下載萬完成通知窗
         await Notifications.instance.cancelNotification(value.id);

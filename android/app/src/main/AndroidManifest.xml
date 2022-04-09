@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
 
     <application
-        android:name=".Application"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
@@ -30,7 +29,9 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:clearTaskOnLaunch="true"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"
+            tools:replace="android:exported">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -47,19 +48,11 @@
                 android:resource="@drawable/splash" />
         </activity>
 
-        <!--
-        <activity
-            android:name=".BootLoaderActivity"
-            android:theme="@style/LaunchTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        -->
-
-
-        <receiver android:name="widget.CourseWidgetProvider">
+        <receiver
+            android:name="widget.CourseWidgetProvider"
+            android:grantUriPermissions="true"
+            android:exported="true"
+            tools:replace="android:exported">
             <intent-filter>
                 <action android:name="club.ntut.npc.tat.weight.onclick" />
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

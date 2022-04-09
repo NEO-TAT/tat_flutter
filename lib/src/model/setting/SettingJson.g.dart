@@ -8,21 +8,15 @@ part of 'SettingJson.dart';
 
 SettingJson _$SettingJsonFromJson(Map<String, dynamic> json) {
   return SettingJson(
-    course: json['course'] == null
-        ? null
-        : CourseSettingJson.fromJson(json['course'] as Map<String, dynamic>),
-    other: json['other'] == null
-        ? null
-        : OtherSettingJson.fromJson(json['other'] as Map<String, dynamic>),
+    course: json['course'] == null ? null : CourseSettingJson.fromJson(json['course'] as Map<String, dynamic>),
+    other: json['other'] == null ? null : OtherSettingJson.fromJson(json['other'] as Map<String, dynamic>),
     announcement: json['announcement'] == null
         ? null
-        : AnnouncementSettingJson.fromJson(
-            json['announcement'] as Map<String, dynamic>),
+        : AnnouncementSettingJson.fromJson(json['announcement'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$SettingJsonToJson(SettingJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$SettingJsonToJson(SettingJson instance) => <String, dynamic>{
       'course': instance.course,
       'other': instance.other,
       'announcement': instance.announcement,
@@ -30,28 +24,22 @@ Map<String, dynamic> _$SettingJsonToJson(SettingJson instance) =>
 
 CourseSettingJson _$CourseSettingJsonFromJson(Map<String, dynamic> json) {
   return CourseSettingJson(
-    info: json['info'] == null
-        ? null
-        : CourseTableJson.fromJson(json['info'] as Map<String, dynamic>),
+    info: json['info'] == null ? null : CourseTableJson.fromJson(json['info'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$CourseSettingJsonToJson(CourseSettingJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CourseSettingJsonToJson(CourseSettingJson instance) => <String, dynamic>{
       'info': instance.info,
     };
 
-AnnouncementSettingJson _$AnnouncementSettingJsonFromJson(
-    Map<String, dynamic> json) {
+AnnouncementSettingJson _$AnnouncementSettingJsonFromJson(Map<String, dynamic> json) {
   return AnnouncementSettingJson(
     page: json['page'] as int,
     maxPage: json['maxPage'] as int,
   );
 }
 
-Map<String, dynamic> _$AnnouncementSettingJsonToJson(
-        AnnouncementSettingJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AnnouncementSettingJsonToJson(AnnouncementSettingJson instance) => <String, dynamic>{
       'page': instance.page,
       'maxPage': instance.maxPage,
     };
@@ -65,8 +53,7 @@ OtherSettingJson _$OtherSettingJsonFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$OtherSettingJsonToJson(OtherSettingJson instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OtherSettingJsonToJson(OtherSettingJson instance) => <String, dynamic>{
       'lang': instance.lang,
       'autoCheckAppUpdate': instance.autoCheckAppUpdate,
       'useExternalVideoPlayer': instance.useExternalVideoPlayer,

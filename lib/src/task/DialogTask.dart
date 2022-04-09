@@ -34,19 +34,15 @@ class DialogTask<T> extends Task<T> {
   }
 
   Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) async {
-    //可自定義處理Error
-    try {
-      var connectivityResult = await (new Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.none) {
-        parameter = ErrorDialogParameter(
-          desc: R.current.networkError,
-        );
-      }
-      return (await ErrorDialog(parameter).show())
-          ? TaskStatus.Restart
-          : TaskStatus.GiveUp;
-    } catch (e) {
-      return TaskStatus.GiveUp;
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      parameter = ErrorDialogParameter(
+        desc: R.current.networkError,
+      );
     }
+    ErrorDialog(parameter).show();
+
+    // Return GiveUp here instead of Restart to prevent the Un-terminated error stack.
+    return TaskStatus.GiveUp;
   }
 }

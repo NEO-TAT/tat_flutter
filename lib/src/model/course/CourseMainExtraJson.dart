@@ -12,7 +12,7 @@ class CourseExtraInfoJson {
   List<ClassmateJson> classmate; //修課同學
 
   CourseExtraInfoJson({this.courseSemester, this.course, this.classmate}) {
-    classmate = classmate ?? List();
+    classmate = classmate ?? [];
     courseSemester = courseSemester ?? SemesterJson();
     course = course ?? CourseExtraJson();
   }
@@ -30,8 +30,7 @@ class CourseExtraInfoJson {
         [courseSemester.toString(), course.toString(), classmate.toString()]);
   }
 
-  factory CourseExtraInfoJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseExtraInfoJsonFromJson(json);
+  factory CourseExtraInfoJson.fromJson(Map<String, dynamic> json) => _$CourseExtraInfoJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseExtraInfoJsonToJson(this);
 }
@@ -42,12 +41,11 @@ class CourseMainInfoJson {
   List<TeacherJson> teacher; //開課老師
   List<ClassroomJson> classroom; //使用教室
   List<ClassJson> openClass; //開課班級
-  CourseMainInfoJson(
-      {this.course, this.teacher, this.classroom, this.openClass}) {
+  CourseMainInfoJson({this.course, this.teacher, this.classroom, this.openClass}) {
     course = course ?? CourseMainJson();
-    teacher = teacher ?? List();
-    classroom = classroom ?? List();
-    openClass = openClass ?? List();
+    teacher = teacher ?? [];
+    classroom = classroom ?? [];
+    openClass = openClass ?? [];
   }
 
   String getOpenClassName() {
@@ -75,7 +73,7 @@ class CourseMainInfoJson {
   }
 
   List<String> getClassroomNameList() {
-    List<String> name = List();
+    List<String> name = [];
     for (ClassroomJson value in classroom) {
       name.add(value.name);
     }
@@ -83,7 +81,7 @@ class CourseMainInfoJson {
   }
 
   List<String> getClassroomHrefList() {
-    List<String> href = List();
+    List<String> href = [];
     for (ClassroomJson value in classroom) {
       href.add(value.href);
     }
@@ -91,10 +89,7 @@ class CourseMainInfoJson {
   }
 
   bool get isEmpty {
-    return course.isEmpty &&
-        teacher.length == 0 &&
-        classroom.length == 0 &&
-        openClass.length == 0;
+    return course.isEmpty && teacher.length == 0 && classroom.length == 0 && openClass.length == 0;
   }
 
   @override
@@ -104,16 +99,10 @@ class CourseMainInfoJson {
             "---------teacherList--------    \n%s \n" +
             "---------classroomList--------  \n%s \n" +
             "---------openClassList--------  \n%s \n",
-        [
-          course.toString(),
-          teacher.toString(),
-          classroom.toString(),
-          openClass.toString()
-        ]);
+        [course.toString(), teacher.toString(), classroom.toString(), openClass.toString()]);
   }
 
-  factory CourseMainInfoJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseMainInfoJsonFromJson(json);
+  factory CourseMainInfoJson.fromJson(Map<String, dynamic> json) => _$CourseMainInfoJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseMainInfoJsonToJson(this);
 }

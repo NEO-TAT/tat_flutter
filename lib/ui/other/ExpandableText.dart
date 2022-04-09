@@ -9,9 +9,7 @@ class ExpandableText extends StatefulWidget {
 
   final bool expand;
 
-  const ExpandableText(
-      {Key key, this.text, this.maxLines, this.style, this.expand})
-      : super(key: key);
+  const ExpandableText({Key key, this.text, this.maxLines, this.style, this.expand}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -39,8 +37,7 @@ class _ExpandableTextState extends State<ExpandableText> {
     return LayoutBuilder(builder: (context, size) {
       final span = TextSpan(text: text ?? '', style: style);
 
-      final tp = TextPainter(
-          text: span, maxLines: maxLines, textDirection: TextDirection.ltr);
+      final tp = TextPainter(text: span, maxLines: maxLines, textDirection: TextDirection.ltr);
 
       tp.layout(maxWidth: size.maxWidth);
 
@@ -73,10 +70,7 @@ class _ExpandableTextState extends State<ExpandableText> {
               ),
               expand
                   ? Text(text ?? '', style: style)
-                  : Text(text ?? '',
-                      maxLines: maxLines,
-                      overflow: TextOverflow.ellipsis,
-                      style: style),
+                  : Text(text ?? '', maxLines: maxLines, overflow: TextOverflow.ellipsis, style: style),
             ],
           ),
         );

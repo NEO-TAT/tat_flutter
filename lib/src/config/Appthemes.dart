@@ -8,14 +8,14 @@ class AppThemes {
     brightness: Brightness.light,
     backgroundColor: AppColors.lightBG,
     primaryColor: AppColors.mainColor,
-    accentColor: AppColors.lightAccent,
-    cursorColor: AppColors.lightAccent,
     toggleableActiveColor: Colors.blue,
     dividerColor: Color(0xFFF8F8F8),
     scaffoldBackgroundColor: AppColors.lightBG,
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: AppColors.mainColor,
     ),
+    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColors.lightAccent),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.lightAccent),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -23,14 +23,12 @@ class AppThemes {
     brightness: Brightness.dark,
     backgroundColor: AppColors.darkBG,
     primaryColor: AppColors.darkPrimary,
-    accentColor: AppColors.darkAccent,
     scaffoldBackgroundColor: AppColors.darkBG,
-    cursorColor: AppColors.darkAccent,
     toggleableActiveColor: Colors.blueAccent,
     dividerColor: Color(0xFF2F2F2F),
     cupertinoOverrideTheme: CupertinoThemeData(
       primaryColor: AppColors.darkAccent,
     ),
-    buttonColor: AppColors.darkAccent,
+    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.darkAccent),
   );
 }

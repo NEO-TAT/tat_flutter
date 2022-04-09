@@ -6,34 +6,9 @@ import 'package:sprintf/sprintf.dart';
 
 part 'CourseTableJson.g.dart';
 
-enum Day {
-  Monday,
-  Tuesday,
-  Wednesday,
-  Thursday,
-  Friday,
-  Saturday,
-  Sunday,
-  UnKnown
-}
+enum Day { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, UnKnown }
 
-enum SectionNumber {
-  T_1,
-  T_2,
-  T_3,
-  T_4,
-  T_N,
-  T_5,
-  T_6,
-  T_7,
-  T_8,
-  T_9,
-  T_A,
-  T_B,
-  T_C,
-  T_D,
-  T_UnKnown
-}
+enum SectionNumber { T_1, T_2, T_3, T_4, T_N, T_5, T_6, T_7, T_8, T_9, T_A, T_B, T_C, T_D, T_UnKnown }
 
 @JsonSerializable()
 class CourseTableJson {
@@ -42,11 +17,7 @@ class CourseTableJson {
   String studentName;
   Map<Day, Map<SectionNumber, CourseInfoJson>> courseInfoMap;
 
-  CourseTableJson(
-      {this.courseSemester,
-      this.courseInfoMap,
-      this.studentId,
-      this.studentName}) {
+  CourseTableJson({this.courseSemester, this.courseInfoMap, this.studentId, this.studentName}) {
     studentId = JsonInit.stringInit(studentId);
     studentName = JsonInit.stringInit(studentName);
     courseSemester = courseSemester ?? SemesterJson();
@@ -110,8 +81,7 @@ class CourseTableJson {
     return pass;
   }
 
-  factory CourseTableJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseTableJsonFromJson(json);
+  factory CourseTableJson.fromJson(Map<String, dynamic> json) => _$CourseTableJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseTableJsonToJson(this);
 
@@ -124,9 +94,7 @@ class CourseTableJson {
       }
     }
     return sprintf(
-        "studentId :%s \n " +
-            "---------courseSemester-------- \n%s \n" +
-            "---------courseInfo--------     \n%s \n",
+        "studentId :%s \n " + "---------courseSemester-------- \n%s \n" + "---------courseInfo--------     \n%s \n",
         [studentId, courseSemester.toString(), courseInfoString]);
   }
 
@@ -138,8 +106,7 @@ class CourseTableJson {
     return courseInfoMap[day][sectionNumber];
   }
 
-  void setCourseDetailByTime(
-      Day day, SectionNumber sectionNumber, CourseInfoJson courseInfo) {
+  void setCourseDetailByTime(Day day, SectionNumber sectionNumber, CourseInfoJson courseInfo) {
     if (day == Day.UnKnown) {
       for (SectionNumber value in SectionNumber.values) {
         if (courseInfo.main.course.id.isEmpty) {
@@ -160,8 +127,7 @@ class CourseTableJson {
     }
   }
 
-  bool setCourseDetailByTimeString(
-      Day day, String sectionNumber, CourseInfoJson courseInfo) {
+  bool setCourseDetailByTimeString(Day day, String sectionNumber, CourseInfoJson courseInfo) {
     bool add = false;
     for (SectionNumber value in SectionNumber.values) {
       String time = value.toString().split("_")[1];
@@ -174,7 +140,7 @@ class CourseTableJson {
   }
 
   List<String> getCourseIdList() {
-    List<String> courseIdList = List();
+    List<String> courseIdList = [];
     for (Day day in Day.values) {
       for (SectionNumber number in SectionNumber.values) {
         CourseInfoJson courseInfo = courseInfoMap[day][number];
@@ -248,12 +214,10 @@ class CourseInfoJson {
   @override
   String toString() {
     return sprintf(
-        "---------main--------  \n%s \n" + "---------extra-------- \n%s \n",
-        [main.toString(), extra.toString()]);
+        "---------main--------  \n%s \n" + "---------extra-------- \n%s \n", [main.toString(), extra.toString()]);
   }
 
-  factory CourseInfoJson.fromJson(Map<String, dynamic> json) =>
-      _$CourseInfoJsonFromJson(json);
+  factory CourseInfoJson.fromJson(Map<String, dynamic> json) => _$CourseInfoJsonFromJson(json);
 
   Map<String, dynamic> toJson() => _$CourseInfoJsonToJson(this);
 }

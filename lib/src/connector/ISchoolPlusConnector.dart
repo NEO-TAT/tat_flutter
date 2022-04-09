@@ -28,11 +28,7 @@ class ISchoolPlusConnector {
   //static final String _getLoginISchoolUrl = _iSchoolPlusUrl + "mooc/login.php";
   //static final String _postLoginISchoolUrl = _iSchoolPlusUrl + "login.php";
   //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
-  static final String _iSchoolPlusLearnIndexUrl =
-      _iSchoolPlusUrl + "learn/index.php";
-  static final String _checkLoginUrl = _iSchoolPlusLearnIndexUrl;
-  static final String _getCourseName =
-      _iSchoolPlusUrl + "learn/mooc_sysbar.php";
+  static final String _getCourseName = _iSchoolPlusUrl + "learn/mooc_sysbar.php";
   static final _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
@@ -58,8 +54,7 @@ class ISchoolPlusConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
-      String jumpUrl =
-          tagNode.getElementsByTagName("form")[0].attributes["action"];
+      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
@@ -70,8 +65,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(
-      String courseId) async {
+  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(String courseId) async {
     ConnectorParameter parameter;
     String result;
     html.Document tagNode;
@@ -81,7 +75,7 @@ class ISchoolPlusConnector {
     List<html.Element> nodes, itemNodes, resourceNodes;
     var value = ReturnWithStatus<List<CourseFileJson>>();
     try {
-      List<CourseFileJson> courseFileList = List();
+      List<CourseFileJson> courseFileList = [];
       if (!await _selectCourse(courseId)) {
         value.status = IPlusReturnStatus.NoPermission;
         return value;
@@ -89,11 +83,10 @@ class ISchoolPlusConnector {
 
       parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/launch.php");
       result = await Connector.getDataByGet(parameter);
-      exp = new RegExp(r"cid=(?<cid>[\w|-]+,)");
+      exp = RegExp(r"cid=(?<cid>[\w|-]+,)");
       matches = exp.firstMatch(result);
       String cid = matches.group(1);
-      parameter =
-          ConnectorParameter(_iSchoolPlusUrl + "learn/path/pathtree.php");
+      parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/pathtree.php");
       parameter.data = {'cid': cid};
 
       result = await Connector.getDataByGet(parameter);
@@ -120,8 +113,7 @@ class ISchoolPlusConnector {
           downloadPost[key] = node.attributes['value'];
         }
       }
-      parameter = ConnectorParameter(
-          _iSchoolPlusUrl + "learn/path/SCORM_loadCA.php"); //取得下載檔案XML
+      parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/SCORM_loadCA.php"); //取得下載檔案XML
       result = await Connector.getDataByGet(parameter);
       tagNode = html.parse(result);
       itemNodes = tagNode.getElementsByTagName("item");
@@ -141,15 +133,10 @@ class ISchoolPlusConnector {
           }
         }
         String base = resourceNode.attributes["xml:base"];
-        String href = ((base != null) ? base : '') +
-            '@' +
-            resourceNode.attributes["href"];
+        String href = ((base != null) ? base : '') + '@' + resourceNode.attributes["href"];
 
         CourseFileJson courseFile = CourseFileJson();
-        courseFile.name = itemNodes[i]
-            .text
-            .split("\t")[0]
-            .replaceAll(RegExp(r"[\s|\n| ]"), "");
+        courseFile.name = itemNodes[i].text.split("\t")[0].replaceAll(RegExp(r"[\s|\n| ]"), "");
         FileType fileType = FileType();
         downloadPost['href'] = href;
         fileType.postData = Map.of(downloadPost); //紀錄  需要使用Map.of不一個改全部都改
@@ -168,25 +155,22 @@ class ISchoolPlusConnector {
   }
 
   //List[0] RealUrl , List[1] referer
-  static Future<List<String>> getRealFileUrl(
-      Map<String, String> postParameter) async {
+  static Future<List<String>> getRealFileUrl(Map<String, String> postParameter) async {
     ConnectorParameter parameter;
     String url;
     String result;
     try {
-      parameter = ConnectorParameter(
-          _iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
+      parameter = ConnectorParameter(_iSchoolPlusUrl + "learn/path/SCORM_fetchResource.php");
       parameter.data = postParameter;
       parameter.charsetName = 'big5';
-      parameter.referer =
-          "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
+      parameter.referer = "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
       Response response;
       response = await Connector.getDataByPostResponse(parameter);
       result = response.toString();
       RegExp exp;
       RegExpMatch matches;
       if (response.statusCode == HttpStatus.ok) {
-        exp = new RegExp("[\"\'](?<url>https?:\/\/.+)[\"\']");
+        exp = RegExp("[\"\'](?<url>https?:\/\/.+)[\"\']");
         //檢測網址 "http://....." or 'https://.....' or "http://..." or 'http://...'
         matches = exp.firstMatch(result);
         bool pass = (matches?.groupCount == null)
@@ -199,20 +183,19 @@ class ISchoolPlusConnector {
           //已經是完整連結
           return [url, url];
         } else {
-          exp = new RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
+          exp = RegExp("\"(?<url>\/.+)\""); //檢測/ 開頭網址
           matches = exp.firstMatch(result);
           bool pass = (matches?.groupCount == null) ? false : true;
           if (pass) {
             String realUrl = _iSchoolPlusUrl + matches.group(1);
             return [realUrl, realUrl]; //一般下載連結
           } else {
-            exp = new RegExp("\"(?<url>.+)\""); //檢測""內包含字
+            exp = RegExp("\"(?<url>.+)\""); //檢測""內包含字
             matches = exp.firstMatch(result);
             url = _iSchoolPlusUrl + "learn/path/" + matches.group(1); //是PDF預覽畫面
             parameter = ConnectorParameter(url); //去PDF預覽頁面取得真實下載網址
             result = await Connector.getDataByGet(parameter);
-            exp =
-                new RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
+            exp = RegExp("DEFAULT_URL.+['|\"](?<url>.+)['|\"]"); //取的PDF真實下載位置
             matches = exp.firstMatch(result);
             String realUrl = _iSchoolPlusUrl + "learn/path/" + matches.group(1);
             return [realUrl, url]; //PDF需要有referer不然會無法下載
@@ -235,8 +218,7 @@ class ISchoolPlusConnector {
 
   static String bid;
 
-  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>>
-      getCourseAnnouncement(String courseId) async {
+  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>> getCourseAnnouncement(String courseId) async {
     String result;
     var value = ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>();
     try {
@@ -253,10 +235,9 @@ class ISchoolPlusConnector {
         "bid": "",
         "nid": "",
       };
-      List<ISchoolPlusAnnouncementJson> announcementList = List();
+      List<ISchoolPlusAnnouncementJson> announcementList = [];
 
-      parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/forum/m_node_list.php");
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/m_node_list.php");
       parameter.data = data;
       result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
@@ -264,10 +245,8 @@ class ISchoolPlusConnector {
 
       node = tagNode.getElementById("formSearch");
       nodes = node.getElementsByTagName("input");
-      String selectPage =
-          tagNode.getElementById("selectPage").attributes['value'];
-      String inputPerPage =
-          tagNode.getElementById("inputPerPage").attributes['value'];
+      String selectPage = tagNode.getElementById("selectPage").attributes['value'];
+      String inputPerPage = tagNode.getElementById("inputPerPage").attributes['value'];
       data = {
         "token": "",
         "bid": "",
@@ -283,8 +262,7 @@ class ISchoolPlusConnector {
           data[name] = node.attributes['value'];
         }
       }
-      parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/mooc/controllers/forum_ajax.php");
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/mooc/controllers/forum_ajax.php");
       parameter.data = data;
       result = await Connector.getDataByPost(parameter);
       //ISchoolPlusAnnouncementInfoJson iPlusJson = ISchoolPlusAnnouncementInfoJson.fromJson( json.decode(result) );
@@ -295,8 +273,7 @@ class ISchoolPlusConnector {
         int totalRows = int.parse(json.decode(result)['total_rows']);
         if (totalRows > 0) {
           for (String keyName in json.decode(result)['data'].keys.toList()) {
-            ISchoolPlusAnnouncementJson courseInfo =
-                ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
+            ISchoolPlusAnnouncementJson courseInfo = ISchoolPlusAnnouncementJson.fromJson(jsonData[keyName]);
             courseInfo.subject = HtmlUtils.clean(courseInfo.subject); //處理HTM特殊字
             courseInfo.token = data['token'];
             courseInfo.bid = keyName.split("|").first;
@@ -315,8 +292,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<Map> getCourseAnnouncementDetail(
-      ISchoolPlusAnnouncementJson value) async {
+  static Future<Map> getCourseAnnouncementDetail(ISchoolPlusAnnouncementJson value) async {
     String result;
     try {
       ConnectorParameter parameter;
@@ -334,8 +310,7 @@ class ISchoolPlusConnector {
         'awppathre': '',
         'nowpage': '1'
       };
-      parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/forum/m_node_chain.php");
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/m_node_chain.php");
       parameter.data = data;
       result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
@@ -382,8 +357,7 @@ class ISchoolPlusConnector {
     String title;
     String result;
     try {
-      parameter =
-          ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
       parameter.data = {"bid": bid};
       int time = 0;
       do {
@@ -410,10 +384,9 @@ class ISchoolPlusConnector {
     html.Element node;
     List<html.Element> nodes;
     String result;
-    List<String> courseNameList = List();
+    List<String> courseNameList = [];
     try {
-      parameter =
-          ConnectorParameter("https://istudy.ntut.edu.tw/learn/my_forum.php");
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/learn/my_forum.php");
       result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
       nodes = tagNode.getElementsByTagName("tbody");
@@ -425,8 +398,7 @@ class ISchoolPlusConnector {
       nodes = node.getElementsByTagName("tr");
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
-        String courseName =
-            node.getElementsByTagName("td")[1].text.split("_")[1];
+        String courseName = node.getElementsByTagName("td")[1].text.split("_")[1];
         courseNameList.add(courseName);
       }
       return courseNameList;
@@ -442,8 +414,7 @@ class ISchoolPlusConnector {
     String title;
     String result;
     try {
-      parameter =
-          ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
       parameter.data = {"bid": bid};
       await Connector.getDataByPost(parameter);
       result = await Connector.getDataByPost(parameter);
@@ -500,10 +471,8 @@ class ISchoolPlusConnector {
       if (courseValue == null) {
         return false;
       }
-      String xml =
-          "<manifest><ticket/><course_id>$courseValue</course_id><env/></manifest>";
-      parameter = ConnectorParameter(
-          "https://istudy.ntut.edu.tw/learn/goto_course.php");
+      String xml = "<manifest><ticket/><course_id>$courseValue</course_id><env/></manifest>";
+      parameter = ConnectorParameter("https://istudy.ntut.edu.tw/learn/goto_course.php");
       parameter.data = xml;
       await Connector.getDataByPost(
           parameter); //因為RequestsConnector無法傳送XML但是 DioConnector無法解析 Content-Type: text/html;;charset=UTF-8

@@ -1,6 +1,5 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:chewie/chewie.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
@@ -42,7 +41,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   bool isLoading = true;
   VideoPlayerController _controller;
   ChewieController _chewieController;
-  List<VideoInfo> videoName = List();
+  List<VideoInfo> videoName = [];
   VideoInfo _select;
   int selectIndex = 0;
 
@@ -86,7 +85,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
           info.name = child.id;
           videoName.add(info);
         }
-      } catch (e, stack) {
+      } catch (e) {
         continue;
       }
     }
@@ -111,7 +110,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
             shrinkWrap: true, //使清單最小化
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                child: FlatButton(
+                child: TextButton(
                   child: Text(videoName[index].name),
                   onPressed: () {
                     String url = getVideoUrl(videoName[index].url);
@@ -124,7 +123,6 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
           ),
         ),
       ),
-      useRootNavigator: false,
       barrierDismissible: true,
     );
     bool open = false;
@@ -178,12 +176,8 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                     onPressed: () async {
                       String url = _controller.dataSource;
                       String courseName = widget.courseInfo.main.course.name;
-                      String saveName =
-                          widget.name + "_" + _select.name + ".mp4";
-                      String subDir =
-                          (LanguageUtil.getLangIndex() == LangEnum.zh)
-                              ? "上課錄影"
-                              : "video";
+                      String saveName = widget.name + "_" + _select.name + ".mp4";
+                      String subDir = (LanguageUtil.getLangIndex() == LangEnum.zh) ? "上課錄影" : "video";
                       String dirName = path.join(courseName, subDir);
                       FileDownload.download(context, url, dirName, saveName);
                     },
