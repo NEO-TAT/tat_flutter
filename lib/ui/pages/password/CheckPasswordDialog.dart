@@ -4,7 +4,6 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/error_codes.dart' as errorCode;
 import 'package:local_auth/local_auth.dart';
 
 class CheckPasswordDialog extends StatefulWidget {
@@ -31,28 +30,16 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
     try {
       bool didAuthenticate = await localAuthentication.authenticate(
         localizedReason: R.current.checkIdentity,
-        useErrorDialogs: false,
-        biometricOnly: true,
+        options: const AuthenticationOptions(
+          useErrorDialogs: false,
+          biometricOnly: true,
+        ),
       );
       if (didAuthenticate) {
         Get.back<bool>(result: true);
       }
     } on PlatformException catch (e) {
       Log.d(e.code);
-      switch (e.code) {
-        case errorCode.passcodeNotSet:
-          break;
-        case errorCode.lockedOut:
-          break;
-        case errorCode.notAvailable:
-          break;
-        case errorCode.notEnrolled: //NotEnrolled
-          break;
-        case errorCode.otherOperatingSystem:
-          break;
-        case errorCode.permanentlyLockedOut:
-          break;
-      }
     }
   }
 
