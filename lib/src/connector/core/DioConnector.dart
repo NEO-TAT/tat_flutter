@@ -6,6 +6,7 @@ import 'package:dart_big5/big5.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/adapters/early_interceptor_adapter.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
 import 'package:flutter_app/src/connector/interceptors/response_cookie_filter.dart';
 import 'package:get/get.dart' as getUtils;
@@ -20,34 +21,53 @@ class DioConnector {
     HttpHeaders.userAgentHeader: presetUserAgent,
     "Upgrade-Insecure-Requests": "1",
   };
-  Alice alice = Alice(
+
+  final alice = Alice(
     darkTheme: true,
     showNotification: false,
   );
-  static final BaseOptions dioOptions = BaseOptions(
-      connectTimeout: 5000,
-      receiveTimeout: 10000,
-      sendTimeout: 5000,
-      headers: _headers,
-      responseType: ResponseType.json,
-      contentType: "application/x-www-form-urlencoded",
-      validateStatus: (status) {
-        // 關閉狀態檢測
-        return status <= 500;
-      },
-      responseDecoder: null);
-  Dio dio = Dio(dioOptions);
+
+  static final dioOptions = BaseOptions(
+    connectTimeout: 5000,
+    receiveTimeout: 10000,
+    sendTimeout: 5000,
+    headers: _headers,
+    responseType: ResponseType.json,
+    contentType: "application/x-www-form-urlencoded",
+    validateStatus: (status) => status <= 500,
+    responseDecoder: null,
+  );
+
+  static final headerDecorators = {
+    // To force replace the strange header responded from the i-school APIs.
+    // Please refer to https://github.com/NEO-TAT/tat_flutter/issues/63 for more details.
+    HttpHeaders.contentTypeHeader: (List<String> headers) {
+      headers.asMap().forEach((i, header) {
+        if (header.contains('text/html;;')) {
+          // Replace it to the standard header value.
+          headers[i] = ContentType.html.toString();
+        }
+      });
+
+      return headers;
+    },
+  };
+
+  final dio = Dio(dioOptions)
+    ..httpClientAdapter = EarlyInterceptorAdapter(
+      headerDecorators: headerDecorators,
+    );
+
   PersistCookieJar _cookieJar;
-  static final Exception connectorError = Exception("Connector statusCode is not 200");
+
+  static final connectorError = Exception("Connector statusCode is not 200");
 
   DioConnector._privateConstructor();
 
-  static final DioConnector instance = DioConnector._privateConstructor();
+  static final instance = DioConnector._privateConstructor();
 
-  static String _big5Decoder(List<int> responseBytes, RequestOptions options, ResponseBody responseBody) {
-    String result = big5.decode(responseBytes);
-    return result;
-  }
+  static String _big5Decoder(List<int> responseBytes, RequestOptions options, ResponseBody responseBody) =>
+      big5.decode(responseBytes);
 
   Future<void> init() async {
     final List<RegExp> _blockedCookieNamePatterns = [
@@ -74,79 +94,54 @@ class DioConnector {
     }
   }
 
-  void deleteCookies() {
-    _cookieJar.deleteAll();
-  }
+  void deleteCookies() => _cookieJar.deleteAll();
 
   Future<String> getDataByPost(ConnectorParameter parameter) async {
-    try {
-      Response response = await getDataByPostResponse(parameter);
-      if (response.statusCode == HttpStatus.ok) {
-        return response.toString();
-      } else {
-        throw connectorError;
-      }
-    } catch (e) {
-      throw e;
+    final response = await getDataByPostResponse(parameter);
+
+    if (response.statusCode == HttpStatus.ok) {
+      return response.toString().trim();
     }
+
+    throw connectorError;
   }
 
   Future<String> getDataByGet(ConnectorParameter parameter) async {
-    Response response;
-    try {
-      response = await getDataByGetResponse(parameter);
-      if (response.statusCode == HttpStatus.ok) {
-        return response.toString();
-      } else {
-        throw connectorError;
-      }
-    } catch (e) {
-      throw e;
+    final response = await getDataByGetResponse(parameter);
+
+    if (response.statusCode == HttpStatus.ok) {
+      return response.toString().trim();
     }
+
+    throw connectorError;
   }
 
   Future<Map<String, List<String>>> getHeadersByGet(ConnectorParameter parameter) async {
-    Response<ResponseBody> response;
-    try {
-      response = await dio.get<ResponseBody>(
-        parameter.url,
-        options: Options(responseType: ResponseType.stream), // set responseType to `stream`
-      ); //使速度更快
-      if (response.statusCode == HttpStatus.ok) {
-        return response.headers.map;
-      } else {
-        throw connectorError;
-      }
-    } catch (e) {
-      throw e;
+    final response = await dio.get<ResponseBody>(
+      parameter.url,
+      options: Options(responseType: ResponseType.stream), // set responseType to `stream`
+    );
+
+    if (response.statusCode == HttpStatus.ok) {
+      return response.headers.map;
     }
+
+    throw connectorError;
   }
 
   Future<Response> getDataByGetResponse(ConnectorParameter parameter) async {
-    Response response;
-    try {
-      String url = parameter.url;
-      Map<String, String> data = parameter.data;
-      _handleCharsetName(parameter.charsetName);
-      _handleHeaders(parameter);
-      response = await dio.get(url, queryParameters: data);
-      return response;
-    } catch (e) {
-      throw e;
-    }
+    final url = parameter.url;
+    final data = parameter.data;
+    _handleCharsetName(parameter.charsetName);
+    _handleHeaders(parameter);
+    return await dio.get(url, queryParameters: data);
   }
 
   Future<Response> getDataByPostResponse(ConnectorParameter parameter) async {
-    Response response;
-    try {
-      String url = parameter.url;
-      _handleCharsetName(parameter.charsetName);
-      _handleHeaders(parameter);
-      response = await dio.post(url, data: parameter.data);
-      return response;
-    } catch (e) {
-      throw e;
-    }
+    final url = parameter.url;
+    _handleCharsetName(parameter.charsetName);
+    _handleHeaders(parameter);
+    return await dio.post(url, data: parameter.data);
   }
 
   void _handleHeaders(ConnectorParameter parameter) {
@@ -166,24 +161,25 @@ class DioConnector {
     }
   }
 
-  Future<void> download(String url, SavePathCallback savePath,
-      {ProgressCallback progressCallback, CancelToken cancelToken, Map<String, dynamic> header}) async {
+  Future<void> download(
+    String url,
+    SavePathCallback savePath, {
+    ProgressCallback progressCallback,
+    CancelToken cancelToken,
+    Map<String, dynamic> header,
+  }) async {
     await dio
         .downloadUri(Uri.parse(url), savePath,
             onReceiveProgress: progressCallback,
             cancelToken: cancelToken,
-            options: Options(receiveTimeout: 0, headers: header)) //設置不超時
+            options: Options(receiveTimeout: 0, headers: header))
         .catchError((onError, stack) {
       Log.eWithStack(onError.toString(), stack);
       throw onError;
     });
   }
 
-  Map<String, String> get headers {
-    return _headers;
-  }
+  Map<String, String> get headers => _headers;
 
-  PersistCookieJar get cookiesManager {
-    return _cookieJar;
-  }
+  PersistCookieJar get cookiesManager => _cookieJar;
 }

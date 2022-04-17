@@ -61,22 +61,22 @@ PODS:
   - Firebase/RemoteConfig (8.14.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 8.14.0)
-  - firebase_analytics (9.1.4):
+  - firebase_analytics (9.1.5):
     - Firebase/Analytics (= 8.14.0)
     - firebase_core
     - Flutter
-  - firebase_core (1.14.0):
+  - firebase_core (1.14.1):
     - Firebase/CoreOnly (= 8.14.0)
     - Flutter
-  - firebase_crashlytics (2.6.1):
+  - firebase_crashlytics (2.6.2):
     - Firebase/Crashlytics (= 8.14.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (11.2.12):
+  - firebase_messaging (11.2.13):
     - Firebase/Messaging (= 8.14.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (2.0.3):
+  - firebase_remote_config (2.0.4):
     - Firebase/RemoteConfig (= 8.14.0)
     - firebase_core
     - Flutter
@@ -213,7 +213,7 @@ PODS:
   - HLSCachingReverseProxyServer (0.1.0):
     - GCDWebServer (~> 3.5)
     - PINCache (>= 3.0.1-beta.3)
-  - local_auth (0.0.1):
+  - local_auth_ios (0.0.1):
     - Flutter
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
@@ -279,7 +279,7 @@ DEPENDENCIES:
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
-  - local_auth (from `.symlinks/plugins/local_auth/ios`)
+  - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -356,8 +356,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
-  local_auth:
-    :path: ".symlinks/plugins/local_auth/ios"
+  local_auth_ios:
+    :path: ".symlinks/plugins/local_auth_ios/ios"
   open_file:
     :path: ".symlinks/plugins/open_file/ios"
   package_info:
@@ -397,11 +397,11 @@ SPEC CHECKSUMS:
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
-  firebase_analytics: 3d3cbbe452befde99014d7f6fd281bbb4e6f96da
-  firebase_core: b0b382f1497ab407aceb25e41e3036c8798c1609
-  firebase_crashlytics: 4855a96241cfc4cb92a81bebedc29ea29488373a
-  firebase_messaging: 34dd10d1aa6d8f40d03660eeacd0452d62eec7aa
-  firebase_remote_config: 892caabe89e466aa8d503692920cb79ccf2afbc3
+  firebase_analytics: 8a36c76380be1fca3bab69534cf911082e0d7ab8
+  firebase_core: cdef02fcf55872191eb0568d4c31a7a700e38582
+  firebase_crashlytics: 6c0450e99d20c62d0cd868f287a12aeffbe9b010
+  firebase_messaging: 57f89047ec0084a4049e253ce84cea39becadad4
+  firebase_remote_config: c038c6badd049a19f6f6be77b253a7680ece5fa9
   FirebaseABTesting: aaa0e096c9fc9972ce6806d596e8fcc077d4371f
   FirebaseAnalytics: 2fc3876e2eb347673ad2f35e249ae7b15d6c88f5
   FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
@@ -423,7 +423,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   HLSCachingReverseProxyServer: 59935e1e0244ad7f3375d75b5ef46e8eb26ab181
-  local_auth: 1740f55d7af0a2e2a8684ce225fe79d8931e808c
+  local_auth_ios: 0d333dde7780f669e66f19d2ff6005f3ea84008d
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
