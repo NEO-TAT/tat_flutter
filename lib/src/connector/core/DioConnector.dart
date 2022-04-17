@@ -6,6 +6,7 @@ import 'package:dart_big5/big5.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/src/connector/adapters/early_interceptor_adapter.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
 import 'package:flutter_app/src/connector/interceptors/response_cookie_filter.dart';
 import 'package:get/get.dart' as getUtils;
@@ -37,7 +38,26 @@ class DioConnector {
     responseDecoder: null,
   );
 
-  final dio = Dio(dioOptions);
+  static final headerDecorators = {
+    // To force replace the strange header responded from the i-school APIs.
+    // Please refer to https://github.com/NEO-TAT/tat_flutter/issues/63 for more details.
+    HttpHeaders.contentTypeHeader: (List<String> headers) {
+      headers.asMap().forEach((i, header) {
+        if (header.contains('text/html;;')) {
+          // Replace it to the standard header value.
+          headers[i] = ContentType.html.toString();
+        }
+      });
+
+      return headers;
+    },
+  };
+
+  final dio = Dio(dioOptions)
+    ..httpClientAdapter = EarlyInterceptorAdapter(
+      headerDecorators: headerDecorators,
+    );
+
   PersistCookieJar _cookieJar;
 
   static final connectorError = Exception("Connector statusCode is not 200");
