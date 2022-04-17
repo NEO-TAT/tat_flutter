@@ -1,5 +1,9 @@
+// TODO: Remove language version selector after migrated to null safety.
+// @dart=2.16
+
 // 🎯 Dart imports:
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -7,10 +11,11 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 
-// 🌎 Project imports:
-import 'package:tat_core/src/utils/debug_util.dart';
+/// A function that may do somethings for the [originValues].
+typedef HeaderDecorator = List<String> Function(List<String> originValues);
 
 /// An adapter which lets you do something before the Dio interceptor executes.
+/// Especially for changing the header of response.
 ///
 /// Inherited from the `DefaultHttpClientAdapter` of Dio v4.0.6,
 /// please refer to https://pub.dev/packages/dio for more details.
@@ -18,13 +23,25 @@ import 'package:tat_core/src/utils/debug_util.dart';
 @protected
 @sealed
 class EarlyInterceptorAdapter implements HttpClientAdapter {
-  late final HttpClient? _defaultHttpClient;
+  /// Initialize [EarlyInterceptorAdapter].
+  ///
+  /// [headerDecorators] is a [Map], each value of which is a Header modifier,
+  /// and key is the target header name, suggest using the standard [HttpHeaders] library.
+  /// Before outputting the final response, if a header provides a corresponding modifier,
+  /// it will use the modifier to modify the header, so , the final output header value will be the modified version.
+  EarlyInterceptorAdapter({
+    Map<String, HeaderDecorator>? headerDecorators,
+  })  : _headerDecorators = headerDecorators,
+        _defaultHttpClient = HttpClient();
+
+  final HttpClient _defaultHttpClient;
   final Completer _adapterLife = Completer();
+  final Map<String, HeaderDecorator>? _headerDecorators;
 
   @override
   void close({bool force = false}) {
     _adapterLife.complete();
-    _defaultHttpClient?.close(force: force);
+    _defaultHttpClient.close(force: force);
   }
 
   @override
@@ -35,7 +52,7 @@ class EarlyInterceptorAdapter implements HttpClientAdapter {
   ) async {
     if (_adapterLife.isCompleted) {
       const msg = "Can't establish connection after [HttpClientAdapter] closed!";
-      _log(msg, areaName: 'fetch');
+      log(msg);
       throw Exception(msg);
     }
 
@@ -130,7 +147,9 @@ class EarlyInterceptorAdapter implements HttpClientAdapter {
 
     final headers = <String, List<String>>{};
     responseStream.headers.forEach((key, values) {
-      headers[key] = values;
+      final hasDecorator = _headerDecorators?.containsKey(key) ?? false;
+      final decorator = hasDecorator ? _headerDecorators![key] : null;
+      headers[key] = decorator != null ? decorator(values) : values;
     });
 
     return ResponseBody(
@@ -164,20 +183,17 @@ class EarlyInterceptorAdapter implements HttpClientAdapter {
           try {
             _httpClient.close(force: true);
           } catch (e) {
-            _log(e, areaName: '_configHttpClient');
+            log(e.toString());
           }
         });
       });
       return _httpClient..connectionTimeout = _connectionTimeout;
     }
 
-    if (_defaultHttpClient == null) {
-      _defaultHttpClient = HttpClient();
-      _defaultHttpClient!.idleTimeout = const Duration(seconds: 3);
-      _defaultHttpClient!.connectionTimeout = _connectionTimeout;
-    }
-    return _defaultHttpClient!;
+    _defaultHttpClient
+      ..idleTimeout = const Duration(seconds: 3)
+      ..connectionTimeout = _connectionTimeout;
+
+    return _defaultHttpClient;
   }
 }
-
-final _log = createNamedLog((EarlyInterceptorAdapter).toString());
