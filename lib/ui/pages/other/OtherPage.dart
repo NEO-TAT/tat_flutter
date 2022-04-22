@@ -179,14 +179,13 @@ class _OtherPageState extends State<OtherPage> {
     );
   }
 
-  Widget _buildHeader() {
-    UserInfoJson userInfo = Model.instance.getUserInfo();
+  Widget _buildHeader(Map userImageInfo) {
+    final userInfo = Model.instance.getUserInfo();
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
-    Map userImageInfo = NTUTConnector.getUserImage();
-    Widget userImage = CachedNetworkImage(
+    final userImage = CachedNetworkImage(
       cacheManager: Model.instance.cacheManager,
-      imageUrl: userImageInfo["url"],
+      imageUrl: userImageInfo["url"]["value"],
       httpHeaders: userImageInfo["header"],
       imageBuilder: (context, imageProvider) => CircleAvatar(
         radius: 40.0,
