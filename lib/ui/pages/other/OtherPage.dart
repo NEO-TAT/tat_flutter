@@ -164,15 +164,13 @@ class _OtherPageState extends State<OtherPage> {
             child: AnimationLimiter(
               child: ListView.builder(
                 itemCount: optionList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    child: ScaleAnimation(
-                      child: _buildSetting(optionList[index]),
-                    ),
-                  );
-                },
+                itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: ScaleAnimation(
+                    child: _buildSetting(optionList[index]),
+                  ),
+                ),
               ),
             ),
           ),
