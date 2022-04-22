@@ -15,7 +15,6 @@ import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SubSystemPage.dart';
 import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPage.dart';
-import 'package:flutter_app/ui/pages/webview/WebViewPluginPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
 import 'package:get/get.dart';
 
@@ -87,16 +86,6 @@ class RouteUtils {
   static Future toSettingPage(PageController controller) async {
     return await Get.to(
       () => SettingPage(controller),
-      transition: transition,
-    );
-  }
-
-  static Future toWebViewPluginPage(String title, String url) async {
-    return await Get.to(
-      () => WebViewPluginPage(
-        title: title,
-        url: url,
-      ),
       transition: transition,
     );
   }

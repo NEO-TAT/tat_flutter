@@ -59,7 +59,6 @@ dependencies:
   clipboard: ^0.1.3
   #剪貼簿
   #----------WebView----------#
-  flutter_webview_plugin: ^0.4.0
   flutter_inappwebview: ^5.4.0+2
   #---------icon----------#
   eva_icons_flutter: ^3.1.0
@@ -114,11 +113,11 @@ dependencies:
   alice: ^0.2.5
 
   # Firebase
-  firebase_core: ^1.14.1
-  firebase_analytics: ^9.1.5
-  firebase_crashlytics: ^2.6.2
-  firebase_remote_config: ^2.0.4
-  firebase_messaging: ^11.2.13
+  firebase_core: ^1.15.0
+  firebase_analytics: ^9.1.6
+  firebase_crashlytics: ^2.6.3
+  firebase_remote_config: ^2.0.5
+  firebase_messaging: ^11.2.14
 
   http_parser: ^4.0.0
 
@@ -149,7 +148,10 @@ flutter:
           weight: 700
 
 flutter_intl:
-  enabled: true
+  # Because it will be repeatedly generated when it is turned on,
+  # it is very troublesome, so we temporarily turn it off.
+  # If necessary, please turn it on by yourself.
+  enabled: false
 
 flutter_icons:
   ios: true

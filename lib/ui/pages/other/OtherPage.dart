@@ -135,7 +135,7 @@ class _OtherPageState extends State<OtherPage> {
           String mainVersion = await AppUpdate.getAppVersion();
           link = AppLink.feedback(mainVersion, LogConsole.getLog());
         } catch (e) {}
-        RouteUtils.toWebViewPluginPage(R.current.feedback, link);
+        RouteUtils.toWebViewPage(R.current.feedback, link);
         break;
       default:
         MyToast.show(R.current.noFunction);
