@@ -3,7 +3,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/model/ischoolplus/ISchoolPlusAnnouncementJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:get/get.dart';
 
 import '../Task.dart';
 import 'IPlusSystemTask.dart';

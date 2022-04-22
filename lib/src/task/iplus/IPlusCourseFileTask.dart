@@ -1,10 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
 import 'package:flutter_app/src/model/ischoolplus/CourseFileJson.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:get/get.dart';
 
 import '../Task.dart';
 import 'IPlusSystemTask.dart';
