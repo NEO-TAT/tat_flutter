@@ -27,12 +27,12 @@ enum NTUTConnectorStatus {
 }
 
 class NTUTConnector {
-  static final String host = "https://app.ntut.edu.tw/";
-  static final String _loginUrl = host + "login.do";
-  static final String _getPictureUrl = host + "photoView.do";
-  static final String _getTreeUrl = host + "aptreeList.do";
-  static final String _getCalendarUrl = host + "calModeApp.do";
-  static final String _changePasswordUrl = host + "passwordMdy.do";
+  static const host = "https://app.ntut.edu.tw/";
+  static const _loginUrl = host + "login.do";
+  static const _getPictureUrl = host + "photoView.do";
+  static const _getTreeUrl = host + "aptreeList.do";
+  static const _getCalendarUrl = host + "calModeApp.do";
+  static const _changePasswordUrl = host + "passwordMdy.do";
 
   static Future<NTUTConnectorStatus> login(String account, String password) async {
     try {
