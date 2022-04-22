@@ -115,22 +115,16 @@ class NTUTConnector {
     }
   }
 
-  /*
-  Map key
-  url
-  header
-   */
-  static Map getUserImage() {
-    Map imageInfo = Map();
-    String userPhoto = Model.instance.getUserInfo().userPhoto;
+  static Future<Map<String, Map<String, String>>> getUserImageRequestInfo() async {
+    final imageInfo = Map<String, Map<String, String>>();
+    final userPhoto = Model.instance.getUserInfo().userPhoto;
     Log.d("getUserImage");
-    String url = _getPictureUrl;
-    Map<String, String> data = {"realname": userPhoto};
-    if (userPhoto.isNotEmpty) {
-      url = Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
-    }
-    imageInfo["url"] = url;
-    imageInfo["header"] = Connector.getLoginHeaders(url);
+
+    final url = _getPictureUrl + '?realname=$userPhoto';
+
+    imageInfo['url'] = {'value': url};
+    imageInfo['header'] = await Connector.getLoginHeaders(url);
+
     return imageInfo;
   }
 
