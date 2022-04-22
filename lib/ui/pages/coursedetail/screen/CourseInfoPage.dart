@@ -159,7 +159,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
 
   void _launchWebView(String title, String url) {
     canPop = false;
-    RouteUtils.toWebViewPluginPage(title, url).then((value) => canPop = true);
+    RouteUtils.toWebViewPage(title, url).then((value) => canPop = true);
   }
 
   Widget _buildCourseInfoWithButton(String text, String buttonText, String url) {
