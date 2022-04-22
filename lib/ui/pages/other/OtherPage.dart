@@ -151,8 +151,11 @@ class _OtherPageState extends State<OtherPage> {
       ),
       body: Column(children: <Widget>[
         if (Model.instance.getAccount().isNotEmpty)
-          Container(
-            child: _buildHeader(),
+          SizedBox(
+            child: FutureBuilder<Map<String, Map<String, String>>>(
+              future: NTUTConnector.getUserImageRequestInfo(),
+              builder: (_, snapshot) => snapshot.data != null ? _buildHeader(snapshot.data) : SizedBox.shrink(),
+            ),
           ),
         SizedBox(
           height: 16,
