@@ -198,8 +198,8 @@ class _OtherPageState extends State<OtherPage> {
         return Icon(Icons.error);
       },
     );
-    List<Widget> columnItem = [];
-    final MediaQueryData data = MediaQuery.of(context);
+    final columnItem = <Widget>[];
+    final data = MediaQuery.of(context);
     if (givenName.isNotEmpty) {
       columnItem
         ..add(Text(
