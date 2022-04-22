@@ -225,27 +225,26 @@ class _OtherPageState extends State<OtherPage> {
       givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
       userMail = (userMail.isEmpty) ? "" : userMail;
     }
-    TaskFlow taskFlow = TaskFlow();
-    var task = NTUTTask("ImageTask");
+    final taskFlow = TaskFlow();
+    final task = NTUTTask("ImageTask");
     task.openLoadingDialog = false;
     taskFlow.addTask(task);
     return Container(
       padding: EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Container(
             width: 60,
             height: 60,
             child: InkWell(
               child: FutureBuilder<bool>(
                 future: taskFlow.start(),
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done && snapshot.data == true) {
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done && snapshot.data) {
                     return userImage;
-                  } else {
-                    return SpinKitRotatingCircle(color: Theme.of(context).colorScheme.secondary);
                   }
+                  return SpinKitRotatingCircle(color: Theme.of(context).colorScheme.secondary);
                 },
               ),
               onTap: () {
