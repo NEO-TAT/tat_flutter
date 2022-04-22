@@ -1,12 +1,5 @@
-//
-//  Connector.dart
-//  北科課程助手
-//
-//  Created by morris13579 on 2020/02/12.
-//  Copyright © 2020 morris13579 All rights reserved.
-//
+import 'dart:io';
 
-import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:sprintf/sprintf.dart';
@@ -53,17 +46,19 @@ class Connector {
     }
   }
 
-  static Map<String, String> getLoginHeaders(String url) {
+  static Future<Map<String, String>> getLoginHeaders(String url) async {
     try {
-      PersistCookieJar cookieJar = DioConnector.instance.cookiesManager;
-      Map<String, String> headers = Map.from(DioConnector.instance.headers);
-      headers["Cookie"] = cookieJar.loadForRequest(Uri.parse(url)).toString().replaceAll("[", "").replaceAll("]", "");
-      headers.remove("content-type");
-      //Log.d(headers.toString());
+      final cookieJar = DioConnector.instance.cookiesManager;
+      final headers = Map<String, String>.from(DioConnector.instance.headers);
+      final cookies = await cookieJar.loadForRequest(Uri.parse(url));
+
+      headers[HttpHeaders.cookieHeader] = cookies.first.toString();
+      headers.remove(HttpHeaders.contentTypeHeader);
+
       return headers;
     } catch (e) {
       Log.d(e.toString());
-      return Map();
+      return null;
     }
   }
 
