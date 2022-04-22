@@ -27,12 +27,12 @@ enum NTUTConnectorStatus {
 }
 
 class NTUTConnector {
-  static final String host = "https://app.ntut.edu.tw/";
-  static final String _loginUrl = host + "login.do";
-  static final String _getPictureUrl = host + "photoView.do";
-  static final String _getTreeUrl = host + "aptreeList.do";
-  static final String _getCalendarUrl = host + "calModeApp.do";
-  static final String _changePasswordUrl = host + "passwordMdy.do";
+  static const host = "https://app.ntut.edu.tw/";
+  static const _loginUrl = host + "login.do";
+  static const _getPictureUrl = host + "photoView.do";
+  static const _getTreeUrl = host + "aptreeList.do";
+  static const _getCalendarUrl = host + "calModeApp.do";
+  static const _changePasswordUrl = host + "passwordMdy.do";
 
   static Future<NTUTConnectorStatus> login(String account, String password) async {
     try {
@@ -115,22 +115,16 @@ class NTUTConnector {
     }
   }
 
-  /*
-  Map key
-  url
-  header
-   */
-  static Map getUserImage() {
-    Map imageInfo = Map();
-    String userPhoto = Model.instance.getUserInfo().userPhoto;
+  static Future<Map<String, Map<String, String>>> getUserImageRequestInfo() async {
+    final imageInfo = Map<String, Map<String, String>>();
+    final userPhoto = Model.instance.getUserInfo().userPhoto;
     Log.d("getUserImage");
-    String url = _getPictureUrl;
-    Map<String, String> data = {"realname": userPhoto};
-    if (userPhoto.isNotEmpty) {
-      url = Uri.https(Uri.parse(url).host, Uri.parse(url).path, data).toString();
-    }
-    imageInfo["url"] = url;
-    imageInfo["header"] = Connector.getLoginHeaders(url);
+
+    final url = _getPictureUrl + '?realname=$userPhoto';
+
+    imageInfo['url'] = {'value': url};
+    imageInfo['header'] = await Connector.getLoginHeaders(url);
+
     return imageInfo;
   }
 

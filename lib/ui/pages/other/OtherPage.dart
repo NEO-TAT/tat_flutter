@@ -7,7 +7,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
-import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
@@ -40,7 +39,7 @@ class OtherPage extends StatefulWidget {
 }
 
 class _OtherPageState extends State<OtherPage> {
-  List<Map> optionList = [
+  final optionList = [
     {
       "icon": EvaIcons.settings2Outline,
       "color": Colors.orange,
@@ -151,8 +150,11 @@ class _OtherPageState extends State<OtherPage> {
       ),
       body: Column(children: <Widget>[
         if (Model.instance.getAccount().isNotEmpty)
-          Container(
-            child: _buildHeader(),
+          SizedBox(
+            child: FutureBuilder<Map<String, Map<String, String>>>(
+              future: NTUTConnector.getUserImageRequestInfo(),
+              builder: (_, snapshot) => snapshot.data != null ? _buildHeader(snapshot.data) : SizedBox.shrink(),
+            ),
           ),
         SizedBox(
           height: 16,
@@ -162,15 +164,13 @@ class _OtherPageState extends State<OtherPage> {
             child: AnimationLimiter(
               child: ListView.builder(
                 itemCount: optionList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    child: ScaleAnimation(
-                      child: _buildSetting(optionList[index]),
-                    ),
-                  );
-                },
+                itemBuilder: (context, index) => AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 375),
+                  child: ScaleAnimation(
+                    child: _buildSetting(optionList[index]),
+                  ),
+                ),
               ),
             ),
           ),
@@ -179,14 +179,13 @@ class _OtherPageState extends State<OtherPage> {
     );
   }
 
-  Widget _buildHeader() {
-    UserInfoJson userInfo = Model.instance.getUserInfo();
+  Widget _buildHeader(Map userImageInfo) {
+    final userInfo = Model.instance.getUserInfo();
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
-    Map userImageInfo = NTUTConnector.getUserImage();
-    Widget userImage = CachedNetworkImage(
+    final userImage = CachedNetworkImage(
       cacheManager: Model.instance.cacheManager,
-      imageUrl: userImageInfo["url"],
+      imageUrl: userImageInfo["url"]["value"],
       httpHeaders: userImageInfo["header"],
       imageBuilder: (context, imageProvider) => CircleAvatar(
         radius: 40.0,
@@ -199,8 +198,8 @@ class _OtherPageState extends State<OtherPage> {
         return Icon(Icons.error);
       },
     );
-    List<Widget> columnItem = [];
-    final MediaQueryData data = MediaQuery.of(context);
+    final columnItem = <Widget>[];
+    final data = MediaQuery.of(context);
     if (givenName.isNotEmpty) {
       columnItem
         ..add(Text(
@@ -226,27 +225,26 @@ class _OtherPageState extends State<OtherPage> {
       givenName = (givenName.isEmpty) ? R.current.pleaseLogin : givenName;
       userMail = (userMail.isEmpty) ? "" : userMail;
     }
-    TaskFlow taskFlow = TaskFlow();
-    var task = NTUTTask("ImageTask");
+    final taskFlow = TaskFlow();
+    final task = NTUTTask("ImageTask");
     task.openLoadingDialog = false;
     taskFlow.addTask(task);
     return Container(
       padding: EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0, bottom: 24.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Container(
             width: 60,
             height: 60,
             child: InkWell(
               child: FutureBuilder<bool>(
                 future: taskFlow.start(),
-                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done && snapshot.data == true) {
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done && snapshot.data) {
                     return userImage;
-                  } else {
-                    return SpinKitRotatingCircle(color: Theme.of(context).colorScheme.secondary);
                   }
+                  return SpinKitRotatingCircle(color: Theme.of(context).colorScheme.secondary);
                 },
               ),
               onTap: () {
