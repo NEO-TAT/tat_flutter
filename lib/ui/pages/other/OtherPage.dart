@@ -7,7 +7,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
-import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_app/src/store/Model.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
@@ -40,7 +39,7 @@ class OtherPage extends StatefulWidget {
 }
 
 class _OtherPageState extends State<OtherPage> {
-  List<Map> optionList = [
+  final optionList = [
     {
       "icon": EvaIcons.settings2Outline,
       "color": Colors.orange,
