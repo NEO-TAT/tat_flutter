@@ -135,7 +135,7 @@ class _LogConsoleState extends State<LogConsole> {
       debugShowCheckedModeBanner: false,
       theme: widget.dark
           ? ThemeData(
-              brightness: Brightness.dark,
+              brightness: Brightness.light,
               colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueGrey),
             )
           : ThemeData(
@@ -208,7 +208,7 @@ class _LogConsoleState extends State<LogConsole> {
 
   Widget _buildLogContent() {
     return Container(
-      color: widget.dark ? Colors.black : Colors.grey[150],
+      color: Colors.grey[150],
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
