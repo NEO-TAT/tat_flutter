@@ -23,7 +23,7 @@ class DioConnector {
   };
 
   final alice = Alice(
-    darkTheme: true,
+    // darkTheme: true,
     showNotification: false,
   );
 
