@@ -20,7 +20,7 @@ dependencies:
   path: ^1.8.0 # constraints by flutter_test
   path_provider: ^2.0.9
   provider: ^6.0.2
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.0
   #開啟email phone url...
   logger: ^1.1.0
   #顯示Log
@@ -59,7 +59,7 @@ dependencies:
   clipboard: ^0.1.3
   #剪貼簿
   #----------WebView----------#
-  flutter_inappwebview: ^5.4.0+2
+  flutter_inappwebview: ^5.4.1
   #---------icon----------#
   eva_icons_flutter: ^3.1.0
   #https://akveo.github.io/eva-icons/#/
