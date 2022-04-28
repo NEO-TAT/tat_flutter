@@ -53,6 +53,12 @@ class _OtherPageState extends State<OtherPage> {
       "onPress": onListViewPress.SubSystem
     },
     {
+      "icon": Icons.access_alarm,
+      "color": Colors.red,
+      "title": R.current.rollCallRemind,
+      "onPress": (){}
+    },
+    {
       "icon": EvaIcons.downloadOutline,
       "color": Colors.yellow[700],
       "title": R.current.fileViewer,
