@@ -661,14 +661,20 @@ class _CourseTablePageState extends State<CourseTablePage> {
             ],
           ),
         ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              _showCourseDetail(courseInfo);
-            },
-            child: Text(R.current.details),
-          ),
-        ],
+        actions: courseInfo.main.course.id.isNotEmpty
+            ? [
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.access_alarm),
+                  label: Text(R.current.rollCallRemind),
+                ),
+                TextButton.icon(
+                  onPressed: () => _showCourseDetail(courseInfo),
+                  icon: Icon(Icons.add_outlined),
+                  label: Text(R.current.details),
+                ),
+              ]
+            : [SizedBox.shrink()],
       ),
       barrierDismissible: true,
     );
