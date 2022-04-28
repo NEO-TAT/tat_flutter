@@ -231,5 +231,8 @@
   "graduationSetting": "畢業學分標準設定",
   "save": "儲存",
   "loading": "載入中...",
-  "pleaseConnectToNetwork": "請確認網路連接狀態"
+  "pleaseConnectToNetwork": "請確認網路連接狀態",
+  "autoRollCall": "自動點名",
+  "rollCall": "點名",
+  "rollCallRemind": "點名提醒"
 }

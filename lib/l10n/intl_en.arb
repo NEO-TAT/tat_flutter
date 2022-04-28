@@ -231,5 +231,8 @@
   "graduationSetting": "Graduation credit standard setting",
   "save": "Save",
   "loading": "Loading...",
-  "pleaseConnectToNetwork": "Please connect to network"
+  "pleaseConnectToNetwork": "Please connect to network",
+  "autoRollCall": "Auto RollCall",
+  "rollCall": "RollCall",
+  "rollCallRemind": "RollCall Remind"
 }

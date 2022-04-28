@@ -2353,6 +2353,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Auto RollCall`
+  String get autoRollCall {
+    return Intl.message(
+      'Auto RollCall',
+      name: 'autoRollCall',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RollCall`
+  String get rollCall {
+    return Intl.message(
+      'RollCall',
+      name: 'rollCall',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RollCall Remind`
+  String get rollCallRemind {
+    return Intl.message(
+      'RollCall Remind',
+      name: 'rollCallRemind',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
