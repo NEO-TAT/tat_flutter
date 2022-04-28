@@ -1293,6 +1293,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.3"
+  tat_core:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "5a68bc515f4a97dc9ad4f3dc7ed5bdd369f6fa4b"
+      url: "git@github.com:NTUT-NPC/TAT-Core.git"
+    source: git
+    version: "1.0.0-3.0.pre"
   term_glyph:
     dependency: transitive
     description:

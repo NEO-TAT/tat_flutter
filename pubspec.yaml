@@ -17,6 +17,13 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # TAT 2 Core implementations, reference it to use some of the new features.
+  # Use https login with github personal access key at the first time to obtain this sub-package.
+  tat_core:
+    git:
+      url: git@github.com:NTUT-NPC/TAT-Core.git
+      ref: main
+
   path: ^1.8.0 # constraints by flutter_test
   path_provider: ^2.0.9
   provider: ^6.0.2
