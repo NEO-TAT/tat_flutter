@@ -56,7 +56,7 @@ class _OtherPageState extends State<OtherPage> {
       "icon": Icons.access_alarm,
       "color": Colors.red,
       "title": R.current.rollCallRemind,
-      "onPress": (){}
+      "onPress": () {},
     },
     {
       "icon": EvaIcons.downloadOutline,
