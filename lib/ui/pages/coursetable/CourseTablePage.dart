@@ -664,7 +664,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         actions: courseInfo.main.course.id.isNotEmpty
             ? [
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: _showRollCallDashboardPage,
                   icon: Icon(Icons.access_alarm),
                   label: Text(R.current.rollCallRemind),
                 ),
@@ -678,6 +678,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
       ),
       barrierDismissible: true,
     );
+  }
+
+  void _showRollCallDashboardPage() {
+    Get.back();
+    RouteUtils.launchRollCallDashBoardPage();
   }
 
   Future<String> _showEditDialog(String value) async {

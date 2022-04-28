@@ -27,6 +27,7 @@ enum onListViewPress {
   About,
   Login,
   SubSystem,
+  RollCallRemind,
 }
 
 class OtherPage extends StatefulWidget {
@@ -56,7 +57,7 @@ class _OtherPageState extends State<OtherPage> {
       "icon": Icons.access_alarm,
       "color": Colors.red,
       "title": R.current.rollCallRemind,
-      "onPress": () {},
+      "onPress": onListViewPress.RollCallRemind,
     },
     {
       "icon": EvaIcons.downloadOutline,
@@ -141,6 +142,9 @@ class _OtherPageState extends State<OtherPage> {
           link = AppLink.feedback(mainVersion, LogConsole.getLog());
         } catch (e) {}
         RouteUtils.toWebViewPage(R.current.feedback, link);
+        break;
+      case onListViewPress.RollCallRemind:
+        RouteUtils.launchRollCallDashBoardPage();
         break;
       default:
         MyToast.show(R.current.noFunction);
