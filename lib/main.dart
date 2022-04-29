@@ -55,7 +55,6 @@ Future<Null> main() async {
           providers: [
             ChangeNotifierProvider(create: (_) => AppProvider()),
             ChangeNotifierProvider(create: (_) => CategoryProvider()),
-            Provider.value(value: zuvioLoginUseCase, updateShouldNotify: (_, __) => false),
           ],
           child: MyApp(),
         ),
