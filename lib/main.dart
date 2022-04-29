@@ -12,10 +12,14 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/controllers/login_box_controller.dart';
 import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:tat_core/core/api/zuvio_api_service.dart';
+import 'package:tat_core/core/zuvio/data/login_repository.dart';
+import 'package:tat_core/core/zuvio/usecase/login_use_case.dart';
 
 import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
@@ -32,13 +36,26 @@ Future<Null> main() async {
       DeviceOrientation.portraitDown,
     ],
   );
+
+  final zuvioApiService = ZuvioApiService();
+  final zuvioLoginRepository = ZLoginRepository(apiService: zuvioApiService);
+  final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
+
+  final loginBoxController = LoginBoxController(
+    isLoginBtnEnabled: true,
+    isInputBoxesEnabled: true,
+    loginUseCase: zuvioLoginUseCase,
+  );
+
   runZonedGuarded(
     () {
+      Get.put(loginBoxController);
       runApp(
         MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => AppProvider()),
             ChangeNotifierProvider(create: (_) => CategoryProvider()),
+            Provider.value(value: zuvioLoginUseCase, updateShouldNotify: (_, __) => false),
           ],
           child: MyApp(),
         ),
