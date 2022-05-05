@@ -1,6 +1,6 @@
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/ISchoolPlusConnector.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/Task.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
@@ -17,7 +17,7 @@ class IPlusSystemTask<T> extends NTUTTask<T> {
     if (status == TaskStatus.Success) {
       isLogin = true;
       super.onStart(R.current.loginISchoolPlus);
-      String studentId = Model.instance.getAccount();
+      String studentId = LocalStorage.instance.getAccount();
       ISchoolPlusConnectorStatus value = await ISchoolPlusConnector.login(studentId);
       super.onEnd();
       if (value != ISchoolPlusConnectorStatus.LoginSuccess) {

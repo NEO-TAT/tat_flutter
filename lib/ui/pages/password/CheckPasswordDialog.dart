@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -120,7 +120,7 @@ class _CheckPasswordDialogState extends State<CheckPasswordDialog> {
   }
 
   String _validatorOriginPassword(String value) {
-    if (value == Model.instance.getPassword()) {
+    if (value == LocalStorage.instance.getPassword()) {
       _originPasswordErrorMessage = '';
     } else {
       setState(() {

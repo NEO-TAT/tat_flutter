@@ -7,7 +7,7 @@ import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/ischoolplus/CourseFileJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/iplus/IPlusCourseFileTask.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
@@ -38,7 +38,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
   void initState() {
     super.initState();
     BackButtonInterceptor.add(myInterceptor);
-    isSupport = Model.instance.getAccount() == widget.studentId;
+    isSupport = LocalStorage.instance.getAccount() == widget.studentId;
     Future.delayed(Duration.zero, () {
       if (isSupport) {
         _addTask();

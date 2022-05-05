@@ -1,7 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/Task.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -22,8 +22,8 @@ class NTUTTask<T> extends DialogTask<T> {
   Future<TaskStatus> execute() async {
     if (_isLogin) return TaskStatus.Success;
     name = "NTUTTask " + name;
-    String account = Model.instance.getAccount();
-    String password = Model.instance.getPassword();
+    String account = LocalStorage.instance.getAccount();
+    String password = LocalStorage.instance.getPassword();
     if (account.isEmpty || password.isEmpty) {
       return TaskStatus.GiveUp;
     }

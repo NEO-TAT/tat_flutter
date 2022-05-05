@@ -3,7 +3,7 @@ import 'package:flutter_app/src/connector/CourseConnector.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 
 import '../Task.dart';
@@ -52,10 +52,10 @@ class CourseTableTask extends CourseSystemTask<CourseTableJson> {
             courseTable.setCourseDetailByTime(Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
           }
         }
-        if (studentId == Model.instance.getAccount()) {
+        if (studentId == LocalStorage.instance.getAccount()) {
           //只儲存自己的課表
-          Model.instance.addCourseTable(courseTable);
-          await Model.instance.saveCourseTableList();
+          LocalStorage.instance.addCourseTable(courseTable);
+          await LocalStorage.instance.saveCourseTableList();
         }
         result = courseTable;
         return TaskStatus.Success;

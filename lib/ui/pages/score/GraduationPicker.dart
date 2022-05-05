@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/course/CourseCreditInfoTask.dart';
 import 'package:flutter_app/src/task/course/CourseDepartmentTask.dart';
@@ -108,7 +108,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
     await _getYearList();
     //利用學號預設學年度
     if (graduationInformation.selectYear.isEmpty) {
-      graduationInformation.selectYear = Model.instance.getAccount().substring(0, 3);
+      graduationInformation.selectYear = LocalStorage.instance.getAccount().substring(0, 3);
     }
     for (String v in yearList) {
       if (v.contains(graduationInformation.selectYear)) {
@@ -338,7 +338,7 @@ class _GraduationPickerWidget extends State<GraduationPickerWidget> {
   }
 
   void _cancel() {
-    graduationInformation = Model.instance.getGraduationInformation();
+    graduationInformation = LocalStorage.instance.getGraduationInformation();
     _returnValue();
   }
 

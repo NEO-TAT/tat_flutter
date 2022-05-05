@@ -7,7 +7,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/ui/other/ListViewAnimator.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -127,11 +127,11 @@ class _SettingPageState extends State<SettingPage> with AfterInitMixin<SettingPa
           ),
         ],
       ),
-      value: Model.instance.getOtherSetting().autoCheckAppUpdate,
+      value: LocalStorage.instance.getOtherSetting().autoCheckAppUpdate,
       onChanged: (value) {
         setState(() {
-          Model.instance.getOtherSetting().autoCheckAppUpdate = value;
-          Model.instance.saveOtherSetting();
+          LocalStorage.instance.getOtherSetting().autoCheckAppUpdate = value;
+          LocalStorage.instance.saveOtherSetting();
         });
       },
     );
@@ -179,11 +179,11 @@ class _SettingPageState extends State<SettingPage> with AfterInitMixin<SettingPa
           ),
         ],
       ),
-      value: Model.instance.getOtherSetting().checkIPlusNew,
+      value: LocalStorage.instance.getOtherSetting().checkIPlusNew,
       onChanged: (value) {
         setState(() {
-          Model.instance.getOtherSetting().checkIPlusNew = value;
-          Model.instance.saveOtherSetting();
+          LocalStorage.instance.getOtherSetting().checkIPlusNew = value;
+          LocalStorage.instance.saveOtherSetting();
         });
       },
     );
@@ -205,11 +205,11 @@ class _SettingPageState extends State<SettingPage> with AfterInitMixin<SettingPa
           ),
         ],
       ),
-      value: Model.instance.getOtherSetting().useExternalVideoPlayer,
+      value: LocalStorage.instance.getOtherSetting().useExternalVideoPlayer,
       onChanged: (value) {
         setState(() {
-          Model.instance.getOtherSetting().useExternalVideoPlayer = value;
-          Model.instance.saveOtherSetting();
+          LocalStorage.instance.getOtherSetting().useExternalVideoPlayer = value;
+          LocalStorage.instance.saveOtherSetting();
         });
       },
     );

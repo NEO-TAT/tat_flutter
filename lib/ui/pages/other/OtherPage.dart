@@ -7,7 +7,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppLink.dart';
 import 'package:flutter_app/src/connector/NTUTConnector.dart';
 import 'package:flutter_app/src/file/FileStore.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/ntut/NTUTTask.dart';
 import 'package:flutter_app/src/version/update/AppUpdate.dart';
@@ -65,14 +65,14 @@ class _OtherPageState extends State<OtherPage> {
       "title": R.current.fileViewer,
       "onPress": onListViewPress.FileViewer
     },
-    if (Model.instance.getPassword().isNotEmpty)
+    if (LocalStorage.instance.getPassword().isNotEmpty)
       {
         "icon": EvaIcons.undoOutline,
         "color": Colors.teal[400],
         "title": R.current.logout,
         "onPress": onListViewPress.Logout
       },
-    if (Model.instance.getPassword().isEmpty)
+    if (LocalStorage.instance.getPassword().isEmpty)
       {
         "icon": EvaIcons.logIn,
         "color": Colors.teal[400],
@@ -113,7 +113,7 @@ class _OtherPageState extends State<OtherPage> {
             btnOkOnPress: () {
               Get.back();
               TaskFlow.resetLoginStatus();
-              Model.instance.logout().then((_) {
+              LocalStorage.instance.logout().then((_) {
                 widget.pageController.jumpToPage(0);
               });
             });
@@ -159,7 +159,7 @@ class _OtherPageState extends State<OtherPage> {
         title: Text(R.current.titleOther),
       ),
       body: Column(children: <Widget>[
-        if (Model.instance.getAccount().isNotEmpty)
+        if (LocalStorage.instance.getAccount().isNotEmpty)
           SizedBox(
             child: FutureBuilder<Map<String, Map<String, String>>>(
               future: NTUTConnector.getUserImageRequestInfo(),
@@ -190,11 +190,11 @@ class _OtherPageState extends State<OtherPage> {
   }
 
   Widget _buildHeader(Map userImageInfo) {
-    final userInfo = Model.instance.getUserInfo();
+    final userInfo = LocalStorage.instance.getUserInfo();
     String givenName = userInfo.givenName;
     String userMail = userInfo.userMail;
     final userImage = CachedNetworkImage(
-      cacheManager: Model.instance.cacheManager,
+      cacheManager: LocalStorage.instance.cacheManager,
       imageUrl: userImageInfo["url"]["value"],
       httpHeaders: userImageInfo["header"],
       imageBuilder: (context, imageProvider) => CircleAvatar(
@@ -258,7 +258,7 @@ class _OtherPageState extends State<OtherPage> {
                 },
               ),
               onTap: () {
-                Model.instance.cacheManager.emptyCache(); //清除圖片暫存
+                LocalStorage.instance.cacheManager.emptyCache(); //清除圖片暫存
               },
             ),
           ),

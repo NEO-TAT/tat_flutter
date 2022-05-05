@@ -3,13 +3,13 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/generated/l10n.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/setting/SettingJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 
 enum LangEnum { en, zh }
 
 class LanguageUtil {
   static Future<void> init(BuildContext context) async {
-    OtherSettingJson otherSetting = Model.instance.getOtherSetting();
+    OtherSettingJson otherSetting = LocalStorage.instance.getOtherSetting();
     if (otherSetting.lang.isEmpty || !otherSetting.lang.contains("_")) {
       //如果沒有設定語言使用手機目前語言
       Locale locale = Localizations.localeOf(context);
@@ -27,14 +27,14 @@ class LanguageUtil {
     if (getSupportLocale.contains(locale)) {
       await R.load(locale);
       String lang = locale2String(locale);
-      OtherSettingJson otherSetting = Model.instance.getOtherSetting();
+      OtherSettingJson otherSetting = LocalStorage.instance.getOtherSetting();
       if (otherSetting.lang != lang) {
         //只有不相同時可以載入
         otherSetting.lang = lang;
-        Model.instance.setOtherSetting(otherSetting);
-        await Model.instance.saveOtherSetting();
-        await Model.instance.clearCourseTableList();
-        await Model.instance.clearCourseSetting();
+        LocalStorage.instance.setOtherSetting(otherSetting);
+        await LocalStorage.instance.saveOtherSetting();
+        await LocalStorage.instance.clearCourseTableList();
+        await LocalStorage.instance.clearCourseSetting();
       }
     } else {
       Log.e("no any locale load");
@@ -67,7 +67,7 @@ class LanguageUtil {
   }
 
   static LangEnum getLangIndex() {
-    OtherSettingJson otherSetting = Model.instance.getOtherSetting();
+    OtherSettingJson otherSetting = LocalStorage.instance.getOtherSetting();
     int index = getSupportLocale.indexOf(string2Locale(otherSetting.lang));
     switch (index) {
       case 0:

@@ -9,7 +9,7 @@ import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/file/FileDownload.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/util/MXPlayerUtil.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
@@ -126,7 +126,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
       barrierDismissible: true,
     );
     bool open = false;
-    if (Model.instance.getOtherSetting().useExternalVideoPlayer) {
+    if (LocalStorage.instance.getOtherSetting().useExternalVideoPlayer) {
       String name = widget.name + "_" + _select.name + ".mp4";
       open = await MXPlayerUtil.launch(url: url, name: name);
     }
