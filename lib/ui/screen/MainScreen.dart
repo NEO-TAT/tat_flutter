@@ -5,7 +5,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/file/MyDownloader.dart';
 import 'package:flutter_app/src/notifications/Notifications.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/src/util/LanguageUtil.dart';
 import 'package:flutter_app/src/util/RemoteConfigUtil.dart';
@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
 
   void appInit() async {
     R.set(context);
-    await Model.instance.getInstance(); //一定要先getInstance()不然無法取得資料
+    await LocalStorage.instance.getInstance(); //一定要先getInstance()不然無法取得資料
     try {
       await RemoteConfigUtil.init();
       await initLanguage();

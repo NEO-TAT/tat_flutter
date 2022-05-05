@@ -5,7 +5,7 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppColors.dart';
 import 'package:flutter_app/src/model/course/CourseMainExtraJson.dart';
 import 'package:flutter_app/src/model/course/CourseScoreJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/course/CourseExtraInfoTask.dart';
 import 'package:flutter_app/src/task/score/ScoreRankTask.dart';
@@ -36,8 +36,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   @override
   void initState() {
     super.initState();
-    courseScoreCredit = Model.instance.getCourseScoreCredit();
-    courseScoreList = Model.instance.getSemesterCourseScore();
+    courseScoreCredit = LocalStorage.instance.getCourseScoreCredit();
+    courseScoreList = LocalStorage.instance.getSemesterCourseScore();
     if (courseScoreList.length == 0) {
       _addScoreRankTask();
     } else {
@@ -60,7 +60,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       courseScoreList = scoreTask.result;
     }
     if (courseScoreList != null && courseScoreList.isNotEmpty) {
-      await Model.instance.setSemesterCourseScore(courseScoreList);
+      await LocalStorage.instance.setSemesterCourseScore(courseScoreList);
       int total = courseScoreCredit.getCourseInfoList().length;
       List<CourseScoreInfoJson> courseInfoList = courseScoreCredit.getCourseInfoList();
       ProgressRateDialog progressRateDialog = ProgressRateDialog(context);
@@ -89,7 +89,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
         courseScoreInfo.openClass = extraInfo.course.openClass.replaceAll("\n", " ");
       };
       await taskFlow.start();
-      await Model.instance.setSemesterCourseScore(courseScoreList);
+      await LocalStorage.instance.setSemesterCourseScore(courseScoreList);
       progressRateDialog.hide();
     } else {
       MyToast.show(R.current.searchCreditIsNullWarning);
@@ -105,8 +105,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     Log.d(value.toString());
     if (value != null) {
       courseScoreCredit.graduationInformation = value;
-      Model.instance.setCourseScoreCredit(courseScoreCredit);
-      Model.instance.saveCourseScoreCredit();
+      LocalStorage.instance.setCourseScoreCredit(courseScoreCredit);
+      LocalStorage.instance.saveCourseScoreCredit();
     }
     _buildTabBar();
   }
@@ -415,7 +415,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   }
 
   Widget _buildOtherDepartmentItem() {
-    String department = Model.instance.getGraduationInformation().selectDepartment;
+    String department = LocalStorage.instance.getGraduationInformation().selectDepartment;
     int otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
     try {
       department = department.substring(0, 2);
@@ -539,8 +539,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
                             .toList());
                          */
                           //存檔
-                          Model.instance.setCourseScoreCredit(courseScoreCredit);
-                          Model.instance.saveCourseScoreCredit();
+                          LocalStorage.instance.setCourseScoreCredit(courseScoreCredit);
+                          LocalStorage.instance.saveCourseScoreCredit();
                         });
                       }),
                 Container(

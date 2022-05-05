@@ -15,7 +15,7 @@ import 'package:flutter_app/src/connector/core/ConnectorParameter.dart';
 import 'package:flutter_app/src/model/ntut/APTreeJson.dart';
 import 'package:flutter_app/src/model/ntut/NTUTCalendarJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:intl/intl.dart';
 
 enum NTUTConnectorStatus {
@@ -55,8 +55,8 @@ class NTUTConnector {
       Map jsonMap = json.decode(result);
       if (jsonMap["success"]) {
         UserInfoJson userInfo = UserInfoJson.fromJson(jsonMap);
-        Model.instance.setUserInfo(userInfo);
-        Model.instance.saveUserData();
+        LocalStorage.instance.setUserInfo(userInfo);
+        LocalStorage.instance.saveUserData();
         // if the user's password is nearly to expired, `userInfo.passwordExpiredRemind.isNotEmpty` will be true.
         return NTUTConnectorStatus.LoginSuccess;
       } else {
@@ -117,7 +117,7 @@ class NTUTConnector {
 
   static Future<Map<String, Map<String, String>>> getUserImageRequestInfo() async {
     final imageInfo = Map<String, Map<String, String>>();
-    final userPhoto = Model.instance.getUserInfo().userPhoto;
+    final userPhoto = LocalStorage.instance.getUserInfo().userPhoto;
     Log.d("getUserImage");
 
     final url = _getPictureUrl + '?realname=$userPhoto';
@@ -133,7 +133,7 @@ class NTUTConnector {
     String result;
     try {
       parameter = ConnectorParameter(_changePasswordUrl);
-      String oldPassword = Model.instance.getPassword();
+      String oldPassword = LocalStorage.instance.getPassword();
       parameter.data = {
         "userPassword": password,
         "oldPassword": oldPassword,

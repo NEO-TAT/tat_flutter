@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/ischoolplus/ISchoolPlusAnnouncementJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/iPlus/IPlusGetCourseSubscribeTask.dart';
 import 'package:flutter_app/src/task/iPlus/IPlusSetCourseSubscribeTask.dart';
@@ -30,7 +30,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage> with Automatic
   @override
   void initState() {
     super.initState();
-    isSupport = Model.instance.getAccount() == widget.studentId;
+    isSupport = LocalStorage.instance.getAccount() == widget.studentId;
     items = [];
     if (isSupport) {
       _addTask();
@@ -51,7 +51,10 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage> with Automatic
       openNotifications = getTask.result["openNotifications"];
     }
     items = items ?? [];
-    setState(() {});
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _getAnnouncementDetail(ISchoolPlusAnnouncementJson value) async {

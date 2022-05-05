@@ -5,7 +5,7 @@ import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/TabPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/CourseInfoPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementPage.dart';
@@ -34,7 +34,7 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
     super.initState();
     tabPageList = TabPageList();
     tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.courseInfo)));
-    if (widget.studentId == Model.instance.getAccount()) {
+    if (widget.studentId == LocalStorage.instance.getAccount()) {
       tabPageList.add(TabPage(
           R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
       tabPageList.add(

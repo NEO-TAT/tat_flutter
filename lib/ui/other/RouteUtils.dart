@@ -13,6 +13,9 @@ import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
 import 'package:flutter_app/ui/pages/other/page/PrivacyPolicyPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SubSystemPage.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/controllers/login_box_controller.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_dashboard_page.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/zuvio_login_page.dart';
 import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
@@ -37,22 +40,23 @@ class RouteUtils {
 
   static Future toSubSystemPage(String title, String arg) async {
     return Get.to(
-        () => SubSystemPage(
-              title: title,
-              arg: arg,
-            ),
-        transition: transition,
-        preventDuplicates: false //必免重覆頁面時不載入
-        );
+      () => SubSystemPage(
+        title: title,
+        arg: arg,
+      ),
+      transition: transition,
+      preventDuplicates: false,
+    );
   }
 
   static Future toFileViewerPage(String title, String path) async {
     return await Get.to(
-        () => FileViewerPage(
-              title: title,
-              path: path,
-            ),
-        transition: transition);
+      () => FileViewerPage(
+        title: title,
+        path: path,
+      ),
+      transition: transition,
+    );
   }
 
   static Future toISchoolPage(String studentId, CourseInfoJson courseInfo) async {
@@ -124,4 +128,23 @@ class RouteUtils {
       transition: transition,
     );
   }
+
+  static Future<void> launchRollCallDashBoardPage() => Get.to(
+        () => RollCallDashboardPage(
+          onAddNewPressed: () {
+            launchZuvioLoginPage();
+          },
+        ),
+        transition: transition,
+        preventDuplicates: true,
+      );
+
+  static Future<void> launchZuvioLoginPage() => Get.to(
+        () => ZuvioLoginPage(
+          loginHandler: ({username, password}) => ZLoginBoxController.to.login(username, password),
+          onPageClose: () => Get.back(),
+        ),
+        transition: transition,
+        preventDuplicates: true,
+      );
 }

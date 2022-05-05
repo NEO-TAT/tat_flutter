@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/config/AppColors.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/ui/other/MyToast.dart';
 import 'package:get/get.dart';
 
@@ -22,17 +22,17 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _accountControl.text = Model.instance.getAccount();
-    _passwordControl.text = Model.instance.getPassword();
+    _accountControl.text = LocalStorage.instance.getAccount();
+    _passwordControl.text = LocalStorage.instance.getPassword();
   }
 
   void _loginPress(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
-      Model.instance.setAccount(_accountControl.text.toString());
-      Model.instance.setPassword(_passwordControl.text.toString());
-      await Model.instance.saveUserData();
+      LocalStorage.instance.setAccount(_accountControl.text.toString());
+      LocalStorage.instance.setPassword(_passwordControl.text.toString());
+      await LocalStorage.instance.saveUserData();
       MyToast.show(R.current.loginSave);
       Get.back<bool>(result: true);
     }

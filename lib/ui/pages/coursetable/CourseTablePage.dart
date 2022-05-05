@@ -13,7 +13,7 @@ import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
-import 'package:flutter_app/src/store/Model.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/TaskFlow.dart';
 import 'package:flutter_app/src/task/course/CourseSemesterTask.dart';
 import 'package:flutter_app/src/task/course/CourseTableTask.dart';
@@ -53,7 +53,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void initState() {
     super.initState();
     _studentIdControl.text = " ";
-    UserDataJson userData = Model.instance.getUserData();
+    UserDataJson userData = LocalStorage.instance.getUserData();
     Future.delayed(Duration(milliseconds: 200)).then((_) {
       if (userData.account.isEmpty || userData.password.isEmpty) {
         RouteUtils.toLoginScreen().then((value) {
@@ -71,13 +71,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       loadCourseNotice = false;
     });
-    if (!Model.instance.getOtherSetting().checkIPlusNew) {
+    if (!LocalStorage.instance.getOtherSetting().checkIPlusNew) {
       return;
     }
-    if (!Model.instance.getFirstUse(Model.courseNotice, timeOut: 15 * 60)) {
+    if (!LocalStorage.instance.getFirstUse(LocalStorage.courseNotice, timeOut: 15 * 60)) {
       return;
     }
-    if (Model.instance.getAccount() != Model.instance.getCourseSetting().info.studentId) {
+    if (LocalStorage.instance.getAccount() != LocalStorage.instance.getCourseSetting().info.studentId) {
       //只有顯示自己的課表時才會檢查新公告
       return;
     }
@@ -141,7 +141,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         );
       }
     }
-    Model.instance.setAlreadyUse(Model.courseNotice);
+    LocalStorage.instance.setAlreadyUse(LocalStorage.courseNotice);
     setState(() {
       loadCourseNotice = false;
     });
@@ -164,7 +164,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     //Log.d(MediaQuery.of(context).size.height.toString());
     RenderObject renderObject = _key.currentContext.findRenderObject();
     courseHeight = (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight) / showCourseTableNum; //計算高度
-    CourseTableJson courseTable = Model.instance.getCourseSetting().info;
+    CourseTableJson courseTable = LocalStorage.instance.getCourseSetting().info;
     if (courseTable == null || courseTable.isEmpty) {
       _getCourseTable();
     } else {
@@ -177,22 +177,22 @@ class _CourseTablePageState extends State<CourseTablePage> {
     var task = CourseSemesterTask(studentId);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
-      Model.instance.setSemesterJsonList(task.result);
+      LocalStorage.instance.setSemesterJsonList(task.result);
     }
   }
 
   void _getCourseTable({SemesterJson semesterSetting, String studentId, bool refresh = false}) async {
     await Future.delayed(Duration(microseconds: 100)); //等待頁面刷新
-    UserDataJson userData = Model.instance.getUserData();
+    UserDataJson userData = LocalStorage.instance.getUserData();
     studentId = studentId ?? userData.account;
     studentId = studentId.replaceAll(" ", "");
     if (courseTableData?.studentId != studentId) {
-      Model.instance.clearSemesterJsonList(); //需重設因為更換了studentId
+      LocalStorage.instance.clearSemesterJsonList(); //需重設因為更換了studentId
     }
     SemesterJson semesterJson;
     if (semesterSetting == null) {
       await _getSemesterList(studentId);
-      semesterJson = Model.instance.getSemesterJsonItem(0);
+      semesterJson = LocalStorage.instance.getSemesterJsonItem(0);
     } else {
       semesterJson = semesterSetting;
     }
@@ -203,7 +203,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     CourseTableJson courseTable;
     if (!refresh) {
       //是否要去找暫存的
-      courseTable = Model.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
+      courseTable = LocalStorage.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
     }
     if (courseTable == null) {
       //代表沒有暫存的需要爬蟲
@@ -214,8 +214,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
         courseTable = task.result;
       }
     }
-    Model.instance.getCourseSetting().info = courseTable; //儲存課表
-    Model.instance.saveCourseSetting();
+    LocalStorage.instance.getCourseSetting().info = courseTable; //儲存課表
+    LocalStorage.instance.saveCourseSetting();
     _showCourseTable(courseTable);
   }
 
@@ -233,15 +233,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showSemesterList() async {
     //顯示選擇學期
     _unFocusStudentInput();
-    if (Model.instance.getSemesterList().length == 0) {
+    if (LocalStorage.instance.getSemesterList().length == 0) {
       TaskFlow taskFlow = TaskFlow();
       var task = CourseSemesterTask(_studentIdControl.text);
       taskFlow.addTask(task);
       if (await taskFlow.start()) {
-        Model.instance.setSemesterJsonList(task.result);
+        LocalStorage.instance.setSemesterJsonList(task.result);
       }
     }
-    List<SemesterJson> semesterList = Model.instance.getSemesterList();
+    List<SemesterJson> semesterList = LocalStorage.instance.getSemesterList();
     //Model.instance.saveSemesterJsonList();
     Get.dialog(
       AlertDialog(
@@ -278,15 +278,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   void _setFavorite(bool like) {
     if (like) {
-      Model.instance.addCourseTable(courseTableData);
+      LocalStorage.instance.addCourseTable(courseTableData);
     } else {
-      Model.instance.removeCourseTable(courseTableData);
+      LocalStorage.instance.removeCourseTable(courseTableData);
     }
-    Model.instance.saveCourseTableList();
+    LocalStorage.instance.saveCourseTableList();
   }
 
   void _loadFavorite() async {
-    List<CourseTableJson> value = Model.instance.getCourseTableList();
+    List<CourseTableJson> value = LocalStorage.instance.getCourseTableList();
     if (value.length == 0) {
       MyToast.show(R.current.noAnyFavorite);
       return;
@@ -318,10 +318,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           ])),
                         ),
                         onPressed: () {
-                          Model.instance.getCourseSetting().info = value[index]; //儲存課表
-                          Model.instance.saveCourseSetting();
+                          LocalStorage.instance.getCourseSetting().info = value[index]; //儲存課表
+                          LocalStorage.instance.saveCourseSetting();
                           _showCourseTable(value[index]);
-                          Model.instance.clearSemesterJsonList(); //須清除已儲存學期
+                          LocalStorage.instance.clearSemesterJsonList(); //須清除已儲存學期
                           Get.back();
                         },
                       ),
@@ -334,9 +334,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           foregroundColor: Colors.red,
                           icon: Icons.delete_forever,
                           onPressed: (_) {
-                            Model.instance.removeCourseTable(value[index]);
+                            LocalStorage.instance.removeCourseTable(value[index]);
                             value.remove(index);
-                            Model.instance.saveCourseTableList().then((_) => setState(() {}));
+                            LocalStorage.instance.saveCourseTableList().then((_) => setState(() {}));
                           },
                         ),
                       ],
@@ -351,7 +351,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       barrierDismissible: true,
     );
     setState(() {
-      favorite = (Model.instance.getCourseTableList().contains(courseTableData));
+      favorite = (LocalStorage.instance.getCourseTableList().contains(courseTableData));
     });
   }
 
@@ -373,7 +373,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   ),
                 )
               : Container(),
-          (!isLoading && Model.instance.getAccount() != courseTableData.studentId)
+          (!isLoading && LocalStorage.instance.getAccount() != courseTableData.studentId)
               ? Padding(
                   padding: EdgeInsets.only(
                     right: 20,
@@ -634,7 +634,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     CourseMainJson course = courseInfo.main.course;
     String classroomName = courseInfo.main.getClassroomName();
     String teacherName = courseInfo.main.getTeacherName();
-    String studentId = Model.instance.getCourseSetting().info.studentId;
+    String studentId = LocalStorage.instance.getCourseSetting().info.studentId;
     setState(() {
       _studentIdControl.text = studentId;
     });
@@ -651,7 +651,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 child: Text(sprintf("%s : %s", [R.current.courseId, course.id])),
                 onLongPress: () async {
                   course.id = await _showEditDialog(course.id);
-                  Model.instance.saveOtherSetting();
+                  LocalStorage.instance.saveOtherSetting();
                   setState(() {});
                 },
               ),
@@ -664,7 +664,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         actions: courseInfo.main.course.id.isNotEmpty
             ? [
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: _showRollCallDashboardPage,
                   icon: Icon(Icons.access_alarm),
                   label: Text(R.current.rollCallRemind),
                 ),
@@ -678,6 +678,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
       ),
       barrierDismissible: true,
     );
+  }
+
+  void _showRollCallDashboardPage() {
+    Get.back();
+    RouteUtils.launchRollCallDashBoardPage();
   }
 
   Future<String> _showEditDialog(String value) async {
@@ -719,13 +724,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showCourseDetail(CourseInfoJson courseInfo) {
     CourseMainJson course = courseInfo.main.course;
     Get.back();
-    String studentId = Model.instance.getCourseSetting().info.studentId;
+    String studentId = LocalStorage.instance.getCourseSetting().info.studentId;
     if (course.id.isEmpty) {
       MyToast.show(course.name + R.current.noSupport);
     } else {
       RouteUtils.toISchoolPage(studentId, courseInfo).then((value) {
         if (value != null) {
-          SemesterJson semesterSetting = Model.instance.getCourseSetting().info.courseSemester;
+          SemesterJson semesterSetting = LocalStorage.instance.getCourseSetting().info.courseSemester;
           _getCourseTable(semesterSetting: semesterSetting, studentId: value);
         }
       });
@@ -753,9 +758,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       isLoading = false;
     });
-    favorite = (Model.instance.getCourseTable(courseTable.studentId, courseTable.courseSemester) != null);
+    favorite = (LocalStorage.instance.getCourseTable(courseTable.studentId, courseTable.courseSemester) != null);
     if (favorite) {
-      Model.instance.addCourseTable(courseTableData);
+      LocalStorage.instance.addCourseTable(courseTableData);
     }
   }
 
