@@ -84,7 +84,7 @@ class ZuvioLoginPage extends StatelessWidget {
                       constraints: BoxConstraints.tightFor(
                         height: min(300, constraints.maxHeight),
                       ),
-                      child: GetBuilder<LoginBoxController>(
+                      child: GetBuilder<ZLoginBoxController>(
                         builder: (controller) => Column(
                           children: [
                             _boxTitle,

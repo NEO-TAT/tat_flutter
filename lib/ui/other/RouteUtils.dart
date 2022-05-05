@@ -141,7 +141,7 @@ class RouteUtils {
 
   static Future<void> launchZuvioLoginPage() => Get.to(
         () => ZuvioLoginPage(
-          loginHandler: ({username, password}) => LoginBoxController.to.login(username, password),
+          loginHandler: ({username, password}) => ZLoginBoxController.to.login(username, password),
           onPageClose: () => Get.back(),
         ),
         transition: transition,

@@ -41,7 +41,7 @@ Future<Null> main() async {
   final zuvioLoginRepository = ZLoginRepository(apiService: zuvioApiService);
   final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
 
-  final loginBoxController = LoginBoxController(
+  final loginBoxController = ZLoginBoxController(
     isLoginBtnEnabled: true,
     isInputBoxesEnabled: true,
     loginUseCase: zuvioLoginUseCase,
