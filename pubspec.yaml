@@ -33,7 +33,7 @@ dependencies:
   logger: ^1.1.0
   #顯示Log
   sprintf: ^6.0.0
-  flutter_local_notifications: ^9.4.1
+  flutter_local_notifications: ^9.5.1
   #通知欄  需修改android原始碼
   rxdart: ^0.27.3
   #通知欄有使用到
@@ -84,7 +84,7 @@ dependencies:
   package_info: ^2.0.2
   #檢測app版本用於檢查更新
   #----------html viewer----------#
-  flutter_widget_from_html_core: ^0.8.5+1
+  flutter_widget_from_html_core: ^0.8.5+3
   #----------animation----------#
   flutter_staggered_animations: ^1.0.0
   #listView or gridView動畫
@@ -109,7 +109,7 @@ dependencies:
   #語言切換用
   fluttertoast: ^8.0.9
   #Toast
-  awesome_dialog: ^2.2.0
+  awesome_dialog: ^2.2.1
   #顯示Error時用到
   flutter_slidable: ^1.2.0
   #email使用可左右滑抽屜
@@ -121,11 +121,11 @@ dependencies:
   alice: ^0.2.5
 
   # Firebase
-  firebase_core: ^1.15.0
-  firebase_analytics: ^9.1.6
-  firebase_crashlytics: ^2.7.1
-  firebase_remote_config: ^2.0.5
-  firebase_messaging: ^11.2.15
+  firebase_core: ^1.16.0
+  firebase_analytics: ^9.1.7
+  firebase_crashlytics: ^2.7.2
+  firebase_remote_config: ^2.0.6
+  firebase_messaging: ^11.3.0
 
   http_parser: ^4.0.0
 
