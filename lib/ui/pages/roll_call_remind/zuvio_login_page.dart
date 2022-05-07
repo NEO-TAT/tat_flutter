@@ -6,7 +6,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/ui/pages/roll_call_remind/controllers/login_box_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:get/get.dart';
 
 typedef LoginHandler = FutureOr<void> Function({String username, String password});
@@ -84,7 +84,7 @@ class ZuvioLoginPage extends StatelessWidget {
                       constraints: BoxConstraints.tightFor(
                         height: min(300, constraints.maxHeight),
                       ),
-                      child: GetBuilder<ZLoginBoxController>(
+                      child: GetBuilder<ZAuthController>(
                         builder: (controller) => Column(
                           children: [
                             _boxTitle,

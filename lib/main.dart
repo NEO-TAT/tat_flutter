@@ -8,11 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/config/Appthemes.dart';
+import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
 import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
-import 'package:flutter_app/ui/pages/roll_call_remind/controllers/login_box_controller.dart';
 import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -41,7 +41,7 @@ Future<Null> main() async {
   final zuvioLoginRepository = ZLoginRepository(apiService: zuvioApiService);
   final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
 
-  final loginBoxController = ZLoginBoxController(
+  final loginBoxController = ZAuthController(
     isLoginBtnEnabled: true,
     isInputBoxesEnabled: true,
     loginUseCase: zuvioLoginUseCase,

@@ -16,14 +16,14 @@ import 'package:tat_core/core/zuvio/usecase/login_use_case.dart';
 
 typedef _UISuspendedTransaction<T> = FutureOr<T> Function();
 
-class ZLoginBoxController extends GetxController {
-  ZLoginBoxController({
+class ZAuthController extends GetxController {
+  ZAuthController({
     required this.isLoginBtnEnabled,
     required this.isInputBoxesEnabled,
     required ZLoginUseCase loginUseCase,
   }) : _loginUseCase = loginUseCase;
 
-  static ZLoginBoxController get to => Get.find();
+  static ZAuthController get to => Get.find();
 
   bool isLoginBtnEnabled;
   bool isInputBoxesEnabled;
