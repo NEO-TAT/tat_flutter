@@ -3,11 +3,15 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/core/zuvio/domain/login_credential.dart';
+import 'package:tat_core/core/zuvio/domain/user_info.dart';
 import 'package:tat_core/core/zuvio/usecase/login_use_case.dart';
 
 typedef _UISuspendedTransaction<T> = FutureOr<T> Function();
@@ -44,6 +48,11 @@ class ZLoginBoxController extends GetxController {
     return result;
   }
 
+  Future<void> _saveCredential(ZLoginCredential credential) =>
+      LocalStorage.instance.saveZuvioLoginCredential(credential);
+
+  Future<void> _saveUserInfo(ZUserInfo userInfo) => LocalStorage.instance.saveZuvioUserInfo(userInfo);
+
   Future<void> _login(String username, String password) async {
     final loginCredential = ZLoginCredential(email: username, password: password);
     final result = await _loginUseCase(credential: loginCredential);
@@ -60,6 +69,19 @@ class ZLoginBoxController extends GetxController {
     }
 
     Log.d('Zuvio login successfully.');
+
+    await _saveCredential(loginCredential);
+    Log.d('Zuvio login credential saved.');
+
+    await _saveUserInfo(result.userInfo!);
+    Log.d('Zuvio user info saved.');
+
+    if (kDebugMode) {
+      Log.d(LocalStorage.instance.getZuvioLoginCredential());
+      Log.d(LocalStorage.instance.getZuvioUserInfo());
+    }
+
+    RouteUtils.launchRollCallDashBoardPage();
   }
 
   Future<void> login(String username, String password) =>
