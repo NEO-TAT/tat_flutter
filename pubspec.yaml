@@ -129,6 +129,8 @@ dependencies:
 
   http_parser: ^4.0.0
 
+  modal_bottom_sheet: ^2.0.1
+  email_validator: ^2.0.1
 
 dev_dependencies:
   flutter_test:
