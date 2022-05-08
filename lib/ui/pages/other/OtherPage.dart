@@ -144,7 +144,7 @@ class _OtherPageState extends State<OtherPage> {
         RouteUtils.toWebViewPage(R.current.feedback, link);
         break;
       case onListViewPress.RollCallRemind:
-        RouteUtils.launchRollCallDashBoardPage();
+        RouteUtils.launchRollCallDashBoardPageAfterLogin();
         break;
       default:
         MyToast.show(R.current.noFunction);
