@@ -8,7 +8,6 @@ import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
-import 'package:flutter_app/ui/other/RouteUtils.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/core/zuvio/domain/login_credential.dart';
 import 'package:tat_core/core/zuvio/domain/user_info.dart';
@@ -27,6 +26,7 @@ class ZAuthController extends GetxController {
 
   bool isLoginBtnEnabled;
   bool isInputBoxesEnabled;
+
   final ZLoginUseCase _loginUseCase;
 
   void _suspendUIInteractions() {
@@ -77,13 +77,18 @@ class ZAuthController extends GetxController {
     Log.d('Zuvio user info saved.');
 
     if (kDebugMode) {
-      Log.d(LocalStorage.instance.getZuvioLoginCredential());
+      Log.d(LocalStorage.instance.getZuvioLoginCredential().email);
       Log.d(LocalStorage.instance.getZuvioUserInfo());
     }
-
-    RouteUtils.launchRollCallDashBoardPage();
   }
 
   Future<void> login(String username, String password) =>
       _suspendInteractionsTransaction(transaction: () => _login(username, password));
+
+  bool isLoggedIntoZuvio() {
+    final accessToken = LocalStorage.instance.getZuvioUserInfo()?.accessToken;
+
+    // TODO(TU): Check if the accessToken is valid.
+    return accessToken != null && accessToken.isNotEmpty;
+  }
 }
