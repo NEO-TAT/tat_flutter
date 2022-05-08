@@ -130,6 +130,10 @@ dependencies:
   http_parser: ^4.0.0
 
 
+  # 相機
+  camera: ^0.9.4+21
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -160,7 +164,7 @@ flutter_intl:
   # Because it will be repeatedly generated when it is turned on,
   # it is very troublesome, so we temporarily turn it off.
   # If necessary, please turn it on by yourself.
-  enabled: false
+  enabled: true
 
 flutter_icons:
   android: true

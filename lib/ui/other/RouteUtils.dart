@@ -19,6 +19,7 @@ import 'package:flutter_app/ui/pages/roll_call_remind/zuvio_login_page.dart';
 import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
 import 'package:flutter_app/ui/pages/webview/WebViewPage.dart';
 import 'package:flutter_app/ui/screen/LoginScreen.dart';
+import 'package:flutter_app/ui/pages/note_camera/note_camera.dart';
 import 'package:get/get.dart';
 
 class RouteUtils {
@@ -147,4 +148,10 @@ class RouteUtils {
         transition: transition,
         preventDuplicates: true,
       );
+
+  static Future<void> launchCameraPage() => Get.to(
+        () => NoteCamera(),
+    transition: transition,
+    preventDuplicates: true,
+  );
 }

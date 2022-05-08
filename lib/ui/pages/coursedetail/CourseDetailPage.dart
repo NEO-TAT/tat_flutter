@@ -8,6 +8,7 @@ import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/TabPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/CourseInfoPage.dart';
+import 'package:flutter_app/ui/pages/coursedetail/screen/album_page.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusFilePage.dart';
 import 'package:get/get.dart';
@@ -39,6 +40,7 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
           R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
       tabPageList.add(
           TabPage(R.current.fileAndVideo, Icons.file_download, IPlusFilePage(widget.studentId, widget.courseInfo)));
+      tabPageList.add(TabPage("相簿", Icons.image, AlbumPage())); // need to deal with language
     }
 
     _tabController = TabController(vsync: this, length: tabPageList.length);

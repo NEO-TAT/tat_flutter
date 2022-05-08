@@ -234,5 +234,6 @@
   "pleaseConnectToNetwork": "Please connect to network",
   "autoRollCall": "Auto RollCall",
   "rollCall": "RollCall",
-  "rollCallRemind": "RollCall Remind"
+  "rollCallRemind": "RollCall Remind",
+  "album": "album"
 }

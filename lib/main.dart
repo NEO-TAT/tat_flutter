@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,8 @@ Future<Null> main() async {
   final zuvioApiService = ZuvioApiService();
   final zuvioLoginRepository = ZLoginRepository(apiService: zuvioApiService);
   final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
+
+  Get.put(await availableCameras());
 
   final loginBoxController = ZLoginBoxController(
     isLoginBtnEnabled: true,

@@ -255,6 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "useOldPassword": MessageLookupByLibrary.simpleMessage("延長原始密碼時間"),
         "versionInfo": MessageLookupByLibrary.simpleMessage("版本資訊"),
         "warning": MessageLookupByLibrary.simpleMessage("警告"),
-        "willRestart": MessageLookupByLibrary.simpleMessage("將自動重啟並套用語言")
+        "willRestart": MessageLookupByLibrary.simpleMessage("將自動重啟並套用語言"),
+        "album": MessageLookupByLibrary.simpleMessage("相簿")
       };
 }
