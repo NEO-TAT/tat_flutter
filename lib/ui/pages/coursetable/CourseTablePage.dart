@@ -730,7 +730,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     CourseMainJson course = courseInfo.main.course;
     String courseId = course.id;
     Get.back();
-    RouteUtils.launchCameraPage();
+    RouteUtils.launchCameraPage(courseId);
   }
 
   Future<String> _showEditDialog(String value) async {

@@ -149,8 +149,8 @@ class RouteUtils {
         preventDuplicates: true,
       );
 
-  static Future<void> launchCameraPage() => Get.to(
-        () => NoteCamera(),
+  static Future<void> launchCameraPage(String courseId) => Get.to(
+        () => NoteCamera(courseId: courseId),
     transition: transition,
     preventDuplicates: true,
   );

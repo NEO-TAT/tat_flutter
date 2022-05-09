@@ -5,20 +5,27 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:flutter_app/src/store/picture_storage.dart';
 
 class NoteCamera extends StatefulWidget {
-  const NoteCamera({Key? key}) : super(key: key);
+  final String courseId;
+  const NoteCamera({Key? key, required this.courseId}) : super(key: key);
 
   @override
-  State<NoteCamera> createState() => _NoteCameraState();
+  State<NoteCamera> createState() => _NoteCameraState(courseId);
 }
 
 class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   CameraController? controller;
   bool _isCameraInitialized = false;
   late List<CameraDescription> cameras;
+  late String courseId;
 
   double _zoom = 1.0;
+
+  _NoteCameraState(String courseId){
+    this.courseId = courseId;
+  }
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     final previousCameraController = controller;
@@ -51,6 +58,12 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
         _isCameraInitialized = controller!.value.isInitialized;
       });
     }
+  }
+
+  void takePicture() async{
+    final image = await controller?.takePicture();
+    String? path = image?.path;
+    if(path != null)PictureStorage.takePictureToStorage(courseId, path);
   }
 
   @override
@@ -89,7 +102,8 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
       body: Column(
         children: [
           _isCameraInitialized
-              ? CameraPreview(controller!,
+              ? CameraPreview(
+            controller!,
             child: GestureDetector(
               onScaleUpdate: (scaleStartDetails) {
                 double newZoom = 0.0;
@@ -124,7 +138,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
                   child: InkWell(
                     splashColor: Colors.grey[300]?.withOpacity(0.7),
                     splashFactory: InkRipple.splashFactory,
-                    onTap: () {},
+                    onTap: () => takePicture(),
                     child: const SizedBox(width: 56, height: 56),
                   ),
                 ),

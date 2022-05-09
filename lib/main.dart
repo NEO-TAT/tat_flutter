@@ -17,10 +17,12 @@ import 'package:flutter_app/ui/pages/roll_call_remind/controllers/login_box_cont
 import 'package:flutter_app/ui/screen/MainScreen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:tat_core/core/api/zuvio_api_service.dart';
 import 'package:tat_core/core/zuvio/data/login_repository.dart';
 import 'package:tat_core/core/zuvio/usecase/login_use_case.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
@@ -43,6 +45,21 @@ Future<Null> main() async {
   final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
 
   Get.put(await availableCameras());
+
+  Get.put(await openDatabase(
+    join(await getDatabasesPath(), 'localDB.db'),
+    onCreate: (db, version) {
+      return db.execute(
+          'CREATE TABLE photo_storage ('
+              '_id INTEGER PRIMARY KEY AUTOINCREMENT, '
+              'cursorId INTEGER, '
+              'courseId TEXT, '
+              'label TEXT, '
+              'picturePath TEXT)'
+          );
+    },
+    version: 1,
+  ));
 
   final loginBoxController = ZLoginBoxController(
     isLoginBtnEnabled: true,
@@ -73,7 +90,8 @@ Future<Null> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppProvider>(builder: (BuildContext context, AppProvider appProvider, Widget child) {
+    return Consumer<AppProvider>(
+        builder: (BuildContext context, AppProvider appProvider, Widget child) {
       appProvider.navigatorKey = Get.key;
       return GetMaterialApp(
         title: AppConfig.appName,
@@ -86,7 +104,10 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate
         ],
         builder: BotToastInit(),
-        navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
+        navigatorObservers: [
+          BotToastNavigatorObserver(),
+          AnalyticsUtils.observer
+        ],
         supportedLocales: S.delegate.supportedLocales,
         home: MainScreen(),
         logWriterCallback: (String text, {bool isError}) {

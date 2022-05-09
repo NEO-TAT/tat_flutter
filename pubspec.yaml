@@ -53,6 +53,7 @@ dependencies:
   #----------store data----------#
   shared_preferences: ^2.0.13
   flutter_cache_manager: ^3.3.0
+  sqflite: ^2.0.2+1
   #----------internet----------#
   dio: ^4.0.6
   #網路get post API
