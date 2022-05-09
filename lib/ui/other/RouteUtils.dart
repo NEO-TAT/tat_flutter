@@ -134,9 +134,7 @@ class RouteUtils {
       : launchRollCallDashBoardPage();
 
   static Future<void> launchRollCallDashBoardPage() => Get.to(
-        () => RollCallDashboardPage(
-          onAddNewPressed: () {},
-        ),
+        () => RollCallDashboardPage(),
         transition: transition,
         preventDuplicates: true,
       );
