@@ -18,8 +18,8 @@ typedef CancelLoginAction = void Function();
 /// A function to called when content of a [TextFormField] or [TextField] changed.
 typedef TextFieldValidator = String? Function(String?);
 
-class ZuvioLoginPage extends StatelessWidget {
-  ZuvioLoginPage({
+class ZuvioLoginPage extends StatefulWidget {
+  const ZuvioLoginPage({
     Key? key,
     LoginSuccessAction? onLoginSuccess,
     CancelLoginAction? onPageClose,
@@ -30,10 +30,37 @@ class ZuvioLoginPage extends StatelessWidget {
   final LoginSuccessAction? _onLoginSuccess;
   final CancelLoginAction? _onPageClose;
 
-  final TextEditingController _userNameInputBoxController = TextEditingController();
-  final TextEditingController _passwordInputBoxController = TextEditingController();
+  @override
+  State<ZuvioLoginPage> createState() => _ZuvioLoginPageState();
+}
+
+class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
+  late final TextEditingController _userNameInputBoxController;
+  late final TextEditingController _passwordInputBoxController;
+
+  final _closeButtonSize = 24.0;
+  final _loginFormKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _userNameInputBoxController = TextEditingController();
+    _passwordInputBoxController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _userNameInputBoxController.dispose();
+    _passwordInputBoxController.dispose();
+    super.dispose();
+  }
 
   void _onLoginPressed() {
+    final isValidate = _loginFormKey.currentState?.validate() ?? false;
+    if (!isValidate) {
+      return;
+    }
+
     final username = _userNameInputBoxController.text.trim();
     final password = _passwordInputBoxController.text;
 
@@ -42,14 +69,12 @@ class ZuvioLoginPage extends StatelessWidget {
 
   void _handleLoginCallBack() {
     if (ZAuthController.to.isLoggedIntoZuvio()) {
-      _onLoginSuccess?.call();
-    } else {
-      _passwordInputBoxController.clear();
+      widget._onLoginSuccess?.call();
     }
   }
 
   String? _emailValidator(String? rawData) {
-    if (rawData == null) {
+    if (rawData == null || rawData.isEmpty) {
       return R.current.accountNull;
     }
 
@@ -57,13 +82,7 @@ class ZuvioLoginPage extends StatelessWidget {
     return isValid ? null : R.current.error;
   }
 
-  String? _passwordValidator(String? rawData) {
-    if (rawData == null) {
-      return R.current.passwordNull;
-    }
-
-    return rawData.isNotEmpty ? null : R.current.error;
-  }
+  String? _passwordValidator(String? rawData) => (rawData == null || rawData.isEmpty) ? R.current.passwordNull : null;
 
   Widget _buildLoginButton({required bool enabled}) => Padding(
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 0),
@@ -131,32 +150,46 @@ class ZuvioLoginPage extends StatelessWidget {
           decoration: _boxDecoration,
           child: Padding(
             padding: EdgeInsets.all(20),
-            child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: LayoutBuilder(
-                builder: (context, constraints) => SingleChildScrollView(
-                  child: MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints.tightFor(
-                        height: min(330, constraints.maxHeight),
-                      ),
-                      child: GetBuilder<ZAuthController>(
-                        builder: (controller) {
-                          // Since the [didChangeDependencies] of the [GetBuilderState] won't be called,
-                          // we need to put the logics needs to be done after [build] finished here.
-                          WidgetsBinding.instance?.addPostFrameCallback((_) => _handleLoginCallBack());
+            child: LayoutBuilder(
+              builder: (context, constraints) => SingleChildScrollView(
+                child: MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints.tightForFinite(
+                      /// To avoid overlapping with the close button,
+                      /// we have to set the height not to exceed the height of the full screen minus the height of the close button,
+                      /// since the close button is placed at the top left.
+                      /// The size of the close button is its icon size (`_closeButtonSize`) plus the size of the inner edge of the button,
+                      /// and the default size of the inner edge is 12 per side.
+                      /// Please refer to [IconButton] for more details.
+                      /// And we also have to plus the edge size of the first padding widget of the _loginBox,
+                      /// So the final height of the _loginBox should be `max - (_closeButtonSize + closeButtonTotalHeight + first Padding height)`.
+                      height: min(330, constraints.maxHeight - (_closeButtonSize + 24 + 18)),
+                    ),
+                    child: GetBuilder<ZAuthController>(
+                      builder: (controller) {
+                        // Since the [didChangeDependencies] of the [GetBuilderState] won't be called,
+                        // we need to put the logics needs to be done after [build] finished here.
+                        WidgetsBinding.instance?.addPostFrameCallback((_) => _handleLoginCallBack());
 
-                          return Column(
-                            children: [
-                              _boxTitle,
-                              _buildEmailTextField(enabled: controller.isInputBoxesEnabled),
-                              _buildPasswordTextField(enabled: controller.isInputBoxesEnabled),
-                              _buildLoginButton(enabled: controller.isLoginBtnEnabled),
-                            ],
-                          );
-                        },
-                      ),
+                        return Wrap(
+                          runAlignment: WrapAlignment.center,
+                          children: [
+                            Form(
+                              key: _loginFormKey,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  _boxTitle,
+                                  _buildEmailTextField(enabled: controller.isInputBoxesEnabled),
+                                  _buildPasswordTextField(enabled: controller.isInputBoxesEnabled),
+                                  _buildLoginButton(enabled: controller.isLoginBtnEnabled),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -167,8 +200,9 @@ class ZuvioLoginPage extends StatelessWidget {
       );
 
   Widget get _closePageButton => IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () => _onPageClose?.call(),
+        icon: Icon(Icons.clear, size: _closeButtonSize),
+        iconSize: _closeButtonSize,
+        onPressed: () => widget._onPageClose?.call(),
       );
 
   Color get _bgColor => Color(0xFF125B50);
@@ -235,7 +269,6 @@ class _InputBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 0),
-        // TODO(TU): add form input content validations.
         child: TextFormField(
           controller: _controller,
           keyboardType: _keyboardType,
