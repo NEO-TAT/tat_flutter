@@ -65,6 +65,8 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
     final username = _userNameInputBoxController.text.trim();
     final password = _passwordInputBoxController.text;
 
+    _showPassword.value = false;
+
     ZAuthController.to.login(username, password);
   }
 
