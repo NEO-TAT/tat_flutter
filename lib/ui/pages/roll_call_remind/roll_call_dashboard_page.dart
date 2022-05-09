@@ -3,8 +3,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
-import 'package:get/get.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+/// A function returns `void` and with no any parameters.
+typedef VoidFunc = void Function();
 
 class RollCallDashboardPage extends StatelessWidget {
   const RollCallDashboardPage({
@@ -15,36 +18,7 @@ class RollCallDashboardPage extends StatelessWidget {
 
   void _onAddNewButtonPressed(BuildContext context) => showCupertinoModalBottomSheet(
         context: context,
-        builder: (context) => _buildRollCallServiceSheet(context),
-      );
-
-  Widget _buildCloseSheetButton(BuildContext context) => GestureDetector(
-        onTap: () => Get.back(),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            padding: EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.close,
-              size: 24,
-              color: Get.isDarkMode ? Theme.of(context).primaryColorLight : Theme.of(context).primaryColor,
-            ),
-          ),
-        ),
-      );
-
-  BoxDecoration get _sheetDecoration => BoxDecoration();
-
-  Widget _buildRollCallServiceSheet(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
-        child: Container(
-          decoration: _sheetDecoration,
-          child: _buildCloseSheetButton(context),
-        ),
+        builder: (context) => RollCallBottomSheet(),
       );
 
   PreferredSizeWidget get _appBar => AppBar(
@@ -59,8 +33,12 @@ class RollCallDashboardPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildAddNewButton(BuildContext context) => IconButton(
-        onPressed: () => _onAddNewButtonPressed(context),
+  Widget _buildAddNewButton(
+    BuildContext context, {
+    VoidFunc? onPressed,
+  }) =>
+      IconButton(
+        onPressed: onPressed,
         iconSize: _addNewButtonSize,
         icon: Center(
           child: Icon(
@@ -76,7 +54,10 @@ class RollCallDashboardPage extends StatelessWidget {
         body: SafeArea(
           child: Align(
             alignment: Alignment.center,
-            child: _buildAddNewButton(context),
+            child: _buildAddNewButton(
+              context,
+              onPressed: () => _onAddNewButtonPressed(context),
+            ),
           ),
         ),
       );
