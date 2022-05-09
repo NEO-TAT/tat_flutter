@@ -40,6 +40,7 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
 
   final _closeButtonSize = 24.0;
   final _loginFormKey = GlobalKey<FormState>();
+  final _showPassword = ValueNotifier(false);
 
   @override
   void initState() {
@@ -134,14 +135,24 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
         validator: _emailValidator,
       );
 
-  Widget _buildPasswordTextField({required bool enabled}) => _InputBox(
-        controller: _passwordInputBoxController,
-        keyboardType: TextInputType.visiblePassword,
-        icon: Icons.lock,
-        hintText: R.current.password,
-        obscure: true,
-        enabled: enabled,
-        validator: _passwordValidator,
+  Widget _buildPasswordTextField({required bool enabled}) => ValueListenableBuilder<bool>(
+        valueListenable: _showPassword,
+        builder: (context, value, child) => _InputBox(
+          controller: _passwordInputBoxController,
+          keyboardType: TextInputType.visiblePassword,
+          icon: Icons.lock,
+          hintText: R.current.password,
+          obscure: !_showPassword.value,
+          enabled: enabled,
+          validator: _passwordValidator,
+          suffixIcon: IconButton(
+            icon: Icon(
+              _showPassword.value ? Icons.visibility : Icons.visibility_off,
+              color: Theme.of(context).primaryColorDark,
+            ),
+            onPressed: () => _showPassword.value = !_showPassword.value,
+          ),
+        ),
       );
 
   Widget get _loginBox => Padding(
@@ -241,6 +252,7 @@ class _InputBox extends StatelessWidget {
     bool obscure = false,
     bool enabled = true,
     TextFieldValidator? validator,
+    Widget? suffixIcon,
   })  : _controller = controller,
         _keyboardType = keyboardType,
         _icon = icon,
@@ -248,6 +260,7 @@ class _InputBox extends StatelessWidget {
         _obscure = obscure,
         _enabled = enabled,
         _validator = validator,
+        _suffixIcon = suffixIcon,
         super(key: key);
 
   final TextEditingController _controller;
@@ -257,6 +270,7 @@ class _InputBox extends StatelessWidget {
   final bool _obscure;
   final bool _enabled;
   final TextFieldValidator? _validator;
+  final Widget? _suffixIcon;
 
   OutlineInputBorder _buildBorder({
     required Color color,
@@ -283,6 +297,7 @@ class _InputBox extends StatelessWidget {
             hintStyle: TextStyle(color: Colors.black26),
             border: _buildBorder(color: Colors.transparent),
             focusedBorder: _buildBorder(color: Colors.black54),
+            suffixIcon: _suffixIcon,
           ),
           style: TextStyle(color: Colors.black87),
         ),
