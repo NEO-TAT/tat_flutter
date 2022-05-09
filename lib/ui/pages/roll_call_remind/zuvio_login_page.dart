@@ -139,20 +139,20 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
 
   Widget _buildPasswordTextField({required bool enabled}) => ValueListenableBuilder<bool>(
         valueListenable: _showPassword,
-        builder: (context, value, child) => _InputBox(
+        builder: (context, showPassword, _) => _InputBox(
           controller: _passwordInputBoxController,
           keyboardType: TextInputType.visiblePassword,
           icon: Icons.lock,
           hintText: R.current.password,
-          obscure: !_showPassword.value,
+          obscure: !showPassword,
           enabled: enabled,
           validator: _passwordValidator,
           suffixIcon: IconButton(
             icon: Icon(
-              _showPassword.value ? Icons.visibility : Icons.visibility_off,
+              showPassword ? Icons.visibility : Icons.visibility_off,
               color: Theme.of(context).primaryColorDark,
             ),
-            onPressed: () => _showPassword.value = !_showPassword.value,
+            onPressed: () => _showPassword.value = !showPassword,
           ),
         ),
       );
