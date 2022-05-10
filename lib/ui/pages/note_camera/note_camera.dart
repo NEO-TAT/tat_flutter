@@ -9,6 +9,7 @@ import 'package:flutter_app/src/store/picture_storage.dart';
 
 class NoteCamera extends StatefulWidget {
   final String courseId;
+
   const NoteCamera({Key? key, required this.courseId}) : super(key: key);
 
   @override
@@ -23,7 +24,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
 
   double _zoom = 1.0;
 
-  _NoteCameraState(String courseId){
+  _NoteCameraState(String courseId) {
     this.courseId = courseId;
   }
 
@@ -60,7 +61,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
     }
   }
 
-  void takePicture() async{
+  void takePicture() async {
     final image = await controller?.takePicture();
     String? path = image?.path;
     if(path != null)PictureStorage.takePictureToStorage(courseId, path);
@@ -68,11 +69,11 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
     cameras = Get.find<List<CameraDescription>>();
     onNewCameraSelected(cameras[0]);
-    super.initState();
   }
 
   @override
@@ -98,53 +99,39 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          _isCameraInitialized
-              ? CameraPreview(
-            controller!,
-            child: GestureDetector(
-              onScaleUpdate: (scaleStartDetails) {
-                double newZoom = 0.0;
-                if (scaleStartDetails.scale > 1.0) {
-                  newZoom = _zoom + 0.05;
-                } else if (scaleStartDetails.scale < 1.0) {
-                  newZoom = _zoom - 0.05;
-                }
-
-                if (newZoom >= 1.0 && newZoom <= 9.0) {
-                  _zoom = newZoom;
-                }
-
-                controller?.setZoomLevel(_zoom);
-              },
-            ),
-          )
-              : Container(),
-          Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.transparent,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 3.0,
-                ),
-              ),
-              padding: const EdgeInsets.all(1.0),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.white,
-                  child: InkWell(
-                    splashColor: Colors.grey[300]?.withOpacity(0.7),
-                    splashFactory: InkRipple.splashFactory,
-                    onTap: () => takePicture(),
-                    child: const SizedBox(width: 56, height: 56),
-                  ),
-                ),
-              )),
-        ],
-      )
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onScaleUpdate: (scaleStartDetails) {
+        double newZoom = 0.0;
+        if (scaleStartDetails.scale > 1.0) {
+          newZoom = _zoom + 0.05;
+        } else if (scaleStartDetails.scale < 1.0) {
+          newZoom = _zoom - 0.05;
+        }
+        if (newZoom >= 1.0 && newZoom <= 9.0) {
+          _zoom = newZoom;
+        }
+        controller?.setZoomLevel(_zoom);
+      },
+      child: _isCameraInitialized
+          ? CameraPreview(controller!,
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: ClipOval(
+                      child: Material(
+                        color: Colors.white,
+                        child: InkWell(
+                          splashColor: Colors.grey[300]?.withOpacity(0.7),
+                          splashFactory: InkRipple.splashFactory,
+                          onTap: () => takePicture(),
+                          child: const SizedBox(width: 56, height: 56),
+                        ),
+                      ),
+                    ),
+                  )))
+          : Container(),
     );
   }
 }
