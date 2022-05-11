@@ -6,9 +6,6 @@ import 'package:flutter_app/src/R.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-/// A function returns `void` and with no any parameters.
-typedef VoidFunc = void Function();
-
 class RollCallDashboardPage extends StatelessWidget {
   const RollCallDashboardPage({
     Key? key,
@@ -35,7 +32,7 @@ class RollCallDashboardPage extends StatelessWidget {
 
   Widget _buildAddNewButton(
     BuildContext context, {
-    VoidFunc? onPressed,
+    VoidCallback? onPressed,
   }) =>
       IconButton(
         onPressed: onPressed,
