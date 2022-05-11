@@ -52,11 +52,14 @@ class RollCallDashboardPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: _appBar,
         body: SafeArea(
-          child: Align(
-            alignment: Alignment.center,
-            child: _buildAddNewButton(
-              context,
-              onPressed: () => _onAddNewButtonPressed(context),
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+            child: Align(
+              alignment: Alignment.center,
+              child: _buildAddNewButton(
+                context,
+                onPressed: () => _onAddNewButtonPressed(context),
+              ),
             ),
           ),
         ),
