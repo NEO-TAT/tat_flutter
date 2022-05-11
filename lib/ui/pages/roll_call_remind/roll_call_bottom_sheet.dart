@@ -2,22 +2,20 @@
 // @dart=2.16
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/course_card_widget.dart';
 import 'package:get/get.dart';
-
-/// A function returns `void` and with no any parameters.
-typedef VoidFunc = void Function();
 
 class RollCallBottomSheet extends StatelessWidget {
   const RollCallBottomSheet({Key? key}) : super(key: key);
 
   Widget _buildCloseSheetButton(
     BuildContext context, {
-    VoidFunc? onTab,
+    VoidCallback? onTab,
   }) =>
       GestureDetector(
         onTap: onTab,
         child: Container(
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.1),
             shape: BoxShape.circle,
@@ -30,20 +28,46 @@ class RollCallBottomSheet extends StatelessWidget {
         ),
       );
 
-  BoxDecoration get _sheetDecoration => BoxDecoration();
-
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
-        child: Container(
-          decoration: _sheetDecoration,
-          child: Align(
-            alignment: Alignment.topRight,
+  Widget build(BuildContext context) => Stack(
+        children: [
+          Positioned(
+            right: 12,
+            top: 12,
             child: _buildCloseSheetButton(
               context,
               onTab: () => Get.back(),
             ),
           ),
-        ),
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  width: 0,
+                  height: 32,
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+                    child: ListView.builder(
+                      itemCount: 12,
+                      itemBuilder: (context, index) {
+                        return CourseCard(
+                          courseName: "TEST",
+                          teacherName: "Daniel",
+                          semesterName: "110-2",
+                          isDarkMode: Get.isDarkMode,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       );
 }
