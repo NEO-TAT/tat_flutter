@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/config/app_link.dart';
 import 'package:flutter_app/src/model/remoteconfig/remote_config_version_info.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/util/remote_config_util.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:get/get.dart';

@@ -1,6 +1,6 @@
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
 import 'package:flutter_app/src/model/ischoolplus/ischool_plus_announcement_json.dart';
+import 'package:flutter_app/src/r.dart';
 
 import '../task.dart';
 import 'iplus_system_task.dart';

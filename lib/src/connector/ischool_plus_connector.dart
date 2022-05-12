@@ -10,8 +10,8 @@ import 'package:flutter_app/src/util/html_utils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 
-import 'ntut_connector.dart';
 import 'core/connector_parameter.dart';
+import 'ntut_connector.dart';
 
 enum ISchoolPlusConnectorStatus { loginSuccess, loginFail, unknownError }
 

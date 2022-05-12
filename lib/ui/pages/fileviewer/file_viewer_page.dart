@@ -5,7 +5,7 @@ import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
 import 'package:flutter_app/src/util/file_utils.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:get/get.dart';
 import 'package:path/path.dart' as path_lib;
 import 'package:provider/provider.dart';
@@ -139,7 +139,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                       return index == 0
                           ? IconButton(
                               icon: Icon(
-                                widget.path.toString().contains("emulated") ? Feather.smartphone : Icons.sd_card,
+                                widget.path.toString().contains("emulated") ? FeatherIcons.smartphone : Icons.sd_card,
                                 color: index == paths.length - 1
                                     ? Theme.of(context).colorScheme.secondary
                                     : Theme.of(context).textTheme.headline6.color,
@@ -273,7 +273,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
           floatingActionButton: FloatingActionButton(
             onPressed: () => addDialog(context, path),
             tooltip: "Add Folder",
-            child: const Icon(Feather.plus),
+            child: const Icon(FeatherIcons.plus),
           ),
         ),
       );

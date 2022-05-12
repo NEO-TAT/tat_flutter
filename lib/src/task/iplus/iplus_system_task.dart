@@ -1,8 +1,8 @@
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/src/task/ntut/ntut_task.dart';
+import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
 
 class IPlusSystemTask<T> extends NTUTTask<T> {

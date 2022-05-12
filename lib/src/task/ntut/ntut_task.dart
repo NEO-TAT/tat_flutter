@@ -1,6 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';

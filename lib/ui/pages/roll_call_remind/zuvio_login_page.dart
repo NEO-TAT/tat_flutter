@@ -6,8 +6,8 @@ import 'dart:math';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:get/get.dart';
 
 /// A function to be invoked after logged in successfully.

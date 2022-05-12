@@ -1,8 +1,7 @@
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
-
-import '../task.dart';
-import 'iplus_system_task.dart';
+import 'package:flutter_app/src/r.dart';
+import 'package:flutter_app/src/task/iplus/iplus_system_task.dart';
+import 'package:flutter_app/src/task/task.dart';
 
 class IPlusSetCourseSubscribeTask extends IPlusSystemTask<bool> {
   final String bid;

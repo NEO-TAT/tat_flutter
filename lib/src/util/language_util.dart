@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/generated/l10n.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/model/setting/setting_json.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 
 enum LangEnum { en, zh }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
+import 'package:flutter_app/src/r.dart';
 
 class CourseTableControl {
   bool isHideSaturday = false;

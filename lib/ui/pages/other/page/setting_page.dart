@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:after_init/after_init.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
@@ -11,7 +10,7 @@ import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/ui/other/list_view_animator.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -24,17 +23,13 @@ class SettingPage extends StatefulWidget {
   State<SettingPage> createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> with AfterInitMixin<SettingPage> {
+class _SettingPageState extends State<SettingPage> {
   String downloadPath;
 
   @override
   void initState() {
     downloadPath = "";
     super.initState();
-  }
-
-  @override
-  void didInitState() {
     _getDownloadPath();
   }
 
@@ -151,7 +146,7 @@ class _SettingPageState extends State<SettingPage> with AfterInitMixin<SettingPa
                   padding: EdgeInsets.only(left: 10),
                 ),
                 const Icon(
-                  Feather.moon,
+                  FeatherIcons.moon,
                 ),
               ],
             ),

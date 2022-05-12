@@ -3,8 +3,8 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 

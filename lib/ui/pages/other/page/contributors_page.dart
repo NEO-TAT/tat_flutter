@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/config/app_link.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/list_view_animator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:github/github.dart';
