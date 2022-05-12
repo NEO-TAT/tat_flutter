@@ -2,6 +2,7 @@
 // @dart=2.16
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/course_card_widget.dart';
 import 'package:get/get.dart';
 
@@ -28,6 +29,24 @@ class RollCallBottomSheet extends StatelessWidget {
         ),
       );
 
+  Widget get _courseCardList {
+    final isDarkMode = Get.isDarkMode;
+    return GetBuilder<ZCourseController>(
+      builder: (controller) => ListView.builder(
+        itemCount: controller.courses.length,
+        itemBuilder: (_, index) {
+          final course = controller.courses[index];
+          return CourseCard(
+            courseName: course.name,
+            teacherName: course.teacherName,
+            semesterName: course.semesterName,
+            isDarkMode: isDarkMode,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Stack(
         children: [
@@ -52,17 +71,7 @@ class RollCallBottomSheet extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
                     padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
-                    child: ListView.builder(
-                      itemCount: 12,
-                      itemBuilder: (context, index) {
-                        return CourseCard(
-                          courseName: "TEST",
-                          teacherName: "Daniel",
-                          semesterName: "110-2",
-                          isDarkMode: Get.isDarkMode,
-                        );
-                      },
-                    ),
+                    child: _courseCardList,
                   ),
                 ),
               ],

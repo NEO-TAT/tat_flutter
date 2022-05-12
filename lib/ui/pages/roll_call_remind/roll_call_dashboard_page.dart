@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -13,10 +14,13 @@ class RollCallDashboardPage extends StatelessWidget {
 
   final _addNewButtonSize = 144.0;
 
-  void _onAddNewButtonPressed(BuildContext context) => showCupertinoModalBottomSheet(
-        context: context,
-        builder: (context) => RollCallBottomSheet(),
-      );
+  void _onAddNewButtonPressed(BuildContext context) {
+    ZCourseController.to.loadCourses();
+    showCupertinoModalBottomSheet(
+      context: context,
+      builder: (context) => RollCallBottomSheet(),
+    );
+  }
 
   PreferredSizeWidget get _appBar => AppBar(
         title: Row(
