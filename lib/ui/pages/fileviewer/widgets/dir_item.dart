@@ -21,8 +21,8 @@ class DirectoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
         onTap: tap,
-        contentPadding: EdgeInsets.all(0),
-        leading: Container(
+        contentPadding: const EdgeInsets.all(0),
+        leading: const SizedBox(
           height: 40,
           width: 40,
           child: Center(
@@ -32,8 +32,8 @@ class DirectoryItem extends StatelessWidget {
           ),
         ),
         title: Text(
-          "${basename(file.path)}",
-          style: TextStyle(
+          basename(file.path),
+          style: const TextStyle(
             fontSize: 14,
           ),
           maxLines: 2,

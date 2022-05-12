@@ -6,27 +6,24 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app/src/config/AppConfig.dart';
-import 'package:flutter_app/src/config/Appthemes.dart';
+import 'package:flutter_app/src/config/app_config.dart';
+import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
-import 'package:flutter_app/src/providers/AppProvider.dart';
-import 'package:flutter_app/src/providers/CategoryProvider.dart';
-import 'package:flutter_app/src/util/AnalyticsUtils.dart';
-import 'package:flutter_app/src/util/CloudMessagingUtils.dart';
-import 'package:flutter_app/ui/screen/MainScreen.dart';
+import 'package:flutter_app/src/providers/app_provider.dart';
+import 'package:flutter_app/src/providers/category_provider.dart';
+import 'package:flutter_app/src/util/analytics_utils.dart';
+import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
+import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:tat_core/core/api/zuvio_api_service.dart';
-import 'package:tat_core/core/zuvio/data/login_repository.dart';
-import 'package:tat_core/core/zuvio/usecase/login_use_case.dart';
 import 'package:tat_core/tat_core.dart';
 
-import 'debug/log/Log.dart';
+import 'debug/log/log.dart';
 import 'generated/l10n.dart';
 
-Future<Null> main() async {
+Future<void> main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -67,7 +64,7 @@ Future<Null> main() async {
             ChangeNotifierProvider(create: (_) => AppProvider()),
             ChangeNotifierProvider(create: (_) => CategoryProvider()),
           ],
-          child: MyApp(),
+          child: const MyApp(),
         ),
       );
     },
@@ -79,6 +76,8 @@ Future<Null> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(builder: (BuildContext context, AppProvider appProvider, Widget child) {
@@ -87,7 +86,7 @@ class MyApp extends StatelessWidget {
         title: AppConfig.appName,
         theme: appProvider.theme,
         darkTheme: AppThemes.darkTheme,
-        localizationsDelegates: [
+        localizationsDelegates: const [
           S.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
@@ -96,7 +95,7 @@ class MyApp extends StatelessWidget {
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
         supportedLocales: S.delegate.supportedLocales,
-        home: MainScreen(),
+        home: const MainScreen(),
         logWriterCallback: (String text, {bool isError}) {
           Log.d(text);
         },

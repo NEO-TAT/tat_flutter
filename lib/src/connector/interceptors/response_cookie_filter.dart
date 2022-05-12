@@ -21,10 +21,10 @@ class ResponseCookieFilter extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     try {
-      final _clearedResponse = _removeCookiesFrom(response);
-      handler.next(_clearedResponse);
-    } on Exception catch (e, _stackTrace) {
-      final err = DioError(requestOptions: response.requestOptions, error: e)..stackTrace = _stackTrace;
+      final clearedResponse = _removeCookiesFrom(response);
+      handler.next(clearedResponse);
+    } on Exception catch (e, stackTrace) {
+      final err = DioError(requestOptions: response.requestOptions, error: e)..stackTrace = stackTrace;
       handler.reject(err, true);
     }
   }

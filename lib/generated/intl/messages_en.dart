@@ -177,7 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSupport": MessageLookupByLibrary.simpleMessage(" not support"),
         "noSupportExternalVideoPlayer": MessageLookupByLibrary.simpleMessage("Not find support external video player"),
         "notSupport": MessageLookupByLibrary.simpleMessage("Not support"),
-        "nothingHere": MessageLookupByLibrary.simpleMessage("There\'s nothing here"),
+        "nothingHere": MessageLookupByLibrary.simpleMessage("There's nothing here"),
         "numberOfStudent": MessageLookupByLibrary.simpleMessage("Number of students"),
         "numberOfWithdraw": MessageLookupByLibrary.simpleMessage("Number of withdraw"),
         "openExternalVideo": MessageLookupByLibrary.simpleMessage("Open with external video player"),

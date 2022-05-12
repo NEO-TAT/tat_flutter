@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:open_file/open_file.dart';
 import 'package:rxdart/rxdart.dart';
@@ -29,7 +29,7 @@ class Notifications {
     // var notificationAppLaunchDetails =
     //     await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-    var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+    var initializationSettingsAndroid = const AndroidInitializationSettings('app_icon');
     // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
     // of the `IOSFlutterLocalNotificationsPlugin` class
     var initializationSettingsIOS = IOSInitializationSettings(
@@ -114,7 +114,7 @@ class Notifications {
       progress: nowProgress,
       playSound: false,
     );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
@@ -137,7 +137,7 @@ class Notifications {
       indeterminate: true,
       playSound: false,
     );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails();
     var platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(value.id, value.title, value.body, platformChannelSpecifics,
@@ -155,7 +155,7 @@ class Notifications {
       ticker: 'ticker',
       playSound: false,
     );
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
@@ -192,7 +192,7 @@ class ReceivedNotification {
   set title(String value) {
     String newTitle;
     if (value.length >= _titleLong) {
-      newTitle = value.substring(0, _titleLong) + "...";
+      newTitle = "${value.substring(0, _titleLong)}...";
     }
     _showTitle = (value.length <= _titleLong) ? value : newTitle;
   }

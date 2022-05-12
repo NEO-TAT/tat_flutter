@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_app/debug/log/Log.dart';
+import 'package:flutter_app/debug/log/log.dart';
 import 'package:sprintf/sprintf.dart';
 
-import 'ConnectorParameter.dart';
-import 'DioConnector.dart';
+import 'connector_parameter.dart';
+import 'dio_connector.dart';
 
 class Connector {
   static Future<String> getDataByPost(ConnectorParameter parameter) async {
@@ -13,7 +13,7 @@ class Connector {
       String result = await DioConnector.instance.getDataByPost(parameter);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -22,7 +22,7 @@ class Connector {
       String result = await DioConnector.instance.getDataByGet(parameter);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -32,7 +32,7 @@ class Connector {
       result = await DioConnector.instance.getDataByGetResponse(parameter);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -42,7 +42,7 @@ class Connector {
       result = await DioConnector.instance.getDataByPostResponse(parameter);
       return result;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

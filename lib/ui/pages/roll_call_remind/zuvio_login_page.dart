@@ -1,11 +1,12 @@
 // TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.16
+// @dart=2.17
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'dart:math';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:get/get.dart';
 
@@ -88,26 +89,26 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
   String? _passwordValidator(String? rawData) => (rawData == null || rawData.isEmpty) ? R.current.passwordNull : null;
 
   Widget _buildLoginButton({required bool enabled}) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
         child: ElevatedButton.icon(
           onPressed: enabled ? _onLoginPressed : null,
           style: ElevatedButton.styleFrom(
-            primary: Color(0xFFFF6363),
+            primary: const Color(0xFFFF6363),
             onSurface: Colors.black12,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             ),
           ),
-          icon: Icon(Icons.login),
+          icon: const Icon(Icons.login),
           label: Text(R.current.login),
         ),
       );
 
   Widget get _boxTitle => Padding(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
         child: Text(
-          R.current.login + ' Zuvio',
-          style: TextStyle(
+          '${R.current.login} Zuvio',
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
             color: Colors.black54,
@@ -116,14 +117,14 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
       );
 
   BoxDecoration get _boxDecoration => BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: Color(0xFFFAF5E4),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        color: const Color(0xFFFAF5E4),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
             spreadRadius: 5,
             blurRadius: 7,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ],
       );
@@ -162,7 +163,7 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
         child: Container(
           decoration: _boxDecoration,
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: LayoutBuilder(
               builder: (context, constraints) => SingleChildScrollView(
                 child: MediaQuery(
@@ -183,7 +184,7 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
                       builder: (controller) {
                         // Since the [didChangeDependencies] of the [GetBuilderState] won't be called,
                         // we need to put the logics needs to be done after [build] finished here.
-                        WidgetsBinding.instance?.addPostFrameCallback((_) => _handleLoginCallBack());
+                        WidgetsBinding.instance.addPostFrameCallback((_) => _handleLoginCallBack());
 
                         return Wrap(
                           runAlignment: WrapAlignment.center,
@@ -218,7 +219,7 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
         onPressed: () => widget._onPageClose?.call(),
       );
 
-  Color get _bgColor => Color(0xFF125B50);
+  Color get _bgColor => const Color(0xFF125B50);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -284,7 +285,7 @@ class _InputBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
         child: TextFormField(
           controller: _controller,
           keyboardType: _keyboardType,
@@ -292,16 +293,16 @@ class _InputBox extends StatelessWidget {
           enabled: _enabled,
           validator: _validator,
           decoration: InputDecoration(
-            fillColor: Color(0xFFEAE5D2),
+            fillColor: const Color(0xFFEAE5D2),
             filled: true,
             icon: Icon(_icon, color: Colors.black54),
             hintText: _hintText,
-            hintStyle: TextStyle(color: Colors.black26),
+            hintStyle: const TextStyle(color: Colors.black26),
             border: _buildBorder(color: Colors.transparent),
             focusedBorder: _buildBorder(color: Colors.black54),
             suffixIcon: _suffixIcon,
           ),
-          style: TextStyle(color: Colors.black87),
+          style: const TextStyle(color: Colors.black87),
         ),
       );
 }

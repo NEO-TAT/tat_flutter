@@ -12,5 +12,5 @@ class PathBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) => child;
 
   @override
-  Size get preferredSize => Size.fromHeight(40.0);
+  Size get preferredSize => const Size.fromHeight(40.0);
 }

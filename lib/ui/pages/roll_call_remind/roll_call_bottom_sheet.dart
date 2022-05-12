@@ -1,5 +1,5 @@
 // TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.16
+// @dart=2.17
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';

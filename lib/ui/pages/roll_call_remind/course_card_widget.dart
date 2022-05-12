@@ -1,5 +1,5 @@
 // TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.16
+// @dart=2.17
 
 import 'package:flutter/material.dart';
 
@@ -38,7 +38,7 @@ class CourseCard extends StatelessWidget {
           FittedBox(
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.account_circle_outlined,
                   color: Colors.white,
                 ),
@@ -50,7 +50,7 @@ class CourseCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 20),
-                Icon(
+                const Icon(
                   Icons.schedule,
                   color: Colors.white,
                 ),
@@ -103,7 +103,7 @@ class CourseCard extends StatelessWidget {
       child: SizedBox(
         height: size.height * 0.25,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

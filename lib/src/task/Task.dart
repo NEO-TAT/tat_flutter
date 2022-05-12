@@ -1,4 +1,4 @@
-enum TaskStatus { Success, GiveUp, Restart }
+enum TaskStatus { success, giveUp, restart }
 
 abstract class Task<T> {
   T result;
