@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/src/config/AppConfig.dart';
 import 'package:flutter_app/src/config/Appthemes.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/providers/CategoryProvider.dart';
 import 'package:flutter_app/src/util/AnalyticsUtils.dart';
@@ -20,6 +21,7 @@ import 'package:provider/provider.dart';
 import 'package:tat_core/core/api/zuvio_api_service.dart';
 import 'package:tat_core/core/zuvio/data/login_repository.dart';
 import 'package:tat_core/core/zuvio/usecase/login_use_case.dart';
+import 'package:tat_core/tat_core.dart';
 
 import 'debug/log/Log.dart';
 import 'generated/l10n.dart';
@@ -38,18 +40,27 @@ Future<Null> main() async {
   );
 
   final zuvioApiService = ZuvioApiService();
-  final zuvioLoginRepository = ZLoginRepository(apiService: zuvioApiService);
-  final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
 
-  final loginBoxController = ZAuthController(
+  final zuvioLoginRepository = ZLoginRepository(apiService: zuvioApiService);
+  final zStudentCourseListRepository = ZStudentCourseListRepository(apiService: zuvioApiService);
+
+  final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
+  final zuvioGetCourseListUseCase = ZGetStudentCourseListUseCase(zStudentCourseListRepository);
+
+  final zAuthController = ZAuthController(
     isLoginBtnEnabled: true,
     isInputBoxesEnabled: true,
     loginUseCase: zuvioLoginUseCase,
   );
 
+  final zCourseController = ZCourseController(
+    getCourseListUseCase: zuvioGetCourseListUseCase,
+  );
+
   runZonedGuarded(
     () {
-      Get.put(loginBoxController);
+      Get.put(zAuthController);
+      Get.put(zCourseController);
       runApp(
         MultiProvider(
           providers: [
