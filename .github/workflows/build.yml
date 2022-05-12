@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 on:
   push:
@@ -49,6 +49,13 @@ jobs:
     # Get packages.
     - name: Get dependencies
       run: flutter pub get
+
+    # check code is formatted correctly.
+    - name: Ensure the Dart code is formatted correctly
+      run: flutter format --set-exit-if-changed --dry-run -l 120 .
+
+    # Analyze, check formatting, and run unit tests.
+    - run: flutter analyze
 
     # Build ios app
     - name: Build app
@@ -105,6 +112,13 @@ jobs:
     # Get packages.
     - name: Get dependencies
       run: flutter pub get
+
+    # check code is formatted correctly.
+    - name: Ensure the Dart code is formatted correctly
+      run: flutter format --set-exit-if-changed --dry-run -l 120 .
+
+    # Analyze, check formatting, and run unit tests.
+    - run: flutter analyze
 
     # Build aos app
     - name: Build appbundle
