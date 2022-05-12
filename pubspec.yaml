@@ -46,7 +46,7 @@ dependencies:
   #處理HTML特殊字
   local_auth: ^2.0.2
   #驗證身分指紋
-  version: ^1.2.0
+  version: ^2.0.0
   #版本比較
   file_picker: ^4.5.1
   #選擇android資料夾
@@ -71,7 +71,8 @@ dependencies:
   #---------icon----------#
   eva_icons_flutter: ^3.1.0
   #https://akveo.github.io/eva-icons/#/
-  flutter_icons: ^1.1.0
+
+  flutter_feather_icons: ^2.0.0+1
   #https://oblador.github.io/react-native-vector-icons/
   #---------json----------#
   json_annotation: ^4.5.0
