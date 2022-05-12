@@ -35,32 +35,34 @@ class CourseCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Row(
-            children: [
-              Icon(
-                Icons.account_circle_outlined,
-                color: Colors.white,
-              ),
-              Text(
-                _teacherName,
-                style: const TextStyle(
+          FittedBox(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.account_circle_outlined,
                   color: Colors.white,
-                  fontSize: 20,
                 ),
-              ),
-              const SizedBox(width: 20),
-              Icon(
-                Icons.schedule,
-                color: Colors.white,
-              ),
-              Text(
-                _semesterName,
-                style: const TextStyle(
+                Text(
+                  _teacherName,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Icon(
+                  Icons.schedule,
                   color: Colors.white,
-                  fontSize: 20,
                 ),
-              ),
-            ],
+                Text(
+                  _semesterName,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       );
