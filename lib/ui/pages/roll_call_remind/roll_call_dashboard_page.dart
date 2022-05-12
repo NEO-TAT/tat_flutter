@@ -3,16 +3,24 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class RollCallDashboardPage extends StatelessWidget {
   const RollCallDashboardPage({
     Key? key,
-    required void Function() onAddNewPressed,
-  })  : _onAddNewButtonPressed = onAddNewPressed,
-        super(key: key);
+  }) : super(key: key);
 
-  final void Function() _onAddNewButtonPressed;
   final _addNewButtonSize = 144.0;
+
+  void _onAddNewButtonPressed(BuildContext context) {
+    ZCourseController.to.loadCourses();
+    showCupertinoModalBottomSheet(
+      context: context,
+      builder: (context) => RollCallBottomSheet(),
+    );
+  }
 
   PreferredSizeWidget get _appBar => AppBar(
         title: Row(
@@ -26,8 +34,12 @@ class RollCallDashboardPage extends StatelessWidget {
         ),
       );
 
-  Widget get _addNewButton => IconButton(
-        onPressed: _onAddNewButtonPressed,
+  Widget _buildAddNewButton(
+    BuildContext context, {
+    VoidCallback? onPressed,
+  }) =>
+      IconButton(
+        onPressed: onPressed,
         iconSize: _addNewButtonSize,
         icon: Center(
           child: Icon(
@@ -41,9 +53,15 @@ class RollCallDashboardPage extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: _appBar,
         body: SafeArea(
-          child: Align(
-            alignment: Alignment.center,
-            child: _addNewButton,
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+            child: Align(
+              alignment: Alignment.center,
+              child: _buildAddNewButton(
+                context,
+                onPressed: () => _onAddNewButtonPressed(context),
+              ),
+            ),
           ),
         ),
       );

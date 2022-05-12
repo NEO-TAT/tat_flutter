@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/core/DioConnector.dart';
+import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/ui/pages/coursedetail/CourseDetailPage.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementDetailPage.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_app/ui/pages/other/page/DevPage.dart';
 import 'package:flutter_app/ui/pages/other/page/PrivacyPolicyPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SettingPage.dart';
 import 'package:flutter_app/ui/pages/other/page/SubSystemPage.dart';
-import 'package:flutter_app/ui/pages/roll_call_remind/controllers/login_box_controller.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_dashboard_page.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/zuvio_login_page.dart';
 import 'package:flutter_app/ui/pages/videoplayer/ClassVideoPlayer.dart';
@@ -129,22 +129,29 @@ class RouteUtils {
     );
   }
 
+  static Future<void> launchRollCallDashBoardPageAfterLogin() => (!isLoggedIntoZuvio())
+      ? launchZuvioLoginPage(loginSuccessAction: () => launchRollCallDashBoardPage())
+      : launchRollCallDashBoardPage();
+
   static Future<void> launchRollCallDashBoardPage() => Get.to(
-        () => RollCallDashboardPage(
-          onAddNewPressed: () {
-            launchZuvioLoginPage();
-          },
-        ),
+        () => RollCallDashboardPage(),
         transition: transition,
         preventDuplicates: true,
       );
 
-  static Future<void> launchZuvioLoginPage() => Get.to(
+  static Future<void> launchZuvioLoginPage({
+    LoginSuccessAction loginSuccessAction,
+  }) =>
+      Get.to(
         () => ZuvioLoginPage(
-          loginHandler: ({username, password}) => ZLoginBoxController.to.login(username, password),
+          onLoginSuccess: () {
+            Get.back();
+            loginSuccessAction();
+          },
           onPageClose: () => Get.back(),
         ),
         transition: transition,
-        preventDuplicates: true,
       );
+
+  static bool isLoggedIntoZuvio() => ZAuthController.to.isLoggedIntoZuvio();
 }

@@ -8,6 +8,7 @@ import 'package:flutter_app/src/model/setting/SettingJson.dart';
 import 'package:flutter_app/src/model/userdata/UserDataJson.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tat_core/tat_core.dart';
 
 import '../model/course/CourseClassJson.dart';
 
@@ -29,6 +30,8 @@ class LocalStorage {
   final _courseSemesterJsonKey = "CourseSemesterListJson";
   final _scoreCreditJsonKey = "ScoreCreditJsonKey";
   final _settingJsonKey = "SettingJsonKey";
+  final _zUserInfoKey = 'ZUserInfoKey';
+  final _zLoginCredentialKey = 'ZLoginCredentialKey';
   final _firstRun = Map<String, bool>();
   final _courseTableList = <CourseTableJson>[];
 
@@ -219,6 +222,42 @@ class LocalStorage {
   Future<void> _clearAnnouncementSetting() {
     _setting.announcement = AnnouncementSettingJson();
     return _saveAnnouncementSetting();
+  }
+
+  Future<void> saveZuvioLoginCredential(ZLoginCredential credential) async {
+    await _writeString('$_zLoginCredentialKey-email', credential.email);
+    await _writeString('$_zLoginCredentialKey-password', credential.password);
+  }
+
+  Future<void> saveZuvioUserInfo(ZUserInfo userInfo) => _saveJson(_zUserInfoKey, {
+        '$_zUserInfoKey-id': userInfo.id,
+        '$_zUserInfoKey-accessToken': userInfo.accessToken,
+        '$_zUserInfoKey-name': userInfo.name,
+        '$_zUserInfoKey-hasCourse': userInfo.hasCourse.toString(),
+      });
+
+  ZLoginCredential getZuvioLoginCredential() {
+    final rawZuvioLoginCredentialEmail = _readString('$_zLoginCredentialKey-email');
+    final rawZuvioLoginCredentialPassword = _readString('$_zLoginCredentialKey-password');
+
+    return (rawZuvioLoginCredentialEmail != null && rawZuvioLoginCredentialPassword != null)
+        ? ZLoginCredential(
+            email: rawZuvioLoginCredentialEmail,
+            password: rawZuvioLoginCredentialPassword,
+          )
+        : null;
+  }
+
+  ZUserInfo getZuvioUserInfo() {
+    final rawUserInfo = jsonDecode(_readString(_zUserInfoKey) ?? '{}');
+    return (rawUserInfo != null)
+        ? ZUserInfo(
+            id: rawUserInfo['$_zUserInfoKey-id'],
+            accessToken: rawUserInfo['$_zUserInfoKey-accessToken'],
+            name: rawUserInfo['$_zUserInfoKey-name'],
+            hasCourse: rawUserInfo['$_zUserInfoKey-hasCourse'] == 'true',
+          )
+        : null;
   }
 
   void clearSemesterJsonList() => _courseSemesterList.clear();

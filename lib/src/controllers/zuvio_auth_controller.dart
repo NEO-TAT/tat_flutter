@@ -3,26 +3,30 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_app/debug/log/Log.dart';
 import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/ui/other/ErrorDialog.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/core/zuvio/domain/login_credential.dart';
+import 'package:tat_core/core/zuvio/domain/user_info.dart';
 import 'package:tat_core/core/zuvio/usecase/login_use_case.dart';
 
 typedef _UISuspendedTransaction<T> = FutureOr<T> Function();
 
-class ZLoginBoxController extends GetxController {
-  ZLoginBoxController({
+class ZAuthController extends GetxController {
+  ZAuthController({
     required this.isLoginBtnEnabled,
     required this.isInputBoxesEnabled,
     required ZLoginUseCase loginUseCase,
   }) : _loginUseCase = loginUseCase;
 
-  static ZLoginBoxController get to => Get.find();
+  static ZAuthController get to => Get.find();
 
   bool isLoginBtnEnabled;
   bool isInputBoxesEnabled;
+
   final ZLoginUseCase _loginUseCase;
 
   void _suspendUIInteractions() {
@@ -44,6 +48,11 @@ class ZLoginBoxController extends GetxController {
     return result;
   }
 
+  Future<void> _saveCredential(ZLoginCredential credential) =>
+      LocalStorage.instance.saveZuvioLoginCredential(credential);
+
+  Future<void> _saveUserInfo(ZUserInfo userInfo) => LocalStorage.instance.saveZuvioUserInfo(userInfo);
+
   Future<void> _login(String username, String password) async {
     final loginCredential = ZLoginCredential(email: username, password: password);
     final result = await _loginUseCase(credential: loginCredential);
@@ -60,8 +69,26 @@ class ZLoginBoxController extends GetxController {
     }
 
     Log.d('Zuvio login successfully.');
+
+    await _saveCredential(loginCredential);
+    Log.d('Zuvio login credential saved.');
+
+    await _saveUserInfo(result.userInfo!);
+    Log.d('Zuvio user info saved.');
+
+    if (kDebugMode) {
+      Log.d(LocalStorage.instance.getZuvioLoginCredential().email);
+      Log.d(LocalStorage.instance.getZuvioUserInfo());
+    }
   }
 
   Future<void> login(String username, String password) =>
       _suspendInteractionsTransaction(transaction: () => _login(username, password));
+
+  bool isLoggedIntoZuvio() {
+    final accessToken = LocalStorage.instance.getZuvioUserInfo()?.accessToken;
+
+    // TODO(TU): Check if the accessToken is valid.
+    return accessToken != null && accessToken.isNotEmpty;
+  }
 }

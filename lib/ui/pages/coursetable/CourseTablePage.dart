@@ -682,7 +682,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   void _showRollCallDashboardPage() {
     Get.back();
-    RouteUtils.launchRollCallDashBoardPage();
+    RouteUtils.launchRollCallDashBoardPageAfterLogin();
   }
 
   Future<String> _showEditDialog(String value) async {
