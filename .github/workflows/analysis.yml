@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  analysis:
+    name: analysis
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ macos-latest ]
+
+    steps:
+      # Set up Flutter.
+      - name: Clone Flutter repository with stable channel
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.x'
+
+      # checkout codebase.
+      - name: Checkout codebase
+        uses: actions/checkout@v3
+
+      - name: Add Key property
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" > android/key.properties
+
+      # install ssh key
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      # Add github token
+      - name: Add Github Token
+        uses: oleksiyrudenko/gha-git-credentials@v2
+        with:
+          token: '${{ secrets.TAT_CORE_ACCESS_TOKEN }}'
+          email: '${{ secrets.EMAIL }}'
+
+      # Get packages.
+      - name: Get dependencies
+        run: flutter pub get
+
+      # check code is formatted correctly.
+      - name: Ensure the Dart code is formatted correctly
+        run: flutter format --set-exit-if-changed --dry-run -l 120 .
+
+      # Analyze, check formatting, and run unit tests.
+      - run: flutter analyze
