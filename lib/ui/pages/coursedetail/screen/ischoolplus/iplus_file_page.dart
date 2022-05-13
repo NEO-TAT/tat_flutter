@@ -203,7 +203,10 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
       Row(
         children: [
           Column(
-            children: iconWidgetList,
+            children: const [
+              // TODO(TU): To know why we can't use the icon list here.
+              Icon(Icons.file_copy),
+            ],
           ),
           const Padding(
             padding: EdgeInsets.only(left: 10),
