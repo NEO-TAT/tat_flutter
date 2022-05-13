@@ -1,16 +1,22 @@
-# TAT App
-[![Codemagic build status](https://api.codemagic.io/apps/5e6800d11339a90018240c67/5e71e2162c96469a4a77c67b/status_badge.svg)](https://codemagic.io/apps/5e6800d11339a90018240c67/5e71e2162c96469a4a77c67b/latest_build)
+<p align="center">
+<img src="https://i.imgur.com/8UfiwmZ.webp" align="center" width=200>
+</p>
 
-給臺北科技大學學生專用的 Flutter App
+<p align="center">
+  <h1 align="center"> TAT </h1>
+  <h3 align="center"> An app specially made for <a target="_blank" href="https://ntut.edu.tw">NTUT</a> to simplify campus life </h3>
+</p>
 
-## 下載
+[![Build](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml/badge.svg)](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml)
+
+## Download
 
 <a href='https://play.google.com/store/apps/details?id=club.ntut.npc.tat'>
-  <img width="180" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/>
+  <img height="60" alt='Get it on Google Play' src='https://i.imgur.com/lnvrMMS.webp'/>
 </a>
 
-<a href="https://apps.apple.com/tw/app/tat-北科生活/id1513875597?l=en">
-  <img alt='Get it on AppStore' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?releaseDate=2019-04-02&kind=iossoftware&bubble=ios_apps' width='200'>
+<a href="https://apps.apple.com/tw/app/tat-北科生活/id1513875597">
+  <img alt='Get it on AppStore' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?releaseDate=2019-04-02&kind=iossoftware&bubble=ios_apps' height="60">
 </a>
 
 ## 功能
