@@ -10,8 +10,8 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class RollCallDashboardPage extends StatelessWidget {
   const RollCallDashboardPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final _addNewButtonSize = 144.0;
 

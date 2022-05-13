@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class CourseCard extends StatelessWidget {
   const CourseCard({
-    Key? key,
+    super.key,
     required bool isDarkMode,
     required String courseName,
     required String teacherName,
@@ -13,8 +13,7 @@ class CourseCard extends StatelessWidget {
   })  : _isDarkMode = isDarkMode,
         _courseName = courseName,
         _teacherName = teacherName,
-        _semesterName = semesterName,
-        super(key: key);
+        _semesterName = semesterName;
 
   final bool _isDarkMode;
   final String _courseName;

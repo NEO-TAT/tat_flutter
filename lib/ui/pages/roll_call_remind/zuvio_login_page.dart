@@ -21,12 +21,11 @@ typedef TextFieldValidator = String? Function(String?);
 
 class ZuvioLoginPage extends StatefulWidget {
   const ZuvioLoginPage({
-    Key? key,
+    super.key,
     LoginSuccessAction? onLoginSuccess,
     CancelLoginAction? onPageClose,
   })  : _onPageClose = onPageClose,
-        _onLoginSuccess = onLoginSuccess,
-        super(key: key);
+        _onLoginSuccess = onLoginSuccess;
 
   final LoginSuccessAction? _onLoginSuccess;
   final CancelLoginAction? _onPageClose;
@@ -247,7 +246,6 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
 
 class _InputBox extends StatelessWidget {
   const _InputBox({
-    Key? key,
     required TextEditingController controller,
     required TextInputType keyboardType,
     required IconData icon,
@@ -263,8 +261,7 @@ class _InputBox extends StatelessWidget {
         _obscure = obscure,
         _enabled = enabled,
         _validator = validator,
-        _suffixIcon = suffixIcon,
-        super(key: key);
+        _suffixIcon = suffixIcon;
 
   final TextEditingController _controller;
   final TextInputType _keyboardType;

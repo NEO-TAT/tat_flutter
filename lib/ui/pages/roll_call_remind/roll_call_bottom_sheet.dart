@@ -7,7 +7,7 @@ import 'package:flutter_app/ui/pages/roll_call_remind/course_card_widget.dart';
 import 'package:get/get.dart';
 
 class RollCallBottomSheet extends StatelessWidget {
-  const RollCallBottomSheet({Key? key}) : super(key: key);
+  const RollCallBottomSheet({super.key});
 
   Widget _buildCloseSheetButton(
     BuildContext context, {
