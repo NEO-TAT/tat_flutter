@@ -581,6 +581,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
         ),
       ),
     );
+
+    final isDarkMode = Get.isDarkMode;
+
     for (int day in courseTableControl.getDayIntList) {
       CourseInfoJson courseInfo = courseTableControl.getCourseInfo(day, section);
       Color color = courseTableControl.getCourseInfoColor(day, section);
@@ -589,26 +592,37 @@ class _CourseTablePageState extends State<CourseTablePage> {
         Expanded(
           child: (courseInfo.isEmpty)
               ? Container()
-              : Container(
-                  padding: const EdgeInsets.all(1),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(0),
-                      primary: color,
+              : Card(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: color,
                     ),
-                    child: AutoSizeText(
-                      courseInfo.main.course.name,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        highlightColor: isDarkMode ? Colors.white : Colors.black12,
+                        onTap: () => showCourseDetailDialog(section, courseInfo),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: AutoSizeText(
+                                courseInfo.main.course.name,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                                minFontSize: 10,
+                                maxLines: 3,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      minFontSize: 10,
-                      maxLines: 3,
-                      textAlign: TextAlign.center,
                     ),
-                    onPressed: () {
-                      showCourseDetailDialog(section, courseInfo);
-                    },
                   ),
                 ),
         ),
