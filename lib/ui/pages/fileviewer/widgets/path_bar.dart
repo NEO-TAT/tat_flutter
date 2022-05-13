@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'package:flutter/material.dart';
 
 class PathBar extends StatelessWidget implements PreferredSizeWidget {
@@ -12,5 +14,5 @@ class PathBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) => child;
 
   @override
-  Size get preferredSize => Size.fromHeight(40.0);
+  Size get preferredSize => const Size.fromHeight(40.0);
 }

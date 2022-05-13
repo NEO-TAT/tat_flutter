@@ -1,7 +1,9 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:mime_type/mime_type.dart';
 import 'package:path/path.dart';
 
@@ -16,26 +18,26 @@ class FileIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final f = File(file.path);
-    final _extension = extension(f.path).toLowerCase();
+    final configuredExtension = extension(f.path).toLowerCase();
     final mimeType = mime(basename(file.path).toLowerCase());
     final type = mimeType == null ? "" : mimeType.split("/")[0];
-    if (_extension == ".apk") {
-      return Icon(
+    if (configuredExtension == ".apk") {
+      return const Icon(
         Icons.android,
         color: Colors.green,
       );
-    } else if (_extension == ".crdownload") {
-      return Icon(
-        Feather.download,
+    } else if (configuredExtension == ".crdownload") {
+      return const Icon(
+        FeatherIcons.download,
         color: Colors.lightBlue,
       );
-    } else if (_extension == ".zip" || _extension.contains("tar")) {
-      return Icon(
-        Feather.archive,
+    } else if (configuredExtension == ".zip" || configuredExtension.contains("tar")) {
+      return const Icon(
+        FeatherIcons.archive,
       );
-    } else if (_extension == ".epub" || _extension == ".pdf" || _extension == ".mobi") {
-      return Icon(
-        Feather.file_text,
+    } else if (configuredExtension == ".epub" || configuredExtension == ".pdf" || configuredExtension == ".mobi") {
+      return const Icon(
+        FeatherIcons.fileText,
         color: Colors.orangeAccent,
       );
     } else {
@@ -51,8 +53,8 @@ class FileIcon extends StatelessWidget {
           break;
         case "audio":
           {
-            return Icon(
-              Feather.music,
+            return const Icon(
+              FeatherIcons.music,
               color: Colors.blue,
             );
           }
@@ -60,8 +62,8 @@ class FileIcon extends StatelessWidget {
 
         case "text":
           {
-            return Icon(
-              Feather.file_text,
+            return const Icon(
+              FeatherIcons.fileText,
               color: Colors.orangeAccent,
             );
           }
@@ -69,8 +71,8 @@ class FileIcon extends StatelessWidget {
 
         default:
           {
-            return Icon(
-              Feather.file,
+            return const Icon(
+              FeatherIcons.file,
             );
           }
           break;

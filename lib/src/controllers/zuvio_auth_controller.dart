@@ -1,13 +1,12 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.16
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_app/debug/log/Log.dart';
-import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/debug/log/log.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/ui/other/ErrorDialog.dart';
+import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/core/zuvio/domain/login_credential.dart';
 import 'package:tat_core/core/zuvio/domain/user_info.dart';

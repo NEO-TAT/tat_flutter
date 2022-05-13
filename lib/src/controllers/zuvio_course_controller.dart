@@ -1,5 +1,4 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.16
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:get/get.dart';

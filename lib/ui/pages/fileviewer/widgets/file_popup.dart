@@ -1,5 +1,7 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
+import 'package:flutter_app/src/r.dart';
 
 class FilePopup extends StatelessWidget {
   final String path;
@@ -33,6 +35,6 @@ class FilePopup extends StatelessWidget {
           color: Theme.of(context).textTheme.headline6.color,
         ),
         color: Theme.of(context).scaffoldBackgroundColor,
-        offset: Offset(0, 30),
+        offset: const Offset(0, 30),
       );
 }

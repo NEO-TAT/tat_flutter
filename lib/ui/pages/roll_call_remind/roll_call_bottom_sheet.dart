@@ -1,13 +1,10 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.16
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/course_card_widget.dart';
 import 'package:get/get.dart';
 
 class RollCallBottomSheet extends StatelessWidget {
-  const RollCallBottomSheet({Key? key}) : super(key: key);
+  const RollCallBottomSheet({super.key});
 
   Widget _buildCloseSheetButton(
     BuildContext context, {

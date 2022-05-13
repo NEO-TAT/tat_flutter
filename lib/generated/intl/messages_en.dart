@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a en locale. All the
 // messages from the main program should be duplicated here with the same
@@ -20,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
+
   static _notInlinedMessages(_) => <String, Function>{
         "AreYouSureToOpen": MessageLookupByLibrary.simpleMessage("Are you sure to open?"),
         "Contribution": MessageLookupByLibrary.simpleMessage("Contribution"),
@@ -177,7 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSupport": MessageLookupByLibrary.simpleMessage(" not support"),
         "noSupportExternalVideoPlayer": MessageLookupByLibrary.simpleMessage("Not find support external video player"),
         "notSupport": MessageLookupByLibrary.simpleMessage("Not support"),
-        "nothingHere": MessageLookupByLibrary.simpleMessage("There\'s nothing here"),
+        "nothingHere": MessageLookupByLibrary.simpleMessage("There's nothing here"),
         "numberOfStudent": MessageLookupByLibrary.simpleMessage("Number of students"),
         "numberOfWithdraw": MessageLookupByLibrary.simpleMessage("Number of withdraw"),
         "openExternalVideo": MessageLookupByLibrary.simpleMessage("Open with external video player"),

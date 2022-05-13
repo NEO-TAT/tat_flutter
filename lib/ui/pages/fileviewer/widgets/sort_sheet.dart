@@ -1,29 +1,34 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/R.dart';
-import 'package:flutter_app/src/config/Constants.dart';
-import 'package:flutter_app/src/providers/CategoryProvider.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_app/src/config/constants.dart';
+import 'package:flutter_app/src/providers/category_provider.dart';
+import 'package:flutter_app/src/r.dart';
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class SortSheet extends StatelessWidget {
+  const SortSheet({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => FractionallySizedBox(
         heightFactor: 0.85,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(
                 R.current.sortBy,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12.0,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Flexible(
@@ -33,16 +38,16 @@ class SortSheet extends StatelessWidget {
                     return ListTile(
                       onTap: () async {
                         await Provider.of<CategoryProvider>(context, listen: false).setSort(index);
-                        Navigator.pop(context);
+                        Get.back();
                       },
-                      contentPadding: EdgeInsets.all(0),
+                      contentPadding: const EdgeInsets.all(0),
                       trailing: index == Provider.of<CategoryProvider>(context, listen: false).sort
-                          ? Icon(
-                              Feather.check,
+                          ? const Icon(
+                              FeatherIcons.check,
                               color: Colors.blue,
                               size: 16,
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       title: Text(
                         "${Constants.sortList[index]}",
                         style: TextStyle(

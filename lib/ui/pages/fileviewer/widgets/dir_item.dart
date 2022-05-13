@@ -1,7 +1,9 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:path/path.dart';
 
 import 'dir_popup.dart';
@@ -21,19 +23,19 @@ class DirectoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
         onTap: tap,
-        contentPadding: EdgeInsets.all(0),
-        leading: Container(
+        contentPadding: const EdgeInsets.all(0),
+        leading: const SizedBox(
           height: 40,
           width: 40,
           child: Center(
             child: Icon(
-              Feather.folder,
+              FeatherIcons.folder,
             ),
           ),
         ),
         title: Text(
-          "${basename(file.path)}",
-          style: TextStyle(
+          basename(file.path),
+          style: const TextStyle(
             fontSize: 14,
           ),
           maxLines: 2,
