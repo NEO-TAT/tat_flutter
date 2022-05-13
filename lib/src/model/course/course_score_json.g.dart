@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'course_score_json.dart';

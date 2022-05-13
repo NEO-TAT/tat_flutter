@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
 import 'package:flutter_app/src/model/ischoolplus/course_file_json.dart';

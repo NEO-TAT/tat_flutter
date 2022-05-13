@@ -1,6 +1,3 @@
-// TODO: Remove language version selector after migrated to null safety.
-// @dart=2.17
-
 // 🎯 Dart imports:
 import 'dart:async';
 import 'dart:developer';

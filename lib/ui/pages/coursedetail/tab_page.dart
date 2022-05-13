@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 

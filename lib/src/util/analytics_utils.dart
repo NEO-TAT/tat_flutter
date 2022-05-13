@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 class AnalyticsUtils {

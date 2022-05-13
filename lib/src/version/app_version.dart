@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/model/remoteconfig/remote_config_version_info.dart';
 import 'package:flutter_app/src/store/local_storage.dart';

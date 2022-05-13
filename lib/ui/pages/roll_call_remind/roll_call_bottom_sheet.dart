@@ -1,6 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.17
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/course_card_widget.dart';

@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'dart:io';
 
 import 'package:permission_handler/permission_handler.dart';
