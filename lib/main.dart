@@ -63,6 +63,23 @@ Future<Null> main() async {
     version: 1,
   ));
 
+  Get.put(await availableCameras());
+
+  Get.put(await openDatabase(
+    join(await getDatabasesPath(), 'localDB.db'),
+    onCreate: (db, version) {
+      return db.execute(
+          'CREATE TABLE photo_storage ('
+              '_id INTEGER PRIMARY KEY AUTOINCREMENT, '
+              'cursorId INTEGER, '
+              'courseId TEXT, '
+              'label TEXT, '
+              'picturePath TEXT)'
+      );
+    },
+    version: 1,
+  ));
+
   final zAuthController = ZAuthController(
     isLoginBtnEnabled: true,
     isInputBoxesEnabled: true,
