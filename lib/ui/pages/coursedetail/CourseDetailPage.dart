@@ -6,11 +6,12 @@ import 'package:flutter_app/src/model/course/CourseClassJson.dart';
 import 'package:flutter_app/src/model/coursetable/CourseTableJson.dart';
 import 'package:flutter_app/src/providers/AppProvider.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/ui/pages/coursedetail/TabPage.dart';
-import 'package:flutter_app/ui/pages/coursedetail/screen/CourseInfoPage.dart';
+import 'package:flutter_app/ui/pages/coursedetail/screen/course_info_page.dart';
+import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/iplus_announcement_page.dart';
+import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/iplus_file_page.dart';
+import 'package:flutter_app/ui/pages/coursedetail/tab_page.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/album_page.dart';
-import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusAnnouncementPage.dart';
-import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/IPlusFilePage.dart';
+
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 

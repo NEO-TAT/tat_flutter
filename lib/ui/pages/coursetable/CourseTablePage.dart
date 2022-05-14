@@ -714,6 +714,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   icon: Icon(Icons.camera_alt_outlined),
                   label: Text(R.current.details),
                 ),
+                TextButton.icon(
+                  onPressed: () => _showCameraPage(courseInfo),
+                  icon: Icon(Icons.camera_alt_outlined),
+                  label: Text(R.current.details),
+                ),
               ]
             : [SizedBox.shrink()],
       ),
@@ -731,6 +736,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
     String courseId = course.id;
     Get.back();
     RouteUtils.launchCameraPage(courseId);
+  }
+
+  Future <void> _showCameraPage(CourseInfoJson courseInfo)async {
+    CourseMainJson course = courseInfo.main.course;
+    String courseId = course.id;
+    Get.back();
+    RouteUtils.launchCameraPage();
   }
 
   Future<String> _showEditDialog(String value) async {

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:camera/camera.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,12 +58,12 @@ Future<Null> main() async {
               'courseId TEXT, '
               'label TEXT, '
               'picturePath TEXT)'
-          );
+      );
     },
     version: 1,
   ));
 
-  final loginBoxController = ZLoginBoxController(
+  final zAuthController = ZAuthController(
     isLoginBtnEnabled: true,
     isInputBoxesEnabled: true,
     loginUseCase: zuvioLoginUseCase,
