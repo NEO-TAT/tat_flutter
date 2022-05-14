@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
-import 'package:flutter_app/ui/pages/roll_call_remind/course_card_widget.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/new_roll_call_monitor_card_widget.dart';
 import 'package:get/get.dart';
 
 class RollCallBottomSheet extends StatelessWidget {
@@ -33,7 +33,7 @@ class RollCallBottomSheet extends StatelessWidget {
         itemCount: controller.courses.length,
         itemBuilder: (_, index) {
           final course = controller.courses[index];
-          return CourseCard(
+          return NewRollCallMonitorCard(
             courseName: course.name,
             teacherName: course.teacherName,
             semesterName: course.semesterName,

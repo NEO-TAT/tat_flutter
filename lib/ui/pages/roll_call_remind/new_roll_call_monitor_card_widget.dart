@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
-class CourseCard extends StatelessWidget {
-  CourseCard({
+class NewRollCallMonitorCard extends StatefulWidget {
+  const NewRollCallMonitorCard({
     super.key,
     required bool isDarkMode,
     required String courseName,
@@ -17,6 +17,12 @@ class CourseCard extends StatelessWidget {
   final String _courseName;
   final String _teacherName;
   final String _semesterName;
+
+  @override
+  State<NewRollCallMonitorCard> createState() => _NewRollCallMonitorCardState();
+}
+
+class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
   final _monitoringStartTime = ValueNotifier<TimeOfDay?>(null);
   final _monitoringEndTime = ValueNotifier<TimeOfDay?>(null);
   final _selectedWeekdays = ValueNotifier(List.filled(7, false));
@@ -31,7 +37,7 @@ class CourseCard extends StatelessWidget {
         children: [
           FittedBox(
             child: Text(
-              _courseName,
+              widget._courseName,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 30,
@@ -48,7 +54,7 @@ class CourseCard extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Text(
-                  _teacherName,
+                  widget._teacherName,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -60,7 +66,7 @@ class CourseCard extends StatelessWidget {
                   color: Colors.white,
                 ),
                 Text(
-                  _semesterName,
+                  widget._semesterName,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -108,7 +114,7 @@ class CourseCard extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           side: BorderSide(
             width: 2,
-            color: _isDarkMode ? Colors.white : Colors.black54,
+            color: widget._isDarkMode ? Colors.white : Colors.black54,
           ),
         ),
         onPressed: onPressed,
@@ -117,7 +123,7 @@ class CourseCard extends StatelessWidget {
             Icon(
               Icons.access_time_outlined,
               size: 14,
-              color: _isDarkMode ? Colors.white : Colors.black,
+              color: widget._isDarkMode ? Colors.white : Colors.black,
             ),
             const SizedBox(width: 2),
             Expanded(
@@ -127,7 +133,9 @@ class CourseCard extends StatelessWidget {
                   time == null ? defaultText : _toTimeTextFrom(time),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: _isDarkMode ? Colors.white : Colors.black,
+                    color: widget._isDarkMode
+                        ? (time == null ? Colors.white : Colors.yellowAccent)
+                        : (time == null ? Colors.black : Colors.purple),
                     fontWeight: FontWeight.w100,
                   ),
                 ),
@@ -232,7 +240,7 @@ class CourseCard extends StatelessWidget {
               _buildHorizontalSideContainer(
                 size: size,
                 ratio: 0.7,
-                color: _isDarkMode ? const Color(0xFF205375) : const Color(0xFF2155CD),
+                color: widget._isDarkMode ? const Color(0xFF205375) : const Color(0xFF2155CD),
                 leftRadius: const Radius.circular(15),
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 content: _buildLeftSection(),
@@ -240,7 +248,7 @@ class CourseCard extends StatelessWidget {
               _buildHorizontalSideContainer(
                 size: size,
                 ratio: 0.3,
-                color: _isDarkMode ? const Color(0xFF112B3C) : const Color(0xFFA2E7F7),
+                color: widget._isDarkMode ? const Color(0xFF112B3C) : const Color(0xFFA2E7F7),
                 rightRadius: const Radius.circular(15),
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 content: _buildRightSection(context),
