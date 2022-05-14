@@ -26,4 +26,8 @@ class ZCourseController extends GetxController {
       update();
     }
   }
+
+  void addScheduledMonitor() {
+    // print('addScheduledMonitor');
+  }
 }

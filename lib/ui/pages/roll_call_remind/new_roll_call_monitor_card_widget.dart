@@ -1,5 +1,16 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
+import 'dart:async';
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/r.dart';
+import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:tat_core/tat_core.dart';
 import 'package:weekday_selector/weekday_selector.dart';
+
+/// A type of the function which handles the add roll-call monitor event.
+typedef OnAddMonitorPressed = FutureOr<void> Function(Week weekday, TimeOfDay startTime, TimeOfDay endTime);
 
 class NewRollCallMonitorCard extends StatefulWidget {
   const NewRollCallMonitorCard({
@@ -8,15 +19,18 @@ class NewRollCallMonitorCard extends StatefulWidget {
     required String courseName,
     required String teacherName,
     required String semesterName,
+    required OnAddMonitorPressed onAddMonitorPressed,
   })  : _isDarkMode = isDarkMode,
         _courseName = courseName,
         _teacherName = teacherName,
-        _semesterName = semesterName;
+        _semesterName = semesterName,
+        _onAddMonitorPressed = onAddMonitorPressed;
 
   final bool _isDarkMode;
   final String _courseName;
   final String _teacherName;
   final String _semesterName;
+  final OnAddMonitorPressed _onAddMonitorPressed;
 
   @override
   State<NewRollCallMonitorCard> createState() => _NewRollCallMonitorCardState();
@@ -30,6 +44,72 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
   String _toTimeTextFrom(TimeOfDay? time) {
     String _addLeadingZeroIfNeeded(int value) => value < 10 ? '0$value' : value.toString();
     return time == null ? ' --:-- ' : '${_addLeadingZeroIfNeeded(time.hour)}:${_addLeadingZeroIfNeeded(time.minute)}';
+  }
+
+  bool _verifyCardInfo() {
+    final hasStartTime = _monitoringStartTime.value != null;
+    if (!hasStartTime) {
+      ErrorDialog(ErrorDialogParameter(
+        dialogType: DialogType.WARNING,
+        title: 'Missing required information',
+        desc: 'Please select a start time!',
+        btnOkText: R.current.sure,
+        offCancelBtn: true,
+      )).show();
+      return false;
+    }
+
+    final hasEndTime = _monitoringEndTime.value != null;
+    if (!hasEndTime) {
+      ErrorDialog(ErrorDialogParameter(
+        dialogType: DialogType.WARNING,
+        title: 'Missing required information',
+        desc: 'Please select an end time!',
+        btnOkText: R.current.sure,
+        offCancelBtn: true,
+      )).show();
+      return false;
+    }
+
+    final hasWeekDay = _selectedWeekdays.value.any((selection) => selection);
+    if (!hasWeekDay) {
+      ErrorDialog(ErrorDialogParameter(
+        dialogType: DialogType.WARNING,
+        title: 'Missing required information',
+        desc: 'Please select a weekday!',
+        btnOkText: R.current.sure,
+        offCancelBtn: true,
+      )).show();
+      return false;
+    }
+
+    int _timeInMinuteOf(TimeOfDay? time) => time == null ? 0 : time.hour * 60 + time.minute;
+
+    if (_timeInMinuteOf(_monitoringStartTime.value) > _timeInMinuteOf(_monitoringEndTime.value)) {
+      ErrorDialog(ErrorDialogParameter(
+        dialogType: DialogType.WARNING,
+        title: 'Incorrect information entered',
+        desc: 'End time must be after start time!',
+        btnOkText: R.current.sure,
+        offCancelBtn: true,
+      )).show();
+      return false;
+    }
+
+    return true;
+  }
+
+  void _onAddMonitorButtonPressed() {
+    final isCardValid = _verifyCardInfo();
+    if (!isCardValid) {
+      return;
+    }
+
+    final weekday = Week.values[_selectedWeekdays.value.indexOf(true)];
+    final startTime = _monitoringStartTime.value ?? TimeOfDay.now();
+    final endTime = _monitoringEndTime.value ?? TimeOfDay.now();
+
+    widget._onAddMonitorPressed(weekday, startTime, endTime);
   }
 
   Widget _buildLeftSection() => Column(
@@ -81,7 +161,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
       );
 
   Widget _buildAddMonitorButton() => ElevatedButton(
-        onPressed: () {},
+        onPressed: _onAddMonitorButtonPressed,
         style: ElevatedButton.styleFrom(
           primary: Colors.green,
         ),
