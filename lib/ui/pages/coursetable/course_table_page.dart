@@ -683,6 +683,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   icon: const Icon(Icons.add_outlined),
                   label: Text(R.current.details),
                 ),
+                TextButton.icon(
+                  onPressed: () => _showCameraPage(courseInfo),
+                  icon: Icon(Icons.camera_alt_outlined),
+                  label: Text(R.current.details),
+                ),
               ]
             : [const SizedBox.shrink()],
       ),
@@ -693,6 +698,13 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _showRollCallDashboardPage() {
     Get.back();
     RouteUtils.launchRollCallDashBoardPageAfterLogin();
+  }
+
+  Future <void> _showCameraPage(CourseInfoJson courseInfo)async {
+    CourseMainJson course = courseInfo.main.course;
+    String courseId = course.id;
+    Get.back();
+    RouteUtils.launchCameraPage();
   }
 
   Future<String> _showEditDialog(String value) async {

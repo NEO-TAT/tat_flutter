@@ -268,6 +268,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "useOldPassword": MessageLookupByLibrary.simpleMessage("Use old password"),
         "versionInfo": MessageLookupByLibrary.simpleMessage("Version info"),
         "warning": MessageLookupByLibrary.simpleMessage("Warning"),
-        "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically")
+        "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically"),
+        "album": MessageLookupByLibrary.simpleMessage("album")
       };
 }

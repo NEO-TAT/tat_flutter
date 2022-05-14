@@ -3,6 +3,9 @@
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:camera/camera.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,6 +48,23 @@ Future<void> main() async {
 
   final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
   final zuvioGetCourseListUseCase = ZGetStudentCourseListUseCase(zStudentCourseListRepository);
+
+  Get.put(await availableCameras());
+
+  Get.put(await openDatabase(
+    join(await getDatabasesPath(), 'localDB.db'),
+    onCreate: (db, version) {
+      return db.execute(
+          'CREATE TABLE photo_storage ('
+              '_id INTEGER PRIMARY KEY AUTOINCREMENT, '
+              'cursorId INTEGER, '
+              'courseId TEXT, '
+              'label TEXT, '
+              'picturePath TEXT)'
+      );
+    },
+    version: 1,
+  ));
 
   final zAuthController = ZAuthController(
     isLoginBtnEnabled: true,

@@ -234,5 +234,6 @@
   "pleaseConnectToNetwork": "請確認網路連接狀態",
   "autoRollCall": "自動點名",
   "rollCall": "點名",
-  "rollCallRemind": "點名提醒"
+  "rollCallRemind": "點名提醒",
+  "album": "相簿"
 }

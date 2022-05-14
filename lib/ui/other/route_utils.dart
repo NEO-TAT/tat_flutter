@@ -21,7 +21,11 @@ import 'package:flutter_app/ui/pages/roll_call_remind/zuvio_login_page.dart';
 import 'package:flutter_app/ui/pages/videoplayer/class_video_player.dart';
 import 'package:flutter_app/ui/pages/webview/web_view_page.dart';
 import 'package:flutter_app/ui/screen/login_screen.dart';
+import 'package:flutter_app/ui/pages/note_camera/note_camera.dart';
 import 'package:get/get.dart';
+
+
+
 
 class RouteUtils {
   static Transition transition = (Platform.isAndroid) ? Transition.downToUp : Transition.cupertino;
@@ -153,7 +157,14 @@ class RouteUtils {
           onPageClose: () => Get.back(),
         ),
         transition: transition,
+        preventDuplicates: true,
       );
 
   static bool isLoggedIntoZuvio() => ZAuthController.to.isLoggedIntoZuvio();
+
+  static Future<void> launchCameraPage() => Get.to(
+        () => NoteCamera(),
+    transition: transition,
+    preventDuplicates: true,
+  );
 }
