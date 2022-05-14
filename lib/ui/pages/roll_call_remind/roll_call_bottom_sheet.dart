@@ -34,6 +34,7 @@ class RollCallBottomSheet extends StatelessWidget {
         itemBuilder: (_, index) {
           final course = controller.courses[index];
           return NewRollCallMonitorCard(
+            key: ValueKey(course.hashCode + index),
             courseName: course.name,
             teacherName: course.teacherName,
             semesterName: course.semesterName,
