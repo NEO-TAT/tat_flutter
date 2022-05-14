@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a zh_TW locale. All the
 // messages from the main program should be duplicated here with the same
@@ -20,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh_TW';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
+
   static _notInlinedMessages(_) => <String, Function>{
         "AreYouSureToOpen": MessageLookupByLibrary.simpleMessage("確定要打開嗎"),
         "Contribution": MessageLookupByLibrary.simpleMessage("貢獻"),

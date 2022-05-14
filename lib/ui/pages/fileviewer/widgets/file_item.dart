@@ -1,7 +1,9 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/util/FileUtils.dart';
+import 'package:flutter_app/src/util/file_utils.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 
@@ -21,13 +23,13 @@ class FileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ListTile(
         onTap: () => OpenFile.open(file.path),
-        contentPadding: EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.all(0),
         leading: FileIcon(
           file: file,
         ),
         title: Text(
-          "${basename(file.path)}",
-          style: TextStyle(
+          basename(file.path),
+          style: const TextStyle(
             fontSize: 14,
           ),
           maxLines: 2,

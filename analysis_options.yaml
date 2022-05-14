@@ -1,0 +1,15 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude: [build/**]
+  language:
+    strict-casts: false
+    strict-inference: false
+    strict-raw-types: false
+  errors:
+    todo: ignore
+
+linter:
+  rules:
+    lines_longer_than_80_chars: false
+    import_of_legacy_library_into_null_safe: false

@@ -1,6 +1,3 @@
-// TODO: Remove language version selector after migrated to null safety.
-// @dart=2.16
-
 // 🎯 Dart imports:
 import 'dart:async';
 import 'dart:developer';
@@ -56,8 +53,8 @@ class EarlyInterceptorAdapter implements HttpClientAdapter {
       throw Exception(msg);
     }
 
-    final _httpClient = _configHttpClient(cancelFuture, options.connectTimeout);
-    final reqFuture = _httpClient.openUrl(options.method, options.uri);
+    final httpClient = _configHttpClient(cancelFuture, options.connectTimeout);
+    final reqFuture = httpClient.openUrl(options.method, options.uri);
 
     void _throwConnectingTimeout() => throw DioError(
           requestOptions: options,
@@ -171,28 +168,28 @@ class EarlyInterceptorAdapter implements HttpClientAdapter {
   }
 
   HttpClient _configHttpClient(Future? cancelFuture, int connectionTimeout) {
-    final _connectionTimeout = connectionTimeout > 0 ? Duration(milliseconds: connectionTimeout) : null;
+    final configuredConnectionTimeout = connectionTimeout > 0 ? Duration(milliseconds: connectionTimeout) : null;
 
     if (cancelFuture != null) {
-      final _httpClient = HttpClient()
+      final httpClient = HttpClient()
         ..userAgent = null
         ..idleTimeout = Duration.zero;
 
       cancelFuture.whenComplete(() {
         Future.delayed(Duration.zero).then((_) {
           try {
-            _httpClient.close(force: true);
+            httpClient.close(force: true);
           } catch (e) {
             log(e.toString());
           }
         });
       });
-      return _httpClient..connectionTimeout = _connectionTimeout;
+      return httpClient..connectionTimeout = configuredConnectionTimeout;
     }
 
     _defaultHttpClient
       ..idleTimeout = const Duration(seconds: 3)
-      ..connectionTimeout = _connectionTimeout;
+      ..connectionTimeout = configuredConnectionTimeout;
 
     return _defaultHttpClient;
   }

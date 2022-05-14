@@ -116,13 +116,13 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseFirestore (8.15.0):
-    - FirebaseFirestore/AutodetectLeveldb (= 8.15.0)
-  - FirebaseFirestore/AutodetectLeveldb (8.15.0):
+  - FirebaseFirestore (9.0.0):
+    - FirebaseFirestore/AutodetectLeveldb (= 9.0.0)
+  - FirebaseFirestore/AutodetectLeveldb (9.0.0):
     - FirebaseFirestore/Base
     - FirebaseFirestore/WithLeveldb
-  - FirebaseFirestore/Base (8.15.0)
-  - FirebaseFirestore/WithLeveldb (8.15.0):
+  - FirebaseFirestore/Base (9.0.0)
+  - FirebaseFirestore/WithLeveldb (9.0.0):
     - FirebaseFirestore/Base
   - FirebaseInstallations (8.15.0):
     - FirebaseCore (~> 8.0)
@@ -246,6 +246,8 @@ PODS:
   - SDWebImage/Core (5.12.5)
   - sensors (0.0.1):
     - Flutter
+  - sensors_plus (0.0.1):
+    - Flutter
   - share (0.0.1):
     - Flutter
   - shared_preferences_ios (0.0.1):
@@ -257,7 +259,7 @@ PODS:
   - Toast (4.0.0)
   - url_launcher_ios (0.0.1):
     - Flutter
-  - video_player (0.0.1):
+  - video_player_avfoundation (0.0.1):
     - Flutter
   - wakelock (0.0.1):
     - Flutter
@@ -286,11 +288,12 @@ DEPENDENCIES:
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - sensors (from `.symlinks/plugins/sensors/ios`)
+  - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
 SPEC REPOS:
@@ -370,6 +373,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   sensors:
     :path: ".symlinks/plugins/sensors/ios"
+  sensors_plus:
+    :path: ".symlinks/plugins/sensors_plus/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
   shared_preferences_ios:
@@ -378,14 +383,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
 
 CHECKOUT OPTIONS:
   FirebaseFirestore:
-    :commit: cf1f08193dcfd1b13dd3d70f4c15ddb24ef6d3f3
+    :commit: 75792c8d94dd2caf49f8ea79b74eb80d993dadf0
     :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
 
 SPEC CHECKSUMS:
@@ -407,7 +412,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
   FirebaseCrashlytics: feb07e4e9187be3c23c6a846cce4824e5ce2dd0b
-  FirebaseFirestore: 3a0a7e1e72e4359b92d4c38de06d84e4c4900c0a
+  FirebaseFirestore: a5fe5955573c53ce1359aa544952ee08463a6e79
   FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
   FirebaseMessaging: 5e5118a2383b3531e730d974680954c679ca0a13
   FirebaseRemoteConfig: 2d6e2cfdb49af79535c8af8a80a4a5009038ec2b
@@ -437,15 +442,16 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
   sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
+  sensors_plus: 5717760720f7e6acd96fdbd75b7428f5ad755ec2
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
-  video_player: 7e9dad9437c238a97648819f6dd443c8854cf0c7
+  video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
-PODFILE CHECKSUM: a3c4f1961648f596a3c53d0192c037f398d4358d
+PODFILE CHECKSUM: ec2299932004a09419b6e4deae512747fb843a27
 
 COCOAPODS: 1.11.3

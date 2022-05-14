@@ -1,3 +1,5 @@
+// TODO: remove sdk version selector after migrating to null-safety.
+// @dart=2.10
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that looks up messages for specific locales by
 // delegating to the appropriate library.
@@ -19,6 +21,7 @@ import 'messages_en.dart' as messages_en;
 import 'messages_zh_TW.dart' as messages_zh_tw;
 
 typedef LibraryLoader = Future<dynamic> Function();
+
 Map<String, LibraryLoader> _deferredLibraries = {
   'en': () => Future.value(null),
   'zh_TW': () => Future.value(null),
