@@ -141,17 +141,6 @@ dependencies:
   camera: ^0.9.4+21
 
 
-  # 相機
-  camera: ^0.9.4+21
-
-
-  # 相機
-  camera: ^0.9.4+21
-
-
-  # 相機
-  camera: ^0.9.4+21
-
 
 dev_dependencies:
   flutter_test:
