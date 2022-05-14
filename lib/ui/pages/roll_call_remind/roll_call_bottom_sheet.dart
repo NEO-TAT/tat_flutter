@@ -67,7 +67,7 @@ class RollCallBottomSheet extends StatelessWidget {
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
-                    padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
                     child: _courseCardList,
                   ),
                 ),
