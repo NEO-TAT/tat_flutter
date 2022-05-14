@@ -11,16 +11,6 @@ class RollCallDashboardPage extends StatelessWidget {
     super.key,
   });
 
-  final _addNewButtonSize = 144.0;
-
-  void _onAddNewButtonPressed(BuildContext context) {
-    ZCourseController.to.loadCourses();
-    showCupertinoModalBottomSheet(
-      context: context,
-      builder: (context) => const RollCallBottomSheet(),
-    );
-  }
-
   PreferredSizeWidget get _appBar => AppBar(
         title: Row(
           children: [
@@ -37,30 +27,30 @@ class RollCallDashboardPage extends StatelessWidget {
     BuildContext context, {
     VoidCallback? onPressed,
   }) =>
-      IconButton(
+      FloatingActionButton(
         onPressed: onPressed,
-        iconSize: _addNewButtonSize,
-        icon: Center(
-          child: Icon(
-            Icons.add_outlined,
-            size: _addNewButtonSize,
-          ),
-        ),
+        child: const Icon(Icons.add),
       );
+
+  void _onAddNewButtonPressed(BuildContext context) {
+    ZCourseController.to.loadCourses();
+    showCupertinoModalBottomSheet(
+      context: context,
+      builder: (context) => const RollCallBottomSheet(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: _appBar,
+        floatingActionButton: _buildAddNewButton(
+          context,
+          onPressed: () => _onAddNewButtonPressed(context),
+        ),
         body: SafeArea(
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-            child: Align(
-              alignment: Alignment.center,
-              child: _buildAddNewButton(
-                context,
-                onPressed: () => _onAddNewButtonPressed(context),
-              ),
-            ),
+            child: const SizedBox.shrink(),
           ),
         ),
       );
