@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard({
+  CourseCard({
     super.key,
     required bool isDarkMode,
     required String courseName,
@@ -16,6 +17,7 @@ class CourseCard extends StatelessWidget {
   final String _courseName;
   final String _teacherName;
   final String _semesterName;
+  final _selectedWeekdays = ValueNotifier(List.filled(7, false));
 
   Widget _buildCourseInfoSection() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +27,7 @@ class CourseCard extends StatelessWidget {
               _courseName,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 40,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -42,7 +44,7 @@ class CourseCard extends StatelessWidget {
                   _teacherName,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
                 const SizedBox(width: 20),
@@ -54,13 +56,25 @@ class CourseCard extends StatelessWidget {
                   _semesterName,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
               ],
             ),
           ),
+          _buildWeekDaySelector(),
         ],
+      );
+
+  Widget _buildWeekDaySelector() => ValueListenableBuilder<List<bool>>(
+        valueListenable: _selectedWeekdays,
+        builder: (_, selectedWeekdays, __) => WeekdaySelector(
+          values: selectedWeekdays,
+          onChanged: (day) {
+            final weekdayIndex = day % 7;
+            _selectedWeekdays.value = List.from(selectedWeekdays..[weekdayIndex] = !selectedWeekdays[weekdayIndex]);
+          },
+        ),
       );
 
   Widget _buildHorizontalSideContainer({
