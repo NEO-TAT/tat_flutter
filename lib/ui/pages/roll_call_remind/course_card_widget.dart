@@ -62,19 +62,31 @@ class CourseCard extends StatelessWidget {
               ],
             ),
           ),
+          const Spacer(),
           _buildWeekDaySelector(),
         ],
       );
 
   Widget _buildWeekDaySelector() => ValueListenableBuilder<List<bool>>(
         valueListenable: _selectedWeekdays,
-        builder: (_, selectedWeekdays, __) => WeekdaySelector(
-          values: selectedWeekdays,
-          onChanged: (day) {
-            final weekdayIndex = day % 7;
-            _selectedWeekdays.value = List.from(selectedWeekdays..[weekdayIndex] = !selectedWeekdays[weekdayIndex]);
-          },
-        ),
+        builder: (_, selectedWeekdays, __) {
+          const border = Border(
+            top: BorderSide(width: 6.0, color: Colors.black12),
+            left: BorderSide(width: 6.0, color: Colors.black12),
+            right: BorderSide(width: 6.0, color: Colors.black26),
+            bottom: BorderSide(width: 6.0, color: Colors.black26),
+          );
+          return WeekdaySelector(
+            shape: border,
+            selectedShape: border,
+            selectedFillColor: Colors.red,
+            values: selectedWeekdays,
+            onChanged: (day) {
+              final weekdayIndex = day % 7;
+              _selectedWeekdays.value = List.from(selectedWeekdays..[weekdayIndex] = !selectedWeekdays[weekdayIndex]);
+            },
+          );
+        },
       );
 
   Widget _buildHorizontalSideContainer({
@@ -128,7 +140,7 @@ class CourseCard extends StatelessWidget {
               _buildHorizontalSideContainer(
                 size: size,
                 ratio: 0.3,
-                color: _isDarkMode ? const Color(0xFF112B3C) : const Color(0xFFE8F9FD),
+                color: _isDarkMode ? const Color(0xFF112B3C) : const Color(0xFFA2E7F7),
                 rightRadius: const Radius.circular(15),
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               ),
