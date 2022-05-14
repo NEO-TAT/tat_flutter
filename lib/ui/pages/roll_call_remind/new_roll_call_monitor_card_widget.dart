@@ -301,7 +301,9 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
           borderRadius: borderRadius,
           color: color,
         ),
-        child: content,
+        child: RepaintBoundary(
+          child: content,
+        ),
       ),
     );
   }
