@@ -136,6 +136,11 @@ dependencies:
 
   meta: ^1.7.0
 
+  # TODO: upgrade this package's version into a stable version. This version still have some block issues that causes build failed on AOS.
+  # https://github.com/fluttercommunity/flutter_workmanager/pull/383
+  # https://github.com/fluttercommunity/flutter_workmanager/issues/382
+  workmanager: ^0.5.0-dev.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

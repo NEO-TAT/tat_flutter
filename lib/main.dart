@@ -6,8 +6,10 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/background_dispatcher.dart';
 import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
@@ -21,6 +23,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tat_core/tat_core.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'debug/log/log.dart';
 import 'generated/l10n.dart';
@@ -30,6 +33,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  // Initialize the background task manager.
+  Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: kDebugMode,
+  );
+
   await CloudMessagingUtils.init();
   await SystemChrome.setPreferredOrientations(
     [
