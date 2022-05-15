@@ -72,7 +72,7 @@ class LocalStorage {
 
   Future<void> saveUserData() => _save(_userDataJsonKey, _userData);
 
-  Future<void> _clearUserData() {
+  Future<void> clearUserData() {
     _userData = UserDataJson();
     return saveUserData();
   }
@@ -298,7 +298,7 @@ class LocalStorage {
   }
 
   Future<void> logout() async {
-    await _clearUserData();
+    await clearUserData();
     clearSemesterJsonList();
     await clearCourseTableList();
     await _clearCourseScoreCredit();
