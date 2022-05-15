@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/connector/core/connector_parameter.dart';
@@ -52,6 +53,10 @@ class NTUTConnector {
         LocalStorage.instance.setUserInfo(userInfo);
         LocalStorage.instance.saveUserData();
         // if the user's password is nearly to expired, `userInfo.passwordExpiredRemind.isNotEmpty` will be true.
+
+        await FirebaseAnalytics.instance.logLogin(
+          loginMethod: 'ntut_portal',
+        );
         return NTUTConnectorStatus.loginSuccess;
       } else {
         String errorMsg = jsonMap["errorMsg"];

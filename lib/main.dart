@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
+import 'package:flutter_app/src/version/update/app_update.dart';
 import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -30,6 +32,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+  await FirebaseAnalytics.instance.setDefaultEventParameters({
+    'version': await AppUpdate.getAppVersion(),
+  });
+
   await CloudMessagingUtils.init();
   await SystemChrome.setPreferredOrientations(
     [
@@ -60,6 +67,9 @@ Future<void> main() async {
     () {
       Get.put(zAuthController);
       Get.put(zCourseController);
+
+      FirebaseAnalytics.instance.logAppOpen();
+
       runApp(
         MultiProvider(
           providers: [
