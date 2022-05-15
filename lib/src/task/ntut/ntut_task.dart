@@ -1,13 +1,14 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
+import 'dart:async';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
-import 'package:flutter_app/ui/screen/login_screen.dart';
-import 'package:get/get.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 
 import '../dialog_task.dart';
 
@@ -23,39 +24,44 @@ class NTUTTask<T> extends DialogTask<T> {
   @override
   Future<TaskStatus> execute() async {
     if (_isLogin) return TaskStatus.success;
+
     name = "NTUTTask $name";
-    String account = LocalStorage.instance.getAccount();
-    String password = LocalStorage.instance.getPassword();
+    final account = LocalStorage.instance.getAccount();
+    final password = LocalStorage.instance.getPassword();
+
     if (account.isEmpty || password.isEmpty) {
       return TaskStatus.giveUp;
     }
+
     super.onStart(R.current.loginNTUT);
-    NTUTConnectorStatus value = await NTUTConnector.login(account, password);
+    final value = await NTUTConnector.login(account, password);
     super.onEnd();
+
     if (value == NTUTConnectorStatus.loginSuccess) {
       _isLogin = true;
+      await LocalStorage.instance.saveUserData();
       return TaskStatus.success;
-    } else {
-      return await _onError(value);
     }
+
+    return _onError(value);
   }
 
-  Future<TaskStatus> _onError(NTUTConnectorStatus value) async {
+  Future<TaskStatus> _onError(NTUTConnectorStatus value) {
+    unawaited(RouteUtils.toLoginScreen());
+
     ErrorDialogParameter parameter = ErrorDialogParameter(
       desc: "",
+      dialogType: DialogType.WARNING,
+      offCancelBtn: true,
     );
+
     switch (value) {
       case NTUTConnectorStatus.accountLockWarning:
-        parameter.dialogType = DialogType.INFO;
         parameter.desc = R.current.accountLock;
         break;
       case NTUTConnectorStatus.accountPasswordIncorrect:
-        parameter.dialogType = DialogType.INFO;
         parameter.desc = R.current.accountPasswordError;
-        parameter.btnOkText = R.current.setting;
-        parameter.btnOkOnPress = () {
-          Get.to(() => const LoginScreen()).then((value) => Get.back<bool>(result: true));
-        };
+        parameter.btnOkText = R.current.restart;
         break;
       case NTUTConnectorStatus.authCodeFailError:
         parameter.desc = R.current.authCodeFail;
@@ -64,7 +70,9 @@ class NTUTTask<T> extends DialogTask<T> {
         parameter.desc = R.current.unknownError;
         break;
     }
-    return await onErrorParameter(parameter);
+
+    LocalStorage.instance.clearUserData();
+    return onErrorParameter(parameter);
   }
 
   @override

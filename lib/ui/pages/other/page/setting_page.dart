@@ -2,7 +2,6 @@
 // @dart=2.10
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/src/file/file_store.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/ui/other/list_view_animator.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -50,11 +48,7 @@ class _SettingPageState extends State<SettingPage> {
       listViewData.add(_buildOpenExternalVideoSetting());
     }
     listViewData.add(_buildLoadIPlusNewsSetting());
-    listViewData.add(_buildAutoCheckAppVersionSetting());
     listViewData.add(_buildDarkModeSetting());
-    if (Platform.isAndroid) {
-      listViewData.add(_buildFolderPathSetting());
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text(R.current.setting),
@@ -107,28 +101,6 @@ class _SettingPageState extends State<SettingPage> {
             widget.pageController.jumpToPage(0);
             Get.back();
           });
-        });
-      },
-    );
-  }
-
-  Widget _buildAutoCheckAppVersionSetting() {
-    return SwitchListTile.adaptive(
-      contentPadding: const EdgeInsets.all(0),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            R.current.autoAppCheck,
-            style: textTitle,
-          ),
-        ],
-      ),
-      value: LocalStorage.instance.getOtherSetting().autoCheckAppUpdate,
-      onChanged: (value) {
-        setState(() {
-          LocalStorage.instance.getOtherSetting().autoCheckAppUpdate = value;
-          LocalStorage.instance.saveOtherSetting();
         });
       },
     );
@@ -210,55 +182,5 @@ class _SettingPageState extends State<SettingPage> {
         });
       },
     );
-  }
-
-  Widget _buildFolderPathSetting() {
-    if (downloadPath.isEmpty) {
-      return Container();
-    } else {
-      return InkWell(
-        child: Container(
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      R.current.downloadPath,
-                      style: textTitle,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      downloadPath,
-                      style: textBody,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        onTap: () async {
-          String directory = await FilePicker.platform.getDirectoryPath();
-          if (directory == "/" || directory == null) {
-            if (directory == '/') {
-              MyToast.show(R.current.selectDirectoryFail);
-            }
-          } else {
-            await FileStore.setFilePath(directory);
-            setState(() {
-              downloadPath = directory;
-            });
-          }
-        },
-      );
-    }
   }
 }
