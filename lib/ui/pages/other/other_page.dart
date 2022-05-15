@@ -115,9 +115,7 @@ class _OtherPageState extends State<OtherPage> {
             btnOkOnPress: () {
               Get.back();
               TaskFlow.resetLoginStatus();
-              LocalStorage.instance.logout().then((_) {
-                widget.pageController.jumpToPage(0);
-              });
+              LocalStorage.instance.logout().then((_) => RouteUtils.toLoginScreen());
             });
         ErrorDialog(parameter).show();
         break;

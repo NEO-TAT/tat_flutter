@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
-import 'package:get/get.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -25,20 +24,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    super.initState();
     _accountControl.text = LocalStorage.instance.getAccount();
-    _passwordControl.text = LocalStorage.instance.getPassword();
+    super.initState();
   }
 
   void _loginPress(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
-      LocalStorage.instance.setAccount(_accountControl.text.toString());
+      LocalStorage.instance.setAccount(_accountControl.text.toString().trim());
       LocalStorage.instance.setPassword(_passwordControl.text.toString());
       await LocalStorage.instance.saveUserData();
-      MyToast.show(R.current.loginSave);
-      Get.back<bool>(result: true);
+      _passwordControl.clear();
+      RouteUtils.launchMainPage();
     }
   }
 

@@ -21,17 +21,15 @@ import 'package:flutter_app/ui/pages/roll_call_remind/zuvio_login_page.dart';
 import 'package:flutter_app/ui/pages/videoplayer/class_video_player.dart';
 import 'package:flutter_app/ui/pages/webview/web_view_page.dart';
 import 'package:flutter_app/ui/screen/login_screen.dart';
+import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:get/get.dart';
 
 class RouteUtils {
   static Transition transition = (Platform.isAndroid) ? Transition.downToUp : Transition.cupertino;
 
-  static Future toLoginScreen() async {
-    return await Get.to(
-      () => const LoginScreen(),
-      transition: transition,
-    );
-  }
+  static Future toLoginScreen() => Get.offAll(() => const LoginScreen());
+
+  static Future launchMainPage() => Get.offAll(() => const MainScreen());
 
   static Future toDevPage() async {
     return await Get.to(
