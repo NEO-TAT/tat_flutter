@@ -1,6 +1,7 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/version/app_version.dart';
@@ -96,7 +97,7 @@ class _AboutPageState extends State<AboutPage> {
         Future.delayed(const Duration(seconds: 2)).then((_) {
           pressTime = 0;
         });
-        if (pressTime > 3) {
+        if (pressTime > 3 && kDebugMode) {
           if (!inDevMode) {
             inDevMode = true;
             _addDevListItem();
