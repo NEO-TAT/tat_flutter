@@ -594,7 +594,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       widgetList.add(
         Expanded(
           child: (courseInfo.isEmpty)
-              ? Container()
+              ? const SizedBox.shrink()
               : Card(
                   child: Container(
                     decoration: BoxDecoration(
@@ -611,15 +611,19 @@ class _CourseTablePageState extends State<CourseTablePage> {
                           children: [
                             Align(
                               alignment: Alignment.center,
-                              child: AutoSizeText(
-                                courseInfo.main.course.name,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
+                              child: Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: AutoSizeText(
+                                  courseInfo.main.course.name,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  minFontSize: 6,
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
                                 ),
-                                minFontSize: 10,
-                                maxLines: 3,
-                                textAlign: TextAlign.center,
                               ),
                             ),
                           ],
