@@ -39,7 +39,7 @@ class ISchoolPlusConnector {
       ConnectorParameter parameter;
       html.Document tagNode;
       List<html.Element> nodes;
-      Map<String, String> data = {
+      final data = {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
         "apOu": "ischool_plus_",
         "sso": "true",
@@ -47,16 +47,32 @@ class ISchoolPlusConnector {
       };
       parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
-      result = await Connector.getDataByGet(parameter);
-      tagNode = html.parse(result);
+      result = (await Connector.getDataByGet(parameter));
+
+      // Perform retry for cryptic API errors (?).
+      // If the string `connect lost` be found in the response, we will do the retry.
+      int retryTimes = 3;
+      do {
+        if (result.contains('connect lost')) {
+          print('@@@@@@@@@ $retryTimes');
+          // Take a short delay to avoid being blocked.
+          await Future.delayed(const Duration(milliseconds: 100));
+          result = (await Connector.getDataByGet(parameter));
+        } else {
+          print('######### $retryTimes');
+          break;
+        }
+      } while ((retryTimes--) > 0);
+
+      tagNode = html.parse(result.toString().trim());
       nodes = tagNode.getElementsByTagName("input");
-      data = {};
-      for (html.Element node in nodes) {
-        String name = node.attributes['name'];
-        String value = node.attributes['value'];
+      data.clear();
+      for (final node in nodes) {
+        final name = node.attributes['name'];
+        final value = node.attributes['value'];
         data[name] = value;
       }
-      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
+      final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       await Connector.getDataByPostResponse(parameter);
