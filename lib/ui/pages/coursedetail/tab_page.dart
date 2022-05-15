@@ -13,10 +13,12 @@ class TabPage {
     tab = Column(
       children: <Widget>[
         Icon(icons),
-        AutoSizeText(
-          title,
-          maxLines: 1,
-          minFontSize: 6,
+        FittedBox(
+          child: AutoSizeText(
+            title,
+            maxLines: 1,
+            minFontSize: 6,
+          ),
         ),
       ],
     );
@@ -55,7 +57,10 @@ class TabPageList {
     for (TabPage tabPage in tabPageList) {
       Widget tabNew = SizedBox(
         width: width,
-        child: tabPage.tab,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+          child: tabPage.tab,
+        ),
       );
       pages.add(tabNew);
     }
