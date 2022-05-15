@@ -3,6 +3,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/config/app_link.dart';
@@ -58,7 +59,8 @@ class _OtherPageState extends State<OtherPage> {
     {
       "icon": Icons.access_alarm,
       "color": Colors.red,
-      "title": R.current.rollCallRemind,
+      // TODO(TU): remove `coming soon`.
+      "title": '${R.current.rollCallRemind} (coming soon)',
       "onPress": OnListViewPress.rollCallRemind,
     },
     {
@@ -146,7 +148,24 @@ class _OtherPageState extends State<OtherPage> {
         RouteUtils.toWebViewPage(R.current.feedback, link);
         break;
       case OnListViewPress.rollCallRemind:
-        RouteUtils.launchRollCallDashBoardPageAfterLogin();
+        // TODO(TU): update this log to the real feature log.
+        await FirebaseAnalytics.instance.logEvent(
+          name: 'z_roll_call_pre_msg_clicked',
+          parameters: {
+            'position': 'other_page',
+          },
+        );
+
+        // TODO(TU): remove this Dialog.
+        ErrorDialog(ErrorDialogParameter(
+          desc: "Zuvio (自動)點名提醒的功能即將上線\n敬請期待！\nZuvio's (auto) roll-call reminder is coming soon!",
+          title: 'Coming soon!',
+          dialogType: DialogType.INFO,
+          offCancelBtn: true,
+          btnOkText: R.current.sure,
+        )).show();
+        // TODO(TU): un-comment this line after feature is already prepared for release.
+        // RouteUtils.launchRollCallDashBoardPageAfterLogin();
         break;
       default:
         MyToast.show(R.current.noFunction);

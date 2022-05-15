@@ -5,7 +5,9 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +22,7 @@ import 'package:flutter_app/src/task/course/course_semester_task.dart';
 import 'package:flutter_app/src/task/course/course_table_task.dart';
 import 'package:flutter_app/src/task/iplus/iplus_subscribe_notice_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
+import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_app/ui/pages/coursetable/course_table_control.dart';
@@ -695,9 +698,27 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-  void _showRollCallDashboardPage() {
-    Get.back();
-    RouteUtils.launchRollCallDashBoardPageAfterLogin();
+  void _showRollCallDashboardPage() async {
+    // TODO(TU): update this log to the real feature log.
+    await FirebaseAnalytics.instance.logEvent(
+      name: 'z_roll_call_pre_msg_clicked',
+      parameters: {
+        'position': 'course_table_course',
+      },
+    );
+
+    // TODO(TU): remove this Dialog.
+    ErrorDialog(ErrorDialogParameter(
+      desc: "Zuvio (自動)點名提醒的功能即將上線\n敬請期待！\nZuvio's (auto) roll-call reminder is coming soon!",
+      title: 'Coming soon!',
+      dialogType: DialogType.INFO_REVERSED,
+      offCancelBtn: true,
+      btnOkText: R.current.sure,
+    )).show();
+
+    // TODO(TU): un-comment the next two lines after feature is already prepared for release.
+    // Get.back();
+    // RouteUtils.launchRollCallDashBoardPageAfterLogin();
   }
 
   Future<String> _showEditDialog(String value) async {
