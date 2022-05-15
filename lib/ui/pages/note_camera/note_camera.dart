@@ -10,20 +10,17 @@ class NoteCamera extends StatefulWidget {
   const NoteCamera({Key? key, required this.courseId}) : super(key: key);
 
   @override
-  State<NoteCamera> createState() => _NoteCameraState(courseId);
+  State<NoteCamera> createState() => _NoteCameraState();
 }
 
 class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   CameraController? controller;
   bool _isCameraInitialized = false;
   late List<CameraDescription> cameras;
-  late String courseId;
 
   double _zoom = 1.0;
 
-  _NoteCameraState(String courseId) {
-    this.courseId = courseId;
-  }
+  _NoteCameraState();
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     final previousCameraController = controller;
@@ -48,7 +45,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
     try {
       await cameraController.initialize();
     } on CameraException catch (e) {
-      print('Error initializing camera: $e');
+      throw Exception('Error initializing camera: $e');
     }
 
     if (mounted) {
@@ -61,7 +58,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   void takePicture() async {
     final image = await controller?.takePicture();
     String? path = image?.path;
-    if(path != null)PictureStorage.takePictureToStorage(courseId, path);
+    if (path != null) PictureStorage.takePictureToStorage(widget.courseId, path);
   }
 
   @override
@@ -112,22 +109,22 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
       },
       child: _isCameraInitialized
           ? CameraPreview(controller!,
-          child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.white,
-                    child: InkWell(
-                      splashColor: Colors.grey[300]?.withOpacity(0.7),
-                      splashFactory: InkRipple.splashFactory,
-                      onTap: () => takePicture(),
-                      child: const SizedBox(width: 56, height: 56),
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: ClipOval(
+                      child: Material(
+                        color: Colors.white,
+                        child: InkWell(
+                          splashColor: Colors.grey[300]?.withOpacity(0.7),
+                          splashFactory: InkRipple.splashFactory,
+                          onTap: () => takePicture(),
+                          child: const SizedBox(width: 56, height: 56),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              )))
+                  )))
           : Container(),
     );
   }

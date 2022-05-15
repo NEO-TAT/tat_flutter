@@ -330,10 +330,6 @@ class LocalStorage {
     await _writeStringList(key, jsonList);
   }
 
-  void saveImage(String courseId, String imgPath) async{
-    List<String> courseIdLabels = _readStringList(courseId);
-  }
-
   Future<void> _writeString(String key, String value) => _pref.setString(key, value);
 
   Future<void> _writeInt(String key, int value) => _pref.setInt(key, value);

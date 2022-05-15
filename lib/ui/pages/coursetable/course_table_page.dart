@@ -30,7 +30,6 @@ import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 
-
 class CourseTablePage extends StatefulWidget {
   const CourseTablePage({Key key}) : super(key: key);
 
@@ -79,12 +78,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
     if (!LocalStorage.instance.getOtherSetting().checkIPlusNew) {
       return;
     }
-    if (!LocalStorage.instance
-        .getFirstUse(LocalStorage.courseNotice, timeOut: 15 * 60)) {
+    if (!LocalStorage.instance.getFirstUse(LocalStorage.courseNotice, timeOut: 15 * 60)) {
       return;
     }
-    if (LocalStorage.instance.getAccount() !=
-        LocalStorage.instance.getCourseSetting().info.studentId) {
+    if (LocalStorage.instance.getAccount() != LocalStorage.instance.getCourseSetting().info.studentId) {
       //只有顯示自己的課表時才會檢查新公告
       return;
     }
@@ -102,8 +99,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       v = v ?? [];
       for (int i = 0; i < v.length; i++) {
         String courseName = v[i];
-        CourseInfoJson courseInfo =
-            courseTableData.getCourseInfoByCourseName(courseName);
+        CourseInfoJson courseInfo = courseTableData.getCourseInfoByCourseName(courseName);
         if (courseInfo != null) {
           value.add(courseName);
         }
@@ -169,10 +165,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void _loadSetting() {
     //Log.d(MediaQuery.of(context).size.height.toString());
     RenderObject renderObject = _key.currentContext.findRenderObject();
-    courseHeight = (renderObject.semanticBounds.size.height -
-            studentIdHeight -
-            dayHeight) /
-        showCourseTableNum; //計算高度
+    courseHeight = (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight) / showCourseTableNum; //計算高度
     CourseTableJson courseTable = LocalStorage.instance.getCourseSetting().info;
     if (courseTable == null || courseTable.isEmpty) {
       _getCourseTable();
@@ -212,8 +205,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     CourseTableJson courseTable;
     if (!refresh) {
       //是否要去找暫存的
-      courseTable = LocalStorage.instance
-          .getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
+      courseTable = LocalStorage.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
     }
     if (courseTable == null) {
       //代表沒有暫存的需要爬蟲
@@ -235,9 +227,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       child: Text(semesterString),
       onPressed: () {
         Get.back();
-        _getCourseTable(
-            semesterSetting: semester,
-            studentId: _studentIdControl.text); //取得課表
+        _getCourseTable(semesterSetting: semester, studentId: _studentIdControl.text); //取得課表
       },
     );
   }
@@ -275,8 +265,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   _onPopupMenuSelect(int value) async {
     switch (value) {
       case 0:
-        MyToast.show(sprintf("%s:%s",
-            [R.current.credit, courseTableData.getTotalCredit().toString()]));
+        MyToast.show(sprintf("%s:%s", [R.current.credit, courseTableData.getTotalCredit().toString()]));
         break;
       case 1:
         _loadFavorite();
@@ -306,8 +295,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     }
     Get.dialog(
       StatefulBuilder(
-        builder:
-            (BuildContext context, void Function(void Function()) setState) {
+        builder: (BuildContext context, void Function(void Function()) setState) {
           return AlertDialog(
             content: SizedBox(
               width: double.minPositive,
@@ -363,9 +351,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       barrierDismissible: true,
     );
     setState(() {
-      favorite = (LocalStorage.instance
-          .getCourseTableList()
-          .contains(courseTableData));
+      favorite = (LocalStorage.instance.getCourseTableList().contains(courseTableData));
     });
   }
 
@@ -387,9 +373,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   ),
                 )
               : Container(),
-          (!isLoading &&
-                  LocalStorage.instance.getAccount() !=
-                      courseTableData.studentId)
+          (!isLoading && LocalStorage.instance.getAccount() != courseTableData.studentId)
               ? Padding(
                   padding: const EdgeInsets.only(
                     right: 20,
@@ -401,8 +385,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       });
                       _setFavorite(favorite);
                     },
-                    child: Icon(Icons.favorite,
-                        color: (favorite) ? Colors.pinkAccent : Colors.white),
+                    child: Icon(Icons.favorite, color: (favorite) ? Colors.pinkAccent : Colors.white),
                   ),
                 )
               : Container(),
@@ -542,9 +525,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     1 + courseTableControl.getSectionIntList.length,
                     (index) {
                       Widget widget;
-                      widget = (index == 0)
-                          ? _buildDay()
-                          : _buildCourseTable(index - 1);
+                      widget = (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
                       return AnimationConfiguration.staggeredList(
                         position: index,
                         duration: const Duration(milliseconds: 375),
@@ -589,9 +570,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   Widget _buildCourseTable(int index) {
     int section = courseTableControl.getSectionIntList[index];
     Color color;
-    color = (index % 2 == 1)
-        ? Theme.of(context).backgroundColor
-        : Theme.of(context).dividerColor;
+    color = (index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor;
     color = color.withAlpha(courseTableWithAlpha);
     List<Widget> widgetList = [];
     widgetList.add(
@@ -608,8 +587,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     final isDarkMode = Get.isDarkMode;
 
     for (int day in courseTableControl.getDayIntList) {
-      CourseInfoJson courseInfo =
-          courseTableControl.getCourseInfo(day, section);
+      CourseInfoJson courseInfo = courseTableControl.getCourseInfo(day, section);
       Color color = courseTableControl.getCourseInfoColor(day, section);
       courseInfo = courseInfo ?? CourseInfoJson();
       widgetList.add(
@@ -707,7 +685,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                 ),
                 TextButton.icon(
                   onPressed: () => _showCameraPage(courseInfo),
-                  icon: Icon(Icons.camera_alt_outlined),
+                  icon: const Icon(Icons.camera_alt_outlined),
                   label: Text(R.current.details),
                 ),
               ]
@@ -722,7 +700,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     RouteUtils.launchRollCallDashBoardPageAfterLogin();
   }
 
-  Future <void> _showCameraPage(CourseInfoJson courseInfo)async {
+  Future<void> _showCameraPage(CourseInfoJson courseInfo) async {
     CourseMainJson course = courseInfo.main.course;
     String courseId = course.id;
     Get.back();
@@ -774,8 +752,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     } else {
       RouteUtils.toISchoolPage(studentId, courseInfo).then((value) {
         if (value != null) {
-          SemesterJson semesterSetting =
-              LocalStorage.instance.getCourseSetting().info.courseSemester;
+          SemesterJson semesterSetting = LocalStorage.instance.getCourseSetting().info.courseSemester;
           _getCourseTable(semesterSetting: semesterSetting, studentId: value);
         }
       });
@@ -803,9 +780,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       isLoading = false;
     });
-    favorite = (LocalStorage.instance.getCourseTable(
-            courseTable.studentId, courseTable.courseSemester) !=
-        null);
+    favorite = (LocalStorage.instance.getCourseTable(courseTable.studentId, courseTable.courseSemester) != null);
     if (favorite) {
       LocalStorage.instance.addCourseTable(courseTableData);
     }

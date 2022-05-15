@@ -22,7 +22,6 @@ import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
 import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:tat_core/tat_core.dart';
 
@@ -55,14 +54,12 @@ Future<void> main() async {
   Get.put(await openDatabase(
     join(await getDatabasesPath(), 'localDB.db'),
     onCreate: (db, version) {
-      return db.execute(
-          'CREATE TABLE photo_storage ('
-              '_id INTEGER PRIMARY KEY AUTOINCREMENT, '
-              'cursorId INTEGER, '
-              'courseId TEXT, '
-              'label TEXT, '
-              'picturePath TEXT)'
-      );
+      return db.execute('CREATE TABLE photo_storage ('
+          '_id INTEGER PRIMARY KEY AUTOINCREMENT, '
+          'cursorId INTEGER, '
+          'courseId TEXT, '
+          'label TEXT, '
+          'picturePath TEXT)');
     },
     version: 1,
   ));
@@ -103,8 +100,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppProvider>(
-        builder: (BuildContext context, AppProvider appProvider, Widget child) {
+    return Consumer<AppProvider>(builder: (BuildContext context, AppProvider appProvider, Widget child) {
       appProvider.navigatorKey = Get.key;
       return GetMaterialApp(
         title: AppConfig.appName,
@@ -117,10 +113,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate
         ],
         builder: BotToastInit(),
-        navigatorObservers: [
-          BotToastNavigatorObserver(),
-          AnalyticsUtils.observer
-        ],
+        navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
         supportedLocales: S.delegate.supportedLocales,
         home: const MainScreen(),
         logWriterCallback: (String text, {bool isError}) {

@@ -24,9 +24,6 @@ import 'package:flutter_app/ui/screen/login_screen.dart';
 import 'package:flutter_app/ui/pages/note_camera/note_camera.dart';
 import 'package:get/get.dart';
 
-
-
-
 class RouteUtils {
   static Transition transition = (Platform.isAndroid) ? Transition.downToUp : Transition.cupertino;
 
@@ -164,7 +161,7 @@ class RouteUtils {
 
   static Future<void> launchCameraPage(String courseId) => Get.to(
         () => NoteCamera(courseId: courseId),
-    transition: transition,
-    preventDuplicates: true,
-  );
+        transition: transition,
+        preventDuplicates: true,
+      );
 }
