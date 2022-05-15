@@ -49,21 +49,6 @@ class ISchoolPlusConnector {
       parameter.data = data;
       result = (await Connector.getDataByGet(parameter));
 
-      // Perform retry for cryptic API errors (?).
-      // If the string `connect lost` be found in the response, we will do the retry.
-      int retryTimes = 3;
-      do {
-        if (result.contains('connect lost')) {
-          print('@@@@@@@@@ $retryTimes');
-          // Take a short delay to avoid being blocked.
-          await Future.delayed(const Duration(milliseconds: 100));
-          result = (await Connector.getDataByGet(parameter));
-        } else {
-          print('######### $retryTimes');
-          break;
-        }
-      } while ((retryTimes--) > 0);
-
       tagNode = html.parse(result.toString().trim());
       nodes = tagNode.getElementsByTagName("input");
       data.clear();
@@ -75,7 +60,21 @@ class ISchoolPlusConnector {
       final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
-      await Connector.getDataByPostResponse(parameter);
+
+      Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
+      // Perform retry for cryptic API errors (?).
+      // If the string `connect lost` be found in the response, we will do the retry.
+      int retryTimes = 3;
+      do {
+        if (jumpResult.data.toString().contains('connect lost')) {
+          // Take a short delay to avoid being blocked.
+          await Future.delayed(const Duration(milliseconds: 100));
+          jumpResult = (await Connector.getDataByPostResponse(parameter));
+        } else {
+          break;
+        }
+      } while ((retryTimes--) > 0);
+
       return ISchoolPlusConnectorStatus.loginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
