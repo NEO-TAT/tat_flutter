@@ -22,6 +22,8 @@ import BackgroundTasks
             UserDefaults.standard.set(true, forKey: "Notification")
         }
         
+        WorkmanagerPlugin.registerTask(withIdentifier: "tat.background.task")
+        
         // Register the app's plugins in the context of a normal run
         registerPlugins(registry: self)
         
