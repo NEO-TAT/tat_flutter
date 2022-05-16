@@ -70,6 +70,9 @@ class _DevPageState extends State<DevPage> {
       case OnListViewPress.appLog:
         RouteUtils.toLogConsolePage();
         break;
+      case OnListViewPress.backgroundServices:
+        RouteUtils.launchBackgroundServicesDebugPage();
+        break;
       default:
         MyToast.show(R.current.noFunction);
         break;

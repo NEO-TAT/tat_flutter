@@ -11,6 +11,7 @@ import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/iplus_annou
 import 'package:flutter_app/ui/pages/fileviewer/file_viewer_page.dart';
 import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
 import 'package:flutter_app/ui/pages/other/page/about_page.dart';
+import 'package:flutter_app/ui/pages/other/page/background_services_debug_page.dart';
 import 'package:flutter_app/ui/pages/other/page/contributors_page.dart';
 import 'package:flutter_app/ui/pages/other/page/dev_page.dart';
 import 'package:flutter_app/ui/pages/other/page/privacy_policy_page.dart';
@@ -128,6 +129,8 @@ class RouteUtils {
       transition: transition,
     );
   }
+
+  static Future<void> launchBackgroundServicesDebugPage() => Get.to(() => const BGServiceDebugPage());
 
   static Future<void> launchRollCallDashBoardPageAfterLogin() => (!isLoggedIntoZuvio())
       ? launchZuvioLoginPage(loginSuccessAction: () => launchRollCallDashBoardPage())
