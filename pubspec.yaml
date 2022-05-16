@@ -134,6 +134,8 @@ dependencies:
   modal_bottom_sheet: ^2.0.1
   email_validator: ^2.0.1
 
+  home_widget: ^0.1.6
+
   meta: ^1.7.0
 
 dev_dependencies:

@@ -714,6 +714,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  home_widget:
+    dependency: "direct main"
+    description:
+      name: home_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.6"
   html:
     dependency: "direct main"
     description:
@@ -1574,7 +1581,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.0"
+    version: "2.6.1"
   xdg_directories:
     dependency: transitive
     description:
