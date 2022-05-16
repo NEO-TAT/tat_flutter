@@ -42,7 +42,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
                 RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.course_widget);
                 Intent actionIntent = new Intent(context, CourseWidgetProvider.class);//顯示意圖
                 actionIntent.setAction(CourseWidgetProvider.ACTION_ONCLICK);
-                PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_IMMUTABLE);
                 remoteViews.setOnClickPendingIntent(R.id.course_widget_table, pIntent);
                 String path = context.getFilesDir().getPath() + "/course_widget.png";
                 Log.i(TAG, path);
@@ -73,7 +73,7 @@ public class CourseWidgetProvider extends AppWidgetProvider {
             Intent actionIntent = new Intent(context, CourseWidgetProvider.class);//顯示意圖
             actionIntent.setAction(CourseWidgetProvider.ACTION_ONCLICK);
             //actionIntent.setPackage(context.getPackageName());//隱式意圖必須設置Package，實際測試發現，如果使用隱式意圖，在應用被殺掉時不響應廣播
-            PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pIntent = PendingIntent.getBroadcast(context, 0, actionIntent, PendingIntent.FLAG_IMMUTABLE);
             remoteViews.setOnClickPendingIntent(R.id.course_widget_table, pIntent);
             String path = context.getFilesDir().getPath() + "/course_weight.png";
             Log.i(TAG, path);
