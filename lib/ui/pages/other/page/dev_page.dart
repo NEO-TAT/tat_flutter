@@ -8,7 +8,12 @@ import 'package:flutter_app/ui/other/list_view_animator.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 
-enum OnListViewPress { cloudMessageToken, dioLog, appLog }
+enum OnListViewPress {
+  cloudMessageToken,
+  dioLog,
+  appLog,
+  backgroundServices,
+}
 
 class DevPage extends StatefulWidget {
   const DevPage({Key key}) : super(key: key);
@@ -25,8 +30,24 @@ class _DevPageState extends State<DevPage> {
       "color": Colors.green,
       "onPress": OnListViewPress.cloudMessageToken
     },
-    {"icon": Icons.info_outline, "title": "Dio Log", "color": Colors.blue, "onPress": OnListViewPress.dioLog},
-    {"icon": Icons.info_outline, "title": "App Log", "color": Colors.yellow, "onPress": OnListViewPress.appLog},
+    {
+      "icon": Icons.info_outline,
+      "title": "Dio Log",
+      "color": Colors.blue,
+      "onPress": OnListViewPress.dioLog,
+    },
+    {
+      "icon": Icons.info_outline,
+      "title": "App Log",
+      "color": Colors.yellow,
+      "onPress": OnListViewPress.appLog,
+    },
+    {
+      "icon": Icons.account_tree_outlined,
+      "title": "Background Services",
+      "color": Colors.red,
+      "onPress": OnListViewPress.backgroundServices,
+    },
   ];
 
   @override
