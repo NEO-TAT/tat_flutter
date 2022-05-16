@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/debug_log.dart';
 import 'package:path_provider/path_provider.dart';
@@ -95,7 +96,7 @@ class BGServiceDebugPage extends StatelessWidget {
                 onPressed: () {
                   Workmanager().initialize(
                     callbackDispatcher,
-                    isInDebugMode: true,
+                    isInDebugMode: kDebugMode,
                   );
                 },
               ),
