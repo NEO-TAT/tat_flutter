@@ -1,7 +1,6 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -599,6 +598,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
           child: (courseInfo.isEmpty)
               ? const SizedBox.shrink()
               : Card(
+                  elevation: 0,
+                  margin: const EdgeInsets.all(2),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -803,31 +804,37 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static const platform = MethodChannel(AppConfig.methodChannelName);
 
   Future screenshot() async {
-    double originHeight = courseHeight;
-    RenderObject renderObject = _key.currentContext.findRenderObject();
-    double height = renderObject.semanticBounds.size.height - studentIdHeight - dayHeight;
+    final originHeight = courseHeight;
+    final renderObject = _key.currentContext.findRenderObject();
+    final height = renderObject.semanticBounds.size.height - studentIdHeight - dayHeight;
     RenderRepaintBoundary boundary = overRepaintKey.currentContext.findRenderObject();
-    Directory directory = await getApplicationSupportDirectory();
-    String path = directory.path;
-    setState(() {
-      courseHeight = height / courseTableControl.getSectionIntList.length;
-    });
+    final directory = await getApplicationSupportDirectory();
+    final path = directory.path;
+
+    setState(() => courseHeight = height / courseTableControl.getSectionIntList.length);
+
     await Future.delayed(const Duration(milliseconds: 100));
-    setState(() {
-      isLoading = true;
-    });
+    setState(() => isLoading = true);
+
     Log.d(path);
-    ui.Image image = await boundary.toImage(pixelRatio: 2);
+
+    final image = await boundary.toImage(pixelRatio: 2);
+
     setState(() {
       courseHeight = originHeight;
       isLoading = false;
     });
-    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    Uint8List pngBytes = byteData.buffer.asUint8List();
-    File imgFile = File('$path/course_widget.png');
+
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    final pngBytes = byteData.buffer.asUint8List();
+    final imgFile = File('$path/course_widget.png');
+
     await imgFile.writeAsBytes(pngBytes);
-    final bool result = await platform.invokeMethod('update_weight');
+
+    final result = await platform.invokeMethod('update_home_screen_weight');
+
     Log.d("complete $result");
+
     if (result) {
       MyToast.show(R.current.settingComplete);
     } else {
