@@ -133,7 +133,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.10"
+    version: "2.1.11"
   build_runner_core:
     dependency: transitive
     description:
@@ -714,13 +714,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  home_widget:
-    dependency: "direct main"
-    description:
-      name: home_widget
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.6"
   html:
     dependency: "direct main"
     description:
