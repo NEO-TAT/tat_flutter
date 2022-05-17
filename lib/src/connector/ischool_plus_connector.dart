@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/model/ischoolplus/course_file_json.dart';
@@ -75,6 +76,9 @@ class ISchoolPlusConnector {
         }
       } while ((retryTimes--) > 0);
 
+      await FirebaseAnalytics.instance.logLogin(
+        loginMethod: 'ntut_iplus',
+      );
       return ISchoolPlusConnectorStatus.loginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
