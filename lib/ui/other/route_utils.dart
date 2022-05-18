@@ -122,12 +122,10 @@ class RouteUtils {
     );
   }
 
-  static Future toVideoPlayer(String url, CourseInfoJson courseInfo, String name) async {
-    return await Get.to(
-      () => ClassVideoPlayer(url, courseInfo, name),
-      transition: transition,
-    );
-  }
+  static Future toVideoPlayer(String url, CourseInfoJson courseInfo, String name) => Get.to(
+        () => ClassVideoPlayer(url, courseInfo, name),
+        transition: transition,
+      );
 
   static Future<void> launchRollCallDashBoardPageAfterLogin() => (!isLoggedIntoZuvio())
       ? launchZuvioLoginPage(loginSuccessAction: () => launchRollCallDashBoardPage())
