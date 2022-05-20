@@ -38,12 +38,7 @@ Future<void> main() async {
   });
 
   await CloudMessagingUtils.init();
-  await SystemChrome.setPreferredOrientations(
-    [
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ],
-  );
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   final zuvioApiService = ZuvioApiService();
 

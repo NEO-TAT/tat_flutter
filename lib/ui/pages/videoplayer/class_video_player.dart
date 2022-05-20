@@ -3,6 +3,7 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/connector/core/connector_parameter.dart';
@@ -59,6 +60,10 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
 
   @override
   void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     BackButtonInterceptor.remove(myInterceptor);
 
     _playerController?.dispose();
@@ -104,7 +109,11 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     }
 
     await _buildDialog();
-
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
     setState(() => _isLoading = false);
   }
 
