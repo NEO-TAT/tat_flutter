@@ -193,7 +193,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              if (!isLoading) (tabChildList.isNotEmpty) ? tabChildList[_currentTabIndex] : Container(),
+              if (!isLoading) (tabChildList.isNotEmpty) ? tabChildList[_currentTabIndex] : const SizedBox.shrink(),
             ],
           ),
         ),
