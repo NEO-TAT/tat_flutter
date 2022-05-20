@@ -40,31 +40,33 @@ class ContributorsPage extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: SizedBox(
-                  height: 50,
-                  child: InkWell(
-                    onTap: () {
-                      const url = AppLink.gitHub;
-                      launchUrl(Uri.parse(url));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                R.current.github,
-                                style: const TextStyle(fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: const [Text(AppLink.gitHub)],
-                          ),
-                        ],
-                      ),
+                child: InkWell(
+                  onTap: () {
+                    const url = AppLink.gitHub;
+                    launchUrl(Uri.parse(url));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              R.current.github,
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: const [
+                            Expanded(
+                              child: Text(AppLink.gitHub),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
