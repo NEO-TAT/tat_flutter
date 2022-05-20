@@ -234,5 +234,6 @@
   "pleaseConnectToNetwork": "Please connect to network",
   "autoRollCall": "Auto RollCall",
   "rollCall": "RollCall",
-  "rollCallRemind": "RollCall Remind"
+  "rollCallRemind": "RollCall Remind",
+  "videoMayLoadFailedWarningMsg": "The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again"
 }

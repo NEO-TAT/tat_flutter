@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a en locale. All the
 // messages from the main program should be duplicated here with the same
@@ -9,7 +7,8 @@
 // ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names
+// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -22,8 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-
-  static _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AreYouSureToOpen": MessageLookupByLibrary.simpleMessage("Are you sure to open?"),
         "Contribution": MessageLookupByLibrary.simpleMessage("Contribution"),
         "Contributors": MessageLookupByLibrary.simpleMessage("Contributors"),
@@ -180,7 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSupport": MessageLookupByLibrary.simpleMessage(" not support"),
         "noSupportExternalVideoPlayer": MessageLookupByLibrary.simpleMessage("Not find support external video player"),
         "notSupport": MessageLookupByLibrary.simpleMessage("Not support"),
-        "nothingHere": MessageLookupByLibrary.simpleMessage("There's nothing here"),
+        "nothingHere": MessageLookupByLibrary.simpleMessage("There\'s nothing here"),
         "numberOfStudent": MessageLookupByLibrary.simpleMessage("Number of students"),
         "numberOfWithdraw": MessageLookupByLibrary.simpleMessage("Number of withdraw"),
         "openExternalVideo": MessageLookupByLibrary.simpleMessage("Open with external video player"),
@@ -267,6 +265,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "useOldPassword": MessageLookupByLibrary.simpleMessage("Use old password"),
         "versionInfo": MessageLookupByLibrary.simpleMessage("Version info"),
+        "videoMayLoadFailedWarningMsg": MessageLookupByLibrary.simpleMessage(
+            "The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again"),
         "warning": MessageLookupByLibrary.simpleMessage("Warning"),
         "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically")
       };
