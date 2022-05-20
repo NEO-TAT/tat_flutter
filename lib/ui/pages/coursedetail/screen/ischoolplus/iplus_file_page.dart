@@ -17,7 +17,6 @@ import 'package:flutter_app/ui/icon/my_icons.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
-import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -253,14 +252,15 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
       ErrorDialog(errorDialogParameter).show();
       return;
     } else if (urlParse.host.contains("istream.ntut.edu.tw")) {
-      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter(context: context, desc: R.current.isVideo);
+      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter(
+        context: context,
+        desc: '${R.current.isVideo}\n${R.current.videoMayLoadFailedWarningMsg}',
+      );
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.INFO;
       errorDialogParameter.btnOkText = R.current.sure;
-      errorDialogParameter.btnOkOnPress = () {
-        Get.back();
-        RouteUtils.toVideoPlayer(urlParse.toString(), widget.courseInfo, courseFile.name);
-      };
+      errorDialogParameter.btnOkOnPress =
+          () => RouteUtils.toVideoPlayer(urlParse.toString(), widget.courseInfo, courseFile.name);
       ErrorDialog(errorDialogParameter).show();
     } else {
       await FileDownload.download(url, dirName, courseFile.name, referer);
