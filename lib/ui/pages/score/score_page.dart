@@ -504,52 +504,49 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       int typeSelect = constCourseType.indexOf(score.category);
       return Column(
         children: <Widget>[
-          SizedBox(
-            height: 25,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: AutoSizeText(
-                    score.name,
-                    style: const TextStyle(fontSize: 16.0),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: AutoSizeText(
+                  score.name,
+                  style: const TextStyle(fontSize: 16.0),
                 ),
-                if (score.category.isNotEmpty)
-                  DropdownButton(
-                      underline: Container(),
-                      value: typeSelect,
-                      items: constCourseType
-                          .map((e) => DropdownMenuItem(
-                                value: constCourseType.indexOf(e),
-                                child: Text(
-                                  e,
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          typeSelect = value;
-                          score.category = constCourseType[typeSelect];
-                          /*
-                        print(courseScoreList
-                            .map((e) => e.courseScoreList
-                                .map((k) => k.category)
-                                .toList())
-                            .toList());
-                         */
-                          //存檔
-                          LocalStorage.instance.setCourseScoreCredit(courseScoreCredit);
-                          LocalStorage.instance.saveCourseScoreCredit();
-                        });
-                      }),
-                SizedBox(
-                  width: 40,
-                  child: Text(score.score, style: const TextStyle(fontSize: 16.0), textAlign: TextAlign.end),
-                ),
-              ],
-            ),
+              ),
+              if (score.category.isNotEmpty)
+                DropdownButton(
+                    underline: Container(),
+                    value: typeSelect,
+                    items: constCourseType
+                        .map((e) => DropdownMenuItem(
+                              value: constCourseType.indexOf(e),
+                              child: Text(
+                                e,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        typeSelect = value;
+                        score.category = constCourseType[typeSelect];
+                        /*
+                      print(courseScoreList
+                          .map((e) => e.courseScoreList
+                              .map((k) => k.category)
+                              .toList())
+                          .toList());
+                       */
+                        //存檔
+                        LocalStorage.instance.setCourseScoreCredit(courseScoreCredit);
+                        LocalStorage.instance.saveCourseScoreCredit();
+                      });
+                    }),
+              SizedBox(
+                width: 40,
+                child: Text(score.score, style: const TextStyle(fontSize: 16.0), textAlign: TextAlign.end),
+              ),
+            ],
           ),
           const SizedBox(
             height: 8.0,
