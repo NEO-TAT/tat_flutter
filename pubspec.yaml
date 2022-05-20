@@ -133,6 +133,8 @@ dependencies:
   modal_bottom_sheet: ^2.0.1
   email_validator: ^2.0.1
 
+  weekday_selector: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
