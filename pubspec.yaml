@@ -6,7 +6,7 @@ publish_to: 'none'
 # flutter clean && flutter build ipa --split-debug-info=build/app/outputs/symbols --obfuscate && flutter build appbundle --split-debug-info=build/app/outputs/symbols --obfuscate
 # follow the google play new policy in 2021, do not build apk but aab.
 # CHECK THE BUILD CODE BEFORE DISTRIBUTION!!
-version: 1.4.0+5012
+version: 1.4.1+5013
 
 environment:
   flutter: ">=3.0.1 <4.0.0"
