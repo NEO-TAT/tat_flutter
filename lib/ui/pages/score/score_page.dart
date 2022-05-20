@@ -649,16 +649,19 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       children: <Widget>[
         Expanded(
           child: AutoSizeText(
-            sprintf("%s: %s    %s: %s    %s: %s% ", [
-              R.current.rank,
-              rankItem.rank.toString(),
-              R.current.totalPeople,
-              rankItem.total.toString(),
-              R.current.percentage,
-              rankItem.percentage.toString()
-            ]),
+            sprintf(
+              "%s: %s    %s: %s    %s: %s% ",
+              [
+                R.current.rank,
+                rankItem.rank.toString(),
+                R.current.totalPeople,
+                rankItem.total.toString(),
+                R.current.percentage,
+                rankItem.percentage.toString(),
+              ],
+            ),
             style: textStyle,
-            minFontSize: 10,
+            minFontSize: 6,
             maxLines: 1,
             textAlign: TextAlign.center,
           ),
