@@ -152,7 +152,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   @override
   void setState(fn) {
-    if (context != null) {
+    if (mounted && context != null) {
       super.setState(fn);
     }
   }
