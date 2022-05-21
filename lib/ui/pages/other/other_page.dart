@@ -59,8 +59,7 @@ class _OtherPageState extends State<OtherPage> {
     {
       "icon": Icons.access_alarm,
       "color": Colors.red,
-      // TODO(TU): remove `coming soon`.
-      "title": '${R.current.rollCallRemind} (coming soon)',
+      "title": R.current.rollCallRemind,
       "onPress": OnListViewPress.rollCallRemind,
     },
     {
@@ -156,16 +155,7 @@ class _OtherPageState extends State<OtherPage> {
           },
         );
 
-        // TODO(TU): remove this Dialog.
-        ErrorDialog(ErrorDialogParameter(
-          desc: "Zuvio (自動)點名提醒的功能即將上線\n敬請期待！\nZuvio's (auto) roll-call reminder is coming soon!",
-          title: 'Coming soon!',
-          dialogType: DialogType.INFO,
-          offCancelBtn: true,
-          btnOkText: R.current.sure,
-        )).show();
-        // TODO(TU): un-comment this line after feature is already prepared for release.
-        // RouteUtils.launchRollCallDashBoardPageAfterLogin();
+        RouteUtils.launchRollCallDashBoardPageAfterLogin();
         break;
       default:
         MyToast.show(R.current.noFunction);
