@@ -1,13 +1,17 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.16
-
 import 'package:flutter/material.dart';
+import 'package:flutter_app/src/store/picture_storage.dart';
 
 class AlbumPage extends StatelessWidget {
-  const AlbumPage({Key? key}) : super(key: key);
+  final String courseId;
+
+  const AlbumPage({
+    super.key,
+    required this.courseId
+  });
 
   @override
   Widget build(BuildContext context) {
+    PictureStorage.getCoursePicture(courseId);
     return Container();
   }
 }
