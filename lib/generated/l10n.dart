@@ -2407,6 +2407,116 @@ class S {
       args: [],
     );
   }
+
+  /// `The roll call schedule was added successfully`
+  String get rollCallScheduledSuccessfully {
+    return Intl.message(
+      'The roll call schedule was added successfully',
+      name: 'rollCallScheduledSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The roll call schedule has been cancelled`
+  String get rollCallScheduleCanceled {
+    return Intl.message(
+      'The roll call schedule has been cancelled',
+      name: 'rollCallScheduleCanceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Missing required information`
+  String get missingRequiredInformation {
+    return Intl.message(
+      'Missing required information',
+      name: 'missingRequiredInformation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect information entered`
+  String get incorrectInformationEntered {
+    return Intl.message(
+      'Incorrect information entered',
+      name: 'incorrectInformationEntered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a start time`
+  String get pleaseSelectStartTime {
+    return Intl.message(
+      'Please select a start time',
+      name: 'pleaseSelectStartTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select an end time`
+  String get pleaseSelectEndTime {
+    return Intl.message(
+      'Please select an end time',
+      name: 'pleaseSelectEndTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a weekday`
+  String get pleaseSelectWeekday {
+    return Intl.message(
+      'Please select a weekday',
+      name: 'pleaseSelectWeekday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End time must be after start time`
+  String get endTimeMustBeAfterStartTime {
+    return Intl.message(
+      'End time must be after start time',
+      name: 'endTimeMustBeAfterStartTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ADD`
+  String get capitalAdd {
+    return Intl.message(
+      'ADD',
+      name: 'capitalAdd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End`
+  String get end {
+    return Intl.message(
+      'End',
+      name: 'end',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Begin`
+  String get begin {
+    return Intl.message(
+      'Begin',
+      name: 'begin',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
