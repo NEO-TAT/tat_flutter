@@ -37,7 +37,7 @@ dependencies:
   #通知欄  需修改android原始碼
   rxdart: ^0.27.4
   #通知欄有使用到
-  video_player: ^2.4.4
+  video_player: ^2.4.5
   chewie: ^1.1.0 # constraints by alice: ^0.2.5
   after_init: ^0.1.2
   android_intent: ^2.0.2
