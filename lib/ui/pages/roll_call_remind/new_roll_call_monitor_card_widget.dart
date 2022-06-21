@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
@@ -51,8 +52,8 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     if (!hasStartTime) {
       ErrorDialog(ErrorDialogParameter(
         dialogType: DialogType.WARNING,
-        title: 'Missing required information',
-        desc: 'Please select a start time!',
+        title: R.current.missingRequiredInformation,
+        desc: R.current.pleaseSelectStartTime,
         btnOkText: R.current.sure,
         offCancelBtn: true,
       )).show();
@@ -63,8 +64,8 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     if (!hasEndTime) {
       ErrorDialog(ErrorDialogParameter(
         dialogType: DialogType.WARNING,
-        title: 'Missing required information',
-        desc: 'Please select an end time!',
+        title: R.current.missingRequiredInformation,
+        desc: R.current.pleaseSelectEndTime,
         btnOkText: R.current.sure,
         offCancelBtn: true,
       )).show();
@@ -75,8 +76,8 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     if (!hasWeekDay) {
       ErrorDialog(ErrorDialogParameter(
         dialogType: DialogType.WARNING,
-        title: 'Missing required information',
-        desc: 'Please select a weekday!',
+        title: R.current.missingRequiredInformation,
+        desc: R.current.pleaseSelectWeekday,
         btnOkText: R.current.sure,
         offCancelBtn: true,
       )).show();
@@ -88,8 +89,8 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     if (_timeInMinuteOf(_monitoringStartTime.value) > _timeInMinuteOf(_monitoringEndTime.value)) {
       ErrorDialog(ErrorDialogParameter(
         dialogType: DialogType.WARNING,
-        title: 'Incorrect information entered',
-        desc: 'End time must be after start time!',
+        title: R.current.incorrectInformationEntered,
+        desc: R.current.endTimeMustBeAfterStartTime,
         btnOkText: R.current.sure,
         offCancelBtn: true,
       )).show();
@@ -166,17 +167,17 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
           primary: Colors.green,
         ),
         child: Row(
-          children: const [
-            Icon(
+          children: [
+            const Icon(
               Icons.add,
               size: 14,
               color: Colors.white,
             ),
-            SizedBox(width: 6),
+            const SizedBox(width: 6),
             Text(
               // TODO(TU): replace text with `R.current.xxx`
-              "ADD",
-              style: TextStyle(
+              R.current.capitalAdd,
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
@@ -209,9 +210,11 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
             Expanded(
               child: ValueListenableBuilder<TimeOfDay?>(
                 valueListenable: monitorTime,
-                builder: (_, time, __) => Text(
+                builder: (_, time, __) => AutoSizeText(
                   time == null ? defaultText : _toTimeTextFrom(time),
                   textAlign: TextAlign.center,
+                  minFontSize: 6,
+                  wrapWords: false,
                   style: TextStyle(
                     color: widget._isDarkMode
                         ? (time == null ? Colors.white : Colors.yellowAccent)
@@ -234,7 +237,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
             children: [
               _buildTimeSelectionButton(
                 monitorTime: _monitoringStartTime,
-                defaultText: "Begin",
+                defaultText: R.current.begin,
                 onPressed: () async {
                   _monitoringStartTime.value = await showTimePicker(
                     context: context,
@@ -244,7 +247,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
               ),
               _buildTimeSelectionButton(
                 monitorTime: _monitoringEndTime,
-                defaultText: "End",
+                defaultText: R.current.end,
                 onPressed: () async {
                   _monitoringEndTime.value = await showTimePicker(
                     context: context,
