@@ -7,9 +7,7 @@ import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dar
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class RollCallDashboardPage extends StatelessWidget {
-  const RollCallDashboardPage({
-    super.key,
-  });
+  const RollCallDashboardPage({super.key});
 
   PreferredSizeWidget get _appBar => AppBar(
         title: Row(
