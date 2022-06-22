@@ -7,6 +7,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/horizontal_side_container.dart';
 import 'package:tat_core/tat_core.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
@@ -280,37 +281,6 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
         },
       );
 
-  Widget _buildHorizontalSideContainer({
-    required Size size,
-    required double ratio,
-    required Color color,
-    Radius leftRadius = Radius.zero,
-    Radius rightRadius = Radius.zero,
-    EdgeInsetsGeometry? padding,
-    Widget? content,
-  }) {
-    final borderRadius = BorderRadius.horizontal(
-      left: leftRadius,
-      right: rightRadius,
-    );
-    return Material(
-      borderRadius: borderRadius,
-      elevation: 6,
-      color: Colors.transparent,
-      child: Container(
-        width: size.width * ratio,
-        padding: padding,
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          color: color,
-        ),
-        child: RepaintBoundary(
-          child: content,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -322,7 +292,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildHorizontalSideContainer(
+              HorizontalSideContainer(
                 size: size,
                 ratio: 0.7,
                 color: widget._isDarkMode ? const Color(0xFF205375) : const Color(0xFF2155CD),
@@ -330,7 +300,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 content: _buildLeftSection(),
               ),
-              _buildHorizontalSideContainer(
+              HorizontalSideContainer(
                 size: size,
                 ratio: 0.3,
                 color: widget._isDarkMode ? const Color(0xFF112B3C) : const Color(0xFFA2E7F7),
