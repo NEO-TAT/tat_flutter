@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/horizontal_side_container.dart';
+import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
 /// A type of the function which handles the add roll-call monitor event.
-typedef OnAddMonitorPressed = FutureOr<void> Function(Week weekday, TimeOfDay startTime, TimeOfDay endTime);
+typedef OnAddMonitorPressed = FutureOr<void> Function(Week weekday, TimeOfDayPeriod period);
 
 class NewRollCallMonitorCard extends StatefulWidget {
   const NewRollCallMonitorCard({
@@ -111,7 +112,8 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     final startTime = _monitoringStartTime.value ?? TimeOfDay.now();
     final endTime = _monitoringEndTime.value ?? TimeOfDay.now();
 
-    widget._onAddMonitorPressed(weekday, startTime, endTime);
+    widget._onAddMonitorPressed(weekday, TimeOfDayPeriod(startTime, endTime));
+    Get.back();
   }
 
   Widget _buildLeftSection() => Column(
@@ -176,7 +178,6 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
             ),
             const SizedBox(width: 6),
             Text(
-              // TODO(TU): replace text with `R.current.xxx`
               R.current.capitalAdd,
               style: const TextStyle(
                 color: Colors.white,
