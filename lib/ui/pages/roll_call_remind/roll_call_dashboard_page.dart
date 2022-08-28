@@ -2,9 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dart';
+import 'package:flutter_app/ui/pages/roll_call_remind/scheduled_roll_call_monitor_card_widget.dart';
+import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:tat_core/tat_core.dart';
 
 class RollCallDashboardPage extends StatelessWidget {
   const RollCallDashboardPage({super.key});
@@ -85,7 +89,10 @@ class RollCallDashboardPage extends StatelessWidget {
         body: SafeArea(
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
-            child: const SizedBox.shrink(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: _scheduledMonitorList,
+            ),
           ),
         ),
       );
