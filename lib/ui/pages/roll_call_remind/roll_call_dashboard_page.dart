@@ -38,6 +38,43 @@ class RollCallDashboardPage extends StatelessWidget {
     );
   }
 
+  Widget get _scheduledMonitorList {
+    return GetBuilder<ZRollCallMonitorController>(
+      builder: (controller) => ListView.builder(
+        itemCount: controller.schedules.length,
+        itemBuilder: (_, index) {
+          final schedule = controller.schedules[index];
+
+          // TODO: FIXME: refactor with the correct domain model inside TAT-Core, instead of using Map structure.
+          final isEnabled = schedule['enabled'] as bool;
+          final startHour = schedule['schedule']['start-time']['hour'] as int;
+          final startMinute = schedule['schedule']['start-time']['minute'] as int;
+          final endHour = schedule['schedule']['end-time']['hour'] as int;
+          final endMinute = schedule['schedule']['end-time']['minute'] as int;
+
+          final courseRawData = schedule['z-course'] as Map<String, dynamic>;
+          final zCourse = ZCourse.fromJson(courseRawData);
+
+          final weekDay = schedule['schedule']['weekday'] as int;
+
+          final id = schedule['id'] as String;
+
+          return ScheduledRollCallMonitorCard(
+            period: TimeOfDayPeriod(
+              TimeOfDay(hour: startHour, minute: startMinute),
+              TimeOfDay(hour: endHour, minute: endMinute),
+            ),
+            courseName: zCourse.name,
+            selectedWeekDay: Week.values[weekDay],
+            isMonitorEnabled: isEnabled,
+            onRemoveMonitorPressed: () => controller.removeMonitor(monitorId: id),
+            onRollCallPressed: () => controller.makeRollCall(course: zCourse),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: _appBar,
