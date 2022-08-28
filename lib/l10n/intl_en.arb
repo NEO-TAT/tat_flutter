@@ -235,5 +235,16 @@
   "autoRollCall": "Auto RollCall",
   "rollCall": "RollCall",
   "rollCallRemind": "RollCall Remind",
-  "videoMayLoadFailedWarningMsg": "The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again"
+  "videoMayLoadFailedWarningMsg": "The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again",
+  "rollCallScheduledSuccessfully": "The roll call schedule was added successfully",
+  "rollCallScheduleCanceled": "The roll call schedule has been cancelled",
+  "missingRequiredInformation": "Missing required information",
+  "incorrectInformationEntered": "Incorrect information entered",
+  "pleaseSelectStartTime": "Please select a start time",
+  "pleaseSelectEndTime": "Please select an end time",
+  "pleaseSelectWeekday": "Please select a weekday",
+  "endTimeMustBeAfterStartTime": "End time must be after start time",
+  "capitalAdd": "ADD",
+  "end": "End",
+  "begin": "Begin"
 }

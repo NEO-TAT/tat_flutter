@@ -226,40 +226,19 @@ class LocalStorage {
     return _saveAnnouncementSetting();
   }
 
-  Future<void> saveZuvioLoginCredential(ZLoginCredential credential) async {
-    await _writeString('$_zLoginCredentialKey-email', credential.email);
-    await _writeString('$_zLoginCredentialKey-password', credential.password);
-  }
+  Future<void> saveZuvioLoginCredential(ZLoginCredential credential) =>
+      _writeString(_zLoginCredentialKey, jsonEncode(credential.toJson()));
 
-  Future<void> saveZuvioUserInfo(ZUserInfo userInfo) => _saveJson(_zUserInfoKey, {
-        '$_zUserInfoKey-id': userInfo.id,
-        '$_zUserInfoKey-accessToken': userInfo.accessToken,
-        '$_zUserInfoKey-name': userInfo.name,
-        '$_zUserInfoKey-hasCourse': userInfo.hasCourse.toString(),
-      });
+  Future<void> saveZuvioUserInfo(ZUserInfo userInfo) => _writeString(_zUserInfoKey, jsonEncode(userInfo.toJson()));
 
   ZLoginCredential getZuvioLoginCredential() {
-    final rawZuvioLoginCredentialEmail = _readString('$_zLoginCredentialKey-email');
-    final rawZuvioLoginCredentialPassword = _readString('$_zLoginCredentialKey-password');
-
-    return (rawZuvioLoginCredentialEmail != null && rawZuvioLoginCredentialPassword != null)
-        ? ZLoginCredential(
-            email: rawZuvioLoginCredentialEmail,
-            password: rawZuvioLoginCredentialPassword,
-          )
-        : null;
+    final savedData = _readString(_zLoginCredentialKey);
+    return (savedData == null) ? null : ZLoginCredential.fromJson(jsonDecode(savedData) as Map<String, dynamic>);
   }
 
   ZUserInfo getZuvioUserInfo() {
-    final rawUserInfo = jsonDecode(_readString(_zUserInfoKey) ?? '{}');
-    return (rawUserInfo != null)
-        ? ZUserInfo(
-            id: rawUserInfo['$_zUserInfoKey-id'],
-            accessToken: rawUserInfo['$_zUserInfoKey-accessToken'],
-            name: rawUserInfo['$_zUserInfoKey-name'],
-            hasCourse: rawUserInfo['$_zUserInfoKey-hasCourse'] == 'true',
-          )
-        : null;
+    final savedData = _readString(_zUserInfoKey);
+    return (savedData == null) ? null : ZUserInfo.fromJson(jsonDecode(savedData) as Map<String, dynamic>);
   }
 
   void clearSemesterJsonList() => _courseSemesterList.clear();

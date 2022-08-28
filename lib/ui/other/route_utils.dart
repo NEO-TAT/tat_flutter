@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/ui/pages/coursedetail/course_detail_page.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/iplus_announcement_detail_page.dart';
@@ -131,11 +132,14 @@ class RouteUtils {
       ? launchZuvioLoginPage(loginSuccessAction: () => launchRollCallDashBoardPage())
       : launchRollCallDashBoardPage();
 
-  static Future<void> launchRollCallDashBoardPage() => Get.to(
-        () => const RollCallDashboardPage(),
-        transition: transition,
-        preventDuplicates: true,
-      );
+  static Future<void> launchRollCallDashBoardPage() {
+    ZRollCallMonitorController.to.getScheduledMonitors();
+    return Get.to(
+      () => const RollCallDashboardPage(),
+      transition: transition,
+      preventDuplicates: true,
+    );
+  }
 
   static Future<void> launchZuvioLoginPage({
     LoginSuccessAction loginSuccessAction,

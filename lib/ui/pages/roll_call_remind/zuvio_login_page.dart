@@ -96,8 +96,11 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
               borderRadius: BorderRadius.circular(18.0),
             ),
           ),
-          icon: const Icon(Icons.login),
-          label: Text(R.current.login),
+          icon: const Icon(Icons.login, color: Colors.white),
+          label: Text(
+            R.current.login,
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
       );
 
