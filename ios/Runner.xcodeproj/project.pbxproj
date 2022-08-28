@@ -145,7 +145,6 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				A55FD5AB25B416EB00F4C4FC /* Firebase Script */,
 				2CE37DF21336D48B31CD77C9 /* [CP] Embed Pods Frameworks */,
-				CA57ACD6762DF98D0ACFDBA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -290,23 +289,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/FirebaseCrashlytics/run -gsp ${PROJECT_DIR}/Runner/GoogleService-Info.plist\n";
-		};
-		CA57ACD6762DF98D0ACFDBA5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
