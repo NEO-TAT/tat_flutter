@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
@@ -44,9 +46,18 @@ Future<void> main() async {
 
   final zuvioLoginRepository = ZLoginRepository(apiService: zuvioApiService);
   final zStudentCourseListRepository = ZStudentCourseListRepository(apiService: zuvioApiService);
+  final zGetRollCallRepository = ZGetRollCallRepository(apiService: zuvioApiService);
+  final zMakeRollCallRepository = ZMakeRollCallRepository(apiService: zuvioApiService);
 
   final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
   final zuvioGetCourseListUseCase = ZGetStudentCourseListUseCase(zStudentCourseListRepository);
+  final zuvioGetRollCallUseCase = ZGetRollCallUseCase(zGetRollCallRepository);
+  final zuvioMakeRollCallUseCase = ZMakeRollCallUseCase(
+    zGetRollCallRepository,
+    zMakeRollCallRepository,
+  );
+
+  final firestore = FirebaseFirestore.instance;
 
   final zAuthController = ZAuthController(
     isLoginBtnEnabled: true,
@@ -56,12 +67,20 @@ Future<void> main() async {
 
   final zCourseController = ZCourseController(
     getCourseListUseCase: zuvioGetCourseListUseCase,
+    firestore: firestore,
+  );
+
+  final zRollCallMonitorController = ZRollCallMonitorController(
+    getRollCallUseCase: zuvioGetRollCallUseCase,
+    makeRollCallUseCase: zuvioMakeRollCallUseCase,
+    firestore: firestore,
   );
 
   runZonedGuarded(
     () {
       Get.put(zAuthController);
       Get.put(zCourseController);
+      Get.put(zRollCallMonitorController);
 
       FirebaseAnalytics.instance.logAppOpen();
 
