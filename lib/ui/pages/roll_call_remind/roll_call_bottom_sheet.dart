@@ -39,7 +39,11 @@ class RollCallBottomSheet extends StatelessWidget {
             teacherName: course.teacherName,
             semesterName: course.semesterName,
             isDarkMode: isDarkMode,
-            onAddMonitorPressed: (weekday, startTime, endTime) => controller.addScheduledMonitor(),
+            onAddMonitorPressed: (weekday, period) => controller.addScheduledMonitor(
+              course: course,
+              period: period,
+              weekday: weekday,
+            ),
           );
         },
       ),
