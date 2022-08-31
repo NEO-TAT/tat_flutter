@@ -2517,6 +2517,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Zuvio's (auto) roll-call reminder is coming soon!`
+  String get zuvioAutoRollCallFeatureReleaseNotice {
+    return Intl.message(
+      'Zuvio\'s (auto) roll-call reminder is coming soon!',
+      name: 'zuvioAutoRollCallFeatureReleaseNotice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coming Soon！`
+  String get comingSoon {
+    return Intl.message(
+      'Coming Soon！',
+      name: 'comingSoon',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
