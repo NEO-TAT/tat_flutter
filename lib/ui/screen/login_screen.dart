@@ -172,10 +172,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.center,
                       child: TextButton(
                         style: TextButton.styleFrom(
+                          foregroundColor: AppColors.mainColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32.0),
                           ),
-                          primary: AppColors.mainColor,
                           textStyle: const TextStyle(color: AppColors.lightFontColor),
                           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         ),

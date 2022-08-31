@@ -333,7 +333,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                     width: 130,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).colorScheme.secondary,
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
@@ -431,7 +431,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        primary: Theme.of(context).colorScheme.secondary,
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
                       ),
                       child: Text(
                         R.current.rename,

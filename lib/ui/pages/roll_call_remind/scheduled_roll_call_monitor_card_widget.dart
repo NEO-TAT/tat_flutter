@@ -40,8 +40,8 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
   final OnRollCallPressed _onRollCallPressed;
 
   String _toTimeTextFrom(TimeOfDay? time) {
-    String _addLeadingZeroIfNeeded(int value) => value < 10 ? '0$value' : value.toString();
-    return time == null ? ' --:-- ' : '${_addLeadingZeroIfNeeded(time.hour)}:${_addLeadingZeroIfNeeded(time.minute)}';
+    String addLeadingZeroIfNeeded(int value) => value < 10 ? '0$value' : value.toString();
+    return time == null ? ' --:-- ' : '${addLeadingZeroIfNeeded(time.hour)}:${addLeadingZeroIfNeeded(time.minute)}';
   }
 
   Widget _buildLeftSection() => Column(
@@ -126,7 +126,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
           )).show();
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.deepOrange,
+          backgroundColor: Colors.deepOrange,
         ),
         child: FittedBox(
           child: Row(
@@ -172,7 +172,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
           }
         },
         style: ElevatedButton.styleFrom(
-          primary: Colors.white,
+          backgroundColor: Colors.white,
         ),
         child: FittedBox(
           child: Row(
