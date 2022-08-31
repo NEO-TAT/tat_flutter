@@ -5,7 +5,6 @@ import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -681,11 +680,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
         actions: courseInfo.main.course.id.isNotEmpty
             ? [
                 TextButton.icon(
-                  onPressed: _showRollCallDashboardPage,
-                  icon: const Icon(Icons.access_alarm),
-                  label: Text(R.current.rollCallRemind),
-                ),
-                TextButton.icon(
                   onPressed: () => _showCourseDetail(courseInfo),
                   icon: const Icon(Icons.add_outlined),
                   label: Text(R.current.details),
@@ -695,19 +689,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
       ),
       barrierDismissible: true,
     );
-  }
-
-  void _showRollCallDashboardPage() async {
-    // TODO(TU): update this log to the real feature log.
-    await FirebaseAnalytics.instance.logEvent(
-      name: 'z_roll_call_pre_msg_clicked',
-      parameters: {
-        'position': 'course_table_course',
-      },
-    );
-
-    Get.back();
-    RouteUtils.launchRollCallDashBoardPageAfterLogin();
   }
 
   Future<String> _showEditDialog(String value) async {
