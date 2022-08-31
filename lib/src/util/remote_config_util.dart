@@ -1,23 +1,23 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
 import 'dart:convert';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_app/src/model/remoteconfig/remote_config_version_info.dart';
 
 class RemoteConfigUtil {
-  static FirebaseRemoteConfig _remoteConfig;
+  static final _remoteConfig = FirebaseRemoteConfig.instance;
 
-  static const versionConfigKey = "version_config";
-
-  static Future<void> init() async {
-    _remoteConfig = FirebaseRemoteConfig.instance;
-  }
+  static const _versionConfigKey = "version_config";
+  static const _featureToggleZuvioRollCallKey = "enable_zuvio_roll_call_feature";
 
   static Future<RemoteConfigVersionInfo> getVersionConfig() async {
-    await _remoteConfig.fetch();
-    await _remoteConfig.activate();
-    final result = _remoteConfig.getString(versionConfigKey);
+    await _remoteConfig.fetchAndActivate();
+    final result = _remoteConfig.getString(_versionConfigKey);
     return RemoteConfigVersionInfo.fromJson(json.decode(result));
+  }
+
+  static Future<bool> getFeatureToggleZuvioRollCallFlag() async {
+    await _remoteConfig.fetchAndActivate();
+    return _remoteConfig.getBool(_featureToggleZuvioRollCallKey);
   }
 }

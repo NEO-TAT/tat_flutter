@@ -10,7 +10,6 @@ import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/language_util.dart';
-import 'package:flutter_app/src/util/remote_config_util.dart';
 import 'package:flutter_app/src/version/app_version.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/pages/calendar/calendar_page.dart';
@@ -56,7 +55,6 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     R.set(context);
     await LocalStorage.instance.getInstance(); //一定要先getInstance()不然無法取得資料
     try {
-      await RemoteConfigUtil.init();
       await initLanguage();
       Log.init();
       APPVersion.initAndCheck();

@@ -70,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "classroomUse": MessageLookupByLibrary.simpleMessage("classroomUse"),
         "closeOnce": MessageLookupByLibrary.simpleMessage("Press again to close"),
         "closeSubscribe": MessageLookupByLibrary.simpleMessage("Close subscribe"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming Soon！"),
         "compulsoryCompulsory": MessageLookupByLibrary.simpleMessage("Compulsory Compulsory"),
         "compulsoryMajorRevision": MessageLookupByLibrary.simpleMessage("Compulsory major revision"),
         "compulsoryProfessional": MessageLookupByLibrary.simpleMessage("Compulsory professional"),
@@ -280,6 +281,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "videoMayLoadFailedWarningMsg": MessageLookupByLibrary.simpleMessage(
             "The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again"),
         "warning": MessageLookupByLibrary.simpleMessage("Warning"),
-        "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically")
+        "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically"),
+        "zuvioAutoRollCallFeatureReleaseNotice":
+            MessageLookupByLibrary.simpleMessage("Zuvio\'s (auto) roll-call reminder is coming soon!")
       };
 }

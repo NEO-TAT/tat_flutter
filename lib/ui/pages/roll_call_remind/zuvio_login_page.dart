@@ -90,8 +90,9 @@ class _ZuvioLoginPageState extends State<ZuvioLoginPage> {
         child: ElevatedButton.icon(
           onPressed: enabled ? _onLoginPressed : null,
           style: ElevatedButton.styleFrom(
-            primary: const Color(0xFFFF6363),
-            onSurface: Colors.black12,
+            backgroundColor: const Color(0xFFFF6363),
+            disabledForegroundColor: Colors.black12.withOpacity(0.38),
+            disabledBackgroundColor: Colors.black12.withOpacity(0.12),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
             ),

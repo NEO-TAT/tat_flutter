@@ -45,8 +45,8 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
   final _selectedWeekdays = ValueNotifier(List.filled(7, false));
 
   String _toTimeTextFrom(TimeOfDay? time) {
-    String _addLeadingZeroIfNeeded(int value) => value < 10 ? '0$value' : value.toString();
-    return time == null ? ' --:-- ' : '${_addLeadingZeroIfNeeded(time.hour)}:${_addLeadingZeroIfNeeded(time.minute)}';
+    String addLeadingZeroIfNeeded(int value) => value < 10 ? '0$value' : value.toString();
+    return time == null ? ' --:-- ' : '${addLeadingZeroIfNeeded(time.hour)}:${addLeadingZeroIfNeeded(time.minute)}';
   }
 
   bool _verifyCardInfo() {
@@ -86,9 +86,9 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
       return false;
     }
 
-    int _timeInMinuteOf(TimeOfDay? time) => time == null ? 0 : time.hour * 60 + time.minute;
+    int timeInMinuteOf(TimeOfDay? time) => time == null ? 0 : time.hour * 60 + time.minute;
 
-    if (_timeInMinuteOf(_monitoringStartTime.value) > _timeInMinuteOf(_monitoringEndTime.value)) {
+    if (timeInMinuteOf(_monitoringStartTime.value) > timeInMinuteOf(_monitoringEndTime.value)) {
       ErrorDialog(ErrorDialogParameter(
         dialogType: DialogType.WARNING,
         title: R.current.incorrectInformationEntered,
@@ -167,7 +167,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
   Widget _buildAddMonitorButton() => ElevatedButton(
         onPressed: _onAddMonitorButtonPressed,
         style: ElevatedButton.styleFrom(
-          primary: Colors.green,
+          backgroundColor: Colors.green,
         ),
         child: Row(
           children: [

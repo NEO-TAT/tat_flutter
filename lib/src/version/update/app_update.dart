@@ -1,5 +1,4 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -16,15 +15,17 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 class AppUpdate {
-  static Future<bool> checkUpdate() async {
+  static Future<bool> checkUpdate({RemoteConfigVersionInfo? versionConfig}) async {
     try {
-      RemoteConfigVersionInfo config = await RemoteConfigUtil.getVersionConfig();
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      Version currentVersion = Version.parse(packageInfo.version);
-      Version latestVersion = Version.parse(config.last.version);
-      bool needUpdate = latestVersion > currentVersion;
+      versionConfig = versionConfig ?? await RemoteConfigUtil.getVersionConfig();
+
+      final packageInfo = await PackageInfo.fromPlatform();
+      final currentVersion = Version.parse(packageInfo.version);
+      final latestVersion = Version.parse(versionConfig.last.version);
+      final needUpdate = latestVersion > currentVersion;
+
       if (needUpdate) {
-        _showUpdateDialog(config);
+        _showUpdateDialog(versionConfig);
         return true;
       }
     } catch (e) {
@@ -34,19 +35,19 @@ class AppUpdate {
   }
 
   static Future<String> getAppVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.version;
   }
 
   static void _showUpdateDialog(RemoteConfigVersionInfo value) async {
-    String title = sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
+    final title = sprintf("%s %s", [R.current.findNewVersion, value.last.version]);
 
     await Get.dialog<bool>(
       AlertDialog(
         title: Text(title),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
+            children: [
               if (value.isFocusUpdate) ...[
                 Text(R.current.isFocusUpdate),
                 const Padding(
@@ -57,12 +58,10 @@ class AppUpdate {
             ],
           ),
         ),
-        actions: <Widget>[
+        actions: [
           TextButton(
             child: Text(R.current.cancel),
-            onPressed: () {
-              Get.back<bool>(result: false);
-            },
+            onPressed: () => Get.back<bool>(result: false),
           ),
           TextButton(
             child: Text(R.current.update),

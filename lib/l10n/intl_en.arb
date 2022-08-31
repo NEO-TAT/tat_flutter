@@ -246,5 +246,7 @@
   "endTimeMustBeAfterStartTime": "End time must be after start time",
   "capitalAdd": "ADD",
   "end": "End",
-  "begin": "Begin"
+  "begin": "Begin",
+  "zuvioAutoRollCallFeatureReleaseNotice": "Zuvio's (auto) roll-call reminder is coming soon!",
+  "comingSoon": "Coming Soon！"
 }

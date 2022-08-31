@@ -25,7 +25,7 @@ dependencies:
       url: git@github.com:NTUT-NPC/TAT-Core.git
       ref: main
 
-  path: ^1.8.1 # flutter_test depends on 1.8.1
+  path: ^1.8.2
   path_provider: ^2.0.11
   provider: ^6.0.3
   url_launcher: ^6.1.5
@@ -33,7 +33,7 @@ dependencies:
   logger: ^1.1.0
   #顯示Log
   sprintf: ^6.0.2
-  flutter_local_notifications: ^9.8.0+1
+  flutter_local_notifications: ^9.9.0
   #通知欄  需修改android原始碼
   rxdart: ^0.27.5
   #通知欄有使用到
@@ -100,7 +100,7 @@ dependencies:
   bot_toast: ^4.0.3
   pull_to_refresh: ^2.0.0
   #提供ListView可下拉式更新並且可動態加載
-  cached_network_image: ^3.2.1
+  cached_network_image: ^3.2.2
   #用url顯示圖片
   auto_size_text: ^3.0.0
   #課表顯示有用到
