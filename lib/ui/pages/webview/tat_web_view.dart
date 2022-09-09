@@ -7,15 +7,19 @@ class TATWebView extends StatelessWidget {
     super.key,
     required Uri initialUrl,
     InAppWebViewCreatedCallback? onWebViewCreated,
+    InAppWebViewProgressChangedCallback? onProgressChanged,
   })  : _initialUrl = initialUrl,
-        _onWebViewCreated = onWebViewCreated;
+        _onWebViewCreated = onWebViewCreated,
+        _onProgressChanged = onProgressChanged;
 
   final Uri _initialUrl;
   final InAppWebViewCreatedCallback? _onWebViewCreated;
+  final InAppWebViewProgressChangedCallback? _onProgressChanged;
 
   @override
   Widget build(BuildContext context) => InAppWebView(
         initialUrlRequest: URLRequest(url: _initialUrl),
         onWebViewCreated: _onWebViewCreated,
+        onProgressChanged: _onProgressChanged,
       );
 }
