@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsPage extends StatelessWidget {
   final github = GitHub();
-  final repositorySlug = RepositorySlug(AppLink.githubOwner, AppLink.githubName);
+  final repositorySlug = RepositorySlug(AppLink.githubOwnerName, AppLink.tatRepoName);
 
   ContributorsPage({Key key}) : super(key: key);
 
@@ -44,7 +44,7 @@ class ContributorsPage extends StatelessWidget {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          const url = AppLink.gitHub;
+                          const url = AppLink.tatGitHubRepoUrlString;
                           launchUrl(Uri.parse(url));
                         },
                         child: Container(
@@ -64,7 +64,7 @@ class ContributorsPage extends StatelessWidget {
                               Row(
                                 children: const [
                                   Expanded(
-                                    child: Text(AppLink.gitHub),
+                                    child: Text(AppLink.tatGitHubRepoUrlString),
                                   ),
                                 ],
                               ),

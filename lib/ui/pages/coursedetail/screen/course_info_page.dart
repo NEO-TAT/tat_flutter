@@ -170,9 +170,16 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     );
   }
 
-  void _launchWebView(String title, String url) {
+  void _launchWebView(String title, String urlString) {
     canPop = false;
-    RouteUtils.toWebViewPage(title, url).then((value) => canPop = true);
+
+    final url = Uri.tryParse(urlString);
+
+    if (url != null) {
+      RouteUtils.toWebViewPage(title: title, initialUrl: url).then((value) => canPop = true);
+    } else {
+      // TODO: handle exceptions when the url is null. (null means it may caused by the parse process error.)
+    }
   }
 
   Widget _buildCourseInfoWithButton(String text, String buttonText, String url) {
