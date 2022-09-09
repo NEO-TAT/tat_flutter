@@ -80,6 +80,14 @@ class _SubSystemPageState extends State<SubSystemPage> {
           ),
           onTap: () async {
             if (ap.type == 'link') {
+              // This step checks if the `ap.urlLink` is a completed url (should has scheme).
+              // Because we don't need to add any prefix such as `NTUTConnector.host` when it is a completed url.
+              final apLinkUrl = Uri.tryParse(ap.urlLink);
+              if (apLinkUrl != null && apLinkUrl.hasScheme) {
+                RouteUtils.toWebViewPage(title: ap.description, initialUrl: apLinkUrl);
+                return;
+              }
+
               final urlString = "${NTUTConnector.host}${ap.urlLink}";
               final url = Uri.tryParse(urlString);
 
