@@ -95,15 +95,13 @@ class RouteUtils {
     );
   }
 
-  static Future toWebViewPage(String title, String url) async {
-    return await Get.to(
-      () => WebViewPage(
-        title: title,
-        url: url,
-      ),
-      transition: transition,
-    );
-  }
+  static Future toWebViewPage({@required String title, @required Uri initialUrl}) => Get.to(
+        () => WebViewPage(
+          title: title,
+          initialUrl: initialUrl,
+        ),
+        transition: transition,
+      );
 
   static Future toLogConsolePage() async {
     return await Get.to(

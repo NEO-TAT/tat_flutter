@@ -138,14 +138,10 @@ class _OtherPageState extends State<OtherPage> {
         RouteUtils.toSettingPage(widget.pageController);
         break;
       case OnListViewPress.report:
-        String link = AppLink.feedbackBaseUrl;
-        try {
-          String mainVersion = await AppUpdate.getAppVersion();
-          link = AppLink.feedback(mainVersion, LogConsole.getLog());
-        } catch (e) {
-          0;
-        }
-        RouteUtils.toWebViewPage(R.current.feedback, link);
+        final mainVersion = await AppUpdate.getAppVersion();
+        final link = AppLink.feedbackUrl(mainVersion, LogConsole.getLog());
+
+        RouteUtils.toWebViewPage(title: R.current.feedback, initialUrl: link ?? AppLink.feedbackBaseUrl);
         break;
       case OnListViewPress.rollCallRemind:
         // TODO(TU): update this log to the real feature log.

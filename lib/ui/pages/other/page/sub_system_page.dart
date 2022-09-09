@@ -80,8 +80,14 @@ class _SubSystemPageState extends State<SubSystemPage> {
           ),
           onTap: () async {
             if (ap.type == 'link') {
-              String url = "${NTUTConnector.host}${ap.urlLink}";
-              RouteUtils.toWebViewPage(ap.description, url);
+              final urlString = "${NTUTConnector.host}${ap.urlLink}";
+              final url = Uri.tryParse(urlString);
+
+              if (url != null) {
+                RouteUtils.toWebViewPage(title: ap.description, initialUrl: url);
+              } else {
+                // TODO: handle exceptions when the url is null. (null means it may caused by the parse process error.)
+              }
             } else {
               RouteUtils.toSubSystemPage(ap.description, ap.apDn);
             }
