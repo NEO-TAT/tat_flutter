@@ -31,3 +31,6 @@ typedef OnNavigateToUrl = void Function(String);
 
 /// Signature for callbacks that report that an [InAppWebView] is created.
 typedef InAppWebViewCreatedCallback = void Function(InAppWebViewController controller);
+
+/// Signature for callbacks that report an [InAppWebView] has updated its loading progress.
+typedef InAppWebViewProgressChangedCallback = void Function(InAppWebViewController controller, int progress);
