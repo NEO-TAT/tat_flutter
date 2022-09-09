@@ -27,7 +27,7 @@ class _WebViewPageState extends State<WebViewPage> {
   late final InAppWebViewController _controller;
 
   // A value shows the progress of page loading. Range from 0.0 to 1.0.
-  double progress = 0;
+  final progress = ValueNotifier(0.0);
 
   Future<void> setInitialCookies() async {
     final cookies = await cookieJar.loadForRequest(widget._initialUrl);
@@ -50,9 +50,14 @@ class _WebViewPageState extends State<WebViewPage> {
     _controller = controller;
   }
 
+  void _onProgressChanged(int webViewProgress) {
+    progress.value = webViewProgress / 100.0;
+  }
+
   Widget _buildTATWebView() => TATWebView(
         initialUrl: widget._initialUrl,
         onWebViewCreated: _onWebViewCreated,
+        onProgressChanged: (_, progress) => _onProgressChanged(progress),
       );
 
   Widget _buildButtonBar() => WebViewButtonBar(
@@ -61,13 +66,16 @@ class _WebViewPageState extends State<WebViewPage> {
         onRefreshPressed: () => _controller.reload(),
       );
 
-  Widget _buildProgressBar() => SizedBox(
-        child: progress < 1.0
-            ? LinearProgressIndicator(
-                value: progress,
-                color: Colors.greenAccent,
-              )
-            : const SizedBox.shrink(),
+  Widget _buildProgressBar() => ValueListenableBuilder<double>(
+        valueListenable: progress,
+        builder: (_, progress, __) => SizedBox(
+          child: progress < 1.0
+              ? LinearProgressIndicator(
+                  value: progress,
+                  color: Colors.greenAccent,
+                )
+              : const SizedBox.shrink(),
+        ),
       );
 
   @override
