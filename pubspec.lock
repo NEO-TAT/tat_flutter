@@ -663,9 +663,11 @@ packages:
   flutter_web_browser:
     dependency: "direct main"
     description:
-      name: flutter_web_browser
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: fecd595b9d43769a149476c8177fa6bfd2786c6c
+      url: "git@github.com:NEO-TAT/flutter_web_browser.git"
+    source: git
     version: "0.17.1"
   flutter_web_plugins:
     dependency: transitive

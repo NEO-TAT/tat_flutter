@@ -1,6 +1,5 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:get/get.dart';
@@ -30,6 +29,7 @@ class WebViewPage {
           instantAppsEnabled: true,
           showTitle: true,
           urlBarHidingEnabled: true,
+          privateMode: true,
         ),
         safariVCOptions: const SafariViewControllerOptions(
           barCollapsingEnabled: true,
