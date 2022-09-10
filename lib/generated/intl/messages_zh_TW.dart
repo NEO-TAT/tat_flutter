@@ -42,6 +42,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountPasswordError": MessageLookupByLibrary.simpleMessage("帳號密碼錯誤"),
         "aestheticDimension": MessageLookupByLibrary.simpleMessage("美學向度"),
         "alertError": MessageLookupByLibrary.simpleMessage("發生錯誤"),
+        "androidPrivateBrowseGuideSubTitle": MessageLookupByLibrary.simpleMessage("開啟隱私瀏覽，安全更有保障"),
+        "androidPrivateBrowseGuideTitle": MessageLookupByLibrary.simpleMessage("關於隱私瀏覽"),
         "announcement": MessageLookupByLibrary.simpleMessage("公告"),
         "appWillClose": MessageLookupByLibrary.simpleMessage("即將關閉應用程式"),
         "app_name": MessageLookupByLibrary.simpleMessage("TAT-北科生活"),

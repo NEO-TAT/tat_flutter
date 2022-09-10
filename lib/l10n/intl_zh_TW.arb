@@ -248,5 +248,7 @@
   "end": "結束",
   "begin": "開始",
   "zuvioAutoRollCallFeatureReleaseNotice": "Zuvio (自動)點名提醒的功能即將上線\n敬請期待！",
-  "comingSoon": "即將上線！"
+  "comingSoon": "即將上線！",
+  "androidPrivateBrowseGuideTitle": "關於隱私瀏覽",
+  "androidPrivateBrowseGuideSubTitle": "開啟隱私瀏覽，安全更有保障"
 }
