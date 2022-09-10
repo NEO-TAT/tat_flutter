@@ -1363,7 +1363,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: c60ffa1cfd9567a2b0f12d922012f07fbb39c5f8
+      resolved-ref: a0a29bd1c8a2586baa54a7d9e7486e70bfea712c
       url: "git@github.com:NTUT-NPC/TAT-Core.git"
     source: git
     version: "1.0.0-4.0.pre"
@@ -1614,4 +1614,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.18.0 <3.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.3.1"
