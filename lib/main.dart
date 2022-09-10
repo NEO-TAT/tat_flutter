@@ -33,6 +33,7 @@ import 'generated/l10n.dart';
 Future<void> main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
@@ -78,6 +79,14 @@ Future<void> main() async {
   );
 
   const webViewPage = WebViewPage();
+
+  Future<void> handleAppDetached() async {
+    await webViewPage.close();
+  }
+
+  WidgetsBinding.instance.addObserver(
+    _TATLifeCycleEventHandler(detachedCallBack: handleAppDetached),
+  );
 
   runZonedGuarded(
     () {
@@ -131,5 +140,31 @@ class MyApp extends StatelessWidget {
         },
       );
     });
+  }
+}
+
+typedef _FutureVoidCallBack = Future<void> Function();
+
+class _TATLifeCycleEventHandler extends WidgetsBindingObserver {
+  _TATLifeCycleEventHandler({
+    @required _FutureVoidCallBack detachedCallBack,
+  }) : _detachedCallBack = detachedCallBack;
+  final _FutureVoidCallBack _detachedCallBack;
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.detached:
+        await _detachedCallBack();
+        break;
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        break;
+    }
   }
 }
