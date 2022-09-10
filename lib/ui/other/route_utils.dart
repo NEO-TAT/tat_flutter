@@ -95,8 +95,12 @@ class RouteUtils {
 
   static Future<void> toWebViewPage({
     @required Uri initialUrl,
+    bool shouldUseAppCookies = false,
   }) =>
-      WebViewPage.to(initialUrl: initialUrl);
+      WebViewPage.to(
+        initialUrl: initialUrl,
+        shouldUseAppCookies: shouldUseAppCookies,
+      );
 
   static Future toLogConsolePage() async {
     return await Get.to(
