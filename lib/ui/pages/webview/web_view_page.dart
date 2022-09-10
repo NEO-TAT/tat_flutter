@@ -35,7 +35,7 @@ class WebViewPage {
       encodedCookies: encodedCookies,
     );
 
-    final redirectReqJson =  json.encode(redirectReq.toJson());
+    final redirectReqJson = json.encode(redirectReq.toJson());
 
     // DEV: TODO: should apply encrypt
     return _encodeToBase64(redirectReqJson);
@@ -44,6 +44,8 @@ class WebViewPage {
   /// Set [shouldUseAppCookies] to true if the [initialUrl] requires cookies stored in app.
   Future<void> call({required Uri initialUrl, bool shouldUseAppCookies = false}) async {
     if (shouldUseAppCookies) {
+      // TODO: remove ignore.
+      // ignore: unused_local_variable
       final encryptedRedirectPath = await _generateEncryptedRedirectReqPath(targetUrl: initialUrl);
       // TODO: change target to redirect page and send the encryptedRedirectPath.
     }
