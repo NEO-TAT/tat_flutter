@@ -20,6 +20,7 @@ import 'package:flutter_app/src/providers/category_provider.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
 import 'package:flutter_app/src/version/update/app_update.dart';
+import 'package:flutter_app/ui/pages/webview/web_view_page.dart';
 import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -76,8 +77,11 @@ Future<void> main() async {
     firestore: firestore,
   );
 
+  const webViewPage = WebViewPage();
+
   runZonedGuarded(
     () {
+      Get.put(webViewPage);
       Get.put(zAuthController);
       Get.put(zCourseController);
       Get.put(zRollCallMonitorController);

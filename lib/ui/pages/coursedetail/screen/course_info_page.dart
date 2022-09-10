@@ -176,7 +176,8 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     final url = Uri.tryParse(urlString);
 
     if (url != null) {
-      RouteUtils.toWebViewPage(title: title, initialUrl: url).then((value) => canPop = true);
+      RouteUtils.toWebViewPage(initialUrl: url);
+      canPop = true;
     } else {
       // TODO: handle exceptions when the url is null. (null means it may caused by the parse process error.)
     }
