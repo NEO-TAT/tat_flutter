@@ -88,12 +88,10 @@ class RouteUtils {
     );
   }
 
-  static Future toSettingPage(PageController controller) async {
-    return await Get.to(
-      () => SettingPage(controller),
-      transition: transition,
-    );
-  }
+  static Future toSettingPage(PageController controller) => Get.to(
+        () => SettingPage(controller),
+        transition: transition,
+      );
 
   static Future<void> toWebViewPage({
     @required Uri initialUrl,
