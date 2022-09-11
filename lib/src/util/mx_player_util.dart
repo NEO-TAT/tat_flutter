@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MXPlayerUtil {
@@ -29,9 +30,7 @@ class MXPlayerUtil {
 
   static Future<bool> _iosLaunch(String url) async {
     try {
-      if (await launchUrl(Uri.parse(url))) {
-        await launchUrl(Uri.parse(url));
-      }
+      RouteUtils.toWebViewPage(initialUrl: Uri.parse(url));
     } catch (e) {
       return false;
     }
