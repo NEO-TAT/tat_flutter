@@ -268,9 +268,9 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
   }
 
   _launchURL(String url) async {
-    final preparedUrl = Uri.parse(url);
-    if (await canLaunchUrl(preparedUrl)) {
-      await launchUrl(preparedUrl);
+    final preparedUrl = Uri.tryParse(url);
+    if (preparedUrl != null && await canLaunchUrl(preparedUrl)) {
+      RouteUtils.toWebViewPage(initialUrl: preparedUrl);
     } else {
       throw 'Could not launch $url';
     }
