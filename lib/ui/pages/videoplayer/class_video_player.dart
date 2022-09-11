@@ -14,10 +14,10 @@ import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/src/util/mx_player_util.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:path/path.dart' as path;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
@@ -208,7 +208,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                     return;
                   }
 
-                  await launchUrl(Uri.parse(dataSource));
+                  await RouteUtils.toWebViewPage(initialUrl: Uri.parse(dataSource));
                 },
               ),
           ],
