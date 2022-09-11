@@ -6,7 +6,6 @@ import 'package:android_intent/android_intent.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MXPlayerUtil {
   static String mxPlayerFreePackageName = "com.mxtech.videoplayer.ad";
