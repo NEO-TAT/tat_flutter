@@ -1,20 +1,20 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/config/app_link.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/list_view_animator.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:github/github.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ContributorsPage extends StatelessWidget {
   final github = GitHub();
   final repositorySlug = RepositorySlug(AppLink.githubOwnerName, AppLink.tatRepoName);
 
-  ContributorsPage({Key key}) : super(key: key);
+  ContributorsPage({super.key});
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -45,7 +45,7 @@ class ContributorsPage extends StatelessWidget {
                       child: InkWell(
                         onTap: () {
                           const url = AppLink.tatGitHubRepoUrlString;
-                          launchUrl(Uri.parse(url));
+                          RouteUtils.toWebViewPage(initialUrl: Uri.parse(url));
                         },
                         child: Container(
                           padding: const EdgeInsets.only(left: 20, right: 20),
@@ -90,17 +90,18 @@ class ContributorsPage extends StatelessWidget {
                 ),
                 FutureBuilder<List<Contributor>>(
                   future: github.repositories.listContributors(repositorySlug).toList(),
-                  builder: (BuildContext context, AsyncSnapshot<List<Contributor>> snapshot) {
+                  builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<Contributor> contributorList = snapshot.data;
+                      final contributorList = snapshot.data;
                       return ListView.builder(
-                        itemCount: contributorList.length,
+                        itemCount: contributorList?.length,
                         shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          Contributor contributor = contributorList[index];
+                        itemBuilder: (context, index) {
+                          final contributor = contributorList![index];
+
                           return InkWell(
                             onTap: () {
-                              launchUrl(Uri.parse(contributor.htmlUrl));
+                              RouteUtils.toWebViewPage(initialUrl: Uri.parse(contributor.htmlUrl ?? ''));
                             },
                             child: WidgetAnimator(
                               Container(
@@ -111,7 +112,7 @@ class ContributorsPage extends StatelessWidget {
                                       height: 50,
                                       width: 50,
                                       child: CachedNetworkImage(
-                                        imageUrl: contributor.avatarUrl,
+                                        imageUrl: contributor.avatarUrl ?? '',
                                         imageBuilder: (context, imageProvider) => CircleAvatar(
                                           radius: 15.0,
                                           backgroundImage: imageProvider,
@@ -121,7 +122,7 @@ class ContributorsPage extends StatelessWidget {
                                     const Padding(
                                       padding: EdgeInsets.only(left: 10),
                                     ),
-                                    Text(contributor.login)
+                                    Text(contributor.login ?? '')
                                   ],
                                 ),
                               ),

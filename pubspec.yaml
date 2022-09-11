@@ -68,6 +68,10 @@ dependencies:
   #剪貼簿
   #----------WebView----------#
   flutter_inappwebview: ^5.4.3+7
+  flutter_web_browser:
+    git:
+      url: git@github.com:NEO-TAT/flutter_web_browser.git
+      ref: master
   #---------icon----------#
   eva_icons_flutter: ^3.1.0
   #https://akveo.github.io/eva-icons/#/

@@ -20,6 +20,7 @@ import 'package:flutter_app/src/providers/category_provider.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
 import 'package:flutter_app/src/version/update/app_update.dart';
+import 'package:flutter_app/ui/pages/webview/web_view_page.dart';
 import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -32,6 +33,7 @@ import 'generated/l10n.dart';
 Future<void> main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
@@ -76,8 +78,19 @@ Future<void> main() async {
     firestore: firestore,
   );
 
+  const webViewPage = WebViewPage();
+
+  Future<void> handleAppDetached() async {
+    await webViewPage.close();
+  }
+
+  WidgetsBinding.instance.addObserver(
+    _TATLifeCycleEventHandler(detachedCallBack: handleAppDetached),
+  );
+
   runZonedGuarded(
     () {
+      Get.put(webViewPage);
       Get.put(zAuthController);
       Get.put(zCourseController);
       Get.put(zRollCallMonitorController);
@@ -127,5 +140,31 @@ class MyApp extends StatelessWidget {
         },
       );
     });
+  }
+}
+
+typedef _FutureVoidCallBack = Future<void> Function();
+
+class _TATLifeCycleEventHandler extends WidgetsBindingObserver {
+  _TATLifeCycleEventHandler({
+    @required _FutureVoidCallBack detachedCallBack,
+  }) : _detachedCallBack = detachedCallBack;
+  final _FutureVoidCallBack _detachedCallBack;
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.detached:
+        await _detachedCallBack();
+        break;
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.paused:
+        break;
+    }
   }
 }

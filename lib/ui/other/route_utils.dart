@@ -88,19 +88,20 @@ class RouteUtils {
     );
   }
 
-  static Future toSettingPage(PageController controller) async {
-    return await Get.to(
-      () => SettingPage(controller),
-      transition: transition,
-    );
-  }
-
-  static Future toWebViewPage({@required String title, @required Uri initialUrl}) => Get.to(
-        () => WebViewPage(
-          title: title,
-          initialUrl: initialUrl,
-        ),
+  static Future toSettingPage(PageController controller) => Get.to(
+        () => SettingPage(controller),
         transition: transition,
+      );
+
+  static Future<void> toWebViewPage({
+    @required Uri initialUrl,
+    String title,
+    bool shouldUseAppCookies = false,
+  }) =>
+      WebViewPage.to(
+        initialUrl: initialUrl,
+        title: title,
+        shouldUseAppCookies: shouldUseAppCookies,
       );
 
   static Future toLogConsolePage() async {

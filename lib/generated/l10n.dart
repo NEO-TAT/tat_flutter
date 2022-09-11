@@ -2537,6 +2537,26 @@ class S {
       args: [],
     );
   }
+
+  /// `About Incognito Browse`
+  String get androidPrivateBrowseGuideTitle {
+    return Intl.message(
+      'About Incognito Browse',
+      name: 'androidPrivateBrowseGuideTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Incognito browsing to enhanced security`
+  String get androidPrivateBrowseGuideSubTitle {
+    return Intl.message(
+      'Open Incognito browsing to enhanced security',
+      name: 'androidPrivateBrowseGuideSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

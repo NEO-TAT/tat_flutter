@@ -9,6 +9,7 @@ class RemoteConfigUtil {
 
   static const _versionConfigKey = "version_config";
   static const _featureToggleZuvioRollCallKey = "enable_zuvio_roll_call_feature";
+  static const _androidIncognitoSetupGuidePageUrlKey = "android_incognito_setup_guide_page_url";
 
   static Future<RemoteConfigVersionInfo> getVersionConfig() async {
     await _remoteConfig.fetchAndActivate();
@@ -19,5 +20,10 @@ class RemoteConfigUtil {
   static Future<bool> getFeatureToggleZuvioRollCallFlag() async {
     await _remoteConfig.fetchAndActivate();
     return _remoteConfig.getBool(_featureToggleZuvioRollCallKey);
+  }
+
+  static Future<String> getAndroidIncognitoSetupGuidePageUrl() async {
+    await _remoteConfig.fetchAndActivate();
+    return _remoteConfig.getString(_androidIncognitoSetupGuidePageUrlKey);
   }
 }
