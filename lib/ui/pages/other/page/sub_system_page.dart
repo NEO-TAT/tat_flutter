@@ -84,7 +84,11 @@ class _SubSystemPageState extends State<SubSystemPage> {
               // Because we don't need to add any prefix such as `NTUTConnector.host` when it is a completed url.
               final apLinkUrl = Uri.tryParse(ap.urlLink);
               if (apLinkUrl != null && apLinkUrl.hasScheme) {
-                RouteUtils.toWebViewPage(initialUrl: apLinkUrl, shouldUseAppCookies: true);
+                RouteUtils.toWebViewPage(
+                  initialUrl: apLinkUrl,
+                  title: ap.description,
+                  shouldUseAppCookies: true,
+                );
                 return;
               }
 
@@ -92,7 +96,11 @@ class _SubSystemPageState extends State<SubSystemPage> {
               final url = Uri.tryParse(urlString);
 
               if (url != null) {
-                RouteUtils.toWebViewPage(initialUrl: url, shouldUseAppCookies: true);
+                RouteUtils.toWebViewPage(
+                  initialUrl: url,
+                  title: ap.description,
+                  shouldUseAppCookies: true,
+                );
               } else {
                 // TODO: handle exceptions when the url is null. (null means it may caused by the parse process error.)
               }

@@ -95,10 +95,12 @@ class RouteUtils {
 
   static Future<void> toWebViewPage({
     @required Uri initialUrl,
+    String title,
     bool shouldUseAppCookies = false,
   }) =>
       WebViewPage.to(
         initialUrl: initialUrl,
+        title: title,
         shouldUseAppCookies: shouldUseAppCookies,
       );
 

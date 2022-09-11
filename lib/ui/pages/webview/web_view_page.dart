@@ -1,13 +1,9 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flutter_app/src/connector/core/dio_connector.dart';
+import 'package:flutter_app/ui/pages/webview/tat_web_view.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:get/get.dart';
 import 'package:meta/meta.dart';
-import 'package:tat_core/tat_core.dart';
 
 @immutable
 @sealed
@@ -17,56 +13,58 @@ class WebViewPage {
 
   static WebViewPage get to => Get.find();
 
-  Future<List<Cookie>> _loadCookiesFrom(Uri url) {
-    final cookieJar = DioConnector.instance.cookiesManager;
-    return cookieJar.loadForRequest(url);
-  }
+  Future<void> close() => FlutterWebBrowser.close();
 
-  String _encodeToBase64(dynamic origin) => base64Encode(utf8.encode(origin.toString()));
+  Future<void> _launchNativeWebView({required Uri initialUrl}) => Future.microtask(
+        () => FlutterWebBrowser.openWebPage(
+          url: initialUrl.toString(),
+          customTabsOptions: CustomTabsOptions(
+            colorScheme: Get.isDarkMode ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
+            instantAppsEnabled: true,
+            showTitle: true,
+            urlBarHidingEnabled: true,
+            // Enable the Incognito mode on Android web view.
+            // But should self-enable the `ALLOW_INCOGNITO_CUSTOM_TABS_FROM_THIRD_PARTY` flag on device's chrome.
+            // chrome://flags/#cct-incognito-available-to-third-party
+            privateMode: true,
+          ),
+          safariVCOptions: const SafariViewControllerOptions(
+            barCollapsingEnabled: true,
+            dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+          ),
+        ),
+      );
 
-  List<String> _encodeCookiesToBase64(List<Cookie> cookies) =>
-      cookies.map((cookie) => _encodeToBase64(cookie)).toList();
+  Future<void> _launchTATWebView({
+    required Uri initialUrl,
+    String? title,
+  }) =>
+      Future.microtask(
+        () => Get.to(
+          () => TATWebView(
+            initialUrl: initialUrl,
+            title: title,
+          ),
+        ),
+      );
 
-  Future<String> _generateEncryptedRedirectReqPath({required Uri targetUrl}) async {
-    final cookies = await _loadCookiesFrom(targetUrl);
-    final encodedCookies = _encodeCookiesToBase64(cookies);
-    final redirectReq = RedirectRequest(
-      targetUrl: targetUrl.toString(),
-      encodedCookies: encodedCookies,
-    );
-
-    final redirectReqJson = json.encode(redirectReq.toJson());
-
-    // DEV: TODO: should apply encrypt
-    return _encodeToBase64(redirectReqJson);
-  }
-
+  /// Launch a web view with configs.
+  ///
   /// Set [shouldUseAppCookies] to true if the [initialUrl] requires cookies stored in app.
-  Future<void> call({required Uri initialUrl, bool shouldUseAppCookies = false}) async {
+  /// When [shouldUseAppCookies] is true, the internal web view will be launched,
+  /// otherwise we use the native web view.
+  Future<void> call({
+    required Uri initialUrl,
+    String? title,
+    bool shouldUseAppCookies = false,
+  }) async {
     if (shouldUseAppCookies) {
-      // TODO: remove ignore.
-      // ignore: unused_local_variable
-      final encryptedRedirectPath = await _generateEncryptedRedirectReqPath(targetUrl: initialUrl);
-      // TODO: change target to redirect page and send the encryptedRedirectPath.
+      return _launchTATWebView(
+        initialUrl: initialUrl,
+        title: title,
+      );
     }
 
-    return Future.microtask(
-      () => FlutterWebBrowser.openWebPage(
-        url: initialUrl.toString(),
-        customTabsOptions: CustomTabsOptions(
-          colorScheme: Get.isDarkMode ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
-          instantAppsEnabled: true,
-          showTitle: true,
-          urlBarHidingEnabled: true,
-          privateMode: true,
-        ),
-        safariVCOptions: const SafariViewControllerOptions(
-          barCollapsingEnabled: true,
-          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-        ),
-      ),
-    );
+    return _launchNativeWebView(initialUrl: initialUrl);
   }
-
-  Future<void> close() => FlutterWebBrowser.close();
 }
