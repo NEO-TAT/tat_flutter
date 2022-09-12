@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
 import 'package:flutter_app/src/task/iplus/iplus_system_task.dart';
 
@@ -10,14 +10,14 @@ class IPlusSubscribeNoticeTask extends IPlusSystemTask<List<String>> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.success) {
-      List<String> value = await ISchoolPlusConnector.getSubscribeNotice();
+      final value = await ISchoolPlusConnector.getSubscribeNotice() as List<String>?;
       if (value != null) {
         result = value;
         return TaskStatus.success;
       } else {
-        return TaskStatus.giveUp;
+        return TaskStatus.shouldGiveUp;
       }
     }
     return status;
