@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter_app/src/connector/course_connector.dart';
 import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
 import 'package:flutter_app/src/r.dart';
@@ -14,11 +14,13 @@ class CourseExtraInfoTask extends CourseSystemTask<CourseExtraInfoJson> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
+
     if (status == TaskStatus.success) {
       super.onStart(R.current.getCourseDetail);
-      CourseExtraInfoJson value = await CourseConnector.getCourseExtraInfo(id);
+      final value = await CourseConnector.getCourseExtraInfo(id) as CourseExtraInfoJson?;
       super.onEnd();
+
       if (value != null) {
         result = value;
         return TaskStatus.success;
