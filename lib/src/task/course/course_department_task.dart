@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter_app/src/connector/course_connector.dart';
 import 'package:flutter_app/src/r.dart';
 
@@ -13,16 +13,17 @@ class CourseDepartmentTask extends CourseSystemTask<List<Map>> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.searchingDepartment);
-      List<Map> value = await CourseConnector.getDepartmentList(code);
+      final value = await CourseConnector.getDepartmentList(code) as List<Map<dynamic, dynamic>>?;
       super.onEnd();
+
       if (value != null) {
         result = value;
         return TaskStatus.success;
       } else {
-        return TaskStatus.giveUp;
+        return TaskStatus.shouldGiveUp;
       }
     }
     return status;

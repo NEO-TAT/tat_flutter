@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
 import 'package:flutter_app/src/model/ischoolplus/ischool_plus_announcement_json.dart';
 import 'package:flutter_app/src/r.dart';
@@ -14,16 +14,16 @@ class IPlusCourseAnnouncementDetailTask extends IPlusSystemTask<Map> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.getISchoolPlusCourseAnnouncementDetail);
-      Map value = await ISchoolPlusConnector.getCourseAnnouncementDetail(data);
+      final value = await ISchoolPlusConnector.getCourseAnnouncementDetail(data) as Map<dynamic, dynamic>?;
       super.onEnd();
       if (value != null) {
         result = value;
         return TaskStatus.success;
       } else {
-        return await super.onError(R.current.getISchoolPlusCourseAnnouncementDetailError);
+        return super.onError(R.current.getISchoolPlusCourseAnnouncementDetailError);
       }
     }
     return status;
