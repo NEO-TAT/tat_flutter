@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:async';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -15,7 +15,7 @@ import '../dialog_task.dart';
 class NTUTTask<T> extends DialogTask<T> {
   static bool _isLogin = false;
 
-  NTUTTask(name) : super(name);
+  NTUTTask(name) : super("NTUTTask $name");
 
   static set isLogin(bool value) {
     _isLogin = value;
@@ -25,12 +25,11 @@ class NTUTTask<T> extends DialogTask<T> {
   Future<TaskStatus> execute() async {
     if (_isLogin) return TaskStatus.success;
 
-    name = "NTUTTask $name";
     final account = LocalStorage.instance.getAccount();
     final password = LocalStorage.instance.getPassword();
 
     if (account.isEmpty || password.isEmpty) {
-      return TaskStatus.giveUp;
+      return TaskStatus.shouldGiveUp;
     }
 
     super.onStart(R.current.loginNTUT);
@@ -49,7 +48,7 @@ class NTUTTask<T> extends DialogTask<T> {
   Future<TaskStatus> _onError(NTUTConnectorStatus value) {
     unawaited(RouteUtils.toLoginScreen());
 
-    ErrorDialogParameter parameter = ErrorDialogParameter(
+    final parameter = ErrorDialogParameter(
       desc: "",
       dialogType: DialogType.WARNING,
       offCancelBtn: true,
