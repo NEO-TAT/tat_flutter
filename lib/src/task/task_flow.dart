@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/r.dart';
@@ -14,10 +14,16 @@ import 'task.dart';
 typedef OnSuccessCallBack = Function(Task);
 
 class TaskFlow {
-  List<Task> _queue;
-  List<Task> _completeTask;
-  List<Task> _failTask;
-  OnSuccessCallBack callback;
+  TaskFlow()
+      : _queue = [],
+        _completeTask = [],
+        _failTask = [],
+        callback = null;
+
+  final List<Task> _queue;
+  final List<Task> _completeTask;
+  final List<Task> _failTask;
+  OnSuccessCallBack? callback;
 
   static resetLoginStatus() {
     NTUTTask.isLogin = false;
@@ -26,19 +32,9 @@ class TaskFlow {
     CourseSystemTask.isLogin = false;
   }
 
-  int get length {
-    return _queue.length;
-  }
+  int get length => _queue.length;
 
-  List<Task> get completeTask {
-    return _completeTask;
-  }
-
-  TaskFlow() {
-    _queue = [];
-    _completeTask = [];
-    _failTask = [];
-  }
+  List<Task> get completeTask => _completeTask;
 
   void addTask(Task task) {
     _queue.add(task);
@@ -59,30 +55,30 @@ class TaskFlow {
           _queue.removeAt(0);
           _completeTask.add(task);
           if (callback != null) {
-            callback(task);
+            callback?.call(task);
           }
           break;
-        case TaskStatus.giveUp:
+        case TaskStatus.shouldGiveUp:
           _failTask.addAll(_queue);
-          _queue = [];
+          _queue.clear();
           success = false;
           break;
-        case TaskStatus.restart:
+        case TaskStatus.shouldRestart:
           break;
       }
     }
     String log = "success";
-    for (Task task in _completeTask) {
+    for (final task in _completeTask) {
       log += '\n--${task.name}';
     }
     if (!success) {
       log += "\nfail";
-      for (Task task in _failTask) {
+      for (final task in _failTask) {
         log += '\n--${task.name}';
       }
     }
-    _completeTask = [];
-    _failTask = [];
+    _completeTask.clear();
+    _failTask.clear();
     Log.d(log);
     return success;
   }

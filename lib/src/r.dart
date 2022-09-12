@@ -1,11 +1,9 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'package:flutter/cupertino.dart';
 
 import '../generated/l10n.dart';
 
 class R {
-  static BuildContext _context;
+  static late BuildContext _context;
   static S current = S.of(_context);
 
   static set(BuildContext setContext) {
