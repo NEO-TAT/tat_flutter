@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:async';
 import 'dart:convert';
 
@@ -11,86 +11,81 @@ import 'package:flutter_app/src/model/ntut/ap_tree_json.dart';
 import 'package:flutter_app/src/model/ntut/ntut_calendar_json.dart';
 import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:tat_core/core/portal/domain/login_credential.dart';
+import 'package:tat_core/core/portal/domain/simple_login_result.dart';
+import 'package:tat_core/core/portal/usecase/simple_login_use_case.dart';
 
 enum NTUTConnectorStatus {
   loginSuccess,
-  accountLockWarning, //帳號鎖住
+  accountLockWarning,
   accountPasswordIncorrect,
-  authCodeFailError, //驗證碼錯誤
-  unknownError
+  authCodeFailError,
+  unknownError,
 }
 
 class NTUTConnector {
   static const host = "https://app.ntut.edu.tw/";
-  static const _loginUrl = "${host}login.do";
   static const _getPictureUrl = "${host}photoView.do";
   static const _getTreeUrl = "${host}aptreeList.do";
   static const _getCalendarUrl = "${host}calModeApp.do";
   static const _changePasswordUrl = "${host}passwordMdy.do";
 
   static Future<NTUTConnectorStatus> login(String account, String password) async {
-    try {
-      ConnectorParameter parameter;
-      Map<String, String> data = {
-        "muid": account,
-        "mpassword": password,
-        "forceMobile": "app",
-        //"rememberUidValue": "" ,
-        //"rememberPwdValue" : "1" ,
-        //"authcode" : "" ,
-        "md5Code": "1111",
-        "ssoId": ""
-      };
-      parameter = ConnectorParameter(_loginUrl);
-      parameter.data = data;
-      parameter.userAgent = "Direk Android App";
-      String result = await Connector.getDataByPost(parameter);
-      parameter.userAgent = "";
-      Map jsonMap = json.decode(result);
-      if (jsonMap["success"]) {
-        UserInfoJson userInfo = UserInfoJson.fromJson(jsonMap);
+    final simpleLoginUseCase = Get.find<SimpleLoginUseCase>();
+    final loginCredential = LoginCredential(userId: account, password: password);
+    final loginResult = await simpleLoginUseCase(credential: loginCredential);
+
+    Log.d(loginResult.resultType);
+
+    await FirebaseAnalytics.instance.logLogin(
+      loginMethod: 'ntut_portal_new',
+    );
+
+    switch (loginResult.resultType) {
+      case SimpleLoginResultType.success:
+      case SimpleLoginResultType.needsVerifyMobile:
+        LocalStorage.instance.setAccount(account);
+        LocalStorage.instance.setPassword(password);
+
+        final userInfo = UserInfoJson(
+          givenName: loginResult.userNaturalName,
+          userMail: loginResult.userMail,
+          userPhoto: loginResult.userPhotoName,
+          userDn: loginResult.userDn,
+          passwordExpiredRemind: loginResult.passwordExpiredRemind,
+        );
+
         LocalStorage.instance.setUserInfo(userInfo);
         LocalStorage.instance.saveUserData();
-        // if the user's password is nearly to expired, `userInfo.passwordExpiredRemind.isNotEmpty` will be true.
-
-        await FirebaseAnalytics.instance.logLogin(
-          loginMethod: 'ntut_portal',
-        );
         return NTUTConnectorStatus.loginSuccess;
-      } else {
-        String errorMsg = jsonMap["errorMsg"];
-        if (errorMsg.contains("帳號或密碼錯誤")) {
-          return NTUTConnectorStatus.accountPasswordIncorrect;
-        } else if (errorMsg.contains("驗證碼")) {
-          return NTUTConnectorStatus.authCodeFailError;
-        } else if (errorMsg.contains("帳號已被鎖住")) {
-          return NTUTConnectorStatus.accountLockWarning;
-        } else {
-          return NTUTConnectorStatus.unknownError;
-        }
-      }
-    } catch (e, stack) {
-      Log.eWithStack(e.toString(), stack);
-      return NTUTConnectorStatus.unknownError;
+
+      case SimpleLoginResultType.wrongCredential:
+        return NTUTConnectorStatus.accountPasswordIncorrect;
+
+      case SimpleLoginResultType.locked:
+        return NTUTConnectorStatus.accountLockWarning;
+
+      case SimpleLoginResultType.needsResetPassword:
+      case SimpleLoginResultType.unknown:
+        return NTUTConnectorStatus.unknownError;
     }
   }
 
-  static Future<List<NTUTCalendarJson>> getCalendar(DateTime startTime, DateTime endTime) async {
-    //暫無用到 取得學校行事曆
-    ConnectorParameter parameter;
-    var formatter = DateFormat("yyyy/MM/dd");
-    String startDate = formatter.format(startTime);
-    String endDate = formatter.format(endTime);
+  static Future<List<NTUTCalendarJson>?> getCalendar(DateTime startTime, DateTime endTime) async {
+    final formatter = DateFormat("yyyy/MM/dd");
+    final startDate = formatter.format(startTime);
+    final endDate = formatter.format(endTime);
     try {
-      Map<String, String> data = {
+      final data = {
         "startDate": startDate,
         "endDate": endDate,
       };
-      parameter = ConnectorParameter(_getCalendarUrl);
+      final parameter = ConnectorParameter(_getCalendarUrl);
       parameter.data = data;
-      String result = await Connector.getDataByGet(parameter);
-      List<NTUTCalendarJson> calendarList = getNTUTCalendarJsonList(json.decode(result));
+      final result = await Connector.getDataByGet(parameter);
+      final calendarList = getNTUTCalendarJsonList(json.decode(result));
       return calendarList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -98,15 +93,14 @@ class NTUTConnector {
     }
   }
 
-  static Future<APTreeJson> getTree(String arg) async {
-    ConnectorParameter parameter;
+  static Future<APTreeJson?> getTree(String? arg) async {
     try {
-      parameter = ConnectorParameter(_getTreeUrl);
+      final parameter = ConnectorParameter(_getTreeUrl);
       if (arg != null) {
         parameter.data = {"apDn": arg};
       }
-      String result = await Connector.getDataByPost(parameter);
-      APTreeJson apTreeJson = APTreeJson.fromJson(json.decode(result));
+      final result = await Connector.getDataByPost(parameter);
+      final apTreeJson = APTreeJson.fromJson(json.decode(result));
       return apTreeJson;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -127,19 +121,17 @@ class NTUTConnector {
     return imageInfo;
   }
 
-  static Future<String> changePassword(String password) async {
-    ConnectorParameter parameter;
-    String result;
+  static Future<String?> changePassword(String password) async {
     try {
-      parameter = ConnectorParameter(_changePasswordUrl);
-      String oldPassword = LocalStorage.instance.getPassword();
+      final parameter = ConnectorParameter(_changePasswordUrl);
+      final oldPassword = LocalStorage.instance.getPassword();
       parameter.data = {
         "userPassword": password,
         "oldPassword": oldPassword,
         "pwdForceMdy": "profile",
       };
-      result = await Connector.getDataByPost(parameter);
-      var jsonResult = json.decode(result);
+      final result = await Connector.getDataByPost(parameter);
+      final jsonResult = json.decode(result);
       if (jsonResult["success"] == 'true') {
         return "";
       } else {
