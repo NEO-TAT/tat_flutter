@@ -8,7 +8,6 @@ import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
-import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_app/debug/log/log.dart';
 
 import '../dialog_task.dart';
@@ -44,7 +43,7 @@ class NTUTTask<T> extends DialogTask<T> {
       }
 
       return _onError(loginResult);
-    } catch(e, stackTrace) {
+    } catch (e, stackTrace) {
       // When some errors happened, such as server timeout, we directly return
       // an unknown type status to the error handle function.
       Log.error(e, stackTrace);
