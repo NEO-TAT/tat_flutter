@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
@@ -36,6 +37,8 @@ class LocalStorage {
   final _zLoginCredentialKey = 'ZLoginCredentialKey';
   final _firstRun = <String, bool>{};
   final _courseTableList = <CourseTableJson>[];
+
+  final _httpClientInterceptors = <Interceptor>[];
 
   SharedPreferences _pref;
   UserDataJson _userData;
@@ -265,9 +268,10 @@ class LocalStorage {
 
   Future<void> setVersion(String version) => _writeString("version", version);
 
-  Future<void> getInstance() async {
+  Future<void> init({List<Interceptor> httpClientInterceptors = const []}) async {
     _pref = await SharedPreferences.getInstance();
-    await DioConnector.instance.init();
+    await DioConnector.instance.init(interceptors: httpClientInterceptors);
+    _httpClientInterceptors.addAll(httpClientInterceptors);
     _courseSemesterList = _courseSemesterList ?? [];
     _loadUserData();
     _loadCourseTableList();
@@ -286,7 +290,7 @@ class LocalStorage {
     DioConnector.instance.deleteCookies();
     await cacheManager.emptyCache(); //clears all data in cache.
     _setFirstUse(courseNotice, true);
-    await getInstance();
+    await init();
   }
 
   Future<void> _save(String key, dynamic saveObj) async {

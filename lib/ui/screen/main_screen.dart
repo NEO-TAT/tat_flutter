@@ -1,5 +1,6 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
+import 'package:dio/dio.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
@@ -21,7 +22,12 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key key}) : super(key: key);
+  const MainScreen({
+    super.key,
+    List<Interceptor> httpInterceptors = const [],
+  }) : _httpInterceptors = httpInterceptors;
+
+  final List<Interceptor> _httpInterceptors;
 
   @override
   State<StatefulWidget> createState() => _MainScreenState();
@@ -42,7 +48,10 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    AnalyticsUtils.observer.subscribe(this, ModalRoute.of(context));
+    final modalRoute = ModalRoute.of(context);
+    if (modalRoute != null) {
+      AnalyticsUtils.observer.subscribe(this, modalRoute);
+    }
   }
 
   @override
@@ -53,7 +62,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
 
   void appInit() async {
     R.set(context);
-    await LocalStorage.instance.getInstance(); //一定要先getInstance()不然無法取得資料
+    await LocalStorage.instance.init(httpClientInterceptors: widget._httpInterceptors);
     try {
       await initLanguage();
       Log.init();
@@ -89,7 +98,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider appProvider, Widget child) {
+      builder: (context, appProvider, child) {
         appProvider.navigatorKey = Get.key;
         return WillPopScope(
           onWillPop: _onWillPop,
