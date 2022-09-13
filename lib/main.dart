@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +21,7 @@ import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
 import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
+import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
 import 'package:flutter_app/src/version/update/app_update.dart';
@@ -109,6 +109,8 @@ Future<void> main() async {
     _TATLifeCycleEventHandler(detachedCallBack: handleAppDetached),
   );
 
+  LocalStorage.instance.init(httpClientInterceptors: apiInterceptors);
+
   runZonedGuarded(
     () {
       Get.put(webViewPage);
@@ -126,7 +128,7 @@ Future<void> main() async {
             ChangeNotifierProvider(create: (_) => AppProvider()),
             ChangeNotifierProvider(create: (_) => CategoryProvider()),
           ],
-          child: MyApp(httpInterceptors: apiInterceptors),
+          child: const MyApp(),
         ),
       );
     },
@@ -138,13 +140,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    Key key,
-    List<Interceptor> httpInterceptors = const [],
-  })  : _httpInterceptors = httpInterceptors,
-        super(key: key);
-
-  final List<Interceptor> _httpInterceptors;
+  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +159,7 @@ class MyApp extends StatelessWidget {
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
         supportedLocales: S.delegate.supportedLocales,
-        home: MainScreen(httpInterceptors: _httpInterceptors),
+        home: const MainScreen(),
         logWriterCallback: (String text, {bool isError}) {
           Log.d(text);
         },
