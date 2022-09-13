@@ -9,6 +9,7 @@ import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
+import 'package:flutter_app/debug/log/log.dart';
 
 import '../dialog_task.dart';
 
@@ -32,29 +33,33 @@ class NTUTTask<T> extends DialogTask<T> {
       return TaskStatus.shouldGiveUp;
     }
 
-    super.onStart(R.current.loginNTUT);
-    final value = await NTUTConnector.login(account, password);
-    super.onEnd();
+    try {
+      super.onStart(R.current.loginNTUT);
+      final loginResult = await NTUTConnector.login(account, password);
+      super.onEnd();
 
-    if (value == NTUTConnectorStatus.loginSuccess) {
-      _isLogin = true;
-      await LocalStorage.instance.saveUserData();
-      return TaskStatus.success;
+      if (loginResult == NTUTConnectorStatus.loginSuccess) {
+        _isLogin = true;
+        return TaskStatus.success;
+      }
+
+      return _onError(loginResult);
+    } catch(e, stackTrace) {
+      // When some errors happened, such as server timeout, we directly return
+      // an unknown type status to the error handle function.
+      Log.error(e, stackTrace);
+      return _onError(NTUTConnectorStatus.unknownError);
     }
-
-    return _onError(value);
   }
 
-  Future<TaskStatus> _onError(NTUTConnectorStatus value) {
-    unawaited(RouteUtils.toLoginScreen());
-
+  Future<TaskStatus> _onError(NTUTConnectorStatus status) {
     final parameter = ErrorDialogParameter(
       desc: "",
       dialogType: DialogType.WARNING,
       offCancelBtn: true,
     );
 
-    switch (value) {
+    switch (status) {
       case NTUTConnectorStatus.accountLockWarning:
         parameter.desc = R.current.accountLock;
         break;
@@ -70,7 +75,6 @@ class NTUTTask<T> extends DialogTask<T> {
         break;
     }
 
-    LocalStorage.instance.clearUserData();
     return onErrorParameter(parameter);
   }
 
