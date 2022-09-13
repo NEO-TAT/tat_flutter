@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
 import 'package:logger/logger.dart';

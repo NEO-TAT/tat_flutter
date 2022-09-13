@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
