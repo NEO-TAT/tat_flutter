@@ -56,19 +56,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void initState() {
     super.initState();
     _studentIdControl.text = " ";
-    final userData = LocalStorage.instance.getUserData();
-
-    Future.delayed(const Duration()).then((_) {
-      if (userData.account.isEmpty || userData.password.isEmpty) {
-        RouteUtils.toLoginScreen().then((value) {
-          if (value != null && value) {
-            _loadSetting();
-          }
-        });
-      } else {
-        _loadSetting();
-      }
-    });
+    Future.microtask(() => _loadSetting());
   }
 
   void getCourseNotice() async {
@@ -163,10 +151,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _loadSetting() {
-    //Log.d(MediaQuery.of(context).size.height.toString());
-    RenderObject renderObject = _key.currentContext.findRenderObject();
+    final renderObject = _key.currentContext.findRenderObject();
     courseHeight = (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight) / showCourseTableNum; //計算高度
-    CourseTableJson courseTable = LocalStorage.instance.getCourseSetting().info;
+    final courseTable = LocalStorage.instance.getCourseSetting().info;
     if (courseTable == null || courseTable.isEmpty) {
       _getCourseTable();
     } else {

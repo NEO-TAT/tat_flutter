@@ -1,6 +1,5 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'package:dio/dio.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
@@ -9,10 +8,13 @@ import 'package:flutter_app/src/notifications/notifications.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
+import 'package:flutter_app/src/task/ntut/ntut_task.dart';
+import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/src/version/app_version.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_app/ui/pages/calendar/calendar_page.dart';
 import 'package:flutter_app/ui/pages/coursetable/course_table_page.dart';
 import 'package:flutter_app/ui/pages/notification/notification_page.dart';
@@ -22,12 +24,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({
-    super.key,
-    List<Interceptor> httpInterceptors = const [],
-  }) : _httpInterceptors = httpInterceptors;
-
-  final List<Interceptor> _httpInterceptors;
+  const MainScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _MainScreenState();
@@ -62,7 +59,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
 
   void appInit() async {
     R.set(context);
-    await LocalStorage.instance.init(httpClientInterceptors: widget._httpInterceptors);
+
     try {
       await initLanguage();
       Log.init();
@@ -72,6 +69,14 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
     }
+
+    final loginTaskResult = await checkIfLogin();
+    if (loginTaskResult != TaskStatus.success) {
+      LocalStorage.instance.clearUserData();
+      RouteUtils.toLoginScreen();
+      return;
+    }
+
     setState(() {
       _pageList = [];
       _pageList.add(const CourseTablePage());
@@ -80,6 +85,11 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
       _pageList.add(const ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
     });
+  }
+
+  Future<TaskStatus> checkIfLogin() {
+    final loginTask = NTUTTask('AutoLoginOnMainScreen');
+    return loginTask.execute();
   }
 
   void initFlutterDownloader() async {
