@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
+import 'package:flutter_app/src/task/ntut/ntut_task.dart';
+import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -32,11 +34,20 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
-      LocalStorage.instance.setAccount(_accountControl.text.toString().trim());
-      LocalStorage.instance.setPassword(_passwordControl.text.toString());
-      await LocalStorage.instance.saveUserData();
+
+      final account = _accountControl.text.toString().trim();
+      final password = _passwordControl.text.toString();
       _passwordControl.clear();
-      RouteUtils.launchMainPage();
+
+      LocalStorage.instance.setAccount(account);
+      LocalStorage.instance.setPassword(password);
+
+      final loginTask = NTUTTask('LoginOnLoginScreen');
+
+      final loginTaskResult = await loginTask.execute();
+      if (loginTaskResult == TaskStatus.success) {
+        RouteUtils.launchMainPage();
+      }
     }
   }
 
