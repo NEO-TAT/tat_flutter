@@ -46,9 +46,6 @@ class NTUTConnector {
     switch (loginResult.resultType) {
       case SimpleLoginResultType.success:
       case SimpleLoginResultType.needsVerifyMobile:
-        LocalStorage.instance.setAccount(account);
-        LocalStorage.instance.setPassword(password);
-
         final userInfo = UserInfoJson(
           givenName: loginResult.userNaturalName,
           userMail: loginResult.userMail,
