@@ -32,7 +32,7 @@ class NTUTConnector {
   static const _getCalendarUrl = "${host}calModeApp.do";
   static const _changePasswordUrl = "${host}passwordMdy.do";
 
-  static Future<NTUTConnectorStatus> login(String account, String password) async {
+  static Future<SimpleLoginResultType> login(String account, String password) async {
     final simpleLoginUseCase = Get.find<SimpleLoginUseCase>();
     final loginCredential = LoginCredential(userId: account, password: password);
     final loginResult = await simpleLoginUseCase(credential: loginCredential);
@@ -56,17 +56,12 @@ class NTUTConnector {
 
         LocalStorage.instance.setUserInfo(userInfo);
         LocalStorage.instance.saveUserData();
-        return NTUTConnectorStatus.loginSuccess;
 
-      case SimpleLoginResultType.wrongCredential:
-        return NTUTConnectorStatus.accountPasswordIncorrect;
+        // ignore the `needsVerifyMobile` case.
+        return SimpleLoginResultType.success;
 
-      case SimpleLoginResultType.locked:
-        return NTUTConnectorStatus.accountLockWarning;
-
-      case SimpleLoginResultType.needsResetPassword:
-      case SimpleLoginResultType.unknown:
-        return NTUTConnectorStatus.unknownError;
+      default:
+        return loginResult.resultType;
     }
   }
 
