@@ -70,12 +70,10 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
       Log.eWithStack(e.toString(), stack);
     }
 
-    final loginTaskResult = await checkIfLogin();
-    if (loginTaskResult != TaskStatus.success) {
-      LocalStorage.instance.clearUserData();
-      RouteUtils.toLoginScreen();
-      return;
-    }
+    // Request login status check and also do the initial login.
+    // We will ignore all failed cases of this step, since we should allow offline mode.
+    // But some cases (like Wrong Password) will move user to the login screen and wipe data.
+    await checkIfLogin();
 
     setState(() {
       _pageList = [];

@@ -3,12 +3,13 @@
 import 'dart:async';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
-import 'package:flutter_app/debug/log/log.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 
 import '../dialog_task.dart';
 
@@ -65,6 +66,10 @@ class NTUTTask<T> extends DialogTask<T> {
       case NTUTConnectorStatus.accountPasswordIncorrect:
         parameter.desc = R.current.accountPasswordError;
         parameter.btnOkText = R.current.restart;
+        parameter.btnOkOnPress = () {
+          LocalStorage.instance.clearUserData();
+          RouteUtils.toLoginScreen();
+        };
         break;
       case NTUTConnectorStatus.authCodeFailError:
         parameter.desc = R.current.authCodeFail;
