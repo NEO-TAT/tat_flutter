@@ -287,8 +287,7 @@ class LocalStorage {
     await _clearCourseScoreCredit();
     await _clearAnnouncementSetting();
     await clearCourseSetting();
-    DioConnector.instance.deleteCookies();
-    await cacheManager.emptyCache(); //clears all data in cache.
+    await cacheManager.emptyCache();
     _setFirstUse(courseNotice, true);
     await init();
   }
