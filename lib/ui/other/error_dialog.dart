@@ -32,7 +32,7 @@ class ErrorDialogParameter {
     this.offCancelBtn = false,
   }) {
     title ??= R.current.alertError;
-    btnOkText ??= R.current.restart;
+    btnOkText ??= R.current.sure;
     btnCancelText ??= R.current.cancel;
     animType ??= AnimType.BOTTOMSLIDE;
     dialogType ??= DialogType.ERROR;
