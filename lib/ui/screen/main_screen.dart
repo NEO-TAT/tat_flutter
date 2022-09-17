@@ -7,14 +7,12 @@ import 'package:flutter_app/src/file/my_downloader.dart';
 import 'package:flutter_app/src/notifications/notifications.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/ntut/ntut_task.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/src/version/app_version.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
-import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_app/ui/pages/calendar/calendar_page.dart';
 import 'package:flutter_app/ui/pages/coursetable/course_table_page.dart';
 import 'package:flutter_app/ui/pages/notification/notification_page.dart';
@@ -104,25 +102,22 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<AppProvider>(
-      builder: (context, appProvider, child) {
-        appProvider.navigatorKey = Get.key;
-        return WillPopScope(
-          onWillPop: _onWillPop,
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            body: _buildPageView(),
-            bottomNavigationBar: _buildBottomNavigationBar(),
-          ),
-        );
-      },
-    );
-  }
+  Widget build(BuildContext context) => Consumer<AppProvider>(
+        builder: (context, appProvider, child) {
+          appProvider.navigatorKey = Get.key;
+          return WillPopScope(
+            onWillPop: _onWillPop,
+            child: Scaffold(
+              backgroundColor: Theme.of(context).backgroundColor,
+              body: _buildPageView(),
+              bottomNavigationBar: _buildBottomNavigationBar(),
+            ),
+          );
+        },
+      );
 
   Future<bool> _onWillPop() async {
-    var canPop = Navigator.of(context).canPop();
-    //Log.d(canPop.toString());
+    final canPop = Navigator.of(context).canPop();
     if (canPop) {
       Navigator.of(context).pop();
       _closeAppCount = 0;
@@ -136,14 +131,12 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     return (_closeAppCount >= 2);
   }
 
-  Widget _buildPageView() {
-    return PageView(
-      controller: _pageController,
-      onPageChanged: _onPageChanged,
-      physics: const NeverScrollableScrollPhysics(),
-      children: _pageList, // 禁止滑動
-    );
-  }
+  Widget _buildPageView() => PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _pageList,
+      );
 
   Widget _buildBottomNavigationBar() {
     return BottomNavigationBar(
@@ -184,7 +177,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   }
 
   void _onPageChange(int index) {
-    String screenName = _pageList[index].toString();
+    final screenName = _pageList[index].toString();
     AnalyticsUtils.setScreenName(screenName);
   }
 
