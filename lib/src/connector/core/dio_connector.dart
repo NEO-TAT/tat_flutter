@@ -71,7 +71,13 @@ class DioConnector {
     dio.interceptors.add(alice.getDioInterceptor());
   }
 
-  void deleteCookies() => _cookieJar.deleteAll();
+  void deleteCookies() {
+    try {
+      _cookieJar.deleteAll();
+    } catch (_, stackTrace) {
+      stackTrace.printError();
+    }
+  }
 
   Future<String> getDataByPost(ConnectorParameter parameter) async {
     final response = await getDataByPostResponse(parameter);
