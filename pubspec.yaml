@@ -96,7 +96,6 @@ dependencies:
   #----------download----------#
   flutter_downloader: ^1.8.4
   #下載app更新
-  open_file: ^3.2.1
   permission_handler: ^8.3.0 # constraints by alice: ^0.2.5
   mime_type: ^1.0.0
   #----------Widget----------#
