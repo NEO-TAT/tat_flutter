@@ -3,6 +3,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
+import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/file/my_downloader.dart';
 import 'package:flutter_app/src/notifications/notifications.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
@@ -142,12 +143,20 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
       );
 
   Widget _buildBottomNavigationBar() {
+    final isDarkMode = Get.isDarkMode;
+    final selectedItemColor = isDarkMode ? AppColors.lightAccent : AppColors.mainColor;
+    final unSelectedItemColor = isDarkMode ? AppColors.lightBG : AppColors.darkFontColor;
+    final barBgColor = isDarkMode ? Colors.black12 : Colors.grey[200];
+
     return BottomNavigationBar(
       currentIndex: _currentIndex,
-      type: BottomNavigationBarType.fixed,
+      type: BottomNavigationBarType.shifting,
       onTap: _onTap,
+      selectedItemColor: selectedItemColor,
+      unselectedItemColor: unSelectedItemColor,
       items: [
         BottomNavigationBarItem(
+          backgroundColor: barBgColor,
           icon: const Icon(
             EvaIcons.clockOutline,
           ),
@@ -171,10 +180,11 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
             ),
             label: R.current.titleScore),
         BottomNavigationBarItem(
-            icon: const Icon(
-              EvaIcons.menu,
-            ),
-            label: R.current.titleOther),
+          icon: const Icon(
+            EvaIcons.menu,
+          ),
+          label: R.current.titleOther,
+        ),
       ],
     );
   }
