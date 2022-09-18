@@ -3,12 +3,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/model/setting/setting_json.dart';
 import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tat_core/tat_core.dart';
 
@@ -36,6 +38,8 @@ class LocalStorage {
   final _zLoginCredentialKey = 'ZLoginCredentialKey';
   final _firstRun = <String, bool>{};
   final _courseTableList = <CourseTableJson>[];
+
+  final _httpClientInterceptors = <Interceptor>[];
 
   SharedPreferences _pref;
   UserDataJson _userData;
@@ -125,19 +129,16 @@ class LocalStorage {
   }
 
   void removeCourseTable(CourseTableJson addCourseTable) {
-    final tableList = _courseTableList;
-    for (int i = 0; i < tableList.length; i++) {
-      final table = tableList[i];
-      if (table.courseSemester == addCourseTable.courseSemester && table.studentId == addCourseTable.studentId) {
-        tableList.removeAt(i);
-      }
-    }
+    _courseTableList.removeWhere(
+      (courseTable) =>
+          courseTable.courseSemester == addCourseTable.courseSemester &&
+          courseTable.studentId == addCourseTable.studentId,
+    );
   }
 
   void addCourseTable(CourseTableJson addCourseTable) {
-    final tableList = _courseTableList;
     removeCourseTable(addCourseTable);
-    tableList.add(addCourseTable);
+    _courseTableList.add(addCourseTable);
   }
 
   List<CourseTableJson> getCourseTableList() {
@@ -151,20 +152,13 @@ class LocalStorage {
   }
 
   CourseTableJson getCourseTable(String studentId, SemesterJson courseSemester) {
-    final tableList = _courseTableList;
-
-    if (courseSemester == null || studentId.isEmpty) {
+    if (courseSemester == null || studentId == null || studentId.isEmpty) {
       return null;
     }
 
-    for (int i = 0; i < tableList.length; i++) {
-      final table = tableList[i];
-      if (table.courseSemester == courseSemester && table.studentId == studentId) {
-        return table;
-      }
-    }
-
-    return null;
+    return _courseTableList.firstWhereOrNull(
+      (courseTable) => courseTable.courseSemester == courseSemester && courseTable.studentId == studentId,
+    );
   }
 
   Future<void> _saveSetting() => _save(_settingJsonKey, _setting);
@@ -241,11 +235,11 @@ class LocalStorage {
     return (savedData == null) ? null : ZUserInfo.fromJson(jsonDecode(savedData) as Map<String, dynamic>);
   }
 
-  void clearSemesterJsonList() => _courseSemesterList.clear();
+  void clearSemesterJsonList() => _courseSemesterList?.clear();
 
   void _loadSemesterJsonList() {
     final readJsonList = _readStringList(_courseSemesterJsonKey);
-    _courseSemesterList.clear();
+    _courseSemesterList?.clear();
 
     if (readJsonList != null) {
       for (final readJson in readJsonList) {
@@ -257,7 +251,7 @@ class LocalStorage {
   void setSemesterJsonList(List<SemesterJson> value) => _courseSemesterList = value;
 
   SemesterJson getSemesterJsonItem(int index) =>
-      (_courseSemesterList.length > index) ? _courseSemesterList[index] : null;
+      ((_courseSemesterList?.length ?? -1) > index) ? _courseSemesterList[index] : null;
 
   List<SemesterJson> getSemesterList() => _courseSemesterList;
 
@@ -265,9 +259,10 @@ class LocalStorage {
 
   Future<void> setVersion(String version) => _writeString("version", version);
 
-  Future<void> getInstance() async {
+  Future<void> init({List<Interceptor> httpClientInterceptors = const []}) async {
     _pref = await SharedPreferences.getInstance();
-    await DioConnector.instance.init();
+    await DioConnector.instance.init(interceptors: httpClientInterceptors);
+    _httpClientInterceptors.addAll(httpClientInterceptors);
     _courseSemesterList = _courseSemesterList ?? [];
     _loadUserData();
     _loadCourseTableList();
@@ -283,10 +278,9 @@ class LocalStorage {
     await _clearCourseScoreCredit();
     await _clearAnnouncementSetting();
     await clearCourseSetting();
-    DioConnector.instance.deleteCookies();
-    await cacheManager.emptyCache(); //clears all data in cache.
+    await cacheManager.emptyCache();
     _setFirstUse(courseNotice, true);
-    await getInstance();
+    await init();
   }
 
   Future<void> _save(String key, dynamic saveObj) async {

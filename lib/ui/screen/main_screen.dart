@@ -1,13 +1,15 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
+import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/file/my_downloader.dart';
 import 'package:flutter_app/src/notifications/notifications.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/src/store/local_storage.dart';
+import 'package:flutter_app/src/task/ntut/ntut_task.dart';
+import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/src/version/app_version.dart';
@@ -21,7 +23,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _MainScreenState();
@@ -42,7 +44,10 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    AnalyticsUtils.observer.subscribe(this, ModalRoute.of(context));
+    final modalRoute = ModalRoute.of(context);
+    if (modalRoute != null) {
+      AnalyticsUtils.observer.subscribe(this, modalRoute);
+    }
   }
 
   @override
@@ -53,7 +58,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
 
   void appInit() async {
     R.set(context);
-    await LocalStorage.instance.getInstance(); //一定要先getInstance()不然無法取得資料
+
     try {
       await initLanguage();
       Log.init();
@@ -63,6 +68,15 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
     }
+
+    // Request login status check and also do the initial login.
+    // We will ignore all failed cases of this step, since we should allow offline mode.
+    // But some cases (like Wrong Password) will move user to the login screen and wipe data.
+    final checkLoginTaskResult = await checkIfLogin();
+    if (checkLoginTaskResult == TaskStatus.shouldGiveUp) {
+      return;
+    }
+
     setState(() {
       _pageList = [];
       _pageList.add(const CourseTablePage());
@@ -71,6 +85,11 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
       _pageList.add(const ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
     });
+  }
+
+  Future<TaskStatus> checkIfLogin() {
+    final loginTask = NTUTTask('AutoLoginOnMainScreen');
+    return loginTask.execute();
   }
 
   void initFlutterDownloader() async {
@@ -87,25 +106,22 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider appProvider, Widget child) {
-        appProvider.navigatorKey = Get.key;
-        return WillPopScope(
-          onWillPop: _onWillPop,
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            body: _buildPageView(),
-            bottomNavigationBar: _buildBottomNavigationBar(),
-          ),
-        );
-      },
-    );
-  }
+  Widget build(BuildContext context) => Consumer<AppProvider>(
+        builder: (context, appProvider, child) {
+          appProvider.navigatorKey = Get.key;
+          return WillPopScope(
+            onWillPop: _onWillPop,
+            child: Scaffold(
+              backgroundColor: Theme.of(context).backgroundColor,
+              body: _buildPageView(),
+              bottomNavigationBar: _buildBottomNavigationBar(),
+            ),
+          );
+        },
+      );
 
   Future<bool> _onWillPop() async {
-    var canPop = Navigator.of(context).canPop();
-    //Log.d(canPop.toString());
+    final canPop = Navigator.of(context).canPop();
     if (canPop) {
       Navigator.of(context).pop();
       _closeAppCount = 0;
@@ -119,22 +135,28 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     return (_closeAppCount >= 2);
   }
 
-  Widget _buildPageView() {
-    return PageView(
-      controller: _pageController,
-      onPageChanged: _onPageChanged,
-      physics: const NeverScrollableScrollPhysics(),
-      children: _pageList, // 禁止滑動
-    );
-  }
+  Widget _buildPageView() => PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        physics: const NeverScrollableScrollPhysics(),
+        children: _pageList,
+      );
 
   Widget _buildBottomNavigationBar() {
+    final isDarkMode = Get.isDarkMode;
+    final selectedItemColor = isDarkMode ? AppColors.lightAccent : AppColors.mainColor;
+    final unSelectedItemColor = isDarkMode ? AppColors.lightBG : AppColors.darkFontColor;
+    final barBgColor = isDarkMode ? Colors.black12 : Colors.grey[200];
+
     return BottomNavigationBar(
       currentIndex: _currentIndex,
-      type: BottomNavigationBarType.fixed,
+      type: BottomNavigationBarType.shifting,
       onTap: _onTap,
+      selectedItemColor: selectedItemColor,
+      unselectedItemColor: unSelectedItemColor,
       items: [
         BottomNavigationBarItem(
+          backgroundColor: barBgColor,
           icon: const Icon(
             EvaIcons.clockOutline,
           ),
@@ -158,16 +180,17 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
             ),
             label: R.current.titleScore),
         BottomNavigationBarItem(
-            icon: const Icon(
-              EvaIcons.menu,
-            ),
-            label: R.current.titleOther),
+          icon: const Icon(
+            EvaIcons.menu,
+          ),
+          label: R.current.titleOther,
+        ),
       ],
     );
   }
 
   void _onPageChange(int index) {
-    String screenName = _pageList[index].toString();
+    final screenName = _pageList[index].toString();
     AnalyticsUtils.setScreenName(screenName);
   }
 

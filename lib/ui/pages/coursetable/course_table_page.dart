@@ -56,19 +56,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void initState() {
     super.initState();
     _studentIdControl.text = " ";
-    final userData = LocalStorage.instance.getUserData();
-
-    Future.delayed(const Duration()).then((_) {
-      if (userData.account.isEmpty || userData.password.isEmpty) {
-        RouteUtils.toLoginScreen().then((value) {
-          if (value != null && value) {
-            _loadSetting();
-          }
-        });
-      } else {
-        _loadSetting();
-      }
-    });
+    Future.microtask(() => _loadLocalSettings());
   }
 
   void getCourseNotice() async {
@@ -162,21 +150,20 @@ class _CourseTablePageState extends State<CourseTablePage> {
     super.dispose();
   }
 
-  void _loadSetting() {
-    //Log.d(MediaQuery.of(context).size.height.toString());
-    RenderObject renderObject = _key.currentContext.findRenderObject();
-    courseHeight = (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight) / showCourseTableNum; //計算高度
-    CourseTableJson courseTable = LocalStorage.instance.getCourseSetting().info;
+  void _loadLocalSettings() {
+    final renderObject = _key.currentContext.findRenderObject();
+    courseHeight = (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight) / showCourseTableNum;
+    final courseTable = LocalStorage.instance.getCourseSetting().info;
     if (courseTable == null || courseTable.isEmpty) {
-      _getCourseTable();
+      _getCourseTable(studentId: courseTable.studentId, semesterSetting: courseTable.courseSemester);
     } else {
       _showCourseTable(courseTable);
     }
   }
 
   Future<void> _getSemesterList(String studentId) async {
-    TaskFlow taskFlow = TaskFlow();
-    var task = CourseSemesterTask(studentId);
+    final taskFlow = TaskFlow();
+    final task = CourseSemesterTask(studentId);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       LocalStorage.instance.setSemesterJsonList(task.result);
@@ -192,7 +179,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       LocalStorage.instance.clearSemesterJsonList(); //需重設因為更換了studentId
     }
     SemesterJson semesterJson;
-    if (semesterSetting == null) {
+    if (semesterSetting == null || semesterSetting.semester.isEmpty || semesterSetting.year.isEmpty) {
       await _getSemesterList(studentId);
       semesterJson = LocalStorage.instance.getSemesterJsonItem(0);
     } else {
@@ -204,11 +191,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
     CourseTableJson courseTable;
     if (!refresh) {
-      //是否要去找暫存的
       courseTable = LocalStorage.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
     }
     if (courseTable == null) {
-      //代表沒有暫存的需要爬蟲
       TaskFlow taskFlow = TaskFlow();
       var task = CourseTableTask(studentId, semesterJson);
       taskFlow.addTask(task);
@@ -216,13 +201,16 @@ class _CourseTablePageState extends State<CourseTablePage> {
         courseTable = task.result;
       }
     }
-    LocalStorage.instance.getCourseSetting().info = courseTable; //儲存課表
-    LocalStorage.instance.saveCourseSetting();
-    _showCourseTable(courseTable);
+
+    if (courseTable != null) {
+      LocalStorage.instance.getCourseSetting().info = courseTable;
+      LocalStorage.instance.saveCourseSetting();
+      _showCourseTable(courseTable);
+    }
   }
 
   Widget _getSemesterItem(SemesterJson semester) {
-    String semesterString = "${semester.year}-${semester.semester}";
+    final semesterString = "${semester.year}-${semester.semester}";
     return TextButton(
       child: Text(semesterString),
       onPressed: () {
@@ -233,28 +221,30 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _showSemesterList() async {
-    //顯示選擇學期
     _unFocusStudentInput();
-    if (LocalStorage.instance.getSemesterList().isEmpty) {
-      TaskFlow taskFlow = TaskFlow();
-      var task = CourseSemesterTask(_studentIdControl.text);
+    if (LocalStorage.instance.getSemesterList()?.isEmpty == true) {
+      final taskFlow = TaskFlow();
+      final task = CourseSemesterTask(_studentIdControl.text);
       taskFlow.addTask(task);
       if (await taskFlow.start()) {
         LocalStorage.instance.setSemesterJsonList(task.result);
       }
     }
-    List<SemesterJson> semesterList = LocalStorage.instance.getSemesterList();
-    //Model.instance.saveSemesterJsonList();
+
+    final List<SemesterJson> semesterList = LocalStorage.instance.getSemesterList();
+
+    if (semesterList?.isEmpty ?? true) {
+      return;
+    }
+
     Get.dialog(
       AlertDialog(
         content: SizedBox(
           width: double.minPositive,
           child: ListView.builder(
-            itemCount: semesterList.length,
-            shrinkWrap: true, //使清單最小化
-            itemBuilder: (BuildContext context, int index) {
-              return _getSemesterItem(semesterList[index]);
-            },
+            itemCount: semesterList?.length ?? 0,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => _getSemesterItem(semesterList[index]),
           ),
         ),
       ),
@@ -262,16 +252,19 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-  _onPopupMenuSelect(int value) async {
+  _onPopupMenuSelect(int value) {
     switch (value) {
       case 0:
-        MyToast.show(sprintf("%s:%s", [R.current.credit, courseTableData.getTotalCredit().toString()]));
+        final credit = courseTableData?.getTotalCredit()?.toString();
+        if (credit != null) {
+          MyToast.show(sprintf("%s:%s", [R.current.credit, credit]));
+        }
         break;
       case 1:
         _loadFavorite();
         break;
       case 2:
-        await screenshot();
+        screenshot();
         break;
       default:
         break;
@@ -357,8 +350,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   @override
   Widget build(BuildContext context) {
-    SemesterJson semesterSetting = courseTableData?.courseSemester ?? SemesterJson();
-    String semesterString = "${semesterSetting.year}-${semesterSetting.semester}";
+    final semesterSetting = courseTableData?.courseSemester ?? SemesterJson();
+    final semesterString = "${semesterSetting.year}-${semesterSetting.semester}";
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -373,44 +367,36 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   ),
                 )
               : Container(),
-          (!isLoading && LocalStorage.instance.getAccount() != courseTableData.studentId)
+          (!isLoading && LocalStorage.instance.getAccount() != courseTableData?.studentId)
               ? Padding(
                   padding: const EdgeInsets.only(
                     right: 20,
                   ),
                   child: InkWell(
                     onTap: () {
-                      setState(() {
-                        favorite = !favorite;
-                      });
+                      setState(() => favorite = !favorite);
                       _setFavorite(favorite);
                     },
                     child: Icon(Icons.favorite, color: (favorite) ? Colors.pinkAccent : Colors.white),
                   ),
                 )
-              : Container(),
+              : const SizedBox.shrink(),
           Padding(
             padding: const EdgeInsets.only(
               right: 20,
             ),
             child: InkWell(
-              onTap: () {
-                _getCourseTable(
-                  semesterSetting: courseTableData?.courseSemester,
-                  studentId: _studentIdControl.text,
-                  refresh: true,
-                );
-              },
+              onTap: () => _getCourseTable(
+                semesterSetting: courseTableData?.courseSemester,
+                studentId: _studentIdControl.text,
+                refresh: true,
+              ),
               child: const Icon(EvaIcons.refreshOutline),
             ),
           ),
           PopupMenuButton<int>(
-            onSelected: (result) {
-              setState(() {
-                _onPopupMenuSelect(result);
-              });
-            },
-            itemBuilder: (BuildContext context) => [
+            onSelected: (result) => setState(() => _onPopupMenuSelect(result)),
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: 0,
                 child: Text(R.current.searchCredit),
@@ -430,7 +416,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       ),
       body: Column(
         key: _key,
-        children: <Widget>[
+        children: [
           Container(
             height: studentIdHeight,
             color: Theme.of(context).backgroundColor,
@@ -442,7 +428,6 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     scrollPadding: const EdgeInsets.all(0),
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
-                      // 關閉框線
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.all(10),
                       hintText: R.current.pleaseEnterStudentId,
@@ -457,17 +442,11 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     },
                     controller: _studentIdControl,
                     focusNode: _studentFocus,
-                    /*
-                    toolbarOptions: ToolbarOptions(
-                      copy: true,
-                      paste: true,
-                    ),
-                     */
                   ),
                 ),
                 TextButton(
                   child: Row(
-                    children: <Widget>[
+                    children: [
                       Text(
                         semesterString,
                         textAlign: TextAlign.center,
@@ -478,9 +457,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                       const Icon(Icons.arrow_drop_down),
                     ],
                   ),
-                  onPressed: () {
-                    _showSemesterList();
-                  },
+                  onPressed: () => _showSemesterList(),
                 ),
               ],
             ),
@@ -495,60 +472,57 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   final GlobalKey<OverRepaintBoundaryState> overRepaintKey = GlobalKey();
 
-  Widget _buildListViewWithScreenshot() {
-    return SingleChildScrollView(
-      child: OverRepaintBoundary(
-        key: overRepaintKey,
-        child: RepaintBoundary(
-          child: (isLoading)
-              ? Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          //makes the red row full width
-                          child: SizedBox(
-                            height: courseHeight * showCourseTableNum,
-                            child: const Center(
-                              child: CircularProgressIndicator(),
+  Widget _buildListViewWithScreenshot() => SingleChildScrollView(
+        child: OverRepaintBoundary(
+          key: overRepaintKey,
+          child: RepaintBoundary(
+            child: (isLoading)
+                ? Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            //makes the red row full width
+                            child: SizedBox(
+                              height: courseHeight * showCourseTableNum,
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )
-              : Column(
-                  children: List.generate(
-                    1 + courseTableControl.getSectionIntList.length,
-                    (index) {
-                      Widget widget;
-                      widget = (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
-                      return AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 375),
-                        child: ScaleAnimation(
-                          child: FadeInAnimation(
-                            child: widget,
+                        ],
+                      ),
+                    ],
+                  )
+                : Column(
+                    children: List.generate(
+                      1 + courseTableControl.getSectionIntList.length,
+                      (index) {
+                        final widget = (index == 0) ? _buildDay() : _buildCourseTable(index - 1);
+                        return AnimationConfiguration.staggeredList(
+                          position: index,
+                          duration: const Duration(milliseconds: 375),
+                          child: ScaleAnimation(
+                            child: FadeInAnimation(
+                              child: widget,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   Widget _buildDay() {
-    List<Widget> widgetList = [];
+    final List<Widget> widgetList = [];
     widgetList.add(Container(
       width: sectionWidth,
     ));
-    for (int i in courseTableControl.getDayIntList) {
+    for (final i in courseTableControl.getDayIntList) {
       widgetList.add(
         Expanded(
           child: Text(
@@ -568,11 +542,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   Widget _buildCourseTable(int index) {
-    int section = courseTableControl.getSectionIntList[index];
-    Color color;
-    color = (index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor;
-    color = color.withAlpha(courseTableWithAlpha);
-    List<Widget> widgetList = [];
+    final section = courseTableControl.getSectionIntList[index];
+    final color = ((index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor)
+        .withAlpha(courseTableWithAlpha);
+    final List<Widget> widgetList = [];
     widgetList.add(
       Container(
         width: sectionWidth,
@@ -586,10 +559,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
     final isDarkMode = Get.isDarkMode;
 
-    for (int day in courseTableControl.getDayIntList) {
-      CourseInfoJson courseInfo = courseTableControl.getCourseInfo(day, section);
-      Color color = courseTableControl.getCourseInfoColor(day, section);
-      courseInfo = courseInfo ?? CourseInfoJson();
+    for (final day in courseTableControl.getDayIntList) {
+      final courseInfo = courseTableControl.getCourseInfo(day, section) ?? CourseInfoJson();
+      final color = courseTableControl.getCourseInfoColor(day, section);
       widgetList.add(
         Expanded(
           child: (courseInfo.isEmpty)
@@ -649,10 +621,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
   //顯示課程對話框
   void showCourseDetailDialog(int section, CourseInfoJson courseInfo) {
     _unFocusStudentInput();
-    CourseMainJson course = courseInfo.main.course;
-    String classroomName = courseInfo.main.getClassroomName();
-    String teacherName = courseInfo.main.getTeacherName();
-    String studentId = LocalStorage.instance.getCourseSetting().info.studentId;
+    final course = courseInfo.main.course;
+    final classroomName = courseInfo.main.getClassroomName();
+    final teacherName = courseInfo.main.getTeacherName();
+    final studentId = LocalStorage.instance.getCourseSetting().info.studentId;
     setState(() {
       _studentIdControl.text = studentId;
     });
@@ -663,12 +635,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+          children: [
             GestureDetector(
               child: Text(sprintf("%s : %s", [R.current.courseId, course.id])),
               onLongPress: () async {
                 course.id = await _showEditDialog(course.id);
-                LocalStorage.instance.saveOtherSetting();
+                await LocalStorage.instance.saveOtherSetting();
                 setState(() {});
               },
             ),
@@ -694,12 +666,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
   Future<String> _showEditDialog(String value) async {
     final TextEditingController controller = TextEditingController();
     controller.text = value;
-    String v = await Get.dialog<String>(
+    final v = await Get.dialog<String>(
       AlertDialog(
         contentPadding: const EdgeInsets.all(16.0),
         title: const Text('Edit'),
         content: Row(
-          children: <Widget>[
+          children: [
             Expanded(
               child: TextField(
                 controller: controller,
@@ -709,7 +681,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
             )
           ],
         ),
-        actions: <Widget>[
+        actions: [
           TextButton(
               child: Text(R.current.cancel),
               onPressed: () {
@@ -728,15 +700,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
   }
 
   void _showCourseDetail(CourseInfoJson courseInfo) {
-    CourseMainJson course = courseInfo.main.course;
+    final course = courseInfo.main.course;
     Get.back();
-    String studentId = LocalStorage.instance.getCourseSetting().info.studentId;
+    final studentId = LocalStorage.instance.getCourseSetting().info.studentId;
     if (course.id.isEmpty) {
       MyToast.show(course.name + R.current.noSupport);
     } else {
       RouteUtils.toISchoolPage(studentId, courseInfo).then((value) {
         if (value != null) {
-          SemesterJson semesterSetting = LocalStorage.instance.getCourseSetting().info.courseSemester;
+          final semesterSetting = LocalStorage.instance.getCourseSetting().info.courseSemester;
           _getCourseTable(semesterSetting: semesterSetting, studentId: value);
         }
       });
@@ -776,7 +748,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     final originHeight = courseHeight;
     final renderObject = _key.currentContext.findRenderObject();
     final height = renderObject.semanticBounds.size.height - studentIdHeight - dayHeight;
-    RenderRepaintBoundary boundary = overRepaintKey.currentContext.findRenderObject();
+    final RenderRepaintBoundary boundary = overRepaintKey.currentContext.findRenderObject();
     final directory = await getApplicationSupportDirectory();
     final path = directory.path;
 

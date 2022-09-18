@@ -266,6 +266,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalAverage": MessageLookupByLibrary.simpleMessage("總平均"),
         "totalPeople": MessageLookupByLibrary.simpleMessage("總人數"),
         "unknownError": MessageLookupByLibrary.simpleMessage("發生未知錯誤"),
+        "unknownServerError": MessageLookupByLibrary.simpleMessage("與校園系統溝通時發生問題，大部分功能可能將受影響\n請確認校園系統能正常使用後再試一次，謝謝"),
         "update": MessageLookupByLibrary.simpleMessage("更新"),
         "useOldPassword": MessageLookupByLibrary.simpleMessage("延長原始密碼時間"),
         "versionInfo": MessageLookupByLibrary.simpleMessage("版本資訊"),

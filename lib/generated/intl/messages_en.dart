@@ -278,6 +278,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalAverage": MessageLookupByLibrary.simpleMessage("Total average"),
         "totalPeople": MessageLookupByLibrary.simpleMessage("Total people"),
         "unknownError": MessageLookupByLibrary.simpleMessage("An unknown error occurred"),
+        "unknownServerError": MessageLookupByLibrary.simpleMessage(
+            "A problem occurred when communicating with the campus server, most features may be affected\nPlease confirm that the campus system can be used normally and try again, thanks"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "useOldPassword": MessageLookupByLibrary.simpleMessage("Use old password"),
         "versionInfo": MessageLookupByLibrary.simpleMessage("Version info"),

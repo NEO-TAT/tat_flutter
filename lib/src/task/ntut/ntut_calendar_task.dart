@@ -18,7 +18,7 @@ class NTUTCalendarTask extends NTUTTask<List<NTUTCalendarJson>> {
     final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.getCalendar);
-      final value = await NTUTConnector.getCalendar(startTime, endTime) as List<NTUTCalendarJson>?;
+      final value = await NTUTConnector.getCalendar(startTime, endTime);
       super.onEnd();
       if (value != null) {
         result = value;

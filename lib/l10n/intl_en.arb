@@ -30,6 +30,7 @@
   "accountLock": "Account is locked, please try again in 15 minutes",
   "networkError": "Network error",
   "unknownError": "An unknown error occurred",
+  "unknownServerError": "A problem occurred when communicating with the campus server, most features may be affected\nPlease confirm that the campus system can be used normally and try again, thanks",
   "passwordExpiredWarning": "Password is about to expire, please update password as soon as possible",
   "checkLogin": "Check login...",
   "loginScore": "Login to Score...",

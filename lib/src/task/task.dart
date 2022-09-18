@@ -2,6 +2,7 @@ enum TaskStatus {
   success,
   shouldGiveUp,
   shouldRestart,
+  shouldIgnore,
 }
 
 abstract class Task<T> {

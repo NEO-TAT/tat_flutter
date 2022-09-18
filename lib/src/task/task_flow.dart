@@ -64,6 +64,9 @@ class TaskFlow {
           success = false;
           break;
         case TaskStatus.shouldRestart:
+        case TaskStatus.shouldIgnore:
+          _queue.removeAt(0);
+          _completeTask.add(task);
           break;
       }
     }
