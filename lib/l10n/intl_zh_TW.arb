@@ -30,6 +30,7 @@
   "accountLock": "帳號已被鎖住，請15分鐘後再試",
   "networkError": "網路發生錯誤",
   "unknownError": "發生未知錯誤",
+  "unknownServerError": "與校園系統溝通時發生問題，大部分功能可能將受影響\n請確認校園系統能正常使用後再試一次，謝謝",
   "passwordExpiredWarning": "密碼即將過期，請盡快更新密碼",
   "checkLogin": "檢查登入...",
   "loginScore": "登入成績查詢系統...",

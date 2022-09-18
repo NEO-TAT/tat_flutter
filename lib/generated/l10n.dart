@@ -348,6 +348,16 @@ class S {
     );
   }
 
+  /// `A problem occurred when communicating with the campus server, most features may be affected\nPlease confirm that the campus system can be used normally and try again, thanks`
+  String get unknownServerError {
+    return Intl.message(
+      'A problem occurred when communicating with the campus server, most features may be affected\nPlease confirm that the campus system can be used normally and try again, thanks',
+      name: 'unknownServerError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password is about to expire, please update password as soon as possible`
   String get passwordExpiredWarning {
     return Intl.message(

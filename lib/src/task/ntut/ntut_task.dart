@@ -73,7 +73,7 @@ class NTUTTask<T> extends DialogTask<T> {
         parameter.btnOkText = R.current.restart;
         break;
       default:
-        parameter.desc = R.current.unknownError;
+        parameter.desc = R.current.unknownServerError;
         break;
     }
 
