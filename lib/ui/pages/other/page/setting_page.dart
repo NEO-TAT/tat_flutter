@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/ui/other/list_view_animator.dart';
+import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
 import 'package:get/get.dart';
@@ -101,7 +103,13 @@ class _SettingPageState extends State<SettingPage> {
         ],
       ),
       value: (LanguageUtil.getLangIndex() == LangEnum.en),
-      onChanged: (value) {
+      onChanged: (value) async {
+        final connectivityResult = await Connectivity().checkConnectivity();
+        if (connectivityResult == ConnectivityResult.none) {
+          MyToast.show(R.current.pleaseConnectToNetwork);
+          return;
+        }
+
         setState(() {
           final int langIndex = 1 - LanguageUtil.getLangIndex().index;
           LanguageUtil.setLangByIndex(LangEnum.values.toList()[langIndex]).then((_) {
