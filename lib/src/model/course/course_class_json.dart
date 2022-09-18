@@ -195,9 +195,14 @@ class SemesterJson {
 
   @override
   bool operator ==(dynamic other) {
-    return (int.parse(other.semester) == int.parse(semester) &&
-        int.parse(other.year) == int.parse(year) &&
-        other is SemesterJson);
+    if (other is! SemesterJson) {
+      return false;
+    }
+
+    final isSemesterSame = int.tryParse(other.semester) == int.tryParse(semester);
+    final isYearSame = int.tryParse(other.year) == int.tryParse(year);
+
+    return isSemesterSame && isYearSame;
   }
 
   @override
