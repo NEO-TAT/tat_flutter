@@ -71,7 +71,10 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     // Request login status check and also do the initial login.
     // We will ignore all failed cases of this step, since we should allow offline mode.
     // But some cases (like Wrong Password) will move user to the login screen and wipe data.
-    await checkIfLogin();
+    final checkLoginTaskResult = await checkIfLogin();
+    if (checkLoginTaskResult == TaskStatus.shouldGiveUp) {
+      return;
+    }
 
     setState(() {
       _pageList = [];
