@@ -34,3 +34,9 @@ typedef InAppWebViewCreatedCallback = void Function(InAppWebViewController contr
 
 /// Signature for callbacks that report an [InAppWebView] has updated its loading progress.
 typedef InAppWebViewProgressChangedCallback = void Function(InAppWebViewController controller, int progress);
+
+/// Signature for callbacks that report an [InAppWebView] has received an auth request.
+typedef InAppWebViewReceivedServerTrustAuthRequestCallBack = Future<ServerTrustAuthResponse?> Function(
+  InAppWebViewController controller,
+  URLAuthenticationChallenge challenge,
+);
