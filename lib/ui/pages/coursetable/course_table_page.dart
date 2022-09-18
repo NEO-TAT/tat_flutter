@@ -56,7 +56,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   void initState() {
     super.initState();
     _studentIdControl.text = " ";
-    Future.microtask(() => _loadSetting());
+    Future.microtask(() => _loadLocalSettings());
   }
 
   void getCourseNotice() async {
@@ -150,12 +150,12 @@ class _CourseTablePageState extends State<CourseTablePage> {
     super.dispose();
   }
 
-  void _loadSetting() {
+  void _loadLocalSettings() {
     final renderObject = _key.currentContext.findRenderObject();
-    courseHeight = (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight) / showCourseTableNum; //計算高度
+    courseHeight = (renderObject.semanticBounds.size.height - studentIdHeight - dayHeight) / showCourseTableNum;
     final courseTable = LocalStorage.instance.getCourseSetting().info;
     if (courseTable == null || courseTable.isEmpty) {
-      _getCourseTable();
+      _getCourseTable(studentId: courseTable.studentId, semesterSetting: courseTable.courseSemester);
     } else {
       _showCourseTable(courseTable);
     }
@@ -179,7 +179,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       LocalStorage.instance.clearSemesterJsonList(); //需重設因為更換了studentId
     }
     SemesterJson semesterJson;
-    if (semesterSetting == null) {
+    if (semesterSetting == null || semesterSetting.semester.isEmpty || semesterSetting.year.isEmpty) {
       await _getSemesterList(studentId);
       semesterJson = LocalStorage.instance.getSemesterJsonItem(0);
     } else {
