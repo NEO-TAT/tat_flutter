@@ -10,6 +10,7 @@ import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/model/setting/setting_json.dart';
 import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tat_core/tat_core.dart';
 
@@ -128,19 +129,16 @@ class LocalStorage {
   }
 
   void removeCourseTable(CourseTableJson addCourseTable) {
-    final tableList = _courseTableList;
-    for (int i = 0; i < tableList.length; i++) {
-      final table = tableList[i];
-      if (table.courseSemester == addCourseTable.courseSemester && table.studentId == addCourseTable.studentId) {
-        tableList.removeAt(i);
-      }
-    }
+    _courseTableList.removeWhere(
+      (courseTable) =>
+          courseTable.courseSemester == addCourseTable.courseSemester &&
+          courseTable.studentId == addCourseTable.studentId,
+    );
   }
 
   void addCourseTable(CourseTableJson addCourseTable) {
-    final tableList = _courseTableList;
     removeCourseTable(addCourseTable);
-    tableList.add(addCourseTable);
+    _courseTableList.add(addCourseTable);
   }
 
   List<CourseTableJson> getCourseTableList() {
@@ -154,20 +152,13 @@ class LocalStorage {
   }
 
   CourseTableJson getCourseTable(String studentId, SemesterJson courseSemester) {
-    final tableList = _courseTableList;
-
-    if (courseSemester == null || studentId.isEmpty) {
+    if (courseSemester == null || studentId == null || studentId.isEmpty) {
       return null;
     }
 
-    for (int i = 0; i < tableList.length; i++) {
-      final table = tableList[i];
-      if (table.courseSemester == courseSemester && table.studentId == studentId) {
-        return table;
-      }
-    }
-
-    return null;
+    return _courseTableList.firstWhereOrNull(
+      (courseTable) => courseTable.courseSemester == courseSemester && courseTable.studentId == studentId,
+    );
   }
 
   Future<void> _saveSetting() => _save(_settingJsonKey, _setting);
