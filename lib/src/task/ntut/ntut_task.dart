@@ -88,8 +88,7 @@ class NTUTTask<T> extends DialogTask<T> {
     ErrorDialog(parameter).show();
 
     // Ignore all error cases exclude the password incorrect.
-    // TODO: make the course table shows on offline mode.
-    return TaskStatus.shouldGiveUp;
+    return TaskStatus.shouldIgnore;
   }
 
   @override

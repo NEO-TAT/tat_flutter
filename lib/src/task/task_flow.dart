@@ -64,6 +64,7 @@ class TaskFlow {
           success = false;
           break;
         case TaskStatus.shouldRestart:
+        case TaskStatus.shouldIgnore:
           break;
       }
     }
