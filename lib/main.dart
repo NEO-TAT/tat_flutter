@@ -109,17 +109,17 @@ Future<void> main() async {
     _TATLifeCycleEventHandler(detachedCallBack: handleAppDetached),
   );
 
-  LocalStorage.instance.init(httpClientInterceptors: apiInterceptors);
+  Get.put(webViewPage);
+  Get.put(zAuthController);
+  Get.put(zCourseController);
+  Get.put(zRollCallMonitorController);
+  Get.put(simpleLoginUseCase);
+  Get.put(cookieJar);
+
+  await LocalStorage.instance.init(httpClientInterceptors: apiInterceptors);
 
   runZonedGuarded(
     () {
-      Get.put(webViewPage);
-      Get.put(zAuthController);
-      Get.put(zCourseController);
-      Get.put(zRollCallMonitorController);
-      Get.put(simpleLoginUseCase);
-      Get.put(cookieJar);
-
       FirebaseAnalytics.instance.logAppOpen();
 
       runApp(
