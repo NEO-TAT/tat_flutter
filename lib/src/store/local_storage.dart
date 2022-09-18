@@ -235,11 +235,11 @@ class LocalStorage {
     return (savedData == null) ? null : ZUserInfo.fromJson(jsonDecode(savedData) as Map<String, dynamic>);
   }
 
-  void clearSemesterJsonList() => _courseSemesterList.clear();
+  void clearSemesterJsonList() => _courseSemesterList?.clear();
 
   void _loadSemesterJsonList() {
     final readJsonList = _readStringList(_courseSemesterJsonKey);
-    _courseSemesterList.clear();
+    _courseSemesterList?.clear();
 
     if (readJsonList != null) {
       for (final readJson in readJsonList) {
@@ -251,7 +251,7 @@ class LocalStorage {
   void setSemesterJsonList(List<SemesterJson> value) => _courseSemesterList = value;
 
   SemesterJson getSemesterJsonItem(int index) =>
-      (_courseSemesterList.length > index) ? _courseSemesterList[index] : null;
+      ((_courseSemesterList?.length ?? -1) > index) ? _courseSemesterList[index] : null;
 
   List<SemesterJson> getSemesterList() => _courseSemesterList;
 

@@ -75,21 +75,31 @@ class CourseTableControl {
   }
 
   CourseInfoJson getCourseInfo(int intDay, int intNumber) {
-    Day day = Day.values[intDay];
-    SectionNumber number = SectionNumber.values[intNumber];
-    //Log.d( day.toString()  + " " + number.toString() );
-    return courseTable.courseInfoMap[day][number];
+    final day = Day.values[intDay];
+    final number = SectionNumber.values[intNumber];
+
+    if (courseTable == null) {
+      return null;
+    }
+
+    return courseTable?.courseInfoMap[day][number];
   }
 
   Color getCourseInfoColor(int intDay, int intNumber) {
-    CourseInfoJson courseInfo = getCourseInfo(intDay, intNumber);
-    for (String key in colorMap.keys) {
+    final courseInfo = getCourseInfo(intDay, intNumber);
+
+    if (colorMap == null) {
+      return Colors.white;
+    }
+
+    for (final key in colorMap.keys) {
       if (courseInfo != null) {
         if (key == courseInfo.main.course.id) {
           return colorMap[key];
         }
       }
     }
+
     return Colors.white;
   }
 

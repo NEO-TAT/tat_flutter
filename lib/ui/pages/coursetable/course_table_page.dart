@@ -222,7 +222,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   void _showSemesterList() async {
     _unFocusStudentInput();
-    if (LocalStorage.instance.getSemesterList().isEmpty) {
+    if (LocalStorage.instance.getSemesterList()?.isEmpty == true) {
       final taskFlow = TaskFlow();
       final task = CourseSemesterTask(_studentIdControl.text);
       taskFlow.addTask(task);
@@ -233,7 +233,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
     final List<SemesterJson> semesterList = LocalStorage.instance.getSemesterList();
 
-    if (semesterList.isEmpty) {
+    if (semesterList?.isEmpty ?? true) {
       return;
     }
 
@@ -242,7 +242,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         content: SizedBox(
           width: double.minPositive,
           child: ListView.builder(
-            itemCount: semesterList.length,
+            itemCount: semesterList?.length ?? 0,
             shrinkWrap: true,
             itemBuilder: (context, index) => _getSemesterItem(semesterList[index]),
           ),
@@ -252,16 +252,19 @@ class _CourseTablePageState extends State<CourseTablePage> {
     );
   }
 
-  _onPopupMenuSelect(int value) async {
+  _onPopupMenuSelect(int value) {
     switch (value) {
       case 0:
-        MyToast.show(sprintf("%s:%s", [R.current.credit, courseTableData.getTotalCredit().toString()]));
+        final credit = courseTableData?.getTotalCredit()?.toString();
+        if (credit != null) {
+          MyToast.show(sprintf("%s:%s", [R.current.credit, credit]));
+        }
         break;
       case 1:
         _loadFavorite();
         break;
       case 2:
-        await screenshot();
+        screenshot();
         break;
       default:
         break;
@@ -364,7 +367,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
                   ),
                 )
               : Container(),
-          (!isLoading && LocalStorage.instance.getAccount() != courseTableData.studentId)
+          (!isLoading && LocalStorage.instance.getAccount() != courseTableData?.studentId)
               ? Padding(
                   padding: const EdgeInsets.only(
                     right: 20,
