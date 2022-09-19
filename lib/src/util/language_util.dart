@@ -11,11 +11,14 @@ enum LangEnum { en, zh }
 
 class LanguageUtil {
   static Future<void> init(BuildContext context) async {
-    OtherSettingJson otherSetting = LocalStorage.instance.getOtherSetting();
+    final otherSetting = LocalStorage.instance.getOtherSetting();
     if (otherSetting.lang.isEmpty || !otherSetting.lang.contains("_")) {
-      //如果沒有設定語言使用手機目前語言
-      Locale locale = Localizations.localeOf(context);
-      load(locale);
+      try {
+        final locale = Localizations.localeOf(context);
+        load(locale);
+      } catch (e) {
+        e.printError();
+      }
     } else {
       load(string2Locale(otherSetting.lang));
     }

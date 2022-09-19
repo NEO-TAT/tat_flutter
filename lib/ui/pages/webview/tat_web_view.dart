@@ -54,10 +54,17 @@ class _TATWebViewState extends State<TATWebView> {
     progress.value = webViewProgress / 100.0;
   }
 
+  Future<ServerTrustAuthResponse?> _onReceivedTrustAuthReqCallBack(
+    InAppWebViewController controller,
+    URLAuthenticationChallenge challenge,
+  ) async =>
+      ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
+
   Widget _buildTATWebViewCore() => _TATWebViewCore(
         initialUrl: widget._initialUrl,
         onWebViewCreated: _onWebViewCreated,
         onProgressChanged: (_, progress) => _onProgressChanged(progress),
+        onReceivedTrustAuthReqCallBack: _onReceivedTrustAuthReqCallBack,
       );
 
   Widget _buildButtonBar() => WebViewButtonBar(
@@ -105,18 +112,22 @@ class _TATWebViewCore extends StatelessWidget {
     required Uri initialUrl,
     InAppWebViewCreatedCallback? onWebViewCreated,
     InAppWebViewProgressChangedCallback? onProgressChanged,
+    InAppWebViewReceivedServerTrustAuthRequestCallBack? onReceivedTrustAuthReqCallBack,
   })  : _initialUrl = initialUrl,
         _onWebViewCreated = onWebViewCreated,
-        _onProgressChanged = onProgressChanged;
+        _onProgressChanged = onProgressChanged,
+        _onReceivedTrustAuthReqCallBack = onReceivedTrustAuthReqCallBack;
 
   final Uri _initialUrl;
   final InAppWebViewCreatedCallback? _onWebViewCreated;
   final InAppWebViewProgressChangedCallback? _onProgressChanged;
+  final InAppWebViewReceivedServerTrustAuthRequestCallBack? _onReceivedTrustAuthReqCallBack;
 
   @override
   Widget build(BuildContext context) => InAppWebView(
         initialUrlRequest: URLRequest(url: _initialUrl),
         onWebViewCreated: _onWebViewCreated,
         onProgressChanged: _onProgressChanged,
+        onReceivedServerTrustAuthRequest: _onReceivedTrustAuthReqCallBack,
       );
 }
