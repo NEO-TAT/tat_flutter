@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:io';
 
 class PictureStorage {
   static pictureInformationMap(String courseId, String label, String picturePath, String note) {
@@ -48,5 +49,14 @@ class Picture{
 
   void modifyNote(){}
 
-  void deletePicture(){}
+  void deletePicture() async {
+    Database pictureDB = Get.find<Database>();
+    await pictureDB.delete(
+      "photo_storage",
+      where: "_id = ?",
+      whereArgs: [id],
+    );
+
+    File(getPath()).delete();
+  }
 }

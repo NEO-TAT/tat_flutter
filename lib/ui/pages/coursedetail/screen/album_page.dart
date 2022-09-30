@@ -17,8 +17,6 @@ class _AlbumPageState extends State<AlbumPage> {
 
   late int pictureNum;
   late List<Picture> pictures = [];
-  late List<String> labels = [];
-  late Map<String, List<Picture>> picturesClassifyByLabel = {};
 
   dynamic picturesInfo;
 
@@ -43,15 +41,7 @@ class _AlbumPageState extends State<AlbumPage> {
       String infoNote = picturesInfo[i]['note'];
       String infoPath = picturesInfo[i]['picturePath'];
 
-      if (picturesClassifyByLabel.containsKey(infoLabel)) {
-        picturesClassifyByLabel[infoLabel]
-            ?.add(Picture(infoId, infoLabel, infoNote, infoPath));
-      } else {
-        picturesClassifyByLabel[infoLabel] = [
-          Picture(infoId, infoLabel, infoNote, infoPath)
-        ];
-        labels.add(infoLabel);
-      }
+      pictures.add(Picture(infoId, infoLabel, infoNote, infoPath));
     }
     setState(() {});
   }
@@ -78,50 +68,48 @@ class _AlbumPageState extends State<AlbumPage> {
 
   Widget pictureAlbum() {
     return ListView(children: [
-      for (String label in labels)
-        labelDividerPictures(label, picturesClassifyByLabel[label]!),
-      const SizedBox(height: 10)
+      Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 10.0, // gap between adjacent chips
+        runSpacing: 6.0,
+        children: [
+          for (Picture picture in pictures)
+            SizedBox(
+              width: screenWidth / 4,
+              height: screenHeight / 8,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: InkWell(
+                      child: PhotoView(
+                        imageProvider: FileImage(File(picture.getPath())),
+                      ),
+                      onTap: () =>
+                          openOriginalSizePicture(context, picture))),
+            )
+        ],
+      )
     ]);
   }
 
-  Widget labelDividerPictures(String label, List<Picture> pictures) {
-    return Column(
-      children: [
-        Text(label),
-        const Divider(
-            height: 20,
-            thickness: 5,
-            indent: 20,
-            endIndent: 0,
-            color: Colors.white),
-        Wrap(
-          spacing: 10.0, // gap between adjacent chips
-          runSpacing: 6.0,
-          children: [
-            for (Picture picture in pictures)
-              SizedBox(
-                width: screenWidth / 4,
-                height: screenHeight / 8,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: InkWell(
-                        child: PhotoView(
-                          imageProvider: FileImage(File(picture.getPath())),
-                        ),
-                        onTap: () =>
-                            openOriginalSizePicture(context, picture))),
-              )
-          ],
-        )
-      ],
-    );
-  }
-
   void openOriginalSizePicture(BuildContext context, Picture picture) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                PhotoView(imageProvider: FileImage(File(picture.getPath())))));
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return Scaffold(
+        body: PhotoView(
+          imageProvider: FileImage(File(picture.getPath())),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            picture.deletePicture();
+            pictures.remove(picture);
+            setState(() {});
+            Navigator.pop(context);
+          },
+          label: const Text('Delete'),
+          backgroundColor: Colors.pink,
+        ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
+      );
+    }));
   }
 }
+//
