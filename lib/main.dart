@@ -59,7 +59,9 @@ Future<void> main() async {
           'cursorId INTEGER, '
           'courseId TEXT, '
           'label TEXT, '
-          'picturePath TEXT)');
+          'note TEXT, '
+          'picturePath TEXT)'
+      );
     },
     version: 1,
   ));
