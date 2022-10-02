@@ -13,12 +13,9 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  bool isLoading = true;
+  bool _isLoading = true;
 
-  late int pictureNum;
   late List<Picture> pictures = [];
-
-  dynamic picturesInfo;
 
   late double screenWidth;
   late double screenHeight;
@@ -32,17 +29,16 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   void useCourseIdToGetPicturePaths() async {
-    picturesInfo = await PictureStorage.getCoursePicture(widget.courseId);
-    isLoading = false;
-    pictureNum = picturesInfo.length;
-    for (int i = 0; i < pictureNum; i++) {
-      int infoId = picturesInfo[i]['_id'];
-      String infoLabel = picturesInfo[i]['label'];
-      String infoNote = picturesInfo[i]['note'];
-      String infoPath = picturesInfo[i]['picturePath'];
-
+    dynamic picturesInfo =
+        await PictureStorage.getCoursePicture(widget.courseId);
+    for (final pictureInfo in picturesInfo) {
+      int infoId = pictureInfo['_id'];
+      String infoLabel = pictureInfo['label'];
+      String infoNote = pictureInfo['note'];
+      String infoPath = pictureInfo['picturePath'];
       pictures.add(Picture(infoId, infoLabel, infoNote, infoPath));
     }
+    _isLoading = false;
     setState(() {});
   }
 
@@ -52,21 +48,17 @@ class _AlbumPageState extends State<AlbumPage> {
     screenHeight = MediaQuery.of(context).size.height;
     return Container(
       padding: const EdgeInsets.only(top: 20),
-      child: Column(
-        children: [
-          isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Expanded(
-                  child: pictureAlbum(),
-                ),
-        ],
-      ),
+      child: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Expanded(
+              child: pictureAlbum,
+            ),
     );
   }
 
-  Widget pictureAlbum() {
+  Widget get pictureAlbum {
     return ListView(children: [
       Wrap(
         alignment: WrapAlignment.center,
@@ -90,8 +82,8 @@ class _AlbumPageState extends State<AlbumPage> {
     ]);
   }
 
-  void openOriginalSizePicture(BuildContext context, Picture picture) {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+  MaterialPageRoute checkPhotoViewRoute(picture) {
+    return MaterialPageRoute(builder: (BuildContext context) {
       return Scaffold(
           body: PhotoView(
             imageProvider: FileImage(File(picture.getPath)),
@@ -106,8 +98,12 @@ class _AlbumPageState extends State<AlbumPage> {
             label: const Text('Delete'),
             backgroundColor: Colors.pink,
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
-    }));
+          floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerFloat);
+    });
+  }
+
+  void openOriginalSizePicture(BuildContext context, Picture picture) {
+    Navigator.push(context, checkPhotoViewRoute(picture));
   }
 }
-//

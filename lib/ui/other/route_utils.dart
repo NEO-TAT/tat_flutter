@@ -165,7 +165,7 @@ class RouteUtils {
 
   static bool isLoggedIntoZuvio() => ZAuthController.to.isLoggedIntoZuvio();
 
-  static Future<void>? launchCameraPage(String courseId) => Get.to(
+  static void launchCameraPage(String courseId) => Get.to(
         () => NoteCamera(courseId: courseId),
         transition: transition,
         preventDuplicates: true,
