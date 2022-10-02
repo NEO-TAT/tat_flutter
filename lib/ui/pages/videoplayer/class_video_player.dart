@@ -1,51 +1,55 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/config/app_config.dart';
-import 'package:flutter_app/src/config/app_themes.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/connector/core/connector_parameter.dart';
 import 'package:flutter_app/src/file/file_download.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
-import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:flutter_app/src/util/mx_player_util.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:get/get.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 import 'package:path/path.dart' as path;
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 class ClassVideoPlayer extends StatefulWidget {
+  const ClassVideoPlayer(
+    this.videoUrl,
+    this.courseInfo,
+    this.name, {
+    super.key,
+  });
+
   final String videoUrl;
   final CourseInfoJson courseInfo;
   final String name;
-
-  const ClassVideoPlayer(this.videoUrl, this.courseInfo, this.name, {Key key}) : super(key: key);
 
   @override
   State<ClassVideoPlayer> createState() => _VideoPlayer();
 }
 
-class VideoInfo {
-  String name;
-  String url;
+@immutable
+class _VideoInfo {
+  const _VideoInfo(this.name, this.url);
+
+  final String name;
+  final String url;
 }
 
 class _VideoPlayer extends State<ClassVideoPlayer> {
-  bool isLoading = true;
-  VideoPlayerController _controller;
-  ChewieController _chewieController;
-  List<VideoInfo> videoName = [];
-  VideoInfo _select;
-  int selectIndex = 0;
+  bool _isLoading = true;
+  final _videoNames = <_VideoInfo>[];
+  VideoPlayerController? _playerController;
+  ChewieController? _chewieController;
+  late final _VideoInfo _selectedVideoInfo;
 
   @override
   void initState() {
@@ -56,9 +60,15 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
 
   @override
   void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     BackButtonInterceptor.remove(myInterceptor);
-    _controller?.dispose();
+
+    _playerController?.dispose();
     _chewieController?.dispose();
+
     super.dispose();
   }
 
@@ -68,69 +78,77 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   void parseVideo() async {
-    isLoading = true;
-    ConnectorParameter parameter = ConnectorParameter(widget.videoUrl);
-    String result = await Connector.getDataByGet(parameter);
-    dom.Document tagNode = parse(result);
-    dom.Element node = tagNode.getElementById("videoplayer");
+    _isLoading = true;
+
+    final parameter = ConnectorParameter(widget.videoUrl);
+    final result = await Connector.getDataByGet(parameter);
+    final tagNode = parse(result);
+    final node = tagNode.getElementById("videoplayer");
+
     if (node?.children == null) {
       MyToast.show(R.current.unknownError);
       Get.back();
       return;
     }
-    for (dom.Element child in node.children) {
-      try {
-        if (child.children.first.localName == 'source') {
-          String url = child.children.first.attributes['src'];
-          VideoInfo info = VideoInfo();
-          info.url = url;
-          info.name = child.id;
-          videoName.add(info);
+
+    for (final child in node!.children) {
+      if (child.children.first.localName == 'source') {
+        try {
+          final url = child.children.first.attributes['src'];
+          if (url == null) {
+            continue;
+          }
+
+          final info = _VideoInfo(child.id, url);
+          _videoNames.add(info);
+        } on Exception catch (e, stackTrace) {
+          Log.eWithStack(e, stackTrace);
+          continue;
         }
-      } catch (e) {
-        continue;
       }
     }
+
     await _buildDialog();
-    setState(() {
-      isLoading = false;
-    });
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+    setState(() => _isLoading = false);
   }
 
-  String getVideoUrl(String path) {
-    String url = "https://istream.ntut.edu.tw/videoplayer/$path";
-    return url;
-  }
+  String getVideoUrl(String path) => "https://istream.ntut.edu.tw/videoplayer/$path";
 
   Future<void> _buildDialog() async {
-    String url = await Get.dialog<String>(
+    final url = await Get.dialog<String>(
       AlertDialog(
         content: SizedBox(
           width: double.minPositive,
           child: ListView.builder(
-            itemCount: videoName.length,
-            shrinkWrap: true, //使清單最小化
-            itemBuilder: (BuildContext context, int index) {
-              return TextButton(
-                child: Text(videoName[index].name),
-                onPressed: () {
-                  String url = getVideoUrl(videoName[index].url);
-                  _select = videoName[index];
-                  Get.back<String>(result: url);
-                },
-              );
-            },
+            itemCount: _videoNames.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => TextButton(
+              child: Text(_videoNames[index].name),
+              onPressed: () {
+                final url = getVideoUrl(_videoNames[index].url);
+                _selectedVideoInfo = _videoNames[index];
+                Get.back<String>(result: url);
+              },
+            ),
           ),
         ),
       ),
       barrierDismissible: true,
     );
-    bool open = false;
+
+    bool externalPlayerHasLaunched = false;
+
     if (LocalStorage.instance.getOtherSetting().useExternalVideoPlayer) {
-      String name = "${widget.name}_${_select.name}.mp4";
-      open = await MXPlayerUtil.launch(url: url, name: name);
+      final name = "${widget.name}_${_selectedVideoInfo.name}.mp4";
+      externalPlayerHasLaunched = await MXPlayerUtil.launch(url: url, name: name);
     }
-    if (!open) {
+
+    if (!externalPlayerHasLaunched && url != null) {
       await initController(url);
     } else {
       Get.back();
@@ -138,73 +156,67 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   Future<void> initController(String url) async {
-    _controller = VideoPlayerController.network(
+    _playerController = VideoPlayerController.network(
       url,
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    await _controller.initialize();
+
+    _playerController?.addListener(() => setState(() {}));
+    _playerController?.setLooping(true);
+
+    await _playerController?.initialize();
+
     _chewieController = ChewieController(
-      videoPlayerController: _controller,
+      videoPlayerController: _playerController!,
       autoPlay: true,
-      //aspectRatio: 3 / 2.0,
-      //customControls: CustomControls(),
+      autoInitialize: true,
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider appProvider, Widget child) {
-        return MaterialApp(
-          title: AppConfig.appName,
-          theme: appProvider.theme,
-          darkTheme: AppThemes.darkTheme,
-          home: Scaffold(
-            appBar: AppBar(
-              leading: BackButton(
-                onPressed: () => Get.back(),
-              ),
-              title: Text(R.current.classVideo),
-              actions: [
-                if (!isLoading)
-                  IconButton(
-                    icon: const Icon(Icons.file_download),
-                    onPressed: () async {
-                      String url = _controller.dataSource;
-                      String courseName = widget.courseInfo.main.course.name;
-                      String saveName = "${widget.name}_${_select.name}.mp4";
-                      String subDir = (LanguageUtil.getLangIndex() == LangEnum.zh) ? "上課錄影" : "video";
-                      String dirName = path.join(courseName, subDir);
-                      FileDownload.download(url, dirName, saveName);
-                    },
-                  ),
-                if (!isLoading)
-                  IconButton(
-                    icon: const Icon(Icons.open_in_new),
-                    onPressed: () async {
-                      await launchUrl(Uri.parse(_controller.dataSource));
-                    },
-                  )
-              ],
-            ),
-            body: (isLoading || _controller == null)
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : buildVideoPlayer(_controller),
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: () => Get.back(),
           ),
-        );
-      },
-    );
-  }
+          title: Text(R.current.classVideo),
+          actions: [
+            if (!_isLoading)
+              IconButton(
+                icon: const Icon(Icons.file_download),
+                onPressed: () {
+                  final url = _playerController?.dataSource;
+                  if (url == null) {
+                    return;
+                  }
 
-  Widget buildVideoPlayer(VideoPlayerController controller) {
-    return Chewie(
-      controller: _chewieController,
-    );
-  }
+                  final courseName = widget.courseInfo.main.course.name;
+                  final saveName = "${widget.name}_${_selectedVideoInfo.name}.mp4";
+                  final subDir = (LanguageUtil.getLangIndex() == LangEnum.zh) ? "上課錄影" : "video";
+                  final dirName = path.join(courseName, subDir);
+
+                  FileDownload.download(url, dirName, saveName);
+                },
+              ),
+            if (!_isLoading)
+              IconButton(
+                icon: const Icon(Icons.open_in_new),
+                onPressed: () async {
+                  final dataSource = _playerController?.dataSource;
+
+                  if (dataSource == null) {
+                    return;
+                  }
+
+                  await RouteUtils.toWebViewPage(initialUrl: Uri.parse(dataSource));
+                },
+              ),
+          ],
+        ),
+        body: SafeArea(
+          child: (!_isLoading && _chewieController != null)
+              ? Chewie(controller: _chewieController!)
+              : const Center(child: CircularProgressIndicator()),
+        ),
+      );
 }

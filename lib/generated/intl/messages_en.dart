@@ -9,7 +9,8 @@
 // ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names
+// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -22,8 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-
-  static _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AreYouSureToOpen": MessageLookupByLibrary.simpleMessage("Are you sure to open?"),
         "Contribution": MessageLookupByLibrary.simpleMessage("Contribution"),
         "Contributors": MessageLookupByLibrary.simpleMessage("Contributors"),
@@ -45,6 +45,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountPasswordError": MessageLookupByLibrary.simpleMessage("Account password incorrect"),
         "aestheticDimension": MessageLookupByLibrary.simpleMessage("Aesthetic dimension"),
         "alertError": MessageLookupByLibrary.simpleMessage("An error occurred"),
+        "androidPrivateBrowseGuideSubTitle":
+            MessageLookupByLibrary.simpleMessage("Open Incognito browsing to enhanced security"),
+        "androidPrivateBrowseGuideTitle": MessageLookupByLibrary.simpleMessage("About Incognito Browse"),
         "announcement": MessageLookupByLibrary.simpleMessage("Announcement"),
         "appWillClose": MessageLookupByLibrary.simpleMessage("APP will close"),
         "app_name": MessageLookupByLibrary.simpleMessage("NTUT Course Assistant"),
@@ -52,10 +55,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "authCodeFail": MessageLookupByLibrary.simpleMessage("Verification code error"),
         "autoAppCheck": MessageLookupByLibrary.simpleMessage("Auto App Check"),
         "autoRollCall": MessageLookupByLibrary.simpleMessage("Auto RollCall"),
+        "begin": MessageLookupByLibrary.simpleMessage("Begin"),
         "calculationCredit": MessageLookupByLibrary.simpleMessage("Calculation credit"),
         "calendar": MessageLookupByLibrary.simpleMessage("Calendar"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "cannotWrite": MessageLookupByLibrary.simpleMessage("Cannot write to this Storage device!"),
+        "capitalAdd": MessageLookupByLibrary.simpleMessage("ADD"),
         "category": MessageLookupByLibrary.simpleMessage("Category"),
         "changePassword": MessageLookupByLibrary.simpleMessage("Change the password"),
         "changingPassword": MessageLookupByLibrary.simpleMessage("Changing password..."),
@@ -70,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "classroomUse": MessageLookupByLibrary.simpleMessage("classroomUse"),
         "closeOnce": MessageLookupByLibrary.simpleMessage("Press again to close"),
         "closeSubscribe": MessageLookupByLibrary.simpleMessage("Close subscribe"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("Coming Soon！"),
         "compulsoryCompulsory": MessageLookupByLibrary.simpleMessage("Compulsory Compulsory"),
         "compulsoryMajorRevision": MessageLookupByLibrary.simpleMessage("Compulsory major revision"),
         "compulsoryProfessional": MessageLookupByLibrary.simpleMessage("Compulsory professional"),
@@ -102,6 +108,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "downloadPath": MessageLookupByLibrary.simpleMessage("Download path"),
         "downloadWillStart": MessageLookupByLibrary.simpleMessage("Download ready to start"),
         "downloading": MessageLookupByLibrary.simpleMessage("Download..."),
+        "end": MessageLookupByLibrary.simpleMessage("End"),
+        "endTimeMustBeAfterStartTime": MessageLookupByLibrary.simpleMessage("End time must be after start time"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
         "feedback": MessageLookupByLibrary.simpleMessage("Feedback"),
         "file": MessageLookupByLibrary.simpleMessage("File"),
@@ -140,6 +148,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "historicalDimension": MessageLookupByLibrary.simpleMessage("Historical dimension"),
         "iPlusNoThisClass": MessageLookupByLibrary.simpleMessage("This course does not support queries"),
         "identifyLinks": MessageLookupByLibrary.simpleMessage("Identify links"),
+        "incorrectInformationEntered": MessageLookupByLibrary.simpleMessage("Incorrect information entered"),
         "informationSystem": MessageLookupByLibrary.simpleMessage("Information System"),
         "inputNewPassword": MessageLookupByLibrary.simpleMessage("Input new password"),
         "inputNewPasswordAgain": MessageLookupByLibrary.simpleMessage("Input new password again"),
@@ -169,6 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("Sign out"),
         "logoutWarning":
             MessageLookupByLibrary.simpleMessage("Are you sure you want to log out? \nAll data will be cleared"),
+        "missingRequiredInformation": MessageLookupByLibrary.simpleMessage("Missing required information"),
         "naturalDimension": MessageLookupByLibrary.simpleMessage("Natural dimension"),
         "networkError": MessageLookupByLibrary.simpleMessage("Network error"),
         "noAnyAnnouncement": MessageLookupByLibrary.simpleMessage("Without any announcement"),
@@ -180,7 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSupport": MessageLookupByLibrary.simpleMessage(" not support"),
         "noSupportExternalVideoPlayer": MessageLookupByLibrary.simpleMessage("Not find support external video player"),
         "notSupport": MessageLookupByLibrary.simpleMessage("Not support"),
-        "nothingHere": MessageLookupByLibrary.simpleMessage("There's nothing here"),
+        "nothingHere": MessageLookupByLibrary.simpleMessage("There\'s nothing here"),
         "numberOfStudent": MessageLookupByLibrary.simpleMessage("Number of students"),
         "numberOfWithdraw": MessageLookupByLibrary.simpleMessage("Number of withdraw"),
         "openExternalVideo": MessageLookupByLibrary.simpleMessage("Open with external video player"),
@@ -201,6 +211,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterStudentId": MessageLookupByLibrary.simpleMessage("Please enter student number"),
         "pleaseLogin": MessageLookupByLibrary.simpleMessage("Please Login"),
         "pleaseMoveToFilePage": MessageLookupByLibrary.simpleMessage("Please go directly to the download page"),
+        "pleaseSelectEndTime": MessageLookupByLibrary.simpleMessage("Please select an end time"),
+        "pleaseSelectStartTime": MessageLookupByLibrary.simpleMessage("Please select a start time"),
+        "pleaseSelectWeekday": MessageLookupByLibrary.simpleMessage("Please select a weekday"),
         "practiceCredit": MessageLookupByLibrary.simpleMessage("Practice credit"),
         "prepareDownload": MessageLookupByLibrary.simpleMessage("Prepare download..."),
         "previousRankings": MessageLookupByLibrary.simpleMessage("Previous rankings"),
@@ -215,6 +228,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "revisedCommonCompulsory": MessageLookupByLibrary.simpleMessage("Revised Common Compulsory"),
         "rollCall": MessageLookupByLibrary.simpleMessage("RollCall"),
         "rollCallRemind": MessageLookupByLibrary.simpleMessage("RollCall Remind"),
+        "rollCallScheduleCanceled": MessageLookupByLibrary.simpleMessage("The roll call schedule has been cancelled"),
+        "rollCallScheduledSuccessfully":
+            MessageLookupByLibrary.simpleMessage("The roll call schedule was added successfully"),
         "ruleDimension": MessageLookupByLibrary.simpleMessage("Rule of law"),
         "sameOldPassword": MessageLookupByLibrary.simpleMessage("Same password as before"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -264,11 +280,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalAverage": MessageLookupByLibrary.simpleMessage("Total average"),
         "totalPeople": MessageLookupByLibrary.simpleMessage("Total people"),
         "unknownError": MessageLookupByLibrary.simpleMessage("An unknown error occurred"),
+        "unknownServerError": MessageLookupByLibrary.simpleMessage(
+            "A problem occurred when communicating with the campus server, most features may be affected\nPlease confirm that the campus system can be used normally and try again, thanks"),
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "useOldPassword": MessageLookupByLibrary.simpleMessage("Use old password"),
         "versionInfo": MessageLookupByLibrary.simpleMessage("Version info"),
+        "videoMayLoadFailedWarningMsg": MessageLookupByLibrary.simpleMessage(
+            "The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again"),
         "warning": MessageLookupByLibrary.simpleMessage("Warning"),
         "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically"),
-        "album": MessageLookupByLibrary.simpleMessage("album")
+        "album": MessageLookupByLibrary.simpleMessage("album"),
+        "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically"),
+        "zuvioAutoRollCallFeatureReleaseNotice":
+            MessageLookupByLibrary.simpleMessage("Zuvio\'s (auto) roll-call reminder is coming soon!")
       };
 }

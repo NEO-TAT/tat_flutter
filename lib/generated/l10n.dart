@@ -1,9 +1,6 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -13,12 +10,18 @@ import 'intl/messages_all.dart';
 
 // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
-// ignore_for_file: avoid_redundant_argument_values
+// ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes
 
 class S {
   S();
 
-  static S current;
+  static S? _current;
+
+  static S get current {
+    assert(
+        _current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    return _current!;
+  }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
@@ -27,13 +30,21 @@ class S {
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      S.current = S();
+      final instance = S();
+      S._current = instance;
 
-      return S.current;
+      return instance;
     });
   }
 
   static S of(BuildContext context) {
+    final instance = S.maybeOf(context);
+    assert(instance != null,
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    return instance!;
+  }
+
+  static S? maybeOf(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
 
@@ -332,6 +343,16 @@ class S {
     return Intl.message(
       'An unknown error occurred',
       name: 'unknownError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A problem occurred when communicating with the campus server, most features may be affected\nPlease confirm that the campus system can be used normally and try again, thanks`
+  String get unknownServerError {
+    return Intl.message(
+      'A problem occurred when communicating with the campus server, most features may be affected\nPlease confirm that the campus system can be used normally and try again, thanks',
+      name: 'unknownServerError',
       desc: '',
       args: [],
     );
@@ -2386,6 +2407,166 @@ class S {
       args: [],
     );
   }
+
+  /// `The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again`
+  String get videoMayLoadFailedWarningMsg {
+    return Intl.message(
+      'The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again',
+      name: 'videoMayLoadFailedWarningMsg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The roll call schedule was added successfully`
+  String get rollCallScheduledSuccessfully {
+    return Intl.message(
+      'The roll call schedule was added successfully',
+      name: 'rollCallScheduledSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The roll call schedule has been cancelled`
+  String get rollCallScheduleCanceled {
+    return Intl.message(
+      'The roll call schedule has been cancelled',
+      name: 'rollCallScheduleCanceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Missing required information`
+  String get missingRequiredInformation {
+    return Intl.message(
+      'Missing required information',
+      name: 'missingRequiredInformation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incorrect information entered`
+  String get incorrectInformationEntered {
+    return Intl.message(
+      'Incorrect information entered',
+      name: 'incorrectInformationEntered',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a start time`
+  String get pleaseSelectStartTime {
+    return Intl.message(
+      'Please select a start time',
+      name: 'pleaseSelectStartTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select an end time`
+  String get pleaseSelectEndTime {
+    return Intl.message(
+      'Please select an end time',
+      name: 'pleaseSelectEndTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select a weekday`
+  String get pleaseSelectWeekday {
+    return Intl.message(
+      'Please select a weekday',
+      name: 'pleaseSelectWeekday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End time must be after start time`
+  String get endTimeMustBeAfterStartTime {
+    return Intl.message(
+      'End time must be after start time',
+      name: 'endTimeMustBeAfterStartTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ADD`
+  String get capitalAdd {
+    return Intl.message(
+      'ADD',
+      name: 'capitalAdd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End`
+  String get end {
+    return Intl.message(
+      'End',
+      name: 'end',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Begin`
+  String get begin {
+    return Intl.message(
+      'Begin',
+      name: 'begin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zuvio's (auto) roll-call reminder is coming soon!`
+  String get zuvioAutoRollCallFeatureReleaseNotice {
+    return Intl.message(
+      'Zuvio\'s (auto) roll-call reminder is coming soon!',
+      name: 'zuvioAutoRollCallFeatureReleaseNotice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Coming Soon！`
+  String get comingSoon {
+    return Intl.message(
+      'Coming Soon！',
+      name: 'comingSoon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About Incognito Browse`
+  String get androidPrivateBrowseGuideTitle {
+    return Intl.message(
+      'About Incognito Browse',
+      name: 'androidPrivateBrowseGuideTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Open Incognito browsing to enhanced security`
+  String get androidPrivateBrowseGuideSubTitle {
+    return Intl.message(
+      'Open Incognito browsing to enhanced security',
+      name: 'androidPrivateBrowseGuideSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -2400,19 +2581,15 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
-
   @override
   Future<S> load(Locale locale) => S.load(locale);
-
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 
   bool _isSupported(Locale locale) {
-    if (locale != null) {
-      for (var supportedLocale in supportedLocales) {
-        if (supportedLocale.languageCode == locale.languageCode) {
-          return true;
-        }
+    for (var supportedLocale in supportedLocales) {
+      if (supportedLocale.languageCode == locale.languageCode) {
+        return true;
       }
     }
     return false;

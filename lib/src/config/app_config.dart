@@ -1,9 +1,10 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+import 'package:flutter_app/src/util/remote_config_util.dart';
+
 class AppConfig {
-  //static bool DEBUG = kDebugMode;
-  //App related strings
-  static const String appName = "TAT";
-  static const String methodChannelName = "club.ntut.npc.tat.main.mothod.channel.name";
-  static bool dioLogDebug = true;
+  static const appName = "TAT";
+  static const methodChannelName = "tat/global";
+  static final zuvioRollCallFeatureEnabled = RemoteConfigUtil.getFeatureToggleZuvioRollCallFlag();
+
+  // Only for android use.
+  static final androidChromeIncognitoFlagSetupPageUrl = RemoteConfigUtil.getAndroidIncognitoSetupGuidePageUrl();
 }

@@ -124,11 +124,11 @@ class ScoreConnector {
           courseScore.courseScoreList.add(score);
         }
         try {
-          courseScore.averageScore = double.parse(scoreNodes[scoreNodes.length - 4].getElementsByTagName("td")[0].text);
+          courseScore.averageScore = double.parse(scoreNodes[scoreNodes.length - 5].getElementsByTagName("td")[0].text);
           courseScore.performanceScore =
-              double.parse(scoreNodes[scoreNodes.length - 3].getElementsByTagName("td")[0].text);
-          courseScore.totalCredit = double.parse(scoreNodes[scoreNodes.length - 2].getElementsByTagName("td")[0].text);
-          courseScore.takeCredit = double.parse(scoreNodes[scoreNodes.length - 1].getElementsByTagName("td")[0].text);
+              double.parse(scoreNodes[scoreNodes.length - 4].getElementsByTagName("td")[0].text);
+          courseScore.totalCredit = double.parse(scoreNodes[scoreNodes.length - 3].getElementsByTagName("td")[0].text);
+          courseScore.takeCredit = double.parse(scoreNodes[scoreNodes.length - 2].getElementsByTagName("td")[0].text);
         } catch (e) {
           continue;
         } finally {

@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
 import 'package:flutter_app/src/model/ischoolplus/ischool_plus_announcement_json.dart';
@@ -16,27 +16,26 @@ class IPlusCourseAnnouncementTask extends IPlusSystemTask<List<ISchoolPlusAnnoun
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.getISchoolPlusCourseAnnouncement);
-      ReturnWithStatus<List<ISchoolPlusAnnouncementJson>> value = await ISchoolPlusConnector.getCourseAnnouncement(id);
+      final value = await ISchoolPlusConnector.getCourseAnnouncement(id);
       super.onEnd();
       switch (value.status) {
         case IPlusReturnStatus.success:
           result = value.result;
           return TaskStatus.success;
         case IPlusReturnStatus.fail:
-          return await super.onError(R.current.getISchoolPlusCourseAnnouncementError);
+          return super.onError(R.current.getISchoolPlusCourseAnnouncementError);
         case IPlusReturnStatus.noPermission:
-          ErrorDialogParameter parameter = ErrorDialogParameter(
+          final parameter = ErrorDialogParameter(
             title: R.current.warning,
             dialogType: DialogType.INFO,
             desc: R.current.iPlusNoThisClass,
             btnOkText: R.current.sure,
             offCancelBtn: true,
           );
-          return await super.onErrorParameter(parameter);
-          break;
+          return super.onErrorParameter(parameter);
       }
     }
     return status;

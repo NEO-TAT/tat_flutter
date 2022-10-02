@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/model/ntut/ntut_calendar_json.dart';
 import 'package:flutter_app/src/r.dart';
@@ -15,17 +15,16 @@ class NTUTCalendarTask extends NTUTTask<List<NTUTCalendarJson>> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.success) {
-      List<NTUTCalendarJson> value;
       super.onStart(R.current.getCalendar);
-      value = await NTUTConnector.getCalendar(startTime, endTime);
+      final value = await NTUTConnector.getCalendar(startTime, endTime);
       super.onEnd();
       if (value != null) {
         result = value;
         return TaskStatus.success;
       } else {
-        return await super.onError(R.current.getCalendarError);
+        return super.onError(R.current.getCalendarError);
       }
     }
     return status;

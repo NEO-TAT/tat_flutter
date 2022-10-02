@@ -1,8 +1,6 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/config/app_config.dart';
-import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/src/model/course/course_class_json.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
@@ -60,11 +58,8 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
             bool pop = (currentState == null) ? true : currentState.canPop();
             return pop;
           },
-          child: MaterialApp(
-            title: AppConfig.appName,
-            theme: appProvider.theme,
-            darkTheme: AppThemes.darkTheme,
-            home: tabPageView(),
+          child: Container(
+            child: tabPageView(),
           ),
         );
       },
@@ -81,7 +76,7 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
           leading: BackButton(
             onPressed: () => Get.back(),
           ),
-          title: Text(course.name),
+          title: FittedBox(child: Text(course.name)),
           bottom: TabBar(
             indicatorPadding: const EdgeInsets.all(0),
             labelPadding: const EdgeInsets.all(0),

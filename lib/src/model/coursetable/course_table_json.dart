@@ -37,8 +37,8 @@ class CourseTableJson {
 
   int getTotalCredit() {
     int credit = 0;
-    List<String> courseIdList = getCourseIdList();
-    for (String courseId in courseIdList) {
+    final List<String> courseIdList = getCourseIdList();
+    for (final courseId in courseIdList) {
       credit += getCreditByCourseId(courseId);
     }
     return credit;

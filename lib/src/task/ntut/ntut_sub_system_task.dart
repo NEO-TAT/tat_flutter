@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/model/ntut/ap_tree_json.dart';
 import 'package:flutter_app/src/r.dart';
@@ -14,14 +14,14 @@ class NTUTSubSystemTask extends NTUTTask<APTreeJson> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.success) {
-      APTreeJson value = await NTUTConnector.getTree(arg);
+      final value = await NTUTConnector.getTree(arg);
       if (value != null) {
         result = value;
         return TaskStatus.success;
       } else {
-        return await super.onError(R.current.error);
+        return super.onError(R.current.error);
       }
     }
     return status;

@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
-import 'package:get/get.dart';
+import 'package:flutter_app/src/task/ntut/ntut_task.dart';
+import 'package:flutter_app/src/task/task.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -25,20 +26,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    super.initState();
     _accountControl.text = LocalStorage.instance.getAccount();
-    _passwordControl.text = LocalStorage.instance.getPassword();
+    super.initState();
   }
 
   void _loginPress(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       _passwordFocus.unfocus();
       _accountFocus.unfocus();
-      LocalStorage.instance.setAccount(_accountControl.text.toString());
-      LocalStorage.instance.setPassword(_passwordControl.text.toString());
-      await LocalStorage.instance.saveUserData();
-      MyToast.show(R.current.loginSave);
-      Get.back<bool>(result: true);
+
+      final account = _accountControl.text.toString().trim();
+      final password = _passwordControl.text.toString();
+      _passwordControl.clear();
+
+      LocalStorage.instance.setAccount(account);
+      LocalStorage.instance.setPassword(password);
+
+      final loginTask = NTUTTask('LoginOnLoginScreen');
+
+      final loginTaskResult = await loginTask.execute();
+      if (loginTaskResult == TaskStatus.success) {
+        RouteUtils.launchMainPage();
+      }
     }
   }
 
@@ -174,10 +183,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.center,
                       child: TextButton(
                         style: TextButton.styleFrom(
+                          foregroundColor: AppColors.mainColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(32.0),
                           ),
-                          primary: AppColors.mainColor,
                           textStyle: const TextStyle(color: AppColors.lightFontColor),
                           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                         ),

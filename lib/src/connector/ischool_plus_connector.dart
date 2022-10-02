@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/model/ischoolplus/course_file_json.dart';
@@ -39,7 +40,7 @@ class ISchoolPlusConnector {
       ConnectorParameter parameter;
       html.Document tagNode;
       List<html.Element> nodes;
-      Map<String, String> data = {
+      final data = {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
         "apOu": "ischool_plus_",
         "sso": "true",
@@ -47,19 +48,37 @@ class ISchoolPlusConnector {
       };
       parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
-      result = await Connector.getDataByGet(parameter);
-      tagNode = html.parse(result);
+      result = (await Connector.getDataByGet(parameter));
+
+      tagNode = html.parse(result.toString().trim());
       nodes = tagNode.getElementsByTagName("input");
-      data = {};
-      for (html.Element node in nodes) {
-        String name = node.attributes['name'];
-        String value = node.attributes['value'];
+      data.clear();
+      for (final node in nodes) {
+        final name = node.attributes['name'];
+        final value = node.attributes['value'];
         data[name] = value;
       }
-      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
+      final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
-      await Connector.getDataByPostResponse(parameter);
+
+      Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
+      // Perform retry for cryptic API errors (?).
+      // If the string `connect lost` be found in the response, we will do the retry.
+      int retryTimes = 3;
+      do {
+        if (jumpResult.data.toString().contains('connect lost')) {
+          // Take a short delay to avoid being blocked.
+          await Future.delayed(const Duration(milliseconds: 100));
+          jumpResult = (await Connector.getDataByPostResponse(parameter));
+        } else {
+          break;
+        }
+      } while ((retryTimes--) > 0);
+
+      await FirebaseAnalytics.instance.logLogin(
+        loginMethod: 'ntut_iplus',
+      );
       return ISchoolPlusConnectorStatus.loginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);

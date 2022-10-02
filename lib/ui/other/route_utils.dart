@@ -1,10 +1,10 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/ui/pages/coursedetail/course_detail_page.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/iplus_announcement_detail_page.dart';
@@ -21,27 +21,33 @@ import 'package:flutter_app/ui/pages/roll_call_remind/zuvio_login_page.dart';
 import 'package:flutter_app/ui/pages/videoplayer/class_video_player.dart';
 import 'package:flutter_app/ui/pages/webview/web_view_page.dart';
 import 'package:flutter_app/ui/screen/login_screen.dart';
+import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_app/ui/pages/note_camera/note_camera.dart';
 import 'package:get/get.dart';
 
 class RouteUtils {
   static Transition transition = (Platform.isAndroid) ? Transition.downToUp : Transition.cupertino;
 
-  static Future toLoginScreen() async {
-    return await Get.to(
+  static Future? toLoginScreen() {
+    return Get.off(
       () => const LoginScreen(),
       transition: transition,
     );
   }
 
-  static Future toDevPage() async {
-    return await Get.to(
+  static Future? launchMainPage() => Get.offAll(
+        () => const MainScreen(),
+        transition: transition,
+      );
+
+  static Future? toDevPage() {
+    return Get.to(
       () => const DevPage(),
       transition: transition,
     );
   }
 
-  static Future toSubSystemPage(String title, String arg) async {
+  static Future? toSubSystemPage(String title, String arg) {
     return Get.to(
       () => SubSystemPage(
         title: title,
@@ -52,8 +58,8 @@ class RouteUtils {
     );
   }
 
-  static Future toFileViewerPage(String title, String path) async {
-    return await Get.to(
+  static Future? toFileViewerPage(String title, String path) {
+    return Get.to(
       () => FileViewerPage(
         title: title,
         path: path,
@@ -62,53 +68,52 @@ class RouteUtils {
     );
   }
 
-  static Future toISchoolPage(String studentId, CourseInfoJson courseInfo) async {
-    return await Get.to(
+  static Future? toISchoolPage(String studentId, CourseInfoJson courseInfo) {
+    return Get.to(
       () => ISchoolPage(studentId, courseInfo),
       transition: transition,
     );
   }
 
-  static Future toPrivacyPolicyPage() async {
-    return await Get.to(
+  static Future? toPrivacyPolicyPage() {
+    return Get.to(
       () => const PrivacyPolicyPage(),
       transition: transition,
     );
   }
 
-  static Future toContributorsPage() async {
-    return await Get.to(
+  static Future? toContributorsPage() {
+    return Get.to(
       () => ContributorsPage(),
       transition: transition,
     );
   }
 
-  static Future toAboutPage() async {
-    return await Get.to(
+  static Future? toAboutPage() {
+    return Get.to(
       () => const AboutPage(),
       transition: transition,
     );
   }
 
-  static Future toSettingPage(PageController controller) async {
-    return await Get.to(
-      () => SettingPage(controller),
-      transition: transition,
-    );
-  }
+  static Future? toSettingPage(PageController controller) => Get.to(
+        () => SettingPage(controller),
+        transition: transition,
+      );
 
-  static Future toWebViewPage(String title, String url) async {
-    return await Get.to(
-      () => WebViewPage(
+  static Future<void> toWebViewPage({
+    required Uri initialUrl,
+    String? title,
+    bool shouldUseAppCookies = false,
+  }) =>
+      WebViewPage.to(
+        initialUrl: initialUrl,
         title: title,
-        url: url,
-      ),
-      transition: transition,
-    );
-  }
+        shouldUseAppCookies: shouldUseAppCookies,
+      );
 
-  static Future toLogConsolePage() async {
-    return await Get.to(
+  static Future? toLogConsolePage() {
+    return Get.to(
       () => LogConsole(dark: true),
       transition: transition,
     );
@@ -118,38 +123,39 @@ class RouteUtils {
     DioConnector.instance.alice.showInspector();
   }
 
-  static Future toIPlusAnnouncementDetailPage(CourseInfoJson courseInfo, Map detail) async {
-    return await Get.to(
+  static Future? toIPlusAnnouncementDetailPage(CourseInfoJson courseInfo, Map detail) {
+    return Get.to(
       () => IPlusAnnouncementDetailPage(courseInfo, detail),
       transition: transition,
     );
   }
 
-  static Future toVideoPlayer(String url, CourseInfoJson courseInfo, String name) async {
-    return await Get.to(
-      () => ClassVideoPlayer(url, courseInfo, name),
-      transition: transition,
-    );
-  }
+  static Future? toVideoPlayer(String url, CourseInfoJson courseInfo, String name) => Get.to(
+        () => ClassVideoPlayer(url, courseInfo, name),
+        transition: transition,
+      );
 
-  static Future<void> launchRollCallDashBoardPageAfterLogin() => (!isLoggedIntoZuvio())
+  static Future<void>? launchRollCallDashBoardPageAfterLogin() => (!isLoggedIntoZuvio())
       ? launchZuvioLoginPage(loginSuccessAction: () => launchRollCallDashBoardPage())
       : launchRollCallDashBoardPage();
 
-  static Future<void> launchRollCallDashBoardPage() => Get.to(
-        () => const RollCallDashboardPage(),
-        transition: transition,
-        preventDuplicates: true,
-      );
+  static Future<void>? launchRollCallDashBoardPage() {
+    ZRollCallMonitorController.to.getScheduledMonitors();
+    return Get.to(
+      () => const RollCallDashboardPage(),
+      transition: transition,
+      preventDuplicates: true,
+    );
+  }
 
-  static Future<void> launchZuvioLoginPage({
-    LoginSuccessAction loginSuccessAction,
+  static Future<void>? launchZuvioLoginPage({
+    LoginSuccessAction? loginSuccessAction,
   }) =>
       Get.to(
         () => ZuvioLoginPage(
           onLoginSuccess: () {
             Get.back();
-            loginSuccessAction();
+            loginSuccessAction?.call();
           },
           onPageClose: () => Get.back(),
         ),
@@ -159,7 +165,7 @@ class RouteUtils {
 
   static bool isLoggedIntoZuvio() => ZAuthController.to.isLoggedIntoZuvio();
 
-  static Future<void> launchCameraPage(String courseId) => Get.to(
+  static Future<void>? launchCameraPage(String courseId) => Get.to(
         () => NoteCamera(courseId: courseId),
         transition: transition,
         preventDuplicates: true,

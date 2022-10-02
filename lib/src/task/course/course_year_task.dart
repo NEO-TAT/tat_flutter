@@ -11,7 +11,7 @@ class CourseYearTask extends CourseSystemTask<List<String>> {
 
   @override
   Future<TaskStatus> execute() async {
-    TaskStatus status = await super.execute();
+    final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.searchingYear);
       List<String> value = await CourseConnector.getYearList();
@@ -20,7 +20,7 @@ class CourseYearTask extends CourseSystemTask<List<String>> {
         result = value;
         return TaskStatus.success;
       } else {
-        return TaskStatus.giveUp;
+        return TaskStatus.shouldGiveUp;
       }
     }
     return status;

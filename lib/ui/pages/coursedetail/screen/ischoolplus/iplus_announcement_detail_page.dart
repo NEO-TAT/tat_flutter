@@ -8,6 +8,7 @@ import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/util/html_utils.dart';
 import 'package:flutter_app/ui/other/list_view_animator.dart';
+import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -203,9 +204,9 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   _launchURL(String url) async {
-    final preparedUrl = Uri.parse(url);
-    if (await canLaunchUrl(preparedUrl)) {
-      await launchUrl(preparedUrl);
+    final preparedUrl = Uri.tryParse(url);
+    if (preparedUrl != null && await canLaunchUrl(preparedUrl)) {
+      RouteUtils.toWebViewPage(initialUrl: preparedUrl);
     } else {
       throw 'Could not launch $url';
     }

@@ -70,10 +70,13 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, courseMainInfo.course.name])));
     courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.credit, courseMainInfo.course.credits])));
     courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.category, courseExtraInfo.course.category])));
-    courseData.add(_buildCourseInfoWithButton(
+    courseData.add(
+      _buildCourseInfoWithButton(
         sprintf("%s: %s", [R.current.instructor, courseMainInfo.getTeacherName()]),
         R.current.syllabus,
-        courseMainInfo.course.scheduleHref));
+        courseMainInfo.course.scheduleHref,
+      ),
+    );
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.startClass, courseMainInfo.getOpenClassName()])));
     courseData.add(_buildMultiButtonInfo(
       sprintf("%s: ", [R.current.classroom]),
@@ -92,7 +95,12 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     listItem.addAll(courseData);
     listItem.add(_buildInfoTitle(R.current.studentList));
     for (int i = 0; i < courseExtraInfo.classmate.length; i++) {
-      listItem.add(_buildClassmateInfo(i, widget.courseInfo.extra.classmate[i]));
+      listItem.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+          child: _buildClassmateInfo(i, widget.courseInfo.extra.classmate[i]),
+        ),
+      );
     }
     isLoading = false;
     setState(() {});
@@ -130,7 +138,10 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
               child: FadeInAnimation(
                 child: GestureDetector(
                   behavior: HitTestBehavior.opaque, //讓透明部分有反應
-                  child: Container(padding: const EdgeInsets.only(left: 20, right: 20), child: listItem[index]),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: listItem[index],
+                  ),
                   onTap: () {},
                 ),
               ),
@@ -159,34 +170,37 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     );
   }
 
-  void _launchWebView(String title, String url) {
+  void _launchWebView(String title, String urlString) {
     canPop = false;
-    RouteUtils.toWebViewPage(title, url).then((value) => canPop = true);
+
+    final url = Uri.tryParse(urlString);
+
+    if (url != null) {
+      RouteUtils.toWebViewPage(initialUrl: url, title: title);
+      canPop = true;
+    } else {
+      // TODO: handle exceptions when the url is null. (null means it may caused by the parse process error.)
+    }
   }
 
   Widget _buildCourseInfoWithButton(String text, String buttonText, String url) {
-    TextStyle textStyle = const TextStyle(fontSize: 18);
     return Container(
       padding: const EdgeInsets.only(bottom: 5),
       child: Row(
-        children: <Widget>[
+        children: [
           const Icon(Icons.details),
           Expanded(
             child: Text(
               text,
-              style: textStyle,
+              style: const TextStyle(fontSize: 18),
             ),
           ),
           (url.isNotEmpty)
               ? ElevatedButton(
-                  child: Text(
-                    buttonText,
-                  ),
-                  onPressed: () {
-                    _launchWebView(buttonText, url);
-                  },
+                  child: Text(buttonText),
+                  onPressed: () => _launchWebView(buttonText, url),
                 )
-              : Container()
+              : const SizedBox.shrink(),
         ],
       ),
     );
@@ -208,42 +222,55 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   }
 
   Widget _buildMultiButtonInfo(String title, String buttonText, List<String> textList, List<String> urlList) {
-    TextStyle textStyle = const TextStyle(fontSize: 18);
-    List<Widget> classroomItemList = [];
+    const textStyle = TextStyle(fontSize: 18);
+    final classroomItemList = <Widget>[];
+
     for (int i = 0; i < textList.length; i++) {
-      String text = textList[i];
-      classroomItemList.add(Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            text,
-            style: textStyle,
+      final text = textList[i];
+      classroomItemList.add(
+        FittedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                text,
+                style: textStyle,
+              ),
+              const SizedBox(width: 4),
+              urlList[i].isNotEmpty
+                  ? FittedBox(
+                      child: ElevatedButton(
+                        onPressed: () => _launchWebView(buttonText, urlList[i]),
+                        child: Text(buttonText),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ],
           ),
-          urlList[i].isNotEmpty
-              ? ElevatedButton(
-                  onPressed: () {
-                    _launchWebView(buttonText, urlList[i]);
-                  },
-                  child: Text(buttonText),
-                )
-              : Container()
-        ],
-      ));
+        ),
+      );
     }
-    Widget classroomWidget = Column(
-      children: classroomItemList,
-    );
+
     return Container(
       padding: const EdgeInsets.only(bottom: 5),
       child: Row(
-        children: <Widget>[
-          const Icon(Icons.details),
-          Text(
-            title,
-            style: textStyle,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Icon(Icons.details),
+              Text(
+                title,
+                style: textStyle,
+              ),
+            ],
           ),
           Expanded(
-            child: classroomWidget,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: classroomItemList,
+            ),
           ),
         ],
       ),
@@ -251,31 +278,38 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   }
 
   Widget _buildClassmateInfo(int index, ClassmateJson classmate) {
-    Color color;
-    color = (index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor;
+    final color = (index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor;
     return Container(
-      color: color,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Expanded(
-              child: Text(
-            classmate.className,
-            textAlign: TextAlign.center,
-          )),
+            child: Text(
+              classmate.className,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(width: 4),
           Expanded(
             child: Text(
               classmate.studentId,
               textAlign: TextAlign.center,
             ),
           ),
+          const SizedBox(width: 4),
           Expanded(
             child: Text(
               classmate.getName(),
               textAlign: TextAlign.center,
             ),
           ),
-          Expanded(
+          const SizedBox(width: 4),
+          FittedBox(
             child: ElevatedButton(
               child: Text(R.current.search),
               onPressed: () {

@@ -9,7 +9,8 @@
 // ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
 // ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
 // ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
-// ignore_for_file:unused_import, file_names
+// ignore_for_file:unused_import, file_names, avoid_escaping_inner_quotes
+// ignore_for_file:unnecessary_string_interpolations, unnecessary_string_escapes
 
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
@@ -22,8 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh_TW';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-
-  static _notInlinedMessages(_) => <String, Function>{
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "AreYouSureToOpen": MessageLookupByLibrary.simpleMessage("確定要打開嗎"),
         "Contribution": MessageLookupByLibrary.simpleMessage("貢獻"),
         "Contributors": MessageLookupByLibrary.simpleMessage("貢獻者"),
@@ -44,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "accountPasswordError": MessageLookupByLibrary.simpleMessage("帳號密碼錯誤"),
         "aestheticDimension": MessageLookupByLibrary.simpleMessage("美學向度"),
         "alertError": MessageLookupByLibrary.simpleMessage("發生錯誤"),
+        "androidPrivateBrowseGuideSubTitle": MessageLookupByLibrary.simpleMessage("開啟隱私瀏覽，安全更有保障"),
+        "androidPrivateBrowseGuideTitle": MessageLookupByLibrary.simpleMessage("關於隱私瀏覽"),
         "announcement": MessageLookupByLibrary.simpleMessage("公告"),
         "appWillClose": MessageLookupByLibrary.simpleMessage("即將關閉應用程式"),
         "app_name": MessageLookupByLibrary.simpleMessage("TAT-北科生活"),
@@ -51,10 +53,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "authCodeFail": MessageLookupByLibrary.simpleMessage("驗證碼錯誤"),
         "autoAppCheck": MessageLookupByLibrary.simpleMessage("自動檢查更新"),
         "autoRollCall": MessageLookupByLibrary.simpleMessage("自動點名"),
+        "begin": MessageLookupByLibrary.simpleMessage("開始"),
         "calculationCredit": MessageLookupByLibrary.simpleMessage("計算學分"),
         "calendar": MessageLookupByLibrary.simpleMessage("行事曆"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "cannotWrite": MessageLookupByLibrary.simpleMessage("無法寫入此存儲設備！"),
+        "capitalAdd": MessageLookupByLibrary.simpleMessage("新增"),
         "category": MessageLookupByLibrary.simpleMessage("類別"),
         "changePassword": MessageLookupByLibrary.simpleMessage("更改密碼"),
         "changingPassword": MessageLookupByLibrary.simpleMessage("修改密碼中..."),
@@ -69,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "classroomUse": MessageLookupByLibrary.simpleMessage("教室使用"),
         "closeOnce": MessageLookupByLibrary.simpleMessage("再按一次關閉"),
         "closeSubscribe": MessageLookupByLibrary.simpleMessage("關閉訂閱"),
+        "comingSoon": MessageLookupByLibrary.simpleMessage("即將上線！"),
         "compulsoryCompulsory": MessageLookupByLibrary.simpleMessage("部訂共同必修"),
         "compulsoryMajorRevision": MessageLookupByLibrary.simpleMessage("校訂專業必修"),
         "compulsoryProfessional": MessageLookupByLibrary.simpleMessage("部訂專業必修"),
@@ -101,6 +106,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "downloadPath": MessageLookupByLibrary.simpleMessage("下載位置"),
         "downloadWillStart": MessageLookupByLibrary.simpleMessage("下載準備開始"),
         "downloading": MessageLookupByLibrary.simpleMessage("下載中..."),
+        "end": MessageLookupByLibrary.simpleMessage("結束"),
+        "endTimeMustBeAfterStartTime": MessageLookupByLibrary.simpleMessage("結束時間必須晚於開始時間"),
         "error": MessageLookupByLibrary.simpleMessage("錯誤"),
         "feedback": MessageLookupByLibrary.simpleMessage("意見反饋"),
         "file": MessageLookupByLibrary.simpleMessage("檔案"),
@@ -137,6 +144,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "historicalDimension": MessageLookupByLibrary.simpleMessage("歷史向度"),
         "iPlusNoThisClass": MessageLookupByLibrary.simpleMessage("此課程不支持查詢"),
         "identifyLinks": MessageLookupByLibrary.simpleMessage("辨識連結"),
+        "incorrectInformationEntered": MessageLookupByLibrary.simpleMessage("輸入的資訊有誤"),
         "informationSystem": MessageLookupByLibrary.simpleMessage("資訊系統"),
         "inputNewPassword": MessageLookupByLibrary.simpleMessage("請輸入新密碼"),
         "inputNewPasswordAgain": MessageLookupByLibrary.simpleMessage("請再輸入一次"),
@@ -165,6 +173,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginScoreError": MessageLookupByLibrary.simpleMessage("登入成績查詢系統錯誤"),
         "logout": MessageLookupByLibrary.simpleMessage("登出"),
         "logoutWarning": MessageLookupByLibrary.simpleMessage("確定要登出嗎? \n將會清除所有資料"),
+        "missingRequiredInformation": MessageLookupByLibrary.simpleMessage("缺少必要資訊"),
         "naturalDimension": MessageLookupByLibrary.simpleMessage("自然向度"),
         "networkError": MessageLookupByLibrary.simpleMessage("網路發生錯誤"),
         "noAnyAnnouncement": MessageLookupByLibrary.simpleMessage("無任何公告"),
@@ -195,6 +204,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterStudentId": MessageLookupByLibrary.simpleMessage("請輸入學號"),
         "pleaseLogin": MessageLookupByLibrary.simpleMessage("請登入"),
         "pleaseMoveToFilePage": MessageLookupByLibrary.simpleMessage("請直接移到下載頁面"),
+        "pleaseSelectEndTime": MessageLookupByLibrary.simpleMessage("請選擇結束時間"),
+        "pleaseSelectStartTime": MessageLookupByLibrary.simpleMessage("請選擇起始時間"),
+        "pleaseSelectWeekday": MessageLookupByLibrary.simpleMessage("請選擇星期"),
         "practiceCredit": MessageLookupByLibrary.simpleMessage("修習學分"),
         "prepareDownload": MessageLookupByLibrary.simpleMessage("準備下載中..."),
         "previousRankings": MessageLookupByLibrary.simpleMessage("歷屆排名"),
@@ -209,6 +221,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "revisedCommonCompulsory": MessageLookupByLibrary.simpleMessage("校訂共同必修"),
         "rollCall": MessageLookupByLibrary.simpleMessage("點名"),
         "rollCallRemind": MessageLookupByLibrary.simpleMessage("點名提醒"),
+        "rollCallScheduleCanceled": MessageLookupByLibrary.simpleMessage("點名行程已取消"),
+        "rollCallScheduledSuccessfully": MessageLookupByLibrary.simpleMessage("點名行程新增成功"),
         "ruleDimension": MessageLookupByLibrary.simpleMessage("法治向度"),
         "sameOldPassword": MessageLookupByLibrary.simpleMessage("不可以與之前密碼相同"),
         "save": MessageLookupByLibrary.simpleMessage("儲存"),
@@ -254,10 +268,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalAverage": MessageLookupByLibrary.simpleMessage("總平均"),
         "totalPeople": MessageLookupByLibrary.simpleMessage("總人數"),
         "unknownError": MessageLookupByLibrary.simpleMessage("發生未知錯誤"),
+        "unknownServerError": MessageLookupByLibrary.simpleMessage("與校園系統溝通時發生問題，大部分功能可能將受影響\n請確認校園系統能正常使用後再試一次，謝謝"),
         "update": MessageLookupByLibrary.simpleMessage("更新"),
         "useOldPassword": MessageLookupByLibrary.simpleMessage("延長原始密碼時間"),
         "versionInfo": MessageLookupByLibrary.simpleMessage("版本資訊"),
+        "videoMayLoadFailedWarningMsg": MessageLookupByLibrary.simpleMessage("影片載入時間視當下網路環境而定\n若載入時間過長，請嘗試退出後再試一次"),
         "warning": MessageLookupByLibrary.simpleMessage("警告"),
+        "willRestart": MessageLookupByLibrary.simpleMessage("將自動重啟並套用語言"),
+        "zuvioAutoRollCallFeatureReleaseNotice": MessageLookupByLibrary.simpleMessage("Zuvio (自動)點名提醒的功能即將上線\n敬請期待！"),
         "willRestart": MessageLookupByLibrary.simpleMessage("將自動重啟並套用語言"),
         "album": MessageLookupByLibrary.simpleMessage("相簿")
       };

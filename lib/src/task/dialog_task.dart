@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
@@ -29,7 +29,7 @@ class DialogTask<T> extends Task<T> {
   }
 
   Future<TaskStatus> onError(String message) async {
-    ErrorDialogParameter parameter = ErrorDialogParameter(
+    final parameter = ErrorDialogParameter(
       desc: message,
     );
     return await onErrorParameter(parameter);
@@ -45,6 +45,6 @@ class DialogTask<T> extends Task<T> {
     ErrorDialog(parameter).show();
 
     // Return GiveUp here instead of Restart to prevent the Un-terminated error stack.
-    return TaskStatus.giveUp;
+    return TaskStatus.shouldGiveUp;
   }
 }

@@ -1,12 +1,15 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
-enum TaskStatus { success, giveUp, restart }
+enum TaskStatus {
+  success,
+  shouldGiveUp,
+  shouldRestart,
+  shouldIgnore,
+}
 
 abstract class Task<T> {
-  T result;
-  String name;
+  Task(this.name);
 
-  Task(this.name, {Map<String, dynamic> arg});
+  T? result;
+  final String name;
 
   Future<TaskStatus> execute();
 }

@@ -3,8 +3,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
+import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/config/app_link.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/file/file_store.dart';
@@ -115,9 +117,7 @@ class _OtherPageState extends State<OtherPage> {
             btnOkOnPress: () {
               Get.back();
               TaskFlow.resetLoginStatus();
-              LocalStorage.instance.logout().then((_) {
-                widget.pageController.jumpToPage(0);
-              });
+              LocalStorage.instance.logout().then((_) => RouteUtils.toLoginScreen());
             });
         ErrorDialog(parameter).show();
         break;
@@ -138,17 +138,35 @@ class _OtherPageState extends State<OtherPage> {
         RouteUtils.toSettingPage(widget.pageController);
         break;
       case OnListViewPress.report:
-        String link = AppLink.feedbackBaseUrl;
-        try {
-          String mainVersion = await AppUpdate.getAppVersion();
-          link = AppLink.feedback(mainVersion, LogConsole.getLog());
-        } catch (e) {
-          0;
-        }
-        RouteUtils.toWebViewPage(R.current.feedback, link);
+        final mainVersion = await AppUpdate.getAppVersion();
+        final link = AppLink.feedbackUrl(mainVersion, LogConsole.getLog());
+
+        RouteUtils.toWebViewPage(
+          initialUrl: link ?? AppLink.feedbackBaseUrl,
+          title: R.current.feedback,
+        );
         break;
       case OnListViewPress.rollCallRemind:
-        RouteUtils.launchRollCallDashBoardPageAfterLogin();
+        // TODO(TU): update this log to the real feature log.
+        await FirebaseAnalytics.instance.logEvent(
+          name: 'z_roll_call_pre_msg_clicked',
+          parameters: {
+            'position': 'other_page',
+          },
+        );
+
+        if (await AppConfig.zuvioRollCallFeatureEnabled) {
+          RouteUtils.launchRollCallDashBoardPageAfterLogin();
+        } else {
+          ErrorDialog(ErrorDialogParameter(
+            desc: R.current.zuvioAutoRollCallFeatureReleaseNotice,
+            title: R.current.comingSoon,
+            dialogType: DialogType.INFO,
+            offCancelBtn: true,
+            btnOkText: R.current.sure,
+          )).show();
+        }
+
         break;
       default:
         MyToast.show(R.current.noFunction);

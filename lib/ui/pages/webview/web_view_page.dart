@@ -1,149 +1,88 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
-import 'package:flutter/material.dart';
-import 'package:flutter_app/src/connector/core/dio_connector.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+// ignore_for_file: import_of_legacy_library_into_null_safe
 
-class WebViewPage extends StatefulWidget {
-  final String url;
-  final String title;
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_app/src/r.dart';
+import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/pages/webview/tat_web_view.dart';
+import 'package:flutter_web_browser/flutter_web_browser.dart';
+import 'package:get/get.dart';
+import 'package:meta/meta.dart';
 
-  const WebViewPage({Key key, this.title, this.url}) : super(key: key);
+@immutable
+@sealed
+class WebViewPage {
+  @literal
+  const WebViewPage();
 
-  @override
-  State<WebViewPage> createState() => _WebViewPageState();
-}
+  static WebViewPage get to => Get.find();
 
-class _WebViewPageState extends State<WebViewPage> {
-  final cookieManager = CookieManager.instance();
-  final cookieJar = DioConnector.instance.cookiesManager;
-  InAppWebViewController webView;
-  Uri url = Uri.parse('');
-  double progress = 0;
+  Future<void> close() => FlutterWebBrowser.close();
 
-  Future<bool> setCookies() async {
-    final cookies = await cookieJar.loadForRequest(Uri.parse(widget.url));
-    for (final cookie in cookies) {
-      await cookieManager.setCookie(
-        url: Uri.parse(widget.url),
-        name: cookie.name,
-        value: cookie.value,
-        domain: cookie.domain,
-        path: cookie.path,
-        maxAge: cookie.maxAge,
-        isSecure: cookie.secure,
-        isHttpOnly: cookie.httpOnly,
+  Future<void> _launchNativeWebView({required Uri initialUrl}) => Future.microtask(
+        () => FlutterWebBrowser.openWebPage(
+          url: initialUrl.toString(),
+          customTabsOptions: CustomTabsOptions(
+            colorScheme: Get.isDarkMode ? CustomTabsColorScheme.dark : CustomTabsColorScheme.light,
+            instantAppsEnabled: true,
+            showTitle: true,
+            urlBarHidingEnabled: true,
+            // Enable the Incognito mode on Android web view.
+            // But should self-enable the `ALLOW_INCOGNITO_CUSTOM_TABS_FROM_THIRD_PARTY` flag on device's chrome.
+            // chrome://flags/#cct-incognito-available-to-third-party
+            privateMode: true,
+          ),
+          safariVCOptions: const SafariViewControllerOptions(
+            barCollapsingEnabled: true,
+            dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+          ),
+        ).onError((error, stackTrace) {
+          stackTrace.printError();
+
+          FirebaseAnalytics.instance.logEvent(
+            name: 'custom_tab_open_err_aos',
+          );
+
+          ErrorDialog(ErrorDialogParameter(
+            desc: R.current.alertError,
+            title: R.current.error,
+            dialogType: DialogType.ERROR,
+            offCancelBtn: true,
+            btnOkText: R.current.sure,
+          )).show();
+        }),
+      );
+
+  Future<void> _launchTATWebView({
+    required Uri initialUrl,
+    String? title,
+  }) =>
+      Future.microtask(
+        () => Get.to(
+          () => TATWebView(
+            initialUrl: initialUrl,
+            title: title,
+          ),
+        ),
+      );
+
+  /// Launch a web view with configs.
+  ///
+  /// Set [shouldUseAppCookies] to true if the [initialUrl] requires cookies stored in app.
+  /// When [shouldUseAppCookies] is true, the internal web view will be launched,
+  /// otherwise we use the native web view.
+  Future<void> call({
+    required Uri initialUrl,
+    String? title,
+    bool shouldUseAppCookies = false,
+  }) async {
+    if (shouldUseAppCookies) {
+      return _launchTATWebView(
+        initialUrl: initialUrl,
+        title: title,
       );
     }
-    return true;
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: FutureBuilder<bool>(
-        future: setCookies(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.hasData) {
-            return SafeArea(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    child: progress < 1.0 ? LinearProgressIndicator(value: progress) : Container(),
-                  ),
-                  Expanded(
-                    child: InAppWebView(
-                      initialUrlRequest: URLRequest(url: Uri.parse(widget.url)),
-                      initialOptions: InAppWebViewGroupOptions(
-                        crossPlatform: InAppWebViewOptions(),
-                      ),
-                      onWebViewCreated: (InAppWebViewController controller) {
-                        webView = controller;
-                      },
-                      onLoadStart: (InAppWebViewController controller, Uri url) {
-                        setState(() {
-                          this.url = url;
-                        });
-                      },
-                      onLoadStop: (InAppWebViewController controller, Uri url) async {
-                        setState(
-                          () {
-                            this.url = url;
-                          },
-                        );
-                      },
-                      onProgressChanged: (InAppWebViewController controller, int progress) {
-                        setState(
-                          () {
-                            this.progress = progress / 100;
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                        ),
-                        child: const Icon(Icons.arrow_back),
-                        onPressed: () async {
-                          if (webView != null) {
-                            await webView.goBack();
-                          }
-                        },
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                        ),
-                        child: const Icon(Icons.arrow_forward),
-                        onPressed: () async {
-                          if (webView != null) {
-                            await webView.goForward();
-                          }
-                        },
-                      ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                        ),
-                        child: const Icon(Icons.refresh),
-                        onPressed: () async {
-                          if (webView != null) {
-                            await webView.reload();
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-    );
+    return _launchNativeWebView(initialUrl: initialUrl);
   }
 }

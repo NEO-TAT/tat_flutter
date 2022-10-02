@@ -1,10 +1,11 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
@@ -12,7 +13,7 @@ class AppProvider extends ChangeNotifier {
     checkTheme();
   }
 
-  ThemeData theme = AppThemes.darkTheme;
+  ThemeData theme = Get.isDarkMode ? AppThemes.darkTheme : AppThemes.lightTheme;
   Key key = UniqueKey();
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -45,9 +46,9 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<ThemeData> checkTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    ThemeData t;
-    String r = prefs.getString("theme") ?? "dark";
+    final prefs = await SharedPreferences.getInstance();
+    late final ThemeData t;
+    final r = prefs.getString("theme") ?? "dark";
 
     if (r == "light") {
       t = AppThemes.lightTheme;

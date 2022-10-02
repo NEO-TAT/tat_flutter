@@ -59,6 +59,7 @@ class ZAuthController extends GetxController {
     if (result.userInfo == null) {
       Log.d('Zuvio login failed.');
 
+      // TODO: move dialog showing to the UI layer.
       ErrorDialog(ErrorDialogParameter(
         desc: result.msg,
         title: R.current.error,
@@ -90,4 +91,6 @@ class ZAuthController extends GetxController {
     // TODO(TU): Check if the accessToken is valid.
     return accessToken != null && accessToken.isNotEmpty;
   }
+
+  ZUserInfo? currentZUserInfo() => LocalStorage.instance.getZuvioUserInfo();
 }
