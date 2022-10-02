@@ -16,7 +16,7 @@ class NoteCamera extends StatefulWidget {
 class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   CameraController? controller;
   bool _isCameraInitialized = false;
-  late List<CameraDescription> cameras;
+  List<CameraDescription> cameras = const [];
 
   double _zoom = 1.0;
 
@@ -61,6 +61,19 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
     if (path != null) PictureStorage.takePictureToStorage(widget.courseId, path);
   }
 
+  void adjustZoom(scaleStartDetails){
+    double newZoom = 0.0;
+    if (scaleStartDetails.scale > 1.0) {
+      newZoom = _zoom + 0.05;
+    } else if (scaleStartDetails.scale < 1.0) {
+      newZoom = _zoom - 0.05;
+    }
+    if (newZoom >= 1.0 && newZoom <= 9.0) {
+      _zoom = newZoom;
+    }
+    controller?.setZoomLevel(_zoom);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,7 +85,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final CameraController? cameraController = controller;
+    final cameraController = controller;
 
     if (cameraController == null || !cameraController.value.isInitialized) {
       return;
@@ -95,18 +108,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onScaleUpdate: (scaleStartDetails) {
-        double newZoom = 0.0;
-        if (scaleStartDetails.scale > 1.0) {
-          newZoom = _zoom + 0.05;
-        } else if (scaleStartDetails.scale < 1.0) {
-          newZoom = _zoom - 0.05;
-        }
-        if (newZoom >= 1.0 && newZoom <= 9.0) {
-          _zoom = newZoom;
-        }
-        controller?.setZoomLevel(_zoom);
-      },
+      onScaleUpdate: (scaleStartDetails) => adjustZoom(scaleStartDetails),
       child: _isCameraInitialized
           ? CameraPreview(controller!,
               child: Align(
