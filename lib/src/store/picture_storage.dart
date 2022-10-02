@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
 class PictureStorage {
-  static pictureInformationMap(String courseId, String label, String picturePath, String note) {
+  static Map<String, String> pictureInformationMap(String courseId, String label, String picturePath, String note) {
     return {
       'courseId': courseId,
       'label': label,
@@ -12,8 +12,8 @@ class PictureStorage {
     };
   }
 
-  static takePictureToStorage(String courseId, String picturePath) async {
-    Database pictureDB = Get.find<Database>();
+  static Future<void> takePictureToStorage(String courseId, String picturePath) async {
+    final pictureDB = Get.find<Database>();
     final information = pictureInformationMap(courseId, "unlabeled", picturePath, "");
     await pictureDB.insert(
       "photo_storage",
@@ -22,41 +22,40 @@ class PictureStorage {
     );
   }
 
-  static getCoursePicture(String courseId) async {
-    Database pictureDB = Get.find<Database>();
-    List<Map> picturePaths = await pictureDB.rawQuery('SELECT  * '
+  static Future<List<Map<String, Object?>>> getCoursePicture(String courseId) async {
+    final pictureDB = Get.find<Database>();
+    return await pictureDB.rawQuery('SELECT  * '
         'FROM photo_storage '
         'WHERE courseId=$courseId');
-    return picturePaths;
   }
 }
 
 class Picture {
-  late int id;
-  late String label;
-  late String note;
-  late String path;
+  final int _id;
+  final String _path;
+  String label;
+  String note;
 
-  Picture(this.id, this.label, this.note, this.path);
+  Picture(this._id, this.label, this.note, this._path);
 
-  String getLabel() => label;
+  String get getLabel => label;
 
-  String getNote() => note;
+  String get getNote => note;
 
-  String getPath() => path;
+  String get getPath => _path;
 
   void modifyLabel() {}
 
   void modifyNote() {}
 
-  void deletePicture() async {
+  Future<void> deletePicture() async {
     Database pictureDB = Get.find<Database>();
     await pictureDB.delete(
       "photo_storage",
       where: "_id = ?",
-      whereArgs: [id],
+      whereArgs: [_id],
     );
 
-    File(getPath()).delete();
+    File(_path).delete();
   }
 }

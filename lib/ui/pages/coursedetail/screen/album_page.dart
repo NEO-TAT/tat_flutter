@@ -81,7 +81,7 @@ class _AlbumPageState extends State<AlbumPage> {
                   borderRadius: BorderRadius.circular(8.0),
                   child: InkWell(
                       child: PhotoView(
-                        imageProvider: FileImage(File(picture.getPath())),
+                        imageProvider: FileImage(File(picture.getPath)),
                       ),
                       onTap: () => openOriginalSizePicture(context, picture))),
             )
@@ -94,7 +94,7 @@ class _AlbumPageState extends State<AlbumPage> {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
       return Scaffold(
           body: PhotoView(
-            imageProvider: FileImage(File(picture.getPath())),
+            imageProvider: FileImage(File(picture.getPath)),
           ),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
