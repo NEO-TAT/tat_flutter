@@ -83,8 +83,7 @@ class _AlbumPageState extends State<AlbumPage> {
                       child: PhotoView(
                         imageProvider: FileImage(File(picture.getPath())),
                       ),
-                      onTap: () =>
-                          openOriginalSizePicture(context, picture))),
+                      onTap: () => openOriginalSizePicture(context, picture))),
             )
         ],
       )
@@ -94,21 +93,20 @@ class _AlbumPageState extends State<AlbumPage> {
   void openOriginalSizePicture(BuildContext context, Picture picture) {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
       return Scaffold(
-        body: PhotoView(
-          imageProvider: FileImage(File(picture.getPath())),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            picture.deletePicture();
-            pictures.remove(picture);
-            setState(() {});
-            Navigator.pop(context);
-          },
-          label: const Text('Delete'),
-          backgroundColor: Colors.pink,
-        ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
-      );
+          body: PhotoView(
+            imageProvider: FileImage(File(picture.getPath())),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              picture.deletePicture();
+              pictures.remove(picture);
+              setState(() {});
+              Navigator.pop(context);
+            },
+            label: const Text('Delete'),
+            backgroundColor: Colors.pink,
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
     }));
   }
 }

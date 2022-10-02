@@ -187,7 +187,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
 
   Widget _buildCourseFile(int index, CourseFileJson courseFile) {
     return Container(
-        color: selectList.getItemSelect(index) ? Colors.grey : Theme.of(context).backgroundColor,
+        color: selectList.getItemSelect(index) ? Colors.grey : Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.all(10),
         child: Column(
           children: _buildFileItem(courseFile),

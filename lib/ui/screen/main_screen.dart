@@ -112,7 +112,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
           return WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).colorScheme.background,
               body: _buildPageView(),
               bottomNavigationBar: _buildBottomNavigationBar(),
             ),

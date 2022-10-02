@@ -130,8 +130,7 @@ Future<void> main() async {
           'courseId TEXT, '
           'label TEXT, '
           'note TEXT, '
-          'picturePath TEXT)'
-      );
+          'picturePath TEXT)');
     },
     version: 1,
   ));

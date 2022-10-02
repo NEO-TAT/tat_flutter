@@ -1,7 +1,6 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -420,7 +419,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         children: [
           Container(
             height: studentIdHeight,
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -534,7 +533,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     return Container(
-      color: Theme.of(context).backgroundColor.withAlpha(courseTableWithAlpha),
+      color: Theme.of(context).colorScheme.background.withAlpha(courseTableWithAlpha),
       height: dayHeight,
       child: Row(
         children: widgetList,
@@ -544,7 +543,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Widget _buildCourseTable(int index) {
     final section = courseTableControl.getSectionIntList[index];
-    final color = ((index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor)
+    final color = ((index % 2 == 1) ? Theme.of(context).colorScheme.background : Theme.of(context).dividerColor)
         .withAlpha(courseTableWithAlpha);
     final List<Widget> widgetList = [];
     widgetList.add(

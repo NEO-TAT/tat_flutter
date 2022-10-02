@@ -24,14 +24,14 @@ class PictureStorage {
 
   static getCoursePicture(String courseId) async {
     Database pictureDB = Get.find<Database>();
-    List<Map> picturePaths =  await pictureDB.rawQuery('SELECT  * '
-                          'FROM photo_storage '
-                          'WHERE courseId=$courseId');
+    List<Map> picturePaths = await pictureDB.rawQuery('SELECT  * '
+        'FROM photo_storage '
+        'WHERE courseId=$courseId');
     return picturePaths;
   }
 }
 
-class Picture{
+class Picture {
   late int id;
   late String label;
   late String note;
@@ -45,9 +45,9 @@ class Picture{
 
   String getPath() => path;
 
-  void modifyLabel(){}
+  void modifyLabel() {}
 
-  void modifyNote(){}
+  void modifyNote() {}
 
   void deletePicture() async {
     Database pictureDB = Get.find<Database>();

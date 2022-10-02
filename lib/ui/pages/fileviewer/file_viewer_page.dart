@@ -144,7 +144,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                                 widget.path.toString().contains("emulated") ? FeatherIcons.smartphone : Icons.sd_card,
                                 color: index == paths.length - 1
                                     ? Theme.of(context).colorScheme.secondary
-                                    : Theme.of(context).textTheme.headline6.color,
+                                    : Theme.of(context).textTheme.titleLarge.color,
                               ),
                               onPressed: () {
                                 setState(() {
@@ -174,7 +174,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                                         fontWeight: FontWeight.bold,
                                         color: index == paths.length - 1
                                             ? Theme.of(context).colorScheme.secondary
-                                            : Theme.of(context).textTheme.headline6.color,
+                                            : Theme.of(context).textTheme.titleLarge.color,
                                       ),
                                     ),
                                   ),
@@ -223,7 +223,8 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                               if (v == 0) {
                                 renameDialog(context, file.path, "dir");
                               } else if (v == 1) {
-                                await Directory(file.path).delete(recursive: true) //將會刪除資料夾內所有東西
+                                await Directory(file.path)
+                                    .delete(recursive: true) //將會刪除資料夾內所有東西
                                     .catchError((e) {
                                   if (e.toString().contains("Permission denied")) {
                                     MyToast.show(R.current.cannotWrite);

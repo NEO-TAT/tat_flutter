@@ -54,7 +54,7 @@ class SortSheet extends StatelessWidget {
                           fontSize: 14.0,
                           color: index == Provider.of<CategoryProvider>(context, listen: false).sort
                               ? Colors.blue
-                              : Theme.of(context).textTheme.headline6.color,
+                              : Theme.of(context).textTheme.titleLarge.color,
                         ),
                       ),
                     );
