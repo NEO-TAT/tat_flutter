@@ -15,17 +15,15 @@ class AlbumPage extends StatefulWidget {
 class _AlbumPageState extends State<AlbumPage> {
   bool _isLoading = true;
 
-  late List<Picture> pictures = [];
-
-  late double screenWidth;
-  late double screenHeight;
+  final List<Picture> pictures = [];
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      useCourseIdToGetPicturePaths();
-    });
+    Future.delayed(
+      Duration.zero,
+      () => useCourseIdToGetPicturePaths(),
+    );
   }
 
   void useCourseIdToGetPicturePaths() async {
@@ -44,63 +42,67 @@ class _AlbumPageState extends State<AlbumPage> {
 
   @override
   Widget build(BuildContext context) {
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
     return Container(
       padding: const EdgeInsets.only(top: 20),
       child: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Expanded(
-              child: pictureAlbum,
-            ),
+          ? const Center(child: CircularProgressIndicator())
+          : Expanded(child: pictureAlbum),
     );
   }
 
   Widget get pictureAlbum {
-    return ListView(children: [
-      Wrap(
-        alignment: WrapAlignment.center,
-        spacing: 10.0, // gap between adjacent chips
-        runSpacing: 6.0,
-        children: [
-          for (Picture picture in pictures)
-            SizedBox(
-              width: screenWidth / 4,
-              height: screenHeight / 8,
-              child: ClipRRect(
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return ListView(
+      children: [
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 10.0, // gap between adjacent chips
+          runSpacing: 6.0,
+          children: [
+            for (final picture in pictures)
+              SizedBox(
+                width: screenWidth / 4,
+                height: screenHeight / 8,
+                child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: InkWell(
-                      child: PhotoView(
-                        imageProvider: FileImage(File(picture.getPath)),
+                    child: PhotoView(
+                      imageProvider: FileImage(
+                        File(picture.getPath),
                       ),
-                      onTap: () => openOriginalSizePicture(context, picture))),
-            )
-        ],
-      )
-    ]);
+                    ),
+                    onTap: () => openOriginalSizePicture(context, picture),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 
   MaterialPageRoute checkPhotoViewRoute(picture) {
-    return MaterialPageRoute(builder: (BuildContext context) {
-      return Scaffold(
-          body: PhotoView(
-            imageProvider: FileImage(File(picture.getPath)),
-          ),
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              picture.deletePicture();
-              pictures.remove(picture);
-              setState(() {});
-              Navigator.pop(context);
-            },
-            label: const Text('Delete'),
-            backgroundColor: Colors.pink,
-          ),
-          floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerFloat);
-    });
+    return MaterialPageRoute(
+      builder: (BuildContext context) {
+        return Scaffold(
+            body: PhotoView(
+              imageProvider: FileImage(File(picture.getPath)),
+            ),
+            floatingActionButton: FloatingActionButton.extended(
+              onPressed: () {
+                picture.deletePicture();
+                pictures.remove(picture);
+                setState(() {});
+                Navigator.pop(context);
+              },
+              label: const Text('Delete'),
+              backgroundColor: Colors.pink,
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat);
+      },
+    );
   }
 
   void openOriginalSizePicture(BuildContext context, Picture picture) {

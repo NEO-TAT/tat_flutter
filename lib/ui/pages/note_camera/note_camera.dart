@@ -58,10 +58,12 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   void takePicture() async {
     final image = await controller?.takePicture();
     String? path = image?.path;
-    if (path != null) PictureStorage.takePictureToStorage(widget.courseId, path);
+    if (path != null) {
+      PictureStorage.takePictureToStorage(widget.courseId, path);
+    }
   }
 
-  void adjustZoom(scaleStartDetails){
+  void adjustZoom(scaleStartDetails) {
     double newZoom = 0.0;
     if (scaleStartDetails.scale > 1.0) {
       newZoom = _zoom + 0.05;
@@ -110,23 +112,26 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
       behavior: HitTestBehavior.translucent,
       onScaleUpdate: (scaleStartDetails) => adjustZoom(scaleStartDetails),
       child: _isCameraInitialized
-          ? CameraPreview(controller!,
+          ? CameraPreview(
+              controller!,
               child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: ClipOval(
-                      child: Material(
-                        color: Colors.white,
-                        child: InkWell(
-                          splashColor: Colors.grey[300]?.withOpacity(0.7),
-                          splashFactory: InkRipple.splashFactory,
-                          onTap: () => takePicture(),
-                          child: const SizedBox(width: 56, height: 56),
-                        ),
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: ClipOval(
+                    child: Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        splashColor: Colors.grey[300]?.withOpacity(0.7),
+                        splashFactory: InkRipple.splashFactory,
+                        onTap: () => takePicture(),
+                        child: const SizedBox(width: 56, height: 56),
                       ),
                     ),
-                  )))
+                  ),
+                ),
+              ),
+            )
           : Container(),
     );
   }
