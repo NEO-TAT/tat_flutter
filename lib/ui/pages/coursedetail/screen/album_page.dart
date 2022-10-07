@@ -27,8 +27,7 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   void useCourseIdToGetPicturePaths() async {
-    dynamic picturesInfo =
-        await PictureStorage.getCoursePicture(widget.courseId);
+    dynamic picturesInfo = await PictureStorage.getCoursePicture(widget.courseId);
     for (final pictureInfo in picturesInfo) {
       int infoId = pictureInfo['_id'];
       String infoLabel = pictureInfo['label'];
@@ -44,9 +43,7 @@ class _AlbumPageState extends State<AlbumPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 20),
-      child: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Expanded(child: pictureAlbum),
+      child: _isLoading ? const Center(child: CircularProgressIndicator()) : Expanded(child: pictureAlbum),
     );
   }
 
@@ -99,8 +96,7 @@ class _AlbumPageState extends State<AlbumPage> {
               label: const Text('Delete'),
               backgroundColor: Colors.pink,
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat);
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
       },
     );
   }

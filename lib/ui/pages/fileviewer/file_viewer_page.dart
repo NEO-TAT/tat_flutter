@@ -223,8 +223,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                               if (v == 0) {
                                 renameDialog(context, file.path, "dir");
                               } else if (v == 1) {
-                                await Directory(file.path)
-                                    .delete(recursive: true) //將會刪除資料夾內所有東西
+                                await Directory(file.path).delete(recursive: true) //將會刪除資料夾內所有東西
                                     .catchError((e) {
                                   if (e.toString().contains("Permission denied")) {
                                     MyToast.show(R.current.cannotWrite);
