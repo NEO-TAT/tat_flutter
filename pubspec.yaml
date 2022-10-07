@@ -174,7 +174,7 @@ flutter_intl:
   # Because it will be repeatedly generated when it is turned on,
   # it is very troublesome, so we temporarily turn it off.
   # If necessary, please turn it on by yourself.
-  enabled: true
+  enabled: false
 
 flutter_icons:
   android: true
