@@ -17,6 +17,10 @@ class _AlbumPageState extends State<AlbumPage> {
 
   final List<Picture> pictures = [];
 
+  final PictureStorage _pictureStorage;
+
+  _AlbumPageState() : _pictureStorage = PictureStorage();
+
   @override
   void initState() {
     super.initState();
@@ -27,7 +31,7 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   void useCourseIdToGetPicturePaths() async {
-    dynamic picturesInfo = await PictureStorage.getCoursePicture(widget.courseId);
+    dynamic picturesInfo = await _pictureStorage.getCoursePicture(widget.courseId);
     for (final pictureInfo in picturesInfo) {
       int infoId = pictureInfo['_id'];
       String infoLabel = pictureInfo['label'];

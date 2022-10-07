@@ -17,10 +17,11 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   CameraController? controller;
   bool _isCameraInitialized = false;
   List<CameraDescription> cameras = const [];
+  final PictureStorage _pictureStorage;
 
   double _zoom = 1.0;
 
-  _NoteCameraState();
+  _NoteCameraState() : _pictureStorage = PictureStorage();
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     final previousCameraController = controller;
@@ -59,7 +60,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
     final image = await controller?.takePicture();
     String? path = image?.path;
     if (path != null) {
-      PictureStorage.takePictureToStorage(widget.courseId, path);
+      _pictureStorage.takePictureToStorage(widget.courseId, path);
     }
   }
 

@@ -3,7 +3,12 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
 class PictureStorage {
-  static Map<String, String> pictureInformationMap(String courseId, String label, String picturePath, String note) {
+
+  PictureStorage() : _pictureDB = Get.find<Database>();
+
+  final Database _pictureDB;
+
+  Map<String, String> pictureInformationMap(String courseId, String label, String picturePath, String note) {
     return {
       'courseId': courseId,
       'label': label,
@@ -12,19 +17,17 @@ class PictureStorage {
     };
   }
 
-  static Future<void> takePictureToStorage(String courseId, String picturePath) async {
-    final pictureDB = Get.find<Database>();
+  Future<void> takePictureToStorage(String courseId, String picturePath) async {
     final information = pictureInformationMap(courseId, "unlabeled", picturePath, "");
-    await pictureDB.insert(
+    await _pictureDB.insert(
       "photo_storage",
       information,
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  static Future<List<Map<String, Object?>>> getCoursePicture(String courseId) async {
-    final pictureDB = Get.find<Database>();
-    return await pictureDB.rawQuery('SELECT  * '
+  Future<List<Map<String, Object?>>> getCoursePicture(String courseId) async {
+    return await _pictureDB.rawQuery('SELECT  * '
         'FROM photo_storage '
         'WHERE courseId=$courseId');
   }
