@@ -143,7 +143,6 @@ dependencies:
 
   weekday_selector: ^1.1.0
 
-  # 相機
   camera: ^0.10.0+3
 
 dev_dependencies:
