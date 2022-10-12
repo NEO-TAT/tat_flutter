@@ -27,7 +27,7 @@ dependencies:
 
   path: ^1.8.2
   path_provider: ^2.0.11
-  provider: ^6.0.3
+  provider: ^6.0.4
   url_launcher: ^6.1.6
   #開啟email phone url...
   logger: ^1.1.0
@@ -127,7 +127,7 @@ dependencies:
   # Firebase
   firebase_core: ^1.24.0
   firebase_analytics: ^9.3.8
-  firebase_crashlytics: ^2.8.13
+  firebase_crashlytics: ^2.9.0
   firebase_remote_config: ^2.0.20
   firebase_messaging: ^13.1.0
   cloud_firestore: ^3.5.1
@@ -143,10 +143,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.10.0
-  flutter_native_splash: ^2.2.10+1
+  flutter_native_splash: ^2.2.11
   #---------json----------#
-  build_runner: ^2.2.1
-  json_serializable: ^6.5.0
+  build_runner: ^2.3.0
+  json_serializable: ^6.5.1
   flutter_lints: ^2.0.1
 
 
