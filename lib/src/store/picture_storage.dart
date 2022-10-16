@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:io';
 
 class PictureStorage {
-
   PictureStorage() : _pictureDB = Get.find<Database>();
 
   final Database _pictureDB;
