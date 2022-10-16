@@ -3,10 +3,10 @@
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,10 +17,10 @@ import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/src/connector/blocked_cookies.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
-import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
-import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_auto_roll_call_schedule_controller.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
+import 'package:flutter_app/src/repositories/auto_roll_call_schedule_repository_impl.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/src/util/cloud_messaging_utils.dart';
@@ -36,6 +36,8 @@ import 'package:tat_core/tat_core.dart';
 import 'debug/log/log.dart';
 import 'generated/l10n.dart';
 
+const String _kVersion = 'version';
+
 Future<void> main() async {
   // Pass all uncaught errors from the framework to Crashlytics.
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +46,7 @@ Future<void> main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   await FirebaseAnalytics.instance.setDefaultEventParameters({
-    'version': await AppUpdate.getAppVersion(),
+    _kVersion: await AppUpdate.getAppVersion(),
   });
 
   await CloudMessagingUtils.init();
@@ -80,7 +82,33 @@ Future<void> main() async {
 
   final simpleLoginUseCase = SimpleLoginUseCase(simpleLoginRepository);
 
-  final firestore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
+
+  await firebaseAuth.signInAnonymously();
+
+  final autoRollCallScheduleRepository = AutoRollCallScheduleRepositoryImpl(
+    firebaseAuth: firebaseAuth,
+  );
+
+  final addAutoRollCallScheduleUseCase = AddAutoRollCallScheduleUseCase(
+    autoRollCallScheduleRepository,
+  );
+
+  final cancelAutoRollCallScheduleUseCase = CancelAutoRollCallScheduleUseCase(
+    autoRollCallScheduleRepository,
+  );
+
+  final getMyAutoRollCallScheduleUseCase = GetMyAutoRollCallScheduleUseCase(
+    autoRollCallScheduleRepository,
+  );
+
+  final enableAutoRollCallScheduleUseCase = EnableAutoRollCallScheduleUseCase(
+    autoRollCallScheduleRepository,
+  );
+
+  final disableAutoRollCallScheduleUseCase = DisableAutoRollCallScheduleUseCase(
+    autoRollCallScheduleRepository,
+  );
 
   final zAuthController = ZAuthController(
     isLoginBtnEnabled: true,
@@ -88,21 +116,22 @@ Future<void> main() async {
     loginUseCase: zuvioLoginUseCase,
   );
 
-  final zCourseController = ZCourseController(
-    getCourseListUseCase: zuvioGetCourseListUseCase,
-    firestore: firestore,
-  );
-
-  final zRollCallMonitorController = ZRollCallMonitorController(
+  final zRollCallMonitorController = ZAutoRollCallScheduleController(
     getRollCallUseCase: zuvioGetRollCallUseCase,
     makeRollCallUseCase: zuvioMakeRollCallUseCase,
-    firestore: firestore,
+    getCourseListUseCase: zuvioGetCourseListUseCase,
+    addAutoRollCallScheduleUseCase: addAutoRollCallScheduleUseCase,
+    getMyAutoRollCallScheduleUseCase: getMyAutoRollCallScheduleUseCase,
+    cancelAutoRollCallScheduleUseCase: cancelAutoRollCallScheduleUseCase,
+    enableAutoRollCallScheduleUseCase: enableAutoRollCallScheduleUseCase,
+    disableAutoRollCallScheduleUseCase: disableAutoRollCallScheduleUseCase,
   );
 
   const webViewPage = WebViewPage();
 
   Future<void> handleAppDetached() async {
     await webViewPage.close();
+    await firebaseAuth.signOut();
   }
 
   WidgetsBinding.instance.addObserver(
@@ -111,7 +140,6 @@ Future<void> main() async {
 
   Get.put(webViewPage);
   Get.put(zAuthController);
-  Get.put(zCourseController);
   Get.put(zRollCallMonitorController);
   Get.put(simpleLoginUseCase);
   Get.put(cookieJar);
