@@ -7,7 +7,8 @@ class PictureStorage {
 
   final Database _pictureDB;
 
-  Map<String, String> pictureInformationMap(String courseId, String label, String picturePath, String note) {
+  Map<String, String> pictureInformationMap(
+      String courseId, String label, String picturePath, String note) {
     return {
       'courseId': courseId,
       'label': label,
@@ -17,7 +18,8 @@ class PictureStorage {
   }
 
   Future<void> takePictureToStorage(String courseId, String picturePath) async {
-    final information = pictureInformationMap(courseId, "unlabeled", picturePath, "");
+    final information =
+        pictureInformationMap(courseId, "unlabeled", picturePath, "");
     await _pictureDB.insert(
       "photo_storage",
       information,
@@ -30,34 +32,42 @@ class PictureStorage {
         'FROM photo_storage '
         'WHERE courseId=$courseId');
   }
-}
 
-class Picture {
-  final int _id;
-  final String _path;
-  String label;
-  String note;
-
-  Picture(this._id, this.label, this.note, this._path);
-
-  String get getLabel => label;
-
-  String get getNote => note;
-
-  String get getPath => _path;
-
-  void modifyLabel() {}
-
-  void modifyNote() {}
-
-  Future<void> deletePicture() async {
+  Future<void> deletePicture(Picture picture) async {
     Database pictureDB = Get.find<Database>();
     await pictureDB.delete(
       "photo_storage",
       where: "_id = ?",
-      whereArgs: [_id],
+      whereArgs: [picture.id],
     );
 
-    File(_path).delete();
+    File(picture.path).delete();
   }
+}
+
+class Picture {
+  final int id;
+  final String path;
+  final String label;
+  final String note;
+
+  const Picture({
+    required this.id,
+    required this.path,
+    required this.label,
+    required this.note,
+  });
+
+  Picture copyWith({
+    int? id,
+    String? path,
+    String? label,
+    String? note,
+  }) =>
+      Picture(
+        id: id ?? this.id,
+        path: path ?? this.path,
+        label: label ?? this.label,
+        note: note ?? this.note,
+      );
 }

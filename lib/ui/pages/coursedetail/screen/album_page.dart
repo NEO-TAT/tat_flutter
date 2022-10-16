@@ -30,14 +30,27 @@ class _AlbumPageState extends State<AlbumPage> {
     );
   }
 
+  void removePicture(picture){
+    _pictureStorage.deletePicture(picture);
+    pictures.remove(picture);
+    setState(() {});
+    Navigator.pop(context);
+  }
+
   void useCourseIdToGetPicturePaths() async {
-    dynamic picturesInfo = await _pictureStorage.getCoursePicture(widget.courseId);
+    dynamic picturesInfo =
+        await _pictureStorage.getCoursePicture(widget.courseId);
     for (final pictureInfo in picturesInfo) {
       int infoId = pictureInfo['_id'];
+      String infoPath = pictureInfo['picturePath'];
       String infoLabel = pictureInfo['label'];
       String infoNote = pictureInfo['note'];
-      String infoPath = pictureInfo['picturePath'];
-      pictures.add(Picture(infoId, infoLabel, infoNote, infoPath));
+      pictures.add(Picture(
+        id: infoId,
+        path: infoPath,
+        label: infoLabel,
+        note: infoNote,
+      ));
     }
     _isLoading = false;
     setState(() {});
@@ -47,7 +60,9 @@ class _AlbumPageState extends State<AlbumPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 20),
-      child: _isLoading ? const Center(child: CircularProgressIndicator()) : Expanded(child: pictureAlbum),
+      child: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Expanded(child: pictureAlbum),
     );
   }
 
@@ -70,7 +85,7 @@ class _AlbumPageState extends State<AlbumPage> {
                   child: InkWell(
                     child: PhotoView(
                       imageProvider: FileImage(
-                        File(picture.getPath),
+                        File(picture.path),
                       ),
                     ),
                     onTap: () => openOriginalSizePicture(context, picture),
@@ -88,19 +103,15 @@ class _AlbumPageState extends State<AlbumPage> {
       builder: (BuildContext context) {
         return Scaffold(
             body: PhotoView(
-              imageProvider: FileImage(File(picture.getPath)),
+              imageProvider: FileImage(File(picture.path)),
             ),
             floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                picture.deletePicture();
-                pictures.remove(picture);
-                setState(() {});
-                Navigator.pop(context);
-              },
+              onPressed: () => removePicture(picture),
               label: const Text('Delete'),
               backgroundColor: Colors.pink,
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat);
       },
     );
   }
