@@ -6,6 +6,8 @@ typedef UISuspendedTransaction<T> = FutureOr<T> Function();
 
 /// A mixin to suspend interactions with UI.
 mixin SuspendInteractionsTransaction on GetxController {
+  bool _isLoading = false;
+
   /// Suspend interactions with UI.
   void suspendUIInteractions();
 
@@ -15,15 +17,21 @@ mixin SuspendInteractionsTransaction on GetxController {
   /// Execute a transaction that suspends interactions with UI.
   FutureOr<T> suspendInteractionsTransaction<T>({required UISuspendedTransaction<T> transaction}) async {
     // Suspend interactions with UI.
-    suspendUIInteractions();
-    update();
+    if (!_isLoading) {
+      suspendUIInteractions();
+      _isLoading = true;
+      update();
+    }
 
     // Execute the transaction.
     final result = await transaction();
 
     // Resume interactions with UI.
-    resumeUIInteractions();
-    update();
+    if (_isLoading) {
+      resumeUIInteractions();
+      _isLoading = false;
+      update();
+    }
 
     return result;
   }

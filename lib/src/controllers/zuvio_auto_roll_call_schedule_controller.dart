@@ -5,6 +5,7 @@ import 'package:flutter_app/src/controllers/suspend_interactions_transaction_mix
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/my_progress_dialog.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
 import 'package:uuid/uuid.dart';
@@ -42,16 +43,14 @@ class ZAutoRollCallScheduleController extends GetxController with SuspendInterac
   final courses = <ZCourse>[];
   final schedules = <AutoRollCallSchedule>[];
 
-  bool isLoading = false;
-
   @override
   void resumeUIInteractions() {
-    isLoading = false;
+    MyProgressDialog.hideProgressDialog();
   }
 
   @override
   void suspendUIInteractions() {
-    isLoading = true;
+    MyProgressDialog.progressDialog(R.current.loading);
   }
 
   ZUserInfo? _getUserInfo() {
@@ -84,33 +83,34 @@ class ZAutoRollCallScheduleController extends GetxController with SuspendInterac
   }
 
   Future<void> getScheduledAutoRollCalls() async {
-    schedules.clear();
+    await suspendInteractionsTransaction(transaction: () async {
+      schedules.clear();
 
-    final zUserInfo = _getUserInfo();
-    if (zUserInfo == null) {
-      return;
-    }
+      final zUserInfo = _getUserInfo();
+      if (zUserInfo == null) {
+        return;
+      }
 
-    final mySchedules = await _getMyAutoRollCallScheduleUseCase(userId: zUserInfo.id);
-    schedules.insertAll(0, mySchedules);
-
-    update();
+      final mySchedules = await _getMyAutoRollCallScheduleUseCase(userId: zUserInfo.id);
+      schedules.insertAll(0, mySchedules);
+    });
   }
 
   Future<void> loadZCourses() async {
-    final zUserInfo = _getUserInfo();
-    if (zUserInfo == null) {
-      return;
-    }
+    await suspendInteractionsTransaction(transaction: () async {
+      final zUserInfo = _getUserInfo();
+      if (zUserInfo == null) {
+        return;
+      }
 
-    final fetchedCourses = await _getCourseListUseCase(userInfo: zUserInfo);
+      final fetchedCourses = await _getCourseListUseCase(userInfo: zUserInfo);
 
-    if (fetchedCourses != null) {
-      courses
-        ..clear()
-        ..addAll(fetchedCourses.skipWhile((course) => course.isSpecialCourse));
-      update();
-    }
+      if (fetchedCourses != null) {
+        courses
+          ..clear()
+          ..addAll(fetchedCourses.skipWhile((course) => course.isSpecialCourse));
+      }
+    });
   }
 
   Future<void> submitNewSchedule({
@@ -118,58 +118,60 @@ class ZAutoRollCallScheduleController extends GetxController with SuspendInterac
     required Week weekday,
     required TimeOfDayPeriod period,
   }) async {
-    final zUserInfo = _getUserInfo();
+    await suspendInteractionsTransaction(transaction: () async {
+      final zUserInfo = _getUserInfo();
 
-    if (zUserInfo == null) {
-      return;
-    }
+      if (zUserInfo == null) {
+        return;
+      }
 
-    final newScheduleTimeRange = AutoRollCallScheduleTimeRange(
-      period: period,
-      selectedWeekDay: weekday,
-    );
+      final newScheduleTimeRange = AutoRollCallScheduleTimeRange(
+        period: period,
+        selectedWeekDay: weekday,
+      );
 
-    final schedule = AutoRollCallSchedule(
-      id: _generateId(),
-      enabled: true,
-      targetCourse: course,
-      targetUser: zUserInfo,
-      timeRange: newScheduleTimeRange,
-    );
+      final schedule = AutoRollCallSchedule(
+        id: _generateId(),
+        enabled: true,
+        targetCourse: course,
+        targetUser: zUserInfo,
+        timeRange: newScheduleTimeRange,
+      );
 
-    await _addAutoRollCallScheduleUseCase(schedule: schedule);
+      await _addAutoRollCallScheduleUseCase(schedule: schedule);
 
-    return ZAutoRollCallScheduleController.to.getScheduledAutoRollCalls();
+      return getScheduledAutoRollCalls();
+    });
   }
 
   Future<void> updateSchedule({required bool newStatus, required AutoRollCallSchedule schedule}) =>
-      newStatus ? _enableSchedule(schedule) : _disableSchedule(schedule);
+      suspendInteractionsTransaction(
+        transaction: () => (newStatus ? _enableSchedule(schedule) : _disableSchedule(schedule)),
+      );
 
-  Future<void> removeSchedule({
-    required String monitorId,
-  }) async {
-    await _cancelAutoRollCallScheduleUseCase(scheduleId: monitorId);
-    return getScheduledAutoRollCalls();
+  Future<void> removeSchedule({required String monitorId}) async {
+    await suspendInteractionsTransaction(transaction: () async {
+      await _cancelAutoRollCallScheduleUseCase(scheduleId: monitorId);
+      return getScheduledAutoRollCalls();
+    });
   }
 
-  Future<bool> makeRollCall({
-    required ZCourse course,
-  }) async {
-    final zUserInfo = _getUserInfo();
-    if (zUserInfo == null) {
-      return false;
-    }
+  Future<bool> makeRollCall({required ZCourse course}) async => suspendInteractionsTransaction(transaction: () async {
+        final zUserInfo = _getUserInfo();
+        if (zUserInfo == null) {
+          return false;
+        }
 
-    final currentRollCall = await _getRollCallUseCase(course: course, userInfo: zUserInfo);
-    if (currentRollCall == null) {
-      // TODO: show the message which indicates the reason why this roll-call is null.
-      return false;
-    }
+        final currentRollCall = await _getRollCallUseCase(course: course, userInfo: zUserInfo);
+        if (currentRollCall == null) {
+          // TODO: show the message which indicates the reason why this roll-call is null.
+          return false;
+        }
 
-    return _makeRollCallUseCase(
-      userInfo: zUserInfo,
-      course: course,
-      rollCall: currentRollCall,
-    );
-  }
+        return _makeRollCallUseCase(
+          userInfo: zUserInfo,
+          course: course,
+          rollCall: currentRollCall,
+        );
+      });
 }
