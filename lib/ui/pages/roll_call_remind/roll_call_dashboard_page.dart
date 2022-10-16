@@ -29,6 +29,7 @@ class RollCallDashboardPage extends StatelessWidget {
   }) =>
       FloatingActionButton(
         onPressed: onPressed,
+        backgroundColor: Get.isDarkMode ? const Color(0xFF2155CD) : const Color(0xFFFF9F29),
         child: const Icon(Icons.add),
       );
 
@@ -42,6 +43,8 @@ class RollCallDashboardPage extends StatelessWidget {
 
   Widget get _scheduledMonitorList => GetBuilder<ZAutoRollCallScheduleController>(
         builder: (controller) => ListView.builder(
+          // TODO: hide the floating button when scrolling down the list.
+          padding: const EdgeInsets.only(bottom: 72),
           itemCount: controller.schedules.length,
           itemBuilder: (_, index) {
             final schedule = controller.schedules[index];

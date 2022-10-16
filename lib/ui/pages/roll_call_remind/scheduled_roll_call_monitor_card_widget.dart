@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/horizontal_side_container.dart';
+import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
@@ -25,8 +26,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
     required OnRemoveMonitorPressed onRemoveMonitorPressed,
     required OnRollCallPressed onRollCallPressed,
     required OnActivationStatusSwitchPressed onActivationStatusSwitchPressed,
-  })  : _isDarkMode = true,
-        _period = period,
+  })  : _period = period,
         _courseName = courseName,
         _selectedWeekDay = selectedWeekDay,
         _isMonitorEnabled = isMonitorEnabled,
@@ -34,7 +34,6 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
         _onRollCallPressed = onRollCallPressed,
         _onActivationStatusSwitchPressed = onActivationStatusSwitchPressed;
 
-  final bool _isDarkMode;
   final bool _isMonitorEnabled;
   final Week _selectedWeekDay;
   final TimeOfDayPeriod _period;
@@ -203,6 +202,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isDarkMode = Get.isDarkMode;
     return FittedBox(
       child: SizedBox(
         height: size.height * 0.25,
@@ -214,7 +214,9 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
               HorizontalSideContainer(
                 size: size,
                 ratio: 0.7,
-                color: _isDarkMode ? const Color(0xFFFF9F29) : const Color(0xFF2155CD),
+                color: _isMonitorEnabled
+                    ? (isDarkMode ? const Color(0xFFFF9F29) : const Color(0xFF1A4D2E))
+                    : const Color(0xFFAAAAAA),
                 leftRadius: const Radius.circular(15),
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 content: _buildLeftSection(),
@@ -222,7 +224,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
               HorizontalSideContainer(
                 size: size,
                 ratio: 0.3,
-                color: _isDarkMode ? const Color(0xFF1A4D2E) : const Color(0xFFA2E7F7),
+                color: isDarkMode ? const Color(0xFF1A4D2E) : const Color(0xFFA2E7F7),
                 rightRadius: const Radius.circular(15),
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 content: _buildRightSection(),
