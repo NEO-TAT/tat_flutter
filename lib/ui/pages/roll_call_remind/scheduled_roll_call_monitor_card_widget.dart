@@ -12,6 +12,7 @@ import 'package:weekday_selector/weekday_selector.dart';
 
 typedef OnRemoveMonitorPressed = FutureOr<void> Function();
 typedef OnRollCallPressed = FutureOr<bool> Function();
+typedef OnActivationStatusSwitchPressed = FutureOr<void> Function(bool);
 
 class ScheduledRollCallMonitorCard extends StatelessWidget {
   // TODO(TU): the real _isDarkMode
@@ -23,13 +24,15 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
     required bool isMonitorEnabled,
     required OnRemoveMonitorPressed onRemoveMonitorPressed,
     required OnRollCallPressed onRollCallPressed,
+    required OnActivationStatusSwitchPressed onActivationStatusSwitchPressed,
   })  : _isDarkMode = true,
         _period = period,
         _courseName = courseName,
         _selectedWeekDay = selectedWeekDay,
         _isMonitorEnabled = isMonitorEnabled,
         _onRemoveMonitorPressed = onRemoveMonitorPressed,
-        _onRollCallPressed = onRollCallPressed;
+        _onRollCallPressed = onRollCallPressed,
+        _onActivationStatusSwitchPressed = onActivationStatusSwitchPressed;
 
   final bool _isDarkMode;
   final bool _isMonitorEnabled;
@@ -38,6 +41,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
   final String _courseName;
   final OnRemoveMonitorPressed _onRemoveMonitorPressed;
   final OnRollCallPressed _onRollCallPressed;
+  final OnActivationStatusSwitchPressed _onActivationStatusSwitchPressed;
 
   String _toTimeTextFrom(TimeOfDay? time) {
     String addLeadingZeroIfNeeded(int value) => value < 10 ? '0$value' : value.toString();
@@ -92,7 +96,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
       selectedShape: border,
       selectedFillColor: Colors.red,
       values: List.generate(7, (index) => index == _selectedWeekDay.index, growable: false),
-      onChanged: null,
+      onChanged: (_) {},
     );
   }
 
@@ -106,7 +110,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
               Text(_isMonitorEnabled ? 'ON' : 'Off'),
               Switch(
                 value: _isMonitorEnabled,
-                onChanged: (isEnabled) {},
+                onChanged: _onActivationStatusSwitchPressed,
               ),
             ],
           ),
