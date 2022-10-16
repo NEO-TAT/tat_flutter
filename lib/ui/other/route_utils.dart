@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
-import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_auto_roll_call_schedule_controller.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/ui/pages/coursedetail/course_detail_page.dart';
 import 'package:flutter_app/ui/pages/coursedetail/screen/ischoolplus/iplus_announcement_detail_page.dart';
@@ -139,7 +139,7 @@ class RouteUtils {
       : launchRollCallDashBoardPage();
 
   static Future<void>? launchRollCallDashBoardPage() {
-    ZRollCallMonitorController.to.getScheduledMonitors();
+    ZAutoRollCallScheduleController.to.getScheduledAutoRollCalls();
     return Get.to(
       () => const RollCallDashboardPage(),
       transition: transition,

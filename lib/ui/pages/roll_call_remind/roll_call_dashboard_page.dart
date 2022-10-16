@@ -1,14 +1,12 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
-import 'package:flutter_app/src/controllers/zuvio_roll_call_monitor_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_auto_roll_call_schedule_controller.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_bottom_sheet.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/scheduled_roll_call_monitor_card_widget.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tat_core/tat_core.dart';
 
 class RollCallDashboardPage extends StatelessWidget {
   const RollCallDashboardPage({super.key});
@@ -35,49 +33,33 @@ class RollCallDashboardPage extends StatelessWidget {
       );
 
   void _onAddNewButtonPressed(BuildContext context) {
-    ZCourseController.to.loadCourses();
+    ZAutoRollCallScheduleController.to.loadZCourses();
     showCupertinoModalBottomSheet(
       context: context,
       builder: (context) => const RollCallBottomSheet(),
     );
   }
 
-  Widget get _scheduledMonitorList {
-    return GetBuilder<ZRollCallMonitorController>(
-      builder: (controller) => ListView.builder(
-        itemCount: controller.schedules.length,
-        itemBuilder: (_, index) {
-          final schedule = controller.schedules[index];
-
-          // TODO: FIXME: refactor with the correct domain model inside TAT-Core, instead of using Map structure.
-          final isEnabled = schedule['enabled'] as bool;
-          final startHour = schedule['schedule']['start-time']['hour'] as int;
-          final startMinute = schedule['schedule']['start-time']['minute'] as int;
-          final endHour = schedule['schedule']['end-time']['hour'] as int;
-          final endMinute = schedule['schedule']['end-time']['minute'] as int;
-
-          final courseRawData = schedule['z-course'] as Map<String, dynamic>;
-          final zCourse = ZCourse.fromJson(courseRawData);
-
-          final weekDay = schedule['schedule']['weekday'] as int;
-
-          final id = schedule['id'] as String;
-
-          return ScheduledRollCallMonitorCard(
-            period: TimeOfDayPeriod(
-              TimeOfDay(hour: startHour, minute: startMinute),
-              TimeOfDay(hour: endHour, minute: endMinute),
-            ),
-            courseName: zCourse.name,
-            selectedWeekDay: Week.values[weekDay],
-            isMonitorEnabled: isEnabled,
-            onRemoveMonitorPressed: () => controller.removeMonitor(monitorId: id),
-            onRollCallPressed: () => controller.makeRollCall(course: zCourse),
-          );
-        },
-      ),
-    );
-  }
+  Widget get _scheduledMonitorList => GetBuilder<ZAutoRollCallScheduleController>(
+        builder: (controller) => ListView.builder(
+          itemCount: controller.schedules.length,
+          itemBuilder: (_, index) {
+            final schedule = controller.schedules[index];
+            return ScheduledRollCallMonitorCard(
+              period: schedule.timeRange.period,
+              courseName: schedule.targetCourse.name,
+              selectedWeekDay: schedule.timeRange.selectedWeekDay,
+              isMonitorEnabled: schedule.enabled,
+              onRemoveMonitorPressed: () => controller.removeSchedule(monitorId: schedule.id),
+              onRollCallPressed: () => controller.makeRollCall(course: schedule.targetCourse),
+              onActivationStatusSwitchPressed: (enabled) => controller.updateSchedule(
+                newStatus: enabled,
+                schedule: schedule,
+              ),
+            );
+          },
+        ),
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
