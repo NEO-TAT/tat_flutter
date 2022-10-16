@@ -621,7 +621,7 @@ packages:
       name: flutter_inappwebview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.5.0+2"
+    version: "5.4.4+3"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -1357,7 +1357,7 @@ packages:
       name: sprintf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.2"
+    version: "7.0.0"
   sqflite:
     dependency: "direct main"
     description:
@@ -1419,7 +1419,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "6d0cf84b3f161616b82a07ab0c406562959b30b1"
+      resolved-ref: "4ab29f4c249f49cb99037af927ccd2aedccdff6f"
       url: "git@github.com:NTUT-NPC/TAT-Core.git"
     source: git
     version: "1.0.0-4.0.pre"
