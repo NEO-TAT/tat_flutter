@@ -18,15 +18,17 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(
-        _current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null,
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -2563,6 +2565,16 @@ class S {
     return Intl.message(
       'Open Incognito browsing to enhanced security',
       name: 'androidPrivateBrowseGuideSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `album`
+  String get album {
+    return Intl.message(
+      'album',
+      name: 'album',
       desc: '',
       args: [],
     );
