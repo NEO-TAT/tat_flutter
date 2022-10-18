@@ -7,7 +7,7 @@ import 'package:flutter_app/src/store/picture_storage.dart';
 class NoteCamera extends StatefulWidget {
   final String courseId;
 
-  const NoteCamera({Key? key, required this.courseId}) : super(key: key);
+  const NoteCamera({super.key, required this.courseId});
 
   @override
   State<NoteCamera> createState() => _NoteCameraState();
