@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/store/picture_storage.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:get/get.dart';
 import 'dart:io';
 
 class AlbumPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class AlbumPage extends StatefulWidget {
 class _AlbumPageState extends State<AlbumPage> {
   bool _isLoading = true;
 
-  final List<Picture> pictures = [];
+  final List<Picture> _pictures = [];
 
   final PictureStorage _pictureStorage;
 
@@ -26,26 +27,25 @@ class _AlbumPageState extends State<AlbumPage> {
     super.initState();
     Future.delayed(
       Duration.zero,
-      () => useCourseIdToGetPicturePaths(),
+      () => _useCourseIdToGetPicturePaths(),
     );
   }
 
-  void removePicture(picture) {
+  void _removePicture(picture) {
     _pictureStorage.deletePicture(picture);
-    pictures.remove(picture);
+    _pictures.remove(picture);
     setState(() {});
-    Navigator.pop(context);
+    Get.back();
   }
 
-  void useCourseIdToGetPicturePaths() async {
-    dynamic picturesInfo =
-        await _pictureStorage.getCoursePicture(widget.courseId);
+  void _useCourseIdToGetPicturePaths() async {
+    dynamic picturesInfo = await _pictureStorage.getCoursePicture(widget.courseId);
     for (final pictureInfo in picturesInfo) {
       int infoId = pictureInfo['_id'];
       String infoPath = pictureInfo['picturePath'];
       String infoLabel = pictureInfo['label'];
       String infoNote = pictureInfo['note'];
-      pictures.add(Picture(
+      _pictures.add(Picture(
         id: infoId,
         path: infoPath,
         label: infoLabel,
@@ -64,11 +64,11 @@ class _AlbumPageState extends State<AlbumPage> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Expanded(child: pictureAlbum),
+          : Expanded(child: _pictureAlbum),
     );
   }
 
-  Widget get pictureAlbum {
+  Widget get _pictureAlbum {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     return ListView(
@@ -78,7 +78,7 @@ class _AlbumPageState extends State<AlbumPage> {
           spacing: 10.0, // gap between adjacent chips
           runSpacing: 6.0,
           children: [
-            for (final picture in pictures)
+            for (final picture in _pictures)
               SizedBox(
                 width: screenWidth / 4,
                 height: screenHeight / 8,
@@ -90,7 +90,7 @@ class _AlbumPageState extends State<AlbumPage> {
                         File(picture.path),
                       ),
                     ),
-                    onTap: () => openOriginalSizePicture(context, picture),
+                    onTap: () => _openOriginalSizePicture(context, picture),
                   ),
                 ),
               ),
@@ -100,7 +100,7 @@ class _AlbumPageState extends State<AlbumPage> {
     );
   }
 
-  MaterialPageRoute checkPhotoViewRoute(picture) {
+  MaterialPageRoute _checkPhotoViewRoute(picture) {
     return MaterialPageRoute(
       builder: (BuildContext context) {
         return Scaffold(
@@ -108,17 +108,16 @@ class _AlbumPageState extends State<AlbumPage> {
               imageProvider: FileImage(File(picture.path)),
             ),
             floatingActionButton: FloatingActionButton.extended(
-              onPressed: () => removePicture(picture),
+              onPressed: () => _removePicture(picture),
               label: const Text('Delete'),
               backgroundColor: Colors.pink,
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat);
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
       },
     );
   }
 
-  void openOriginalSizePicture(BuildContext context, Picture picture) {
-    Navigator.push(context, checkPhotoViewRoute(picture));
+  void _openOriginalSizePicture(BuildContext context, Picture picture) {
+    Navigator.push(context, _checkPhotoViewRoute(picture));
   }
 }
