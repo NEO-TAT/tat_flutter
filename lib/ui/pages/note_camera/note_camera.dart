@@ -133,7 +133,7 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
                 ),
               ),
             )
-          : Container(),
+          : const SizedBox.shrink(),
     );
   }
 }
