@@ -30,7 +30,7 @@ class _AlbumPageState extends State<AlbumPage> {
     );
   }
 
-  void removePicture(picture){
+  void removePicture(picture) {
     _pictureStorage.deletePicture(picture);
     pictures.remove(picture);
     setState(() {});
@@ -58,10 +58,12 @@ class _AlbumPageState extends State<AlbumPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
           : Expanded(child: pictureAlbum),
     );
   }
