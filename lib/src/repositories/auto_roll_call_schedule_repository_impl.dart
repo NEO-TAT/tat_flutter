@@ -7,7 +7,7 @@ import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:tat_core/core/auto_roll_call/data/auto_roll_call_schedule_repository.dart';
 import 'package:tat_core/core/auto_roll_call/domain/auto_roll_call_schedule.dart';
 
-const String _kAutoRollCallScheduleCollectionName = 'auto-roll-call-schedules';
+const String _kAutoRollCallUsersCollectionName = 'auto-roll-call-users';
 const String _kSchedulesFieldName = 'schedules';
 const String _kUserInfoFieldName = 'userInfo';
 const String _kUserDeviceTokensFieldName = 'userDeviceTokens';
@@ -26,7 +26,7 @@ class AutoRollCallScheduleRepositoryImpl implements AutoRollCallScheduleReposito
   final FirebaseAuth _firebaseAuth;
   final FirebaseMessaging _firebaseMessaging;
   final CollectionReference<Map<String, dynamic>> _scheduleCollectionRef =
-      FirebaseFirestore.instance.collection(_kAutoRollCallScheduleCollectionName);
+      FirebaseFirestore.instance.collection(_kAutoRollCallUsersCollectionName);
   late final CollectionReference<Map<String, dynamic>> _userScheduleCollectionRef;
 
   bool _checkUserSignedIn() {
