@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,44 +15,34 @@ class CloudMessagingUtils {
       sound: true,
     );
 
-    FirebaseMessaging.onMessage.listen((event) {
-      _onMessage(event);
-    });
-/*
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      _onMessage(event);
-    });
- */
+    FirebaseMessaging.onMessage.listen((event) => _onMessage(event));
   }
 
-  static Future<String> getToken() async {
-    return await FirebaseMessaging.instance.getToken();
-  }
+  static Future<String?> getToken() => FirebaseMessaging.instance.getToken();
 
-  static Future<void> _onBackGroundMessage(RemoteMessage message) async {
+  static Future<void> _onBackGroundMessage(RemoteMessage message) {
     ReceivedNotification receivedNotification = ReceivedNotification(
-      title: message.notification.title,
-      body: message.notification.body,
+      title: message.notification?.title,
+      body: message.notification?.body,
       payload: json.encode({
         "type": "cloud_message_background",
         "id": Notifications.instance.notificationId,
         "data": message.data,
       }),
     );
-    await Notifications.instance.showNotification(receivedNotification);
-    return;
+    return Notifications.instance.showNotification(receivedNotification);
   }
 
-  static Future<void> _onMessage(RemoteMessage message) async {
+  static Future<void> _onMessage(RemoteMessage message) {
     ReceivedNotification receivedNotification = ReceivedNotification(
-      title: message.notification.title,
-      body: message.notification.body,
+      title: message.notification?.title,
+      body: message.notification?.body,
       payload: json.encode({
         "type": "cloud_message",
         "id": Notifications.instance.notificationId,
         "data": message.data,
       }),
     );
-    await Notifications.instance.showNotification(receivedNotification);
+    return Notifications.instance.showNotification(receivedNotification);
   }
 }
