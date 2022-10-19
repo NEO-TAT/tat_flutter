@@ -36,8 +36,7 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   void _useCourseIdToGetPicturePaths() async {
-    dynamic picturesInfo =
-        await _pictureStorage.getCoursePicture(widget.courseId);
+    dynamic picturesInfo = await _pictureStorage.getCoursePicture(widget.courseId);
     for (final pictureInfo in picturesInfo) {
       int infoId = pictureInfo['_id'];
       String infoPath = pictureInfo['picturePath'];
@@ -100,24 +99,34 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   MaterialPageRoute _checkPhotoViewRoute(picture) {
+    bool deleteButtonIsPressed = false;
     return MaterialPageRoute(
       builder: (BuildContext context) {
         return Scaffold(
             body: PhotoView(
-              imageProvider: FileImage(File(picture.path)),
+              imageProvider: FileImage(
+                File(picture.path),
+              ),
             ),
             floatingActionButton: FloatingActionButton.extended(
-              onPressed: () => _removePicture(picture),
+              onPressed: () {
+                if (!deleteButtonIsPressed) _removePicture(picture);
+                deleteButtonIsPressed = true;
+              },
               label: const Text('Delete'),
               backgroundColor: Colors.pink,
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat);
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
       },
     );
   }
 
   void _openOriginalSizePicture(BuildContext context, Picture picture) {
-    Navigator.push(context, _checkPhotoViewRoute(picture));
+    Navigator.push(
+      context,
+      _checkPhotoViewRoute(
+        picture,
+      ),
+    );
   }
 }
