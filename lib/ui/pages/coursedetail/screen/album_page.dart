@@ -14,7 +14,7 @@ class AlbumPage extends StatefulWidget {
 }
 
 class _AlbumPageState extends State<AlbumPage> {
-  bool _isLoading = true;
+  final _isLoading = true.obs;
 
   final List<Picture> _pictures = [];
 
@@ -25,10 +25,7 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(
-      Duration.zero,
-      () => _useCourseIdToGetPicturePaths(),
-    );
+    _useCourseIdToGetPicturePaths();
   }
 
   void _removePicture(picture) {
@@ -39,7 +36,8 @@ class _AlbumPageState extends State<AlbumPage> {
   }
 
   void _useCourseIdToGetPicturePaths() async {
-    dynamic picturesInfo = await _pictureStorage.getCoursePicture(widget.courseId);
+    dynamic picturesInfo =
+        await _pictureStorage.getCoursePicture(widget.courseId);
     for (final pictureInfo in picturesInfo) {
       int infoId = pictureInfo['_id'];
       String infoPath = pictureInfo['picturePath'];
@@ -52,19 +50,20 @@ class _AlbumPageState extends State<AlbumPage> {
         note: infoNote,
       ));
     }
-    _isLoading = false;
-    setState(() {});
+    _isLoading.toggle();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Expanded(child: _pictureAlbum),
+    return Obx(
+      () => Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: _isLoading.isTrue
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Expanded(child: _pictureAlbum),
+      ),
     );
   }
 
@@ -112,7 +111,8 @@ class _AlbumPageState extends State<AlbumPage> {
               label: const Text('Delete'),
               backgroundColor: Colors.pink,
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat);
       },
     );
   }
