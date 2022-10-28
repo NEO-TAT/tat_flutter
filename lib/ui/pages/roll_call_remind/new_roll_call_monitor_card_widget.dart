@@ -102,7 +102,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     return true;
   }
 
-  void _onAddMonitorButtonPressed() {
+  void _onAddMonitorButtonPressed() async {
     final isCardValid = _verifyCardInfo();
     if (!isCardValid) {
       return;
@@ -112,7 +112,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     final startTime = _monitoringStartTime.value ?? TimeOfDay.now();
     final endTime = _monitoringEndTime.value ?? TimeOfDay.now();
 
-    widget._onAddMonitorPressed(weekday, TimeOfDayPeriod(startTime, endTime));
+    await widget._onAddMonitorPressed(weekday, TimeOfDayPeriod(startTime, endTime));
     Get.back();
   }
 
