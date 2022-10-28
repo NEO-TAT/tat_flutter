@@ -9,7 +9,7 @@ publish_to: 'none'
 version: 1.4.2+5016
 
 environment:
-  flutter: ">=3.3.4 <4.0.0"
+  flutter: ">=3.3.6 <4.0.0"
   sdk: ">=2.18.2 <3.0.0"
 
 dependencies:
@@ -67,7 +67,7 @@ dependencies:
   clipboard: ^0.1.3
   #剪貼簿
   #----------WebView----------#
-  flutter_inappwebview: ^5.5.0+3
+  flutter_inappwebview: ^5.7.1
   flutter_web_browser:
     git:
       url: git@github.com:NEO-TAT/flutter_web_browser.git
@@ -126,13 +126,13 @@ dependencies:
   alice: ^0.2.5
 
   # Firebase
-  firebase_core: ^2.0.0
-  firebase_analytics: ^10.0.1
-  firebase_crashlytics: ^3.0.1
-  firebase_remote_config: ^3.0.1
-  firebase_messaging: ^14.0.1
-  cloud_firestore: ^4.0.1
-  firebase_auth: ^4.0.1
+  firebase_core: ^2.1.1
+  firebase_analytics: ^10.0.3
+  firebase_crashlytics: ^3.0.3
+  firebase_remote_config: ^3.0.3
+  firebase_messaging: ^14.0.3
+  cloud_firestore: ^4.0.3
+  firebase_auth: ^4.1.0
 
   http_parser: ^4.0.2
 
@@ -145,10 +145,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.10.0
-  flutter_native_splash: ^2.2.11
+  flutter_native_splash: ^2.2.12
   #---------json----------#
   build_runner: ^2.3.2
-  json_serializable: ^6.5.3
+  json_serializable: ^6.5.4
   flutter_lints: ^2.0.1
 
 

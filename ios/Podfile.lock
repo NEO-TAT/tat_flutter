@@ -6,7 +6,7 @@ PODS:
     - HLSCachingReverseProxyServer
     - PINCache
   - Cache (6.0.0)
-  - cloud_firestore (4.0.1):
+  - cloud_firestore (4.0.3):
     - Firebase/Firestore (= 10.0.0)
     - firebase_core
     - Flutter
@@ -72,26 +72,26 @@ PODS:
   - Firebase/RemoteConfig (10.0.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.0.0)
-  - firebase_analytics (10.0.1):
+  - firebase_analytics (10.0.3):
     - Firebase/Analytics (= 10.0.0)
     - firebase_core
     - Flutter
-  - firebase_auth (4.0.1):
+  - firebase_auth (4.1.0):
     - Firebase/Auth (= 10.0.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.0.0):
+  - firebase_core (2.1.1):
     - Firebase/CoreOnly (= 10.0.0)
     - Flutter
-  - firebase_crashlytics (3.0.1):
+  - firebase_crashlytics (3.0.3):
     - Firebase/Crashlytics (= 10.0.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.0.1):
+  - firebase_messaging (14.0.3):
     - Firebase/Messaging (= 10.0.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (3.0.1):
+  - firebase_remote_config (3.0.3):
     - Firebase/RemoteConfig (= 10.0.0)
     - firebase_core
     - Flutter
@@ -423,19 +423,19 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   better_player: 2406bfe8175203c7a46fa15f9d778d73b12e1646
   Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
-  cloud_firestore: 517613047eaa75493f00adc8735f9d0315ec906d
+  cloud_firestore: 1efcf26ee1fe576dc695389683695230d60680f5
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
   Firebase: 1b810f3d0c0532e27a48f1961f8c0400a668a2cf
-  firebase_analytics: 8f6874ecf36f61797835ed99d7a792d3a212b026
-  firebase_auth: 62015b6cbfccf40521d7f777c804d19f9bc6f922
-  firebase_core: f9febc855bab615ea02dc9a75b6932364edb1225
-  firebase_crashlytics: 275cc0fb01cead35e85a24f0bed8c5a58246d0d1
-  firebase_messaging: a39df674ecaffd962658a9de3182d735b6cee0d7
-  firebase_remote_config: 11eee0656374e6ef595f36e49d904ddc209b4523
+  firebase_analytics: ed8e5198c08a3ec3f5e1dd150dd4db07d7871e5b
+  firebase_auth: e07b2260d936b7b20f45f9ddafc871f75778be66
+  firebase_core: 5c0bb0ca7d0e70480a68a6e9ad9bf55d1edd5305
+  firebase_crashlytics: ff96f93b1f78d0347aa795abca038cf9f8625cdf
+  firebase_messaging: 46616a7ded661b632eb7a28846d906849c8b15af
+  firebase_remote_config: 40c0b133bc2cbbba8043189b372405097cd9958d
   FirebaseABTesting: 5a08a4d3060b7fb5638f60698bc2cb57996bcc73
   FirebaseAnalytics: 9921a52739f4ab66099da31b6e0243db78a3ac0a
   FirebaseAuth: 493382cf533cc45e2862b00e9aa4cfe4c98daf71
