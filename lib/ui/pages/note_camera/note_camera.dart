@@ -67,9 +67,9 @@ class _NoteCameraState extends State<NoteCamera> with WidgetsBindingObserver {
   void adjustZoom(scaleStartDetails) {
     double newZoom = 0.0;
     if (scaleStartDetails.scale > 1.0) {
-      newZoom = _zoom + 0.05;
+      newZoom = _zoom + 0.01;
     } else if (scaleStartDetails.scale < 1.0) {
-      newZoom = _zoom - 0.05;
+      newZoom = _zoom - 0.01;
     }
     if (newZoom >= 1.0 && newZoom <= 9.0) {
       _zoom = newZoom;
