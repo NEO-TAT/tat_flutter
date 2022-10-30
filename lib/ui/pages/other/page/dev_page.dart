@@ -33,7 +33,7 @@ class DevPage extends StatelessWidget {
       case OnListViewPress.cloudMessageToken:
         final token = await CloudMessagingUtils.getToken();
         MyToast.show("$token copy");
-        FlutterClipboard.copy(token);
+        FlutterClipboard.copy(token ?? '');
         break;
       case OnListViewPress.dioLog:
         RouteUtils.toAliceInspectorPage();

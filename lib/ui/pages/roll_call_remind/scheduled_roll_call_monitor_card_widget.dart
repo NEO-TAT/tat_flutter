@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/error_dialog.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/horizontal_side_container.dart';
+import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
 import 'package:weekday_selector/weekday_selector.dart';
 
 typedef OnRemoveMonitorPressed = FutureOr<void> Function();
 typedef OnRollCallPressed = FutureOr<bool> Function();
+typedef OnActivationStatusSwitchPressed = FutureOr<void> Function(bool);
 
 class ScheduledRollCallMonitorCard extends StatelessWidget {
   // TODO(TU): the real _isDarkMode
@@ -23,21 +25,22 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
     required bool isMonitorEnabled,
     required OnRemoveMonitorPressed onRemoveMonitorPressed,
     required OnRollCallPressed onRollCallPressed,
-  })  : _isDarkMode = true,
-        _period = period,
+    required OnActivationStatusSwitchPressed onActivationStatusSwitchPressed,
+  })  : _period = period,
         _courseName = courseName,
         _selectedWeekDay = selectedWeekDay,
         _isMonitorEnabled = isMonitorEnabled,
         _onRemoveMonitorPressed = onRemoveMonitorPressed,
-        _onRollCallPressed = onRollCallPressed;
+        _onRollCallPressed = onRollCallPressed,
+        _onActivationStatusSwitchPressed = onActivationStatusSwitchPressed;
 
-  final bool _isDarkMode;
   final bool _isMonitorEnabled;
   final Week _selectedWeekDay;
   final TimeOfDayPeriod _period;
   final String _courseName;
   final OnRemoveMonitorPressed _onRemoveMonitorPressed;
   final OnRollCallPressed _onRollCallPressed;
+  final OnActivationStatusSwitchPressed _onActivationStatusSwitchPressed;
 
   String _toTimeTextFrom(TimeOfDay? time) {
     String addLeadingZeroIfNeeded(int value) => value < 10 ? '0$value' : value.toString();
@@ -92,7 +95,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
       selectedShape: border,
       selectedFillColor: Colors.red,
       values: List.generate(7, (index) => index == _selectedWeekDay.index, growable: false),
-      onChanged: null,
+      onChanged: (_) {},
     );
   }
 
@@ -106,7 +109,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
               Text(_isMonitorEnabled ? 'ON' : 'Off'),
               Switch(
                 value: _isMonitorEnabled,
-                onChanged: (isEnabled) {},
+                onChanged: _onActivationStatusSwitchPressed,
               ),
             ],
           ),
@@ -199,6 +202,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isDarkMode = Get.isDarkMode;
     return FittedBox(
       child: SizedBox(
         height: size.height * 0.25,
@@ -210,7 +214,9 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
               HorizontalSideContainer(
                 size: size,
                 ratio: 0.7,
-                color: _isDarkMode ? const Color(0xFFFF9F29) : const Color(0xFF2155CD),
+                color: _isMonitorEnabled
+                    ? (isDarkMode ? const Color(0xFFFF9F29) : const Color(0xFF1A4D2E))
+                    : const Color(0xFFAAAAAA),
                 leftRadius: const Radius.circular(15),
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 content: _buildLeftSection(),
@@ -218,7 +224,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
               HorizontalSideContainer(
                 size: size,
                 ratio: 0.3,
-                color: _isDarkMode ? const Color(0xFF1A4D2E) : const Color(0xFFA2E7F7),
+                color: isDarkMode ? const Color(0xFF1A4D2E) : const Color(0xFFA2E7F7),
                 rightRadius: const Radius.circular(15),
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
                 content: _buildRightSection(),

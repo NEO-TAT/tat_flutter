@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/controllers/zuvio_course_controller.dart';
+import 'package:flutter_app/src/controllers/zuvio_auto_roll_call_schedule_controller.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/new_roll_call_monitor_card_widget.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +28,7 @@ class RollCallBottomSheet extends StatelessWidget {
 
   Widget get _courseCardList {
     final isDarkMode = Get.isDarkMode;
-    return GetBuilder<ZCourseController>(
+    return GetBuilder<ZAutoRollCallScheduleController>(
       builder: (controller) => ListView.builder(
         itemCount: controller.courses.length,
         itemBuilder: (_, index) {
@@ -39,7 +39,7 @@ class RollCallBottomSheet extends StatelessWidget {
             teacherName: course.teacherName,
             semesterName: course.semesterName,
             isDarkMode: isDarkMode,
-            onAddMonitorPressed: (weekday, period) => controller.addScheduledMonitor(
+            onAddMonitorPressed: (weekday, period) => controller.submitNewSchedule(
               course: course,
               period: period,
               weekday: weekday,
