@@ -1,12 +1,5 @@
 PODS:
-  - better_player (0.0.1):
-    - Cache (~> 6.0.0)
-    - Flutter
-    - GCDWebServer
-    - HLSCachingReverseProxyServer
-    - PINCache
-  - Cache (6.0.0)
-  - cloud_firestore (4.0.3):
+  - cloud_firestore (4.0.4):
     - Firebase/Firestore (= 10.0.0)
     - firebase_core
     - Flutter
@@ -72,30 +65,30 @@ PODS:
   - Firebase/RemoteConfig (10.0.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.0.0)
-  - firebase_analytics (10.0.3):
+  - firebase_analytics (10.0.4):
     - Firebase/Analytics (= 10.0.0)
     - firebase_core
     - Flutter
-  - firebase_auth (4.1.0):
+  - firebase_auth (4.1.1):
     - Firebase/Auth (= 10.0.0)
     - firebase_core
     - Flutter
   - firebase_core (2.1.1):
     - Firebase/CoreOnly (= 10.0.0)
     - Flutter
-  - firebase_crashlytics (3.0.3):
+  - firebase_crashlytics (3.0.4):
     - Firebase/Crashlytics (= 10.0.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.0.3):
+  - firebase_messaging (14.0.4):
     - Firebase/Messaging (= 10.0.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (3.0.3):
+  - firebase_remote_config (3.0.4):
     - Firebase/RemoteConfig (= 10.0.0)
     - firebase_core
     - Flutter
-  - FirebaseABTesting (10.0.0):
+  - FirebaseABTesting (10.1.0):
     - FirebaseCore (~> 10.0)
   - FirebaseAnalytics (10.0.0):
     - FirebaseAnalytics/AdIdSupport (= 10.0.0)
@@ -124,7 +117,7 @@ PODS:
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
-  - FirebaseCoreInternal (10.0.0):
+  - FirebaseCoreInternal (10.1.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FirebaseCrashlytics (10.0.0):
     - FirebaseCore (~> 10.0)
@@ -141,7 +134,7 @@ PODS:
   - FirebaseFirestore/Base (10.0.0)
   - FirebaseFirestore/WithLeveldb (10.0.0):
     - FirebaseFirestore/Base
-  - FirebaseInstallations (10.0.0):
+  - FirebaseInstallations (10.1.0):
     - FirebaseCore (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
@@ -183,9 +176,6 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - GCDWebServer (3.5.4):
-    - GCDWebServer/Core (= 3.5.4)
-  - GCDWebServer/Core (3.5.4)
   - GoogleAppMeasurement (10.0.0):
     - GoogleAppMeasurement/AdIdSupport (= 10.0.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.8)
@@ -229,10 +219,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.8.0):
     - GoogleUtilities/Logger
-  - GTMSessionFetcher/Core (2.1.0)
-  - HLSCachingReverseProxyServer (0.1.0):
-    - GCDWebServer (~> 3.5)
-    - PINCache (>= 3.0.1-beta.3)
+  - GTMSessionFetcher/Core (2.2.0)
   - local_auth_ios (0.0.1):
     - Flutter
   - nanopb (2.30909.0):
@@ -240,7 +227,7 @@ PODS:
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
-  - open_file (0.0.1):
+  - open_filex (0.0.2):
     - Flutter
   - OrderedSet (5.0.0)
   - package_info (0.0.1):
@@ -249,24 +236,16 @@ PODS:
     - Flutter
   - path_provider_ios (0.0.1):
     - Flutter
-  - "permission_handler (5.1.0+2)":
+  - permission_handler_apple (9.0.4):
     - Flutter
-  - PINCache (3.0.3):
-    - PINCache/Arc-exception-safe (= 3.0.3)
-    - PINCache/Core (= 3.0.3)
-  - PINCache/Arc-exception-safe (3.0.3):
-    - PINCache/Core
-  - PINCache/Core (3.0.3):
-    - PINOperation (~> 1.2.1)
-  - PINOperation (1.2.1)
   - PromisesObjC (2.1.1)
   - Reachability (3.2)
-  - SDWebImage (5.13.4):
-    - SDWebImage/Core (= 5.13.4)
-  - SDWebImage/Core (5.13.4)
-  - sensors (0.0.1):
+  - SDWebImage (5.13.5):
+    - SDWebImage/Core (= 5.13.5)
+  - SDWebImage/Core (5.13.5)
+  - sensors_plus (0.0.1):
     - Flutter
-  - share (0.0.1):
+  - share_plus (0.0.1):
     - Flutter
   - shared_preferences_ios (0.0.1):
     - Flutter
@@ -283,7 +262,6 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - better_player (from `.symlinks/plugins/better_player/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
@@ -303,13 +281,13 @@ DEPENDENCIES:
   - flutter_web_browser (from `.symlinks/plugins/flutter_web_browser/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
-  - open_file (from `.symlinks/plugins/open_file/ios`)
+  - open_filex (from `.symlinks/plugins/open_filex/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
-  - sensors (from `.symlinks/plugins/sensors/ios`)
-  - share (from `.symlinks/plugins/share/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - sensors_plus (from `.symlinks/plugins/sensors_plus/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
@@ -318,7 +296,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Cache
     - DKImagePickerController
     - DKPhotoGallery
     - Firebase
@@ -332,16 +309,12 @@ SPEC REPOS:
     - FirebaseMessaging
     - FirebaseRemoteConfig
     - FMDB
-    - GCDWebServer
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
     - GTMSessionFetcher
-    - HLSCachingReverseProxyServer
     - nanopb
     - OrderedSet
-    - PINCache
-    - PINOperation
     - PromisesObjC
     - Reachability
     - SDWebImage
@@ -349,8 +322,6 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
-  better_player:
-    :path: ".symlinks/plugins/better_player/ios"
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   connectivity:
@@ -390,20 +361,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   local_auth_ios:
     :path: ".symlinks/plugins/local_auth_ios/ios"
-  open_file:
-    :path: ".symlinks/plugins/open_file/ios"
+  open_filex:
+    :path: ".symlinks/plugins/open_filex/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
-  permission_handler:
-    :path: ".symlinks/plugins/permission_handler/ios"
-  sensors:
-    :path: ".symlinks/plugins/sensors/ios"
-  share:
-    :path: ".symlinks/plugins/share/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  sensors_plus:
+    :path: ".symlinks/plugins/sensors_plus/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_ios:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
   sqflite:
@@ -421,29 +392,27 @@ CHECKOUT OPTIONS:
     :tag: 10.0.0
 
 SPEC CHECKSUMS:
-  better_player: 2406bfe8175203c7a46fa15f9d778d73b12e1646
-  Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
-  cloud_firestore: 1efcf26ee1fe576dc695389683695230d60680f5
+  cloud_firestore: 62c5fa0e5ce5373be25d6233e8edbbe991fa973d
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
   Firebase: 1b810f3d0c0532e27a48f1961f8c0400a668a2cf
-  firebase_analytics: ed8e5198c08a3ec3f5e1dd150dd4db07d7871e5b
-  firebase_auth: e07b2260d936b7b20f45f9ddafc871f75778be66
+  firebase_analytics: 38790c3205b2ee56b82be7bf0f54c84fc866253f
+  firebase_auth: dd33e93fce72a1c72040f7380dacf06e89db5705
   firebase_core: 5c0bb0ca7d0e70480a68a6e9ad9bf55d1edd5305
-  firebase_crashlytics: ff96f93b1f78d0347aa795abca038cf9f8625cdf
-  firebase_messaging: 46616a7ded661b632eb7a28846d906849c8b15af
-  firebase_remote_config: 40c0b133bc2cbbba8043189b372405097cd9958d
-  FirebaseABTesting: 5a08a4d3060b7fb5638f60698bc2cb57996bcc73
+  firebase_crashlytics: 5256cf2eb7f883fee0b5f1c8cd71ea3137942f62
+  firebase_messaging: bf848602391fa6ee68d86e337f81be14be120aaf
+  firebase_remote_config: 02b66b55a60acde247bbf92101ae5fecc113df80
+  FirebaseABTesting: 8404d743de561c73570c8dbb7810035ffec10053
   FirebaseAnalytics: 9921a52739f4ab66099da31b6e0243db78a3ac0a
   FirebaseAuth: 493382cf533cc45e2862b00e9aa4cfe4c98daf71
   FirebaseCore: 97f48a3a567a72b8d4daa0f03c3aadb78df4e995
-  FirebaseCoreInternal: 5eb3960335da5ea30115d57d39db6988c4ad06f3
+  FirebaseCoreInternal: 96d75228e10fd369564da51bd898414eb0f54df5
   FirebaseCrashlytics: 6b0613b548fe096221b5ba6d2f7a9732b451233b
   FirebaseFirestore: 078f25cdb382aef05be4c116942c74c3cacbb8d4
-  FirebaseInstallations: 7f1c9ae6bd9df6abe9c74124b38fa8740aba5df4
+  FirebaseInstallations: 99d24bac0243cf8b0e96cf5426340d211f0bcc80
   FirebaseMessaging: 8916bf5edb1dbfac74665a181e4d1ab3a78a08a2
   FirebaseRemoteConfig: e4431ddba74ddf705e2aabd7d356a23d5b802853
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
@@ -454,27 +423,23 @@ SPEC CHECKSUMS:
   flutter_web_browser: 7bccaafbb0c5b8862afe7bcd158f15557109f61f
   fluttertoast: 74526702fea2c060ea55dde75895b7e1bde1c86b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   GoogleAppMeasurement: 7e48a3249792ac35d6f18f107f63f199a7e9d0ce
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
-  GTMSessionFetcher: ffbb25ec00ebcb5201adab0a56d808f6f1902d9f
-  HLSCachingReverseProxyServer: 59935e1e0244ad7f3375d75b5ef46e8eb26ab181
+  GTMSessionFetcher: d62ffccea5108bb9e7762ee121ae63bbdd2c6303
   local_auth_ios: 0d333dde7780f669e66f19d2ff6005f3ea84008d
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
-  open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
+  open_filex: 6e26e659846ec990262224a12ef1c528bb4edbe4
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
-  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
-  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
-  PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  SDWebImage: e5cc87bf736e60f49592f307bdf9e157189298a3
-  sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
-  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  SDWebImage: 23d714cd599354ee7906dbae26dff89b421c4370
+  sensors_plus: 5717760720f7e6acd96fdbd75b7428f5ad755ec2
+  share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
