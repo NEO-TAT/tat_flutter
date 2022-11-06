@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,9 +9,9 @@ class FileIcon extends StatelessWidget {
   final FileSystemEntity file;
 
   const FileIcon({
-    Key key,
-    @required this.file,
-  }) : super(key: key);
+    super.key,
+    required this.file,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +43,11 @@ class FileIcon extends StatelessWidget {
         case "image":
           {
             return Image.file(
-              file,
+              f,
               height: 40,
               width: 40,
             );
           }
-          break;
         case "audio":
           {
             return const Icon(
@@ -58,7 +55,6 @@ class FileIcon extends StatelessWidget {
               color: Colors.blue,
             );
           }
-          break;
 
         case "text":
           {
@@ -67,7 +63,6 @@ class FileIcon extends StatelessWidget {
               color: Colors.orangeAccent,
             );
           }
-          break;
 
         default:
           {
@@ -75,7 +70,6 @@ class FileIcon extends StatelessWidget {
               FeatherIcons.file,
             );
           }
-          break;
       }
     }
   }

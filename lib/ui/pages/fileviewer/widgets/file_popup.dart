@@ -1,17 +1,15 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
 
 class FilePopup extends StatelessWidget {
   final String path;
-  final Function popTap;
+  final void Function(int) popTap;
 
   const FilePopup({
-    Key key,
-    @required this.path,
-    @required this.popTap,
-  }) : super(key: key);
+    super.key,
+    required this.path,
+    required this.popTap,
+  });
 
   @override
   Widget build(BuildContext context) => PopupMenuButton<int>(
@@ -32,7 +30,7 @@ class FilePopup extends StatelessWidget {
         ],
         icon: Icon(
           Icons.arrow_drop_down,
-          color: Theme.of(context).textTheme.headline6.color,
+          color: Theme.of(context).textTheme.headline6?.color,
         ),
         color: Theme.of(context).scaffoldBackgroundColor,
         offset: const Offset(0, 30),
