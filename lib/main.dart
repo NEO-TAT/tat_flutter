@@ -149,6 +149,8 @@ Future<void> main() async {
 
   await LocalStorage.instance.init(httpClientInterceptors: apiInterceptors);
 
+  Log.init();
+
   runZonedGuarded(
     () {
       FirebaseAnalytics.instance.logAppOpen();
@@ -174,29 +176,27 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<AppProvider>(builder: (BuildContext context, AppProvider appProvider, Widget child) {
-      appProvider.navigatorKey = Get.key;
-      return GetMaterialApp(
-        title: AppConfig.appName,
-        theme: appProvider.theme,
-        darkTheme: AppThemes.darkTheme,
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate
-        ],
-        builder: BotToastInit(),
-        navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
-        supportedLocales: S.delegate.supportedLocales,
-        home: const MainScreen(),
-        logWriterCallback: (String text, {bool isError}) {
-          Log.d(text);
-        },
-      );
-    });
-  }
+  Widget build(BuildContext context) => Consumer<AppProvider>(builder: (context, appProvider, child) {
+        appProvider.navigatorKey = Get.key;
+        return GetMaterialApp(
+          title: AppConfig.appName,
+          theme: appProvider.theme,
+          darkTheme: AppThemes.darkTheme,
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate
+          ],
+          builder: BotToastInit(),
+          navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
+          supportedLocales: S.delegate.supportedLocales,
+          home: const MainScreen(),
+          logWriterCallback: (String text, {bool isError}) {
+            Log.d(text);
+          },
+        );
+      });
 }
 
 typedef _FutureVoidCallBack = Future<void> Function();

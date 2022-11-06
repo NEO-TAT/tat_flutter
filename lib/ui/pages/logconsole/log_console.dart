@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -8,7 +6,7 @@ import 'package:logger/logger.dart';
 
 import 'ansi_parser.dart';
 
-ListQueue<OutputEvent> _outputEventBuffer = ListQueue();
+final ListQueue<OutputEvent> _outputEventBuffer = ListQueue();
 int _bufferSize = 50;
 bool _initialized = false;
 
@@ -25,9 +23,7 @@ class MyConsoleOutput extends LogOutput {
 class LogConsole extends StatefulWidget {
   final bool dark;
 
-  LogConsole({Key key, this.dark = false})
-      : assert(_initialized, "Please call LogConsole.init() first."),
-        super(key: key);
+  LogConsole({super.key, this.dark = false}) : assert(_initialized, "Please call LogConsole.init() first.");
 
   static void init({int bufferSize = 50}) {
     if (_initialized) return;
@@ -37,13 +33,13 @@ class LogConsole extends StatefulWidget {
 
   static String getLog() {
     bool error = false;
-    List<OutputEvent> events = [];
-    for (OutputEvent event in _outputEventBuffer) {
+    final List<OutputEvent> events = [];
+    for (final event in _outputEventBuffer) {
       events.add(event);
     }
     String log = "";
     for (int i = 0; i < events.length; i++) {
-      OutputEvent event = events[i];
+      final event = events[i];
       if (event.level == Level.error) {
         error = true;
         log += event.lines.join("\n");
@@ -71,12 +67,17 @@ class RenderedEvent {
   final TextSpan span;
   final String lowerCaseText;
 
-  RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
+  const RenderedEvent(
+    this.id,
+    this.level,
+    this.span,
+    this.lowerCaseText,
+  );
 }
 
 class _LogConsoleState extends State<LogConsole> {
   final ListQueue<RenderedEvent> _renderedBuffer = ListQueue();
-  List<RenderedEvent> _filteredBuffer = [];
+  final List<RenderedEvent> _filteredBuffer = [];
 
   final _scrollController = ScrollController();
   final _filterController = TextEditingController();
@@ -84,7 +85,7 @@ class _LogConsoleState extends State<LogConsole> {
   Level _filterLevel = Level.verbose;
   double _logFontSize = 14;
 
-  var _currentId = 0;
+  int _currentId = 0;
   bool _scrollListenerEnabled = true;
   bool _followBottom = true;
 
@@ -93,7 +94,7 @@ class _LogConsoleState extends State<LogConsole> {
     super.initState();
     _scrollController.addListener(() {
       if (!_scrollListenerEnabled) return;
-      var scrolledToBottom = _scrollController.offset >= _scrollController.position.maxScrollExtent;
+      final scrolledToBottom = _scrollController.offset >= _scrollController.position.maxScrollExtent;
       setState(() {
         _followBottom = scrolledToBottom;
       });
@@ -105,26 +106,27 @@ class _LogConsoleState extends State<LogConsole> {
     super.didChangeDependencies();
 
     _renderedBuffer.clear();
-    for (var event in _outputEventBuffer) {
+    for (final event in _outputEventBuffer) {
       _renderedBuffer.add(_renderEvent(event));
     }
     _refreshFilter();
   }
 
   void _refreshFilter() {
-    var newFilteredBuffer = _renderedBuffer.where((it) {
-      var logLevelMatches = it.level.index >= _filterLevel.index;
+    final newFilteredBuffer = _renderedBuffer.where((it) {
+      final logLevelMatches = it.level.index >= _filterLevel.index;
       if (!logLevelMatches) {
         return false;
       } else if (_filterController.text.isNotEmpty) {
-        var filterText = _filterController.text.toLowerCase();
+        final filterText = _filterController.text.toLowerCase();
         return it.lowerCaseText.contains(filterText);
       } else {
         return true;
       }
     }).toList();
     setState(() {
-      _filteredBuffer = newFilteredBuffer;
+      _filteredBuffer.clear();
+      _filteredBuffer.addAll(newFilteredBuffer);
     });
 
     if (_followBottom) {
@@ -133,19 +135,7 @@ class _LogConsoleState extends State<LogConsole> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: widget.dark
-          ? ThemeData(
-              brightness: Brightness.light,
-              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.blueGrey),
-            )
-          : ThemeData(
-              brightness: Brightness.light,
-              colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.lightBlueAccent),
-            ),
-      home: Scaffold(
+  Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -181,7 +171,7 @@ class _LogConsoleState extends State<LogConsole> {
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+            children: [
               Expanded(
                 child: _buildLogContent(),
               ),
@@ -205,94 +195,90 @@ class _LogConsoleState extends State<LogConsole> {
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
 
-  Widget _buildLogContent() {
-    return Container(
-      color: Colors.grey[150],
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SizedBox(
-          width: 1600,
-          child: ListView.builder(
-            shrinkWrap: true,
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              var logEntry = _filteredBuffer[index];
-              return Text.rich(
-                logEntry.span,
-                key: Key(logEntry.id.toString()),
-                style: TextStyle(fontSize: _logFontSize),
-              );
-            },
-            itemCount: _filteredBuffer.length,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomBar() {
-    return LogBar(
-      dark: widget.dark,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              style: const TextStyle(fontSize: 20),
-              controller: _filterController,
-              onChanged: (s) => _refreshFilter(),
-              decoration: const InputDecoration(
-                labelText: "Filter log output",
-                border: OutlineInputBorder(),
-              ),
+  Widget _buildLogContent() => Container(
+        color: Colors.grey[150],
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(
+            width: 1600,
+            child: ListView.builder(
+              shrinkWrap: true,
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                final logEntry = _filteredBuffer[index];
+                return Text.rich(
+                  logEntry.span,
+                  key: Key(logEntry.id.toString()),
+                  style: TextStyle(fontSize: _logFontSize),
+                );
+              },
+              itemCount: _filteredBuffer.length,
             ),
           ),
-          const SizedBox(width: 20),
-          DropdownButton(
-            value: _filterLevel,
-            items: const [
-              DropdownMenuItem(
-                value: Level.verbose,
-                child: Text("Verbose"),
+        ),
+      );
+
+  Widget _buildBottomBar() => LogBar(
+        dark: widget.dark,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: TextField(
+                style: const TextStyle(fontSize: 20),
+                controller: _filterController,
+                onChanged: (s) => _refreshFilter(),
+                decoration: const InputDecoration(
+                  labelText: "Filter log output",
+                  border: OutlineInputBorder(),
+                ),
               ),
-              DropdownMenuItem(
-                value: Level.debug,
-                child: Text("Debug"),
-              ),
-              DropdownMenuItem(
-                value: Level.info,
-                child: Text("Info"),
-              ),
-              DropdownMenuItem(
-                value: Level.warning,
-                child: Text("Warning"),
-              ),
-              DropdownMenuItem(
-                value: Level.error,
-                child: Text("Error"),
-              ),
-              DropdownMenuItem(
-                value: Level.wtf,
-                child: Text("WTF"),
-              ),
-              DropdownMenuItem(
-                value: Level.nothing,
-                child: Text("Nothing"),
-              )
-            ],
-            onChanged: (value) {
-              _filterLevel = value;
-              _refreshFilter();
-            },
-          )
-        ],
-      ),
-    );
-  }
+            ),
+            const SizedBox(width: 20),
+            DropdownButton(
+              value: _filterLevel,
+              items: const [
+                DropdownMenuItem(
+                  value: Level.verbose,
+                  child: Text("Verbose"),
+                ),
+                DropdownMenuItem(
+                  value: Level.debug,
+                  child: Text("Debug"),
+                ),
+                DropdownMenuItem(
+                  value: Level.info,
+                  child: Text("Info"),
+                ),
+                DropdownMenuItem(
+                  value: Level.warning,
+                  child: Text("Warning"),
+                ),
+                DropdownMenuItem(
+                  value: Level.error,
+                  child: Text("Error"),
+                ),
+                DropdownMenuItem(
+                  value: Level.wtf,
+                  child: Text("WTF"),
+                ),
+                DropdownMenuItem(
+                  value: Level.nothing,
+                  child: Text("Nothing"),
+                )
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  _filterLevel = value;
+                  _refreshFilter();
+                }
+              },
+            )
+          ],
+        ),
+      );
 
   void _scrollToBottom() async {
     _scrollListenerEnabled = false;
@@ -301,7 +287,7 @@ class _LogConsoleState extends State<LogConsole> {
       _followBottom = true;
     });
 
-    var scrollPosition = _scrollController.position;
+    final scrollPosition = _scrollController.position;
     await _scrollController.animateTo(
       scrollPosition.maxScrollExtent,
       duration: const Duration(milliseconds: 400),
@@ -312,8 +298,8 @@ class _LogConsoleState extends State<LogConsole> {
   }
 
   RenderedEvent _renderEvent(OutputEvent event) {
-    var parser = AnsiParser(widget.dark);
-    var text = event.lines.join('\n');
+    final parser = AnsiParser(widget.dark);
+    final text = event.lines.join('\n');
     parser.parse(text);
     return RenderedEvent(
       _currentId++,
@@ -333,30 +319,32 @@ class LogBar extends StatelessWidget {
   final bool dark;
   final Widget child;
 
-  const LogBar({Key key, this.dark, this.child}) : super(key: key);
+  const LogBar({
+    super.key,
+    required this.dark,
+    required this.child,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 60,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            if (!dark)
-              BoxShadow(
-                color: Colors.grey[400],
-                blurRadius: 3,
-              ),
-          ],
-        ),
-        child: Material(
-          color: dark ? Colors.blueGrey[900] : Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
-            child: child,
+  Widget build(BuildContext context) => SizedBox(
+        height: 60,
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              if (!dark)
+                BoxShadow(
+                  color: Colors.grey[400]!,
+                  blurRadius: 3,
+                ),
+            ],
+          ),
+          child: Material(
+            color: dark ? Colors.blueGrey[900] : Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+              child: child,
+            ),
           ),
         ),
-      ),
-    );
-  }
+      );
 }

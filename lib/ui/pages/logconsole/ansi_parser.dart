@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'package:flutter/material.dart';
 
 class AnsiParser {
@@ -9,20 +7,20 @@ class AnsiParser {
 
   AnsiParser(this.dark);
 
-  Color foreground;
-  Color background;
-  List<TextSpan> spans;
+  Color? foreground;
+  Color? background;
+  List<TextSpan>? spans;
 
   void parse(String s) {
     spans = [];
-    var state = ansiText;
-    StringBuffer buffer;
-    var text = StringBuffer();
-    var code = 0;
-    List<int> codes;
+    int state = ansiText;
+    StringBuffer buffer = StringBuffer();
+    StringBuffer text = StringBuffer();
+    int code = 0;
+    final List<int> codes = [];
 
-    for (var i = 0, n = s.length; i < n; i++) {
-      var c = s[i];
+    for (int i = 0, n = s.length; i < n; i++) {
+      final c = s[i];
 
       switch (state) {
         case ansiText:
@@ -30,7 +28,7 @@ class AnsiParser {
             state = ansiBracket;
             buffer = StringBuffer(c);
             code = 0;
-            codes = [];
+            codes.clear();
           } else {
             text.write(c);
           }
@@ -48,7 +46,7 @@ class AnsiParser {
 
         case ansiCode:
           buffer.write(c);
-          var codeUnit = c.codeUnitAt(0);
+          final codeUnit = c.codeUnitAt(0);
           if (codeUnit >= 48 && codeUnit <= 57) {
             code = code * 10 + codeUnit - 48;
             continue;
@@ -58,7 +56,7 @@ class AnsiParser {
             continue;
           } else {
             if (text.isNotEmpty) {
-              spans.add(createSpan(text.toString()));
+              spans?.add(createSpan(text.toString()));
               text.clear();
             }
             state = ansiText;
@@ -74,7 +72,7 @@ class AnsiParser {
       }
     }
 
-    spans.add(createSpan(text.toString()));
+    spans?.add(createSpan(text.toString()));
   }
 
   void handleCodes(List<int> codes) {
@@ -101,7 +99,7 @@ class AnsiParser {
     }
   }
 
-  Color getColor(int colorCode, bool foreground) {
+  Color? getColor(int colorCode, bool foreground) {
     switch (colorCode) {
       case 0:
         return foreground ? Colors.black : Colors.transparent;
