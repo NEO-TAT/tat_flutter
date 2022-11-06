@@ -4,25 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:open_file/open_file.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Notifications {
   Notifications._privateConstructor();
 
   static int idCount = 0;
-  static final Notifications instance = Notifications._privateConstructor();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
-      BehaviorSubject<ReceivedNotification>();
-  final BehaviorSubject<String> selectNotificationSubject = BehaviorSubject<String>();
-  final String downloadChannelId = "Download";
-  final String downloadChannelName = "Download";
-  final String downloadChannelDescription = "Show Download Progress";
-  List<int> idList = []; //紀錄以點擊id
+  static final instance = Notifications._privateConstructor();
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
+  final selectNotificationSubject = BehaviorSubject<String>();
+  final downloadChannelId = "Download";
+  final downloadChannelName = "Download";
+  final downloadChannelDescription = "Show Download Progress";
+  final List<int> idList = [];
 
   Future<void> init() async {
-// needed if you intend to initialize in the `main` function
+    // needed if you intend to initialize in the `main` function
     WidgetsFlutterBinding.ensureInitialized();
     // NOTE: if you want to find out if the app was launched via notification then you could use the following call and then do something like
     // change the default route of the app
@@ -32,7 +31,7 @@ class Notifications {
     const initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
     // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
     // of the `IOSFlutterLocalNotificationsPlugin` class
-    final initializationSettingsIOS = IOSInitializationSettings(
+    final initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: false,
         requestBadgePermission: false,
         requestSoundPermission: false,
@@ -48,11 +47,15 @@ class Notifications {
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: (payload) async {
-      if (payload != null) {
-        selectNotificationSubject.add(payload);
-      }
-    });
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (response) async {
+        final payload = response.payload;
+        if (payload != null) {
+          selectNotificationSubject.add(payload);
+        }
+      },
+    );
 
     _requestIOSPermissions();
     _configureDidReceiveLocalNotificationSubject();
@@ -88,7 +91,7 @@ class Notifications {
           if (parse.containsKey("path")) {
             final String path = parse["path"];
             Log.d("open $path");
-            await OpenFile.open(path);
+            await OpenFilex.open(path);
           }
           break;
         case "download_fail":
@@ -118,7 +121,7 @@ class Notifications {
       progress: nowProgress,
       playSound: false,
     );
-    const iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
     final platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
@@ -141,11 +144,18 @@ class Notifications {
       indeterminate: true,
       playSound: false,
     );
-    const iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    final platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(value.id, value.title, value.body, platformChannelSpecifics,
-        payload: value.payload);
+    const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+    final platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      value.id,
+      value.title,
+      value.body,
+      platformChannelSpecifics,
+      payload: value.payload,
+    );
   }
 
   Future<void> showNotification(ReceivedNotification value) async {
@@ -159,13 +169,18 @@ class Notifications {
       ticker: 'ticker',
       playSound: false,
     );
-    const iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    const iOSPlatformChannelSpecifics = DarwinNotificationDetails();
     final platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
     );
-    await flutterLocalNotificationsPlugin.show(value.id, value.title, value.body, platformChannelSpecifics,
-        payload: value.payload);
+    await flutterLocalNotificationsPlugin.show(
+      value.id,
+      value.title,
+      value.body,
+      platformChannelSpecifics,
+      payload: value.payload,
+    );
   }
 
   Future<void> cancelNotification(int id) async {
