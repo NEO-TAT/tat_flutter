@@ -33,7 +33,7 @@ dependencies:
   logger: ^1.1.0
   #顯示Log
   sprintf: ^7.0.0
-  flutter_local_notifications: ^12.0.4 # restricted by alice 0.3.x
+  flutter_local_notifications: ^13.0.0
   #通知欄  需修改android原始碼
   rxdart: ^0.27.7
   #通知欄有使用到
@@ -122,7 +122,8 @@ dependencies:
   flutter_markdown: ^0.6.13
   numberpicker: ^2.1.1
   #選擇學期
-  alice: ^0.3.2
+  alice_lightweight: ^3.2.0
+  open_filex: ^4.3.2
 
   # Firebase
   firebase_core: ^2.4.0

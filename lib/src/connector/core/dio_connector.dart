@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:alice/alice.dart';
+import 'package:alice_lightweight/alice.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dart_big5/big5.dart';
 import 'package:dio/dio.dart';
@@ -21,7 +21,6 @@ class DioConnector {
 
   final alice = Alice(
     navigatorKey: Get.key,
-    showNotification: false,
   );
 
   static final dioOptions = BaseOptions(
