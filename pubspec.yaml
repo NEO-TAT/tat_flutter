@@ -101,9 +101,9 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   flutter_launcher_icons: ^0.11.0
   flutter_native_splash: ^2.2.16
-  #---------json----------#
   build_runner: ^2.3.3
   json_serializable: ^6.5.4
   flutter_lints: ^2.0.1
