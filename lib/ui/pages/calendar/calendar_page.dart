@@ -51,6 +51,29 @@ class CalendarPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
           ),
         ),
+        calendarStyle: const CalendarStyle(
+          isTodayHighlighted: true,
+          selectedDecoration: BoxDecoration(
+            color: Colors.lightBlueAccent,
+            shape: BoxShape.circle,
+          ),
+          selectedTextStyle: TextStyle(color: Colors.white),
+          todayDecoration: BoxDecoration(
+            color: Colors.deepOrange,
+            shape: BoxShape.circle,
+          ),
+          todayTextStyle: TextStyle(color: Colors.white),
+          outsideDaysVisible: false,
+          weekendTextStyle: TextStyle(color: Colors.red),
+          markerDecoration: BoxDecoration(
+            color: Colors.teal,
+            shape: BoxShape.circle,
+          ),
+        ),
+        daysOfWeekStyle: const DaysOfWeekStyle(
+          weekdayStyle: TextStyle(height: 1),
+          weekendStyle: TextStyle(height: 1, color: Colors.red),
+        ),
       );
 
   @override
