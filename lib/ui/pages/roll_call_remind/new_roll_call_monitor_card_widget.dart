@@ -53,7 +53,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     final hasStartTime = _monitoringStartTime.value != null;
     if (!hasStartTime) {
       ErrorDialog(ErrorDialogParameter(
-        dialogType: DialogType.WARNING,
+        dialogType: DialogType.warning,
         title: R.current.missingRequiredInformation,
         desc: R.current.pleaseSelectStartTime,
         btnOkText: R.current.sure,
@@ -65,7 +65,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     final hasEndTime = _monitoringEndTime.value != null;
     if (!hasEndTime) {
       ErrorDialog(ErrorDialogParameter(
-        dialogType: DialogType.WARNING,
+        dialogType: DialogType.warning,
         title: R.current.missingRequiredInformation,
         desc: R.current.pleaseSelectEndTime,
         btnOkText: R.current.sure,
@@ -77,7 +77,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     final hasWeekDay = _selectedWeekdays.value.any((selection) => selection);
     if (!hasWeekDay) {
       ErrorDialog(ErrorDialogParameter(
-        dialogType: DialogType.WARNING,
+        dialogType: DialogType.warning,
         title: R.current.missingRequiredInformation,
         desc: R.current.pleaseSelectWeekday,
         btnOkText: R.current.sure,
@@ -90,7 +90,7 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
 
     if (timeInMinuteOf(_monitoringStartTime.value) > timeInMinuteOf(_monitoringEndTime.value)) {
       ErrorDialog(ErrorDialogParameter(
-        dialogType: DialogType.WARNING,
+        dialogType: DialogType.warning,
         title: R.current.incorrectInformationEntered,
         desc: R.current.endTimeMustBeAfterStartTime,
         btnOkText: R.current.sure,

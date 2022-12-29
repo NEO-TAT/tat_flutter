@@ -34,8 +34,8 @@ class ErrorDialogParameter {
     title ??= R.current.alertError;
     btnOkText ??= R.current.sure;
     btnCancelText ??= R.current.cancel;
-    animType ??= AnimType.BOTTOMSLIDE;
-    dialogType ??= DialogType.ERROR;
+    animType ??= AnimType.bottomSlide;
+    dialogType ??= DialogType.error;
     btnCancelOnPress ??= () => null;
     btnOkOnPress ??= () => null;
     if (offOkBtn) {

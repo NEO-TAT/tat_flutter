@@ -46,7 +46,7 @@ class WebViewPage {
           ErrorDialog(ErrorDialogParameter(
             desc: R.current.alertError,
             title: R.current.error,
-            dialogType: DialogType.ERROR,
+            dialogType: DialogType.error,
             offCancelBtn: true,
             btnOkText: R.current.sure,
           )).show();
