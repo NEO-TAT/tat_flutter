@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/controllers/calendar_controller.dart';
+import 'package:flutter_app/src/model/ntut/ntut_calendar_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/pages/calendar/calendar_detail_dialog.dart';
 import 'package:get/get.dart';
@@ -10,25 +11,30 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
 
-  Widget _buildEventList(CalendarController controller) => ListView(
-        children: controller.selectedEvents
-            .map(
-              (event) => Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.8),
-                  borderRadius: BorderRadius.circular(12.0),
+  Widget _buildEventList(List<NTUTCalendarJson> selectedEvents) => ListView.builder(
+        itemCount: selectedEvents.length,
+        itemBuilder: (context, index) {
+          final event = selectedEvents[index];
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: InkWell(
+              customBorder: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ListTile(
+                title: Text(event.calTitle),
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: ListTile(
-                  title: Text(event.calTitle),
-                  onTap: () => Get.dialog(
-                    CalendarDetailDialog(calendarDetail: event),
-                    barrierDismissible: true,
-                  ),
+                onTap: () => Get.dialog(
+                  CalendarDetailDialog(calendarDetail: event),
+                  barrierDismissible: true,
                 ),
               ),
-            )
-            .toList(),
+            ),
+          );
+        },
       );
 
   Widget _buildTableCalendar(CalendarController controller) => TableCalendar(
@@ -90,7 +96,7 @@ class CalendarPage extends StatelessWidget {
                 _buildTableCalendar(controller),
                 const SizedBox(height: 16.0),
                 Expanded(
-                  child: _buildEventList(controller),
+                  child: _buildEventList(controller.selectedEvents),
                 ),
               ],
             ),
