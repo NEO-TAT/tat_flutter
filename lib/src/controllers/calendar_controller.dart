@@ -68,6 +68,10 @@ class CalendarController extends GetxController {
   }
 
   Future<void> findFirstEventsFromToday() async {
+    if (_storedMonthSet.isNotEmpty) {
+      return;
+    }
+
     final now = DateTime.now();
 
     // Only preserve the day part of the date.
