@@ -32,7 +32,7 @@ class CalendarController extends GetxController {
 
   final _storedMonthSet = <DateTime>{};
 
-  String get currentCalendarLocaleString => (LanguageUtil.getLangIndex() == LangEnum.zh) ? "zh_CN" : "en_US";
+  String get currentCalendarLocaleString => (LanguageUtil.getLangIndex() == LangEnum.zh) ? "zh_TW" : "en_US";
 
   List<NTUTCalendarJson> getEventsFromDay(DateTime day) => knownSchoolEvents[day] ?? const [];
 
