@@ -22,10 +22,10 @@ class CalendarController extends GetxController {
 
   final knownSchoolEvents = LinkedHashMap<DateTime, List<NTUTCalendarJson>>(equals: isSameDay);
 
-  final selectedEvents = <NTUTCalendarJson>[].obs;
-  final calendarFormat = CalendarFormat.month.obs;
-  final focusDay = DateTime.now().toLocal().obs;
-  final selectedDay = DateTime.now().toLocal().obs;
+  final selectedEventsRx = <NTUTCalendarJson>[].obs;
+  final calendarFormatRx = CalendarFormat.month.obs;
+  final focusDayRx = DateTime.now().toLocal().obs;
+  final selectedDayRx = DateTime.now().toLocal().obs;
 
   final firstDay = DateTime(1990);
   final lastDay = DateTime(2099);
@@ -38,32 +38,32 @@ class CalendarController extends GetxController {
 
   bool isHoliday(DateTime day) => knownHolidays.containsKey(day);
 
-  bool isSelectingSelectedDay(DateTime day) => isSameDay(selectedDay.value, day);
+  bool isSelectingSelectedDay(DateTime day) => isSameDay(selectedDayRx.value, day);
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(this.selectedDay.value, selectedDay)) {
-      this.selectedDay.value = selectedDay;
-      focusDay.value = focusedDay;
-      selectedEvents.value = getEventsFromDay(selectedDay);
+    if (!isSameDay(selectedDayRx.value, selectedDay)) {
+      selectedDayRx.value = selectedDay;
+      focusDayRx.value = focusedDay;
+      selectedEventsRx.value = getEventsFromDay(selectedDay);
       update();
     }
   }
 
   Future<void> onPageChanged(DateTime focusedDay) async {
-    focusDay.value = focusedDay;
+    focusDayRx.value = focusedDay;
     await _getMonthlyEvents(startTime: focusedDay);
 
     // change the selected day to the first day of current month.
-    selectedDay.value = DateTime(focusedDay.year, focusedDay.month, 1).toUTCLocal();
+    selectedDayRx.value = DateTime(focusedDay.year, focusedDay.month, 1).toUTCLocal();
 
     // change the selected events to the first day of current month.
-    selectedEvents.value = getEventsFromDay(selectedDay.value);
+    selectedEventsRx.value = getEventsFromDay(selectedDayRx.value);
 
     update();
   }
 
   void onFormatChanged(CalendarFormat format) {
-    calendarFormat.value = format;
+    calendarFormatRx.value = format;
     update();
   }
 
@@ -78,7 +78,7 @@ class CalendarController extends GetxController {
     final today = DateTime(now.year, now.month, now.day).toUTCLocal();
 
     await _getMonthlyEvents(startTime: today);
-    selectedEvents.value = getEventsFromDay(today);
+    selectedEventsRx.value = getEventsFromDay(today);
   }
 
   /// Get the events of the month of the given [startTime].

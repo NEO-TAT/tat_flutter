@@ -38,11 +38,11 @@ class CalendarPage extends StatelessWidget {
       );
 
   Widget _buildTableCalendar(CalendarController controller) => TableCalendar(
-        focusedDay: controller.focusDay.value,
+        focusedDay: controller.focusDayRx.value,
         firstDay: controller.firstDay,
         lastDay: controller.lastDay,
         locale: controller.currentCalendarLocaleString,
-        calendarFormat: controller.calendarFormat.value,
+        calendarFormat: controller.calendarFormatRx.value,
         eventLoader: controller.getEventsFromDay,
         holidayPredicate: controller.isHoliday,
         selectedDayPredicate: controller.isSelectingSelectedDay,
@@ -96,7 +96,7 @@ class CalendarPage extends StatelessWidget {
                 _buildTableCalendar(controller),
                 const SizedBox(height: 16.0),
                 Expanded(
-                  child: _buildEventList(controller.selectedEvents),
+                  child: _buildEventList(controller.selectedEventsRx),
                 ),
               ],
             ),
