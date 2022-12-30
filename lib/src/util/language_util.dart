@@ -1,11 +1,12 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/generated/l10n.dart';
 import 'package:flutter_app/src/model/setting/setting_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
+import 'package:get/get_utils/get_utils.dart';
 
 enum LangEnum { en, zh }
 
@@ -31,10 +32,9 @@ class LanguageUtil {
   static Future<void> load(Locale locale) async {
     if (getSupportLocale.contains(locale)) {
       await R.load(locale);
-      String lang = locale2String(locale);
+      final lang = locale2String(locale);
       OtherSettingJson otherSetting = LocalStorage.instance.getOtherSetting();
       if (otherSetting.lang != lang) {
-        //只有不相同時可以載入
         otherSetting.lang = lang;
         LocalStorage.instance.setOtherSetting(otherSetting);
         await LocalStorage.instance.saveOtherSetting();
@@ -48,16 +48,16 @@ class LanguageUtil {
   }
 
   static String locale2String(Locale locale) {
-    String countryCode = locale.countryCode ?? "";
-    String languageCode = locale.languageCode ?? "";
+    final countryCode = locale.countryCode ?? "";
+    final languageCode = locale.languageCode;
     return '${countryCode}_$languageCode';
   }
 
   static Locale string2Locale(String lang) {
     try {
-      String countryCode = lang.split("_")[0];
-      String languageCode = lang.split("_")[1];
-      for (Locale locale in getSupportLocale) {
+      final countryCode = lang.split("_")[0];
+      final languageCode = lang.split("_")[1];
+      for (final locale in getSupportLocale) {
         if (locale.languageCode == languageCode && locale.countryCode == countryCode) {
           return locale;
         }
@@ -71,13 +71,13 @@ class LanguageUtil {
   }
 
   static Future<void> setLangByIndex(LangEnum langEnum) async {
-    Locale locale = getSupportLocale[langEnum.index];
+    final locale = getSupportLocale[langEnum.index];
     await load(locale);
   }
 
   static LangEnum getLangIndex() {
-    OtherSettingJson otherSetting = LocalStorage.instance.getOtherSetting();
-    int index = getSupportLocale.indexOf(string2Locale(otherSetting.lang));
+    final otherSetting = LocalStorage.instance.getOtherSetting();
+    final index = getSupportLocale.indexOf(string2Locale(otherSetting.lang));
     switch (index) {
       case 0:
         return LangEnum.en;

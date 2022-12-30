@@ -111,7 +111,7 @@ class _OtherPageState extends State<OtherPage> {
         ErrorDialogParameter parameter = ErrorDialogParameter(
             context: context,
             desc: R.current.logoutWarning,
-            dialogType: DialogType.WARNING,
+            dialogType: DialogType.warning,
             title: R.current.warning,
             btnOkText: R.current.sure,
             btnOkOnPress: () {
@@ -161,7 +161,7 @@ class _OtherPageState extends State<OtherPage> {
           ErrorDialog(ErrorDialogParameter(
             desc: R.current.zuvioAutoRollCallFeatureReleaseNotice,
             title: R.current.comingSoon,
-            dialogType: DialogType.INFO,
+            dialogType: DialogType.info,
             offCancelBtn: true,
             btnOkText: R.current.sure,
           )).show();

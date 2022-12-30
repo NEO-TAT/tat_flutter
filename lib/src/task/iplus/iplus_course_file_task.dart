@@ -30,7 +30,7 @@ class IPlusCourseFileTask extends IPlusSystemTask<List<CourseFileJson>> {
         case IPlusReturnStatus.noPermission:
           final parameter = ErrorDialogParameter(
             title: R.current.warning,
-            dialogType: DialogType.INFO,
+            dialogType: DialogType.info,
             desc: R.current.iPlusNoThisClass,
             btnOkText: R.current.sure,
             offCancelBtn: true,

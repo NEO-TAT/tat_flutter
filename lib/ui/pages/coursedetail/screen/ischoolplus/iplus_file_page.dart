@@ -244,7 +244,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
       //代表可能是一個連結
       ErrorDialogParameter errorDialogParameter = ErrorDialogParameter(context: context, desc: R.current.isALink);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
-      errorDialogParameter.dialogType = DialogType.INFO;
+      errorDialogParameter.dialogType = DialogType.info;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress = () {
         _launchURL(url);
@@ -257,7 +257,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
         desc: '${R.current.isVideo}\n${R.current.videoMayLoadFailedWarningMsg}',
       );
       errorDialogParameter.title = R.current.AreYouSureToOpen;
-      errorDialogParameter.dialogType = DialogType.INFO;
+      errorDialogParameter.dialogType = DialogType.info;
       errorDialogParameter.btnOkText = R.current.sure;
       errorDialogParameter.btnOkOnPress =
           () => RouteUtils.toVideoPlayer(urlParse.toString(), widget.courseInfo, courseFile.name);

@@ -58,7 +58,7 @@ class NTUTTask<T> extends DialogTask<T> {
   Future<TaskStatus> _handleConnectorStatus(SimpleLoginResultType status) async {
     final parameter = ErrorDialogParameter(
       desc: "",
-      dialogType: DialogType.WARNING,
+      dialogType: DialogType.warning,
       offCancelBtn: true,
     );
 

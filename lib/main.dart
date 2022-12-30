@@ -17,6 +17,7 @@ import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
 import 'package:flutter_app/src/connector/blocked_cookies.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
+import 'package:flutter_app/src/controllers/calendar_controller.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:flutter_app/src/controllers/zuvio_auto_roll_call_schedule_controller.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
@@ -130,6 +131,8 @@ Future<void> main() async {
     disableAutoRollCallScheduleUseCase: disableAutoRollCallScheduleUseCase,
   );
 
+  final calendarController = CalendarController();
+
   const webViewPage = WebViewPage();
 
   Future<void> handleAppDetached() async {
@@ -146,6 +149,7 @@ Future<void> main() async {
   Get.put(zRollCallMonitorController);
   Get.put(simpleLoginUseCase);
   Get.put(cookieJar);
+  Get.put(calendarController);
 
   await LocalStorage.instance.init(httpClientInterceptors: apiInterceptors);
 

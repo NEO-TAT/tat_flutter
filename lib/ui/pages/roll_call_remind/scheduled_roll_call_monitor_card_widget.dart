@@ -121,7 +121,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
   Widget _buildRemoveMonitorButton() => ElevatedButton(
         onPressed: () {
           ErrorDialog(ErrorDialogParameter(
-            dialogType: DialogType.QUESTION,
+            dialogType: DialogType.question,
             title: '',
             desc: 'Do you really want to remove this scheduled roll-call remind?',
             btnOkText: R.current.sure,
@@ -158,7 +158,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
           final isSuccess = await _onRollCallPressed();
           if (isSuccess) {
             ErrorDialog(ErrorDialogParameter(
-              dialogType: DialogType.SUCCES,
+              dialogType: DialogType.success,
               title: 'RollCall Success',
               desc: 'You have roll-called to $_courseName.',
               btnOkText: R.current.sure,
@@ -166,7 +166,7 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
             )).show();
           } else {
             ErrorDialog(ErrorDialogParameter(
-              dialogType: DialogType.ERROR,
+              dialogType: DialogType.error,
               title: 'RollCall Failed',
               desc: 'Failed to roll-called to $_courseName, please try again.',
               btnOkText: R.current.sure,
