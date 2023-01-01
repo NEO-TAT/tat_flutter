@@ -2567,6 +2567,26 @@ class S {
       args: [],
     );
   }
+
+  /// `class`
+  String get kClass {
+    return Intl.message(
+      'class',
+      name: 'kClass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `department`
+  String get kDepartment {
+    return Intl.message(
+      'department',
+      name: 'kDepartment',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

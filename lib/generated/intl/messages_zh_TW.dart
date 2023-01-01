@@ -153,6 +153,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "isNewVersion": MessageLookupByLibrary.simpleMessage("已經是最新版本了"),
         "isVideo": MessageLookupByLibrary.simpleMessage("上課錄影"),
         "jointElective": MessageLookupByLibrary.simpleMessage("共同選修"),
+        "kClass": MessageLookupByLibrary.simpleMessage("班級"),
+        "kDepartment": MessageLookupByLibrary.simpleMessage("系所"),
         "languageSetting": MessageLookupByLibrary.simpleMessage("語言"),
         "languageSwitch": MessageLookupByLibrary.simpleMessage("使用英文介面"),
         "loadFavorite": MessageLookupByLibrary.simpleMessage("載入常用課表"),

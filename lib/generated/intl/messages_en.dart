@@ -157,6 +157,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "isNewVersion": MessageLookupByLibrary.simpleMessage("Already the latest version"),
         "isVideo": MessageLookupByLibrary.simpleMessage("Is a video"),
         "jointElective": MessageLookupByLibrary.simpleMessage("Joint elective"),
+        "kClass": MessageLookupByLibrary.simpleMessage("class"),
+        "kDepartment": MessageLookupByLibrary.simpleMessage("department"),
         "languageSetting": MessageLookupByLibrary.simpleMessage("Language"),
         "languageSwitch": MessageLookupByLibrary.simpleMessage("Use English interface"),
         "loadFavorite": MessageLookupByLibrary.simpleMessage("Load favorite"),

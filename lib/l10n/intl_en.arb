@@ -251,5 +251,7 @@
   "zuvioAutoRollCallFeatureReleaseNotice": "Zuvio's (auto) roll-call reminder is coming soon!",
   "comingSoon": "Coming Soon！",
   "androidPrivateBrowseGuideTitle": "About Incognito Browse",
-  "androidPrivateBrowseGuideSubTitle": "Open Incognito browsing to enhanced security"
+  "androidPrivateBrowseGuideSubTitle": "Open Incognito browsing to enhanced security",
+  "kClass": "class",
+  "kDepartment": "department"
 }
