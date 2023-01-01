@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
@@ -15,7 +13,8 @@ class AppThemes {
     appBarTheme: const AppBarTheme(
       color: Colors.blueAccent,
     ),
-    dividerColor: const Color(0xFFF8F8F8),
+    dividerColor: const Color(0xFF2F2F2F),
+    highlightColor: const Color(0xFFF8F8F8),
     scaffoldBackgroundColor: AppColors.lightBG,
     cupertinoOverrideTheme: const CupertinoThemeData(
       primaryColor: AppColors.mainColor,
@@ -32,7 +31,8 @@ class AppThemes {
     primaryColor: AppColors.darkPrimary,
     scaffoldBackgroundColor: AppColors.darkBG,
     toggleableActiveColor: Colors.blueAccent,
-    dividerColor: const Color(0xFF2F2F2F),
+    dividerColor: const Color(0xFFF8F8F8),
+    highlightColor: const Color(0xFF2F2F2F),
     appBarTheme: const AppBarTheme(
       color: Colors.black26,
     ),
