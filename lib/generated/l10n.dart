@@ -2049,10 +2049,10 @@ class S {
   }
 
   /// `This calculation is for reference only. Actually, please focus on the school.`
-  String get scoreCalculationWarring {
+  String get scoreCalculationWarning {
     return Intl.message(
       'This calculation is for reference only. Actually, please focus on the school.',
-      name: 'scoreCalculationWarring',
+      name: 'scoreCalculationWarning',
       desc: '',
       args: [],
     );
@@ -2563,6 +2563,26 @@ class S {
     return Intl.message(
       'Open Incognito browsing to enhanced security',
       name: 'androidPrivateBrowseGuideSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `class`
+  String get kClass {
+    return Intl.message(
+      'class',
+      name: 'kClass',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `department`
+  String get kDepartment {
+    return Intl.message(
+      'department',
+      name: 'kDepartment',
       desc: '',
       args: [],
     );

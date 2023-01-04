@@ -157,6 +157,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "isNewVersion": MessageLookupByLibrary.simpleMessage("Already the latest version"),
         "isVideo": MessageLookupByLibrary.simpleMessage("Is a video"),
         "jointElective": MessageLookupByLibrary.simpleMessage("Joint elective"),
+        "kClass": MessageLookupByLibrary.simpleMessage("class"),
+        "kDepartment": MessageLookupByLibrary.simpleMessage("department"),
         "languageSetting": MessageLookupByLibrary.simpleMessage("Language"),
         "languageSwitch": MessageLookupByLibrary.simpleMessage("Use English interface"),
         "loadFavorite": MessageLookupByLibrary.simpleMessage("Load favorite"),
@@ -232,7 +234,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ruleDimension": MessageLookupByLibrary.simpleMessage("Rule of law"),
         "sameOldPassword": MessageLookupByLibrary.simpleMessage("Same password as before"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
-        "scoreCalculationWarring": MessageLookupByLibrary.simpleMessage(
+        "scoreCalculationWarning": MessageLookupByLibrary.simpleMessage(
             "This calculation is for reference only. Actually, please focus on the school."),
         "scoreSearch": MessageLookupByLibrary.simpleMessage("Score query"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),

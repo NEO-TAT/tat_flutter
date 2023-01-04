@@ -543,7 +543,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Widget _buildCourseTable(int index) {
     final section = courseTableControl.getSectionIntList[index];
-    final color = ((index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor)
+    final color = ((index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor)
         .withAlpha(courseTableWithAlpha);
     final List<Widget> widgetList = [];
     widgetList.add(

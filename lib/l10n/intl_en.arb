@@ -200,7 +200,7 @@
   "takeSelect": "Take select",
   "takeForeignDepartmentCredits": "Foreign Department Credits",
   "takeForeignDepartmentCreditsLimit": "Credit limit",
-  "scoreCalculationWarring": "This calculation is for reference only. Actually, please focus on the school.",
+  "scoreCalculationWarning": "This calculation is for reference only. Actually, please focus on the school.",
   "resultsOfVariousSubjects": "Results of various subjects",
   "semesterGrades": "Semester grades",
   "totalAverage": "Total average",
@@ -251,5 +251,7 @@
   "zuvioAutoRollCallFeatureReleaseNotice": "Zuvio's (auto) roll-call reminder is coming soon!",
   "comingSoon": "Coming Soon！",
   "androidPrivateBrowseGuideTitle": "About Incognito Browse",
-  "androidPrivateBrowseGuideSubTitle": "Open Incognito browsing to enhanced security"
+  "androidPrivateBrowseGuideSubTitle": "Open Incognito browsing to enhanced security",
+  "kClass": "class",
+  "kDepartment": "department"
 }

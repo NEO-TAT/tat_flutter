@@ -200,7 +200,7 @@
   "takeSelect": "實得選修",
   "takeForeignDepartmentCredits": "外系學分",
   "takeForeignDepartmentCreditsLimit": "學分上限",
-  "scoreCalculationWarring": "此計算僅供參考，實際請以學校為主",
+  "scoreCalculationWarning": "此計算僅供參考，實際請以學校為主",
   "resultsOfVariousSubjects": "各科成績",
   "semesterGrades": "學期成績",
   "totalAverage": "總平均",
@@ -251,5 +251,7 @@
   "zuvioAutoRollCallFeatureReleaseNotice": "Zuvio (自動)點名提醒的功能即將上線\n敬請期待！",
   "comingSoon": "即將上線！",
   "androidPrivateBrowseGuideTitle": "關於隱私瀏覽",
-  "androidPrivateBrowseGuideSubTitle": "開啟隱私瀏覽，安全更有保障"
+  "androidPrivateBrowseGuideSubTitle": "開啟隱私瀏覽，安全更有保障",
+  "kClass": "班級",
+  "kDepartment": "系所"
 }

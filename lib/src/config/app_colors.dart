@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -9,7 +7,7 @@ class AppColors {
   // font color
   static const Color darkFontColor = Colors.black87;
   static const Color lightFontColor = Colors.white;
-  static final Color greyFontColor = Colors.grey[700];
+  static final Color greyFontColor = Colors.grey[700]!;
 
   //Colors for theme
   static Color lightPrimary = Colors.white;

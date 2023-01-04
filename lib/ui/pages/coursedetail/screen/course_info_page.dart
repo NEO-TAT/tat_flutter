@@ -278,7 +278,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   }
 
   Widget _buildClassmateInfo(int index, ClassmateJson classmate) {
-    final color = (index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).dividerColor;
+    final color = (index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor;
     return Container(
       decoration: BoxDecoration(
         color: color,
