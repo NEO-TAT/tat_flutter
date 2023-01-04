@@ -32,12 +32,12 @@ class ScoreTile extends StatelessWidget {
     return index == -1 ? null : index;
   }
 
-  Widget _buildCourseName() => AutoSizeText(
+  Widget get _courseNameText => AutoSizeText(
         _courseName,
         style: const TextStyle(fontSize: 16.0),
       );
 
-  Widget _buildCategoryMenu() => ValueListenableBuilder(
+  Widget get _categoryMenu => ValueListenableBuilder(
         valueListenable: _selectedCategory,
         builder: (_, value, __) => DropdownButton(
           underline: const SizedBox.shrink(),
@@ -54,15 +54,7 @@ class ScoreTile extends StatelessWidget {
         ),
       );
 
-  DropdownMenuItem<int> _buildCategoryMenuItem(String category, int index) => DropdownMenuItem(
-        value: index,
-        child: Text(
-          category,
-          style: const TextStyle(fontSize: 16.0),
-        ),
-      );
-
-  Widget _buildScoreValue() => SizedBox(
+  Widget get _scoreValueText => SizedBox(
         width: 40,
         child: Text(
           _scoreValue,
@@ -71,13 +63,21 @@ class ScoreTile extends StatelessWidget {
         ),
       );
 
+  DropdownMenuItem<int> _buildCategoryMenuItem(String category, int index) => DropdownMenuItem(
+        value: index,
+        child: Text(
+          category,
+          style: const TextStyle(fontSize: 16.0),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: _buildCourseName()),
-          if (_category.isNotEmpty) _buildCategoryMenu(),
-          _buildScoreValue(),
+          Expanded(child: _courseNameText),
+          if (_category.isNotEmpty) _categoryMenu,
+          _scoreValueText,
         ],
       );
 }
