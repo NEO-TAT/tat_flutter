@@ -12,6 +12,7 @@ import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/app_expansion_tile.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/progress_rate_dialog.dart';
+import 'package:flutter_app/ui/pages/score/app_bar_action_buttons.dart';
 import 'package:flutter_app/ui/pages/score/course_score_section.dart';
 import 'package:flutter_app/ui/pages/score/graduation_picker.dart';
 import 'package:flutter_app/ui/pages/score/rank_grade_metrics.dart';
@@ -154,14 +155,9 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
             title: Text(R.current.searchScore),
             actions: [
               if (courseScoreList.isNotEmpty)
-                IconButton(
-                  onPressed: _addScoreRankTask,
-                  icon: const Icon(Icons.refresh),
-                ),
-              if (courseScoreList.isNotEmpty)
-                IconButton(
-                  onPressed: _addSearchCourseTypeTask,
-                  icon: const Icon(Icons.calculate_rounded),
+                ScorePageAppBarActionButtons(
+                  onRefreshPressed: _addScoreRankTask,
+                  onCalculateCreditPressed: _addSearchCourseTypeTask,
                 ),
             ],
             bottom: TabBar(
