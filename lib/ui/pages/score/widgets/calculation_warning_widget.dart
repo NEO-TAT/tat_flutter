@@ -11,7 +11,7 @@ class ScoreCalculationWarning extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                R.current.scoreCalculationWarring,
+                R.current.scoreCalculationWarning,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),

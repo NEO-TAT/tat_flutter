@@ -2049,10 +2049,10 @@ class S {
   }
 
   /// `This calculation is for reference only. Actually, please focus on the school.`
-  String get scoreCalculationWarring {
+  String get scoreCalculationWarning {
     return Intl.message(
       'This calculation is for reference only. Actually, please focus on the school.',
-      name: 'scoreCalculationWarring',
+      name: 'scoreCalculationWarning',
       desc: '',
       args: [],
     );
