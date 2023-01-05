@@ -19,9 +19,7 @@ class AutoRollCallScheduleRepositoryImpl implements AutoRollCallScheduleReposito
     required FirebaseMessaging firebaseMessaging,
   })  : assert(firebaseAuth.currentUser != null),
         _firebaseAuth = firebaseAuth,
-        _firebaseMessaging = firebaseMessaging {
-    _createUserDocumentIfNotExists();
-  }
+        _firebaseMessaging = firebaseMessaging;
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseMessaging _firebaseMessaging;
@@ -39,7 +37,8 @@ class AutoRollCallScheduleRepositoryImpl implements AutoRollCallScheduleReposito
     return true;
   }
 
-  Future<void> _createUserDocumentIfNotExists() async {
+  // TODO: call this method when user sign in, if the auto roll call feature is enabled.
+  Future<void> createUserDocumentIfNotExists() async {
     final isSignedIn = _checkUserSignedIn();
     if (!isSignedIn) return;
 
