@@ -149,7 +149,7 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
 
     return BottomNavigationBar(
       currentIndex: _currentIndex,
-      type: BottomNavigationBarType.shifting,
+      type: BottomNavigationBarType.fixed,
       onTap: _onTap,
       selectedItemColor: selectedItemColor,
       unselectedItemColor: unSelectedItemColor,
