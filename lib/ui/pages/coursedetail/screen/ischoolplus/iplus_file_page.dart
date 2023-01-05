@@ -1,5 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
@@ -24,16 +24,20 @@ class IPlusFilePage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  const IPlusFilePage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
+  const IPlusFilePage(
+    this.studentId,
+    this.courseInfo, {
+    super.key,
+  });
 
   @override
   State<IPlusFilePage> createState() => _IPlusFilePage();
 }
 
 class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientMixin {
-  List<CourseFileJson> courseFileList = [];
-  SelectList selectList = SelectList();
-  bool isSupport;
+  final List<CourseFileJson> courseFileList = [];
+  final selectList = SelectList();
+  bool isSupport = false;
 
   @override
   void initState() {
@@ -56,52 +60,59 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
 
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo routeInfo) {
     if (selectList.inSelectMode) {
-      selectList.leaveSelectMode();
-      setState(() {});
+      setState(() {
+        selectList.leaveSelectMode();
+      });
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   void _addTask() async {
     await Future.delayed(const Duration(microseconds: 500));
-    String courseId = widget.courseInfo.main.course.id;
+    final courseId = widget.courseInfo.main.course.id;
 
-    TaskFlow taskFlow = TaskFlow();
-    var task = IPlusCourseFileTask(courseId);
+    final taskFlow = TaskFlow();
+    final task = IPlusCourseFileTask(courseId);
     taskFlow.addTask(task);
+
     if (await taskFlow.start()) {
-      courseFileList = task.result;
+      final result = task.result;
+      if (result != null) {
+        courseFileList.addAll(result);
+      }
     }
-    courseFileList = courseFileList ?? [];
-    selectList.addItems(courseFileList.length);
-    setState(() {});
+
+    setState(() {
+      selectList.addItems(courseFileList.length);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
+    super.build(context);
     return Scaffold(
-        body: (courseFileList.isNotEmpty)
-            ? _buildFileList()
-            : (isSupport)
-                ? Center(
-                    child: Text(R.current.noAnyFile),
-                  )
-                : Center(
-                    child: Text(R.current.notSupport),
-                  ),
-        floatingActionButton: (selectList.inSelectMode)
-            ? FloatingActionButton(
-                // FloatingActionButton: 浮動按鈕
-                onPressed: _floatingDownloadPress,
-                // 按下觸發的方式名稱: void _incrementCounter()
-                tooltip: R.current.download,
-                // 按住按鈕時出現的提示字
-                child: const Icon(Icons.file_download),
-              )
-            : null);
+      body: (courseFileList.isNotEmpty)
+          ? _buildFileList()
+          : (isSupport)
+              ? Center(
+                  child: Text(R.current.noAnyFile),
+                )
+              : Center(
+                  child: Text(R.current.notSupport),
+                ),
+      floatingActionButton: (selectList.inSelectMode)
+          ? FloatingActionButton(
+              // FloatingActionButton: 浮動按鈕
+              onPressed: _floatingDownloadPress,
+              // 按下觸發的方式名稱: void _incrementCounter()
+              tooltip: R.current.download,
+              // 按住按鈕時出現的提示字
+              child: const Icon(Icons.file_download),
+            )
+          : null,
+    );
   }
 
   Future<void> _floatingDownloadPress() async {
@@ -111,48 +122,45 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
         await _downloadOneFile(i, false);
       }
     }
-    selectList.leaveSelectMode();
-    setState(() {});
+
+    setState(() {
+      selectList.leaveSelectMode();
+    });
   }
 
-  Widget _buildFileList() {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: ListView.separated(
-            itemCount: courseFileList.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque, //讓透明部分有反應
+  Widget _buildFileList() => Column(
+        children: [
+          Expanded(
+            child: ListView.separated(
+              itemCount: courseFileList.length,
+              itemBuilder: (context, index) => GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 child: _buildCourseFile(index, courseFileList[index]),
                 onTap: () {
                   if (selectList.inSelectMode) {
-                    selectList.setItemReverse(index);
-                    setState(() {});
+                    setState(() {
+                      selectList.setItemReverse(index);
+                    });
                   } else {
                     _downloadOneFile(index);
                   }
                 },
                 onLongPress: () {
                   if (!selectList.inSelectMode) {
-                    selectList.setItemReverse(index);
-                    setState(() {});
+                    setState(() {
+                      selectList.setItemReverse(index);
+                    });
                   }
                 },
-              );
-            },
-            separatorBuilder: (context, index) {
-              // 顯示格線
-              return Container(
+              ),
+              separatorBuilder: (context, index) => Container(
                 color: Colors.black12,
                 height: 1,
-              );
-            },
+              ),
+            ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
 
   List<Widget> iconList = [
     const Icon(
@@ -185,19 +193,17 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
     )
   ];
 
-  Widget _buildCourseFile(int index, CourseFileJson courseFile) {
-    return Container(
-        color: selectList.getItemSelect(index) ? Colors.grey : Theme.of(context).backgroundColor,
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: _buildFileItem(courseFile),
-        ));
-  }
+  Widget _buildCourseFile(int index, CourseFileJson courseFile) => Container(
+      color: selectList.getItemSelect(index) ? Colors.grey : Theme.of(context).backgroundColor,
+      padding: const EdgeInsets.all(10),
+      child: Column(
+        children: _buildFileItem(courseFile),
+      ));
 
   List<Widget> _buildFileItem(CourseFileJson courseFile) {
-    List<Widget> widgetList = [];
-    List<Widget> iconWidgetList = [];
-    for (FileType fileType in courseFile.fileType) {
+    final List<Widget> widgetList = [];
+    final List<Widget> iconWidgetList = [];
+    for (final fileType in courseFile.fileType) {
       iconWidgetList.add(iconList[fileType.type.index]);
     }
     widgetList.add(
@@ -222,27 +228,26 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
   }
 
   Future<void> _downloadOneFile(int index, [showToast = true]) async {
-    CourseFileJson courseFile = courseFileList[index];
-    FileType fileType = courseFile.fileType[0];
-    String dirName = widget.courseInfo.main.course.name;
-    String url;
-    String referer;
-    List<String> urlList = [];
+    final courseFile = courseFileList[index];
+    final fileType = courseFile.fileType[0];
+    final dirName = widget.courseInfo.main.course.name;
+    String url = "";
+    String referer = "";
+
     await AnalyticsUtils.logDownloadFileEvent();
     if (showToast) {
       MyToast.show(R.current.downloadWillStart);
     }
-    urlList = await ISchoolPlusConnector.getRealFileUrl(fileType.postData);
+    final urlList = await ISchoolPlusConnector.getRealFileUrl(fileType.postData) as List<String>?;
     if (urlList == null) {
       MyToast.show(sprintf("%s%s", [courseFile.name, R.current.downloadError]));
       return;
     }
     url = urlList[0];
     referer = urlList[1];
-    Uri urlParse = Uri.parse(url);
+    final urlParse = Uri.parse(url);
     if (!urlParse.host.toLowerCase().contains("ntut.edu.tw")) {
-      //代表可能是一個連結
-      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter(context: context, desc: R.current.isALink);
+      final errorDialogParameter = ErrorDialogParameter(context: context, desc: R.current.isALink);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.info;
       errorDialogParameter.btnOkText = R.current.sure;
@@ -251,8 +256,10 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
       };
       ErrorDialog(errorDialogParameter).show();
       return;
-    } else if (urlParse.host.contains("istream.ntut.edu.tw")) {
-      ErrorDialogParameter errorDialogParameter = ErrorDialogParameter(
+    }
+
+    if (urlParse.host.contains("istream.ntut.edu.tw")) {
+      final errorDialogParameter = ErrorDialogParameter(
         context: context,
         desc: '${R.current.isVideo}\n${R.current.videoMayLoadFailedWarningMsg}',
       );
@@ -296,30 +303,28 @@ class SelectList {
   void setItemSelect(int index, bool value) {
     if (index >= _selectList.length) {
       return;
-    } else {
-      _selectList[index] = value;
     }
+    _selectList[index] = value;
   }
 
   void setItemReverse(int index) {
     if (index >= _selectList.length) {
       return;
-    } else {
-      _selectList[index] = !_selectList[index];
     }
+    _selectList[index] = !_selectList[index];
   }
 
   bool getItemSelect(int index) {
     if (index >= _selectList.length) {
       return false;
-    } else {
-      return _selectList[index];
     }
+
+    return _selectList[index];
   }
 
   bool get inSelectMode {
     bool select = false;
-    for (bool value in _selectList) {
+    for (final value in _selectList) {
       select |= value;
     }
     return select;
