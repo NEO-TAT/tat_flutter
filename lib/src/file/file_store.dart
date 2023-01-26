@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:convert';
 import 'dart:io';
 
@@ -19,11 +17,12 @@ class FileStore {
       return '';
     }
 
-    final directory = await _getFilePath() ?? Platform.isAndroid
+    final filePath = await _getFilePath();
+    final directory = filePath != null || Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationSupportDirectory();
 
-    final targetDir = Directory('${directory.path}/TAT');
+    final targetDir = Directory('${directory?.path ?? ''}/TAT');
     final hasExisted = await targetDir.exists();
     if (!hasExisted) {
       targetDir.create();
@@ -44,7 +43,7 @@ class FileStore {
     return savedDir.path;
   }
 
-  static Future<bool> setFilePath(String directory) async {
+  static Future<bool> setFilePath(String? directory) async {
     if (directory != null) {
       final pref = await SharedPreferences.getInstance();
       pref.setString(storeKey, base64Encode(directory.codeUnits));
@@ -54,7 +53,7 @@ class FileStore {
     return false;
   }
 
-  static Future<Directory> _getFilePath() async {
+  static Future<Directory?> _getFilePath() async {
     final pref = await SharedPreferences.getInstance();
     final path = pref.getString(storeKey);
     if (path != null && path.isNotEmpty) {
