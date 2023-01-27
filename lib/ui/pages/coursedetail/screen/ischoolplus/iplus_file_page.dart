@@ -194,7 +194,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
   ];
 
   Widget _buildCourseFile(int index, CourseFileJson courseFile) => Container(
-      color: selectList.getItemSelect(index) ? Colors.grey : Theme.of(context).backgroundColor,
+      color: selectList.getItemSelect(index) ? Colors.grey : Theme.of(context).colorScheme.background,
       padding: const EdgeInsets.all(10),
       child: Column(
         children: _buildFileItem(courseFile),
@@ -247,7 +247,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
     referer = urlList[1];
     final urlParse = Uri.parse(url);
     if (!urlParse.host.toLowerCase().contains("ntut.edu.tw")) {
-      final errorDialogParameter = ErrorDialogParameter(context: context, desc: R.current.isALink);
+      final errorDialogParameter = ErrorDialogParameter(desc: R.current.isALink);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.info;
       errorDialogParameter.btnOkText = R.current.sure;
@@ -260,7 +260,6 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
 
     if (urlParse.host.contains("istream.ntut.edu.tw")) {
       final errorDialogParameter = ErrorDialogParameter(
-        context: context,
         desc: '${R.current.isVideo}\n${R.current.videoMayLoadFailedWarningMsg}',
       );
       errorDialogParameter.title = R.current.AreYouSureToOpen;

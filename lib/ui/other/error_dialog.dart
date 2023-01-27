@@ -6,7 +6,6 @@ import 'package:flutter_app/src/r.dart';
 import 'package:get/get.dart';
 
 class ErrorDialogParameter {
-  final BuildContext context;
   String title;
   String desc;
   String btnOkText;
@@ -19,7 +18,6 @@ class ErrorDialogParameter {
   final bool offCancelBtn;
 
   ErrorDialogParameter({
-    this.context,
     @required this.desc,
     this.title,
     this.btnOkText,

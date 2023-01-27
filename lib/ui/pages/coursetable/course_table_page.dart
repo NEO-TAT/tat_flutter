@@ -419,7 +419,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         children: [
           Container(
             height: studentIdHeight,
-            color: Theme.of(context).backgroundColor,
+            color: Theme.of(context).colorScheme.background,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -533,7 +533,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       );
     }
     return Container(
-      color: Theme.of(context).backgroundColor.withAlpha(courseTableWithAlpha),
+      color: Theme.of(context).colorScheme.background.withAlpha(courseTableWithAlpha),
       height: dayHeight,
       child: Row(
         children: widgetList,
@@ -543,7 +543,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Widget _buildCourseTable(int index) {
     final section = courseTableControl.getSectionIntList[index];
-    final color = ((index % 2 == 1) ? Theme.of(context).backgroundColor : Theme.of(context).highlightColor)
+    final color = ((index % 2 == 1) ? Theme.of(context).colorScheme.background : Theme.of(context).highlightColor)
         .withAlpha(courseTableWithAlpha);
     final List<Widget> widgetList = [];
     widgetList.add(

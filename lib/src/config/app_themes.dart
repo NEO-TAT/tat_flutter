@@ -7,9 +7,7 @@ class AppThemes {
     useMaterial3: true,
     fontFamily: 'MyFont',
     brightness: Brightness.light,
-    backgroundColor: AppColors.lightBG,
     primaryColor: AppColors.mainColor,
-    toggleableActiveColor: Colors.blueAccent,
     appBarTheme: const AppBarTheme(
       color: Colors.blueAccent,
     ),
@@ -19,18 +17,59 @@ class AppThemes {
     cupertinoOverrideTheme: const CupertinoThemeData(
       primaryColor: AppColors.mainColor,
     ),
-    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColors.lightAccent),
     textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.lightAccent),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+    ),
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+      trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+    ),
+    colorScheme:
+        ColorScheme.fromSwatch().copyWith(secondary: AppColors.lightAccent).copyWith(background: AppColors.lightBG),
   );
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'MyFont',
     brightness: Brightness.dark,
-    backgroundColor: AppColors.darkBG,
     primaryColor: AppColors.darkPrimary,
     scaffoldBackgroundColor: AppColors.darkBG,
-    toggleableActiveColor: Colors.blueAccent,
     dividerColor: const Color(0xFFF8F8F8),
     highlightColor: const Color(0xFF2F2F2F),
     appBarTheme: const AppBarTheme(
@@ -40,5 +79,47 @@ class AppThemes {
       primaryColor: AppColors.darkAccent,
     ),
     textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.darkAccent),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+    ),
+    radioTheme: RadioThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+      trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return null;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.blueAccent;
+        }
+        return null;
+      }),
+    ),
   );
 }
