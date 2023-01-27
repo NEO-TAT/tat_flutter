@@ -2,15 +2,12 @@ name: flutter_app
 description: NTUT Life TAT, convenient, concise, fast, powerful, enrich your NTUT life!
 publish_to: 'none'
 
-# you can use this command to build both android app bundle and ios ipa:
-# flutter clean && flutter build ipa --split-debug-info=build/app/outputs/symbols --obfuscate && flutter build appbundle --split-debug-info=build/app/outputs/symbols --obfuscate
-# follow the google play new policy in 2021, do not build apk but aab.
 # CHECK THE BUILD CODE BEFORE DISTRIBUTION!!
 version: 1.4.2+5016
 
 environment:
-  flutter: ">=3.3.10 <4.0.0"
-  sdk: ">=2.18.6 <3.0.0"
+  flutter: ">=3.7.0 <4.0.0"
+  sdk: ">=2.19.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,30 +23,27 @@ dependencies:
       ref: main
 
   path: ^1.8.2 # restricted by flutter sdk.
-  path_provider: ^2.0.11
+  path_provider: ^2.0.12
   provider: ^6.0.5
-  url_launcher: ^6.1.7
+  url_launcher: ^6.1.8
   logger: ^1.1.0
   sprintf: ^7.0.0
   flutter_local_notifications: ^13.0.0
   rxdart: ^0.27.7
-  video_player: ^2.4.10
-  chewie: ^1.3.6
-  after_init: ^0.1.2
+  video_player: ^2.5.1
+  chewie: ^1.4.0
   android_intent: ^2.0.2
-  device_info: ^2.0.3
   html_unescape: ^2.0.0
   local_auth: ^2.1.3
   version: ^3.0.2
-  file_picker: ^5.2.4
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.0.17
   flutter_cache_manager: ^3.3.0
   dio: ^4.0.6
   dio_cookie_manager: ^2.0.0
   cookie_jar: ^3.0.1
   html: ^0.15.1
   connectivity: ^3.0.6
-  github: ^9.7.0
+  github: ^9.8.0
   clipboard: ^0.1.3
   flutter_inappwebview: ^5.7.2+3
   flutter_web_browser:
@@ -58,42 +52,48 @@ dependencies:
       ref: master
   eva_icons_flutter: ^3.1.0
   flutter_feather_icons: ^2.0.0+1
-  json_annotation: ^4.7.0
+  json_annotation: ^4.8.0
   back_button_interceptor: ^6.0.2
   dart_big5: ^0.0.5
   package_info: ^2.0.2
-  flutter_widget_from_html_core: ^0.9.0+2
+  flutter_widget_from_html_core: ^0.9.1
   flutter_staggered_animations: ^1.1.1
-  flutter_downloader: ^1.9.1
+  flutter_downloader: ^1.10.1+2
   permission_handler: ^10.2.0
   mime_type: ^1.0.0
   get: ^4.6.5
   bot_toast: ^4.0.3
-  pull_to_refresh: ^2.0.0
   cached_network_image: ^3.2.3
   auto_size_text: ^3.0.0
-  table_calendar: ^3.0.8
-  flutter_xlider: ^3.4.0
+  table_calendar: ^3.0.9
   fluttertoast: ^8.1.2
   awesome_dialog: ^3.0.2
   flutter_slidable: ^2.0.0
   flutter_spinkit: ^5.1.0
   flutter_markdown: ^0.6.13
   numberpicker: ^2.1.1
-  alice_lightweight: ^3.2.0
+  alice_lightweight: ^3.3.0
   open_filex: ^4.3.2
-  http_parser: ^4.0.2
-  modal_bottom_sheet: ^2.1.2
+  modal_bottom_sheet:
+    # TODO: Change to official package when the issue related to flutter 3.7.0 is addressed.
+    # See here for more details: https://github.com/jamesblasco/modal_bottom_sheet/pull/316
+    git:
+      url: https://github.com/followthemoney1/modal_bottom_sheet.git
+      ref: main
+      path: modal_bottom_sheet
   email_validator: ^2.1.17
   weekday_selector: ^1.1.0
 
   firebase_core: ^2.4.1
   firebase_analytics: ^10.1.0
-  firebase_crashlytics: ^3.0.9
+  firebase_crashlytics: ^3.0.11
   firebase_remote_config: ^3.0.9
   firebase_messaging: ^14.2.1
   cloud_firestore: ^4.3.1
-  firebase_auth: ^4.2.4
+  firebase_auth: ^4.2.5
+
+  meta: ^1.8.0
+  uuid: ^3.0.7
 
 dependency_overrides:
   intl: ^0.18.0
@@ -102,10 +102,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: ^0.11.0
-  flutter_native_splash: ^2.2.16
+  dependency_validator: ^3.2.2
+
+  #  flutter_launcher_icons: ^0.11.0 Restricted by flutter_native_splash. Enable it if you want to use it.
+  flutter_native_splash: ^2.2.17
   build_runner: ^2.3.3
-  json_serializable: ^6.5.4
+  json_serializable: ^6.6.0
   flutter_lints: ^2.0.1
 
 flutter:
@@ -124,7 +126,7 @@ flutter:
 flutter_intl:
   # Because it will be repeatedly generated when it is turned on,
   # it is very troublesome, so we temporarily turn it off.
-  # If necessary, please turn it on by yourself.
+  # Run "flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/l10n/intl_messages.dart" to generate it.
   enabled: false
 
 flutter_icons:
