@@ -1,125 +1,49 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/config/app_colors.dart';
+
+import 'color_schemes.g.dart';
 
 class AppThemes {
-  static ThemeData lightTheme = ThemeData(
+  static final lightTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: 'MyFont',
-    brightness: Brightness.light,
-    primaryColor: AppColors.mainColor,
-    appBarTheme: const AppBarTheme(
-      color: Colors.blueAccent,
+    fontFamily: 'TATFont',
+    colorScheme: lightColorScheme,
+    appBarTheme: AppBarTheme(
+      backgroundColor: lightColorScheme.primary,
+      foregroundColor: lightColorScheme.onPrimary,
+      centerTitle: false,
     ),
-    dividerColor: const Color(0xFF2F2F2F),
-    highlightColor: const Color(0xFFF8F8F8),
-    scaffoldBackgroundColor: AppColors.lightBG,
-    cupertinoOverrideTheme: const CupertinoThemeData(
-      primaryColor: AppColors.mainColor,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: lightColorScheme.background,
+      selectedItemColor: lightColorScheme.tertiary,
+      selectedIconTheme: IconThemeData(color: lightColorScheme.tertiary),
+      unselectedItemColor: lightColorScheme.onBackground,
+      unselectedIconTheme: IconThemeData(color: lightColorScheme.onBackground),
     ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.lightAccent),
-    checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
+    tabBarTheme: TabBarTheme(
+      labelColor: lightColorScheme.tertiaryContainer,
+      unselectedLabelColor: lightColorScheme.onPrimary,
     ),
-    radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
-    ),
-    switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
-    ),
-    colorScheme:
-        ColorScheme.fromSwatch().copyWith(secondary: AppColors.lightAccent).copyWith(background: AppColors.lightBG),
   );
 
-  static ThemeData darkTheme = ThemeData(
+  static final darkTheme = ThemeData(
     useMaterial3: true,
-    fontFamily: 'MyFont',
-    brightness: Brightness.dark,
-    primaryColor: AppColors.darkPrimary,
-    scaffoldBackgroundColor: AppColors.darkBG,
-    dividerColor: const Color(0xFFF8F8F8),
-    highlightColor: const Color(0xFF2F2F2F),
-    appBarTheme: const AppBarTheme(
-      color: Colors.black26,
+    fontFamily: 'TATFont',
+    colorScheme: darkColorScheme,
+    appBarTheme: AppBarTheme(
+      backgroundColor: darkColorScheme.primaryContainer,
+      foregroundColor: darkColorScheme.onPrimaryContainer,
+      centerTitle: false,
     ),
-    cupertinoOverrideTheme: CupertinoThemeData(
-      primaryColor: AppColors.darkAccent,
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: darkColorScheme.background,
+      selectedItemColor: darkColorScheme.tertiary,
+      selectedIconTheme: IconThemeData(color: darkColorScheme.tertiary),
+      unselectedItemColor: darkColorScheme.onBackground,
+      unselectedIconTheme: IconThemeData(color: darkColorScheme.onBackground),
     ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.darkAccent),
-    checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
-    ),
-    radioTheme: RadioThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
-    ),
-    switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.blueAccent;
-        }
-        return null;
-      }),
+    tabBarTheme: TabBarTheme(
+      labelColor: darkColorScheme.tertiary,
+      unselectedLabelColor: darkColorScheme.onPrimaryContainer,
     ),
   );
 }
