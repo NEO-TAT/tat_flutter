@@ -12,5 +12,4 @@ analyzer:
 linter:
   rules:
     lines_longer_than_80_chars: false
-    import_of_legacy_library_into_null_safe: false
     depend_on_referenced_packages: false

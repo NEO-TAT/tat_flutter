@@ -32,7 +32,7 @@ class DirPopup extends StatelessWidget {
         ],
         icon: Icon(
           Icons.arrow_drop_down,
-          color: Theme.of(context).textTheme.headline6.color,
+          color: Theme.of(context).textTheme.titleLarge.color,
         ),
         color: Theme.of(context).scaffoldBackgroundColor,
         offset: const Offset(0, 30),

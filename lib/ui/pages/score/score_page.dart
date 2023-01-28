@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
+import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_app/ui/pages/score/semester_score_grade_metrics.dart';
 import 'package:flutter_app/ui/pages/score/widgets/calculation_warning_widget.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sprintf/sprintf.dart';
 
 class ScoreViewerPage extends StatefulWidget {
@@ -165,12 +167,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
               labelColor: AppColors.mainColor,
               unselectedLabelColor: Colors.white,
               indicatorSize: TabBarIndicatorSize.label,
-              indicator: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+              indicator: BoxDecoration(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                 ),
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
               isScrollable: true,
               tabs: tabLabelList,
@@ -255,8 +257,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
         child: Material(
           child: Ink(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(25.0)),
-              border: Border.all(width: 1, color: Colors.red),
+              borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+              border: Border.all(
+                width: 2,
+                color: context.read<AppProvider>().theme.colorScheme.tertiary,
+              ),
             ),
             child: InkWell(
               borderRadius: BorderRadius.circular(25.0),

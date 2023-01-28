@@ -109,7 +109,6 @@ class _OtherPageState extends State<OtherPage> {
         break;
       case OnListViewPress.logout:
         ErrorDialogParameter parameter = ErrorDialogParameter(
-            context: context,
             desc: R.current.logoutWarning,
             dialogType: DialogType.warning,
             title: R.current.warning,
