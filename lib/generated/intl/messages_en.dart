@@ -180,6 +180,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Are you sure you want to log out? \nAll data will be cleared"),
         "missingRequiredInformation": MessageLookupByLibrary.simpleMessage("Missing required information"),
         "naturalDimension": MessageLookupByLibrary.simpleMessage("Natural dimension"),
+        "needsVerifyMobileWarning": MessageLookupByLibrary.simpleMessage(
+            "You may be asked to verify your phone number\nplease check the website entrance for further information."),
         "networkError": MessageLookupByLibrary.simpleMessage("Network error"),
         "noAnyAnnouncement": MessageLookupByLibrary.simpleMessage("Without any announcement"),
         "noAnyFavorite": MessageLookupByLibrary.simpleMessage("No any favorite"),
@@ -199,7 +201,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "originPassword": MessageLookupByLibrary.simpleMessage("Origin password"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "passwordExpiredWarning": MessageLookupByLibrary.simpleMessage(
-            "Password is about to expire, please update password as soon as possible"),
+            "Your password may be expiring or has expired\nplease update it as soon as possible"),
         "passwordLengthError":
             MessageLookupByLibrary.simpleMessage("The password length must be between 8 characters and 14 characters"),
         "passwordNotSame": MessageLookupByLibrary.simpleMessage("Different from the original password"),
