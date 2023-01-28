@@ -46,7 +46,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
   static double studentIdHeight = 40;
   static double courseHeight = 60;
   static double sectionWidth = 20;
-  static int courseTableWithAlpha = 0xDF;
+  static int courseTableWithAlpha = 0x44;
   static int showCourseTableNum = 9;
   CourseTableControl courseTableControl = CourseTableControl();
   bool favorite = false;
@@ -543,8 +543,9 @@ class _CourseTablePageState extends State<CourseTablePage> {
 
   Widget _buildCourseTable(int index) {
     final section = courseTableControl.getSectionIntList[index];
-    final color = ((index % 2 == 1) ? Theme.of(context).colorScheme.background : Theme.of(context).highlightColor)
-        .withAlpha(courseTableWithAlpha);
+    final color = index % 2 == 1
+        ? Theme.of(context).colorScheme.surface
+        : Theme.of(context).colorScheme.surfaceVariant.withAlpha(courseTableWithAlpha);
     final List<Widget> widgetList = [];
     widgetList.add(
       Container(
