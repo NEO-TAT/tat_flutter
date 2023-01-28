@@ -43,26 +43,25 @@ class NTUTConnector {
       loginMethod: 'ntut_portal_new',
     );
 
-    switch (loginResult.resultType) {
-      case SimpleLoginResultType.success:
-      case SimpleLoginResultType.needsVerifyMobile:
-        final userInfo = UserInfoJson(
-          givenName: loginResult.userNaturalName,
-          userMail: loginResult.userMail,
-          userPhoto: loginResult.userPhotoName,
-          userDn: loginResult.userDn,
-          passwordExpiredRemind: loginResult.passwordExpiredRemind,
-        );
+    if (loginResult.resultType == SimpleLoginResultType.success) {
+      await FirebaseAnalytics.instance.setUserProperty(
+        name: 'user_id',
+        value: account,
+      );
 
-        LocalStorage.instance.setUserInfo(userInfo);
-        LocalStorage.instance.saveUserData();
+      final userInfo = UserInfoJson(
+        givenName: loginResult.userNaturalName,
+        userMail: loginResult.userMail,
+        userPhoto: loginResult.userPhotoName,
+        userDn: loginResult.userDn,
+        passwordExpiredRemind: loginResult.passwordExpiredRemind,
+      );
 
-        // ignore the `needsVerifyMobile` case.
-        return SimpleLoginResultType.success;
-
-      default:
-        return loginResult.resultType;
+      LocalStorage.instance.setUserInfo(userInfo);
+      LocalStorage.instance.saveUserData();
     }
+
+    return loginResult.resultType;
   }
 
   static Future<List<NTUTCalendarJson>?> getCalendar(DateTime startTime, DateTime endTime) async {

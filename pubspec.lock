@@ -1473,7 +1473,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: d99e3e72dcabacf76af2f7c2dcc7d156cd7e9f34
+      resolved-ref: f086eecc3f2d06380bf22f86751f249b151c2f25
       url: "git@github.com:NTUT-NPC/TAT-Core.git"
     source: git
     version: "1.0.0-4.0.pre"

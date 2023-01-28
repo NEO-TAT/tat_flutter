@@ -358,11 +358,21 @@ class S {
     );
   }
 
-  /// `Password is about to expire, please update password as soon as possible`
+  /// `Your password may be expiring or has expired\nplease update it as soon as possible`
   String get passwordExpiredWarning {
     return Intl.message(
-      'Password is about to expire, please update password as soon as possible',
+      'Your password may be expiring or has expired\nplease update it as soon as possible',
       name: 'passwordExpiredWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You may be asked to verify your phone number\nplease check the website entrance for further information.`
+  String get needsVerifyMobileWarning {
+    return Intl.message(
+      'You may be asked to verify your phone number\nplease check the website entrance for further information.',
+      name: 'needsVerifyMobileWarning',
       desc: '',
       args: [],
     );

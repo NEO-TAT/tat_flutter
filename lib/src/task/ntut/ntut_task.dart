@@ -71,6 +71,16 @@ class NTUTTask<T> extends DialogTask<T> {
       case SimpleLoginResultType.wrongCredential:
         parameter.desc = R.current.accountPasswordError;
         parameter.btnOkText = R.current.restart;
+        parameter.dialogType = DialogType.error;
+        break;
+      case SimpleLoginResultType.needsResetPassword:
+        parameter.desc = R.current.passwordExpiredWarning;
+        parameter.title = R.current.warning;
+        break;
+      case SimpleLoginResultType.needsVerifyMobile:
+        parameter.desc = R.current.needsVerifyMobileWarning;
+        parameter.dialogType = DialogType.info;
+        parameter.title = R.current.warning;
         break;
       default:
         parameter.desc = R.current.unknownServerError;
