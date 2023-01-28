@@ -9,7 +9,11 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
-  AppProvider() {
+  static AppProvider instance = AppProvider();
+
+  factory AppProvider() = AppProvider._;
+
+  AppProvider._() {
     checkTheme();
   }
 
