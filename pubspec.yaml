@@ -95,6 +95,7 @@ dependencies:
   meta: ^1.8.0
   uuid: ^3.0.7
 
+
 dependency_overrides:
   intl: ^0.18.0
 
@@ -116,7 +117,7 @@ flutter:
     - assets/
 
   fonts:
-    - family: MyFont
+    - family: TATFont
       fonts:
         - asset: assets/fonts/GenSenRounded-R.ttc
           weight: 400
