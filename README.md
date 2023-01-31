@@ -1,42 +1,42 @@
-<p align="center">
-<img src="https://i.imgur.com/8UfiwmZ.webp" align="center" width=200>
-</p>
+<h6 align="center">
+<a href="https://apps.apple.com/tw/app/tat-%E5%8C%97%E7%A7%91%E7%94%9F%E6%B4%BB/id1513875597?itscg=30200&amp;itsct=apps_box_appicon" style="width: 170px; height: 170px; border-radius: 22%; overflow: hidden; display: inline-block; vertical-align: middle;"><img src="https://is3-ssl.mzstatic.com/image/thumb/Purple112/v4/20/2b/3b/202b3b1c-c977-5445-365d-52593ed795f3/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/540x540bb.jpg" alt="TAT - 北科生活" style="width: 170px; height: 170px; border-radius: 22%; overflow: hidden; display: inline-block; vertical-align: middle;"></a>
+</h6>
 
-<p align="center">
-  <h1 align="center"> TAT </h1>
-  <h3 align="center"> An app specially made for <a target="_blank" href="https://ntut.edu.tw">NTUT</a> to simplify campus life </h3>
-</p>
+<h1 align="center">
+<b>TAT</b>
+<i><p><small>the Best NTUT Campus life assistant</small></p></i>
+</h1>
 
-[![Build](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml/badge.svg)](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml)
+<h6 align="center">
 
-## Download
+[![CI](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml)
 
 <a href='https://play.google.com/store/apps/details?id=club.ntut.npc.tat'>
-  <img height="60" alt='Get it on Google Play' src='https://i.imgur.com/lnvrMMS.webp'/>
+<img height="50px" alt='Get it on Google Play' src='https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg'/>
 </a>
 
-<a href="https://apps.apple.com/tw/app/tat-北科生活/id1513875597">
-  <img alt='Get it on AppStore' src='https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?releaseDate=2019-04-02&kind=iossoftware&bubble=ios_apps' height="60">
+<a href="https://apple.co/3Rmojax">
+<img height="50px" alt='Get it on AppStore' src='https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg'>
 </a>
 
-## 功能
-1. 查詢北科學生課表
-2. 查詢北科當學年行事曆
-3. 查詢北科 i 學園公告
-4. 下載北科 i 學園檔案
-5. 查詢北科學生成績與學分資訊
-6. 支援中文、英文顯示
-7. 消息推播
+</h6>
 
-## 環境安裝問題
-### 缺少 google-services.json
-可以到 [TAT 的雲端](https://drive.google.com/drive/folders/1uGzZfcNeYGytfZp8z7QPqSftCaQH1jfK?usp=sharing)上下載 Firebase 相關檔案，並根據裡面的文件進行設定。
+## Get started
 
-## 貢獻者
-- [morris13579](https://github.com/morris13579)
-- [yaoandy107](https://github.com/yaoandy107)
-- [Xanonymous](https://github.com/Xanonymous-GitHub)
-- [DevilTea](https://github.com/DevilTea)
+## Features
 
-## 授權
-這項專案使用 GPLv3 授權 - 詳情請參閱 [LICENSE](https://github.com/NEO-TAT/NTUTCourseHelper-Flutter/blob/dev/LICENSE)
+## Contact us
+
+## Contributors
+[![All Contributors](https://img.shields.io/github/all-contributors/NEO-TAT/tat_flutter?color=ee8449&style=flat-square)](#contributors)
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+_Copyright © 2023 All rights reserved and owned by [**N.P.C. 北科程式設計研究社**](https://ntut.club)._
