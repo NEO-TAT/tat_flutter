@@ -65,7 +65,7 @@ Due to the strong drive of ![Flutter](https://flutter.dev/), the development of 
 
 - Then, start installing the dependencies in the TAT project.
   ```bash
-  flutter pub get --exclude=tat_core
+  flutter pub get
   ```
 
 Once all dependencies are successfully installed (excluding `tat_core`), you can start doing whatever you want!
