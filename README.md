@@ -46,11 +46,11 @@ However, what many people do not know is that TAT is a project fully developed b
 <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="get started with flutter">
 </a>
 
-Due to the strong drive of ![Flutter](https://flutter.dev/), the development of TAT is accomplished with half the effort.
+Due to the strong drive of [Flutter](https://flutter.dev/), the development of TAT is accomplished with half the effort.
 
 - First, it is recommended that you install Flutter in your development environment. If you are not yet familiar with Flutter, you may refer to its official website for tutorials.
 
-- Next, you are required to install ![Android Studio](https://developer.android.com/studio) or ![VSCode](https://code.visualstudio.com/) in your development environment, as Flutter and Dart officially recommend the use of these two solutions for development. However, if you believe that other editors/IDEs are a better choice for you, you may try installing them as well.
+- Next, you are required to install [Android Studio](https://developer.android.com/studio) or [VSCode](https://code.visualstudio.com/) in your development environment, as Flutter and Dart officially recommend the use of these two solutions for development. However, if you believe that other editors/IDEs are a better choice for you, you may try installing them as well.
 
 - Once your editor/IDE is set up, it is advisable to run Flutter Doctor to check for any missing steps.
   ```bash
@@ -58,7 +58,7 @@ Due to the strong drive of ![Flutter](https://flutter.dev/), the development of 
   flutter doctor -v
   ```
 
-- Now, you may clone the code of TAT to your environment through ![Git](https://git-scm.com/).
+- Now, you may clone the code of TAT to your environment through [Git](https://git-scm.com/).
   ```bash
   git clone --recurse-submodules git@github.com:NEO-TAT/tat_flutter.git
   ```
@@ -80,7 +80,7 @@ The TAT team always holds a positive attitude and strives to provide the best pr
 
 Therefore, if you have any suggestions or advice regarding this app, we sincerely hope that you can go to the "Feedback" section under the "Others" tab in the app and fill out the feedback form.
 
-If you would like to participate directly in our development discussions, you are welcome to join our ![Discord server](https://discord.gg/FvRwmSCKWY) or post your ideas in the ![GitHub Discussion](https://github.com/orgs/NEO-TAT/discussions).
+If you would like to participate directly in our development discussions, you are welcome to join our [Discord server](https://discord.gg/FvRwmSCKWY) or post your ideas in the [GitHub Discussion](https://github.com/orgs/NEO-TAT/discussions).
 
 ## Become contributor
 <img src="https://i.imgur.com/7yYwMr1.webp" height="200">
@@ -89,21 +89,24 @@ If you are inclined to contribute to the improvement of this app, we welcome you
 
 While we certainly welcome more capable developers, contributing to this app does not necessarily require writing code. If your expertise lies in areas such as UI design, animation design, project management, DevOps, planning, quality management, automation, security, server-side, front-end web development, CI/CD, AI, ML, networking, IoT, multilingual translation, accounting and finance, advertising, marketing, and promotion, among others, we also highly value your involvement.
 
-Furthermore, we have compiled detailed development materials into our ![wiki](https://github.com/NEO-TAT/tat_flutter/wiki) and invite you to peruse it at your convenience.
+Furthermore, we have compiled detailed development materials into our [wiki](https://github.com/NEO-TAT/tat_flutter/wiki) and invite you to peruse it at your convenience.
 
 ## Contact us
 <a href="https://discord.gg/FvRwmSCKWY"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord server"></a>
 <a href="https://www.facebook.com/NPC.OwO"><img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook"></a>
 
-<img width="100px" alt="NPC Special Logo SEO" src="https://user-images.githubusercontent.com/47718989/216663916-a7f568e0-8cdd-4cda-8d2d-2c8f72ac08bc.png">
+<a href="https://ntut.club"><img width="100px" alt="NPC Special Logo SEO" src="https://user-images.githubusercontent.com/47718989/216663916-a7f568e0-8cdd-4cda-8d2d-2c8f72ac08bc.png"></a>
 
+## Contributors
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-
+[![All Contributors](https://img.shields.io/github/all-contributors/NEO-TAT/tat_flutter?color=ee8449&style=flat-square)](#contributors)
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+
 
 _Copyright © 2023 All rights reserved and owned by [**N.P.C. 北科程式設計研究社**](https://ntut.club)._
