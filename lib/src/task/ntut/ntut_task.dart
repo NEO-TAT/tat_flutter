@@ -25,8 +25,6 @@ class NTUTTask<T> extends DialogTask<T> {
 
   @override
   Future<TaskStatus> execute() async {
-    if (_isLogin) return TaskStatus.success;
-
     final account = LocalStorage.instance.getAccount();
     final password = LocalStorage.instance.getPassword();
 
@@ -35,6 +33,8 @@ class NTUTTask<T> extends DialogTask<T> {
       LocalStorage.instance.logout();
       RouteUtils.toLoginScreen();
       return TaskStatus.shouldGiveUp;
+    } else if (_isLogin) {
+      return TaskStatus.success;
     }
 
     try {
@@ -42,11 +42,9 @@ class NTUTTask<T> extends DialogTask<T> {
       final loginResult = await NTUTConnector.login(account, password);
       super.onEnd();
 
-      if (loginResult == AccountStatus.normal) {
-        _isLogin = true;
-      }
+      _isLogin = loginResult.isSuccess;
 
-      return _handleConnectorStatus(loginResult);
+      return _handleConnectorStatus(loginResult.accountStatus);
     } catch (e, stackTrace) {
       // When some errors happened, such as server timeout, we directly return
       // an unknown type status to the error handle function.
@@ -55,60 +53,88 @@ class NTUTTask<T> extends DialogTask<T> {
     }
   }
 
+  /// Handle the account status from the connector.
+  ///
+  /// If the login status is false, we will force the user to login again.
+  /// Otherwise, we will show the error dialog to the user, but still let the user to continue the task.
   Future<TaskStatus> _handleConnectorStatus(AccountStatus status) async {
     final parameter = ErrorDialogParameter(
-      desc: "",
+      desc: R.current.unknownServerError,
       dialogType: DialogType.warning,
       offCancelBtn: true,
     );
 
+    TaskStatus taskStatus = TaskStatus.shouldIgnore;
+
     switch (status) {
       case AccountStatus.normal:
-        return TaskStatus.success;
+        // If the status is normal, we will do nothing and let the task continue.
+        taskStatus = TaskStatus.success;
+        break;
       case AccountStatus.locked:
+        // If the status is locked, we will prepare to show the error dialog.
+        // And we will not allow the user to continue the task.
         parameter.desc = R.current.accountLock;
+        taskStatus = TaskStatus.shouldGiveUp;
         break;
       case AccountStatus.receivedInvalidCredential:
+        // If the status is credential invalid, we will prepare to show the error dialog.
+        // And we will not allow the user to continue the task.
         parameter.desc = R.current.accountPasswordError;
         parameter.btnOkText = R.current.restart;
         parameter.dialogType = DialogType.error;
+        taskStatus = TaskStatus.shouldGiveUp;
         break;
       case AccountStatus.needsResetPassword:
+        // If the status is password expired, we will prepare to show the error dialog.
+        // But we will still let the user to continue the task, since the user may want to change the password,
+        // or the password expiration time is not come yet.
+        // TODO: analyze the password `really` expired response from the server.
         parameter.desc = R.current.passwordExpiredWarning;
         parameter.title = R.current.warning;
+        taskStatus = TaskStatus.success;
         break;
       case AccountStatus.needsVerifyMobile:
+        // If the status is mobile not verified, we will prepare to show the error dialog.
+        // But we will still let the user to continue the task, since the user may not want to verify the mobile.
         parameter.desc = R.current.needsVerifyMobileWarning;
         parameter.dialogType = DialogType.info;
         parameter.title = R.current.warning;
+        taskStatus = TaskStatus.success;
         break;
       default:
+        // If the status is unknown, we will prepare to show the error dialog.
         parameter.desc = R.current.unknownServerError;
         break;
     }
 
-    // We will logout the user only when the status is password incorrect.
-    if (status == AccountStatus.receivedInvalidCredential) {
+    // We will logout the user when the server returned unsuccessful result.
+    if (!_isLogin) {
       LocalStorage.instance.logout();
       RouteUtils.toLoginScreen();
-      return onErrorParameter(parameter);
+
+      if (status != AccountStatus.normal) {
+        return onErrorParameter(parameter);
+      }
+    } else if (status != AccountStatus.normal && status != AccountStatus.needsVerifyMobile) {
+      // We will prevent to show the error dialog when the status is normal,
+      // or mobile verify requested.
+      ErrorDialog(parameter).show();
     }
 
-    _isLogin = false;
-    ErrorDialog(parameter).show();
-
-    // Ignore all error cases exclude the password incorrect.
-    return TaskStatus.shouldIgnore;
+    return taskStatus;
   }
 
   @override
   Future<TaskStatus> onError(String message) {
+    // This is aim to invalidate the login status, make it trigger the login task again.
     _isLogin = false;
     return super.onError(message);
   }
 
   @override
   Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) {
+    // This is aim to invalidate the login status, make it trigger the login task again.
     _isLogin = false;
     return super.onErrorParameter(parameter);
   }
