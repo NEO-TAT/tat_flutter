@@ -42,7 +42,7 @@ class NTUTTask<T> extends DialogTask<T> {
       final loginResult = await NTUTConnector.login(account, password);
       super.onEnd();
 
-      if (loginResult == SimpleLoginResultType.success) {
+      if (loginResult == AccountStatus.normal) {
         _isLogin = true;
       }
 
@@ -51,11 +51,11 @@ class NTUTTask<T> extends DialogTask<T> {
       // When some errors happened, such as server timeout, we directly return
       // an unknown type status to the error handle function.
       Log.error(e, stackTrace);
-      return _handleConnectorStatus(SimpleLoginResultType.unknown);
+      return _handleConnectorStatus(AccountStatus.unknown);
     }
   }
 
-  Future<TaskStatus> _handleConnectorStatus(SimpleLoginResultType status) async {
+  Future<TaskStatus> _handleConnectorStatus(AccountStatus status) async {
     final parameter = ErrorDialogParameter(
       desc: "",
       dialogType: DialogType.warning,
@@ -63,21 +63,21 @@ class NTUTTask<T> extends DialogTask<T> {
     );
 
     switch (status) {
-      case SimpleLoginResultType.success:
+      case AccountStatus.normal:
         return TaskStatus.success;
-      case SimpleLoginResultType.locked:
+      case AccountStatus.locked:
         parameter.desc = R.current.accountLock;
         break;
-      case SimpleLoginResultType.wrongCredential:
+      case AccountStatus.receivedInvalidCredential:
         parameter.desc = R.current.accountPasswordError;
         parameter.btnOkText = R.current.restart;
         parameter.dialogType = DialogType.error;
         break;
-      case SimpleLoginResultType.needsResetPassword:
+      case AccountStatus.needsResetPassword:
         parameter.desc = R.current.passwordExpiredWarning;
         parameter.title = R.current.warning;
         break;
-      case SimpleLoginResultType.needsVerifyMobile:
+      case AccountStatus.needsVerifyMobile:
         parameter.desc = R.current.needsVerifyMobileWarning;
         parameter.dialogType = DialogType.info;
         parameter.title = R.current.warning;
@@ -88,7 +88,7 @@ class NTUTTask<T> extends DialogTask<T> {
     }
 
     // We will logout the user only when the status is password incorrect.
-    if (status == SimpleLoginResultType.wrongCredential) {
+    if (status == AccountStatus.receivedInvalidCredential) {
       LocalStorage.instance.logout();
       RouteUtils.toLoginScreen();
       return onErrorParameter(parameter);
