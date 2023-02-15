@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomAlert extends StatelessWidget {
   final Widget child;
 
-  const CustomAlert({Key key, @required this.child}) : super(key: key);
+  const CustomAlert({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

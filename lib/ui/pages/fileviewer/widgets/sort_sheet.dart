@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/constants.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
@@ -9,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class SortSheet extends StatelessWidget {
-  const SortSheet({Key key}) : super(key: key);
+  const SortSheet({super.key});
 
   @override
   Widget build(BuildContext context) => FractionallySizedBox(
@@ -49,12 +47,12 @@ class SortSheet extends StatelessWidget {
                             )
                           : const SizedBox(),
                       title: Text(
-                        "${Constants.sortList[index]}",
+                        Constants.sortList[index],
                         style: TextStyle(
                           fontSize: 14.0,
                           color: index == Provider.of<CategoryProvider>(context, listen: false).sort
                               ? Colors.blue
-                              : Theme.of(context).textTheme.titleLarge.color,
+                              : Theme.of(context).textTheme.titleLarge?.color,
                         ),
                       ),
                     );

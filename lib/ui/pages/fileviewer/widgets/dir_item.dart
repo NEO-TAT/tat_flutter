@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,15 +8,15 @@ import 'dir_popup.dart';
 
 class DirectoryItem extends StatelessWidget {
   final FileSystemEntity file;
-  final Function tap;
-  final Function popTap;
+  final VoidCallback tap;
+  final void Function(int)? popTap;
 
   const DirectoryItem({
-    Key key,
-    @required this.file,
-    @required this.tap,
-    @required this.popTap,
-  }) : super(key: key);
+    super.key,
+    required this.file,
+    required this.tap,
+    required this.popTap,
+  });
 
   @override
   Widget build(BuildContext context) => ListTile(

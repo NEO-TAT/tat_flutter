@@ -1,7 +1,5 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 class Constants {
-  static List sortList = [
+  static List<String> sortList = [
     "File name (A to Z)",
     "File name (Z to A)",
     "Date (oldest first)",
