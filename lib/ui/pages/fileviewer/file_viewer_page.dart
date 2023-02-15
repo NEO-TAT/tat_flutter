@@ -1,10 +1,8 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/providers/category_provider.dart';
+import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/util/file_utils.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
@@ -23,19 +21,20 @@ class FileViewerPage extends StatefulWidget {
   final String path;
 
   const FileViewerPage({
-    Key key,
-    @required this.title,
-    @required this.path,
-  }) : super(key: key);
+    super.key,
+    required this.title,
+    required this.path,
+  });
 
   @override
   State<FileViewerPage> createState() => _FileViewerPageState();
 }
 
 class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObserver {
-  String path;
+  String path = "";
   final List<String> paths = [];
   List<FileSystemEntity> files = [];
+  final isDarkModeEnabled = Get.isDarkMode;
   bool showHidden = false;
 
   @override
@@ -46,13 +45,13 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
   }
 
   getFiles() async {
-    Directory dir = Directory(path);
-    List<FileSystemEntity> l = dir.listSync();
+    final Directory dir = Directory(path);
+    final List<FileSystemEntity> l = dir.listSync();
     files.clear();
     setState(() {
       showHidden = Provider.of<CategoryProvider>(context, listen: false).showHidden;
     });
-    for (FileSystemEntity file in l) {
+    for (final file in l) {
       if (!showHidden) {
         if (!path_lib.basename(file.path).startsWith(".")) {
           setState(() {
@@ -85,164 +84,163 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
   }
 
   @override
-  Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          if (paths.length == 1) {
-            return true;
-          } else {
-            paths.removeLast();
-            setState(() {
-              path = paths.last;
-            });
-            getFiles();
-            return false;
-          }
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-              ),
-              onPressed: () {
-                if (paths.length == 1) {
-                  Navigator.pop(context);
-                } else {
-                  paths.removeLast();
-                  setState(() {
-                    path = paths.last;
-                  });
-                  getFiles();
-                }
-              },
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final labelAndIconColor = isDarkModeEnabled ? colorScheme.onPrimaryContainer : colorScheme.onPrimary;
+    return WillPopScope(
+      onWillPop: () async {
+        if (paths.length == 1) {
+          return true;
+        } else {
+          paths.removeLast();
+          setState(() {
+            path = paths.last;
+          });
+          getFiles();
+          return false;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
             ),
-            elevation: 4,
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  widget.title,
-                ),
-              ],
-            ),
-            bottom: PathBar(
-              child: SizedBox(
-                height: 50,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: paths.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final i = paths[index];
-                      final split = i.split("/");
-                      return index == 0
-                          ? IconButton(
-                              icon: Icon(
-                                widget.path.toString().contains("emulated") ? FeatherIcons.smartphone : Icons.sd_card,
-                                color: index == paths.length - 1
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Theme.of(context).textTheme.titleLarge.color,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  path = paths[index];
-                                  paths.removeRange(index + 1, paths.length);
-                                });
-                                getFiles();
-                              },
-                            )
-                          : InkWell(
-                              onTap: () {
-                                setState(() {
-                                  path = paths[index];
-                                  paths.removeRange(index + 1, paths.length);
-                                });
-                                getFiles();
-                              },
-                              child: SizedBox(
-                                height: 40,
-                                child: Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Text(
-                                      split[split.length - 1],
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: index == paths.length - 1
-                                            ? Theme.of(context).colorScheme.secondary
-                                            : Theme.of(context).textTheme.titleLarge.color,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const Icon(
-                        Icons.arrow_forward_ios,
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              IconButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => const SortSheet(),
-                  ).then((v) {
-                    getFiles();
-                  });
-                },
-                tooltip: R.current.sortBy,
-                icon: const Icon(
-                  Icons.sort,
-                ),
-              ),
+            onPressed: () {
+              if (paths.length == 1) {
+                Navigator.pop(context);
+              } else {
+                paths.removeLast();
+                setState(() {
+                  path = paths.last;
+                });
+                getFiles();
+              }
+            },
+          ),
+          elevation: 4,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.title),
             ],
           ),
-          body: files.isEmpty
-              ? Center(
-                  child: Text(R.current.nothingHere),
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.only(left: 20),
-                  itemCount: files.length,
+          bottom: PathBar(
+            child: SizedBox(
+              height: 50,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: paths.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final file = files[index];
-                    return file.toString().split(":")[0] == "Directory"
-                        ? DirectoryItem(
-                            popTap: (v) async {
-                              if (v == 0) {
-                                renameDialog(context, file.path, "dir");
-                              } else if (v == 1) {
-                                await Directory(file.path)
-                                    .delete(recursive: true) //將會刪除資料夾內所有東西
-                                    .catchError((e) {
-                                  if (e.toString().contains("Permission denied")) {
-                                    MyToast.show(R.current.cannotWrite);
-                                  }
-                                });
-                                getFiles();
-                              }
-                            },
-                            file: file,
-                            tap: () {
-                              paths.add(file.path);
+                    final i = paths[index];
+                    final split = i.split("/");
+                    return index == 0
+                        ? IconButton(
+                            icon: Icon(
+                              widget.path.toString().contains("emulated") ? FeatherIcons.smartphone : Icons.sd_card,
+                              color: labelAndIconColor,
+                            ),
+                            onPressed: () {
                               setState(() {
-                                path = file.path;
+                                path = paths[index];
+                                paths.removeRange(index + 1, paths.length);
                               });
                               getFiles();
                             },
                           )
-                        : FileItem(
+                        : InkWell(
+                            onTap: () {
+                              setState(() {
+                                path = paths[index];
+                                paths.removeRange(index + 1, paths.length);
+                              });
+                              getFiles();
+                            },
+                            child: SizedBox(
+                              height: 40,
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Text(
+                                    split[split.length - 1],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: labelAndIconColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                  },
+                  separatorBuilder: (_, __) => Icon(
+                    Icons.arrow_forward_ios,
+                    color: labelAndIconColor,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => const SortSheet(),
+                ).then((v) {
+                  getFiles();
+                });
+              },
+              tooltip: R.current.sortBy,
+              icon: const Icon(
+                Icons.sort,
+              ),
+            ),
+          ],
+        ),
+        body: files.isEmpty
+            ? Center(
+                child: Text(R.current.nothingHere),
+              )
+            : ListView.builder(
+                itemCount: files.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final file = files[index];
+                  return file.toString().split(":")[0] == "Directory"
+                      ? DirectoryItem(
+                          popTap: (v) async {
+                            if (v == 0) {
+                              renameDialog(context, file.path, "dir");
+                            } else if (v == 1) {
+                              await Directory(file.path)
+                                  .delete(recursive: true) //將會刪除資料夾內所有東西
+                                  .catchError((e) {
+                                if (e.toString().contains("Permission denied")) {
+                                  MyToast.show(R.current.cannotWrite);
+                                }
+
+                                return Directory(file.path);
+                              });
+                              getFiles();
+                            }
+                          },
+                          file: file,
+                          tap: () {
+                            paths.add(file.path);
+                            setState(() {
+                              path = file.path;
+                            });
+                            getFiles();
+                          },
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: FileItem(
                             file: file,
                             popTap: (v) async {
                               if (v == 0) {
@@ -252,37 +250,27 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                                   if (e.toString().contains("Permission denied")) {
                                     MyToast.show(R.current.cannotWrite);
                                   }
+                                  return File(file.path);
                                 });
                                 getFiles();
                               } else if (v == 2) {}
                             },
-                          );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Stack(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                            height: 1,
-                            color: Theme.of(context).dividerColor,
-                            width: MediaQuery.of(context).size.width - 70,
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => addDialog(context, path),
-            tooltip: "Add Folder",
-            child: const Icon(FeatherIcons.plus),
-          ),
+                        );
+                },
+              ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => addDialog(context, path),
+          tooltip: "Add Folder",
+          child: const Icon(FeatherIcons.plus),
         ),
-      );
+      ),
+    );
+  }
 
   addDialog(BuildContext context, String path) {
     final name = TextEditingController();
+    final colorScheme = Theme.of(context).colorScheme;
     Get.dialog(
       CustomAlert(
         child: Padding(
@@ -291,7 +279,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               const SizedBox(height: 15),
               Text(
                 R.current.createNewFolder,
@@ -308,7 +296,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
               const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: [
                   SizedBox(
                     height: 40,
                     width: 130,
@@ -318,12 +306,12 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         side: BorderSide(color: Theme.of(context).colorScheme.secondary),
-                        backgroundColor: Colors.white,
+                        backgroundColor: colorScheme.secondary,
                       ),
                       child: Text(
                         R.current.cancel,
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: colorScheme.onSecondary,
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
@@ -334,15 +322,15 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                     width: 130,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        backgroundColor: colorScheme.tertiary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
                       child: Text(
                         R.current.createFolder,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: colorScheme.onTertiary,
                         ),
                       ),
                       onPressed: () async {
@@ -352,6 +340,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                               if (e.toString().contains("Permission denied")) {
                                 MyToast.show(R.current.cannotWrite);
                               }
+                              return Directory("$path/${name.text}");
                             });
                           } else {
                             MyToast.show(R.current.folderNameAlreadyExists);
@@ -375,6 +364,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
 
   renameDialog(BuildContext context, String path, String type) {
     final name = TextEditingController();
+    final colorScheme = Theme.of(context).colorScheme;
     setState(() {
       name.text = path_lib.basename(path);
     });
@@ -386,7 +376,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               const SizedBox(height: 15),
               Text(
                 R.current.renameItem,
@@ -403,7 +393,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
               const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: [
                   SizedBox(
                     height: 40,
                     width: 130,
@@ -413,12 +403,12 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         side: BorderSide(color: Theme.of(context).colorScheme.secondary),
-                        backgroundColor: Colors.white,
+                        backgroundColor: colorScheme.secondary,
                       ),
                       child: Text(
                         R.current.cancel,
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: colorScheme.onSecondary,
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
@@ -432,12 +422,12 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        backgroundColor: colorScheme.tertiary,
                       ),
                       child: Text(
                         R.current.rename,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: colorScheme.onTertiary,
                         ),
                       ),
                       onPressed: () async {
@@ -450,6 +440,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                                 if (e.toString().contains("Permission denied")) {
                                   MyToast.show(R.current.cannotWrite);
                                 }
+                                return File(path);
                               });
                             } else {
                               MyToast.show(R.current.fileNameAlreadyExists);
@@ -464,6 +455,7 @@ class _FileViewerPageState extends State<FileViewerPage> with WidgetsBindingObse
                                 if (e.toString().contains("Permission denied")) {
                                   MyToast.show(R.current.cannotWrite);
                                 }
+                                return Directory(path);
                               });
                             }
                           }
