@@ -1,5 +1,3 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -15,14 +13,14 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   bool loading = false;
-  List<FileSystemEntity> downloads = [];
-  List<String> downloadTabs = [];
+  final List<FileSystemEntity> downloads = [];
+  final List<String> downloadTabs = [];
 
-  List<FileSystemEntity> images = [];
-  List<String> imageTabs = [];
+  final List<FileSystemEntity> images = [];
+  final List<String> imageTabs = [];
 
-  List<FileSystemEntity> audio = [];
-  List<String> audioTabs = [];
+  final List<FileSystemEntity> audio = [];
+  final List<String> audioTabs = [];
 
   bool showHidden = false;
   int sort = 0;
@@ -32,15 +30,18 @@ class CategoryProvider extends ChangeNotifier {
     downloadTabs.clear();
     downloads.clear();
     downloadTabs.add("All");
-    List<Directory> storages = await FileUtils.getStorageList();
-    for (var dir in storages) {
+    final List<Directory> storages = await FileUtils.getStorageList();
+    for (final dir in storages) {
       if (Directory("${dir.path}Download").existsSync()) {
-        List<FileSystemEntity> files = Directory("${dir.path}Download").listSync();
+        final List<FileSystemEntity> files = Directory("${dir.path}Download").listSync();
         for (final file in files) {
           if (FileSystemEntity.isFileSync(file.path)) {
             downloads.add(file);
-            downloadTabs.add(file.path.split("/")[file.path.split("/").length - 2]);
-            downloadTabs = downloadTabs.toSet().toList();
+            final tmpDownloadTabs = [...downloadTabs, file.path.split("/")[file.path.split("/").length - 2]]
+              ..toSet().toList();
+            downloadTabs
+              ..clear()
+              ..addAll(tmpDownloadTabs);
             notifyListeners();
           }
         }
@@ -54,13 +55,15 @@ class CategoryProvider extends ChangeNotifier {
     imageTabs.clear();
     images.clear();
     imageTabs.add("All");
-    List<FileSystemEntity> files = await FileUtils.getAllFiles(showHidden: showHidden);
-    for (var file in files) {
-      String mimeType = mime(file.path) ?? "";
+    final List<FileSystemEntity> files = await FileUtils.getAllFiles(showHidden: showHidden);
+    for (final file in files) {
+      final mimeType = mime(file.path) ?? "";
       if (mimeType.split("/")[0] == type) {
         images.add(file);
-        imageTabs.add(file.path.split("/")[file.path.split("/").length - 2]);
-        imageTabs = imageTabs.toSet().toList();
+        final tmpImageTabs = [...imageTabs, file.path.split("/")[file.path.split("/").length - 2]]..toSet().toList();
+        imageTabs
+          ..clear()
+          ..addAll(tmpImageTabs);
       }
       notifyListeners();
     }
@@ -72,17 +75,19 @@ class CategoryProvider extends ChangeNotifier {
     audioTabs.clear();
     audio.clear();
     audioTabs.add("All");
-    List<FileSystemEntity> files = await FileUtils.getAllFiles(showHidden: showHidden);
-    for (var file in files) {
-      String mimeType = mime(file.path);
+    final List<FileSystemEntity> files = await FileUtils.getAllFiles(showHidden: showHidden);
+    for (final file in files) {
+      final mimeType = mime(file.path);
       if (type == "text" && extension(file.path) == ".pdf") {
         audio.add(file);
       }
       if (mimeType != null) {
         if (mimeType.split("/")[0] == type) {
           audio.add(file);
-          audioTabs.add(file.path.split("/")[file.path.split("/").length - 2]);
-          audioTabs = audioTabs.toSet().toList();
+          final tmpAudioTabs = [...audioTabs, file.path.split("/")[file.path.split("/").length - 2]]..toSet().toList();
+          audioTabs
+            ..clear()
+            ..addAll(tmpAudioTabs);
         }
         notifyListeners();
       }
@@ -96,28 +101,28 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   setHidden(value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("hidden", value);
     showHidden = value;
     notifyListeners();
   }
 
   getHidden() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool h = prefs.getBool("hidden") ?? false;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool h = prefs.getBool("hidden") ?? false;
     setHidden(h);
   }
 
   Future setSort(value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt("sort", value);
     sort = value;
     notifyListeners();
   }
 
   getSort() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int h = prefs.getInt("sort") ?? 0;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final int h = prefs.getInt("sort") ?? 0;
     setSort(h);
   }
 }
