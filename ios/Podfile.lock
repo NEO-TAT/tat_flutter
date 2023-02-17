@@ -1,5 +1,5 @@
 PODS:
-  - cloud_firestore (4.3.1):
+  - cloud_firestore (4.4.1):
     - Firebase/Firestore (= 10.3.0)
     - firebase_core
     - Flutter
@@ -7,6 +7,8 @@ PODS:
   - connectivity (0.0.1):
     - Flutter
     - Reachability
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/Analytics (10.3.0):
     - Firebase/Core
   - Firebase/Auth (10.3.0):
@@ -29,26 +31,26 @@ PODS:
   - Firebase/RemoteConfig (10.3.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 10.3.0)
-  - firebase_analytics (10.1.0):
+  - firebase_analytics (10.1.2):
     - Firebase/Analytics (= 10.3.0)
     - firebase_core
     - Flutter
-  - firebase_auth (4.2.5):
+  - firebase_auth (4.2.7):
     - Firebase/Auth (= 10.3.0)
     - firebase_core
     - Flutter
-  - firebase_core (2.4.1):
+  - firebase_core (2.6.0):
     - Firebase/CoreOnly (= 10.3.0)
     - Flutter
-  - firebase_crashlytics (3.0.11):
+  - firebase_crashlytics (3.0.13):
     - Firebase/Crashlytics (= 10.3.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.2.1):
+  - firebase_messaging (14.2.3):
     - Firebase/Messaging (= 10.3.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (3.0.9):
+  - firebase_remote_config (3.0.11):
     - Firebase/RemoteConfig (= 10.3.0)
     - firebase_core
     - Flutter
@@ -222,6 +224,7 @@ PODS:
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -276,6 +279,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_auth:
@@ -334,15 +339,16 @@ CHECKOUT OPTIONS:
     :tag: 10.3.0
 
 SPEC CHECKSUMS:
-  cloud_firestore: 5e5bb98722f66e820bf1aa7b3c98ffc9b2450ffb
+  cloud_firestore: 2464c599d5eec8ca57afa0d2f77a0ee54e693864
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   Firebase: f92fc551ead69c94168d36c2b26188263860acd9
-  firebase_analytics: 9f3a4cb560a59976b2c48707abae2d4cb94bcb3a
-  firebase_auth: 3bab991fe1df91c2f948156e9dee976e01a19ab9
-  firebase_core: bf59c32d2e53814f558efa20840c1902fa2fe461
-  firebase_crashlytics: b19405931669c882e0d08542e69ae9e86633c636
-  firebase_messaging: ee597229fc260f8fa491fa8f2d4a32dfbfa406fa
-  firebase_remote_config: 5007603d4cec2dc1e5016077a7ec36ed93c5041b
+  firebase_analytics: 84bc03b774b373cf03d9acfddf8df62bbf8d3a4c
+  firebase_auth: 1683261c732cd83b8b69223252a6f7a1446779b5
+  firebase_core: a98dd43f175cca0b2d509c7703700d5e9b5833e3
+  firebase_crashlytics: 43e3fb1e9a370a93b4d7730b9839ad7e31e6a6ff
+  firebase_messaging: 330dab37891313a27cbc9eb8f8f528ad28f87a4f
+  firebase_remote_config: 06bc2acc76912e65e70a12d9841d5e44e82c3105
   FirebaseABTesting: ae3b32fe26e761fd54c68e37a632a0097b599c87
   FirebaseAnalytics: 036232b6a1e2918e5f67572417be1173576245f3
   FirebaseAuth: 0e415d29d846c1dce2fb641e46f35e9888d9bec6
@@ -378,7 +384,7 @@ SPEC CHECKSUMS:
   shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
-  url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
+  url_launcher_ios: fb12c43172927bb5cf75aeebd073f883801f1993
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
