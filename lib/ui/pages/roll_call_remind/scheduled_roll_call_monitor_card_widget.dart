@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/horizontal_side_container.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
@@ -120,12 +120,12 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
 
   Widget _buildRemoveMonitorButton() => ElevatedButton(
         onPressed: () {
-          ErrorDialog(ErrorDialogParameter(
+          MsgDialog(MsgDialogParameter(
             dialogType: DialogType.question,
             title: '',
             desc: 'Do you really want to remove this scheduled roll-call remind?',
-            btnOkText: R.current.sure,
-            btnOkOnPress: () => _onRemoveMonitorPressed.call(),
+            okButtonText: R.current.sure,
+            onOkButtonClicked: () => _onRemoveMonitorPressed.call(),
           )).show();
         },
         style: ElevatedButton.styleFrom(
@@ -157,20 +157,20 @@ class ScheduledRollCallMonitorCard extends StatelessWidget {
         onPressed: () async {
           final isSuccess = await _onRollCallPressed();
           if (isSuccess) {
-            ErrorDialog(ErrorDialogParameter(
+            MsgDialog(MsgDialogParameter(
               dialogType: DialogType.success,
               title: 'RollCall Success',
               desc: 'You have roll-called to $_courseName.',
-              btnOkText: R.current.sure,
-              offCancelBtn: true,
+              okButtonText: R.current.sure,
+              removeCancelButton: true,
             )).show();
           } else {
-            ErrorDialog(ErrorDialogParameter(
+            MsgDialog(MsgDialogParameter(
               dialogType: DialogType.error,
               title: 'RollCall Failed',
               desc: 'Failed to roll-called to $_courseName, please try again.',
-              btnOkText: R.current.sure,
-              offCancelBtn: true,
+              okButtonText: R.current.sure,
+              removeCancelButton: true,
             )).show();
           }
         },

@@ -3,7 +3,7 @@
 import 'package:flutter_app/src/connector/score_connector.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/task/ntut/ntut_task.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 
 import '../task.dart';
 
@@ -38,7 +38,7 @@ class ScoreSystemTask<T> extends NTUTTask<T> {
   }
 
   @override
-  Future<TaskStatus> onErrorParameter(ErrorDialogParameter parameter) {
+  Future<TaskStatus> onErrorParameter(MsgDialogParameter parameter) {
     isLogin = false;
     return super.onErrorParameter(parameter);
   }

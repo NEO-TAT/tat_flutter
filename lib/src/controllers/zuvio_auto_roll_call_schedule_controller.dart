@@ -4,7 +4,7 @@ import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/controllers/suspend_interactions_transaction_mixin.dart';
 import 'package:flutter_app/src/controllers/zuvio_auth_controller.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:flutter_app/ui/other/my_progress_dialog.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
@@ -57,8 +57,8 @@ class ZAutoRollCallScheduleController extends GetxController with SuspendInterac
     final userInfo = ZAuthController.to.currentZUserInfo();
 
     if (userInfo == null) {
-      ErrorDialog(
-        ErrorDialogParameter(
+      MsgDialog(
+        MsgDialogParameter(
           desc: R.current.pleaseLogin,
           title: R.current.error,
         ),

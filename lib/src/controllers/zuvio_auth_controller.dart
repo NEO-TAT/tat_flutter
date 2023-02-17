@@ -7,7 +7,7 @@ import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/controllers/suspend_interactions_transaction_mixin.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/core/zuvio/domain/login_credential.dart';
 import 'package:tat_core/core/zuvio/domain/user_info.dart';
@@ -52,7 +52,7 @@ class ZAuthController extends GetxController with SuspendInteractionsTransaction
       Log.d('Zuvio login failed.');
 
       // TODO: move dialog showing to the UI layer.
-      ErrorDialog(ErrorDialogParameter(
+      MsgDialog(MsgDialogParameter(
         desc: result.msg,
         title: R.current.error,
       )).show();

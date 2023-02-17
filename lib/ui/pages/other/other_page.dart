@@ -15,7 +15,7 @@ import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/ntut/ntut_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/src/version/update/app_update.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_app/ui/pages/logconsole/log_console.dart';
@@ -108,17 +108,17 @@ class _OtherPageState extends State<OtherPage> {
         RouteUtils.toSubSystemPage(R.current.informationSystem, null);
         break;
       case OnListViewPress.logout:
-        ErrorDialogParameter parameter = ErrorDialogParameter(
+        MsgDialogParameter parameter = MsgDialogParameter(
             desc: R.current.logoutWarning,
             dialogType: DialogType.warning,
             title: R.current.warning,
-            btnOkText: R.current.sure,
-            btnOkOnPress: () {
+            okButtonText: R.current.sure,
+            onOkButtonClicked: () {
               Get.back();
               TaskFlow.resetLoginStatus();
               LocalStorage.instance.logout().then((_) => RouteUtils.toLoginScreen());
             });
-        ErrorDialog(parameter).show();
+        MsgDialog(parameter).show();
         break;
       case OnListViewPress.login:
         RouteUtils.toLoginScreen().then((value) {
@@ -157,12 +157,12 @@ class _OtherPageState extends State<OtherPage> {
         if (await AppConfig.zuvioRollCallFeatureEnabled) {
           RouteUtils.launchRollCallDashBoardPageAfterLogin();
         } else {
-          ErrorDialog(ErrorDialogParameter(
+          MsgDialog(MsgDialogParameter(
             desc: R.current.zuvioAutoRollCallFeatureReleaseNotice,
             title: R.current.comingSoon,
             dialogType: DialogType.info,
-            offCancelBtn: true,
-            btnOkText: R.current.sure,
+            removeCancelButton: true,
+            okButtonText: R.current.sure,
           )).show();
         }
 

@@ -14,7 +14,7 @@ import 'package:flutter_app/src/task/iplus/iplus_course_file_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/src/util/analytics_utils.dart';
 import 'package:flutter_app/ui/icon/my_icons.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:sprintf/sprintf.dart';
@@ -247,27 +247,27 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
     referer = urlList[1];
     final urlParse = Uri.parse(url);
     if (!urlParse.host.toLowerCase().contains("ntut.edu.tw")) {
-      final errorDialogParameter = ErrorDialogParameter(desc: R.current.isALink);
+      final errorDialogParameter = MsgDialogParameter(desc: R.current.isALink);
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.info;
-      errorDialogParameter.btnOkText = R.current.sure;
-      errorDialogParameter.btnOkOnPress = () {
+      errorDialogParameter.okButtonText = R.current.sure;
+      errorDialogParameter.onOkButtonClicked = () {
         _launchURL(url);
       };
-      ErrorDialog(errorDialogParameter).show();
+      MsgDialog(errorDialogParameter).show();
       return;
     }
 
     if (urlParse.host.contains("istream.ntut.edu.tw")) {
-      final errorDialogParameter = ErrorDialogParameter(
+      final errorDialogParameter = MsgDialogParameter(
         desc: '${R.current.isVideo}\n${R.current.videoMayLoadFailedWarningMsg}',
       );
       errorDialogParameter.title = R.current.AreYouSureToOpen;
       errorDialogParameter.dialogType = DialogType.info;
-      errorDialogParameter.btnOkText = R.current.sure;
-      errorDialogParameter.btnOkOnPress =
+      errorDialogParameter.okButtonText = R.current.sure;
+      errorDialogParameter.onOkButtonClicked =
           () => RouteUtils.toVideoPlayer(urlParse.toString(), widget.courseInfo, courseFile.name);
-      ErrorDialog(errorDialogParameter).show();
+      MsgDialog(errorDialogParameter).show();
     } else {
       await FileDownload.download(url, dirName, courseFile.name, referer);
     }

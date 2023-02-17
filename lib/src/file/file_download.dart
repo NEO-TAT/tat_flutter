@@ -9,7 +9,7 @@ import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/notifications/notifications.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/util/file_utils.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 
 import 'file_store.dart';
 
@@ -95,10 +95,10 @@ class FileDownload {
         });
 
         await Notifications.instance.showNotification(value);
-        ErrorDialog(ErrorDialogParameter(
+        MsgDialog(MsgDialogParameter(
           desc: realFileName,
           title: R.current.downloadError,
-          offCancelBtn: true,
+          removeCancelButton: true,
           dialogType: DialogType.warning,
         )).show();
       },
@@ -114,10 +114,10 @@ class FileDownload {
         "id": value.id,
       });
       await Notifications.instance.showNotification(value);
-      ErrorDialog(ErrorDialogParameter(
+      MsgDialog(MsgDialogParameter(
         desc: realFileName,
         title: R.current.downloadComplete,
-        offCancelBtn: true,
+        removeCancelButton: true,
         dialogType: DialogType.success,
       )).show();
     }
