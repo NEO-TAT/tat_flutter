@@ -118,7 +118,10 @@ class NTUTTask<T> extends DialogTask<T> {
         break;
       case AccountStatus.needsVerifyMobile:
         // If the status is mobile not verified, we will prepare to show the error dialog.
-        shouldShowDialog = true;
+
+        // TODO: inspect sending params to the main screen through route for showing the dialog.
+        // For urgent fix, we will not show the dialog here.
+        shouldShowDialog = false;
         // But we will still let the user to continue the task, since the user may not want to verify the mobile.
         parameter.desc = R.current.needsVerifyMobileWarning;
         parameter.dialogType = DialogType.info;
