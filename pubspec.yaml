@@ -95,6 +95,7 @@ dependencies:
 
   meta: ^1.8.0 # restricted by flutter sdk.
   uuid: ^3.0.7
+  intl_utils: ^2.8.1
 
 
 dependency_overrides:
