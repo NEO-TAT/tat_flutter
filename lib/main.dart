@@ -193,7 +193,10 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate
           ],
-          builder: BotToastInit(),
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+            child: BotToastInit().call(context, child) ?? const SizedBox.shrink(),
+          ),
           navigatorObservers: [BotToastNavigatorObserver(), AnalyticsUtils.observer],
           supportedLocales: S.delegate.supportedLocales,
           home: const MainScreen(),

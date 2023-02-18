@@ -2048,10 +2048,10 @@ class S {
     );
   }
 
-  /// `Foreign Department Credits`
+  /// `Foreign Dep Credits`
   String get takeForeignDepartmentCredits {
     return Intl.message(
-      'Foreign Department Credits',
+      'Foreign Dep Credits',
       name: 'takeForeignDepartmentCredits',
       desc: '',
       args: [],

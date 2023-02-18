@@ -43,7 +43,94 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   final List<Widget> tabChildList = [];
 
   int _currentTabIndex = 0;
-  bool isLoading = true;
+  bool _isLoading = true;
+
+  Widget get _summaryTile {
+    final titleWidget = _buildTile(sprintf("%s %d/%d", [
+      R.current.creditSummary,
+      courseScoreCredit.getTotalCourseCredit(),
+      courseScoreCredit.graduationInformation.lowCredit,
+    ]));
+
+    final widgetList = [
+      _buildType(constCourseType[0], R.current.compulsoryCompulsory),
+      _buildType(constCourseType[1], R.current.revisedCommonCompulsory),
+      _buildType(constCourseType[2], R.current.jointElective),
+      _buildType(constCourseType[3], R.current.compulsoryProfessional),
+      _buildType(constCourseType[4], R.current.compulsoryMajorRevision),
+      _buildType(constCourseType[5], R.current.professionalElectives),
+    ];
+
+    return AppExpansionTile(
+      title: titleWidget,
+      initiallyExpanded: appExpansionInitiallyExpanded,
+      children: widgetList,
+    );
+  }
+
+  Widget get _generalLessonItemTile {
+    final generalLesson = courseScoreCredit.getGeneralLesson();
+    final List<Widget> widgetList = [];
+    int selectCredit = 0;
+    int coreCredit = 0;
+
+    for (final courseScoreInfoList in generalLesson.values) {
+      for (final course in courseScoreInfoList) {
+        if (course.isCoreGeneralLesson) {
+          coreCredit += course.credit.toInt();
+        } else {
+          selectCredit += course.credit.toInt();
+        }
+
+        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
+        widgetList.add(courseItemWidget);
+      }
+    }
+
+    final titleWidget = _buildTile(sprintf("%s\n%s: %d %s: %d", [
+      R.current.generalLessonSummary,
+      R.current.takeCore,
+      coreCredit,
+      R.current.takeSelect,
+      selectCredit,
+    ]));
+
+    return AppExpansionTile(
+      title: titleWidget,
+      initiallyExpanded: appExpansionInitiallyExpanded,
+      children: widgetList,
+    );
+  }
+
+  Widget get _otherDepartmentItemTile {
+    final department = LocalStorage.instance.getGraduationInformation().selectDepartment.substring(0, 2);
+    final otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
+
+    final generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
+    final List<Widget> widgetList = [];
+    int otherDepartmentCredit = 0;
+
+    for (final courseScoreInfoList in generalLesson.values) {
+      for (final course in courseScoreInfoList) {
+        otherDepartmentCredit += course.credit.toInt();
+        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
+        widgetList.add(courseItemWidget);
+      }
+    }
+
+    final titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
+      R.current.takeForeignDepartmentCredits,
+      otherDepartmentCredit,
+      R.current.takeForeignDepartmentCreditsLimit,
+      otherDepartmentMaxCredit
+    ]));
+
+    return AppExpansionTile(
+      title: titleWidget,
+      initiallyExpanded: appExpansionInitiallyExpanded,
+      children: widgetList,
+    );
+  }
 
   @override
   void initState() {
@@ -56,18 +143,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       _addScoreRankTask();
     } else {
       _buildTabBar();
-      setState(() {
-        isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 
   void _addScoreRankTask() async {
     courseScoreList.clear();
 
-    setState(() {
-      isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     final taskFlow = TaskFlow();
     final scoreTask = ScoreRankTask();
@@ -121,9 +204,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     }
 
     _buildTabBar();
-    setState(() {
-      isLoading = false;
-    });
+    setState(() => _isLoading = false);
   }
 
   void _onSelectFinish(GraduationInformationJson? value) {
@@ -177,17 +258,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
               isScrollable: true,
               tabs: tabLabelList,
               onTap: (int index) {
-                _currentTabIndex = index;
-                setState(() {});
+                setState(() => _currentTabIndex = index);
               },
             ),
           ),
           body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                if (!isLoading) (tabChildList.isNotEmpty) ? tabChildList[_currentTabIndex] : const SizedBox.shrink(),
-              ],
-            ),
+            child: _isLoading ? const SizedBox.shrink() : tabChildList[_currentTabIndex],
           ),
         ),
       );
@@ -208,9 +284,9 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
                   child: FadeInAnimation(child: widget),
                 ),
                 children: [
-                  _buildSummary(),
-                  _buildGeneralLessonItem(),
-                  _buildOtherDepartmentItem(),
+                  _summaryTile,
+                  _generalLessonItemTile,
+                  _otherDepartmentItemTile,
                   const ScoreCalculationWarning(),
                 ],
               ),
@@ -243,66 +319,25 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   }
 
   Widget _buildTabLabel(String title) => Padding(
-        padding: const EdgeInsets.only(
-          left: 12,
-          right: 12,
-        ),
-        child: Tab(
-          text: title,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Tab(text: title),
       );
 
-  Widget _buildTile(String title) => Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
-        child: Material(
-          child: Ink(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-              border: Border.all(
-                width: 2,
-                color: context.read<AppProvider>().theme.colorScheme.tertiary,
-              ),
-            ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(25.0),
-              child: Container(
-                alignment: const Alignment(0, 0),
-                height: 50,
-                width: 300,
-                child: Text(
-                  title,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
+  Widget _buildTile(String title) => Container(
+        height: 60,
+        width: 300,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            width: 2,
+            color: context.read<AppProvider>().theme.colorScheme.tertiary,
           ),
         ),
+        child: Center(
+          child: Text(title, textAlign: TextAlign.center),
+        ),
       );
-
-  Widget _buildSummary() {
-    final List<Widget> widgetList = [];
-    final graduationInformation = courseScoreCredit.graduationInformation;
-
-    final widget = _buildTile(sprintf("%s %d/%d", [
-      R.current.creditSummary,
-      courseScoreCredit.getTotalCourseCredit(),
-      graduationInformation.lowCredit,
-    ]));
-
-    widgetList
-      ..add(_buildType(constCourseType[0], R.current.compulsoryCompulsory))
-      ..add(_buildType(constCourseType[1], R.current.revisedCommonCompulsory))
-      ..add(_buildType(constCourseType[2], R.current.jointElective))
-      ..add(_buildType(constCourseType[3], R.current.compulsoryProfessional))
-      ..add(_buildType(constCourseType[4], R.current.compulsoryMajorRevision))
-      ..add(_buildType(constCourseType[5], R.current.professionalElectives));
-
-    return AppExpansionTile(
-      title: widget,
-      initiallyExpanded: appExpansionInitiallyExpanded,
-      children: widgetList,
-    );
-  }
 
   Widget _buildType(String type, String title) {
     final nowCredit = courseScoreCredit.getCreditByType(type);
@@ -327,17 +362,16 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       ),
       onTap: () {
         final result = courseScoreCredit.getCourseByType(type);
-        final List<String> courseInfo = [];
+        final List<String> courseInfoList = [];
 
-        for (final key in result.keys.toList()) {
-          courseInfo.add(key);
-          // FIXME: remove `!`.
-          for (final course in result[key]!) {
-            courseInfo.add(sprintf("     %s", [course.name]));
+        for (final courseScoreInfoEntry in result.entries) {
+          courseInfoList.add(courseScoreInfoEntry.key);
+          for (final course in courseScoreInfoEntry.value) {
+            courseInfoList.add(sprintf("     %s", [course.name]));
           }
         }
 
-        if (courseInfo.isNotEmpty) {
+        if (courseInfoList.isNotEmpty) {
           Get.dialog(
             AlertDialog(
               title: Text(R.current.creditInfo),
@@ -346,11 +380,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
                 child: ListView.builder(
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(8),
-                  itemCount: courseInfo.length,
+                  itemCount: courseInfoList.length,
                   itemBuilder: (_, index) {
                     return SizedBox(
                       height: 35,
-                      child: Text(courseInfo[index]),
+                      child: Text(courseInfoList[index]),
                     );
                   },
                 ),
@@ -382,72 +416,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
           ],
         ),
       );
-
-  Widget _buildGeneralLessonItem() {
-    final generalLesson = courseScoreCredit.getGeneralLesson();
-    final List<Widget> widgetList = [];
-    int selectCredit = 0;
-    int coreCredit = 0;
-
-    for (final key in generalLesson.keys) {
-      // FIXME: remove `!`.
-      for (final course in generalLesson[key]!) {
-        if (course.isCoreGeneralLesson) {
-          coreCredit += course.credit.toInt();
-        } else {
-          selectCredit += course.credit.toInt();
-        }
-
-        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
-        widgetList.add(courseItemWidget);
-      }
-    }
-
-    final titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d", [
-      R.current.generalLessonSummary,
-      R.current.takeCore,
-      coreCredit,
-      R.current.takeSelect,
-      selectCredit,
-    ]));
-
-    return AppExpansionTile(
-      title: titleWidget,
-      initiallyExpanded: appExpansionInitiallyExpanded,
-      children: widgetList,
-    );
-  }
-
-  Widget _buildOtherDepartmentItem() {
-    final department = LocalStorage.instance.getGraduationInformation().selectDepartment.substring(0, 2);
-    final otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
-
-    Map<String, List<CourseScoreInfoJson>> generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
-    final List<Widget> widgetList = [];
-    int otherDepartmentCredit = 0;
-
-    for (final key in generalLesson.keys) {
-      // FIXME: remove `!`.
-      for (final course in generalLesson[key]!) {
-        otherDepartmentCredit += course.credit.toInt();
-        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
-        widgetList.add(courseItemWidget);
-      }
-    }
-
-    final titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
-      R.current.takeForeignDepartmentCredits,
-      otherDepartmentCredit,
-      R.current.takeForeignDepartmentCreditsLimit,
-      otherDepartmentMaxCredit
-    ]));
-
-    return AppExpansionTile(
-      title: titleWidget,
-      initiallyExpanded: appExpansionInitiallyExpanded,
-      children: widgetList,
-    );
-  }
 
   Widget _buildSemesterScores(SemesterCourseScoreJson courseScore) => Padding(
         padding: const EdgeInsets.all(24.0),
