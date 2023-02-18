@@ -46,25 +46,23 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   bool isLoading = true;
 
   Widget get _summaryTile {
-    final List<Widget> widgetList = [];
-    final graduationInformation = courseScoreCredit.graduationInformation;
-
-    final widget = _buildTile(sprintf("%s %d/%d", [
+    final titleWidget = _buildTile(sprintf("%s %d/%d", [
       R.current.creditSummary,
       courseScoreCredit.getTotalCourseCredit(),
-      graduationInformation.lowCredit,
+      courseScoreCredit.graduationInformation.lowCredit,
     ]));
 
-    widgetList
-      ..add(_buildType(constCourseType[0], R.current.compulsoryCompulsory))
-      ..add(_buildType(constCourseType[1], R.current.revisedCommonCompulsory))
-      ..add(_buildType(constCourseType[2], R.current.jointElective))
-      ..add(_buildType(constCourseType[3], R.current.compulsoryProfessional))
-      ..add(_buildType(constCourseType[4], R.current.compulsoryMajorRevision))
-      ..add(_buildType(constCourseType[5], R.current.professionalElectives));
+    final widgetList = [
+      _buildType(constCourseType[0], R.current.compulsoryCompulsory),
+      _buildType(constCourseType[1], R.current.revisedCommonCompulsory),
+      _buildType(constCourseType[2], R.current.jointElective),
+      _buildType(constCourseType[3], R.current.compulsoryProfessional),
+      _buildType(constCourseType[4], R.current.compulsoryMajorRevision),
+      _buildType(constCourseType[5], R.current.professionalElectives),
+    ];
 
     return AppExpansionTile(
-      title: widget,
+      title: titleWidget,
       initiallyExpanded: appExpansionInitiallyExpanded,
       children: widgetList,
     );
