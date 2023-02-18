@@ -109,6 +109,10 @@ class CalendarController extends GetxController {
 
       for (final nonAddedSchoolEvent in schoolEvents) {
         final eventTime = nonAddedSchoolEvent.startTime.toLocal();
+        if (eventTime.isBefore(firstDayOfTargetMonth) || eventTime.isAfter(lastDayOfTargetMonth)) {
+          continue;
+        }
+
         knownSchoolEvents.update(
           eventTime,
           (addedEvents) => [...addedEvents, nonAddedSchoolEvent],
