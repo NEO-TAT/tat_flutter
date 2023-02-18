@@ -73,6 +73,7 @@ Future<void> main() async {
   final zMakeRollCallRepository = ZMakeRollCallRepository(apiService: zuvioApiService);
 
   final simpleLoginRepository = SimpleLoginRepository(apiService: schoolApiService);
+  final checkSessionRepository = CheckSessionRepository(apiService: schoolApiService);
 
   final zuvioLoginUseCase = ZLoginUseCase(zuvioLoginRepository);
   final zuvioGetCourseListUseCase = ZGetStudentCourseListUseCase(zStudentCourseListRepository);
@@ -114,6 +115,8 @@ Future<void> main() async {
     autoRollCallScheduleRepository,
   );
 
+  final checkSessionIsAliveUseCase = CheckSessionUseCase(checkSessionRepository);
+
   final zAuthController = ZAuthController(
     isLoginBtnEnabled: true,
     isInputBoxesEnabled: true,
@@ -150,6 +153,7 @@ Future<void> main() async {
   Get.put(simpleLoginUseCase);
   Get.put(cookieJar);
   Get.put(calendarController);
+  Get.put(checkSessionIsAliveUseCase);
 
   await LocalStorage.instance.init(httpClientInterceptors: apiInterceptors);
 
