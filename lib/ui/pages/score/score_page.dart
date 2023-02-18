@@ -243,33 +243,23 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   }
 
   Widget _buildTabLabel(String title) => Padding(
-        padding: const EdgeInsets.only(
-          left: 12,
-          right: 12,
-        ),
-        child: Tab(
-          text: title,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Tab(text: title),
       );
 
   Widget _buildTile(String title) => Container(
-      height: 50,
-      width: 300,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(15.0)),
-        border: Border.all(
-          width: 2,
-          color: context.read<AppProvider>().theme.colorScheme.tertiary,
+        height: 50,
+        width: 300,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            width: 2,
+            color: context.read<AppProvider>().theme.colorScheme.tertiary,
+          ),
         ),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          textAlign: TextAlign.center
-        ),
-      ),
-    );
+        child: Center(child: Text(title, textAlign: TextAlign.center)),
+      );
 
   Widget _buildSummary() {
     final List<Widget> widgetList = [];
