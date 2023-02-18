@@ -18,6 +18,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
+        android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:label="TAT">
