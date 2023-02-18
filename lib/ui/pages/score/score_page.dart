@@ -76,9 +76,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     int selectCredit = 0;
     int coreCredit = 0;
 
-    for (final key in generalLesson.keys) {
-      // FIXME: remove `!`.
-      for (final course in generalLesson[key]!) {
+    for (final courseScoreInfoList in generalLesson.values) {
+      for (final course in courseScoreInfoList) {
         if (course.isCoreGeneralLesson) {
           coreCredit += course.credit.toInt();
         } else {
@@ -113,9 +112,8 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     final List<Widget> widgetList = [];
     int otherDepartmentCredit = 0;
 
-    for (final key in generalLesson.keys) {
-      // FIXME: remove `!`.
-      for (final course in generalLesson[key]!) {
+    for (final courseScoreInfoList in generalLesson.values) {
+      for (final course in courseScoreInfoList) {
         otherDepartmentCredit += course.credit.toInt();
         final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
         widgetList.add(courseItemWidget);
