@@ -43,7 +43,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
   final List<Widget> tabChildList = [];
 
   int _currentTabIndex = 0;
-  bool isLoading = true;
+  bool _isLoading = true;
 
   Widget get _summaryTile {
     final titleWidget = _buildTile(sprintf("%s %d/%d", [
@@ -143,18 +143,14 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       _addScoreRankTask();
     } else {
       _buildTabBar();
-      setState(() {
-        isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 
   void _addScoreRankTask() async {
     courseScoreList.clear();
 
-    setState(() {
-      isLoading = true;
-    });
+    setState(() => _isLoading = true);
 
     final taskFlow = TaskFlow();
     final scoreTask = ScoreRankTask();
@@ -208,9 +204,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     }
 
     _buildTabBar();
-    setState(() {
-      isLoading = false;
-    });
+    setState(() => _isLoading = false);
   }
 
   void _onSelectFinish(GraduationInformationJson? value) {
@@ -272,7 +266,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                if (!isLoading) (tabChildList.isNotEmpty) ? tabChildList[_currentTabIndex] : const SizedBox.shrink(),
+                if (!_isLoading) (tabChildList.isNotEmpty) ? tabChildList[_currentTabIndex] : const SizedBox.shrink(),
               ],
             ),
           ),
