@@ -359,14 +359,15 @@ class _CourseTablePageState extends State<CourseTablePage> {
         title: Text(R.current.titleCourse),
         actions: [
           (!isLoading && loadCourseNotice)
-              ? const Padding(
-                  padding: EdgeInsets.all(10),
+              ? Padding(
+                  padding: const EdgeInsets.all(10),
                   child: CircularProgressIndicator(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.background,
+                    color: Theme.of(context).colorScheme.tertiary,
                     strokeWidth: 4,
                   ),
                 )
-              : Container(),
+              : const SizedBox.shrink(),
           (!isLoading && LocalStorage.instance.getAccount() != courseTableData?.studentId)
               ? Padding(
                   padding: const EdgeInsets.only(
