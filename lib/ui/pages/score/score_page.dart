@@ -258,17 +258,12 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
               isScrollable: true,
               tabs: tabLabelList,
               onTap: (int index) {
-                _currentTabIndex = index;
-                setState(() {});
+                setState(() => _currentTabIndex = index);
               },
             ),
           ),
           body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                if (!_isLoading) (tabChildList.isNotEmpty) ? tabChildList[_currentTabIndex] : const SizedBox.shrink(),
-              ],
-            ),
+            child: _isLoading ? const SizedBox.shrink() : tabChildList[_currentTabIndex],
           ),
         ),
       );
