@@ -87,7 +87,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       }
     }
 
-    final titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d", [
+    final titleWidget = _buildTile(sprintf("%s\n%s: %d %s: %d", [
       R.current.generalLessonSummary,
       R.current.takeCore,
       coreCredit,
@@ -106,7 +106,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     final department = LocalStorage.instance.getGraduationInformation().selectDepartment.substring(0, 2);
     final otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
 
-    Map<String, List<CourseScoreInfoJson>> generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
+    final Map<String, List<CourseScoreInfoJson>> generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
     final List<Widget> widgetList = [];
     int otherDepartmentCredit = 0;
 
@@ -335,7 +335,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       );
 
   Widget _buildTile(String title) => Container(
-        height: 50,
+        height: 60,
         width: 300,
         margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
@@ -345,7 +345,9 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
             color: context.read<AppProvider>().theme.colorScheme.tertiary,
           ),
         ),
-        child: Center(child: Text(title, textAlign: TextAlign.center)),
+        child: Center(
+          child: Text(title, textAlign: TextAlign.center),
+        ),
       );
 
   Widget _buildType(String type, String title) {
