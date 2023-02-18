@@ -1,11 +1,9 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'package:flutter/widgets.dart';
 
 class MyIcon {
   MyIcon._();
 
-  static const _kFontFam = 'MyIcon';
+  static const _kFontFam = 'TATFont';
 
   static const IconData link = IconData(0xe800, fontFamily: _kFontFam);
   static const IconData folder = IconData(0xe801, fontFamily: _kFontFam);

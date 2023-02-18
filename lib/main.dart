@@ -30,6 +30,7 @@ import 'package:flutter_app/src/version/update/app_update.dart';
 import 'package:flutter_app/ui/pages/webview/web_view_page.dart';
 import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -172,6 +173,8 @@ Future<void> main() async {
           child: const MyApp(),
         ),
       );
+
+      FlutterNativeSplash.remove();
     },
     (dynamic exception, StackTrace stack, {dynamic context}) {
       Log.error(exception.toString(), stack);
