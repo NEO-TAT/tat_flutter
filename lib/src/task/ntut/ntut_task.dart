@@ -10,7 +10,8 @@ import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
-import 'package:tat_core/core/portal/domain/simple_login_result.dart';
+import 'package:get/get.dart';
+import 'package:tat_core/tat_core.dart';
 
 import '../dialog_task.dart';
 
@@ -33,8 +34,22 @@ class NTUTTask<T> extends DialogTask<T> {
       LocalStorage.instance.logout();
       RouteUtils.toLoginScreen();
       return TaskStatus.shouldGiveUp;
-    } else if (_isLogin) {
-      return TaskStatus.success;
+    }
+
+    if (_isLogin) {
+      // Strictly check if the current session is still alive.
+      // This is because the school's backend only allow one session at the same time.
+      // So if current session was expired or hijacked by other client, we should try to login again.
+
+      final checkSessionUseCase = Get.find<CheckSessionUseCase>();
+
+      super.onStart(R.current.loading);
+      final isCurrentSessionAlive = await checkSessionUseCase();
+      super.onEnd();
+
+      if (isCurrentSessionAlive) {
+        return TaskStatus.success;
+      }
     }
 
     try {
