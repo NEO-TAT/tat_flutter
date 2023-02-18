@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/controllers/calendar_controller.dart';
 import 'package:flutter_app/src/model/ntut/ntut_calendar_json.dart';
-import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/pages/calendar/calendar_detail_dialog.dart';
 import 'package:get/get.dart';
@@ -12,8 +11,8 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
 
-  Widget _buildEventList(List<NTUTCalendarJson> selectedEvents) {
-    final eventBorderColor = AppProvider.instance.theme.colorScheme.onBackground;
+  Widget _buildEventList(BuildContext context, List<NTUTCalendarJson> selectedEvents) {
+    final eventBorderColor = Theme.of(context).colorScheme.onBackground;
     return ListView.builder(
       itemCount: selectedEvents.length,
       itemBuilder: (context, index) {
@@ -86,7 +85,7 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FutureBuilder(
         future: CalendarController.to.findFirstEventsFromToday(),
-        builder: (_, __) => Scaffold(
+        builder: (context, __) => Scaffold(
           appBar: AppBar(
             title: Text(R.current.calendar),
           ),
@@ -97,7 +96,7 @@ class CalendarPage extends StatelessWidget {
                 _buildTableCalendar(controller),
                 const SizedBox(height: 16.0),
                 Expanded(
-                  child: _buildEventList(controller.selectedEventsRx),
+                  child: _buildEventList(context, controller.selectedEventsRx),
                 ),
               ],
             ),
