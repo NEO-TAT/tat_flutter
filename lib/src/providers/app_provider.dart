@@ -4,49 +4,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/config/app_themes.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppProvider extends ChangeNotifier {
-  static AppProvider instance = AppProvider();
+  static final AppProvider instance = AppProvider._();
 
-  factory AppProvider() = AppProvider._;
+  factory AppProvider() => instance;
 
   AppProvider._() {
     checkTheme();
   }
 
-  ThemeData theme = Get.isDarkMode ? AppThemes.darkTheme : AppThemes.lightTheme;
-  Key key = UniqueKey();
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  ThemeData get theme => (() => _theme)();
+  ThemeData _theme = Get.isDarkMode ? AppThemes.darkTheme : AppThemes.lightTheme;
+  final Key key = UniqueKey();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  void setKey(value) {
-    key = value;
-    notifyListeners();
-  }
-
-  void setNavigatorKey(value) {
-    navigatorKey = value;
-    notifyListeners();
-  }
-
-  void setTheme(value, c) {
-    theme = value;
+  void setTheme(ThemeData value, String colorName) {
+    _theme = value;
     SharedPreferences.getInstance().then((prefs) {
-      prefs.setString("theme", c).then((val) {
+      prefs.setString("theme", colorName).then((val) {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor: c == "dark" ? AppColors.darkPrimary : AppColors.mainColor,
-          statusBarIconBrightness: c == "dark" ? Brightness.light : Brightness.dark,
+          statusBarColor: colorName == "dark" ? AppColors.darkPrimary : AppColors.mainColor,
+          statusBarIconBrightness: colorName == "dark" ? Brightness.light : Brightness.dark,
         ));
       });
     });
     notifyListeners();
-  }
-
-  ThemeData getTheme(value) {
-    return theme;
   }
 
   Future<ThemeData> checkTheme() async {
@@ -63,10 +49,5 @@ class AppProvider extends ChangeNotifier {
     }
 
     return t;
-  }
-
-  void showToast(value) {
-    MyToast.show(value);
-    notifyListeners();
   }
 }
