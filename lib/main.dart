@@ -181,7 +181,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Consumer<AppProvider>(builder: (context, appProvider, child) {
-        appProvider.navigatorKey = Get.key;
         return GetMaterialApp(
           title: AppConfig.appName,
           theme: appProvider.theme,

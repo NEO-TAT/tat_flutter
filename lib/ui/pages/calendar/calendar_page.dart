@@ -11,31 +11,31 @@ import 'package:table_calendar/table_calendar.dart';
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
 
-  Widget _buildEventList(List<NTUTCalendarJson> selectedEvents) => ListView.builder(
-        itemCount: selectedEvents.length,
-        itemBuilder: (context, index) {
-          final event = selectedEvents[index];
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: InkWell(
-              customBorder: RoundedRectangleBorder(
+  Widget _buildEventList(BuildContext context, List<NTUTCalendarJson> selectedEvents) {
+    final eventBorderColor = Theme.of(context).colorScheme.onBackground;
+    return ListView.builder(
+      itemCount: selectedEvents.length,
+      itemBuilder: (context, index) {
+        final event = selectedEvents[index];
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Card(
+            child: ListTile(
+              title: Text(event.calTitle),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: eventBorderColor),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: ListTile(
-                title: Text(event.calTitle),
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                onTap: () => Get.dialog(
-                  CalendarDetailDialog(calendarDetail: event),
-                  barrierDismissible: true,
-                ),
+              onTap: () => Get.dialog(
+                CalendarDetailDialog(calendarDetail: event),
+                barrierDismissible: true,
               ),
             ),
-          );
-        },
-      );
+          ),
+        );
+      },
+    );
+  }
 
   Widget _buildTableCalendar(CalendarController controller) => TableCalendar(
         focusedDay: controller.focusDayRx.value,
@@ -85,7 +85,7 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => FutureBuilder(
         future: CalendarController.to.findFirstEventsFromToday(),
-        builder: (_, __) => Scaffold(
+        builder: (context, __) => Scaffold(
           appBar: AppBar(
             title: Text(R.current.calendar),
           ),
@@ -96,7 +96,7 @@ class CalendarPage extends StatelessWidget {
                 _buildTableCalendar(controller),
                 const SizedBox(height: 16.0),
                 Expanded(
-                  child: _buildEventList(controller.selectedEventsRx),
+                  child: _buildEventList(context, controller.selectedEventsRx),
                 ),
               ],
             ),

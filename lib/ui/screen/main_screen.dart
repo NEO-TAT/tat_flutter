@@ -18,7 +18,6 @@ import 'package:flutter_app/ui/pages/coursetable/course_table_page.dart';
 import 'package:flutter_app/ui/pages/notification/notification_page.dart';
 import 'package:flutter_app/ui/pages/other/other_page.dart';
 import 'package:flutter_app/ui/pages/score/score_page.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -106,7 +105,6 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   @override
   Widget build(BuildContext context) => Consumer<AppProvider>(
         builder: (context, appProvider, child) {
-          appProvider.navigatorKey = Get.key;
           return WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
