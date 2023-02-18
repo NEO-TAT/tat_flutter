@@ -7,9 +7,9 @@ class MyProgressDialog {
     BotToast.showCustomLoading(
       toastBuilder: (cancel) => CustomProgressDialog(
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.black,
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: BorderRadius.circular(5),
           ),
           padding: const EdgeInsets.all(20),
           child: FittedBox(
@@ -17,16 +17,15 @@ class MyProgressDialog {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const CircularProgressIndicator(),
-                message == null
-                    ? const SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          message,
-                          style: const TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                if (message != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      message,
+                      style: const TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
               ],
             ),
           ),
