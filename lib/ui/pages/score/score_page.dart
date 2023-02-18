@@ -371,17 +371,16 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       ),
       onTap: () {
         final result = courseScoreCredit.getCourseByType(type);
-        final List<String> courseInfo = [];
+        final List<String> courseInfoList = [];
 
-        for (final key in result.keys.toList()) {
-          courseInfo.add(key);
-          // FIXME: remove `!`.
-          for (final course in result[key]!) {
-            courseInfo.add(sprintf("     %s", [course.name]));
+        for (final courseScoreInfoEntry in result.entries) {
+          courseInfoList.add(courseScoreInfoEntry.key);
+          for (final course in courseScoreInfoEntry.value) {
+            courseInfoList.add(sprintf("     %s", [course.name]));
           }
         }
 
-        if (courseInfo.isNotEmpty) {
+        if (courseInfoList.isNotEmpty) {
           Get.dialog(
             AlertDialog(
               title: Text(R.current.creditInfo),
@@ -390,11 +389,11 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
                 child: ListView.builder(
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(8),
-                  itemCount: courseInfo.length,
+                  itemCount: courseInfoList.length,
                   itemBuilder: (_, index) {
                     return SizedBox(
                       height: 35,
-                      child: Text(courseInfo[index]),
+                      child: Text(courseInfoList[index]),
                     );
                   },
                 ),
