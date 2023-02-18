@@ -48,15 +48,13 @@ class TaskFlow {
     }
     bool success = true;
     while (_queue.isNotEmpty) {
-      Task task = _queue.first;
-      TaskStatus status = await task.execute();
+      final task = _queue.first;
+      final status = await task.execute();
       switch (status) {
         case TaskStatus.success:
           _queue.removeAt(0);
           _completeTask.add(task);
-          if (callback != null) {
-            callback?.call(task);
-          }
+          callback?.call(task);
           break;
         case TaskStatus.shouldGiveUp:
           _failTask.addAll(_queue);
