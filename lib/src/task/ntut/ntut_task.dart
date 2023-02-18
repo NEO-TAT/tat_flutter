@@ -42,7 +42,10 @@ class NTUTTask<T> extends DialogTask<T> {
       // So if current session was expired or hijacked by other client, we should try to login again.
 
       final checkSessionUseCase = Get.find<CheckSessionUseCase>();
+
+      super.onStart(R.current.loading);
       final isCurrentSessionAlive = await checkSessionUseCase();
+      super.onEnd();
 
       if (isCurrentSessionAlive) {
         return TaskStatus.success;
