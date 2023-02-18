@@ -106,7 +106,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     final department = LocalStorage.instance.getGraduationInformation().selectDepartment.substring(0, 2);
     final otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
 
-    final Map<String, List<CourseScoreInfoJson>> generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
+    final generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
     final List<Widget> widgetList = [];
     int otherDepartmentCredit = 0;
 
