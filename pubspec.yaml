@@ -3,11 +3,11 @@ description: NTUT Life TAT, convenient, concise, fast, powerful, enrich your NTU
 publish_to: 'none'
 
 # CHECK THE BUILD CODE BEFORE DISTRIBUTION!!
-version: 1.4.2+5016
+version: 1.4.3+5024
 
 environment:
-  flutter: ">=3.7.0 <4.0.0"
-  sdk: ">=2.19.0 <3.0.0"
+  flutter: ">=3.7.3 <4.0.0"
+  sdk: ">=2.19.2 <3.0.0"
 
 dependencies:
   flutter:
