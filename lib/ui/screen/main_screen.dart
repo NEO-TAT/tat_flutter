@@ -18,7 +18,6 @@ import 'package:flutter_app/ui/pages/coursetable/course_table_page.dart';
 import 'package:flutter_app/ui/pages/notification/notification_page.dart';
 import 'package:flutter_app/ui/pages/other/other_page.dart';
 import 'package:flutter_app/ui/pages/score/score_page.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
