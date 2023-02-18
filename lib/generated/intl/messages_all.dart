@@ -11,6 +11,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 import 'package:intl/src/intl_helpers.dart';
@@ -20,8 +21,8 @@ import 'messages_zh_TW.dart' as messages_zh_tw;
 
 typedef LibraryLoader = Future<dynamic> Function();
 Map<String, LibraryLoader> _deferredLibraries = {
-  'en': () => Future.value(null),
-  'zh_TW': () => Future.value(null),
+  'en': () => SynchronousFuture(null),
+  'zh_TW': () => SynchronousFuture(null),
 };
 
 MessageLookupByLibrary? _findExact(String localeName) {
@@ -36,17 +37,17 @@ MessageLookupByLibrary? _findExact(String localeName) {
 }
 
 /// User programs should call this before using [localeName] for messages.
-Future<bool> initializeMessages(String localeName) async {
+Future<bool> initializeMessages(String localeName) {
   var availableLocale =
       Intl.verifiedLocale(localeName, (locale) => _deferredLibraries[locale] != null, onFailure: (_) => null);
   if (availableLocale == null) {
-    return Future.value(false);
+    return SynchronousFuture(false);
   }
   var lib = _deferredLibraries[availableLocale];
-  await (lib == null ? Future.value(false) : lib());
+  lib == null ? SynchronousFuture(false) : lib();
   initializeInternalMessageLookup(() => CompositeMessageLookup());
   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);
-  return Future.value(true);
+  return SynchronousFuture(true);
 }
 
 bool _messagesExistFor(String locale) {

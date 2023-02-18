@@ -358,11 +358,21 @@ class S {
     );
   }
 
-  /// `Your password may be expiring or has expired\nplease update it as soon as possible`
+  /// `Your password has expired\nplease update it immediately`
   String get passwordExpiredWarning {
     return Intl.message(
-      'Your password may be expiring or has expired\nplease update it as soon as possible',
+      'Your password has expired\nplease update it immediately',
       name: 'passwordExpiredWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your password will expire in few days\nplease update it as soon as possible`
+  String get passwordWillExpiredWarning {
+    return Intl.message(
+      'Your password will expire in few days\nplease update it as soon as possible',
+      name: 'passwordWillExpiredWarning',
       desc: '',
       args: [],
     );

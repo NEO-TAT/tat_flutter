@@ -185,6 +185,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: AppConfig.appName,
           theme: appProvider.theme,
+          navigatorKey: appProvider.navigatorKey,
           darkTheme: AppThemes.darkTheme,
           localizationsDelegates: const [
             S.delegate,

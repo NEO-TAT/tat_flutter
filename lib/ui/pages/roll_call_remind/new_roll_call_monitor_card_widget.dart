@@ -6,7 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/horizontal_side_container.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
@@ -52,36 +52,36 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
   bool _verifyCardInfo() {
     final hasStartTime = _monitoringStartTime.value != null;
     if (!hasStartTime) {
-      ErrorDialog(ErrorDialogParameter(
+      MsgDialog(MsgDialogParameter(
         dialogType: DialogType.warning,
         title: R.current.missingRequiredInformation,
         desc: R.current.pleaseSelectStartTime,
-        btnOkText: R.current.sure,
-        offCancelBtn: true,
+        okButtonText: R.current.sure,
+        removeCancelButton: true,
       )).show();
       return false;
     }
 
     final hasEndTime = _monitoringEndTime.value != null;
     if (!hasEndTime) {
-      ErrorDialog(ErrorDialogParameter(
+      MsgDialog(MsgDialogParameter(
         dialogType: DialogType.warning,
         title: R.current.missingRequiredInformation,
         desc: R.current.pleaseSelectEndTime,
-        btnOkText: R.current.sure,
-        offCancelBtn: true,
+        okButtonText: R.current.sure,
+        removeCancelButton: true,
       )).show();
       return false;
     }
 
     final hasWeekDay = _selectedWeekdays.value.any((selection) => selection);
     if (!hasWeekDay) {
-      ErrorDialog(ErrorDialogParameter(
+      MsgDialog(MsgDialogParameter(
         dialogType: DialogType.warning,
         title: R.current.missingRequiredInformation,
         desc: R.current.pleaseSelectWeekday,
-        btnOkText: R.current.sure,
-        offCancelBtn: true,
+        okButtonText: R.current.sure,
+        removeCancelButton: true,
       )).show();
       return false;
     }
@@ -89,12 +89,12 @@ class _NewRollCallMonitorCardState extends State<NewRollCallMonitorCard> {
     int timeInMinuteOf(TimeOfDay? time) => time == null ? 0 : time.hour * 60 + time.minute;
 
     if (timeInMinuteOf(_monitoringStartTime.value) > timeInMinuteOf(_monitoringEndTime.value)) {
-      ErrorDialog(ErrorDialogParameter(
+      MsgDialog(MsgDialogParameter(
         dialogType: DialogType.warning,
         title: R.current.incorrectInformationEntered,
         desc: R.current.endTimeMustBeAfterStartTime,
-        btnOkText: R.current.sure,
-        offCancelBtn: true,
+        okButtonText: R.current.sure,
+        removeCancelButton: true,
       )).show();
       return false;
     }

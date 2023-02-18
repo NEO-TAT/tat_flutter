@@ -32,18 +32,16 @@ class NTUTConnector {
   static const _getCalendarUrl = "${host}calModeApp.do";
   static const _changePasswordUrl = "${host}passwordMdy.do";
 
-  static Future<SimpleLoginResultType> login(String account, String password) async {
+  static Future<SimpleLoginResult> login(String account, String password) async {
     final simpleLoginUseCase = Get.find<SimpleLoginUseCase>();
     final loginCredential = LoginCredential(userId: account, password: password);
     final loginResult = await simpleLoginUseCase(credential: loginCredential);
-
-    Log.d(loginResult.resultType);
 
     await FirebaseAnalytics.instance.logLogin(
       loginMethod: 'ntut_portal_new',
     );
 
-    if (loginResult.resultType == SimpleLoginResultType.success) {
+    if (loginResult.isSuccess) {
       await FirebaseAnalytics.instance.setUserProperty(
         name: 'user_id',
         value: account,
@@ -61,7 +59,7 @@ class NTUTConnector {
       LocalStorage.instance.saveUserData();
     }
 
-    return loginResult.resultType;
+    return loginResult;
   }
 
   static Future<List<NTUTCalendarJson>?> getCalendar(DateTime startTime, DateTime endTime) async {

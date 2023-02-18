@@ -3,7 +3,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/ui/other/error_dialog.dart';
+import 'package:flutter_app/ui/other/msg_dialog.dart';
 import 'package:flutter_app/ui/pages/webview/tat_web_view.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:get/get.dart';
@@ -43,12 +43,12 @@ class WebViewPage {
             name: 'custom_tab_open_err_aos',
           );
 
-          ErrorDialog(ErrorDialogParameter(
+          MsgDialog(MsgDialogParameter(
             desc: R.current.alertError,
             title: R.current.error,
             dialogType: DialogType.error,
-            offCancelBtn: true,
-            btnOkText: R.current.sure,
+            removeCancelButton: true,
+            okButtonText: R.current.sure,
           )).show();
         }),
       );
