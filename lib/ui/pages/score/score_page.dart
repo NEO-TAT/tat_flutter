@@ -304,6 +304,72 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
     );
   }
 
+  Widget _buildGeneralLessonItem() {
+    final generalLesson = courseScoreCredit.getGeneralLesson();
+    final List<Widget> widgetList = [];
+    int selectCredit = 0;
+    int coreCredit = 0;
+
+    for (final key in generalLesson.keys) {
+      // FIXME: remove `!`.
+      for (final course in generalLesson[key]!) {
+        if (course.isCoreGeneralLesson) {
+          coreCredit += course.credit.toInt();
+        } else {
+          selectCredit += course.credit.toInt();
+        }
+
+        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
+        widgetList.add(courseItemWidget);
+      }
+    }
+
+    final titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d", [
+      R.current.generalLessonSummary,
+      R.current.takeCore,
+      coreCredit,
+      R.current.takeSelect,
+      selectCredit,
+    ]));
+
+    return AppExpansionTile(
+      title: titleWidget,
+      initiallyExpanded: appExpansionInitiallyExpanded,
+      children: widgetList,
+    );
+  }
+
+  Widget _buildOtherDepartmentItem() {
+    final department = LocalStorage.instance.getGraduationInformation().selectDepartment.substring(0, 2);
+    final otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
+
+    Map<String, List<CourseScoreInfoJson>> generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
+    final List<Widget> widgetList = [];
+    int otherDepartmentCredit = 0;
+
+    for (final key in generalLesson.keys) {
+      // FIXME: remove `!`.
+      for (final course in generalLesson[key]!) {
+        otherDepartmentCredit += course.credit.toInt();
+        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
+        widgetList.add(courseItemWidget);
+      }
+    }
+
+    final titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
+      R.current.takeForeignDepartmentCredits,
+      otherDepartmentCredit,
+      R.current.takeForeignDepartmentCreditsLimit,
+      otherDepartmentMaxCredit
+    ]));
+
+    return AppExpansionTile(
+      title: titleWidget,
+      initiallyExpanded: appExpansionInitiallyExpanded,
+      children: widgetList,
+    );
+  }
+
   Widget _buildType(String type, String title) {
     final nowCredit = courseScoreCredit.getCreditByType(type);
     final minCredit = courseScoreCredit.graduationInformation.courseTypeMinCredit[type];
@@ -382,72 +448,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
           ],
         ),
       );
-
-  Widget _buildGeneralLessonItem() {
-    final generalLesson = courseScoreCredit.getGeneralLesson();
-    final List<Widget> widgetList = [];
-    int selectCredit = 0;
-    int coreCredit = 0;
-
-    for (final key in generalLesson.keys) {
-      // FIXME: remove `!`.
-      for (final course in generalLesson[key]!) {
-        if (course.isCoreGeneralLesson) {
-          coreCredit += course.credit.toInt();
-        } else {
-          selectCredit += course.credit.toInt();
-        }
-
-        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
-        widgetList.add(courseItemWidget);
-      }
-    }
-
-    final titleWidget = _buildTile(sprintf("%s \n %s:%d %s:%d", [
-      R.current.generalLessonSummary,
-      R.current.takeCore,
-      coreCredit,
-      R.current.takeSelect,
-      selectCredit,
-    ]));
-
-    return AppExpansionTile(
-      title: titleWidget,
-      initiallyExpanded: appExpansionInitiallyExpanded,
-      children: widgetList,
-    );
-  }
-
-  Widget _buildOtherDepartmentItem() {
-    final department = LocalStorage.instance.getGraduationInformation().selectDepartment.substring(0, 2);
-    final otherDepartmentMaxCredit = courseScoreCredit.graduationInformation.outerDepartmentMaxCredit;
-
-    Map<String, List<CourseScoreInfoJson>> generalLesson = courseScoreCredit.getOtherDepartmentCourse(department);
-    final List<Widget> widgetList = [];
-    int otherDepartmentCredit = 0;
-
-    for (final key in generalLesson.keys) {
-      // FIXME: remove `!`.
-      for (final course in generalLesson[key]!) {
-        otherDepartmentCredit += course.credit.toInt();
-        final courseItemWidget = _buildOneLineCourse(course.name, course.openClass);
-        widgetList.add(courseItemWidget);
-      }
-    }
-
-    final titleWidget = _buildTile(sprintf("%s: %d  %s: %d", [
-      R.current.takeForeignDepartmentCredits,
-      otherDepartmentCredit,
-      R.current.takeForeignDepartmentCreditsLimit,
-      otherDepartmentMaxCredit
-    ]));
-
-    return AppExpansionTile(
-      title: titleWidget,
-      initiallyExpanded: appExpansionInitiallyExpanded,
-      children: widgetList,
-    );
-  }
 
   Widget _buildSemesterScores(SemesterCourseScoreJson courseScore) => Padding(
         padding: const EdgeInsets.all(24.0),
