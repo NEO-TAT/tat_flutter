@@ -1,5 +1,6 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/msg_dialog.dart';
@@ -32,6 +33,7 @@ class DialogTask<T> extends Task<T> {
   Future<TaskStatus> onError(String message) async {
     final parameter = MsgDialogParameter(
       desc: message,
+      dialogType: DialogType.warning,
     );
     return await onErrorParameter(parameter);
   }
