@@ -106,7 +106,6 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
   @override
   Widget build(BuildContext context) => Consumer<AppProvider>(
         builder: (context, appProvider, child) {
-          appProvider.navigatorKey = Get.key;
           return WillPopScope(
             onWillPop: _onWillPop,
             child: Scaffold(
