@@ -23,8 +23,8 @@ class AppProvider extends ChangeNotifier {
 
   void setTheme(ThemeData value, String colorName) {
     _theme = value;
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setString("theme", colorName).then((val) {
+    SharedPreferences.getInstance().then((preferences) {
+      preferences.setString("theme", colorName).then((val) {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
           statusBarColor: colorName == "dark" ? AppColors.darkPrimary : AppColors.mainColor,
@@ -36,9 +36,9 @@ class AppProvider extends ChangeNotifier {
   }
 
   Future<ThemeData> checkTheme() async {
-    final prefs = await SharedPreferences.getInstance();
+    final preferences = await SharedPreferences.getInstance();
     late final ThemeData t;
-    final r = prefs.getString("theme") ?? "dark";
+    final r = preferences.getString("theme") ?? "dark";
 
     if (r == "light") {
       t = AppThemes.lightTheme;

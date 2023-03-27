@@ -101,28 +101,28 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   setHidden(value) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("hidden", value);
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setBool("hidden", value);
     showHidden = value;
     notifyListeners();
   }
 
   getHidden() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool h = prefs.getBool("hidden") ?? false;
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final bool h = preferences.getBool("hidden") ?? false;
     setHidden(h);
   }
 
   Future setSort(value) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt("sort", value);
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.setInt("sort", value);
     sort = value;
     notifyListeners();
   }
 
   getSort() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final int h = prefs.getInt("sort") ?? 0;
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    final int h = preferences.getInt("sort") ?? 0;
     setSort(h);
   }
 }
