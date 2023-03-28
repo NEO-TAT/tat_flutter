@@ -48,7 +48,7 @@ jobs:
 
     # Build ios app
     - name: Build app
-      run: flutter build ios --no-codesign
+      run: flutter build ios --no-codesign --flavor beta
 
   build-aos:
 
@@ -101,4 +101,4 @@ jobs:
 
     # Build aos app
     - name: Build appbundle
-      run: flutter build appbundle
+      run: flutter build appbundle --flavor beta
