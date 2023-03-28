@@ -42,5 +42,9 @@ android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 ios/firebase_app_id_file.json
 
+ios/GoogleServices/real/GoogleService-Info.plist
+ios/GoogleServices/real/firebase_app_id_file.json
+android/app/src/real/google-services.json
+
 # release build
 *.symbols
