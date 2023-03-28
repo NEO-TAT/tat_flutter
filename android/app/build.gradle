@@ -82,6 +82,17 @@ android {
             enable = false
         }
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        beta {
+            dimension "default"
+        }
+        real {
+            dimension "default"
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 flutter {
