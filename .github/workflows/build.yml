@@ -28,9 +28,6 @@ jobs:
     - name: Checkout codebase
       uses: actions/checkout@v3
 
-    - name: Add firebase cofigs
-      run: echo '${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}' > ios/Runner/GoogleService-Info.plist
-
     # install ssh key
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
@@ -80,9 +77,6 @@ jobs:
     # checkout codebase.
     - name: Checkout codebase
       uses: actions/checkout@v3
-
-    - name: Add firebase cofigs
-      run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
 
     - name: Add Key property
       run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" > android/key.properties

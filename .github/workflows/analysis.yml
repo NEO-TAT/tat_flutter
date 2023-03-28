@@ -25,9 +25,6 @@ jobs:
       - name: Checkout codebase
         uses: actions/checkout@v3
 
-      - name: Add Key property
-        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" > android/key.properties
-
       # install ssh key
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -48,7 +45,7 @@ jobs:
 
       # check code is formatted correctly.
       - name: Ensure the Dart code is formatted correctly
-        run: flutter format --set-exit-if-changed --dry-run -l 120 .
+        run: dart format --set-exit-if-changed -l 120 .
 
       # Analyze, check formatting, and run unit tests.
       - run: flutter analyze
