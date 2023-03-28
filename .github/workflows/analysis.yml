@@ -1,4 +1,4 @@
-name: CI
+name: Analysis
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  analysis:
+  check:
     name: analysis
     runs-on: ${{ matrix.os }}
 
