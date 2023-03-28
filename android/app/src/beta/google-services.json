@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "866921004681",
+    "project_id": "npc-tat-beta",
+    "storage_bucket": "npc-tat-beta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:866921004681:android:ea333c8e3e552591aad058",
+        "android_client_info": {
+          "package_name": "club.ntut.npc.tat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "866921004681-ipcehetm1nhj68mqqm63kh353dmh4fh6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqHTNBb_JzZh9HIL_1yYcn81Ub8woAcHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "866921004681-ipcehetm1nhj68mqqm63kh353dmh4fh6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "866921004681-oocjb5tk8r9s0df3nn0k57snm2alm3jo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.npc.tatFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

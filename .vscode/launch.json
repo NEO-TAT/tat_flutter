@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "real",
+            "program": "lib/main.dart",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--flavor",
+                "real"
+            ]
+        },
+        {
+            "name": "beta",
+            "program": "lib/main_beta.dart",
+            "type": "dart",
+            "request": "launch",
+            "args": [
+                "--flavor",
+                "beta"
+            ]
+        }
+    ]
+}

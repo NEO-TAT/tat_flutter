@@ -22,7 +22,7 @@ Future<void> main() async {
 
   Log.init();
 
-  final firebaseOptions = ScopedFirebaseOptions.getCurrentPlatformOn(Environment.real());
+  final firebaseOptions = ScopedFirebaseOptions.getCurrentPlatformOn(Environment.beta());
   await Firebase.initializeApp(options: firebaseOptions);
 
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);

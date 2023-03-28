@@ -28,9 +28,6 @@ jobs:
     - name: Checkout codebase
       uses: actions/checkout@v3
 
-    - name: Add firebase cofigs
-      run: echo '${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}' > ios/Runner/GoogleService-Info.plist
-
     # install ssh key
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
@@ -51,7 +48,7 @@ jobs:
 
     # Build ios app
     - name: Build app
-      run: flutter build ios --no-codesign
+      run: flutter build ios --no-codesign --flavor beta
 
   build-aos:
 
@@ -81,9 +78,6 @@ jobs:
     - name: Checkout codebase
       uses: actions/checkout@v3
 
-    - name: Add firebase cofigs
-      run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > android/app/google-services.json
-
     - name: Add Key property
       run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" > android/key.properties
 
@@ -107,4 +101,4 @@ jobs:
 
     # Build aos app
     - name: Build appbundle
-      run: flutter build appbundle
+      run: flutter build appbundle --flavor beta
