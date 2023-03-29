@@ -19,7 +19,7 @@ class HtmlUtils {
   		段落符號		&para;		≧	大於等於符號		&ge;			紅心符號				&hearts;
   §		章節符號		&sect;		⊥	垂直符號			&perp;			方塊符號				&diams;
   ©		版權所有符號	&copy;			二分之一符號		&frac12;	α	Alpha符號				&alpha;
-  		註冊商標符號	&reg;			四分之一符號		&frac14;	β	Bata符號				&beta;
+  		註冊商標符號	&reg;			四分之一符號		&frac14;	β	Beta符號				&beta;
   		商標符號		&trade;			四分之三符號		&frac34;	γ	Gamma符號				&gamma;
   €		歐元符號		&euro;			百分符號			&permil;	Δ	Delta符號				&Delta;
   ¢		美分符號		&cent;		∴	所以符號			&there4;	θ	Theta符號				&theta;
