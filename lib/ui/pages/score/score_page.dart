@@ -247,7 +247,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
               controller: _tabController,
               labelColor: AppColors.mainColor,
               unselectedLabelColor: Colors.white,
-              indicatorSize: TabBarIndicatorSize.label,
+              indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(10),
