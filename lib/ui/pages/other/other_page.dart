@@ -32,6 +32,7 @@ enum OnListViewPress {
   login,
   subSystem,
   rollCallRemind,
+  setIcon,
 }
 
 class OtherPage extends StatefulWidget {
@@ -94,6 +95,12 @@ class _OtherPageState extends State<OtherPage> {
       "color": Colors.lightBlue,
       "title": R.current.about,
       "onPress": OnListViewPress.about
+    },
+    {
+      "icon": EvaIcons.infoOutline,
+      "color": Colors.lightBlue,
+      "title": "Set icon",
+      "onPress": OnListViewPress.setIcon
     }
   ];
 
@@ -144,6 +151,9 @@ class _OtherPageState extends State<OtherPage> {
           initialUrl: link ?? AppLink.feedbackBaseUrl,
           title: R.current.feedback,
         );
+        break;
+      case OnListViewPress.setIcon:
+        RouteUtils.toSetIconPage();
         break;
       case OnListViewPress.rollCallRemind:
         // TODO(TU): update this log to the real feature log.

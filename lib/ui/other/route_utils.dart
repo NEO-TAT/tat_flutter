@@ -14,6 +14,7 @@ import 'package:flutter_app/ui/pages/other/page/about_page.dart';
 import 'package:flutter_app/ui/pages/other/page/contributors_page.dart';
 import 'package:flutter_app/ui/pages/other/page/dev_page.dart';
 import 'package:flutter_app/ui/pages/other/page/privacy_policy_page.dart';
+import 'package:flutter_app/ui/pages/other/page/setting_icon.dart';
 import 'package:flutter_app/ui/pages/other/page/setting_page.dart';
 import 'package:flutter_app/ui/pages/other/page/sub_system_page.dart';
 import 'package:flutter_app/ui/pages/roll_call_remind/roll_call_dashboard_page.dart';
@@ -99,6 +100,13 @@ class RouteUtils {
         () => SettingPage(controller),
         transition: transition,
       );
+
+  static Future? toSetIconPage() {
+    return Get.to(
+      () => SettingIcon(),
+      transition: transition,
+    );
+  }
 
   static Future<void> toWebViewPage({
     required Uri initialUrl,
