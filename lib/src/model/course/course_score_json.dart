@@ -432,7 +432,7 @@ class CourseScoreInfoJson {
       isOther |= openClass.contains(key);
     }
 
-    if(category.contains("▲") && openClass.contains("重補修")) {
+    if (category.contains("▲") && openClass.contains("重補修")) {
       isOther = false;
     }
 
