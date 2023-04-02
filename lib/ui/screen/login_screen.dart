@@ -184,10 +184,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32),
                             ),
-                            textStyle: const TextStyle(
-                                color: AppColors.lightFontColor),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12, horizontal: 16),
+                            textStyle: const TextStyle(color: AppColors.lightFontColor),
+                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                           ),
                           onPressed: () => _loginPress(context),
                           child: Text(
@@ -247,8 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.4,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Color(0x222196f3), Color(0x2203a9f4)]),
+              gradient: LinearGradient(colors: [Color(0x222196f3), Color(0x2203a9f4)]),
             ),
             child: Column(),
           ),
@@ -275,13 +272,11 @@ class WaveClipper1 extends CustomClipper<Path> {
 
     var firstEndPoint = Offset(size.width * 0.6, size.height - 29 - 50);
     var firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
 
     var secondEndPoint = Offset(size.width, size.height - 60);
     var secondControlPoint = Offset(size.width * 0.84, size.height - 50);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondEndPoint.dx, secondEndPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
@@ -302,13 +297,11 @@ class WaveClipper2 extends CustomClipper<Path> {
 
     var firstEndPoint = Offset(size.width * 0.6, size.height - 15 - 50);
     var firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
 
     var secondEndPoint = Offset(size.width, size.height - 40);
     var secondControlPoint = Offset(size.width * 0.84, size.height - 30);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondEndPoint.dx, secondEndPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
@@ -329,13 +322,11 @@ class WaveClipper3 extends CustomClipper<Path> {
 
     var firstEndPoint = Offset(size.width * .7, size.height - 40);
     var firstControlPoint = Offset(size.width * .25, size.height);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstEndPoint.dx, firstEndPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
 
     var secondEndPoint = Offset(size.width, size.height - 45);
     var secondControlPoint = Offset(size.width * 0.84, size.height - 50);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
-        secondEndPoint.dx, secondEndPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
