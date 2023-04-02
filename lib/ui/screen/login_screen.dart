@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: <Widget>[
                       Material(
                         elevation: 2,
-                        borderRadius: const BorderRadius.all(Radius.circular(32)),
+                        borderRadius: BorderRadius.circular(32),
                         child: TextFormField(
                           controller: _accountControl,
                           cursorColor: Colors.blue[800],
@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _accountFocus.unfocus();
                             FocusScope.of(context).requestFocus(_passwordFocus);
                           },
-                          validator: (value) => _validatorAccount(value),
+                          validator: _validatorAccount,
                           decoration: InputDecoration(
                             hintText: R.current.account,
                             errorStyle: const TextStyle(
@@ -118,9 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 4,
-                      ),
+                      const SizedBox(height: 4),
                       if (_accountErrorMessage.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
@@ -132,12 +130,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
                       Material(
                         elevation: 2,
-                        borderRadius: const BorderRadius.all(Radius.circular(32)),
+                        borderRadius: BorderRadius.circular(32),
                         child: TextFormField(
                           controller: _passwordControl,
                           cursorColor: Colors.blue[800],
@@ -148,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _passwordFocus.unfocus();
                             TextInput.finishAutofillContext();
                           },
-                          validator: (value) => _validatorPassword(value),
+                          validator: _validatorPassword,
                           decoration: InputDecoration(
                             hintText: R.current.password,
                             errorStyle: const TextStyle(
@@ -167,9 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 4,
-                      ),
+                      const SizedBox(height: 4),
                       if (_passwordErrorMessage.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
@@ -181,26 +175,24 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                      const SizedBox(
-                        height: 25,
-                      ),
+                      const SizedBox(height: 25),
                       Align(
                         alignment: Alignment.center,
                         child: TextButton(
                           style: TextButton.styleFrom(
                             foregroundColor: AppColors.mainColor,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32.0),
+                              borderRadius: BorderRadius.circular(32),
                             ),
-                            textStyle: const TextStyle(color: AppColors.lightFontColor),
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                            textStyle: const TextStyle(
+                                color: AppColors.lightFontColor),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12, horizontal: 16),
                           ),
                           onPressed: () => _loginPress(context),
                           child: Text(
                             R.current.login,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
+                            style: const TextStyle(fontSize: 16),
                           ),
                         ),
                       ),
@@ -255,7 +247,8 @@ class _LoginScreenState extends State<LoginScreen> {
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.4,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [Color(0x222196f3), Color(0x2203a9f4)]),
+              gradient: LinearGradient(
+                  colors: [Color(0x222196f3), Color(0x2203a9f4)]),
             ),
             child: Column(),
           ),
@@ -282,11 +275,13 @@ class WaveClipper1 extends CustomClipper<Path> {
 
     var firstEndPoint = Offset(size.width * 0.6, size.height - 29 - 50);
     var firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
 
     var secondEndPoint = Offset(size.width, size.height - 60);
     var secondControlPoint = Offset(size.width * 0.84, size.height - 50);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
@@ -307,11 +302,13 @@ class WaveClipper2 extends CustomClipper<Path> {
 
     var firstEndPoint = Offset(size.width * 0.6, size.height - 15 - 50);
     var firstControlPoint = Offset(size.width * .25, size.height - 60 - 50);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
 
     var secondEndPoint = Offset(size.width, size.height - 40);
     var secondControlPoint = Offset(size.width * 0.84, size.height - 30);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
@@ -332,11 +329,13 @@ class WaveClipper3 extends CustomClipper<Path> {
 
     var firstEndPoint = Offset(size.width * .7, size.height - 40);
     var firstControlPoint = Offset(size.width * .25, size.height);
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy, firstEndPoint.dx, firstEndPoint.dy);
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
 
     var secondEndPoint = Offset(size.width, size.height - 45);
     var secondControlPoint = Offset(size.width * 0.84, size.height - 50);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
