@@ -1,6 +1,7 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
@@ -85,121 +86,116 @@ class _LoginScreenState extends State<LoginScreen> {
               padding: const EdgeInsets.all(32),
               child: Form(
                 key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Material(
-                      elevation: 2,
-                      borderRadius: const BorderRadius.all(Radius.circular(32)),
-                      child: TextFormField(
-                        controller: _accountControl,
-                        cursorColor: Colors.blue[800],
-                        textInputAction: TextInputAction.done,
-                        focusNode: _accountFocus,
-                        onEditingComplete: () {
-                          _accountFocus.unfocus();
-                          FocusScope.of(context).requestFocus(_passwordFocus);
-                        },
-                        validator: (value) => _validatorAccount(value),
-                        decoration: InputDecoration(
-                          hintText: R.current.account,
-                          errorStyle: const TextStyle(
-                            height: 0,
-                            fontSize: 0,
-                          ),
-                          prefixIcon: const Icon(
-                            Icons.account_circle,
-                            color: Colors.grey,
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    if (_accountErrorMessage.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Text(
-                          _accountErrorMessage,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.red,
+                child: AutofillGroup(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(32),
+                        child: TextFormField(
+                          controller: _accountControl,
+                          cursorColor: Colors.blue[800],
+                          textInputAction: TextInputAction.next,
+                          focusNode: _accountFocus,
+                          autofillHints: const [AutofillHints.username],
+                          onEditingComplete: () {
+                            _accountFocus.unfocus();
+                            FocusScope.of(context).requestFocus(_passwordFocus);
+                          },
+                          validator: _validatorAccount,
+                          decoration: InputDecoration(
+                            hintText: R.current.account,
+                            errorStyle: const TextStyle(
+                              height: 0,
+                              fontSize: 0,
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.account_circle,
+                              color: Colors.grey,
+                            ),
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Material(
-                      elevation: 2,
-                      borderRadius: const BorderRadius.all(Radius.circular(32)),
-                      child: TextFormField(
-                        controller: _passwordControl,
-                        cursorColor: Colors.blue[800],
-                        obscureText: true,
-                        focusNode: _passwordFocus,
-                        onEditingComplete: () {
-                          _passwordFocus.unfocus();
-                        },
-                        validator: (value) => _validatorPassword(value),
-                        decoration: InputDecoration(
-                          hintText: R.current.password,
-                          errorStyle: const TextStyle(
-                            height: 0,
-                            fontSize: 0,
+                      const SizedBox(height: 4),
+                      if (_accountErrorMessage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            _accountErrorMessage,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.red,
+                            ),
                           ),
-                          prefixIcon: const Icon(
-                            Icons.lock,
-                            color: Colors.grey,
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 25,
-                            vertical: 13,
+                        ),
+                      const SizedBox(height: 20),
+                      Material(
+                        elevation: 2,
+                        borderRadius: BorderRadius.circular(32),
+                        child: TextFormField(
+                          controller: _passwordControl,
+                          cursorColor: Colors.blue[800],
+                          obscureText: true,
+                          focusNode: _passwordFocus,
+                          autofillHints: const [AutofillHints.password],
+                          onEditingComplete: () {
+                            _passwordFocus.unfocus();
+                            TextInput.finishAutofillContext();
+                          },
+                          validator: _validatorPassword,
+                          decoration: InputDecoration(
+                            hintText: R.current.password,
+                            errorStyle: const TextStyle(
+                              height: 0,
+                              fontSize: 0,
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: Colors.grey,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 25,
+                              vertical: 13,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    if (_passwordErrorMessage.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16),
-                        child: Text(
-                          _passwordErrorMessage,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.red,
+                      const SizedBox(height: 4),
+                      if (_passwordErrorMessage.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            _passwordErrorMessage,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                      const SizedBox(height: 25),
+                      Align(
+                        alignment: Alignment.center,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppColors.mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32),
+                            ),
+                            textStyle: const TextStyle(color: AppColors.lightFontColor),
+                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          ),
+                          onPressed: () => _loginPress(context),
+                          child: Text(
+                            R.current.login,
+                            style: const TextStyle(fontSize: 16),
                           ),
                         ),
                       ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.mainColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                          textStyle: const TextStyle(color: AppColors.lightFontColor),
-                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                        ),
-                        onPressed: () => _loginPress(context),
-                        child: Text(
-                          R.current.login,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
