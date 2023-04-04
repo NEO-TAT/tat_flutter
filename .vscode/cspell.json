@@ -1,0 +1,31 @@
+{
+  "version": "0.2",
+  "dictionaryDefinitions": [
+    {
+      "name": "ntutTerms",
+      "path": "./dictionaries/ntut_terms.dic"
+    },
+    {
+      "name": "apiEndpointNames",
+      "path": "./dictionaries/api_endpoint_names.dic"
+    },
+    {
+      "name": "thirdPartyTerms",
+      "path": "./dictionaries/third_party_terms.dic"
+    },
+    {
+      "name": "paths",
+      "path": "./dictionaries/paths.dic",
+      "addWords": false
+    }
+  ],
+  "dictionaries": ["ntutTerms", "apiEndpointNames", "thirdPartyTerms", "paths"],
+  "ignorePaths": [
+    "pubspec.lock",
+    "proguard-rules.pro",
+    "ios/Runner.xcodeproj/",
+    "ios/Runner.xcworkspace/",
+    "Podfile.lock",
+    "lib/src/config/firebase_options.dart" // Contains API keys and URLs
+  ]
+}
