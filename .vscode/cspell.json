@@ -22,10 +22,10 @@
   "dictionaries": ["ntutTerms", "apiEndpointNames", "thirdPartyTerms", "paths"],
   "ignorePaths": [
     "pubspec.lock",
-    "proguard-rules.pro",
+    "android/app/proguard-rules.pro",
     "ios/Runner.xcodeproj/",
     "ios/Runner.xcworkspace/",
-    "Podfile.lock",
+    "ios/Podfile.lock",
     "lib/src/config/firebase_options.dart" // Contains API keys and URLs
   ]
 }
