@@ -20,20 +20,20 @@ class APPVersion {
     Log.d("Start check update");
     await AppUpdate.checkUpdate(versionConfig: versionConfig);
 
-    checkIFAPPUpdate();
+    updateLocalVersion();
   }
 
   static Future<bool> checkShouldUpdate() {
     return AppUpdate.checkUpdate();
   }
 
-  static Future<void> checkIFAPPUpdate() async {
-    final version = await AppUpdate.getAppVersion();
-    final preVersion = LocalStorage.instance.getVersion();
-    Log.d(" preVersion: $preVersion \n version: $version");
+  static Future<void> updateLocalVersion() async {
+    final current = await AppUpdate.getAppVersion();
+    final previous = LocalStorage.instance.getVersion();
+    Log.d("Previous: $previous\nCurrent: $current");
 
-    if (preVersion != version) {
-      await LocalStorage.instance.setVersion(version);
+    if (previous != current) {
+      await LocalStorage.instance.setVersion(current);
     }
   }
 }
