@@ -14,12 +14,22 @@
       "path": "./dictionaries/third_party_terms.dic"
     },
     {
+      "name": "abbreviations",
+      "path": "./dictionaries/abbreviations.dic"
+    },
+    {
       "name": "paths",
       "path": "./dictionaries/paths.dic",
       "addWords": false
     }
   ],
-  "dictionaries": ["ntutTerms", "apiEndpointNames", "thirdPartyTerms", "paths"],
+  "dictionaries": [
+    "ntutTerms",
+    "apiEndpointNames",
+    "thirdPartyTerms",
+    "abbreviations",
+    "paths"
+  ],
   "ignorePaths": [
     "pubspec.lock",
     "android/app/proguard-rules.pro",
