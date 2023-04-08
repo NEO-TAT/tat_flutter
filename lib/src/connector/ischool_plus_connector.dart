@@ -141,15 +141,14 @@ class ISchoolPlusConnector {
       resourceNodes = tagNode.getElementsByTagName("resource");
       for (int i = 0; i < itemNodes.length; i++) {
         itemNode = itemNodes[i];
-        String iref;
         if (!itemNode.attributes.containsKey("identifierref")) {
           //代表是目錄不是一個檔案
           continue;
         }
-        iref = itemNode.attributes["identifierref"];
+        var itemId = itemNode.attributes["identifierref"];
         for (int i = 0; i < resourceNodes.length; i++) {
           resourceNode = resourceNodes[i];
-          if (resourceNode.attributes["identifier"] == iref) {
+          if (resourceNode.attributes["identifier"] == itemId) {
             break;
           }
         }
