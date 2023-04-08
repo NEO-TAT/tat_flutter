@@ -16,7 +16,7 @@ dependencies:
     sdk: flutter
 
   # TAT 2 Core implementations, reference it to use some of the new features.
-  # Use https login with github personal access key at the first time to obtain this sub-package.
+  # Use https login with GitHub personal access key at the first time to obtain this sub-package.
   tat_core:
     git:
       url: git@github.com:NTUT-NPC/TAT-Core.git

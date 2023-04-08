@@ -32,7 +32,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
 
-      # Add github token
+      # Add GitHub token
       - name: Add Github Token
         uses: oleksiyrudenko/gha-git-credentials@v2
         with:
