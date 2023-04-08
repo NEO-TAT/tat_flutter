@@ -11,3 +11,6 @@ We follow the "fork-and-pull" GitHub flow, be free to contribute for this projec
 5.  Submit a **Pull request** so that we can review your changes
 
 NOTE: Be sure to merge the latest from "upstream" before making a pull request!
+
+### Spell Checking
+We have dictionary files for spell checking, located in the `dictionaries` folder. Please refer to the [README](dictionaries/README.md) for more information.

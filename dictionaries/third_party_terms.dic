@@ -20,6 +20,7 @@ fluttertoast
 fromSubtags
 fullscreen
 Getx
+IntelliJ
 Localizely
 microtask
 mobi
@@ -34,6 +35,7 @@ shimataro
 shouldReclip
 sprintf
 subosito
+tbody
 temurin
 unfocus
 unnecessary_brace_in_string_interps
@@ -41,4 +43,3 @@ vsync
 xcassets
 xcconfig
 xcworkspace
-tbody
