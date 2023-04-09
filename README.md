@@ -1,112 +1,111 @@
-<h6 align="center">
-<a href="https://apps.apple.com/tw/app/tat-%E5%8C%97%E7%A7%91%E7%94%9F%E6%B4%BB/id1513875597?itscg=30200&amp;itsct=apps_box_appicon" style="width: 170px; height: 170px; border-radius: 22%; overflow: hidden; display: inline-block; vertical-align: middle;"><img src="https://is3-ssl.mzstatic.com/image/thumb/Purple112/v4/20/2b/3b/202b3b1c-c977-5445-365d-52593ed795f3/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/540x540bb.jpg" alt="TAT - 北科生活" style="width: 170px; height: 170px; border-radius: 22%; overflow: hidden; display: inline-block; vertical-align: middle;"></a>
-</h6>
+<!-- markdownlint-disable MD033 MD041 -->
 
-<h1 align="center">
-<b>TAT</b>
-<i><p><small>the Best NTUT Campus life assistant</small></p></i>
-</h1>
+<img src="assets/images/tat-round.png" alt="App logo" align="right" style="width: 20%" />
 
-<h6 align="center">
+# TAT
 
-[![CI](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml)
+The swiss army knife for NTUT students.
 
-<a href='https://play.google.com/store/apps/details?id=club.ntut.npc.tat'>
-<img height="50px" alt='Get it on Google Play' src='https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg'/>
+[![All Contributors](https://img.shields.io/github/all-contributors/NEO-TAT/tat_flutter?color=ee8449&style=for-the-badge)](#contributors)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/NEO-TAT/tat_flutter/build.yml?logo=github&style=for-the-badge)
+
+<a href="https://play.google.com/store/apps/details?id=club.ntut.npc.tat">
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+    alt="Get it on Google Play"
+    style="height: 72px"
+  />
 </a>
-
-<a href="https://apple.co/3Rmojax">
-<img height="50px" alt='Get it on AppStore' src='https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg'>
+<a href="https://apps.apple.com/tw/app/tat-北科生活">
+  <img
+    src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+    alt="Download on the App Store"
+    style="height: 72px"
+  />
 </a>
-
-</h6>
 
 ## Introduction
-TAT is a solution that simplifies campus life. 
 
-With this app, you can quickly view the course tables, classroom, grades, and calendar for each semester, as well as quickly log in to the i-plus website without entering your account information. 
+TAT is an app designed to simplify your college life. It allows you to quickly access your course schedule, classroom locations, grades, and semester calendar. You can also easily log in to i-School Plus without entering your account information.
 
-Additionally, we offer common functions of i-Plus, such as downloading course files and viewing notifications. 
+In addition, you can use TAT to download course materials and check for announcements, just like with i-School Plus. Furthermore, you can also view your friends' schedules and the courses they have chosen.
 
-Furthermore, you can view your friends' course tables and see what courses they have chosen.
-
-If you would like to learn more about the features, why not download and try it for yourself? We support both Android and iOS/iPadOS platforms, making it the most widely used assistant app at National Taipei University of Technology (NTUT).
+If you are interested in learning more about TAT, simply download it! It is available on both Android and iOS/iPadOS platforms and is widely used by students at National Taipei University of Technology (NTUT) to stay organized and manage their academic lives more effectively.
 
 ## Our story
-Not long after the establishment of the **NTUT Programming Club (N.P.C.)**, the founding president created a campus life app called TTS (with features similar to TAT), which was launched on the Google Play Store (due to its development in Android native, there was no iOS version available).
 
-Approximately 2 to 3 years after TTS was in use, a member of NPC had new ideas. He hoped to achieve the goal of a dual-platform launch through the newly-released cross-platform open-source development framework (Flutter) by Google at that time. As a result, the founding president of NPC worked with him to complete the initial version of TAT and released it on both platforms.
+The NTUT Programming Club (NPC) was founded, and its director created an app called TTS, similar to TAT, which was launched on the Google Play Store for Android. After 2-3 years, another club member proposed using the cross-platform open-source development framework Flutter to launch TAT on both Android and iOS platforms. With the founding director's help, they completed TAT's initial version, which has become a necessary tool for the university's students.
 
-Now, TAT has become a necessary tool for Northeastern students. In fact, this is due to the efforts of the student union at that time.
+However, many are unaware that TAT is a project developed entirely by NPC, without any support from the school or student union. As a result, TAT is not obligated to the school or student union, and whenever the school's backend undergoes changes, TAT users may face unexpected errors.
 
-However, what many people do not know is that TAT is a project fully developed by NPC and does not rely on any assistance from the school or student union. Therefore, it does not have any obligations to the school or student union. This makes every time the backend of the school has changes, all TAT users will immediately be at risk of encountering unexpected errors.
+## Getting started
 
-## Get started
-<a href="https://flutter.dev/">
-<img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="get started with flutter">
-</a>
+To develop TAT with Flutter, follow these steps:
 
-Due to the strong drive of [Flutter](https://flutter.dev/), the development of TAT is accomplished with half the effort.
+1. Install [Flutter][Flutter] in your development environment by referring to its official website for tutorials.
 
-- First, it is recommended that you install Flutter in your development environment. If you are not yet familiar with Flutter, you may refer to its official website for tutorials.
+2. Install either [Android Studio][Android Studio] or [Visual Studio Code][Visual Studio Code], as they are officially recommended by Flutter and Dart for development. However, you can use other editors/IDEs if you prefer.
 
-- Next, you are required to install [Android Studio](https://developer.android.com/studio) or [VSCode](https://code.visualstudio.com/) in your development environment, as Flutter and Dart officially recommend the use of these two solutions for development. However, if you believe that other editors/IDEs are a better choice for you, you may try installing them as well.
+3. Run `flutter doctor` to check for any missing steps in your editor/IDE setup.
 
-- Once your editor/IDE is set up, it is advisable to run Flutter Doctor to check for any missing steps.
-  ```bash
-  # Make sure you are using the latest Stable version of Flutter and Dart.
-  flutter doctor -v
-  ```
+4. Clone this repository with the `--recurse-submodules` flag. For example: `git clone --recurse-submodules git@github.com:NEO-TAT/tat_flutter.git`.
 
-- Now, you may clone the code of TAT to your environment through [Git](https://git-scm.com/).
-  ```bash
-  git clone --recurse-submodules git@github.com:NEO-TAT/tat_flutter.git
-  ```
+5. Install the dependencies using the command `flutter pub get`.
 
-- Then, start installing the dependencies in the TAT project.
-  ```bash
-  flutter pub get
-  ```
+6. Once all dependencies are successfully installed (excluding `tat_core`), you can start developing TAT.
 
-Once all dependencies are successfully installed (excluding `tat_core`), you can start doing whatever you want!
-
-> **Note**
-> If you need to debug the TAT app in your environment, you must first become a member of the **NTUT Programming Club (N.P.C.)**, as this will enable your Android Studio to access TAT's core business logic code. Otherwise, you will not be able to build successfully. For information on how to join the **NPC**, please refer to the Contact Us section below.
-
-If you got any questions during the above steps, please feel free to contact us (NPC) anytime.
+Note that to debug the app locally, you must first join the [NTUT Programming Club GitHub organization][NPC GitHub] for the `tat_core` dependency. If you encounter any issues during the process, feel free to [Contact Us](#contact-us) for assistance.
 
 ## Discussion
-The TAT team always holds a positive attitude and strives to provide the best product to all users. We are always willing to listen to any valuable feedback from our users.
 
-Therefore, if you have any suggestions or advice regarding this app, we sincerely hope that you can go to the "Feedback" section under the "Others" tab in the app and fill out the feedback form.
+The TAT team is always positive and aims to provide the best product for users. They are open to valuable feedback and suggestions from users.
 
-If you would like to participate directly in our development discussions, you are welcome to join our [Discord server](https://discord.gg/FvRwmSCKWY) or post your ideas in the [GitHub Discussion](https://github.com/orgs/NEO-TAT/discussions).
+If you have any suggestions or advice regarding the app, you can go to the "Feedback" section under the "Others" tab in the app and fill out the feedback form.
 
-## Become contributor
-<img src="https://i.imgur.com/7yYwMr1.webp" height="200">
+You can also participate in development discussions directly by joining the [TAT Discord server][Discord] or posting your ideas in the [TAT Flutter GitHub Discussions][Discussions].
 
-If you are inclined to contribute to the improvement of this app, we welcome your participation at all times, regardless of the form it may take.
+## Becoming a contributor
 
-While we certainly welcome more capable developers, contributing to this app does not necessarily require writing code. If your expertise lies in areas such as UI design, animation design, project management, DevOps, planning, quality management, automation, security, server-side, front-end web development, CI/CD, AI, ML, networking, IoT, multilingual translation, accounting and finance, advertising, marketing, and promotion, among others, we also highly value your involvement.
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Uncle_Sam_%28pointing_finger%29.png/178px-Uncle_Sam_%28pointing_finger%29.png"
+  alt="Uncle Sam (pointing finger)"
+  align="right"
+/>
 
-Furthermore, we have compiled detailed development materials into our [wiki](https://github.com/NEO-TAT/tat_flutter/wiki) and invite you to peruse it at your convenience.
+We welcome anyone who wants to contribute to the improvement of this app, regardless of their skills or expertise. While we appreciate skilled developers, you don't necessarily have to be one to contribute. You can help with UI design, animation design, project management, DevOps, planning, quality management, automation, security, server-side, front-end web development, CI/CD, AI, ML, networking, IoT, multilingual translation, accounting and finance, advertising, marketing, and promotion, among other things.
+
+We've compiled detailed development materials in our [wiki][Wiki] and encourage you to check it out at your leisure.
 
 ## Contact us
-<a href="https://discord.gg/FvRwmSCKWY"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord server"></a>
-<a href="https://www.facebook.com/NPC.OwO"><img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook"></a>
 
-<a href="https://ntut.club"><img width="100px" alt="NPC Special Logo SEO" src="https://user-images.githubusercontent.com/47718989/216663916-a7f568e0-8cdd-4cda-8d2d-2c8f72ac08bc.png"></a>
+[![Discord server](https://img.shields.io/discord/1068833951143178242?color=5865F2&label=Discord&logo=discord&style=for-the-badge)][Discord]
+
+[![Facebook](https://img.shields.io/badge/Facebook-Follow-1877F2?style=for-the-badge&logo=facebook)][NPC Facebook]
+
+[![Our website](https://img.shields.io/badge/Website-visit-black?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9ImN1cnJlbnRDb2xvciIgZD0iTTE2LjM2IDE0Yy4wOC0uNjYuMTQtMS4zMi4xNC0yYzAtLjY4LS4wNi0xLjM0LS4xNC0yaDMuMzhjLjE2LjY0LjI2IDEuMzEuMjYgMnMtLjEgMS4zNi0uMjYgMm0tNS4xNSA1LjU2Yy42LTEuMTEgMS4wNi0yLjMxIDEuMzgtMy41NmgyLjk1YTguMDMgOC4wMyAwIDAgMS00LjMzIDMuNTZNMTQuMzQgMTRIOS42NmMtLjEtLjY2LS4xNi0xLjMyLS4xNi0yYzAtLjY4LjA2LTEuMzUuMTYtMmg0LjY4Yy4wOS42NS4xNiAxLjMyLjE2IDJjMCAuNjgtLjA3IDEuMzQtLjE2IDJNMTIgMTkuOTZjLS44My0xLjItMS41LTIuNTMtMS45MS0zLjk2aDMuODJjLS40MSAxLjQzLTEuMDggMi43Ni0xLjkxIDMuOTZNOCA4SDUuMDhBNy45MjMgNy45MjMgMCAwIDEgOS40IDQuNDRDOC44IDUuNTUgOC4zNSA2Ljc1IDggOG0tMi45MiA4SDhjLjM1IDEuMjUuOCAyLjQ1IDEuNCAzLjU2QTguMDA4IDguMDA4IDAgMCAxIDUuMDggMTZtLS44Mi0yQzQuMSAxMy4zNiA0IDEyLjY5IDQgMTJzLjEtMS4zNi4yNi0yaDMuMzhjLS4wOC42Ni0uMTQgMS4zMi0uMTQgMmMwIC42OC4wNiAxLjM0LjE0IDJNMTIgNC4wM2MuODMgMS4yIDEuNSAyLjU0IDEuOTEgMy45N2gtMy44MmMuNDEtMS40MyAxLjA4LTIuNzcgMS45MS0zLjk3TTE4LjkyIDhoLTIuOTVhMTUuNjUgMTUuNjUgMCAwIDAtMS4zOC0zLjU2YzEuODQuNjMgMy4zNyAxLjkgNC4zMyAzLjU2TTEyIDJDNi40NyAyIDIgNi41IDIgMTJhMTAgMTAgMCAwIDAgMTAgMTBhMTAgMTAgMCAwIDAgMTAtMTBBMTAgMTAgMCAwIDAgMTIgMloiLz48L3N2Zz4=)][NPC Website]
 
 ## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-[![All Contributors](https://img.shields.io/github/all-contributors/NEO-TAT/tat_flutter?color=ee8449&style=flat-square)](#contributors)
+
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
+---
+_© 2023 [**N.P.C. 北科程式設計研究社**][NPC Website]._
 
-
-_Copyright © 2023 All rights reserved and owned by [**N.P.C. 北科程式設計研究社**](https://ntut.club)._
+[Flutter]: https://flutter.dev
+[Android Studio]: https://developer.android.com/studio
+[Visual Studio Code]: https://code.visualstudio.com
+[Discussions]: https://github.com/NEO-TAT/tat_flutter/discussions
+[Wiki]: https://github.com/NEO-TAT/tat_flutter/wiki
+[Discord]: https://ntut.club/jointat
+[NPC Website]: https://ntut.club
+[NPC GitHub]: https://github.com/NTUT-NPC
+[NPC Facebook]: https://www.facebook.com/NPC.OwO
