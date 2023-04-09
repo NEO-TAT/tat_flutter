@@ -12,8 +12,8 @@ For Visual Studio Code, these files are automatically used by the [spell checker
 
 This dictionary contains the names of the API endpoints.
 
-- `mooc_sysbar.php` 
-- `istream.ntut.edu.tw`.
+- `mooc_sysbar.php`
+- `istream.ntut.edu.tw`
 
 ### ntut_terms
 
@@ -31,7 +31,7 @@ This dictionary contains file extensions, HTTP terms, third-party library names 
 - `flutter_inappwebview`
 - `EdgeInsets.fromLTRB`
 
-# abbreviations
+### abbreviations
 
 This dictionary contains abbreviations used in this repository.
 
