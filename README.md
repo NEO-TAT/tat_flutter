@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD033 MD041 -->
+<!-- markdownlint-disable no-inline-html first-line-heading -->
 
 <img src="assets/images/tat-round.png" alt="App logo" align="right" style="width: 20%" />
 
