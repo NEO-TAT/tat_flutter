@@ -49,3 +49,12 @@ jobs:
 
       # Analyze, check formatting, and run unit tests.
       - run: flutter analyze
+
+  markdownlint:
+    name: markdownlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DavidAnson/markdownlint-cli2-action@v9
+        with:
+          globs: '**/*.md'
