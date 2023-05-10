@@ -145,7 +145,7 @@ class ISchoolPlusConnector {
           //代表是目錄不是一個檔案
           continue;
         }
-        var itemId = itemNode.attributes["identifierref"];
+        final itemId = itemNode.attributes["identifierref"];
         for (int i = 0; i < resourceNodes.length; i++) {
           resourceNode = resourceNodes[i];
           if (resourceNode.attributes["identifier"] == itemId) {
