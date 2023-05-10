@@ -36,6 +36,6 @@
     "ios/Runner.xcodeproj/",
     "ios/Runner.xcworkspace/",
     "ios/Podfile.lock",
-    "lib/src/config/firebase_options.dart" // Contains API keys and URLs
+    "lib/src/config/firebase_options.dart"
   ]
 }
