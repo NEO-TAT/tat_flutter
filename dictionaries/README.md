@@ -31,7 +31,7 @@ This dictionary contains file extensions, HTTP terms, third-party library names 
 - `flutter_inappwebview`
 - `EdgeInsets.fromLTRB`
 
-# abbreviations
+### abbreviations
 
 This dictionary contains abbreviations used in this repository.
 
