@@ -12,8 +12,8 @@ For Visual Studio Code, these files are automatically used by the [spell checker
 
 This dictionary contains the names of the API endpoints.
 
-- `mooc_sysbar.php` 
-- `istream.ntut.edu.tw`.
+- `mooc_sysbar.php`
+- `istream.ntut.edu.tw`
 
 ### ntut_terms
 
