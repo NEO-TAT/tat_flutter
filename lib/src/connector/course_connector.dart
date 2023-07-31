@@ -92,7 +92,6 @@ class CourseConnector {
       };
       parameter = ConnectorParameter(_postCourseCNUrl);
       parameter.data = data;
-      parameter.charsetName = 'big5';
       String result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       courseNodes = tagNode.getElementsByTagName("table");
@@ -497,7 +496,6 @@ class CourseConnector {
     Map graduationMap = {};
     try {
       parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
-      parameter.charsetName = "big5";
       parameter.data = {"format": "-3", "year": year, "matric": "7"};
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
@@ -514,7 +512,6 @@ class CourseConnector {
       }
       href = "https://aps.ntut.edu.tw/course/tw/$href";
       parameter = ConnectorParameter(href);
-      parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
 
       exp = RegExp(r"最低畢業學分：?(\d+)學分");
@@ -556,7 +553,6 @@ class CourseConnector {
     try {
       parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
       parameter.data = {"format": "-1"};
-      parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       nodes = tagNode.getElementsByTagName("a");
@@ -586,7 +582,6 @@ class CourseConnector {
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = {"format": "-2", "year": year};
-      parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       nodes = tagNode.getElementsByTagName("a");
@@ -617,8 +612,6 @@ class CourseConnector {
     try {
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = code;
-      //Log.d( code.toString() );
-      parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
@@ -651,8 +644,6 @@ class CourseConnector {
       Log.d("select is $select");
       parameter = ConnectorParameter(_creditUrl);
       parameter.data = code;
-      //Log.d( code.toString() );
-      parameter.charsetName = "big5";
       result = await Connector.getDataByPost(parameter);
       tagNode = parse(result);
       node = tagNode.getElementsByTagName("table").first;
