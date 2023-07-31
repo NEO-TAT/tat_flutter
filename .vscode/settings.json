@@ -8,5 +8,16 @@
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 120,
     "editor.rulers": [120]
+  },
+
+  // Flutter Version Management https://fvm.app/
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  // Remove .fvm files from search
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  // Remove from file watching
+  "files.watcherExclude": {
+    "**/.fvm": true
   }
 }

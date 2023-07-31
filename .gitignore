@@ -49,3 +49,6 @@ android/app/src/real/google-services.json
 
 # release build
 *.symbols
+
+# Flutter Version Management https://fvm.app/
+.fvm/flutter_sdk
