@@ -80,7 +80,6 @@ class ScoreConnector {
       Map<String, String> data = {"format": "-2"};
       parameter = ConnectorParameter(_scoreAllScoreUrl);
       parameter.data = data;
-      parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
       tableNodes = tagNode.getElementsByTagName("table");
