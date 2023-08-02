@@ -120,7 +120,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   String getVideoUrl(String path) => "https://istream.ntut.edu.tw/videoplayer/$path";
 
   Future<void> _buildDialog() async {
-    final url = await Get.dialog<String>(
+    final urlStr = await Get.dialog<String>(
       AlertDialog(
         content: SizedBox(
           width: double.minPositive,
@@ -145,8 +145,10 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
 
     if (LocalStorage.instance.getOtherSetting().useExternalVideoPlayer) {
       final name = "${widget.name}_${_selectedVideoInfo.name}.mp4";
-      externalPlayerHasLaunched = await MXPlayerUtil.launch(url: url, name: name);
+      externalPlayerHasLaunched = await MXPlayerUtil.launch(url: urlStr, name: name);
     }
+
+    final url = Uri.tryParse(urlStr ?? "");
 
     if (!externalPlayerHasLaunched && url != null) {
       await initController(url);
@@ -155,8 +157,8 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
     }
   }
 
-  Future<void> initController(String url) async {
-    _playerController = VideoPlayerController.network(
+  Future<void> initController(Uri url) async {
+    _playerController = VideoPlayerController.networkUrl(
       url,
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
