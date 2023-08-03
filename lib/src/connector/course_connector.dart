@@ -153,7 +153,6 @@ class CourseConnector {
       };
       parameter = ConnectorParameter(_postCourseCNUrl);
       parameter.data = data;
-      parameter.charsetName = 'big5';
       Response response = await Connector.getDataByPostResponse(parameter);
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[0];
@@ -297,7 +296,6 @@ class CourseConnector {
       };
       parameter = ConnectorParameter(_postCourseCNUrl);
       parameter.data = data;
-      parameter.charsetName = 'big5';
       Response response = await Connector.getDataByPostResponse(parameter);
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];

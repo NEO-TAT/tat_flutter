@@ -4,10 +4,11 @@ import 'package:alice_lightweight/alice.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dart_big5/big5.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/adapters/early_interceptor_adapter.dart';
 import 'package:get/get.dart' as k;
-import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_core/get_core.dart';
 
 import 'connector_parameter.dart';
 
@@ -19,9 +20,9 @@ class DioConnector {
     "Upgrade-Insecure-Requests": "1",
   };
 
-  final alice = Alice(
-    navigatorKey: Get.key,
-  );
+  static final _alice = Alice();
+
+  Alice getAlice({required GlobalKey<NavigatorState> navigatorKey}) => _alice..setNavigatorKey(navigatorKey);
 
   static final dioOptions = BaseOptions(
     connectTimeout: 5000,
@@ -67,7 +68,7 @@ class DioConnector {
 
   Future<void> init({required List<Interceptor> interceptors}) async {
     dio.interceptors.addAll(interceptors);
-    dio.interceptors.add(alice.getDioInterceptor());
+    dio.interceptors.add(getAlice(navigatorKey: Get.key).getDioInterceptor());
   }
 
   void deleteCookies() {
