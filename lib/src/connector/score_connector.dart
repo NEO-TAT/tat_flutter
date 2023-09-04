@@ -10,8 +10,6 @@ import 'package:html/parser.dart';
 import 'core/connector.dart';
 import 'core/connector_parameter.dart';
 
-import 'dart:developer';
-
 enum ScoreConnectorStatus { loginSuccess, loginFail, unknownError }
 
 class ScoreConnector {
