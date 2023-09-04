@@ -10,6 +10,8 @@ import 'package:html/parser.dart';
 import 'core/connector.dart';
 import 'core/connector_parameter.dart';
 
+import 'dart:developer';
+
 enum ScoreConnectorStatus { loginSuccess, loginFail, unknownError }
 
 class ScoreConnector {
@@ -82,19 +84,13 @@ class ScoreConnector {
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      tableNodes = tagNode.getElementsByTagName("table");
-      h3Nodes = tagNode
-          .getElementsByTagName("h3")
-          .reversed
-          .toList()
-          .getRange(0, tableNodes.length)
-          .toList()
-          .reversed
-          .toList();
+      h3Nodes = tagNode.getElementsByTagName("h3");
+
       //依照學期取得課程資料
-      for (int i = 0; i < tableNodes.length; i++) {
-        tableNode = tableNodes[i];
+      for (int i = 0; i < h3Nodes.length; i++) {
         h3Node = h3Nodes[i];
+        if (h3Node.nextElementSibling.localName != "table") continue;
+        tableNode = h3Node.nextElementSibling;
 
         SemesterCourseScoreJson courseScore = SemesterCourseScoreJson();
 
@@ -141,13 +137,18 @@ class ScoreConnector {
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
       rankNodes = tagNode.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-      rankNodes = rankNodes.getRange(2, rankNodes.length).toList().reversed.toList();
+      final List<Element> filteredRankNodes = [];
+      for (final rankNode in rankNodes) {
+        if (rankNode.getElementsByTagName("td").length < 7) continue;
+        filteredRankNodes.add(rankNode);
+      }
+      rankNodes = filteredRankNodes;
+      rankNodes = rankNodes.toList().reversed.toList();
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
         SemesterJson semester = SemesterJson();
         String semesterString = rankNodes[i * 3 + 2].getElementsByTagName("td")[0].innerHtml.split("<br>").first;
         semester.year = semesterString.split(" ")[0];
         semester.semester = semesterString.split(" ").reversed.toList()[0];
-
         //取得學期成績排名
         RankJson rankNow = RankJson();
         RankItemJson rankItemCourse = RankItemJson();
