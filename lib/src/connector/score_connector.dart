@@ -74,7 +74,7 @@ class ScoreConnector {
     String result;
     Document tagNode;
     Element tableNode, h3Node, scoreNode;
-    List<Element> tableNodes, h3Nodes, scoreNodes, rankNodes;
+    List<Element> h3Nodes, scoreNodes, rankNodes;
     List<SemesterCourseScoreJson> courseScoreList = [];
     try {
       Map<String, String> data = {"format": "-2"};
