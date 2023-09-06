@@ -74,7 +74,7 @@ class ScoreConnector {
     String result;
     Document tagNode;
     Element tableNode, h3Node, scoreNode;
-    List<Element> h3Nodes, scoreNodes, rankNodes;
+    List<Element> scoreNodes, rankNodes;
     List<SemesterCourseScoreJson> courseScoreList = [];
     try {
       Map<String, String> data = {"format": "-2"};
@@ -82,7 +82,7 @@ class ScoreConnector {
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      h3Nodes = tagNode.getElementsByTagName("h3");
+      final h3Nodes = tagNode.getElementsByTagName("h3");
 
       //依照學期取得課程資料
       for (int i = 0; i < h3Nodes.length; i++) {
