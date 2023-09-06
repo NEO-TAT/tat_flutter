@@ -134,10 +134,13 @@ class ScoreConnector {
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      rankNodes = tagNode.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-      final filteredRankNodes =
-          rankNodes.where((node) => node.getElementsByTagName("td").length >= 7).toList().reversed.toList();
-      rankNodes = filteredRankNodes;
+      final rankNodes = tagNode
+          .getElementsByTagName("tbody")
+          .first
+          .getElementsByTagName("tr")
+          .reversed
+          .where((row) => row.getElementsByTagName("td").length >= 7)
+          .toList(growable: false);
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
         SemesterJson semester = SemesterJson();
         String semesterString = rankNodes[i * 3 + 2].getElementsByTagName("td")[0].innerHtml.split("<br>").first;
