@@ -73,7 +73,7 @@ class ScoreConnector {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
-    Element tableNode, h3Node, scoreNode;
+    Element tableNode, scoreNode;
     List<Element> scoreNodes, rankNodes;
     List<SemesterCourseScoreJson> courseScoreList = [];
     try {
