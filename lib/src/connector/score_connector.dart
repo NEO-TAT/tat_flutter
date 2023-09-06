@@ -85,8 +85,7 @@ class ScoreConnector {
       final h3Nodes = tagNode.getElementsByTagName("h3");
 
       //依照學期取得課程資料
-      for (int i = 0; i < h3Nodes.length; i++) {
-        h3Node = h3Nodes[i];
+      for (final h3Node in h3Nodes) {
         if (h3Node.nextElementSibling.localName != "table") continue;
         tableNode = h3Node.nextElementSibling;
 
