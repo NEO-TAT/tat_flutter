@@ -73,7 +73,7 @@ class ScoreConnector {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
-    Element tableNode, scoreNode;
+    Element scoreNode;
     List<Element> scoreNodes, rankNodes;
     List<SemesterCourseScoreJson> courseScoreList = [];
     try {
@@ -86,8 +86,9 @@ class ScoreConnector {
 
       //依照學期取得課程資料
       for (final h3Node in h3Nodes) {
-        if (h3Node.nextElementSibling.localName != "table") continue;
-        tableNode = h3Node.nextElementSibling;
+        final siblingOfH3 = h3Node.nextElementSibling;
+        if (siblingOfH3 == null || siblingOfH3.localName != "table") continue;
+        final tableNode = siblingOfH3;
 
         SemesterCourseScoreJson courseScore = SemesterCourseScoreJson();
 
