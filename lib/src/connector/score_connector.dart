@@ -73,8 +73,8 @@ class ScoreConnector {
     ConnectorParameter parameter;
     String result;
     Document tagNode;
-    Element tableNode, h3Node, scoreNode;
-    List<Element> tableNodes, h3Nodes, scoreNodes, rankNodes;
+    Element scoreNode;
+    List<Element> scoreNodes;
     List<SemesterCourseScoreJson> courseScoreList = [];
     try {
       Map<String, String> data = {"format": "-2"};
@@ -82,19 +82,13 @@ class ScoreConnector {
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      tableNodes = tagNode.getElementsByTagName("table");
-      h3Nodes = tagNode
-          .getElementsByTagName("h3")
-          .reversed
-          .toList()
-          .getRange(0, tableNodes.length)
-          .toList()
-          .reversed
-          .toList();
+      final h3Nodes = tagNode.getElementsByTagName("h3");
+
       //依照學期取得課程資料
-      for (int i = 0; i < tableNodes.length; i++) {
-        tableNode = tableNodes[i];
-        h3Node = h3Nodes[i];
+      for (final h3Node in h3Nodes) {
+        final siblingOfH3 = h3Node.nextElementSibling;
+        if (siblingOfH3 == null || siblingOfH3.localName != "table") continue;
+        final tableNode = siblingOfH3;
 
         SemesterCourseScoreJson courseScore = SemesterCourseScoreJson();
 
@@ -140,14 +134,18 @@ class ScoreConnector {
       parameter.charsetName = "big5";
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      rankNodes = tagNode.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-      rankNodes = rankNodes.getRange(2, rankNodes.length).toList().reversed.toList();
+      final rankNodes = tagNode
+          .getElementsByTagName("tbody")
+          .first
+          .getElementsByTagName("tr")
+          .reversed
+          .where((row) => row.getElementsByTagName("td").length >= 7)
+          .toList(growable: false);
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
         SemesterJson semester = SemesterJson();
         String semesterString = rankNodes[i * 3 + 2].getElementsByTagName("td")[0].innerHtml.split("<br>").first;
         semester.year = semesterString.split(" ")[0];
         semester.semester = semesterString.split(" ").reversed.toList()[0];
-
         //取得學期成績排名
         RankJson rankNow = RankJson();
         RankItemJson rankItemCourse = RankItemJson();
