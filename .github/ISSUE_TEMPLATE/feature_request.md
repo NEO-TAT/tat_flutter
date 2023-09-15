@@ -16,7 +16,11 @@ Explain how this feature would benefit the users or the project.
 
 ## Proposed Implementation
 
-If you have any ideas on how this feature could be implemented, describe them here.
+Please show us that the feature can work by providing:
+
+- Code snippets
+- A small working example
+- Any relevant documentation that explains how the feature could be built.
 
 ## Additional Context
 
