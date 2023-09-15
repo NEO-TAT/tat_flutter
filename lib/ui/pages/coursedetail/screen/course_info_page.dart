@@ -60,9 +60,9 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
 
   void _addTask() async {
     courseMainInfo = widget.courseInfo.main;
-    String courseId = courseMainInfo.course.id;
-    TaskFlow taskFlow = TaskFlow();
-    var task = CourseExtraInfoTask(courseId);
+    final courseId = courseMainInfo.course.id;
+    final taskFlow = TaskFlow();
+    final task = CourseExtraInfoTask(courseId);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       courseExtraInfo = task.result;

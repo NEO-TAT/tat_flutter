@@ -119,7 +119,7 @@ class RouteUtils {
   }
 
   static Future toAliceInspectorPage() async {
-    DioConnector.instance.alice.showInspector();
+    DioConnector.instance.getAlice(navigatorKey: Get.key).showInspector();
   }
 
   static Future? toIPlusAnnouncementDetailPage(CourseInfoJson courseInfo, Map detail) {

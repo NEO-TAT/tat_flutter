@@ -35,7 +35,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -50,7 +50,7 @@ android {
     defaultConfig {
         applicationId "club.ntut.npc.tat"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -109,7 +109,7 @@ dependencies {
     implementation "androidx.media:media:1.6.0"
     implementation 'androidx.work:work-runtime:2.8.1'
     implementation 'androidx.work:work-runtime-ktx:2.8.1'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.1'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.6'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.2'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.4.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.0'
 }
