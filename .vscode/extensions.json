@@ -1,3 +1,8 @@
 {
-  "recommendations": ["davidanson.vscode-markdownlint"]
+  "recommendations": [
+    "streetsidesoftware.code-spell-checker",
+    "dart-code.dart-code",
+    "dart-code.flutter",
+    "davidanson.vscode-markdownlint"
+  ]
 }

@@ -1,0 +1,41 @@
+{
+  "version": "0.2",
+  "dictionaryDefinitions": [
+    {
+      "name": "ntutTerms",
+      "path": "./dictionaries/ntut_terms.dic"
+    },
+    {
+      "name": "apiEndpointNames",
+      "path": "./dictionaries/api_endpoint_names.dic"
+    },
+    {
+      "name": "thirdPartyTerms",
+      "path": "./dictionaries/third_party_terms.dic"
+    },
+    {
+      "name": "abbreviations",
+      "path": "./dictionaries/abbreviations.dic"
+    },
+    {
+      "name": "paths",
+      "path": "./dictionaries/paths.dic",
+      "addWords": false
+    }
+  ],
+  "dictionaries": [
+    "ntutTerms",
+    "apiEndpointNames",
+    "thirdPartyTerms",
+    "abbreviations",
+    "paths"
+  ],
+  "ignorePaths": [
+    "pubspec.lock",
+    "android/app/proguard-rules.pro",
+    "ios/Runner.xcodeproj/",
+    "ios/Runner.xcworkspace/",
+    "ios/Podfile.lock",
+    "lib/src/config/firebase_options.dart"
+  ]
+}
