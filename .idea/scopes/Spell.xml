@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Spell" pattern="!($gitignore||file:pubspec.lock||file:android/app/proguard-rules.pro||file:ios/Runner.xcodeproj//*||file:ios/Runner.xcworkspace//*||file:ios/GoogleServices/beta/firebase_app_id_file.json||file:ios/Podfile.lock||file:lib/src/config/firebase_options.dart)" />
+</component>
