@@ -8,13 +8,15 @@
 .buildlog/
 .history
 .svn/
-.last_build_id
+migrate_working_dir/
 
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/*
+!.idea/inspectionProfiles/
+!.idea/scopes/
 !.idea/runConfigurations/
 
 # The .vscode folder contains launch configuration and tasks you configure in
@@ -24,6 +26,7 @@
 
 # Flutter/Dart/Pub related
 **/doc/api/
+**/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -31,12 +34,6 @@
 .pub-cache/
 .pub/
 /build/
-
-# Web related
-lib/generated_plugin_registrant.dart
-
-# Exceptions to above rules.
-!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 # Firebase
 android/app/google-services.json
@@ -47,8 +44,16 @@ ios/GoogleServices/real/GoogleService-Info.plist
 ios/GoogleServices/real/firebase_app_id_file.json
 android/app/src/real/google-services.json
 
-# release build
-*.symbols
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
 
 # Flutter Version Management https://fvm.app/
 .fvm/flutter_sdk

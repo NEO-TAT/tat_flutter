@@ -82,7 +82,7 @@ class _LogConsoleState extends State<LogConsole> {
   final _scrollController = ScrollController();
   final _filterController = TextEditingController();
 
-  Level _filterLevel = Level.verbose;
+  Level _filterLevel = Level.trace;
   double _logFontSize = 14;
 
   int _currentId = 0;
@@ -241,7 +241,7 @@ class _LogConsoleState extends State<LogConsole> {
               value: _filterLevel,
               items: const [
                 DropdownMenuItem(
-                  value: Level.verbose,
+                  value: Level.trace,
                   child: Text("Verbose"),
                 ),
                 DropdownMenuItem(
@@ -261,11 +261,11 @@ class _LogConsoleState extends State<LogConsole> {
                   child: Text("Error"),
                 ),
                 DropdownMenuItem(
-                  value: Level.wtf,
+                  value: Level.fatal,
                   child: Text("WTF"),
                 ),
                 DropdownMenuItem(
-                  value: Level.nothing,
+                  value: Level.off,
                   child: Text("Nothing"),
                 )
               ],
