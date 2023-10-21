@@ -34,6 +34,12 @@ class ISchoolPlusConnector {
   static const String _getCourseName = "${_iSchoolPlusUrl}learn/mooc_sysbar.php";
   static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
+  // The Authorization Step of ISchool (2023-10-21)
+  // 0. POST https://app.ntut.edu.tw/ssoIndex.do
+  // 1. POST https://app.ntut.edu.tw/oauth2Server.do
+  // 2. GET https://istudy.ntut.edu.tw/login2.php
+  // 3. do something...
+
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
     try {
@@ -42,10 +48,12 @@ class ISchoolPlusConnector {
       List<html.Element> nodes;
       final data = {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
-        "apOu": "ischool_plus_",
+        "apOu": "ischool_plus_oauth",
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
+
+      // Step 0
       parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = (await Connector.getDataByGet(parameter));
@@ -58,13 +66,27 @@ class ISchoolPlusConnector {
         final value = node.attributes['value'];
         data[name] = value;
       }
+
+      // Step 1
       final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter(jumpUrl);
+      parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
       parameter.data = data;
 
       Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
+      tagNode = html.parse(jumpResult.data.toString().trim());
+      nodes = tagNode.getElementsByTagName("a");
+      final redirectUrl = nodes[0].attributes["href"];
+
+      // Step 2
+      parameter = ConnectorParameter(redirectUrl);
+      await Connector.getDataByGet(parameter);
+
       // Perform retry for cryptic API errors (?).
       // If the string `connect lost` be found in the response, we will do the retry.
+
+      // [2023-10-21] We may don't need this since the step is changed.
+      // Clean on next PR.
+
       int retryTimes = 3;
       do {
         if (jumpResult.data.toString().contains('connect lost')) {
