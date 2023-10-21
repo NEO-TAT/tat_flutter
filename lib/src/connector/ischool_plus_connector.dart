@@ -85,7 +85,7 @@ class ISchoolPlusConnector {
       // If the string `connect lost` be found in the response, we will do the retry.
 
       // [2023-10-21] We may don't need this since the step is changed.
-      // TODO: Clean on next PR.
+      // TODO: Remove I-School retry loop since it's outdated.
 
       int retryTimes = 3;
       do {
