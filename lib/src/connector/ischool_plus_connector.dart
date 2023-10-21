@@ -34,12 +34,11 @@ class ISchoolPlusConnector {
   static const String _getCourseName = "${_iSchoolPlusUrl}learn/mooc_sysbar.php";
   static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
-  // The Authorization Step of ISchool (2023-10-21)
-  // 0. GET https://app.ntut.edu.tw/ssoIndex.do
-  // 1. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step1)
-  // 2. GET https://istudy.ntut.edu.tw/login2.php
-  // 3. do something...
-
+  /// The Authorization Step of ISchool (2023-10-21)
+  /// 1. GET https://app.ntut.edu.tw/ssoIndex.do
+  /// 2. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
+  /// 3. GET https://istudy.ntut.edu.tw/login2.php
+  /// 4. do something...
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
     try {
@@ -53,7 +52,7 @@ class ISchoolPlusConnector {
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
 
-      // Step 0
+      // Step 1
       parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = (await Connector.getDataByGet(parameter));
@@ -67,7 +66,7 @@ class ISchoolPlusConnector {
         data[name] = value;
       }
 
-      // Step 1
+      // Step 2
       // The action should be "oauth2Server.do".
       // If not, the website is changed and need to fix.
       // TODO: Add the validation to check Step 1 is died. (It should not die if auth is correct)
@@ -80,7 +79,7 @@ class ISchoolPlusConnector {
       nodes = tagNode.getElementsByTagName("a");
       final redirectUrl = nodes[0].attributes["href"];
 
-      // Step 2
+      // Step 3
       parameter = ConnectorParameter(redirectUrl);
       await Connector.getDataByGet(parameter);
 
