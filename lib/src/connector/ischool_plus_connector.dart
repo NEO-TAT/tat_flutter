@@ -87,7 +87,7 @@ class ISchoolPlusConnector {
       // Perform retry for cryptic API errors (?).
       // If the string `connect lost` be found in the response, we will do the retry.
 
-      // [2023-10-21] We may don't need this since the step is changed.
+      // [2023-10-21] We may not need this since the step was changed.
       // TODO: Remove I-School retry loop since it's outdated.
 
       int retryTimes = 3;
