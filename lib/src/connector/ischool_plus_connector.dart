@@ -36,7 +36,7 @@ class ISchoolPlusConnector {
 
   // The Authorization Step of ISchool (2023-10-21)
   // 0. GET https://app.ntut.edu.tw/ssoIndex.do
-  // 1. POST https://app.ntut.edu.tw/oauth2Server.do
+  // 1. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step1)
   // 2. GET https://istudy.ntut.edu.tw/login2.php
   // 3. do something...
 
