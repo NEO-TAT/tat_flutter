@@ -77,7 +77,7 @@ class ISchoolPlusConnector {
       Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
       tagNode = html.parse(jumpResult.data.toString().trim());
       nodes = tagNode.getElementsByTagName("a");
-      final redirectUrl = nodes[0].attributes["href"];
+      final redirectUrl = nodes.first.attributes["href"];
 
       // Step 3
       parameter = ConnectorParameter(redirectUrl);
