@@ -77,11 +77,11 @@ class ISchoolPlusConnector {
       Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
       tagNode = html.parse(jumpResult.data.toString().trim());
       nodes = tagNode.getElementsByTagName("a");
-      final redirectUrl = nodes.first.attributes["href"];
 
       // Step 3
       // The redirectUrl is provided by <a> HTML DOM on Step 2.
       // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
+      final redirectUrl = nodes.first.attributes["href"];
       parameter = ConnectorParameter(redirectUrl);
       await Connector.getDataByGet(parameter);
 
