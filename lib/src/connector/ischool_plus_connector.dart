@@ -37,7 +37,7 @@ class ISchoolPlusConnector {
   /// The Authorization Step of ISchool (2023-10-21)
   /// 1. GET https://app.ntut.edu.tw/ssoIndex.do
   /// 2. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
-  /// 3. GET https://istudy.ntut.edu.tw/login2.php
+  /// 3. GET https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 3)
   /// 4. do something...
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
@@ -80,6 +80,8 @@ class ISchoolPlusConnector {
       final redirectUrl = nodes.first.attributes["href"];
 
       // Step 3
+      // The redirectUrl is provided by <a> HTML DOM on Step 2.
+      // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
       parameter = ConnectorParameter(redirectUrl);
       await Connector.getDataByGet(parameter);
 
