@@ -35,7 +35,7 @@ class ISchoolPlusConnector {
   static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
   // The Authorization Step of ISchool (2023-10-21)
-  // 0. POST https://app.ntut.edu.tw/ssoIndex.do
+  // 0. GET https://app.ntut.edu.tw/ssoIndex.do
   // 1. POST https://app.ntut.edu.tw/oauth2Server.do
   // 2. GET https://istudy.ntut.edu.tw/login2.php
   // 3. do something...
