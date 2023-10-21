@@ -68,6 +68,9 @@ class ISchoolPlusConnector {
       }
 
       // Step 1
+      // The action should be "oauth2Server.do".
+      // If not, the website is changed and need to fix.
+      // TODO: Add the validation to check Step 1 is died. (It should not die if auth is correct)
       final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
       parameter.data = data;
