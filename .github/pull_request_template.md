@@ -1,26 +1,20 @@
 ## Description
 
-Please describe your changes in detail.
+- Closes # (issue number)
 
-### Related Issue
+Briefly describe what this PR addresses and what has been done.
 
-- Link to the related issue (if applicable):
-  - Fixes # (issue number)
+## Implementation
 
-## Screenshots
+- List the changes made in this PR.
+- Mention any breaking changes.
 
-If your changes include visual elements,
-consider attaching relevant screenshots or GIFs.
+## Testing Instructions
 
-## Checklist
+Please provide details on the steps required to review and test this PR.
 
-Before submitting this PR, please make sure you have done the following:
-
-- [ ] Checked your code for syntax errors and formatting issues.
-- [ ] Reviewed your changes to ensure they match the project's coding style and conventions.
-- [ ] Included any necessary documentation updates.
-- [ ] Added or updated relevant tests (if applicable).
-- [ ] Verified that the app still builds and runs without errors.
+- Describe the steps for reviewing the changes.
+- List down manual tests that need to be performed to validate the changes.
 
 ## Additional Notes
 
