@@ -34,6 +34,11 @@ class ISchoolPlusConnector {
   static const String _getCourseName = "${_iSchoolPlusUrl}learn/mooc_sysbar.php";
   static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
 
+  /// The Authorization Step of ISchool (2023-10-21)
+  /// 1. GET https://app.ntut.edu.tw/ssoIndex.do
+  /// 2. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
+  /// 3. GET https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 3)
+  /// 4. do something...
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
     String result;
     try {
@@ -42,10 +47,12 @@ class ISchoolPlusConnector {
       List<html.Element> nodes;
       final data = {
         "apUrl": "https://istudy.ntut.edu.tw/login.php",
-        "apOu": "ischool_plus_",
+        "apOu": "ischool_plus_oauth",
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
+
+      // Step 1
       parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = (await Connector.getDataByGet(parameter));
@@ -58,13 +65,32 @@ class ISchoolPlusConnector {
         final value = node.attributes['value'];
         data[name] = value;
       }
+
+      // Step 2
+      // The `jumpUrl` should be "oauth2Server.do".
+      // If not, it means that the school server has changed.
+      // TODO: Add a validation measurement to check whether Step 1 is died or not. (It should not die if auth is correct)
       final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter(jumpUrl);
+      parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
       parameter.data = data;
 
       Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
+      tagNode = html.parse(jumpResult.data.toString().trim());
+      nodes = tagNode.getElementsByTagName("a");
+
+      // Step 3
+      // The redirectUrl is provided by <a> HTML DOM on Step 2.
+      // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
+      final redirectUrl = nodes.first.attributes["href"];
+      parameter = ConnectorParameter(redirectUrl);
+      await Connector.getDataByGet(parameter);
+
       // Perform retry for cryptic API errors (?).
       // If the string `connect lost` be found in the response, we will do the retry.
+
+      // [2023-10-21] We may not need this since the step was changed.
+      // TODO: Remove I-School retry loop since it's outdated.
+
       int retryTimes = 3;
       do {
         if (jumpResult.data.toString().contains('connect lost')) {
