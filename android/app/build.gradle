@@ -110,7 +110,7 @@ dependencies {
     implementation "androidx.media:media:1.6.0"
     implementation 'androidx.work:work-runtime:2.8.1'
     implementation 'androidx.work:work-runtime-ktx:2.8.1'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.3.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.4.0'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.4.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.5.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.3.0'
 }
