@@ -35,6 +35,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    namespace = "club.ntut.npc.tat"
     compileSdkVersion 34
 
     sourceSets {
