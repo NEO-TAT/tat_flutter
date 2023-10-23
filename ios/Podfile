@@ -1,5 +1,5 @@
 $min_ios_target_version = '14.7'
-$pre_build_firebase_pod_version = '10.12.0'
+$pre_build_firebase_pod_version = '10.15.0'
 
 platform :ios, $min_ios_target_version
 
