@@ -85,7 +85,7 @@ class AppUpdate {
   static void _openAppStore() async {
     final url = AppLink.storeUrlString;
     if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url), mode:LaunchMode.externalApplication);
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     }
   }
 }
