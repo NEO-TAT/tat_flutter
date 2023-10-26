@@ -88,13 +88,13 @@ class ContributorsPage extends StatelessWidget {
                     )
                   ],
                 ),
-                Expanded(
-                  child: FutureBuilder<List<Contributor>>(
-                    future: github.repositories.listContributors(repositorySlug).toList(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        final contributorList = snapshot.data;
-                        return ListView.builder(
+                FutureBuilder<List<Contributor>>(
+                  future: github.repositories.listContributors(repositorySlug).toList(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final contributorList = snapshot.data;
+                      return Expanded(
+                        child:ListView.builder(
                           itemCount: contributorList?.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
@@ -130,19 +130,19 @@ class ContributorsPage extends StatelessWidget {
                               ),
                             );
                           },
-                        );
-                      } else if (snapshot.hasError) {
-                        return const Center(
-                          child: Icon(Icons.error),
-                        );
-                      }
-                      return const Center(
-                        child: SpinKitDoubleBounce(
-                          color: AppColors.mainColor,
                         ),
                       );
-                    },
-                  ),
+                    } else if (snapshot.hasError) {
+                      return const Center(
+                        child: Icon(Icons.error),
+                      );
+                    }
+                    return const Center(
+                      child: SpinKitDoubleBounce(
+                        color: AppColors.mainColor,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
