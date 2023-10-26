@@ -88,59 +88,61 @@ class ContributorsPage extends StatelessWidget {
                     )
                   ],
                 ),
-                FutureBuilder<List<Contributor>>(
-                  future: github.repositories.listContributors(repositorySlug).toList(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final contributorList = snapshot.data;
-                      return ListView.builder(
-                        itemCount: contributorList?.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final contributor = contributorList![index];
+                Expanded(
+                  child: FutureBuilder<List<Contributor>>(
+                    future: github.repositories.listContributors(repositorySlug).toList(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final contributorList = snapshot.data;
+                        return ListView.builder(
+                          itemCount: contributorList?.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final contributor = contributorList![index];
 
-                          return InkWell(
-                            onTap: () {
-                              RouteUtils.toWebViewPage(initialUrl: Uri.parse(contributor.htmlUrl ?? ''));
-                            },
-                            child: WidgetAnimator(
-                              Container(
-                                padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      height: 50,
-                                      width: 50,
-                                      child: CachedNetworkImage(
-                                        imageUrl: contributor.avatarUrl ?? '',
-                                        imageBuilder: (context, imageProvider) => CircleAvatar(
-                                          radius: 15.0,
-                                          backgroundImage: imageProvider,
+                            return InkWell(
+                              onTap: () {
+                                RouteUtils.toWebViewPage(initialUrl: Uri.parse(contributor.htmlUrl ?? ''));
+                              },
+                              child: WidgetAnimator(
+                                Container(
+                                  padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: CachedNetworkImage(
+                                          imageUrl: contributor.avatarUrl ?? '',
+                                          imageBuilder: (context, imageProvider) => CircleAvatar(
+                                            radius: 15.0,
+                                            backgroundImage: imageProvider,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                    ),
-                                    Text(contributor.login ?? '')
-                                  ],
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                      ),
+                                      Text(contributor.login ?? '')
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
+                            );
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                          child: Icon(Icons.error),
+                        );
+                      }
                       return const Center(
-                        child: Icon(Icons.error),
+                        child: SpinKitDoubleBounce(
+                          color: AppColors.mainColor,
+                        ),
                       );
-                    }
-                    return const Center(
-                      child: SpinKitDoubleBounce(
-                        color: AppColors.mainColor,
-                      ),
-                    );
-                  },
+                    },
+                  ),
                 ),
               ],
             ),
