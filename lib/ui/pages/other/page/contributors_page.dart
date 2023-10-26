@@ -12,8 +12,7 @@ import 'package:github/github.dart';
 
 class ContributorsPage extends StatelessWidget {
   final github = GitHub();
-  final repositorySlug =
-      RepositorySlug(AppLink.githubOwnerName, AppLink.tatRepoName);
+  final repositorySlug = RepositorySlug(AppLink.githubOwnerName, AppLink.tatRepoName);
 
   ContributorsPage({super.key});
 
@@ -58,8 +57,7 @@ class ContributorsPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     R.current.github,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w600),
+                                    style: const TextStyle(fontWeight: FontWeight.w600),
                                   )
                                 ],
                               ),
@@ -91,9 +89,7 @@ class ContributorsPage extends StatelessWidget {
                   ],
                 ),
                 FutureBuilder<List<Contributor>>(
-                  future: github.repositories
-                      .listContributors(repositorySlug)
-                      .toList(),
+                  future: github.repositories.listContributors(repositorySlug).toList(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final contributorList = snapshot.data;
@@ -106,14 +102,11 @@ class ContributorsPage extends StatelessWidget {
 
                             return InkWell(
                               onTap: () {
-                                RouteUtils.toWebViewPage(
-                                    initialUrl:
-                                        Uri.parse(contributor.htmlUrl ?? ''));
+                                RouteUtils.toWebViewPage(initialUrl: Uri.parse(contributor.htmlUrl ?? ''));
                               },
                               child: WidgetAnimator(
                                 Container(
-                                  padding: const EdgeInsets.only(
-                                      top: 5, bottom: 5, left: 10),
+                                  padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10),
                                   child: Row(
                                     children: [
                                       SizedBox(
@@ -121,9 +114,7 @@ class ContributorsPage extends StatelessWidget {
                                         width: 50,
                                         child: CachedNetworkImage(
                                           imageUrl: contributor.avatarUrl ?? '',
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  CircleAvatar(
+                                          imageBuilder: (context, imageProvider) => CircleAvatar(
                                             radius: 15.0,
                                             backgroundImage: imageProvider,
                                           ),
