@@ -125,7 +125,7 @@ class CourseConnector {
 
       courseExtraInfo.course = courseExtra;
 
-      nodes = courseNodes[2].getElementsByTagName("tr");
+      nodes = courseNodes[1].getElementsByTagName("tr");
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         classmateNodes = node.getElementsByTagName("td");
