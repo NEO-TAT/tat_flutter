@@ -101,8 +101,13 @@ class CourseConnector {
       //取得學期資料
       nodes = courseNodes[0].getElementsByTagName("td");
       SemesterJson semester = SemesterJson();
-      semester.year = nodes[1].text;
-      semester.semester = nodes[2].text;
+      
+      final titleString = nodes[0].text;
+      RegExp regex = RegExp(r'\b\d+\b');
+      Iterable<RegExpMatch> matches = regex.allMatches(titleString);
+      List<String> numbers = matches.map((match) => match.group(0)).toList();
+      semester.year = numbers[1];
+      semester.semester = numbers[2];
 
       courseExtraInfo.courseSemester = semester;
 
