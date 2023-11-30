@@ -199,7 +199,7 @@ class CourseConnector {
       };
       parameter = ConnectorParameter(_postCourseENUrl);
       parameter.data = data;
-      parameter.charsetName = 'big5';
+      parameter.charsetName = 'utf-8';
       Response response = await Connector.getDataByPostResponse(parameter);
       tagNode = parse(response.toString());
       nodes = tagNode.getElementsByTagName("table");
