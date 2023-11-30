@@ -113,6 +113,19 @@ class CourseConnector {
 
       CourseExtraJson courseExtra = CourseExtraJson();
 
+      nodes = courseNodes[1].getElementsByTagName("tr");
+      List<String> courseIds = nodes.skip(2).map((node)=>node.getElementsByTagName("td")[0].text).toList();
+      node = nodes[courseIds.indexWhere((element) => element.contains(courseId))+2];
+
+      classExtraInfoNodes = node.getElementsByTagName("td");
+      courseExtra.id= classExtraInfoNodes[0].text;
+      courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
+      courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
+      courseExtra.category=classExtraInfoNodes[5].text;
+      courseExtra.href= classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
+
+      courseExtra.selectNumber="s?";
+      courseExtra.withdrawNumber = "w?";
       
       courseExtraInfo.course = courseExtra;
       return courseExtraInfo;
