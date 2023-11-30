@@ -85,7 +85,7 @@ class CourseConnector {
       ConnectorParameter parameter;
       Document tagNode;
       Element node;
-      List<Element> courseNodes, nodes, classmateNodes;
+      List<Element> courseNodes, nodes, classExtraInfoNodes;
       Map<String, String> data = {
         "code": courseId,
         "format": "-1",
@@ -113,20 +113,8 @@ class CourseConnector {
 
       CourseExtraJson courseExtra = CourseExtraJson();
 
-      courseExtra.name = nodes[3].getElementsByTagName("a")[0].text;
-      if (nodes[3].getElementsByTagName("a")[0].attributes.containsKey("href")) {
-        courseExtra.href = _courseCNHost + nodes[3].getElementsByTagName("a")[0].attributes["href"];
-      }
-      courseExtra.category = nodes[7].text; // 取得類別
-      courseExtra.openClass = nodes[9].text;
-      courseExtra.selectNumber = nodes[11].text;
-      courseExtra.withdrawNumber = nodes[12].text;
-      courseExtra.id = courseId;
-
+      
       courseExtraInfo.course = courseExtra;
-
-      nodes = courseNodes[1].getElementsByTagName("tr");
-
       return courseExtraInfo;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
