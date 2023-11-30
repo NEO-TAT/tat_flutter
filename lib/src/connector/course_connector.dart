@@ -122,8 +122,10 @@ class CourseConnector {
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
       courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
       courseExtra.category=classExtraInfoNodes[5].text;
-      courseExtra.href= classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
 
+      if (classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
+        courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
+      }
       courseExtra.selectNumber="s?";
       courseExtra.withdrawNumber = "w?";
       
