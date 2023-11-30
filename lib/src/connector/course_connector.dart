@@ -101,7 +101,7 @@ class CourseConnector {
       //取得學期資料
       nodes = courseNodes[0].getElementsByTagName("td");
       SemesterJson semester = SemesterJson();
-      
+
       final titleString = nodes[0].text;
       RegExp regex = RegExp(r'\b\d+\b');
       Iterable<RegExpMatch> matches = regex.allMatches(titleString);
@@ -114,21 +114,21 @@ class CourseConnector {
       CourseExtraJson courseExtra = CourseExtraJson();
 
       nodes = courseNodes[1].getElementsByTagName("tr");
-      List<String> courseIds = nodes.skip(2).map((node)=>node.getElementsByTagName("td")[0].text).toList();
-      node = nodes[courseIds.indexWhere((element) => element.contains(courseId))+2];
+      List<String> courseIds = nodes.skip(2).map((node) => node.getElementsByTagName("td")[0].text).toList();
+      node = nodes[courseIds.indexWhere((element) => element.contains(courseId)) + 2];
 
       classExtraInfoNodes = node.getElementsByTagName("td");
-      courseExtra.id= strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"[\n| ]"), "");
+      courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"[\n| ]"), "");
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
       courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
-      courseExtra.category=classExtraInfoNodes[5].text;
+      courseExtra.category = classExtraInfoNodes[5].text;
 
       if (classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
         courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
       }
-      courseExtra.selectNumber="s?";
+      courseExtra.selectNumber = "s?";
       courseExtra.withdrawNumber = "w?";
-      
+
       courseExtraInfo.course = courseExtra;
       return courseExtraInfo;
     } catch (e, stack) {
@@ -294,7 +294,7 @@ class CourseConnector {
       parameter = ConnectorParameter(_postCourseCNUrl);
       parameter.data = data;
       Response response = await Connector.getDataByPostResponse(parameter);
-      final adata= response.toString();
+      final adata = response.toString();
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];
       courseNodes = node.getElementsByTagName("tr");

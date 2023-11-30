@@ -86,7 +86,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       courseMainInfo.getClassroomNameList(),
       courseMainInfo.getClassroomHrefList(),
     ));
-    
+
     listItem.removeRange(0, listItem.length);
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
