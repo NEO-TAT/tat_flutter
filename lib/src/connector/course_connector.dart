@@ -294,6 +294,7 @@ class CourseConnector {
       parameter = ConnectorParameter(_postCourseCNUrl);
       parameter.data = data;
       Response response = await Connector.getDataByPostResponse(parameter);
+      final adata= response.toString();
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];
       courseNodes = node.getElementsByTagName("tr");
@@ -314,11 +315,8 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
-        if (nodes.isNotEmpty) {
-          courseMain.id = nodes[0].text;
-          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
-        }
+        courseMain.id = nodesOne[0].text;
+        
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.isNotEmpty) {
