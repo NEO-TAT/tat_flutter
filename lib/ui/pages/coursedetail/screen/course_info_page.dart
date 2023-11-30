@@ -266,53 +266,6 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     );
   }
 
-  Widget _buildClassmateInfo(int index, ClassmateJson classmate) {
-    final color = (index % 2 == 1)
-        ? Theme.of(context).colorScheme.surface
-        : Theme.of(context).colorScheme.surfaceVariant.withAlpha(widget.courseInfoWithAlpha);
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              classmate.className,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: Text(
-              classmate.studentId,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: Text(
-              classmate.getName(),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(width: 4),
-          FittedBox(
-            child: ElevatedButton(
-              child: Text(R.current.search),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop(classmate.studentId);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   bool get wantKeepAlive => true;
 }

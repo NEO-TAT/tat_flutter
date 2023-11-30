@@ -294,7 +294,6 @@ class CourseConnector {
       parameter = ConnectorParameter(_postCourseCNUrl);
       parameter.data = data;
       Response response = await Connector.getDataByPostResponse(parameter);
-      final adata = response.toString();
       tagNode = parse(response.toString());
       node = tagNode.getElementsByTagName("table")[1];
       courseNodes = node.getElementsByTagName("tr");
