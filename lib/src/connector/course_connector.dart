@@ -126,18 +126,7 @@ class CourseConnector {
       courseExtraInfo.course = courseExtra;
 
       nodes = courseNodes[1].getElementsByTagName("tr");
-      for (int i = 1; i < nodes.length; i++) {
-        node = nodes[i];
-        classmateNodes = node.getElementsByTagName("td");
-        ClassmateJson classmate = ClassmateJson();
-        classmate.className = classmateNodes[0].text;
-        classmate.studentId = classmateNodes[1].getElementsByTagName("a")[0].text;
-        classmate.href = _courseCNHost + classmateNodes[1].getElementsByTagName("a")[0].attributes["href"];
-        classmate.studentName = classmateNodes[2].text;
-        classmate.studentEnglishName = classmateNodes[3].text;
-        classmate.isSelect = !classmateNodes[4].text.contains("撤選");
-        courseExtraInfo.classmate.add(classmate);
-      }
+
       return courseExtraInfo;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
