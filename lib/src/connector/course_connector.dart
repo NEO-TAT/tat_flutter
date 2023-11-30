@@ -118,7 +118,7 @@ class CourseConnector {
       node = nodes[courseIds.indexWhere((element) => element.contains(courseId))+2];
 
       classExtraInfoNodes = node.getElementsByTagName("td");
-      courseExtra.id= classExtraInfoNodes[0].text;
+      courseExtra.id= strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"[\n| ]"), "");
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
       courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
       courseExtra.category=classExtraInfoNodes[5].text;
