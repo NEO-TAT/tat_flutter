@@ -315,8 +315,8 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        courseMain.id = nodesOne[0].text;
-        
+        courseMain.id = strQ2B(nodesOne[0].text).replaceAll(RegExp(r"[\n| ]"), "");
+
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.isNotEmpty) {
