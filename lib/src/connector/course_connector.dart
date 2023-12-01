@@ -121,11 +121,17 @@ class CourseConnector {
       courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"[\n| ]"), "");
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
       courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
-      courseExtra.category = classExtraInfoNodes[5].text;
 
       if (classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
         courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
       }
+
+      parameter = ConnectorParameter(courseExtra.href);
+      result = await Connector.getDataByPost(parameter);
+      tagNode = parse(result);
+      nodes = tagNode.getElementsByTagName("tr");
+      courseExtra.category = nodes[1].getElementsByTagName("td")[6].text;
+
       courseExtra.selectNumber = "s?";
       courseExtra.withdrawNumber = "w?";
 
