@@ -651,7 +651,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
             Text(sprintf("%s : %s", [R.current.instructor, teacherName])),
           ],
         ),
-        actions: (courseInfo.main.course.id.isNotEmpty)
+        actions: courseInfo.main.course.id.isNotEmpty
             ? [
                 TextButton.icon(
                   onPressed: () => _showCourseDetail(courseInfo),
