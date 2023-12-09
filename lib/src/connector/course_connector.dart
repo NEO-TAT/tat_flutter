@@ -111,7 +111,7 @@ class CourseConnector {
       final Iterable<RegExpMatch> numberMatches = numberFilter.allMatches(titleString);
       // the "numbers" should consist of three numerical values
       // ex: [110310144, 112, 1]
-      final List<String> numbers = numberMatches.map((match) => match.group(0)).toList();
+      final List<String> studentSemesterDetails = numberMatches.map((match) => match.group(0)).toList();
       semester.year = numbers[1];
       semester.semester = numbers[2];
 
