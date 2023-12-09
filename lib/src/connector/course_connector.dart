@@ -102,6 +102,10 @@ class CourseConnector {
       nodes = courseNodes[0].getElementsByTagName("td");
       SemesterJson semester = SemesterJson();
 
+      // the title String of the first course table was stored seperately in its <td> element,
+      // but it currently stores all the information in a row, 
+      // (ex: 學號：110310144　　姓名：xxx　　班級：電機三甲　　　 112 學年度 第 1 學期　上課時間表)
+      // so the RegExp is used to filter out only the number parts
       final titleString = nodes[0].text;
       final RegExp regex = RegExp(r'\b\d+\b');
       final Iterable<RegExpMatch> matches = regex.allMatches(titleString);
