@@ -109,11 +109,11 @@ class CourseConnector {
       final titleString = nodes[0].text;
       final RegExp numberFilter = RegExp(r'\b\d+\b');
       final Iterable<RegExpMatch> numberMatches = numberFilter.allMatches(titleString);
-      // the "numbers" should consist of three numerical values
+      // "studentSemesterDetails" should consist of three numerical values
       // ex: [110310144, 112, 1]
       final List<String> studentSemesterDetails = numberMatches.map((match) => match.group(0)).toList();
-      semester.year = numbers[1];
-      semester.semester = numbers[2];
+      semester.year = studentSemesterDetails[1];
+      semester.semester = studentSemesterDetails[2];
 
       courseExtraInfo.courseSemester = semester;
 
