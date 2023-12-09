@@ -103,7 +103,7 @@ class CourseConnector {
       SemesterJson semester = SemesterJson();
 
       // the title String of the first course table was stored seperately in its <td> element,
-      // but it currently stores all the information in a row, 
+      // but it currently stores all the information in a row,
       // (ex: 學號：110310144　　姓名：xxx　　班級：電機三甲　　　 112 學年度 第 1 學期　上課時間表)
       // so the RegExp is used to filter out only the number parts
       final titleString = nodes[0].text;
@@ -120,9 +120,11 @@ class CourseConnector {
       CourseExtraJson courseExtra = CourseExtraJson();
 
       nodes = courseNodes[1].getElementsByTagName("tr");
-      List<String> courseIds = nodes.skip(2).map((node) => node.getElementsByTagName("td")[0].text).toList();
-      node = nodes[courseIds.indexWhere((element) => element.contains(courseId)) + 2];
-
+      final List<String> courseIds = nodes.skip(2).map((node) => node.getElementsByTagName("td")[0].text).toList();
+      final courseIdPosition = courseIds.indexWhere((element) => element.contains(courseId));
+      if (courseIdPosition != -1) {
+        node = nodes[courseIdPosition + 2];
+      }
       classExtraInfoNodes = node.getElementsByTagName("td");
       courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"[\n| ]"), "");
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
