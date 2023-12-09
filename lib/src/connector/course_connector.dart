@@ -103,9 +103,9 @@ class CourseConnector {
       SemesterJson semester = SemesterJson();
 
       final titleString = nodes[0].text;
-      RegExp regex = RegExp(r'\b\d+\b');
-      Iterable<RegExpMatch> matches = regex.allMatches(titleString);
-      List<String> numbers = matches.map((match) => match.group(0)).toList();
+      final RegExp regex = RegExp(r'\b\d+\b');
+      final Iterable<RegExpMatch> matches = regex.allMatches(titleString);
+      final List<String> numbers = matches.map((match) => match.group(0)).toList();
       semester.year = numbers[1];
       semester.semester = numbers[2];
 
