@@ -113,7 +113,7 @@ class CourseConnector {
       // ex: [110310144, 112, 1]
       final List<String> studentSemesterDetails = studentSemesterDetailMatches.map((match) => match.group(0)).toList();
       if (studentSemesterDetails.isEmpty) {
-         throw RangeError("[TAT] course_connector.dart: studentSemesterDetails list is empty");
+        throw RangeError("[TAT] course_connector.dart: studentSemesterDetails list is empty");
       }
       if (studentSemesterDetails.length < 3) {
         throw RangeError("[TAT] course_connector.dart: studentSemesterDetails list has range less than 3");
@@ -128,7 +128,9 @@ class CourseConnector {
       nodes = courseNodes[1].getElementsByTagName("tr");
       final List<String> courseIds = nodes.skip(2).map((node) => node.getElementsByTagName("td")[0].text).toList();
       final courseIdPosition = courseIds.indexWhere((element) => element.contains(courseId));
-      if (courseIdPosition != -1) {
+      if (courseIdPosition == -1) {
+        throw StateError('[TAT] course_connector.dart: CourseId not found: $courseId');
+      } else {
         node = nodes[courseIdPosition + 2];
       }
       classExtraInfoNodes = node.getElementsByTagName("td");
