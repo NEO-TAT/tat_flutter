@@ -112,6 +112,12 @@ class CourseConnector {
       // "studentSemesterDetails" should consist of three numerical values
       // ex: [110310144, 112, 1]
       final List<String> studentSemesterDetails = studentSemesterDetailMatches.map((match) => match.group(0)).toList();
+      if (studentSemesterDetails.isEmpty) {
+         throw RangeError("[TAT] course_connector.dart: studentSemesterDetails list is empty");
+      }
+      if (studentSemesterDetails.length < 3) {
+        throw RangeError("[TAT] course_connector.dart: studentSemesterDetails list has range less than 3");
+      }
       semester.year = studentSemesterDetails[1];
       semester.semester = studentSemesterDetails[2];
 
