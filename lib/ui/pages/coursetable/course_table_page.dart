@@ -426,6 +426,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
               children: <Widget>[
                 Expanded(
                   child: TextField(
+                    readOnly: true,
                     scrollPadding: const EdgeInsets.all(0),
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
