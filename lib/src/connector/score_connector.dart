@@ -81,9 +81,14 @@ class ScoreConnector {
       parameter = ConnectorParameter(_scoreAllScoreUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
+      final List<String> evalQuestionnaireCheckTexts = ['教學評量', 'Course Evaluation Questionnaire'];
+      if (evalQuestionnaireCheckTexts.any((text) => result.contains(text))) {
+        //TODO: add notification to notify users to complete the Course Evaluation Questionnaire
+        throw RangeError("[TAT] score_connector.dart: evalQuestionnaireCheckTexts was found in request result");
+      }
+
       tagNode = parse(result);
       final h3Nodes = tagNode.getElementsByTagName("h3");
-
       //依照學期取得課程資料
       for (final h3Node in h3Nodes) {
         final siblingOfH3 = h3Node.nextElementSibling;
