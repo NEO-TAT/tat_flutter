@@ -134,7 +134,7 @@ class CourseConnector {
         node = nodes[courseIdPosition + 2];
       }
       classExtraInfoNodes = node.getElementsByTagName("td");
-      courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"[\n| ]"), "");
+      courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"\s"), "");
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
       courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
 
