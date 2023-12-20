@@ -118,7 +118,12 @@ class ScoreConnector {
           score.courseId = scoreNode.getElementsByTagName("th")[0].text.replaceAll(RegExp(r"[\s| ]"), "");
           score.nameZh = scoreNode.getElementsByTagName("th")[2].text.replaceAll(RegExp(r"[\s| ]"), "");
           score.nameEn = scoreNode.getElementsByTagName("th")[3].text.replaceAll(RegExp("\n"), "");
-          score.credit = double.parse(scoreNode.getElementsByTagName("th")[6].text);
+          RegExp creditDoubleFilter = RegExp(r'\d+(\.\d+)?');
+          final Iterable<RegExpMatch> creditDoubleMatches =
+              creditDoubleFilter.allMatches(scoreNode.getElementsByTagName("th")[6].text);
+          final List<String> creditDoubles = creditDoubleMatches.map((match) => match.group(0)).toList();
+
+          score.credit = double.parse(creditDoubles[0]);
           score.score = scoreNode.getElementsByTagName("th")[7].text.replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);
         }
