@@ -237,11 +237,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
           appBar: AppBar(
             title: Text(R.current.searchScore),
             actions: [
-              if (courseScoreList.isNotEmpty)
-                ScorePageAppBarActionButtons(
-                  onRefreshPressed: _addScoreRankTask,
-                  onCalculateCreditPressed: _addSearchCourseTypeTask,
-                ),
+              ScorePageAppBarActionButtons(
+                onRefreshPressed: _addScoreRankTask,
+                onCalculateCreditPressed: _addSearchCourseTypeTask,
+              ),
             ],
             bottom: TabBar(
               controller: _tabController,
@@ -263,7 +262,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
             ),
           ),
           body: SingleChildScrollView(
-            child: _isLoading ? const SizedBox.shrink() : tabChildList[_currentTabIndex],
+            child: (_isLoading || tabChildList.isEmpty) ? const SizedBox.shrink() : tabChildList[_currentTabIndex],
           ),
         ),
       );

@@ -102,9 +102,9 @@ class CourseConnector {
       nodes = courseNodes[0].getElementsByTagName("td");
       SemesterJson semester = SemesterJson();
 
-      // the title String of the first course table was stored seperately in its <td> element,
+      // Previously, the title string of the first course table was stored separately in its `<td>` element,
       // but it currently stores all the information in a row,
-      // (ex: 學號：110310144　　姓名：xxx　　班級：電機三甲　　　 112 學年度 第 1 學期　上課時間表)
+      // e.g. "學號：110310144　　姓名：xxx　　班級：電機三甲　　　 112 學年度 第 1 學期　上課時間表"
       // so the RegExp is used to filter out only the number parts
       final titleString = nodes[0].text;
       final RegExp studentSemesterDetailFilter = RegExp(r'\b\d+\b');
@@ -134,19 +134,24 @@ class CourseConnector {
         node = nodes[courseIdPosition + 2];
       }
       classExtraInfoNodes = node.getElementsByTagName("td");
-      courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"[\n| ]"), "");
+      courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"\s"), "");
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
       courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
 
       if (classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
         courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
       }
-
-      parameter = ConnectorParameter(courseExtra.href);
-      result = await Connector.getDataByPost(parameter);
-      tagNode = parse(result);
-      nodes = tagNode.getElementsByTagName("tr");
-      courseExtra.category = nodes[1].getElementsByTagName("td")[6].text;
+      // if the courseExtraInfo.herf (課程大綱連結) is empty,
+      // the category of the course will be set to ▲ (校訂專業必修) as default
+      if (courseExtra.href.isNotEmpty) {
+        parameter = ConnectorParameter(courseExtra.href);
+        result = await Connector.getDataByPost(parameter);
+        tagNode = parse(result);
+        nodes = tagNode.getElementsByTagName("tr");
+        courseExtra.category = nodes[1].getElementsByTagName("td")[6].text;
+      } else {
+        courseExtra.category = constCourseType[4];
+      }
 
       courseExtra.selectNumber = "s?";
       courseExtra.withdrawNumber = "w?";
@@ -336,7 +341,7 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        courseMain.id = strQ2B(nodesOne[0].text).replaceAll(RegExp(r"[\n| ]"), "");
+        courseMain.id = strQ2B(nodesOne[0].text).replaceAll(RegExp(r"\s"), "");
 
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
