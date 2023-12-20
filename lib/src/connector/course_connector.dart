@@ -138,12 +138,11 @@ class CourseConnector {
       courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
       courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
 
-      if (classExtraInfoNodes[18].text.trim() != "" && classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
-        courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
-      }
       // if the courseExtraInfo.herf (課程大綱連結) is empty,
       // the category of the course will be set to ▲ (校訂專業必修) as default
-      if (courseExtra.href.isNotEmpty) {
+      if (classExtraInfoNodes[18].text.trim() != "" &&
+          classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
+        courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
         parameter = ConnectorParameter(courseExtra.href);
         result = await Connector.getDataByPost(parameter);
         tagNode = parse(result);
