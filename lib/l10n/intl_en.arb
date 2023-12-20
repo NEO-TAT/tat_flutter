@@ -58,7 +58,7 @@
   "getISchoolPlusCourseAnnouncementDetail": "Get course announcement detail...",
   "getISchoolPlusCourseAnnouncementDetailError": "Get course announcement detail error",
   "getScoreRank": "Getting grade...",
-  "getScoreRankError": "Getting grade error",
+  "getScoreRankError": "Getting grade error, please check the On-line Course Evaluation Questionnaire is completed.",
   "getCalendar": "Getting calendar...",
   "getCalendarError": "Getting calendar error",
   "deleteMessage": "Deleting message...",
