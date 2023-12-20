@@ -141,12 +141,17 @@ class CourseConnector {
       if (classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
         courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
       }
-
-      parameter = ConnectorParameter(courseExtra.href);
-      result = await Connector.getDataByPost(parameter);
-      tagNode = parse(result);
-      nodes = tagNode.getElementsByTagName("tr");
-      courseExtra.category = nodes[1].getElementsByTagName("td")[6].text;
+      // if the courseExtraInfo.herf (課程大綱連結) is empty,
+      // the category of the course will be set to ▲ (校訂專業必修) as default
+      if (courseExtra.href.isNotEmpty) {
+        parameter = ConnectorParameter(courseExtra.href);
+        result = await Connector.getDataByPost(parameter);
+        tagNode = parse(result);
+        nodes = tagNode.getElementsByTagName("tr");
+        courseExtra.category = nodes[1].getElementsByTagName("td")[6].text;
+      } else {
+        courseExtra.category = constCourseType[4];
+      }
 
       courseExtra.selectNumber = "s?";
       courseExtra.withdrawNumber = "w?";
