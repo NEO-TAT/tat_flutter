@@ -24,9 +24,9 @@ class ScoreRankTask extends ScoreSystemTask<List<SemesterCourseScoreJson>> {
       } catch (e) {
         //TODO: generate strings for UI
         if (e is FormatException) {
-          return super.onError("請先完成學期評量");
+          return super.onError(R.current.getScoreRankQuestionnaireError);
         } else {
-          return super.onError("取得課表錯誤");
+          return super.onError(R.current.getScoreRankError);
         }
       }
     }

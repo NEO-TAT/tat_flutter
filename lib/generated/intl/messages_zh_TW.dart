@@ -137,6 +137,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "getISchoolPlusCourseFileError": MessageLookupByLibrary.simpleMessage("取得課程檔案錯誤"),
         "getScoreRank": MessageLookupByLibrary.simpleMessage("取得成績中..."),
         "getScoreRankError": MessageLookupByLibrary.simpleMessage("取得成績錯誤"),
+        "getScoreRankQuestionnaireError": MessageLookupByLibrary.simpleMessage("取得成績錯誤，請確認期末教學評量是否填寫完成"),
         "github": MessageLookupByLibrary.simpleMessage("Github"),
         "graduationSetting": MessageLookupByLibrary.simpleMessage("畢業學分標準設定"),
         "historicalDimension": MessageLookupByLibrary.simpleMessage("歷史向度"),
