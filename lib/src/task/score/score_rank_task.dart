@@ -22,7 +22,6 @@ class ScoreRankTask extends ScoreSystemTask<List<SemesterCourseScoreJson>> {
         result = value;
         return TaskStatus.success;
       } catch (e) {
-        //TODO: generate strings for UI
         if (e is FormatException) {
           return super.onError(R.current.getScoreRankQuestionnaireError);
         } else {

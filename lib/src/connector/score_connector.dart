@@ -83,7 +83,6 @@ class ScoreConnector {
       result = await Connector.getDataByGet(parameter);
       final List<String> evalQuestionnaireCheckTexts = ['教學評量', 'Course Evaluation Questionnaire'];
       if (evalQuestionnaireCheckTexts.any((text) => result.contains(text))) {
-        //TODO: add notification to notify users to complete the Course Evaluation Questionnaire
         throw const FormatException(
             "[TAT] score_connector.dart: evalQuestionnaireCheckTexts was found in request result");
       }
