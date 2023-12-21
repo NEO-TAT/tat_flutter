@@ -14,14 +14,20 @@ class ScoreRankTask extends ScoreSystemTask<List<SemesterCourseScoreJson>> {
   Future<TaskStatus> execute() async {
     final status = await super.execute();
     if (status == TaskStatus.success) {
-      super.onStart(R.current.getScoreRank);
-      final value = await ScoreConnector.getScoreRankList() as List<SemesterCourseScoreJson>?;
-      super.onEnd();
-      if (value != null) {
+      try {
+        super.onStart(R.current.getScoreRank);
+        final value = await ScoreConnector.getScoreRankList() as List<SemesterCourseScoreJson>?;
+        super.onEnd();
+
         result = value;
         return TaskStatus.success;
-      } else {
-        return super.onError(R.current.getScoreRankError);
+      } catch (e) {
+        if (e is FormatException) {
+          return super.onError(R.current.getScoreRankError);
+        } else {
+          //TODO: regenerate the string for this
+          return super.onError("取得課表錯誤");
+        }
       }
     }
     return status;
