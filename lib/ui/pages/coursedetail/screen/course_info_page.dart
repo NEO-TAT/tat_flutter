@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
 import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
@@ -87,23 +86,10 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       courseMainInfo.getClassroomHrefList(),
     ));
 
-    courseData
-        .add(_buildCourseInfo(sprintf("%s: %s", [R.current.numberOfStudent, courseExtraInfo.course.selectNumber])));
-    courseData
-        .add(_buildCourseInfo(sprintf("%s: %s", [R.current.numberOfWithdraw, courseExtraInfo.course.withdrawNumber])));
-
     listItem.removeRange(0, listItem.length);
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
-    listItem.add(_buildInfoTitle(R.current.studentList));
-    for (int i = 0; i < courseExtraInfo.classmate.length; i++) {
-      listItem.add(
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
-          child: _buildClassmateInfo(i, widget.courseInfo.extra.classmate[i]),
-        ),
-      );
-    }
+
     isLoading = false;
     setState(() {});
   }
@@ -272,53 +258,6 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: classroomItemList,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildClassmateInfo(int index, ClassmateJson classmate) {
-    final color = (index % 2 == 1)
-        ? Theme.of(context).colorScheme.surface
-        : Theme.of(context).colorScheme.surfaceVariant.withAlpha(widget.courseInfoWithAlpha);
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              classmate.className,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: Text(
-              classmate.studentId,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: Text(
-              classmate.getName(),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(width: 4),
-          FittedBox(
-            child: ElevatedButton(
-              child: Text(R.current.search),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop(classmate.studentId);
-              },
             ),
           ),
         ],

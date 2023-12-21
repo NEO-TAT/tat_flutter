@@ -81,9 +81,14 @@ class ScoreConnector {
       parameter = ConnectorParameter(_scoreAllScoreUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
+      final List<String> evalQuestionnaireCheckTexts = ['教學評量', 'Course Evaluation Questionnaire'];
+      if (evalQuestionnaireCheckTexts.any((text) => result.contains(text))) {
+        throw const FormatException(
+            "[TAT] score_connector.dart: evalQuestionnaireCheckTexts was found in request result");
+      }
+
       tagNode = parse(result);
       final h3Nodes = tagNode.getElementsByTagName("h3");
-
       //依照學期取得課程資料
       for (final h3Node in h3Nodes) {
         final siblingOfH3 = h3Node.nextElementSibling;
@@ -112,7 +117,12 @@ class ScoreConnector {
           score.courseId = scoreNode.getElementsByTagName("th")[0].text.replaceAll(RegExp(r"[\s| ]"), "");
           score.nameZh = scoreNode.getElementsByTagName("th")[2].text.replaceAll(RegExp(r"[\s| ]"), "");
           score.nameEn = scoreNode.getElementsByTagName("th")[3].text.replaceAll(RegExp("\n"), "");
-          score.credit = double.parse(scoreNode.getElementsByTagName("th")[6].text);
+          RegExp creditDoubleFilter = RegExp(r'\d+(\.\d+)?');
+          final Iterable<RegExpMatch> creditDoubleMatches =
+              creditDoubleFilter.allMatches(scoreNode.getElementsByTagName("th")[6].text);
+          final List<String> creditDoubles = creditDoubleMatches.map((match) => match.group(0)).toList();
+
+          score.credit = double.parse(creditDoubles[0]);
           score.score = scoreNode.getElementsByTagName("th")[7].text.replaceAll(RegExp(r"[\s| ]"), "");
           courseScore.courseScoreList.add(score);
         }
@@ -187,7 +197,7 @@ class ScoreConnector {
       return courseScoreList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return null;
+      rethrow;
     }
   }
 

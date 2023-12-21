@@ -85,7 +85,7 @@ class CourseConnector {
       ConnectorParameter parameter;
       Document tagNode;
       Element node;
-      List<Element> courseNodes, nodes, classmateNodes;
+      List<Element> courseNodes, nodes, classExtraInfoNodes;
       Map<String, String> data = {
         "code": courseId,
         "format": "-1",
@@ -101,38 +101,61 @@ class CourseConnector {
       //取得學期資料
       nodes = courseNodes[0].getElementsByTagName("td");
       SemesterJson semester = SemesterJson();
-      semester.year = nodes[1].text;
-      semester.semester = nodes[2].text;
+
+      // Previously, the title string of the first course table was stored separately in its `<td>` element,
+      // but it currently stores all the information in a row,
+      // e.g. "學號：110310144　　姓名：xxx　　班級：電機三甲　　　 112 學年度 第 1 學期　上課時間表"
+      // so the RegExp is used to filter out only the number parts
+      final titleString = nodes[0].text;
+      final RegExp studentSemesterDetailFilter = RegExp(r'\b\d+\b');
+      final Iterable<RegExpMatch> studentSemesterDetailMatches = studentSemesterDetailFilter.allMatches(titleString);
+      // "studentSemesterDetails" should consist of three numerical values
+      // ex: [110310144, 112, 1]
+      final List<String> studentSemesterDetails = studentSemesterDetailMatches.map((match) => match.group(0)).toList();
+      if (studentSemesterDetails.isEmpty) {
+        throw RangeError("[TAT] course_connector.dart: studentSemesterDetails list is empty");
+      }
+      if (studentSemesterDetails.length < 3) {
+        throw RangeError("[TAT] course_connector.dart: studentSemesterDetails list has range less than 3");
+      }
+      semester.year = studentSemesterDetails[1];
+      semester.semester = studentSemesterDetails[2];
 
       courseExtraInfo.courseSemester = semester;
 
       CourseExtraJson courseExtra = CourseExtraJson();
 
-      courseExtra.name = nodes[3].getElementsByTagName("a")[0].text;
-      if (nodes[3].getElementsByTagName("a")[0].attributes.containsKey("href")) {
-        courseExtra.href = _courseCNHost + nodes[3].getElementsByTagName("a")[0].attributes["href"];
+      nodes = courseNodes[1].getElementsByTagName("tr");
+      final List<String> courseIds = nodes.skip(2).map((node) => node.getElementsByTagName("td")[0].text).toList();
+      final courseIdPosition = courseIds.indexWhere((element) => element.contains(courseId));
+      if (courseIdPosition == -1) {
+        throw StateError('[TAT] course_connector.dart: CourseId not found: $courseId');
+      } else {
+        node = nodes[courseIdPosition + 2];
       }
-      courseExtra.category = nodes[7].text; // 取得類別
-      courseExtra.openClass = nodes[9].text;
-      courseExtra.selectNumber = nodes[11].text;
-      courseExtra.withdrawNumber = nodes[12].text;
-      courseExtra.id = courseId;
+      classExtraInfoNodes = node.getElementsByTagName("td");
+      courseExtra.id = strQ2B(classExtraInfoNodes[0].text).replaceAll(RegExp(r"\s"), "");
+      courseExtra.name = classExtraInfoNodes[1].getElementsByTagName("a")[0].text;
+      courseExtra.openClass = classExtraInfoNodes[7].getElementsByTagName("a")[0].text;
+
+      // if the courseExtraInfo.herf (課程大綱連結) is empty,
+      // the category of the course will be set to ▲ (校訂專業必修) as default
+      if (classExtraInfoNodes[18].text.trim() != "" &&
+          classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes.containsKey("href")) {
+        courseExtra.href = _courseCNHost + classExtraInfoNodes[18].getElementsByTagName("a")[0].attributes["href"];
+        parameter = ConnectorParameter(courseExtra.href);
+        result = await Connector.getDataByPost(parameter);
+        tagNode = parse(result);
+        nodes = tagNode.getElementsByTagName("tr");
+        courseExtra.category = nodes[1].getElementsByTagName("td")[6].text;
+      } else {
+        courseExtra.category = constCourseType[4];
+      }
+
+      courseExtra.selectNumber = "s?";
+      courseExtra.withdrawNumber = "w?";
 
       courseExtraInfo.course = courseExtra;
-
-      nodes = courseNodes[2].getElementsByTagName("tr");
-      for (int i = 1; i < nodes.length; i++) {
-        node = nodes[i];
-        classmateNodes = node.getElementsByTagName("td");
-        ClassmateJson classmate = ClassmateJson();
-        classmate.className = classmateNodes[0].text;
-        classmate.studentId = classmateNodes[1].getElementsByTagName("a")[0].text;
-        classmate.href = _courseCNHost + classmateNodes[1].getElementsByTagName("a")[0].attributes["href"];
-        classmate.studentName = classmateNodes[2].text;
-        classmate.studentEnglishName = classmateNodes[3].text;
-        classmate.isSelect = !classmateNodes[4].text.contains("撤選");
-        courseExtraInfo.classmate.add(classmate);
-      }
       return courseExtraInfo;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -202,7 +225,7 @@ class CourseConnector {
       };
       parameter = ConnectorParameter(_postCourseENUrl);
       parameter.data = data;
-      parameter.charsetName = 'big5';
+      parameter.charsetName = 'utf-8';
       Response response = await Connector.getDataByPostResponse(parameter);
       tagNode = parse(response.toString());
       nodes = tagNode.getElementsByTagName("table");
@@ -317,11 +340,8 @@ class CourseConnector {
           continue;
         }
         //取得課號
-        nodes = nodesOne[0].getElementsByTagName("a"); //確定是否有課號
-        if (nodes.isNotEmpty) {
-          courseMain.id = nodes[0].text;
-          courseMain.href = _courseCNHost + nodes[0].attributes["href"];
-        }
+        courseMain.id = strQ2B(nodesOne[0].text).replaceAll(RegExp(r"\s"), "");
+
         //取的課程名稱/課程連結
         nodes = nodesOne[1].getElementsByTagName("a"); //確定是否有連結
         if (nodes.isNotEmpty) {

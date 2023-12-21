@@ -13,9 +13,9 @@
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = MessageLookup();
+final messages = new MessageLookup();
 
-typedef MessageIfAbsent = String Function(String messageStr, List<dynamic> args);
+typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
@@ -139,8 +139,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "getISchoolPlusCourseAnnouncementError": MessageLookupByLibrary.simpleMessage("Get course announcement error"),
         "getISchoolPlusCourseFile": MessageLookupByLibrary.simpleMessage("Get course files"),
         "getISchoolPlusCourseFileError": MessageLookupByLibrary.simpleMessage("Get course files error"),
-        "getScoreRank": MessageLookupByLibrary.simpleMessage("Getting grade..."),
-        "getScoreRankError": MessageLookupByLibrary.simpleMessage("Getting grade error"),
+        "getScoreRank": MessageLookupByLibrary.simpleMessage("Getting the grades..."),
+        "getScoreRankError": MessageLookupByLibrary.simpleMessage("There\'s an error getting the grades"),
+        "getScoreRankQuestionnaireError": MessageLookupByLibrary.simpleMessage(
+            "There\'s an error getting the grades.\nPlease check if the Online Course Evaluation Questionnaire has been completed"),
         "github": MessageLookupByLibrary.simpleMessage("Github"),
         "graduationSetting": MessageLookupByLibrary.simpleMessage("Graduation credit standard setting"),
         "historicalDimension": MessageLookupByLibrary.simpleMessage("Historical dimension"),

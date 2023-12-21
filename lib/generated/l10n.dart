@@ -618,21 +618,31 @@ class S {
     );
   }
 
-  /// `Getting grade...`
+  /// `Getting the grades...`
   String get getScoreRank {
     return Intl.message(
-      'Getting grade...',
+      'Getting the grades...',
       name: 'getScoreRank',
       desc: '',
       args: [],
     );
   }
 
-  /// `Getting grade error`
+  /// `There's an error getting the grades`
   String get getScoreRankError {
     return Intl.message(
-      'Getting grade error',
+      'There\'s an error getting the grades',
       name: 'getScoreRankError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There's an error getting the grades.\nPlease check if the Online Course Evaluation Questionnaire has been completed`
+  String get getScoreRankQuestionnaireError {
+    return Intl.message(
+      'There\'s an error getting the grades.\nPlease check if the Online Course Evaluation Questionnaire has been completed',
+      name: 'getScoreRankQuestionnaireError',
       desc: '',
       args: [],
     );
