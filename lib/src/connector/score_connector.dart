@@ -198,7 +198,7 @@ class ScoreConnector {
       return courseScoreList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return null;
+      rethrow;
     }
   }
 
