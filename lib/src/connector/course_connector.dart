@@ -107,7 +107,7 @@ class CourseConnector {
       // e.g. "學號：110310144　　姓名：xxx　　班級：電機三甲　　　 112 學年度 第 1 學期　上課時間表"
       // so the RegExp is used to filter out only the number parts
       final titleString = nodes[0].text;
-      final RegExp studentSemesterDetailFilter = RegExp(r'\b\d+\b');
+      final RegExp studentSemesterDetailFilter = RegExp(r'\b[\dA-Z]+\b');
       final Iterable<RegExpMatch> studentSemesterDetailMatches = studentSemesterDetailFilter.allMatches(titleString);
       // "studentSemesterDetails" should consist of three numerical values
       // ex: [110310144, 112, 1]
