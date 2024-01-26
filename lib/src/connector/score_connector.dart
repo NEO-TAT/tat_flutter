@@ -115,6 +115,7 @@ class ScoreConnector {
           scoreNode = scoreNodes[j];
           CourseScoreInfoJson score = CourseScoreInfoJson();
           score.courseId = scoreNode.getElementsByTagName("th")[0].text.replaceAll(RegExp(r"[\s| ]"), "");
+          score.category = scoreNode.getElementsByTagName("th")[1].text[0];
           score.nameZh = scoreNode.getElementsByTagName("th")[2].text.replaceAll(RegExp(r"[\s| ]"), "");
           score.nameEn = scoreNode.getElementsByTagName("th")[3].text.replaceAll(RegExp("\n"), "");
           RegExp creditDoubleFilter = RegExp(r'\d+(\.\d+)?');
@@ -141,7 +142,7 @@ class ScoreConnector {
 
       parameter = ConnectorParameter(_scoreRankUrl);
       parameter.data = data;
-      parameter.charsetName = "big5";
+      parameter.charsetName = "utf-8";
       result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
       final rankNodes = tagNode

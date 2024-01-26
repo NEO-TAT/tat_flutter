@@ -14,10 +14,6 @@ class CourseScoreSection extends StatelessWidget {
 
   final List<CourseScoreInfoJson> _scoreInfoList;
 
-  void _onCategoryChanged(int? category) {
-    // TODO(TU): implement this method in view model or controller.
-  }
-
   @override
   Widget build(BuildContext context) => Column(
         children: [
@@ -34,7 +30,6 @@ class CourseScoreSection extends StatelessWidget {
                   courseName: scoreInfo.name,
                   category: scoreInfo.category,
                   scoreValue: scoreInfo.score,
-                  onCategoryChanged: _onCategoryChanged,
                 ),
               );
             },

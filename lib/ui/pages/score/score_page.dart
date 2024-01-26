@@ -7,12 +7,9 @@ import 'package:flutter_app/src/model/course/course_score_json.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
 import 'package:flutter_app/src/task/score/score_rank_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/app_expansion_tile.dart';
-import 'package:flutter_app/ui/other/my_toast.dart';
-import 'package:flutter_app/ui/other/progress_rate_dialog.dart';
 import 'package:flutter_app/ui/pages/score/app_bar_action_buttons.dart';
 import 'package:flutter_app/ui/pages/score/course_score_section.dart';
 import 'package:flutter_app/ui/pages/score/graduation_picker.dart';
@@ -160,47 +157,6 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       courseScoreList
         ..clear()
         ..addAll(scoreTask.result ?? const []);
-    }
-
-    if (courseScoreList.isNotEmpty) {
-      await LocalStorage.instance.setSemesterCourseScore(courseScoreList);
-      int total = courseScoreCredit.getCourseInfoList().length;
-      final courseInfoList = courseScoreCredit.getCourseInfoList();
-      // ignore: use_build_context_synchronously
-      final progressRateDialog = ProgressRateDialog(context);
-
-      progressRateDialog.update(message: R.current.searchingCredit, nowProgress: 0, progressString: "0/0");
-      progressRateDialog.show();
-
-      for (int i = 0; i < total; i++) {
-        final courseInfo = courseInfoList[i];
-        final courseId = courseInfo.courseId;
-        if (courseInfo.category.isEmpty) {
-          final task = CourseExtraInfoTask(courseId);
-          task.openLoadingDialog = false;
-          if (courseId.isNotEmpty) {
-            taskFlow.addTask(task);
-          }
-        }
-      }
-
-      total = taskFlow.length;
-      int rate = 0;
-
-      taskFlow.callback = (task) {
-        rate++;
-        progressRateDialog.update(nowProgress: rate / total, progressString: sprintf("%d/%d", [rate, total]));
-        final extraInfo = task.result;
-        final courseScoreInfo = courseScoreCredit.getCourseByCourseId(extraInfo.course.id);
-        courseScoreInfo.category = extraInfo.course.category;
-        courseScoreInfo.openClass = extraInfo.course.openClass.replaceAll("\n", " ");
-      };
-
-      await taskFlow.start();
-      await LocalStorage.instance.setSemesterCourseScore(courseScoreList);
-      progressRateDialog.hide();
-    } else {
-      MyToast.show(R.current.searchCreditIsNullWarning);
     }
 
     _buildTabBar();
