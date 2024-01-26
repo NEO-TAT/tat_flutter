@@ -40,63 +40,48 @@ class ISchoolPlusConnector {
   /// 3. GET https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 3)
   /// 4. do something...
   static Future<ISchoolPlusConnectorStatus> login(String account) async {
-    String result;
     try {
       ConnectorParameter parameter;
+
       html.Document tagNode;
-      List<html.Element> nodes;
-      final data = {
-        "apUrl": "https://istudy.ntut.edu.tw/login.php",
-        "apOu": "ischool_plus_oauth",
-        "sso": "true",
-        "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
-      };
+      Map<String, String> oauthData;
+      List<html.Element> oauthResponse;
+      Response jumpResult;
 
       // Step 1
-      parameter = ConnectorParameter(_ssoLoginUrl);
-      parameter.data = data;
-      result = (await Connector.getDataByGet(parameter));
-
-      tagNode = html.parse(result.toString().trim());
-      nodes = tagNode.getElementsByTagName("input");
-      data.clear();
-      for (final node in nodes) {
-        final name = node.attributes['name'];
-        final value = node.attributes['value'];
-        data[name] = value;
-      }
+      oauthData = await getLoginOAuth();
 
       // Step 2
       // The `jumpUrl` should be "oauth2Server.do".
       // If not, it means that the school server has changed.
       // TODO: Add a validation measurement to check whether Step 1 is died or not. (It should not die if auth is correct)
-      final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
-      parameter.data = data;
-
-      Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
-      tagNode = html.parse(jumpResult.data.toString().trim());
-      nodes = tagNode.getElementsByTagName("a");
+      jumpResult = await oauth2Server(oauthData);
+      tagNode = html.parse(jumpResult.toString().trim());
+      oauthResponse = tagNode.getElementsByTagName('a');
+      
 
       // Step 3
       // The redirectUrl is provided by <a> HTML DOM on Step 2.
       // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
-      final redirectUrl = nodes.first.attributes["href"];
-      parameter = ConnectorParameter(redirectUrl);
-      await Connector.getDataByGet(parameter);
+      await login2(oauthResponse);
 
       // Perform retry for cryptic API errors (?).
       // If the string `connect lost` be found in the response, we will do the retry.
 
       // [2023-10-21] We may not need this since the step was changed.
       // TODO: Remove I-School retry loop since it's outdated.
-
       int retryTimes = 3;
       do {
         if (jumpResult.data.toString().contains('connect lost')) {
           // Take a short delay to avoid being blocked.
           await Future.delayed(const Duration(milliseconds: 100));
-          jumpResult = (await Connector.getDataByPostResponse(parameter));
+          oauthData = await getLoginOAuth();
+          jumpResult = await oauth2Server(oauthData);
+          
+          tagNode = html.parse(jumpResult.toString().trim());
+          oauthResponse = tagNode.getElementsByTagName('a');
+
+          await login2(oauthResponse);
         } else {
           break;
         }
@@ -110,6 +95,48 @@ class ISchoolPlusConnector {
       Log.eWithStack(e.toString(), stack);
       return ISchoolPlusConnectorStatus.loginFail;
     }
+  }
+
+  static Future<Map<String, String>> getLoginOAuth() async {
+    Map<String, String> result = {};
+
+    final data = {
+      "apUrl": "https://istudy.ntut.edu.tw/login.php",
+      "apOu": "ischool_plus_oauth",
+      "sso": "true",
+      "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
+    };
+
+    final parameter = ConnectorParameter(_ssoLoginUrl);
+    parameter.data = data;
+    
+    final response = (await Connector.getDataByGet(parameter));
+    final tagNode = html.parse(response.toString().trim());
+    final nodes = tagNode.getElementsByTagName("input");
+
+    for (final node in nodes) {
+      final name = node.attributes['name'];
+      final value = node.attributes['value'];
+      result[name] = value;
+    }
+
+    return result;
+  }
+
+  static Future<Response> oauth2Server(Map<String, String> oauthData) async {
+    final jumpUrl = oauthData['action'];
+    final parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
+    parameter.data = oauthData;
+
+    Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
+    return jumpResult;
+  }
+
+  static Future<void> login2(List<html.Element> nodes) async {
+    final redirectUrl = nodes.first.attributes["href"];
+    final parameter = ConnectorParameter(redirectUrl);
+    
+    await Connector.getDataByGet(parameter);
   }
 
   static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(String courseId) async {
