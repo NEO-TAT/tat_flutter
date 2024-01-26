@@ -6,12 +6,8 @@ import 'package:flutter/material.dart';
 typedef OnCategoryChanged = void Function(int? category);
 
 class ScoreTile extends StatelessWidget {
-  const ScoreTile({
-    super.key,
-    required String courseName,
-    required String category,
-    required String scoreValue
-  })  : _courseName = courseName,
+  const ScoreTile({super.key, required String courseName, required String category, required String scoreValue})
+      : _courseName = courseName,
         _category = category,
         _scoreValue = scoreValue;
 
@@ -36,13 +32,13 @@ class ScoreTile extends StatelessWidget {
       );
 
   Widget get _categoryValueText => SizedBox(
-    width: 40,
-    child: Text(
-      _category,
-      style: const TextStyle(fontSize: 16.0),
-      textAlign: TextAlign.center,
-    ),
-  );
+        width: 40,
+        child: Text(
+          _category,
+          style: const TextStyle(fontSize: 16.0),
+          textAlign: TextAlign.center,
+        ),
+      );
 
   @override
   Widget build(BuildContext context) => Row(
