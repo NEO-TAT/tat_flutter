@@ -72,7 +72,7 @@ class ISchoolPlusConnector {
       return ISchoolPlusConnectorStatus.loginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return ISchoolPlusConnectorStatus.loginFail;
+      rethrow;
     }
   }
 
@@ -90,6 +90,9 @@ class ISchoolPlusConnector {
     parameter.data = data;
 
     final response = (await Connector.getDataByGet(parameter));
+    if(response.contains("重新登入")){
+      throw StateError('[TAT] ischool_plus_connector.dart: session out of date');
+    }
     final tagNode = html.parse(response.toString().trim());
     final nodes = tagNode.getElementsByTagName("input");
 
