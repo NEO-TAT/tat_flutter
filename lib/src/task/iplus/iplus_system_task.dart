@@ -21,7 +21,7 @@ class IPlusSystemTask<T> extends NTUTTask<T> {
 
       super.onStart(R.current.loginISchoolPlus);
       final studentId = LocalStorage.instance.getAccount();
-      final value = await ISchoolPlusConnector.login(studentId);
+      final value = await ISchoolPlusConnector.login(studentId, true);
       super.onEnd();
 
       if (value != ISchoolPlusConnectorStatus.loginSuccess) {

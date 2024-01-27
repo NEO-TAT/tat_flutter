@@ -39,7 +39,7 @@ class ISchoolPlusConnector {
   /// 2. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
   /// 3. GET https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 3)
   /// 4. do something...
-  static Future<ISchoolPlusConnectorStatus> login(String account) async {
+  static Future<ISchoolPlusConnectorStatus> login(String account, doFirebaseLogin) async {
     try {
       ConnectorParameter parameter;
 
@@ -86,10 +86,11 @@ class ISchoolPlusConnector {
           break;
         }
       } while ((retryTimes--) > 0);
-
-      await FirebaseAnalytics.instance.logLogin(
-        loginMethod: 'ntut_iplus',
-      );
+      if(doFirebaseLogin){
+        await FirebaseAnalytics.instance.logLogin(
+          loginMethod: 'ntut_iplus',
+        );
+      }
       return ISchoolPlusConnectorStatus.loginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);

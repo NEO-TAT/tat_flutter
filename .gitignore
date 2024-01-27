@@ -54,3 +54,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Test files
+**/test/ischool_plus_connector_test/credential.json
