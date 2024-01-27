@@ -93,16 +93,26 @@ class ISchoolPlusConnector {
     if(response.contains("重新登入")){
       throw StateError('[TAT] ischool_plus_connector.dart: session out of date');
     }
-    final tagNode = html.parse(response.toString().trim());
-    final nodes = tagNode.getElementsByTagName("input");
+    int retry=3;
+    do{
+      retry=retry-1;
+      final tagNode = html.parse(response.toString().trim());
+      final nodes = tagNode.getElementsByTagName("input");
 
-    for (final node in nodes) {
+      for (final node in nodes) {
       final name = node.attributes['name'];
       final value = node.attributes['value'];
       result[name] = value;
-    }
-
-    return result;
+      }
+      if(result.length!=5){
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+      else{
+        return result;
+      }
+    }while(retry>0);
+    //throw an error for invaild input
+    //TODO: maybe add a custom error class for ischool plus retry mechanism
   }
 
   static Future<Response> oauth2Server(Map<String, String> oauthData) async {
