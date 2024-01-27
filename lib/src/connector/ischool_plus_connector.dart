@@ -58,35 +58,13 @@ class ISchoolPlusConnector {
       jumpResult = await oauth2Server(oauthData);
       tagNode = html.parse(jumpResult.toString().trim());
       oauthResponse = tagNode.getElementsByTagName('a');
-      
 
       // Step 3
       // The redirectUrl is provided by <a> HTML DOM on Step 2.
       // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
       await login2(oauthResponse);
 
-      // Perform retry for cryptic API errors (?).
-      // If the string `connect lost` be found in the response, we will do the retry.
-
-      // [2023-10-21] We may not need this since the step was changed.
-      // TODO: Remove I-School retry loop since it's outdated.
-      int retryTimes = 3;
-      do {
-        if (jumpResult.data.toString().contains('connect lost')) {
-          // Take a short delay to avoid being blocked.
-          await Future.delayed(const Duration(milliseconds: 100));
-          oauthData = await getLoginOAuth();
-          jumpResult = await oauth2Server(oauthData);
-          
-          tagNode = html.parse(jumpResult.toString().trim());
-          oauthResponse = tagNode.getElementsByTagName('a');
-
-          await login2(oauthResponse);
-        } else {
-          break;
-        }
-      } while ((retryTimes--) > 0);
-      if(doFirebaseLogin){
+      if (doFirebaseLogin) {
         await FirebaseAnalytics.instance.logLogin(
           loginMethod: 'ntut_iplus',
         );
@@ -110,7 +88,7 @@ class ISchoolPlusConnector {
 
     final parameter = ConnectorParameter(_ssoLoginUrl);
     parameter.data = data;
-    
+
     final response = (await Connector.getDataByGet(parameter));
     final tagNode = html.parse(response.toString().trim());
     final nodes = tagNode.getElementsByTagName("input");
@@ -136,7 +114,7 @@ class ISchoolPlusConnector {
   static Future<void> login2(List<html.Element> nodes) async {
     final redirectUrl = nodes.first.attributes["href"];
     final parameter = ConnectorParameter(redirectUrl);
-    
+
     await Connector.getDataByGet(parameter);
   }
 
