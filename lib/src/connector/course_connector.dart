@@ -8,6 +8,7 @@ import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/model/course/course_class_json.dart';
 import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
+import 'package:flutter_app/src/model/course/course_syllabus_json.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
@@ -24,6 +25,7 @@ class CourseConnector {
   static const String _courseCNHost = "https://aps.ntut.edu.tw/course/tw/";
   static const String _courseENHost = "https://aps.ntut.edu.tw/course/en/";
   static const String _postCourseCNUrl = "${_courseCNHost}Select.jsp";
+  static const String _getSyllabusCNUrl = "${_courseCNHost}ShowSyllabus.jsp";
   static const String _postTeacherCourseCNUrl = "${_courseCNHost}Teach.jsp";
   static const String _postCourseENUrl = "${_courseENHost}Select.jsp";
   static const String _creditUrl = "${_courseCNHost}Cprog.jsp";
@@ -160,6 +162,42 @@ class CourseConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
+    }
+  }
+
+  static Future<CourseSyllabusJson> getCourseCategory(String courseId) async {
+    try {
+      Map<String, String> data = {
+        "snum": courseId,
+      };
+      ConnectorParameter parameter = ConnectorParameter(_getSyllabusCNUrl);
+      parameter.data = data;
+      String result = await Connector.getDataByGet(parameter);
+      Document tagNode = parse(result);
+
+      var tables = tagNode.getElementsByTagName("table");
+      var trs = tables[0].getElementsByTagName("tr");
+      var syllabusRow = trs[1].getElementsByTagName("td");
+
+      var model = CourseSyllabusJson(
+        yearSemester: syllabusRow[0].text,
+        courseId: syllabusRow[1].text,
+        courseName: syllabusRow[2].text,
+        phase: syllabusRow[3].text,
+        credit: syllabusRow[4].text,
+        hour: syllabusRow[5].text,
+        category: syllabusRow[6].text,
+        teachers: syllabusRow[7].text,
+        className: syllabusRow[8].text,
+        applyStudentCount: syllabusRow[9].text,
+        withdrawStudentCount: syllabusRow[10].text,
+        note: syllabusRow[11].text
+      );
+
+      return model;
+    } catch (e, stack) {
+      Log.eWithStack(e.toString(), stack);
+      return CourseSyllabusJson();
     }
   }
 
