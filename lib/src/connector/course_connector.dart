@@ -180,19 +180,18 @@ class CourseConnector {
       var syllabusRow = trs[1].getElementsByTagName("td");
 
       var model = CourseSyllabusJson(
-        yearSemester: syllabusRow[0].text,
-        courseId: syllabusRow[1].text,
-        courseName: syllabusRow[2].text,
-        phase: syllabusRow[3].text,
-        credit: syllabusRow[4].text,
-        hour: syllabusRow[5].text,
-        category: syllabusRow[6].text,
-        teachers: syllabusRow[7].text,
-        className: syllabusRow[8].text,
-        applyStudentCount: syllabusRow[9].text,
-        withdrawStudentCount: syllabusRow[10].text,
-        note: syllabusRow[11].text
-      );
+          yearSemester: syllabusRow[0].text,
+          courseId: syllabusRow[1].text,
+          courseName: syllabusRow[2].text,
+          phase: syllabusRow[3].text,
+          credit: syllabusRow[4].text,
+          hour: syllabusRow[5].text,
+          category: syllabusRow[6].text,
+          teachers: syllabusRow[7].text,
+          className: syllabusRow[8].text,
+          applyStudentCount: syllabusRow[9].text,
+          withdrawStudentCount: syllabusRow[10].text,
+          note: syllabusRow[11].text);
 
       return model;
     } catch (e, stack) {

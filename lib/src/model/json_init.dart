@@ -5,7 +5,7 @@ class JsonInit {
     return value ?? "";
   }
 
-  static List<T> listInit<T>(List<T> value){
+  static List<T> listInit<T>(List<T> value) {
     return value ?? [] as List<T>;
   }
 }

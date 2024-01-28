@@ -19,20 +19,19 @@ class CourseSyllabusJson {
   int withdrawStudentCount = 0;
   String note = "";
 
-  CourseSyllabusJson({
-    String yearSemester,
-    String courseId,
-    String courseName,
-    String phase,
-    String credit,
-    String hour,
-    String category,
-    String teachers,
-    String className,
-    String applyStudentCount,
-    String withdrawStudentCount,
-    String note
-  }) {
+  CourseSyllabusJson(
+      {String yearSemester,
+      String courseId,
+      String courseName,
+      String phase,
+      String credit,
+      String hour,
+      String category,
+      String teachers,
+      String className,
+      String applyStudentCount,
+      String withdrawStudentCount,
+      String note}) {
     year = int.parse(yearSemester.split("-")[0]);
     semester = int.parse(yearSemester.split("-")[1]);
     this.courseId = int.parse(courseId);
