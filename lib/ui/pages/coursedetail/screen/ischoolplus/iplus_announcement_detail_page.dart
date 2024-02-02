@@ -13,11 +13,13 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../src/model/coursetable/course.dart';
+
 class IPlusAnnouncementDetailPage extends StatefulWidget {
   final Map data;
-  final CourseInfoJson courseInfo;
+  final Course course;
 
-  const IPlusAnnouncementDetailPage(this.courseInfo, this.data, {Key key}) : super(key: key);
+  const IPlusAnnouncementDetailPage(this.course, this.data, {Key key}) : super(key: key);
 
   @override
   State<IPlusAnnouncementDetailPage> createState() => _IPlusAnnouncementDetailPage();
@@ -50,7 +52,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
         leading: BackButton(
           onPressed: () => Get.back(),
         ),
-        title: Text(widget.courseInfo.main.course.name),
+        title: Text(widget.course.name),
         actions: <Widget>[
           PopupMenuButton<int>(
             onSelected: (result) {
@@ -191,7 +193,7 @@ class _IPlusAnnouncementDetailPage extends State<IPlusAnnouncementDetailPage> {
   }
 
   void _downloadFile(String url, String name) async {
-    String courseName = widget.courseInfo.main.course.name;
+    String courseName = widget.course.name;
     await FileDownload.download(url, courseName, name);
   }
 

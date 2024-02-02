@@ -20,13 +20,15 @@ import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../../src/model/coursetable/course.dart';
+
 class IPlusFilePage extends StatefulWidget {
-  final CourseInfoJson courseInfo;
+  final Course course;
   final String studentId;
 
   const IPlusFilePage(
     this.studentId,
-    this.courseInfo, {
+    this.course, {
     super.key,
   });
 
@@ -71,7 +73,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
 
   void _addTask() async {
     await Future.delayed(const Duration(microseconds: 500));
-    final courseId = widget.courseInfo.main.course.id;
+    final courseId = widget.course.id;
 
     final taskFlow = TaskFlow();
     final task = IPlusCourseFileTask(courseId);
@@ -230,7 +232,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
   Future<void> _downloadOneFile(int index, [showToast = true]) async {
     final courseFile = courseFileList[index];
     final fileType = courseFile.fileType[0];
-    final dirName = widget.courseInfo.main.course.name;
+    final dirName = widget.course.name;
     String url = "";
     String referer = "";
 
@@ -266,7 +268,7 @@ class _IPlusFilePage extends State<IPlusFilePage> with AutomaticKeepAliveClientM
       errorDialogParameter.dialogType = DialogType.info;
       errorDialogParameter.okButtonText = R.current.sure;
       errorDialogParameter.onOkButtonClicked =
-          () => RouteUtils.toVideoPlayer(urlParse.toString(), widget.courseInfo, courseFile.name);
+          () => RouteUtils.toVideoPlayer(urlParse.toString(), widget.course, courseFile.name);
       MsgDialog(errorDialogParameter).show();
     } else {
       await FileDownload.download(url, dirName, courseFile.name, referer);

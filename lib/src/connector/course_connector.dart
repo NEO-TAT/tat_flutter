@@ -8,6 +8,8 @@ import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/model/course/course_class_json.dart';
 import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
+import 'package:flutter_app/src/model/coursetable/course.dart';
+import 'package:flutter_app/src/model/coursetable/user.dart';
 import 'package:flutter_app/src/model/course/course_syllabus_json.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:html/dom.dart';
@@ -61,6 +63,112 @@ class CourseConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return CourseConnectorStatus.loginFail;
+    }
+  }
+
+  static Future<List<Course>> getEnglishCourses(String studentId, int year, int semester) async {
+    ConnectorParameter parameter = ConnectorParameter(_postCourseENUrl);
+    Map<String, String> data = {
+      "code": studentId,
+      "format": "-2",
+      "year": year.toString(),
+      "sem": semester.toString(),
+    };
+    parameter.charsetName = 'utf-8';
+    parameter.data = data;
+    String result = await Connector.getDataByGet(parameter);
+
+    Document tagNode = parse(result);
+    List<Element> courseRows = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr");
+    List<Course> courses = <Course>[];
+
+    for(int rowIndex = 1; rowIndex < courseRows.length - 1; rowIndex++){
+      var courseRowData = courseRows[rowIndex].getElementsByTagName("td");
+      courses.add(Course(
+          id: courseRowData[0].text,
+          name: courseRowData[1].text,
+          stage: courseRowData[2].text,
+          credit: courseRowData[3].text,
+          periodCount: courseRowData[4].text,
+          category: "",
+          teacher: courseRowData[5].text,
+          className: courseRowData[6].text,
+          periodSlots: courseRowData.sublist(7, 14).map((data) => data.text).toList(),
+          classroom: courseRowData[14].text,
+          applyStatus: courseRowData[15].text,
+          language: courseRowData[16].text,
+          syllabusLink: "",
+          note: courseRowData[17].text
+      ));
+    }
+
+    return courses;
+  }
+
+  static Future<User> getUserInfo(String studentId, int year, int semester) async {
+    ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
+    Map<String, String> data = {
+      "code": studentId,
+      "format": "-2",
+      "year": year.toString(),
+      "sem": semester.toString(),
+    };
+    parameter.charsetName = 'utf-8';
+    parameter.data = data;
+    String result = await Connector.getDataByGet(parameter);
+
+    Document tagNode = parse(result);
+    String courseTableHead = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr").first.text;
+    List<RegExpMatch> matches = RegExp(r".+?：(.+?)\s").allMatches(courseTableHead).toList();
+
+    return User(
+      id: studentId,
+      name: matches[1].group(1),
+      className: matches[2].group(1)
+    );
+  }
+
+  static Future<List<Course>> getChineseCourses(String studentId, int year, int semester) async {
+    try {
+      ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
+      Map<String, String> data = {
+        "code": studentId,
+        "format": "-2",
+        "year": year.toString(),
+        "sem": semester.toString(),
+      };
+      parameter.charsetName = 'utf-8';
+      parameter.data = data;
+      String result = await Connector.getDataByGet(parameter);
+      Document tagNode = parse(result);
+      List<Element> courseRows = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr");
+      List<Course> courses = <Course>[];
+
+      for (int rowIndex = 2; rowIndex < courseRows.length - 1; rowIndex++) {
+        var courseRowData = courseRows[rowIndex].getElementsByTagName("td");
+        var syllabusNode = courseRowData[18].getElementsByTagName("a");
+        courses.add(Course(
+            id: courseRowData[0].text,
+            name: courseRowData[1].text,
+            stage: courseRowData[2].text,
+            credit: courseRowData[3].text,
+            periodCount: courseRowData[4].text,
+            category: courseRowData[5].text,
+            teacher: courseRowData[6].text,
+            className: courseRowData[7].text,
+            periodSlots: courseRowData.sublist(8, 15).map((data) => data.text).toList(),
+            classroom: courseRowData[15].text,
+            applyStatus: courseRowData[16].text,
+            language: courseRowData[17].text,
+            syllabusLink: syllabusNode.isEmpty ? "" : _postCourseCNUrl + syllabusNode.first.attributes["href"],
+            note: courseRowData[19].text
+        ));
+      }
+
+      return courses;
+    } catch (e, stack){
+      Log.eWithStack(e.toString(), stack);
+      return null;
     }
   }
 

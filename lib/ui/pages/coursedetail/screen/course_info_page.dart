@@ -14,11 +14,13 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
 
+import '../../../../src/model/coursetable/course.dart';
+
 class CourseInfoPage extends StatefulWidget {
-  final CourseInfoJson courseInfo;
+  final Course course;
   final String studentId;
 
-  const CourseInfoPage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
+  const CourseInfoPage(this.studentId, this.course, {Key key}) : super(key: key);
 
   final int courseInfoWithAlpha = 0x44;
 
@@ -27,8 +29,7 @@ class CourseInfoPage extends StatefulWidget {
 }
 
 class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAliveClientMixin {
-  CourseMainInfoJson courseMainInfo;
-  CourseExtraInfoJson courseExtraInfo;
+  Course course;
   bool isLoading = true;
   final List<Widget> courseData = [];
   final List<Widget> listItem = [];
@@ -58,32 +59,24 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   }
 
   void _addTask() async {
-    courseMainInfo = widget.courseInfo.main;
-    final courseId = courseMainInfo.course.id;
-    final taskFlow = TaskFlow();
-    final task = CourseExtraInfoTask(courseId);
-    taskFlow.addTask(task);
-    if (await taskFlow.start()) {
-      courseExtraInfo = task.result;
-    }
-    widget.courseInfo.extra = courseExtraInfo;
-    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseId, courseMainInfo.course.id])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, courseMainInfo.course.name])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.credit, courseMainInfo.course.credits])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.category, courseExtraInfo.course.category])));
+    course = widget.course;
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseId, course.id])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, course.name])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.credit, course.credit])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.category, course.category])));
     courseData.add(
       _buildCourseInfoWithButton(
-        sprintf("%s: %s", [R.current.instructor, courseMainInfo.getTeacherName()]),
+        sprintf("%s: %s", [R.current.instructor, course.teacher]),
         R.current.syllabus,
-        courseMainInfo.course.scheduleHref,
+        course.syllabusLink,
       ),
     );
-    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.startClass, courseMainInfo.getOpenClassName()])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.startClass, course.className])));
     courseData.add(_buildMultiButtonInfo(
       sprintf("%s: ", [R.current.classroom]),
       R.current.classroomUse,
-      courseMainInfo.getClassroomNameList(),
-      courseMainInfo.getClassroomHrefList(),
+      [],
+      [],
     ));
 
     listItem.removeRange(0, listItem.length);

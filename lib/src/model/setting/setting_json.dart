@@ -5,6 +5,8 @@ import 'package:flutter_app/src/model/json_init.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
+import '../coursetable/course_table.dart';
+
 part 'setting_json.g.dart';
 
 @JsonSerializable()
@@ -37,14 +39,14 @@ class SettingJson {
 
 @JsonSerializable()
 class CourseSettingJson {
-  CourseTableJson info;
+  CourseTable info;
 
   CourseSettingJson({this.info}) {
-    info = info ?? CourseTableJson();
+    info = info;
   }
 
   bool get isEmpty {
-    return info.isEmpty;
+    return info.courses.isEmpty;
   }
 
   @override

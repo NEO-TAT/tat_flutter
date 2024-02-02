@@ -12,9 +12,12 @@ import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tat_core/tat_core.dart';
+import 'package:tat_core/core/zuvio/domain/login_credential.dart';
+import 'package:tat_core/core/zuvio/domain/user_info.dart';
 
 import '../model/course/course_class_json.dart';
+import "../model/coursetable/course.dart";
+import '../model/coursetable/course_table.dart';
 
 class LocalStorage {
   LocalStorage._();
@@ -37,7 +40,7 @@ class LocalStorage {
   final _zUserInfoKey = 'ZUserInfoKey';
   final _zLoginCredentialKey = 'ZLoginCredentialKey';
   final _firstRun = <String, bool>{};
-  final _courseTableList = <CourseTableJson>[];
+  final _courseTableList = <CourseTable>[];
 
   final _httpClientInterceptors = <Interceptor>[];
 
@@ -112,52 +115,57 @@ class LocalStorage {
     _courseTableList.clear();
     if (readJsonList != null) {
       for (final readJson in readJsonList) {
-        _courseTableList.add(CourseTableJson.fromJson(json.decode(readJson)));
+        _courseTableList.add(CourseTable.fromJson(json.decode(readJson)));
       }
     }
   }
 
-  String getCourseNameByCourseId(String courseId) {
-    for (final courseDetail in _courseTableList) {
-      final name = courseDetail.getCourseNameByCourseId(courseId);
-      if (name != null) {
-        return name;
+  String getCourseNameByCourseId(int courseId) {
+    for (final courseTable in _courseTableList) {
+      var course = courseTable.courses.firstWhere((course) => course.id == courseId, orElse: () => null);
+      if (course != null) {
+        return course.name;
       }
     }
 
     return null;
   }
 
-  void removeCourseTable(CourseTableJson addCourseTable) {
+  void removeCourseTable(CourseTable courseTable) {
     _courseTableList.removeWhere(
-      (courseTable) =>
-          courseTable.courseSemester == addCourseTable.courseSemester &&
-          courseTable.studentId == addCourseTable.studentId,
+      (value) =>
+          value.semester == courseTable.semester && value.year == courseTable.year &&
+          value.user.id == courseTable.user.id,
     );
   }
 
-  void addCourseTable(CourseTableJson addCourseTable) {
-    removeCourseTable(addCourseTable);
-    _courseTableList.add(addCourseTable);
+  void addCourseTable(CourseTable courseTable) {
+    removeCourseTable(courseTable);
+    _courseTableList.add(courseTable);
   }
 
-  List<CourseTableJson> getCourseTableList() {
+  List<CourseTable> getCourseTableList() {
     _courseTableList.sort((a, b) {
-      if (a.studentId == b.studentId) {
-        return b.courseSemester.toString().compareTo(a.courseSemester.toString());
+      if (a.user.id == b.user.id) {
+        if(a.year == b.year) {
+          return b.semester.compareTo(a.semester);
+        }
+        return a.year.compareTo(b.year);
       }
-      return a.studentId.compareTo(b.studentId);
+      return a.user.id.compareTo(b.user.id);
     });
     return _courseTableList;
   }
 
-  CourseTableJson getCourseTable(String studentId, SemesterJson courseSemester) {
-    if (courseSemester == null || studentId == null || studentId.isEmpty) {
+  CourseTable getCourseTable(String studentId, int year, int semester) {
+    if (studentId == null || studentId.isEmpty) {
       return null;
     }
 
     return _courseTableList.firstWhereOrNull(
-      (courseTable) => courseTable.courseSemester == courseSemester && courseTable.studentId == studentId,
+          (courseTable) => courseTable.semester == semester &&
+          courseTable.year == year &&
+          courseTable.user.id == studentId,
     );
   }
 

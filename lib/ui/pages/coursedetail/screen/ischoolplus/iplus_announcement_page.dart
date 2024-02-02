@@ -12,11 +12,13 @@ import 'package:flutter_app/src/task/iplus/iplus_course_announcement_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 
+import '../../../../../src/model/coursetable/course.dart';
+
 class IPlusAnnouncementPage extends StatefulWidget {
-  final CourseInfoJson courseInfo;
+  final Course course;
   final String studentId;
 
-  const IPlusAnnouncementPage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
+  const IPlusAnnouncementPage(this.studentId, this.course, {Key key}) : super(key: key);
 
   @override
   State<IPlusAnnouncementPage> createState() => _IPlusAnnouncementPage();
@@ -41,7 +43,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage> with Automatic
 
   void _addTask() async {
     //第一次
-    String courseId = widget.courseInfo.main.course.id;
+    int courseId = widget.course.id;
     TaskFlow taskFlow = TaskFlow();
     var task = IPlusCourseAnnouncementTask(courseId);
     var getTask = IPlusGetCourseSubscribeTask(courseId);
@@ -67,7 +69,7 @@ class _IPlusAnnouncementPage extends State<IPlusAnnouncementPage> with Automatic
     if (await taskFlow.start()) {
       detail = task.result;
     }
-    RouteUtils.toIPlusAnnouncementDetailPage(widget.courseInfo, detail);
+    RouteUtils.toIPlusAnnouncementDetailPage(widget.course, detail);
   }
 
   @override

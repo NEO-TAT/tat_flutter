@@ -24,6 +24,8 @@ import 'package:flutter_app/ui/screen/login_screen.dart';
 import 'package:flutter_app/ui/screen/main_screen.dart';
 import 'package:get/get.dart';
 
+import '../../src/model/coursetable/course.dart';
+
 class RouteUtils {
   static Transition transition = (Platform.isAndroid) ? Transition.downToUp : Transition.cupertino;
 
@@ -67,9 +69,9 @@ class RouteUtils {
     );
   }
 
-  static Future? toISchoolPage(String studentId, CourseInfoJson courseInfo) {
+  static Future? toISchoolPage(String studentId, Course course) {
     return Get.to(
-      () => ISchoolPage(studentId, courseInfo),
+      () => ISchoolPage(studentId, course),
       transition: transition,
     );
   }
@@ -122,15 +124,15 @@ class RouteUtils {
     DioConnector.instance.getAlice(navigatorKey: Get.key).showInspector();
   }
 
-  static Future? toIPlusAnnouncementDetailPage(CourseInfoJson courseInfo, Map detail) {
+  static Future? toIPlusAnnouncementDetailPage(Course course, Map detail) {
     return Get.to(
-      () => IPlusAnnouncementDetailPage(courseInfo, detail),
+      () => IPlusAnnouncementDetailPage(course, detail),
       transition: transition,
     );
   }
 
-  static Future? toVideoPlayer(String url, CourseInfoJson courseInfo, String name) => Get.to(
-        () => ClassVideoPlayer(url, courseInfo, name),
+  static Future? toVideoPlayer(String url, Course course, String name) => Get.to(
+        () => ClassVideoPlayer(url, course, name),
         transition: transition,
       );
 

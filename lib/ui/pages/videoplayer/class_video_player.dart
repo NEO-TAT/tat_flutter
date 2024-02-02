@@ -20,16 +20,18 @@ import 'package:html/parser.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 
+import '../../../src/model/coursetable/course.dart';
+
 class ClassVideoPlayer extends StatefulWidget {
   const ClassVideoPlayer(
     this.videoUrl,
-    this.courseInfo,
+    this.course,
     this.name, {
     super.key,
   });
 
   final String videoUrl;
-  final CourseInfoJson courseInfo;
+  final Course course;
   final String name;
 
   @override
@@ -192,7 +194,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                     return;
                   }
 
-                  final courseName = widget.courseInfo.main.course.name;
+                  final courseName = widget.course.name;
                   final saveName = "${widget.name}_${_selectedVideoInfo.name}.mp4";
                   final subDir = (LanguageUtil.getLangIndex() == LangEnum.zh) ? "上課錄影" : "video";
                   final dirName = path.join(courseName, subDir);

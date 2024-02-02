@@ -10,7 +10,7 @@ import '../task.dart';
 import 'iplus_system_task.dart';
 
 class IPlusCourseFileTask extends IPlusSystemTask<List<CourseFileJson>> {
-  final String id;
+  final int id;
 
   IPlusCourseFileTask(this.id) : super("IPlusCourseFileTask");
 
