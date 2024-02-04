@@ -2,6 +2,7 @@
 // @dart=2.10
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
+import 'package:flutter_app/src/model/coursetable/course_period.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 
@@ -19,13 +20,13 @@ class CourseTableControl {
   bool isHideD = false;
   CourseTable courseTable;
   List<String> dayStringList = [
+    R.current.Sunday,
     R.current.Monday,
     R.current.Tuesday,
     R.current.Wednesday,
     R.current.Thursday,
     R.current.Friday,
     R.current.Saturday,
-    R.current.Sunday,
     R.current.UnKnown
   ];
   List<String> timeList = [
@@ -53,8 +54,8 @@ class CourseTableControl {
   void set(CourseTable value) {
     courseTable = value;
     isHideSaturday = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 6));
-    isHideSunday = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 7));
-    isHideUnKnown = true;
+    isHideSunday = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 0));
+    isHideUnKnown = !courseTable.courses.any((course) => course.coursePeriods.isEmpty);
     isHideN = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "N"));
     isHideA = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "A"));
     isHideB = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "B"));
@@ -69,25 +70,32 @@ class CourseTableControl {
   List<int> get getDayIntList {
     List<int> intList = [];
     for (int i = 0; i < dayLength; i++) {
-      if (isHideSaturday && i == 5) continue;
-      if (isHideSunday && i == 6) continue;
+      if (isHideSaturday && i == 6) continue;
+      if (isHideSunday && i == 0) continue;
       if (isHideUnKnown && i == 7) continue;
       intList.add(i);
     }
     return intList;
   }
 
-  Course getCourse(int weekday, String period) {
+  Course getCourse(int weekday, int period) {
+    if(weekday == 7){
+      return getUnknownCourse(period);
+    }
     return courseTable.courses.firstWhere((course) =>
         course.coursePeriods.any((coursePeriod) =>
-          coursePeriod.period == period && coursePeriod.weekday == weekday
-        )
+          coursePeriod.period == getSectionString(period) && coursePeriod.weekday == weekday
+        ), orElse: () => null
     );
   }
 
-  Color getCourseInfoColor(int weekday, String period) {
+  Color getCourseInfoColor(int weekday, int period) {
     Course course = getCourse(weekday, period);
     if (colorMap == null) {
+      return Colors.white;
+    }
+
+    if (course == null){
       return Colors.white;
     }
 
@@ -113,12 +121,25 @@ class CourseTableControl {
     }
   }
 
-  List<String> get getSectionList {
-    List<String> list = [];
+  List<CoursePeriod> get getCoursePeriodList {
+    List<CoursePeriod> list = [];
     for(Course course in courseTable.courses){
-      list.addAll(course.coursePeriods.map((coursePeriod) => coursePeriod.period).toList());
+      list.addAll(course.coursePeriods.map((coursePeriod) => coursePeriod).toList());
     }
     return list.toSet().toList();
+  }
+
+  List<int> get getSectionIntList {
+    List<int> intList = [];
+    for (int i = 0; i < sectionLength; i++) {
+      if (isHideN && i == 4) continue;
+      if (isHideA && i == 10) continue;
+      if (isHideB && i == 11) continue;
+      if (isHideC && i == 12) continue;
+      if (isHideD && i == 13) continue;
+      intList.add(i);
+    }
+    return intList;
   }
 
   String getDayString(int day) {
@@ -131,5 +152,13 @@ class CourseTableControl {
 
   String getSectionString(int section) {
     return sectionStringList[section];
+  }
+
+  Course getUnknownCourse(int period){
+    int index = period;
+    if(index >= courseTable.courses.where((course) => course.coursePeriods.isEmpty).length){
+      return null;
+    }
+    return courseTable.courses.where((course) => course.coursePeriods.isEmpty).toList()[index];
   }
 }

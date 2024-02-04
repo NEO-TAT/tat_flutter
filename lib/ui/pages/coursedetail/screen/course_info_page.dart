@@ -1,14 +1,8 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:async';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
-import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
@@ -20,7 +14,7 @@ class CourseInfoPage extends StatefulWidget {
   final Course course;
   final String studentId;
 
-  const CourseInfoPage(this.studentId, this.course, {Key key}) : super(key: key);
+  const CourseInfoPage(this.studentId, this.course, {required Key key}) : super(key: key);
 
   final int courseInfoWithAlpha = 0x44;
 
@@ -29,7 +23,7 @@ class CourseInfoPage extends StatefulWidget {
 }
 
 class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAliveClientMixin {
-  Course course;
+  late Course course;
   bool isLoading = true;
   final List<Widget> courseData = [];
   final List<Widget> listItem = [];
@@ -62,27 +56,29 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     course = widget.course;
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseId, course.id])));
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, course.name])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.credit, course.credit])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.category, course.category])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.credit, course.credit])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.category, course.category])));
     courseData.add(
       _buildCourseInfoWithButton(
-        sprintf("%s: %s", [R.current.instructor, course.teacher]),
+        sprintf("%04s: %s", [R.current.instructor, course.teachers.join(" ")]),
         R.current.syllabus,
         course.syllabusLink,
       ),
     );
-    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.startClass, course.className])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.startClass, course.classNames.join(" ")])));
     courseData.add(_buildMultiButtonInfo(
       sprintf("%s: ", [R.current.classroom]),
       R.current.classroomUse,
-      [],
-      [],
+      course.classrooms,
+      course.classrooms,
     ));
 
     listItem.removeRange(0, listItem.length);
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
-
+    // listItem.add(_buildCourseCard(course));
+    // listItem.add(_buildInfoTitle("課程修課資訊"));
+    // listItem.add(_buildCourseApplyCard(course));
     isLoading = false;
     setState(() {});
   }
@@ -133,6 +129,230 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     );
   }
 
+  Widget _buildCourseApplyCard(Course course) {
+    return SizedBox(
+        height: MediaQuery
+            .of(context)
+            .size
+            .width * 0.35,
+        child: Row(
+            children: [
+              Expanded(
+                  flex: 5,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blueAccent
+                    ),
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                      child: Column(
+                          children: <Widget>[
+                            Container(
+                                padding: const EdgeInsets.all(2),
+                                child: const Text(
+                                    "修課人數",
+                                    style: TextStyle(fontSize: 14)
+                                )
+                            ),
+                            Expanded(
+                                child: Center(
+                                    child: Text(
+                                        "150",
+                                        style: const TextStyle(fontSize: 36)
+                                    )
+                                )
+                            )
+                          ]
+                      )
+                  )
+              ),
+              Container(padding: const EdgeInsets.all(10)),
+              Expanded(
+                  flex: 5,
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey
+                      ),
+                      padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                      child: Column(
+                          children: <Widget>[
+                            Container(
+                                padding: const EdgeInsets.all(2),
+                                child: const Text(
+                                    "撤選人數",
+                                    style: TextStyle(fontSize: 14)
+                                )
+                            ),
+                            Expanded(
+                                child: Center(
+                                    child: Text(
+                                        "5",
+                                        style: const TextStyle(fontSize: 36)
+                                    )
+                                )
+                            )
+                          ]
+                      )
+                  )
+              )
+            ]
+        )
+    );
+  }
+
+  Widget _buildCourseCard(Course course) {
+    return SizedBox(
+        height: MediaQuery
+            .of(context)
+            .size
+            .width * 0.65,
+        child: Row(
+            children: [
+              Expanded(
+                  flex: 8,
+                  child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.yellow[900]
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FractionallySizedBox(
+                            child: Container(
+                                padding: const EdgeInsets.all(10),
+                                alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                child: Text(
+                                    course.id.toString(),
+                                    style: const TextStyle(fontSize: 16)
+                                )
+                            ),
+                          ),
+                          FractionallySizedBox(
+                            child: Container(
+                                padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                                alignment: const Align(alignment: Alignment.centerLeft).alignment,
+                                child: Container(
+                                  alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                  child: Text(course.name, style: const TextStyle(fontSize: 18)),
+                                )
+                            ),
+                          ),
+                          FractionallySizedBox(
+                              child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                          child: Text(
+                                            course.classNames.join(" "),
+                                            style: const TextStyle(fontSize: 14),
+                                          )
+                                      ),
+                                      Container(
+                                          alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                          child: Text(
+                                            course.teachers.join(" "),
+                                            style: const TextStyle(fontSize: 14),
+                                          )
+                                      ),
+                                      Container(
+                                          alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                          child: Text(
+                                            course.classrooms.join(" "),
+                                            style: const TextStyle(fontSize: 14),
+                                          )
+                                      )
+                                    ],
+                                  )
+                              )
+                          )
+                        ],
+                      )
+                  )
+              ),
+              Container(padding: const EdgeInsets.all(10)),
+              Expanded(
+                flex: 3,
+                child: Column(
+                    children: [
+                      Expanded(
+                          flex: 5,
+                          child: Container(
+                              alignment: const Align(alignment: Alignment.topCenter).alignment,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.deepOrange
+                              ),
+                              child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                        padding: const EdgeInsets.all(10),
+                                        child: const Text(
+                                            "類別",
+                                            style: TextStyle(fontSize: 14)
+                                        )
+                                    ),
+                                    Container(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Center(
+                                            child: Text(
+                                                course.category == "選" ? "選修" : "必修",
+                                                style: const TextStyle(fontSize: 18)
+                                            )
+                                        )
+                                    )
+                                  ]
+                              )
+                          )
+                      ),
+                      Container(
+                          padding: const EdgeInsets.all(10)
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: Container(
+                            padding: const EdgeInsets.all(10),
+                            alignment: const Align(alignment: Alignment.topCenter).alignment,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.deepOrangeAccent
+                            ),
+                            child: Column(
+                                children: <Widget>[
+                                  Container(
+                                      padding: const EdgeInsets.all(10),
+                                      child: const Text(
+                                          "學分數",
+                                          style: TextStyle(fontSize: 14)
+                                      )
+                                  ),
+                                  Container(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Center(
+                                          child: Text(
+                                              course.credit.toString(),
+                                              style: const TextStyle(fontSize: 18)
+                                          )
+                                      )
+                                  )
+                                ]
+                            )
+                        ),
+                      )
+                    ]
+                ),
+              )
+            ]
+        )
+    );
+  }
+
   Widget _buildCourseInfo(String text) {
     TextStyle textStyle = const TextStyle(fontSize: 18);
     return Container(
@@ -140,7 +360,8 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       child: Row(
         children: <Widget>[
           const Icon(Icons.details),
-          Expanded(
+          Container(
+            alignment: const Align(alignment: Alignment.topCenter).alignment,
             child: Text(
               text,
               style: textStyle,
@@ -190,7 +411,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   Widget _buildInfoTitle(String title) {
     TextStyle textStyle = const TextStyle(fontSize: 24);
     return Container(
-      padding: const EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: Row(
         children: <Widget>[
           Text(
@@ -202,7 +423,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     );
   }
 
-  Widget _buildMultiButtonInfo(String title, String buttonText, List<String> textList, List<String> urlList) {
+    Widget _buildMultiButtonInfo(String title, String buttonText, List<String> textList, List<String> urlList) {
     const textStyle = TextStyle(fontSize: 18);
     final classroomItemList = <Widget>[];
 

@@ -7,52 +7,73 @@ part 'course.g.dart';
 
 @JsonSerializable()
 class Course {
+  String idString;
   late int id;
+
   String name;
-  late int stage;
+
+  String stageString;
+  late double stage;
+
+  String creditString;
   late double credit;
+
+  String periodCountString;
   late int periodCount;
+
   String category;
-  String teacher;
-  String className;
-  late List<String> periodSlots;
+
+  String teacherString;
+  late List<String> teachers;
+
+  String classNameString;
+  late List<String> classNames;
+
+  List<String> periodSlots;
   late List<CoursePeriod> coursePeriods;
-  String classroom;
+
+  String classroomString;
+  late List<String> classrooms;
+
   String applyStatus;
   String language;
   String syllabusLink;
   String note;
 
   Course({
-    required String id,
+    required this.idString,
     required this.name,
-    required String stage,
-    required String credit,
-    required String periodCount,
+    required this.stageString,
+    required this.creditString,
+    required this.periodCountString,
     required this.category,
-    required this.teacher,
-    required this.className,
+    required this.teacherString,
+    required this.classNameString,
     required this.periodSlots,
-    required this.classroom,
+    required this.classroomString,
     required this.applyStatus,
     required this.language,
     required this.syllabusLink,
     required this.note
   }) {
-    this.id = JsonInit.intInit(id);
-    name = JsonInit.stringInit(name);
-    this.stage = JsonInit.intInit(stage);
-    this.credit = JsonInit.doubleInit(credit);
-    this.periodCount = JsonInit.intInit(periodCount);
-    category = JsonInit.stringInit(category);
-    teacher = JsonInit.stringInit(teacher);
+    id = JsonInit.intInit(idString);
+    name = JsonInit.stringInit(name).trim();
+    stage = JsonInit.doubleInit(stageString);
+    credit = JsonInit.doubleInit(creditString);
+    periodCount = JsonInit.intInit(periodCountString);
+    category = JsonInit.stringInit(category).trim();
+    teacherString = JsonInit.stringInit(teacherString).trim();
+    teachers = teacherString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
     periodSlots = JsonInit.listInit<String>(periodSlots);
     coursePeriods =  _convertPeriodSlotsToCoursePeriods(periodSlots);
-    classroom = JsonInit.stringInit(classroom);
-    applyStatus = JsonInit.stringInit(applyStatus);
-    language = JsonInit.stringInit(language);
-    syllabusLink = JsonInit.stringInit(syllabusLink);
-    note = JsonInit.stringInit(note);
+    classroomString = JsonInit.stringInit(classroomString).trim();
+    classrooms = classroomString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
+    classNameString = JsonInit.stringInit(classNameString).trim();
+    classNames = classNameString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
+    applyStatus = JsonInit.stringInit(applyStatus).trim();
+    language = JsonInit.stringInit(language).trim();
+    syllabusLink = JsonInit.stringInit(syllabusLink).trim();
+    note = JsonInit.stringInit(note).trim();
   }
 
   bool isEmpty() => id == 0;

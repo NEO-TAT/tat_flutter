@@ -1,10 +1,10 @@
 class JsonInit {
   static int intInit(String value){
-    return value.isEmpty ? int.parse(value) : 0;
+    return value.replaceAll(RegExp(r"\s"), "").isNotEmpty ? int.parse(value) : 0;
   }
 
   static double doubleInit(String value){
-    return value.isEmpty ? double.parse(value) : 0.00;
+    return value.replaceAll(RegExp(r"\s"), "").isNotEmpty ? double.parse(value) : 0.00;
   }
 
   static String stringInit(String value) {

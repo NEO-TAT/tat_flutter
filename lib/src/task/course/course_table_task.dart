@@ -28,9 +28,9 @@ class CourseTableTask extends CourseSystemTask<CourseTable> {
         var userInfo = await CourseConnector.getUserInfo(studentId, year, semester);
         // TODO: Handle Teacher Situation.
         if (LanguageUtil.getLangIndex() == LangEnum.zh) {
-          courses = await CourseConnector.getEnglishCourses(studentId, year, semester);
-        } else {
           courses = await CourseConnector.getChineseCourses(studentId, year, semester);
+        } else {
+          courses = await CourseConnector.getEnglishCourses(studentId, year, semester);
         }
         super.onEnd();
         final courseTable = CourseTable(
