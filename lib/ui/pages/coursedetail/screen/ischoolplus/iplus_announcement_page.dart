@@ -1,7 +1,6 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/model/ischoolplus/ischool_plus_announcement_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';

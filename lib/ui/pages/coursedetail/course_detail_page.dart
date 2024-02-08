@@ -2,7 +2,6 @@
 // @dart=2.10
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';

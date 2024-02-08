@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
 import 'package:flutter_app/src/file/file_download.dart';
 import 'package:flutter_app/src/file/file_store.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/model/ischoolplus/course_file_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';

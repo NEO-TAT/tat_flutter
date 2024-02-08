@@ -8,7 +8,6 @@ import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/connector/core/connector_parameter.dart';
 import 'package:flutter_app/src/file/file_download.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';

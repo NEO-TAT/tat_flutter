@@ -4,7 +4,6 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/file/file_download.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/util/html_utils.dart';
 import 'package:flutter_app/ui/other/list_view_animator.dart';

@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/model/setting/setting_json.dart';
 import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
