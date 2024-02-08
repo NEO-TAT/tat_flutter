@@ -1,6 +1,6 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
-import 'package:flutter_app/src/model/course/course_class_json.dart';
+import 'package:flutter_app/src/model/course/course_semester.dart';
 import 'package:flutter_app/src/model/json_init.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 import 'package:json_annotation/json_annotation.dart';

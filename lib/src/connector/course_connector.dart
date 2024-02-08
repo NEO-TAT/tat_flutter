@@ -3,11 +3,11 @@ import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/connector/core/connector_parameter.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
+import 'package:flutter_app/src/model/course/course_semester.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
 import 'package:flutter_app/src/model/coursetable/course.dart';
 import 'package:flutter_app/src/model/coursetable/user.dart';
-import 'package:flutter_app/src/model/course/course_syllabus_json.dart';
+import 'package:flutter_app/src/model/course/course_syllabus.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 

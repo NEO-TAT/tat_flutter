@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tat_core/core/zuvio/domain/login_credential.dart';
 import 'package:tat_core/core/zuvio/domain/user_info.dart';
 
-import '../model/course/course_class_json.dart';
+import '../model/course/course_semester.dart';
 import "../model/coursetable/course.dart";
 import '../model/coursetable/course_table.dart';
 

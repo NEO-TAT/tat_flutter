@@ -2,7 +2,7 @@
 // @dart=2.10
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'course_class_json.dart';
+part of 'course_semester.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

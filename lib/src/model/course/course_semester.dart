@@ -5,7 +5,7 @@ import 'package:flutter_app/src/util/language_util.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
 
-part 'course_class_json.g.dart';
+part 'course_semester.g.dart';
 
 @JsonSerializable()
 class SemesterJson {
