@@ -1,14 +1,13 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 
 import '../../model/coursetable/course.dart';
 import '../../model/coursetable/course_table.dart';
+import '../../model/coursetable/user.dart';
 import '../task.dart';
 import 'course_system_task.dart';
 
@@ -24,8 +23,8 @@ class CourseTableTask extends CourseSystemTask<CourseTable> {
     final status = await super.execute();
     if (status == TaskStatus.success) {
         super.onStart(R.current.getCourse);
-        List<Course>? courses;
-        var userInfo = await CourseConnector.getUserInfo(studentId, year, semester);
+        List<Course> courses;
+        User userInfo = await CourseConnector.getUserInfo(studentId, year, semester);
         // TODO: Handle Teacher Situation.
         if (LanguageUtil.getLangIndex() == LangEnum.zh) {
           courses = await CourseConnector.getChineseCourses(studentId, year, semester);

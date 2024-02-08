@@ -8,6 +8,8 @@ class User {
   String name;
   String className;
 
+  User.origin() : id = "", name = "", className = "";
+
   User({
     required this.id,
     required this.name,
