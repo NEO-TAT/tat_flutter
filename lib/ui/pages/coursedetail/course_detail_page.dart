@@ -33,7 +33,14 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.course, key: null,)));
+    tabPageList.add(TabPage(
+        R.current.course,
+        Icons.info,
+        CourseInfoPage(
+          widget.studentId,
+          widget.course,
+          key: null,
+        )));
     if (widget.studentId == LocalStorage.instance.getAccount()) {
       tabPageList.add(
           TabPage(R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.course)));
