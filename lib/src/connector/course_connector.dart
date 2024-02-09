@@ -11,8 +11,6 @@ import 'package:flutter_app/src/model/course/course_syllabus.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 
-import '../util/must.dart';
-
 enum CourseConnectorStatus { loginSuccess, loginFail, unknownError }
 
 class CourseConnector {
@@ -318,8 +316,10 @@ class CourseConnector {
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         var href = node.attributes["href"];
-        Must.notNullOrEmpty(href, "href");
-        Map<String, String> code = Uri.parse(href!).queryParameters;
+        if(href == null || href.isEmpty){
+          throw Exception("getDivisionList: href is null or empty.");
+        }
+        Map<String, String> code = Uri.parse(href).queryParameters;
         resultList.add({"name": node.text, "code": code});
       }
       return resultList;
@@ -351,7 +351,9 @@ class CourseConnector {
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         var href = node.attributes["href"];
-        Must.notNullOrEmpty(href, "href");
+        if(href == null || href.isEmpty){
+          throw Exception("getDepartmentList: href is null or empty.");
+        }
         Map<String, String> code = Uri.parse(href!).queryParameters;
         String name = node.text.replaceAll(RegExp("[ |s]"), "");
         resultList.add({"name": name, "code": code});
