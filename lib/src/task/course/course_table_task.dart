@@ -22,29 +22,24 @@ class CourseTableTask extends CourseSystemTask<CourseTable> {
   Future<TaskStatus> execute() async {
     final status = await super.execute();
     if (status == TaskStatus.success) {
-        super.onStart(R.current.getCourse);
-        List<Course> courses;
-        User userInfo = await CourseConnector.getUserInfo(studentId, year, semester);
-        // TODO: Handle Teacher Situation.
-        if (LanguageUtil.getLangIndex() == LangEnum.zh) {
-          courses = await CourseConnector.getChineseCourses(studentId, year, semester);
-        } else {
-          courses = await CourseConnector.getEnglishCourses(studentId, year, semester);
-        }
-        super.onEnd();
-        final courseTable = CourseTable(
-          year: year,
-          semester: semester,
-          courses: courses,
-          user: userInfo
-        );
-        LocalStorage.instance.addCourseTable(courseTable);
-        await LocalStorage.instance.saveCourseTableList();
-
-        result = courseTable;
-        return TaskStatus.success;
+      super.onStart(R.current.getCourse);
+      List<Course> courses;
+      User userInfo = await CourseConnector.getUserInfo(studentId, year, semester);
+      // TODO: Handle Teacher Situation.
+      if (LanguageUtil.getLangIndex() == LangEnum.zh) {
+        courses = await CourseConnector.getChineseCourses(studentId, year, semester);
       } else {
-        return super.onError(R.current.getCourseError);
+        courses = await CourseConnector.getEnglishCourses(studentId, year, semester);
       }
+      super.onEnd();
+      final courseTable = CourseTable(year: year, semester: semester, courses: courses, user: userInfo);
+      LocalStorage.instance.addCourseTable(courseTable);
+      await LocalStorage.instance.saveCourseTableList();
+
+      result = courseTable;
+      return TaskStatus.success;
+    } else {
+      return super.onError(R.current.getCourseError);
+    }
   }
 }

@@ -25,10 +25,7 @@ class CourseConnector {
   static Future<CourseConnectorStatus> login() async {
     try {
       Document tagNode = await _getSSORedirectNodesInLoginPhase();
-      await _tryToSSOLoginOrThrowException(
-          _getSSOLoginJumpUrl(tagNode),
-          _getSSOLoginPayload(tagNode)
-      );
+      await _tryToSSOLoginOrThrowException(_getSSOLoginJumpUrl(tagNode), _getSSOLoginPayload(tagNode));
       return CourseConnectorStatus.loginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
@@ -52,7 +49,7 @@ class CourseConnector {
     List<Element> courseRows = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr");
     List<Course> courses = <Course>[];
 
-    for(int rowIndex = 1; rowIndex < courseRows.length - 1; rowIndex++){
+    for (int rowIndex = 1; rowIndex < courseRows.length - 1; rowIndex++) {
       var courseRowData = courseRows[rowIndex].getElementsByTagName("td");
       courses.add(Course(
           idString: courseRowData[0].text,
@@ -68,8 +65,7 @@ class CourseConnector {
           applyStatus: courseRowData[14].text,
           language: courseRowData[15].text,
           syllabusLink: "",
-          note: courseRowData[16].text
-      ));
+          note: courseRowData[16].text));
     }
 
     return courses;
@@ -89,10 +85,7 @@ class CourseConnector {
       String result = await Connector.getDataByGet(parameter);
 
       Document tagNode = parse(result);
-      String courseTableHead = tagNode.getElementsByTagName("table")[1]
-          .getElementsByTagName("tr")
-          .first
-          .text;
+      String courseTableHead = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr").first.text;
       List<RegExpMatch> matches = RegExp(r".+?：(.+?)\s").allMatches(courseTableHead).toList();
 
       String? name = matches[1].group(1);
@@ -106,11 +99,7 @@ class CourseConnector {
         throw Exception("getUserInfo: Cannot Fetch the user info (null className).");
       }
 
-      return User(
-          id: studentId,
-          name: name,
-          className: className
-      );
+      return User(id: studentId, name: name, className: className);
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return User.origin();
@@ -150,8 +139,7 @@ class CourseConnector {
           applyStatus: courseRowData[16].text,
           language: courseRowData[17].text,
           syllabusLink: syllabusLinkHref == null ? "" : _postCourseCNUrl + syllabusLinkHref,
-          note: courseRowData[19].text
-      ));
+          note: courseRowData[19].text));
     }
 
     return courses;
@@ -166,9 +154,7 @@ class CourseConnector {
       parameter.charsetName = 'big5';
       String result = await Connector.getDataByGet(parameter);
       tagNode = parse(result);
-      node = tagNode
-          .getElementsByTagName("table")
-          .first;
+      node = tagNode.getElementsByTagName("table").first;
       node = node.getElementsByTagName("tr")[1];
       return node.getElementsByTagName("td")[2].text.replaceAll(RegExp(r"\n"), "");
     } catch (e, stack) {
@@ -263,9 +249,8 @@ class CourseConnector {
 
     Element node = tagNode.getElementsByTagName("tbody").first;
     List<Element> nodes = node.getElementsByTagName("tr");
-    String redirectHypertextRef = nodes.firstWhere((node) =>
-        node.text.contains(department)
-    ).getElementsByTagName("a").first.attributes["href"]!;
+    String redirectHypertextRef =
+        nodes.firstWhere((node) => node.text.contains(department)).getElementsByTagName("a").first.attributes["href"]!;
 
     Map<String, int> graduationMap = await _getGraduationCreditMap(redirectHypertextRef);
     return graduationMap;
@@ -316,7 +301,7 @@ class CourseConnector {
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         var href = node.attributes["href"];
-        if(href == null || href.isEmpty){
+        if (href == null || href.isEmpty) {
           throw Exception("getDivisionList: href is null or empty.");
         }
         Map<String, String> code = Uri.parse(href).queryParameters;
@@ -351,7 +336,7 @@ class CourseConnector {
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
         var href = node.attributes["href"];
-        if(href == null || href.isEmpty){
+        if (href == null || href.isEmpty) {
           throw Exception("getDepartmentList: href is null or empty.");
         }
         Map<String, String> code = Uri.parse(href!).queryParameters;
@@ -461,7 +446,7 @@ class CourseConnector {
     return tagNode;
   }
 
-  static Map<String, dynamic> _getSSOLoginPayload(Document ssoRedirectTagNode){
+  static Map<String, dynamic> _getSSOLoginPayload(Document ssoRedirectTagNode) {
     Map<String, dynamic> data = {};
     List<Element> nodes = ssoRedirectTagNode.getElementsByTagName("input");
 
@@ -478,9 +463,7 @@ class CourseConnector {
   }
 
   static String _getSSOLoginJumpUrl(Document ssoRedirectTagNode) {
-    String? jumpUrl = ssoRedirectTagNode
-        .getElementsByTagName("form")[0]
-        .attributes["action"];
+    String? jumpUrl = ssoRedirectTagNode.getElementsByTagName("form")[0].attributes["action"];
 
     if (jumpUrl == null) {
       throw Exception("Cannot fetch jumpUrl.");
@@ -490,9 +473,9 @@ class CourseConnector {
   }
 
   static Future<void> _tryToSSOLoginOrThrowException(String jumpUrl, Map<String, dynamic> payload) async {
-      ConnectorParameter parameter = ConnectorParameter(jumpUrl);
-      parameter.data = payload;
-      await Connector.getDataByPostResponse(parameter);
+    ConnectorParameter parameter = ConnectorParameter(jumpUrl);
+    parameter.data = payload;
+    await Connector.getDataByPostResponse(parameter);
   }
 
   static Future<Map<String, int>> _getGraduationCreditMap(String href) async {

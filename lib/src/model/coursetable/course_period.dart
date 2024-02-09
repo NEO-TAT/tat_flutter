@@ -7,7 +7,7 @@ class CoursePeriod {
   int weekday;
   String period;
 
-  CoursePeriod({required this.weekday, required this.period}){
+  CoursePeriod({required this.weekday, required this.period}) {
     weekday = weekday;
     period = period;
   }

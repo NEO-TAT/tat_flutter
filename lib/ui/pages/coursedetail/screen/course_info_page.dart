@@ -131,226 +131,124 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
 
   Widget _buildCourseApplyCard(Course course) {
     return SizedBox(
-        height: MediaQuery
-            .of(context)
-            .size
-            .width * 0.35,
-        child: Row(
-            children: [
-              Expanded(
-                  flex: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.blueAccent
-                    ),
-                    padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
-                      child: Column(
-                          children: <Widget>[
-                            Container(
-                                padding: const EdgeInsets.all(2),
-                                child: const Text(
-                                    "修課人數",
-                                    style: TextStyle(fontSize: 14)
-                                )
-                            ),
-                            Expanded(
-                                child: Center(
-                                    child: Text(
-                                        "150",
-                                        style: const TextStyle(fontSize: 36)
-                                    )
-                                )
-                            )
-                          ]
-                      )
-                  )
-              ),
-              Container(padding: const EdgeInsets.all(10)),
-              Expanded(
-                  flex: 5,
-                  child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey
-                      ),
-                      padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
-                      child: Column(
-                          children: <Widget>[
-                            Container(
-                                padding: const EdgeInsets.all(2),
-                                child: const Text(
-                                    "撤選人數",
-                                    style: TextStyle(fontSize: 14)
-                                )
-                            ),
-                            Expanded(
-                                child: Center(
-                                    child: Text(
-                                        "5",
-                                        style: const TextStyle(fontSize: 36)
-                                    )
-                                )
-                            )
-                          ]
-                      )
-                  )
-              )
-            ]
-        )
-    );
+        height: MediaQuery.of(context).size.width * 0.35,
+        child: Row(children: [
+          Expanded(
+              flex: 5,
+              child: Container(
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.blueAccent),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                  child: Column(children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.all(2), child: const Text("修課人數", style: TextStyle(fontSize: 14))),
+                    Expanded(child: Center(child: Text("150", style: const TextStyle(fontSize: 36))))
+                  ]))),
+          Container(padding: const EdgeInsets.all(10)),
+          Expanded(
+              flex: 5,
+              child: Container(
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                  child: Column(children: <Widget>[
+                    Container(
+                        padding: const EdgeInsets.all(2), child: const Text("撤選人數", style: TextStyle(fontSize: 14))),
+                    Expanded(child: Center(child: Text("5", style: const TextStyle(fontSize: 36))))
+                  ])))
+        ]));
   }
 
   Widget _buildCourseCard(Course course) {
     return SizedBox(
-        height: MediaQuery
-            .of(context)
-            .size
-            .width * 0.65,
-        child: Row(
-            children: [
-              Expanded(
-                  flex: 8,
-                  child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.yellow[900]
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          FractionallySizedBox(
-                            child: Container(
-                                padding: const EdgeInsets.all(10),
-                                alignment: const Align(alignment: Alignment.topLeft).alignment,
-                                child: Text(
-                                    course.id.toString(),
-                                    style: const TextStyle(fontSize: 16)
-                                )
-                            ),
-                          ),
-                          FractionallySizedBox(
-                            child: Container(
-                                padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
-                                alignment: const Align(alignment: Alignment.centerLeft).alignment,
-                                child: Container(
-                                  alignment: const Align(alignment: Alignment.topLeft).alignment,
-                                  child: Text(course.name, style: const TextStyle(fontSize: 18)),
-                                )
-                            ),
-                          ),
-                          FractionallySizedBox(
-                              child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  alignment: const Align(alignment: Alignment.topLeft).alignment,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          alignment: const Align(alignment: Alignment.topLeft).alignment,
-                                          child: Text(
-                                            course.classNames.join(" "),
-                                            style: const TextStyle(fontSize: 14),
-                                          )
-                                      ),
-                                      Container(
-                                          alignment: const Align(alignment: Alignment.topLeft).alignment,
-                                          child: Text(
-                                            course.teachers.join(" "),
-                                            style: const TextStyle(fontSize: 14),
-                                          )
-                                      ),
-                                      Container(
-                                          alignment: const Align(alignment: Alignment.topLeft).alignment,
-                                          child: Text(
-                                            course.classrooms.join(" "),
-                                            style: const TextStyle(fontSize: 14),
-                                          )
-                                      )
-                                    ],
-                                  )
-                              )
-                          )
-                        ],
-                      )
-                  )
-              ),
-              Container(padding: const EdgeInsets.all(10)),
-              Expanded(
-                flex: 3,
-                child: Column(
+        height: MediaQuery.of(context).size.width * 0.65,
+        child: Row(children: [
+          Expanded(
+              flex: 8,
+              child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.yellow[900]),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                          flex: 5,
-                          child: Container(
-                              alignment: const Align(alignment: Alignment.topCenter).alignment,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.deepOrange
-                              ),
-                              child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                        padding: const EdgeInsets.all(10),
-                                        child: const Text(
-                                            "類別",
-                                            style: TextStyle(fontSize: 14)
-                                        )
-                                    ),
-                                    Container(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Center(
-                                            child: Text(
-                                                course.category == "選" ? "選修" : "必修",
-                                                style: const TextStyle(fontSize: 18)
-                                            )
-                                        )
-                                    )
-                                  ]
-                              )
-                          )
-                      ),
-                      Container(
-                          padding: const EdgeInsets.all(10)
-                      ),
-                      Expanded(
-                        flex: 5,
+                      FractionallySizedBox(
                         child: Container(
                             padding: const EdgeInsets.all(10),
-                            alignment: const Align(alignment: Alignment.topCenter).alignment,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.deepOrangeAccent
-                            ),
-                            child: Column(
-                                children: <Widget>[
+                            alignment: const Align(alignment: Alignment.topLeft).alignment,
+                            child: Text(course.id.toString(), style: const TextStyle(fontSize: 16))),
+                      ),
+                      FractionallySizedBox(
+                        child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
+                            alignment: const Align(alignment: Alignment.centerLeft).alignment,
+                            child: Container(
+                              alignment: const Align(alignment: Alignment.topLeft).alignment,
+                              child: Text(course.name, style: const TextStyle(fontSize: 18)),
+                            )),
+                      ),
+                      FractionallySizedBox(
+                          child: Container(
+                              padding: const EdgeInsets.all(10),
+                              alignment: const Align(alignment: Alignment.topLeft).alignment,
+                              child: Column(
+                                children: [
                                   Container(
-                                      padding: const EdgeInsets.all(10),
-                                      child: const Text(
-                                          "學分數",
-                                          style: TextStyle(fontSize: 14)
-                                      )
-                                  ),
+                                      alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                      child: Text(
+                                        course.classNames.join(" "),
+                                        style: const TextStyle(fontSize: 14),
+                                      )),
                                   Container(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Center(
-                                          child: Text(
-                                              course.credit.toString(),
-                                              style: const TextStyle(fontSize: 18)
-                                          )
-                                      )
-                                  )
-                                ]
-                            )
-                        ),
-                      )
-                    ]
-                ),
+                                      alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                      child: Text(
+                                        course.teachers.join(" "),
+                                        style: const TextStyle(fontSize: 14),
+                                      )),
+                                  Container(
+                                      alignment: const Align(alignment: Alignment.topLeft).alignment,
+                                      child: Text(
+                                        course.classrooms.join(" "),
+                                        style: const TextStyle(fontSize: 14),
+                                      ))
+                                ],
+                              )))
+                    ],
+                  ))),
+          Container(padding: const EdgeInsets.all(10)),
+          Expanded(
+            flex: 3,
+            child: Column(children: [
+              Expanded(
+                  flex: 5,
+                  child: Container(
+                      alignment: const Align(alignment: Alignment.topCenter).alignment,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.deepOrange),
+                      child: Column(children: <Widget>[
+                        Container(
+                            padding: const EdgeInsets.all(10), child: const Text("類別", style: TextStyle(fontSize: 14))),
+                        Container(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                                child:
+                                    Text(course.category == "選" ? "選修" : "必修", style: const TextStyle(fontSize: 18))))
+                      ]))),
+              Container(padding: const EdgeInsets.all(10)),
+              Expanded(
+                flex: 5,
+                child: Container(
+                    padding: const EdgeInsets.all(10),
+                    alignment: const Align(alignment: Alignment.topCenter).alignment,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.deepOrangeAccent),
+                    child: Column(children: <Widget>[
+                      Container(
+                          padding: const EdgeInsets.all(10), child: const Text("學分數", style: TextStyle(fontSize: 14))),
+                      Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Center(child: Text(course.credit.toString(), style: const TextStyle(fontSize: 18))))
+                    ])),
               )
-            ]
-        )
-    );
+            ]),
+          )
+        ]));
   }
 
   Widget _buildCourseInfo(String text) {
@@ -423,7 +321,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     );
   }
 
-    Widget _buildMultiButtonInfo(String title, String buttonText, List<String> textList, List<String> urlList) {
+  Widget _buildMultiButtonInfo(String title, String buttonText, List<String> textList, List<String> urlList) {
     const textStyle = TextStyle(fontSize: 18);
     final classroomItemList = <Widget>[];
 

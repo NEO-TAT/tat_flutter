@@ -52,14 +52,21 @@ class CourseTableControl {
 
   void set(CourseTable value) {
     courseTable = value;
-    isHideSaturday = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 6));
-    isHideSunday = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 0));
+    isHideSaturday =
+        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 6));
+    isHideSunday =
+        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 0));
     isHideUnKnown = !courseTable.courses.any((course) => course.coursePeriods.isEmpty);
-    isHideN = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "N"));
-    isHideA = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "A"));
-    isHideB = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "B"));
-    isHideC = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "C"));
-    isHideD = !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "D"));
+    isHideN =
+        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "N"));
+    isHideA =
+        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "A"));
+    isHideB =
+        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "B"));
+    isHideC =
+        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "C"));
+    isHideD =
+        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "D"));
     isHideA &= (isHideB & isHideC & isHideD);
     isHideB &= (isHideC & isHideD);
     isHideC &= isHideD;
@@ -78,14 +85,13 @@ class CourseTableControl {
   }
 
   Course getCourse(int weekday, int period) {
-    if(weekday == 7){
+    if (weekday == 7) {
       return getUnknownCourse(period);
     }
-    return courseTable.courses.firstWhere((course) =>
-        course.coursePeriods.any((coursePeriod) =>
-          coursePeriod.period == getSectionString(period) && coursePeriod.weekday == weekday
-        ), orElse: () => null
-    );
+    return courseTable.courses.firstWhere(
+        (course) => course.coursePeriods
+            .any((coursePeriod) => coursePeriod.period == getSectionString(period) && coursePeriod.weekday == weekday),
+        orElse: () => null);
   }
 
   Color getCourseInfoColor(int weekday, int period) {
@@ -94,7 +100,7 @@ class CourseTableControl {
       return Colors.white;
     }
 
-    if (course == null){
+    if (course == null) {
       return Colors.white;
     }
 
@@ -122,7 +128,7 @@ class CourseTableControl {
 
   List<CoursePeriod> get getCoursePeriodList {
     List<CoursePeriod> list = [];
-    for(Course course in courseTable.courses){
+    for (Course course in courseTable.courses) {
       list.addAll(course.coursePeriods.map((coursePeriod) => coursePeriod).toList());
     }
     return list.toSet().toList();
@@ -153,9 +159,9 @@ class CourseTableControl {
     return sectionStringList[section];
   }
 
-  Course getUnknownCourse(int period){
+  Course getUnknownCourse(int period) {
     int index = period;
-    if(index >= courseTable.courses.where((course) => course.coursePeriods.isEmpty).length){
+    if (index >= courseTable.courses.where((course) => course.coursePeriods.isEmpty).length) {
       return null;
     }
     return courseTable.courses.where((course) => course.coursePeriods.isEmpty).toList()[index];

@@ -108,10 +108,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     child: Text(value[index]),
                     onPressed: () {
                       String courseName = value[index];
-                      Course courseInfo = courseTableData.courses.firstWhere((course) =>
-                          course.name == courseName,
-                          orElse: () => null
-                      );
+                      Course courseInfo =
+                          courseTableData.courses.firstWhere((course) => course.name == courseName, orElse: () => null);
                       if (courseInfo != null) {
                         _showCourseDetail(courseInfo);
                       } else {
@@ -184,7 +182,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
       LocalStorage.instance.clearSemesterJsonList(); //需重設因為更換了studentId
     }
 
-    if(year == 0 && semester == 0){
+    if (year == 0 && semester == 0) {
       await _getSemesterList(studentId);
       SemesterJson semesterJson = LocalStorage.instance.getSemesterJsonItem(0);
       year = int.parse(semesterJson.year);
@@ -246,7 +244,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
           child: ListView.builder(
             itemCount: semesterList?.length ?? 0,
             shrinkWrap: true,
-            itemBuilder: (context, index) => _getSemesterItem(int.parse(semesterList[index].year), int.parse(semesterList[index].semester)),
+            itemBuilder: (context, index) =>
+                _getSemesterItem(int.parse(semesterList[index].year), int.parse(semesterList[index].semester)),
           ),
         ),
       ),
@@ -257,7 +256,10 @@ class _CourseTablePageState extends State<CourseTablePage> {
   _onPopupMenuSelect(int value) {
     switch (value) {
       case 0:
-        final credit = courseTableData?.courses?.map((course) => course.credit)?.toList()?.reduce((value, element) => value + element);
+        final credit = courseTableData?.courses
+            ?.map((course) => course.credit)
+            ?.toList()
+            ?.reduce((value, element) => value + element);
         if (credit != null) {
           MyToast.show(sprintf("%s:%s", [R.current.credit, credit]));
         }
@@ -321,12 +323,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
                     child: SizedBox(
                       height: 50,
                       child: TextButton(
-                        child: Text(sprintf("%s %s %d-%d", [
-                          value[index].user.id,
-                          value[index].user.name,
-                          value[index].year,
-                          value[index].semester
-                        ])),
+                        child: Text(sprintf("%s %s %d-%d",
+                            [value[index].user.id, value[index].user.name, value[index].year, value[index].semester])),
                         onPressed: () {
                           LocalStorage.instance.getCourseSetting().info = value[index]; //儲存課表
                           LocalStorage.instance.saveCourseSetting();
@@ -574,44 +572,44 @@ class _CourseTablePageState extends State<CourseTablePage> {
           child: (course == null)
               ? const SizedBox.shrink()
               : Card(
-            elevation: 0,
-            margin: const EdgeInsets.all(2),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-                color: courseInfoColor,
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  highlightColor: isDarkMode ? Colors.white : Colors.black12,
-                  onTap: () => showCourseDetailDialog(courseTableControl.getTimeString(section), course),
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2),
-                          child: AutoSizeText(
-                            course.name,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              overflow: TextOverflow.ellipsis,
+                  elevation: 0,
+                  margin: const EdgeInsets.all(2),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
+                      color: courseInfoColor,
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        highlightColor: isDarkMode ? Colors.white : Colors.black12,
+                        onTap: () => showCourseDetailDialog(courseTableControl.getTimeString(section), course),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: AutoSizeText(
+                                  course.name,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  minFontSize: 6,
+                                  maxLines: 3,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
-                            minFontSize: 6,
-                            maxLines: 3,
-                            textAlign: TextAlign.center,
-                          ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
         ),
       );
     }
@@ -743,7 +741,8 @@ class _CourseTablePageState extends State<CourseTablePage> {
     setState(() {
       isLoading = false;
     });
-    favorite = (LocalStorage.instance.getCourseTable(courseTable.user.id, courseTable.year, courseTable.semester) != null);
+    favorite =
+        (LocalStorage.instance.getCourseTable(courseTable.user.id, courseTable.year, courseTable.semester) != null);
     if (favorite) {
       LocalStorage.instance.addCourseTable(courseTableData);
     }

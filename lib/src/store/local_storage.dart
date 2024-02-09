@@ -133,7 +133,8 @@ class LocalStorage {
   void removeCourseTable(CourseTable courseTable) {
     _courseTableList.removeWhere(
       (value) =>
-          value.semester == courseTable.semester && value.year == courseTable.year &&
+          value.semester == courseTable.semester &&
+          value.year == courseTable.year &&
           value.user.id == courseTable.user.id,
     );
   }
@@ -146,7 +147,7 @@ class LocalStorage {
   List<CourseTable> getCourseTableList() {
     _courseTableList.sort((a, b) {
       if (a.user.id == b.user.id) {
-        if(a.year == b.year) {
+        if (a.year == b.year) {
           return b.semester.compareTo(a.semester);
         }
         return a.year.compareTo(b.year);
@@ -162,9 +163,7 @@ class LocalStorage {
     }
 
     return _courseTableList.firstWhereOrNull(
-          (courseTable) => courseTable.semester == semester &&
-          courseTable.year == year &&
-          courseTable.user.id == studentId,
+      (courseTable) => courseTable.semester == semester && courseTable.year == year && courseTable.user.id == studentId,
     );
   }
 

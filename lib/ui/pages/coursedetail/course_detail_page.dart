@@ -36,10 +36,10 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
     tabPageList = TabPageList();
     tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.course)));
     if (widget.studentId == LocalStorage.instance.getAccount()) {
-      tabPageList.add(TabPage(
-          R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.course)));
       tabPageList.add(
-          TabPage(R.current.fileAndVideo, Icons.file_download, IPlusFilePage(widget.studentId, widget.course)));
+          TabPage(R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.course)));
+      tabPageList
+          .add(TabPage(R.current.fileAndVideo, Icons.file_download, IPlusFilePage(widget.studentId, widget.course)));
     }
 
     _tabController = TabController(vsync: this, length: tabPageList.length);

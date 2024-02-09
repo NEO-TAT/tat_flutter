@@ -12,12 +12,7 @@ class CourseTable {
   List<Course> courses;
   User user;
 
-  CourseTable({
-    required this.year,
-    required this.semester,
-    required this.courses,
-    required this.user
-  }){
+  CourseTable({required this.year, required this.semester, required this.courses, required this.user}) {
     year = year;
     semester = semester;
     courses = courses;

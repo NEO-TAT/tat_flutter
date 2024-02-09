@@ -15,9 +15,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       category: json['category'] as String,
       teacherString: json['teacherString'] as String,
       classNameString: json['classNameString'] as String,
-      periodSlots: (json['periodSlots'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      periodSlots: (json['periodSlots'] as List<dynamic>).map((e) => e as String).toList(),
       classroomString: json['classroomString'] as String,
       applyStatus: json['applyStatus'] as String,
       language: json['language'] as String,
@@ -28,16 +26,11 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       ..stage = (json['stage'] as num).toDouble()
       ..credit = (json['credit'] as num).toDouble()
       ..periodCount = json['periodCount'] as int
-      ..teachers =
-          (json['teachers'] as List<dynamic>).map((e) => e as String).toList()
-      ..classNames =
-          (json['classNames'] as List<dynamic>).map((e) => e as String).toList()
-      ..coursePeriods = (json['coursePeriods'] as List<dynamic>)
-          .map((e) => CoursePeriod.fromJson(e as Map<String, dynamic>))
-          .toList()
-      ..classrooms = (json['classrooms'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList();
+      ..teachers = (json['teachers'] as List<dynamic>).map((e) => e as String).toList()
+      ..classNames = (json['classNames'] as List<dynamic>).map((e) => e as String).toList()
+      ..coursePeriods =
+          (json['coursePeriods'] as List<dynamic>).map((e) => CoursePeriod.fromJson(e as Map<String, dynamic>)).toList()
+      ..classrooms = (json['classrooms'] as List<dynamic>).map((e) => e as String).toList();
 
 Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
       'idString': instance.idString,

@@ -8,13 +8,12 @@ class User {
   String name;
   String className;
 
-  User.origin() : id = "", name = "", className = "";
+  User.origin()
+      : id = "",
+        name = "",
+        className = "";
 
-  User({
-    required this.id,
-    required this.name,
-    required this.className
-  }){
+  User({required this.id, required this.name, required this.className}) {
     id = id;
     name = name;
     className = className;
