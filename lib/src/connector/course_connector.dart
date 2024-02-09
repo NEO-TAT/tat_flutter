@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:dio/dio.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
@@ -339,7 +341,7 @@ class CourseConnector {
         if (href == null || href.isEmpty) {
           throw Exception("getDepartmentList: href is null or empty.");
         }
-        Map<String, String> code = Uri.parse(href!).queryParameters;
+        Map<String, String> code = Uri.parse(href).queryParameters;
         String name = node.text.replaceAll(RegExp("[ |s]"), "");
         resultList.add({"name": name, "code": code});
       }

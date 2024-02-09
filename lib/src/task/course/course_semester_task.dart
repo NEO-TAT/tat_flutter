@@ -25,7 +25,7 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
         value = await _selectSemesterDialog();
       } else {
         super.onStart(R.current.getCourseSemester);
-        value = await CourseConnector.getCourseSemester(id) as List<SemesterJson>?;
+        value = await CourseConnector.getCourseSemester(id);
         super.onEnd();
       }
 

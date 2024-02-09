@@ -1,7 +1,6 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/model/course/course_semester.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
@@ -34,7 +33,7 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.course)));
+    tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.course, key: null,)));
     if (widget.studentId == LocalStorage.instance.getAccount()) {
       tabPageList.add(
           TabPage(R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.course)));

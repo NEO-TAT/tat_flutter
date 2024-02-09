@@ -7,11 +7,11 @@ class JsonInit {
     return value.replaceAll(RegExp(r"\s"), "").isNotEmpty ? double.parse(value) : 0.00;
   }
 
-  static String stringInit(String value) {
+  static String stringInit(String? value) {
     return value ?? "";
   }
 
-  static List<T> listInit<T>(List<T> value) {
+  static List<T> listInit<T>(List<T>? value) {
     return value ?? <T>[];
   }
 }
