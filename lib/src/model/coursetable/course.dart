@@ -40,21 +40,21 @@ class Course {
   String syllabusLink;
   String note;
 
-  Course(
-      {required this.idString,
-      required this.name,
-      required this.stageString,
-      required this.creditString,
-      required this.periodCountString,
-      required this.category,
-      required this.teacherString,
-      required this.classNameString,
-      required this.periodSlots,
-      required this.classroomString,
-      required this.applyStatus,
-      required this.language,
-      required this.syllabusLink,
-      required this.note}) {
+  Course({required this.idString,
+    required this.name,
+    required this.stageString,
+    required this.creditString,
+    required this.periodCountString,
+    required this.category,
+    required this.teacherString,
+    required this.classNameString,
+    required this.periodSlots,
+    required this.classroomString,
+    required this.applyStatus,
+    required this.language,
+    required this.syllabusLink,
+    required this.note,
+  }) {
     id = JsonInit.intInit(idString);
     name = JsonInit.stringInit(name).trim();
     stage = JsonInit.doubleInit(stageString);
@@ -93,9 +93,12 @@ class Course {
   }
 
   static bool _isNullOrEmpty(String? text) {
-    return text == null || text.replaceAll(RegExp(r"\s"), "").isEmpty;
+    return text == null || text
+        .replaceAll(RegExp(r"\s"), "")
+        .isEmpty;
   }
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
+
   Map<String, dynamic> toJson() => _$CourseToJson(this);
 }
