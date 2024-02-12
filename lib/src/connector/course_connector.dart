@@ -337,7 +337,7 @@ class CourseConnector {
       nodes = node.getElementsByTagName("a");
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
-        var href = node.attributes["href"];
+        final href = node.attributes["href"];
         if (href == null || href.isEmpty) {
           throw Exception("getDepartmentList: href is null or empty.");
         }
