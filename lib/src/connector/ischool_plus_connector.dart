@@ -7,7 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
-import 'package:flutter_app/src/model/coursetable/course.dart';
 import 'package:flutter_app/src/model/ischoolplus/course_file_json.dart';
 import 'package:flutter_app/src/model/ischoolplus/ischool_plus_announcement_json.dart';
 import 'package:flutter_app/src/util/html_utils.dart';
