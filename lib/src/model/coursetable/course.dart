@@ -22,22 +22,21 @@ class Course {
   String syllabusLink;
   String note;
 
-  Course({
-    required this.id,
-    required this.name,
-    required this.stage,
-    required this.credit,
-    required this.periodCount,
-    required this.category,
-    required this.teachers,
-    required this.classNames,
-    required this.coursePeriods,
-    required this.classrooms,
-    required this.applyStatus,
-    required this.language,
-    required this.syllabusLink,
-    required this.note
-  });
+  Course(
+      {required this.id,
+      required this.name,
+      required this.stage,
+      required this.credit,
+      required this.periodCount,
+      required this.category,
+      required this.teachers,
+      required this.classNames,
+      required this.coursePeriods,
+      required this.classrooms,
+      required this.applyStatus,
+      required this.language,
+      required this.syllabusLink,
+      required this.note});
 
   Course.parseNodeString({
     required String idString,

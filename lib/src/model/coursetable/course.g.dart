@@ -13,17 +13,12 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       credit: (json['credit'] as num).toDouble(),
       periodCount: json['periodCount'] as int,
       category: json['category'] as String,
-      teachers:
-          (json['teachers'] as List<dynamic>).map((e) => e as String).toList(),
-      classNames: (json['classNames'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      teachers: (json['teachers'] as List<dynamic>).map((e) => e as String).toList(),
+      classNames: (json['classNames'] as List<dynamic>).map((e) => e as String).toList(),
       coursePeriods: (json['coursePeriods'] as List<dynamic>)
           .map((e) => CoursePeriod.fromJson(e as Map<String, dynamic>))
           .toList(),
-      classrooms: (json['classrooms'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      classrooms: (json['classrooms'] as List<dynamic>).map((e) => e as String).toList(),
       applyStatus: json['applyStatus'] as String,
       language: json['language'] as String,
       syllabusLink: json['syllabusLink'] as String,
