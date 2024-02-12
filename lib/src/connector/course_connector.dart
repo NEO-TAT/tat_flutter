@@ -36,8 +36,8 @@ class CourseConnector {
   }
 
   static Future<List<Course>> getEnglishCourses(String studentId, int year, int semester) async {
-    ConnectorParameter parameter = ConnectorParameter(_postCourseENUrl);
-    Map<String, String> data = {
+    final ConnectorParameter parameter = ConnectorParameter(_postCourseENUrl);
+    final Map<String, String> data = {
       "code": studentId,
       "format": "-2",
       "year": year.toString(),
@@ -45,11 +45,11 @@ class CourseConnector {
     };
     parameter.charsetName = 'utf-8';
     parameter.data = data;
-    String result = await Connector.getDataByGet(parameter);
+    final String result = await Connector.getDataByGet(parameter);
 
-    Document tagNode = parse(result);
-    List<Element> courseRows = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr");
-    List<Course> courses = <Course>[];
+    final Document tagNode = parse(result);
+    final List<Element> courseRows = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr");
+    final List<Course> courses = <Course>[];
 
     for (int rowIndex = 1; rowIndex < courseRows.length - 1; rowIndex++) {
       final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
@@ -75,8 +75,8 @@ class CourseConnector {
 
   static Future<User> getUserInfo(String studentId, int year, int semester) async {
     try {
-      ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
-      Map<String, String> data = {
+      final ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
+      final Map<String, String> data = {
         "code": studentId,
         "format": "-2",
         "year": year.toString(),
@@ -84,14 +84,14 @@ class CourseConnector {
       };
       parameter.charsetName = 'utf-8';
       parameter.data = data;
-      String result = await Connector.getDataByGet(parameter);
+      final String result = await Connector.getDataByGet(parameter);
 
-      Document tagNode = parse(result);
-      String courseTableHead = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr").first.text;
-      List<RegExpMatch> matches = RegExp(r".+?：(.+?)\s").allMatches(courseTableHead).toList();
+      final Document tagNode = parse(result);
+      final String courseTableHead = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr").first.text;
+      final List<RegExpMatch> matches = RegExp(r".+?：(.+?)\s").allMatches(courseTableHead).toList();
 
-      String? name = matches[1].group(1);
-      String? className = matches[2].group(1);
+      final String? name = matches[1].group(1);
+      final String? className = matches[2].group(1);
 
       if (name == null) {
         throw Exception("getUserInfo: Cannot Fetch the user info (null name).");
@@ -109,8 +109,8 @@ class CourseConnector {
   }
 
   static Future<List<Course>> getChineseCourses(String studentId, int year, int semester) async {
-    ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
-    Map<String, String> data = {
+    final ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
+    final Map<String, String> data = {
       "code": studentId,
       "format": "-2",
       "year": year.toString(),
@@ -118,10 +118,10 @@ class CourseConnector {
     };
     parameter.charsetName = 'utf-8';
     parameter.data = data;
-    String result = await Connector.getDataByGet(parameter);
-    Document tagNode = parse(result);
-    List<Element> courseRows = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr");
-    List<Course> courses = <Course>[];
+    final String result = await Connector.getDataByGet(parameter);
+    final Document tagNode = parse(result);
+    final List<Element> courseRows = tagNode.getElementsByTagName("table")[1].getElementsByTagName("tr");
+    final List<Course> courses = <Course>[];
 
     for (int rowIndex = 2; rowIndex < courseRows.length - 1; rowIndex++) {
       final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
@@ -434,27 +434,27 @@ class CourseConnector {
   }
 
   static Future<Document> _getSSORedirectNodesInLoginPhase() async {
-    ConnectorParameter parameter = ConnectorParameter(_ssoLoginUrl);
-    Map<String, String> data = {
+    final ConnectorParameter parameter = ConnectorParameter(_ssoLoginUrl);
+    final Map<String, String> data = {
       "apUrl": "https://aps.ntut.edu.tw/course/tw/courseSID.jsp",
       "apOu": "aa_0010-",
       "sso": "true",
       "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
     };
     parameter.data = data;
-    String result = await Connector.getDataByGet(parameter);
+    final String result = await Connector.getDataByGet(parameter);
 
-    Document tagNode = parse(result);
+    final Document tagNode = parse(result);
     return tagNode;
   }
 
   static Map<String, dynamic> _getSSOLoginPayload(Document ssoRedirectTagNode) {
-    Map<String, dynamic> data = {};
-    List<Element> nodes = ssoRedirectTagNode.getElementsByTagName("input");
+    final Map<String, dynamic> data = {};
+    final List<Element> nodes = ssoRedirectTagNode.getElementsByTagName("input");
 
     for (Element node in nodes) {
-      String? name = node.attributes['name'];
-      String? value = node.attributes['value'];
+      final String? name = node.attributes['name'];
+      final String? value = node.attributes['value'];
       if (name == null || value == null) {
         throw Exception("Cannot fetch name or value.");
       }
@@ -475,15 +475,15 @@ class CourseConnector {
   }
 
   static Future<void> _tryToSSOLoginOrThrowException(String jumpUrl, Map<String, dynamic> payload) async {
-    ConnectorParameter parameter = ConnectorParameter(jumpUrl);
+    final ConnectorParameter parameter = ConnectorParameter(jumpUrl);
     parameter.data = payload;
     await Connector.getDataByPostResponse(parameter);
   }
 
   static Future<Map<String, int>> _getGraduationCreditMap(String href) async {
-    ConnectorParameter parameter = ConnectorParameter(href);
-    String result = await Connector.getDataByGet(parameter);
-    Map<String, int> graduationMap = <String, int>{};
+    final ConnectorParameter parameter = ConnectorParameter(href);
+    final String result = await Connector.getDataByGet(parameter);
+    final Map<String, int> graduationMap = <String, int>{};
 
     graduationMap["lowCredit"] = _getGraduationCredit(result, RegExp(r"最低畢業學分：?(\d+)學分"));
     graduationMap["△"] = _getGraduationCredit(result, RegExp(r"共同必修：?(\d+)學分"));
@@ -494,12 +494,12 @@ class CourseConnector {
   }
 
   static int _getGraduationCredit(String content, RegExp exp) {
-    RegExpMatch? matches = exp.firstMatch(content);
+    final RegExpMatch? matches = exp.firstMatch(content);
     if (matches == null) {
       return 0;
     }
 
-    String? creditText = matches.group(1);
+    final String? creditText = matches.group(1);
     if (creditText == null) {
       return 0;
     }
