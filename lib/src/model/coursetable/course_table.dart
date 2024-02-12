@@ -19,9 +19,11 @@ class CourseTable {
     semester = semester;
     courses = courses;
     user = user;
-    weekdays.addAll(courses.map((course) => course.coursePeriods.map((coursePeriod) => coursePeriod.weekday))
+    weekdays.addAll(courses
+        .map((course) => course.coursePeriods.map((coursePeriod) => coursePeriod.weekday))
         .expand((element) => element));
-    periods.addAll(courses.map((course) => course.coursePeriods.map((coursePeriod) => coursePeriod.period))
+    periods.addAll(courses
+        .map((course) => course.coursePeriods.map((coursePeriod) => coursePeriod.period))
         .expand((element) => element));
   }
 

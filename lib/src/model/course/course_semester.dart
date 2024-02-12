@@ -29,8 +29,5 @@ class SemesterJson with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [
-    year,
-    semester
-  ];
+  List<Object?> get props => [year, semester];
 }

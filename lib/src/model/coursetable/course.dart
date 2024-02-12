@@ -40,7 +40,8 @@ class Course {
   String syllabusLink;
   String note;
 
-  Course({required this.idString,
+  Course({
+    required this.idString,
     required this.name,
     required this.stageString,
     required this.creditString,
@@ -77,7 +78,7 @@ class Course {
 
   bool isEmpty() => id == 0;
 
-  static List<CoursePeriod> _convertPeriodSlotsToCoursePeriods(List<String> periodSlots) {
+  List<CoursePeriod> _convertPeriodSlotsToCoursePeriods(List<String> periodSlots) {
     List<CoursePeriod> coursePeriods = <CoursePeriod>[];
     for (int weekday = 1; weekday <= 7; weekday++) {
       String weekdaySlot = periodSlots[weekday % 7];
@@ -92,10 +93,8 @@ class Course {
     return coursePeriods;
   }
 
-  static bool _isNullOrEmpty(String? text) {
-    return text == null || text
-        .replaceAll(RegExp(r"\s"), "")
-        .isEmpty;
+  bool _isNullOrEmpty(String? text) {
+    return text == null || text.replaceAll(RegExp(r"\s"), "").isEmpty;
   }
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
