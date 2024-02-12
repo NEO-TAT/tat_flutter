@@ -127,11 +127,11 @@ class CourseTableControl {
   }
 
   List<CoursePeriod> get getCoursePeriodList {
-    final Set<CoursePeriod> list = {};
+    final Set<CoursePeriod> coursePeriodSet = {};
     for (Course course in courseTable.courses) {
-      list.addAll(course.coursePeriods.map((coursePeriod) => coursePeriod).toList());
+      coursePeriodSet.addAll(course.coursePeriods);
     }
-    return list.toList();
+    return coursePeriodSet.toList();
   }
 
   List<int> get getSectionIntList {
