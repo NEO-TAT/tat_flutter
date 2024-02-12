@@ -52,21 +52,13 @@ class CourseTableControl {
 
   void set(CourseTable value) {
     courseTable = value;
-    isHideSaturday =
-        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 6));
-    isHideSunday =
-        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.weekday == 0));
-    isHideUnKnown = !courseTable.courses.any((course) => course.coursePeriods.isEmpty);
-    isHideN =
-        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "N"));
-    isHideA =
-        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "A"));
-    isHideB =
-        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "B"));
-    isHideC =
-        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "C"));
-    isHideD =
-        !courseTable.courses.any((course) => course.coursePeriods.any((coursePeriod) => coursePeriod.period == "D"));
+    isHideSaturday = !courseTable.isWeekdayInCourseTable(6);
+    isHideSunday = !courseTable.isWeekdayInCourseTable(0);
+    isHideN = !courseTable.isPeriodInCourseTable("N");
+    isHideA = !courseTable.isPeriodInCourseTable("A");
+    isHideB = !courseTable.isPeriodInCourseTable("B");
+    isHideC = !courseTable.isPeriodInCourseTable("C");
+    isHideD = !courseTable.isPeriodInCourseTable("D");
     isHideA &= (isHideB & isHideC & isHideD);
     isHideB &= (isHideC & isHideD);
     isHideC &= isHideD;
