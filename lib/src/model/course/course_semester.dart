@@ -10,6 +10,10 @@ class SemesterJson with EquatableMixin {
   String year;
   String semester;
 
+  SemesterJson.origin()
+      : year = "0",
+        semester = "0";
+
   SemesterJson({required this.year, required this.semester}) {
     year = JsonInit.stringInit(year);
     semester = JsonInit.stringInit(semester);

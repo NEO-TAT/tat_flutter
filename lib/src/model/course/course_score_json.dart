@@ -248,7 +248,7 @@ class SemesterCourseScoreJson {
     now = now ?? RankJson();
     history = history ?? RankJson();
     courseScoreList = courseScoreList ?? [];
-    semester = semester ?? SemesterJson();
+    semester = semester ?? SemesterJson.origin();
     averageScore = averageScore ?? 0;
     performanceScore = performanceScore ?? 0;
     totalCredit = totalCredit ?? 0;

@@ -97,7 +97,7 @@ class ScoreConnector {
 
         SemesterCourseScoreJson courseScore = SemesterCourseScoreJson();
 
-        SemesterJson semester = SemesterJson();
+        SemesterJson semester = SemesterJson.origin();
         semester.year = h3Node.text.split(" ")[0];
         semester.semester = h3Node.text.split(" ")[3];
         courseScore.semester = semester;
@@ -152,7 +152,7 @@ class ScoreConnector {
           .where((row) => row.getElementsByTagName("td").length >= 7)
           .toList(growable: false);
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
-        SemesterJson semester = SemesterJson();
+        SemesterJson semester = SemesterJson.origin();
         String semesterString = rankNodes[i * 3 + 2].getElementsByTagName("td")[0].innerHtml.split("<br>").first;
         semester.year = semesterString.split(" ")[0];
         semester.semester = semesterString.split(" ").reversed.toList()[0];
