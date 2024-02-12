@@ -120,7 +120,7 @@ class LocalStorage {
 
   String getCourseNameByCourseId(int courseId) {
     for (final courseTable in _courseTableList) {
-      var course = courseTable.courses.firstWhere((course) => course.id == courseId, orElse: () => null);
+      final course = courseTable.courses.firstWhere((course) => course.id == courseId, orElse: () => null);
       if (course != null) {
         return course.name;
       }
