@@ -160,10 +160,7 @@ class CourseTableControl {
   }
 
   Course getUnknownCourse(int period) {
-    int index = period;
-    if (index >= courseTable.courses.where((course) => course.coursePeriods.isEmpty).length) {
-      return null;
-    }
-    return courseTable.courses.where((course) => course.coursePeriods.isEmpty).toList()[index];
+    final nonPeriodCourses = courseTable.courses.where((course) => course.coursePeriods.isEmpty);
+    return period >= nonPeriodCourses.length ? null : nonPeriodCourses.elementAt(period);
   }
 }
