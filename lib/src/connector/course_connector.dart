@@ -141,7 +141,7 @@ class CourseConnector {
           applyStatus: courseRowData[16].text,
           language: courseRowData[17].text,
           syllabusLink: syllabusLinkHref == null ? "" : _postCourseCNUrl + syllabusLinkHref,
-          note: courseRowData[19].text));
+          note: courseRowData[19].text,),);
     }
 
     return courses;
@@ -149,16 +149,16 @@ class CourseConnector {
 
   static Future<String?> getCourseENName(String url) async {
     try {
-      ConnectorParameter parameter;
-      Document tagNode;
-      Element node;
-      parameter = ConnectorParameter(url);
+      final ConnectorParameter parameter = ConnectorParameter(url);
       parameter.charsetName = 'big5';
-      String result = await Connector.getDataByGet(parameter);
-      tagNode = parse(result);
-      node = tagNode.getElementsByTagName("table").first;
-      node = node.getElementsByTagName("tr")[1];
-      return node.getElementsByTagName("td")[2].text.replaceAll(RegExp(r"\n"), "");
+      final String result = await Connector.getDataByGet(parameter);
+
+      final Document tagNode = parse(result);
+      final Element node = tagNode.getElementsByTagName("table").first
+          .getElementsByTagName("tr")[1]
+          .getElementsByTagName("td")[2];
+
+      return node.text.replaceAll(RegExp(r"\n"), "");
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return null;
@@ -191,7 +191,7 @@ class CourseConnector {
           className: syllabusRow[8].text,
           applyStudentCount: syllabusRow[9].text,
           withdrawStudentCount: syllabusRow[10].text,
-          note: syllabusRow[11].text);
+          note: syllabusRow[11].text,);
 
       return model;
     } catch (e, stack) {
@@ -202,23 +202,22 @@ class CourseConnector {
 
   static Future<List<SemesterJson>?> getCourseSemester(String studentId) async {
     try {
-      ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
+      final ConnectorParameter parameter = ConnectorParameter(_postCourseCNUrl);
       parameter.data = {
         "code": studentId,
         "format": "-3",
       };
-      Response response = await Connector.getDataByPostResponse(parameter);
-      Document tagNode = parse(response.toString());
+      final Response response = await Connector.getDataByPostResponse(parameter);
+      final Document tagNode = parse(response.toString());
 
-      Element node = tagNode.getElementsByTagName("table")[0];
-      List<Element> nodes = node.getElementsByTagName("tr");
+      final Element node = tagNode.getElementsByTagName("table")[0];
+      final List<Element> nodes = node.getElementsByTagName("tr");
 
-      List<SemesterJson> semesterJsonList = [];
+      final List<SemesterJson> semesterJsonList = [];
       for (int i = 1; i < nodes.length; i++) {
-        node = nodes[i];
-        String year, semester;
-        year = node.getElementsByTagName("a")[0].text.split(" ")[0];
-        semester = node.getElementsByTagName("a")[0].text.split(" ")[2];
+        final Element semesterNode = nodes[i];
+        final String year = semesterNode.getElementsByTagName("a")[0].text.split(" ")[0];
+        final String semester = semesterNode.getElementsByTagName("a")[0].text.split(" ")[2];
         semesterJsonList.add(SemesterJson(year: year, semester: semester));
       }
       return semesterJsonList;
@@ -229,7 +228,7 @@ class CourseConnector {
   }
 
   static String strQ2B(String input) {
-    List<int> newString = [];
+    final List<int> newString = [];
     for (int c in input.codeUnits) {
       if (c == 12288) {
         c = 32;
@@ -244,35 +243,30 @@ class CourseConnector {
   }
 
   static Future<Map> getGraduation(String year, String department) async {
-    ConnectorParameter parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+    final ConnectorParameter parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
     parameter.data = {"format": "-3", "year": year, "matric": "7"};
-    String result = await Connector.getDataByGet(parameter);
-    Document tagNode = parse(result);
+    final String result = await Connector.getDataByGet(parameter);
+    final Document tagNode = parse(result);
 
-    Element node = tagNode.getElementsByTagName("tbody").first;
-    List<Element> nodes = node.getElementsByTagName("tr");
-    String redirectHypertextRef =
+    final Element node = tagNode.getElementsByTagName("tbody").first;
+    final List<Element> nodes = node.getElementsByTagName("tr");
+    final String redirectHypertextRef =
         nodes.firstWhere((node) => node.text.contains(department)).getElementsByTagName("a").first.attributes["href"]!;
 
-    Map<String, int> graduationMap = await _getGraduationCreditMap(redirectHypertextRef);
+    final Map<String, int> graduationMap = await _getGraduationCreditMap(redirectHypertextRef);
     return graduationMap;
   }
 
   static Future<List<String>?> getYearList() async {
-    ConnectorParameter parameter;
-    String result;
-    Document tagNode;
-    Element node;
-    List<Element> nodes;
-    List<String> resultList = [];
     try {
-      parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
+      final ConnectorParameter parameter = ConnectorParameter("https://aps.ntut.edu.tw/course/tw/Cprog.jsp");
       parameter.data = {"format": "-1"};
-      result = await Connector.getDataByPost(parameter);
-      tagNode = parse(result);
-      nodes = tagNode.getElementsByTagName("a");
+      final String result = await Connector.getDataByPost(parameter);
+      final Document tagNode = parse(result);
+      final List<Element> nodes = tagNode.getElementsByTagName("a");
+      final List<String> resultList = [];
       for (int i = 0; i < nodes.length; i++) {
-        node = nodes[i];
+        final Element node = nodes[i];
         resultList.add(node.text);
       }
       return resultList;
@@ -288,25 +282,23 @@ class CourseConnector {
   code 參數
   */
   static Future<List<Map>?> getDivisionList(String year) async {
-    ConnectorParameter parameter;
-    String result;
-    Document tagNode;
-    Element node;
-    List<Element> nodes;
-    List<Map> resultList = [];
     try {
-      parameter = ConnectorParameter(_creditUrl);
+      final ConnectorParameter parameter = ConnectorParameter(_creditUrl);
       parameter.data = {"format": "-2", "year": year};
-      result = await Connector.getDataByPost(parameter);
-      tagNode = parse(result);
-      nodes = tagNode.getElementsByTagName("a");
+      final String result = await Connector.getDataByPost(parameter);
+      final Document tagNode = parse(result);
+      final List<Element> nodes = tagNode.getElementsByTagName("a");
+      final List<Map> resultList = [];
+
       for (int i = 0; i < nodes.length; i++) {
-        node = nodes[i];
+        final Element node = nodes[i];
         final href = node.attributes["href"];
         if (href == null || href.isEmpty) {
           throw Exception("getDivisionList: href is null or empty.");
         }
-        Map<String, String> code = Uri.parse(href).queryParameters;
+        final Map<String, String> code = Uri
+            .parse(href)
+            .queryParameters;
         resultList.add({"name": node.text, "code": code});
       }
       return resultList;
@@ -322,27 +314,25 @@ class CourseConnector {
   code 參數
   */
   static Future<List<Map<dynamic, dynamic>>?> getDepartmentList(Map code) async {
-    ConnectorParameter parameter;
-    String result;
-    Document tagNode;
-    Element node;
-    List<Element> nodes;
-    List<Map> resultList = [];
     try {
-      parameter = ConnectorParameter(_creditUrl);
-      parameter.data = code;
-      result = await Connector.getDataByPost(parameter);
-      tagNode = parse(result);
-      node = tagNode.getElementsByTagName("table").first;
-      nodes = node.getElementsByTagName("a");
+      final ConnectorParameter parameter = ConnectorParameter(_creditUrl);
+      final String result = await Connector.getDataByPost(parameter);
+      final Document tagNode = parse(result);
+      final List<Map> resultList = [];
+      final List<Element> nodes = tagNode
+          .getElementsByTagName("table")
+          .first
+          .getElementsByTagName("a");
       for (int i = 0; i < nodes.length; i++) {
-        node = nodes[i];
+        final Element node = nodes[i];
         final href = node.attributes["href"];
         if (href == null || href.isEmpty) {
           throw Exception("getDepartmentList: href is null or empty.");
         }
-        Map<String, String> code = Uri.parse(href).queryParameters;
-        String name = node.text.replaceAll(RegExp("[ |s]"), "");
+        final Map<String, String> code = Uri
+            .parse(href)
+            .queryParameters;
+        final String name = node.text.replaceAll(RegExp("[ |s]"), "");
         resultList.add({"name": name, "code": code});
       }
       return resultList;
@@ -465,7 +455,7 @@ class CourseConnector {
   }
 
   static String _getSSOLoginJumpUrl(Document ssoRedirectTagNode) {
-    String? jumpUrl = ssoRedirectTagNode.getElementsByTagName("form")[0].attributes["action"];
+    final String? jumpUrl = ssoRedirectTagNode.getElementsByTagName("form")[0].attributes["action"];
 
     if (jumpUrl == null) {
       throw Exception("Cannot fetch jumpUrl.");
