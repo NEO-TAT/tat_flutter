@@ -52,7 +52,7 @@ class CourseConnector {
     List<Course> courses = <Course>[];
 
     for (int rowIndex = 1; rowIndex < courseRows.length - 1; rowIndex++) {
-      var courseRowData = courseRows[rowIndex].getElementsByTagName("td");
+      final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
       courses.add(Course(
           idString: courseRowData[0].text,
           name: courseRowData[1].text,
@@ -124,9 +124,9 @@ class CourseConnector {
     List<Course> courses = <Course>[];
 
     for (int rowIndex = 2; rowIndex < courseRows.length - 1; rowIndex++) {
-      var courseRowData = courseRows[rowIndex].getElementsByTagName("td");
-      var syllabusNode = courseRowData[18].getElementsByTagName("a");
-      var syllabusLinkHref = syllabusNode.isEmpty ? null : syllabusNode.first.attributes["href"];
+      final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
+      final syllabusNode = courseRowData[18].getElementsByTagName("a");
+      final syllabusLinkHref = syllabusNode.isEmpty ? null : syllabusNode.first.attributes["href"];
       courses.add(Course(
           idString: courseRowData[0].text,
           name: courseRowData[1].text,
@@ -175,11 +175,11 @@ class CourseConnector {
       String result = await Connector.getDataByGet(parameter);
       Document tagNode = parse(result);
 
-      var tables = tagNode.getElementsByTagName("table");
-      var trs = tables[0].getElementsByTagName("tr");
-      var syllabusRow = trs[1].getElementsByTagName("td");
+      final tables = tagNode.getElementsByTagName("table");
+      final trs = tables[0].getElementsByTagName("tr");
+      final syllabusRow = trs[1].getElementsByTagName("td");
 
-      var model = CourseSyllabusJson(
+      final model = CourseSyllabusJson(
           yearSemester: syllabusRow[0].text,
           courseId: syllabusRow[1].text,
           courseName: syllabusRow[2].text,
@@ -302,7 +302,7 @@ class CourseConnector {
       nodes = tagNode.getElementsByTagName("a");
       for (int i = 0; i < nodes.length; i++) {
         node = nodes[i];
-        var href = node.attributes["href"];
+        final href = node.attributes["href"];
         if (href == null || href.isEmpty) {
           throw Exception("getDivisionList: href is null or empty.");
         }
