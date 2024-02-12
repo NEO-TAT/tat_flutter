@@ -11,7 +11,8 @@ SemesterJson _$SemesterJsonFromJson(Map<String, dynamic> json) => SemesterJson(
       semester: json['semester'] as String,
     );
 
-Map<String, dynamic> _$SemesterJsonToJson(SemesterJson instance) => <String, dynamic>{
+Map<String, dynamic> _$SemesterJsonToJson(SemesterJson instance) =>
+    <String, dynamic>{
       'year': instance.year,
       'semester': instance.semester,
     };

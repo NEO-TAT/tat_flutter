@@ -18,15 +18,17 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(
-        _current != null, 'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(_current != null,
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false) ? locale.languageCode : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -2613,6 +2615,96 @@ class S {
     return Intl.message(
       'department',
       name: 'kDepartment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown Department`
+  String get unknownDepartment {
+    return Intl.message(
+      'Unknown Department',
+      name: 'unknownDepartment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown Student`
+  String get unknownStudent {
+    return Intl.message(
+      'Unknown Student',
+      name: 'unknownStudent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `name`
+  String get name {
+    return Intl.message(
+      'name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `student id`
+  String get studentId {
+    return Intl.message(
+      'student id',
+      name: 'studentId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Getting classmate list...`
+  String get getCourseClassmateList {
+    return Intl.message(
+      'Getting classmate list...',
+      name: 'getCourseClassmateList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get classmate list error`
+  String get getCourseClassmateListError {
+    return Intl.message(
+      'Get classmate list error',
+      name: 'getCourseClassmateListError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NTPU`
+  String get nationalTaipeiUniversity {
+    return Intl.message(
+      'NTPU',
+      name: 'nationalTaipeiUniversity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TMU`
+  String get taipeiMedicineUniversity {
+    return Intl.message(
+      'TMU',
+      name: 'taipeiMedicineUniversity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aduit`
+  String get aduit {
+    return Intl.message(
+      'Aduit',
+      name: 'aduit',
       desc: '',
       args: [],
     );

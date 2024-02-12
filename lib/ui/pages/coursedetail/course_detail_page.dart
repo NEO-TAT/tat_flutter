@@ -14,10 +14,12 @@ import 'package:provider/provider.dart';
 import '../../../src/model/coursetable/course.dart';
 
 class ISchoolPage extends StatefulWidget {
+  final int year;
+  final int semester;
   final Course course;
   final String studentId;
 
-  const ISchoolPage(this.studentId, this.course, {Key key}) : super(key: key);
+  const ISchoolPage(this.studentId, this.course, this.year, this.semester, {Key key}) : super(key: key);
 
   @override
   State<ISchoolPage> createState() => _ISchoolPageState();
@@ -39,6 +41,8 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
         CourseInfoPage(
           widget.studentId,
           widget.course,
+          widget.year,
+          widget.semester,
           key: null,
         )));
     if (widget.studentId == LocalStorage.instance.getAccount()) {

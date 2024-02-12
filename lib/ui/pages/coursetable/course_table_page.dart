@@ -709,7 +709,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     if (course.isEmpty()) {
       MyToast.show(course.name + R.current.noSupport);
     } else {
-      RouteUtils.toISchoolPage(studentId, course).then((value) {
+      RouteUtils.toISchoolPage(studentId, course, courseTableData.year, courseTableData.semester).then((value) {
         if (value != null) {
           final courseTable = LocalStorage.instance.getCourseSetting().info;
           final year = courseTable.year;
