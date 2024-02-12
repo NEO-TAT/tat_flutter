@@ -4,13 +4,10 @@ part 'course_period.g.dart';
 
 @JsonSerializable()
 class CoursePeriod {
-  int weekday;
-  String period;
+  final int weekday;
+  final String period;
 
-  CoursePeriod({required this.weekday, required this.period}) {
-    weekday = weekday;
-    period = period;
-  }
+  CoursePeriod({required this.weekday, required this.period});
 
   factory CoursePeriod.fromJson(Map<String, dynamic> json) => _$CoursePeriodFromJson(json);
 

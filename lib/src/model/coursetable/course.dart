@@ -7,20 +7,20 @@ part 'course.g.dart';
 
 @JsonSerializable()
 class Course {
-  late int id;
-  String name;
-  late double stage;
-  late double credit;
-  late int periodCount;
-  String category;
-  late List<String> teachers;
-  late List<String> classNames;
-  late List<CoursePeriod> coursePeriods;
-  late List<String> classrooms;
-  String applyStatus;
-  String language;
-  String syllabusLink;
-  String note;
+  late final int id;
+  final String name;
+  late final double stage;
+  late final double credit;
+  late final int periodCount;
+  final String category;
+  late final List<String> teachers;
+  late final List<String> classNames;
+  late final List<CoursePeriod> coursePeriods;
+  late final List<String> classrooms;
+  final String applyStatus;
+  final String language;
+  final String syllabusLink;
+  final String note;
 
   Course(
       {required this.id,
@@ -55,19 +55,13 @@ class Course {
     required this.note,
   }) {
     id = JsonInit.intInit(idString);
-    name = JsonInit.stringInit(name).trim();
     stage = JsonInit.doubleInit(stageString);
     credit = JsonInit.doubleInit(creditString);
     periodCount = JsonInit.intInit(periodCountString);
-    category = JsonInit.stringInit(category).trim();
     teachers = teacherString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
     coursePeriods = _convertPeriodSlotsToCoursePeriods(periodSlots);
     classrooms = classroomString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
     classNames = classNameString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
-    applyStatus = JsonInit.stringInit(applyStatus).trim();
-    language = JsonInit.stringInit(language).trim();
-    syllabusLink = JsonInit.stringInit(syllabusLink).trim();
-    note = JsonInit.stringInit(note).trim();
   }
 
   bool isEmpty() => id == 0;

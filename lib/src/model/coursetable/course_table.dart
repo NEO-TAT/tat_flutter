@@ -7,18 +7,14 @@ part 'course_table.g.dart';
 
 @JsonSerializable()
 class CourseTable {
-  int year;
-  int semester;
-  List<Course> courses;
-  User user;
+  final int year;
+  final int semester;
+  final List<Course> courses;
+  final User user;
   late final Set<int> weekdays = {};
   late final Set<String> periods = {};
 
   CourseTable({required this.year, required this.semester, required this.courses, required this.user}) {
-    year = year;
-    semester = semester;
-    courses = courses;
-    user = user;
     weekdays.addAll(courses
         .map((course) => course.coursePeriods.map((coursePeriod) => coursePeriod.weekday))
         .expand((element) => element));
