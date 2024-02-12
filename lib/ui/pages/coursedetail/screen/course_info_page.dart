@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/r.dart';
+import 'package:flutter_app/src/task/task.dart';
+import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
 
 import '../../../../src/model/coursetable/course.dart';
+import '../../../../src/task/iplus/iplus_get_course_student_list_task.dart';
 
 class CourseInfoPage extends StatefulWidget {
   final Course course;
@@ -34,6 +37,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     super.initState();
     isLoading = true;
     BackButtonInterceptor.add(myInterceptor);
+    Future.microtask(() => _loadCourseStudent());
     Future.delayed(Duration.zero, () {
       _addTask();
     });
@@ -253,6 +257,15 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
         ],
       ),
     );
+  }
+
+  void _loadCourseStudent() async {
+    TaskFlow taskFlow = TaskFlow();
+    final task = IPlusGetStudentListTask(courseId: widget.course.id);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      task.result;
+    }
   }
 
   @override
