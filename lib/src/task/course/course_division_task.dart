@@ -16,7 +16,7 @@ class CourseDivisionTask extends CourseSystemTask<List<Map>> {
     final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.searchingDivision);
-      final value = await CourseConnector.getDivisionList(year) as List<Map<dynamic, dynamic>>?;
+      final value = await CourseConnector.getDivisionList(year);
       super.onEnd();
 
       if (value != null) {

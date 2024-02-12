@@ -18,7 +18,7 @@ class CourseCreditInfoTask extends CourseSystemTask<GraduationInformationJson> {
     final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.searchingCreditInfo);
-      final value = await CourseConnector.getCreditInfo(code, creditName) as GraduationInformationJson?;
+      final value = await CourseConnector.getCreditInfo(code, creditName);
       super.onEnd();
 
       if (value != null) {

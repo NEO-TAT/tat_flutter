@@ -112,7 +112,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(String courseId) async {
+  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(int courseId) async {
     ConnectorParameter parameter;
     String result;
     html.Document tagNode;
@@ -263,7 +263,7 @@ class ISchoolPlusConnector {
 
   static String bid;
 
-  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>> getCourseAnnouncement(String courseId) async {
+  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>> getCourseAnnouncement(int courseId) async {
     String result;
     var value = ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>();
     try {
@@ -460,7 +460,7 @@ class ISchoolPlusConnector {
     String result;
     try {
       parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
-      parameter.data = {"bid": bid};
+      parameter.data = {"bid": bid.toString()};
       await Connector.getDataByPost(parameter);
       result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
@@ -471,7 +471,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<String> getBid(String courseId) async {
+  static Future<String> getBid() async {
     /*
     ConnectorParameter parameter;
     html.Document tagNode;
@@ -492,7 +492,7 @@ class ISchoolPlusConnector {
     return bid;
   }
 
-  static Future<bool> _selectCourse(String courseId) async {
+  static Future<bool> _selectCourse(int courseId) async {
     ConnectorParameter parameter;
     html.Document tagNode;
     html.Element node;
@@ -508,7 +508,7 @@ class ISchoolPlusConnector {
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         String name = node.text.split("_").last;
-        if (name == courseId) {
+        if (name == courseId.toString()) {
           courseValue = node.attributes["value"];
           break;
         }

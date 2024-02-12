@@ -1,24 +1,20 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
 import 'dart:async';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
-import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
-import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
 
+import '../../../../src/model/coursetable/course.dart';
+
 class CourseInfoPage extends StatefulWidget {
-  final CourseInfoJson courseInfo;
+  final Course course;
   final String studentId;
 
-  const CourseInfoPage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
+  const CourseInfoPage(this.studentId, this.course, {Key? key}) : super(key: key);
 
   final int courseInfoWithAlpha = 0x44;
 
@@ -27,8 +23,7 @@ class CourseInfoPage extends StatefulWidget {
 }
 
 class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAliveClientMixin {
-  CourseMainInfoJson courseMainInfo;
-  CourseExtraInfoJson courseExtraInfo;
+  late Course course;
   bool isLoading = true;
   final List<Widget> courseData = [];
   final List<Widget> listItem = [];
@@ -58,38 +53,32 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   }
 
   void _addTask() async {
-    courseMainInfo = widget.courseInfo.main;
-    final courseId = courseMainInfo.course.id;
-    final taskFlow = TaskFlow();
-    final task = CourseExtraInfoTask(courseId);
-    taskFlow.addTask(task);
-    if (await taskFlow.start()) {
-      courseExtraInfo = task.result;
-    }
-    widget.courseInfo.extra = courseExtraInfo;
-    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseId, courseMainInfo.course.id])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, courseMainInfo.course.name])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.credit, courseMainInfo.course.credits])));
-    courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.category, courseExtraInfo.course.category])));
+    course = widget.course;
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseId, course.id])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, course.name])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.credit, course.credit])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.category, course.category])));
     courseData.add(
       _buildCourseInfoWithButton(
-        sprintf("%s: %s", [R.current.instructor, courseMainInfo.getTeacherName()]),
+        sprintf("%04s: %s", [R.current.instructor, course.teachers.join(" ")]),
         R.current.syllabus,
-        courseMainInfo.course.scheduleHref,
+        course.syllabusLink,
       ),
     );
-    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.startClass, courseMainInfo.getOpenClassName()])));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.startClass, course.classNames.join(" ")])));
     courseData.add(_buildMultiButtonInfo(
       sprintf("%s: ", [R.current.classroom]),
       R.current.classroomUse,
-      courseMainInfo.getClassroomNameList(),
-      courseMainInfo.getClassroomHrefList(),
+      course.classrooms,
+      course.classrooms,
     ));
 
     listItem.removeRange(0, listItem.length);
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
-
+    // listItem.add(_buildCourseCard(course));
+    // listItem.add(_buildInfoTitle("課程修課資訊"));
+    // listItem.add(_buildCourseApplyCard(course));
     isLoading = false;
     setState(() {});
   }
@@ -147,7 +136,8 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       child: Row(
         children: <Widget>[
           const Icon(Icons.details),
-          Expanded(
+          Container(
+            alignment: const Align(alignment: Alignment.topCenter).alignment,
             child: Text(
               text,
               style: textStyle,
@@ -197,7 +187,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   Widget _buildInfoTitle(String title) {
     TextStyle textStyle = const TextStyle(fontSize: 24);
     return Container(
-      padding: const EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: Row(
         children: <Widget>[
           Text(

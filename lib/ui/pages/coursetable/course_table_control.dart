@@ -2,8 +2,11 @@
 // @dart=2.10
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
+import 'package:flutter_app/src/model/coursetable/course_period.dart';
 import 'package:flutter_app/src/r.dart';
+
+import '../../../src/model/coursetable/course.dart';
+import '../../../src/model/coursetable/course_table.dart';
 
 class CourseTableControl {
   bool isHideSaturday = false;
@@ -14,15 +17,15 @@ class CourseTableControl {
   bool isHideB = false;
   bool isHideC = false;
   bool isHideD = false;
-  CourseTableJson courseTable;
+  CourseTable courseTable;
   List<String> dayStringList = [
+    R.current.Sunday,
     R.current.Monday,
     R.current.Tuesday,
     R.current.Wednesday,
     R.current.Thursday,
     R.current.Friday,
     R.current.Saturday,
-    R.current.Sunday,
     R.current.UnKnown
   ];
   List<String> timeList = [
@@ -47,16 +50,15 @@ class CourseTableControl {
   static int sectionLength = 14;
   Map<String, Color> colorMap;
 
-  void set(CourseTableJson value) {
+  void set(CourseTable value) {
     courseTable = value;
-    isHideSaturday = !courseTable.isDayInCourseTable(Day.Saturday);
-    isHideSunday = !courseTable.isDayInCourseTable(Day.Sunday);
-    isHideUnKnown = !courseTable.isDayInCourseTable(Day.UnKnown);
-    isHideN = !courseTable.isSectionNumberInCourseTable(SectionNumber.T_N);
-    isHideA = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_A));
-    isHideB = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_B));
-    isHideC = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_C));
-    isHideD = (!courseTable.isSectionNumberInCourseTable(SectionNumber.T_D));
+    isHideSaturday = !courseTable.isWeekdayInCourseTable(6);
+    isHideSunday = !courseTable.isWeekdayInCourseTable(0);
+    isHideN = !courseTable.isPeriodInCourseTable("N");
+    isHideA = !courseTable.isPeriodInCourseTable("A");
+    isHideB = !courseTable.isPeriodInCourseTable("B");
+    isHideC = !courseTable.isPeriodInCourseTable("C");
+    isHideD = !courseTable.isPeriodInCourseTable("D");
     isHideA &= (isHideB & isHideC & isHideD);
     isHideB &= (isHideC & isHideD);
     isHideC &= isHideD;
@@ -66,37 +68,37 @@ class CourseTableControl {
   List<int> get getDayIntList {
     List<int> intList = [];
     for (int i = 0; i < dayLength; i++) {
-      if (isHideSaturday && i == 5) continue;
-      if (isHideSunday && i == 6) continue;
+      if (isHideSaturday && i == 6) continue;
+      if (isHideSunday && i == 0) continue;
       if (isHideUnKnown && i == 7) continue;
       intList.add(i);
     }
     return intList;
   }
 
-  CourseInfoJson getCourseInfo(int intDay, int intNumber) {
-    final day = Day.values[intDay];
-    final number = SectionNumber.values[intNumber];
-
-    if (courseTable == null) {
-      return null;
+  Course getCourse(int weekday, int period) {
+    if (weekday == 7) {
+      return getUnknownCourse(period);
     }
-
-    return courseTable?.courseInfoMap[day][number];
+    return courseTable.courses.firstWhere(
+        (course) => course.coursePeriods
+            .any((coursePeriod) => coursePeriod.period == getSectionString(period) && coursePeriod.weekday == weekday),
+        orElse: () => null);
   }
 
-  Color getCourseInfoColor(int intDay, int intNumber) {
-    final courseInfo = getCourseInfo(intDay, intNumber);
-
+  Color getCourseInfoColor(int weekday, int period) {
+    Course course = getCourse(weekday, period);
     if (colorMap == null) {
       return Colors.white;
     }
 
+    if (course == null) {
+      return Colors.white;
+    }
+
     for (final key in colorMap.keys) {
-      if (courseInfo != null) {
-        if (key == courseInfo.main.course.id) {
-          return colorMap[key];
-        }
+      if (key == course.id.toString()) {
+        return colorMap[key];
       }
     }
 
@@ -105,7 +107,7 @@ class CourseTableControl {
 
   void _initColorList() {
     colorMap = {};
-    List<String> courseInfoList = courseTable.getCourseIdList();
+    List<String> courseInfoList = courseTable.courses.map((course) => course.id.toString()).toList();
     int colorCount = courseInfoList.length;
     colorCount = (colorCount == 0) ? 1 : colorCount;
 
@@ -114,6 +116,14 @@ class CourseTableControl {
     for (int i = 0; i < colorCount; i++) {
       colorMap[courseInfoList[i]] = colors[i % colors.length];
     }
+  }
+
+  List<CoursePeriod> get getCoursePeriodList {
+    final Set<CoursePeriod> coursePeriodSet = {};
+    for (Course course in courseTable.courses) {
+      coursePeriodSet.addAll(course.coursePeriods);
+    }
+    return coursePeriodSet.toList();
   }
 
   List<int> get getSectionIntList {
@@ -139,5 +149,10 @@ class CourseTableControl {
 
   String getSectionString(int section) {
     return sectionStringList[section];
+  }
+
+  Course getUnknownCourse(int period) {
+    final nonPeriodCourses = courseTable.courses.where((course) => course.coursePeriods.isEmpty);
+    return period >= nonPeriodCourses.length ? null : nonPeriodCourses.elementAt(period);
   }
 }

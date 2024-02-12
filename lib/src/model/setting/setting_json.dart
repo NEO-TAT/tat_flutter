@@ -1,9 +1,10 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/model/json_init.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
+
+import '../coursetable/course_table.dart';
 
 part 'setting_json.g.dart';
 
@@ -37,14 +38,14 @@ class SettingJson {
 
 @JsonSerializable()
 class CourseSettingJson {
-  CourseTableJson info;
+  CourseTable info;
 
   CourseSettingJson({this.info}) {
-    info = info ?? CourseTableJson();
+    info = info;
   }
 
   bool get isEmpty {
-    return info.isEmpty;
+    return info.courses.isEmpty;
   }
 
   @override

@@ -1,8 +1,6 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'package:flutter/material.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
@@ -13,11 +11,13 @@ import 'package:flutter_app/ui/pages/coursedetail/tab_page.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../../../src/model/coursetable/course.dart';
+
 class ISchoolPage extends StatefulWidget {
-  final CourseInfoJson courseInfo;
+  final Course course;
   final String studentId;
 
-  const ISchoolPage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
+  const ISchoolPage(this.studentId, this.course, {Key key}) : super(key: key);
 
   @override
   State<ISchoolPage> createState() => _ISchoolPageState();
@@ -33,12 +33,19 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.courseInfo)));
+    tabPageList.add(TabPage(
+        R.current.course,
+        Icons.info,
+        CourseInfoPage(
+          widget.studentId,
+          widget.course,
+          key: null,
+        )));
     if (widget.studentId == LocalStorage.instance.getAccount()) {
-      tabPageList.add(TabPage(
-          R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
       tabPageList.add(
-          TabPage(R.current.fileAndVideo, Icons.file_download, IPlusFilePage(widget.studentId, widget.courseInfo)));
+          TabPage(R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.course)));
+      tabPageList
+          .add(TabPage(R.current.fileAndVideo, Icons.file_download, IPlusFilePage(widget.studentId, widget.course)));
     }
 
     _tabController = TabController(vsync: this, length: tabPageList.length);
@@ -63,8 +70,7 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
   }
 
   Widget tabPageView() {
-    CourseMainJson course = widget.courseInfo.main.course;
-
+    Course course = widget.course;
     return DefaultTabController(
       length: tabPageList.length,
       child: Scaffold(

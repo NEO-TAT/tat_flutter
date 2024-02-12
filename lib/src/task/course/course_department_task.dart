@@ -16,7 +16,7 @@ class CourseDepartmentTask extends CourseSystemTask<List<Map>> {
     final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.searchingDepartment);
-      final value = await CourseConnector.getDepartmentList(code) as List<Map<dynamic, dynamic>>?;
+      final value = await CourseConnector.getDepartmentList(code);
       super.onEnd();
 
       if (value != null) {

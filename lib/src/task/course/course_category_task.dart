@@ -1,7 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/model/course/course_syllabus_json.dart';
+import 'package:flutter_app/src/model/course/course_syllabus.dart';
 import 'package:flutter_app/src/r.dart';
 
 import '../task.dart';
