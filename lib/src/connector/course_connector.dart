@@ -127,7 +127,8 @@ class CourseConnector {
       final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
       final syllabusNode = courseRowData[18].getElementsByTagName("a");
       final syllabusLinkHref = syllabusNode.isEmpty ? null : syllabusNode.first.attributes["href"];
-      courses.add(Course.parseNodeString(
+      courses.add(
+        Course.parseNodeString(
           idString: courseRowData[0].text,
           name: courseRowData[1].text,
           stageString: courseRowData[2].text,
@@ -141,7 +142,9 @@ class CourseConnector {
           applyStatus: courseRowData[16].text,
           language: courseRowData[17].text,
           syllabusLink: syllabusLinkHref == null ? "" : _postCourseCNUrl + syllabusLinkHref,
-          note: courseRowData[19].text,),);
+          note: courseRowData[19].text,
+        ),
+      );
     }
 
     return courses;
@@ -154,9 +157,8 @@ class CourseConnector {
       final String result = await Connector.getDataByGet(parameter);
 
       final Document tagNode = parse(result);
-      final Element node = tagNode.getElementsByTagName("table").first
-          .getElementsByTagName("tr")[1]
-          .getElementsByTagName("td")[2];
+      final Element node =
+          tagNode.getElementsByTagName("table").first.getElementsByTagName("tr")[1].getElementsByTagName("td")[2];
 
       return node.text.replaceAll(RegExp(r"\n"), "");
     } catch (e, stack) {
@@ -180,18 +182,19 @@ class CourseConnector {
       final syllabusRow = trs[1].getElementsByTagName("td");
 
       final model = CourseSyllabusJson(
-          yearSemester: syllabusRow[0].text,
-          courseId: syllabusRow[1].text,
-          courseName: syllabusRow[2].text,
-          phase: syllabusRow[3].text,
-          credit: syllabusRow[4].text,
-          hour: syllabusRow[5].text,
-          category: syllabusRow[6].text,
-          teachers: syllabusRow[7].text,
-          className: syllabusRow[8].text,
-          applyStudentCount: syllabusRow[9].text,
-          withdrawStudentCount: syllabusRow[10].text,
-          note: syllabusRow[11].text,);
+        yearSemester: syllabusRow[0].text,
+        courseId: syllabusRow[1].text,
+        courseName: syllabusRow[2].text,
+        phase: syllabusRow[3].text,
+        credit: syllabusRow[4].text,
+        hour: syllabusRow[5].text,
+        category: syllabusRow[6].text,
+        teachers: syllabusRow[7].text,
+        className: syllabusRow[8].text,
+        applyStudentCount: syllabusRow[9].text,
+        withdrawStudentCount: syllabusRow[10].text,
+        note: syllabusRow[11].text,
+      );
 
       return model;
     } catch (e, stack) {
@@ -296,9 +299,7 @@ class CourseConnector {
         if (href == null || href.isEmpty) {
           throw Exception("getDivisionList: href is null or empty.");
         }
-        final Map<String, String> code = Uri
-            .parse(href)
-            .queryParameters;
+        final Map<String, String> code = Uri.parse(href).queryParameters;
         resultList.add({"name": node.text, "code": code});
       }
       return resultList;
@@ -319,19 +320,14 @@ class CourseConnector {
       final String result = await Connector.getDataByPost(parameter);
       final Document tagNode = parse(result);
       final List<Map> resultList = [];
-      final List<Element> nodes = tagNode
-          .getElementsByTagName("table")
-          .first
-          .getElementsByTagName("a");
+      final List<Element> nodes = tagNode.getElementsByTagName("table").first.getElementsByTagName("a");
       for (int i = 0; i < nodes.length; i++) {
         final Element node = nodes[i];
         final href = node.attributes["href"];
         if (href == null || href.isEmpty) {
           throw Exception("getDepartmentList: href is null or empty.");
         }
-        final Map<String, String> code = Uri
-            .parse(href)
-            .queryParameters;
+        final Map<String, String> code = Uri.parse(href).queryParameters;
         final String name = node.text.replaceAll(RegExp("[ |s]"), "");
         resultList.add({"name": name, "code": code});
       }
