@@ -11,7 +11,8 @@ CoursePeriod _$CoursePeriodFromJson(Map<String, dynamic> json) => CoursePeriod(
       period: json['period'] as String,
     );
 
-Map<String, dynamic> _$CoursePeriodToJson(CoursePeriod instance) => <String, dynamic>{
+Map<String, dynamic> _$CoursePeriodToJson(CoursePeriod instance) =>
+    <String, dynamic>{
       'weekday': instance.weekday,
       'period': instance.period,
     };
