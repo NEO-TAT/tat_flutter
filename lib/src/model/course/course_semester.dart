@@ -1,5 +1,4 @@
-// TODO: remove sdk version selector after migrating to null-safety.
-// @dart=2.10
+import 'package:equatable/equatable.dart';
 import 'package:flutter_app/src/model/json_init.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:sprintf/sprintf.dart';
@@ -7,11 +6,11 @@ import 'package:sprintf/sprintf.dart';
 part 'course_semester.g.dart';
 
 @JsonSerializable()
-class SemesterJson {
+class SemesterJson with EquatableMixin {
   String year;
   String semester;
 
-  SemesterJson({this.year, this.semester}) {
+  SemesterJson({required this.year, required this.semester}) {
     year = JsonInit.stringInit(year);
     semester = JsonInit.stringInit(semester);
   }
@@ -30,17 +29,8 @@ class SemesterJson {
   }
 
   @override
-  bool operator ==(dynamic other) {
-    if (other is! SemesterJson) {
-      return false;
-    }
-
-    final isSemesterSame = int.tryParse(other.semester) == int.tryParse(semester);
-    final isYearSame = int.tryParse(other.year) == int.tryParse(year);
-
-    return isSemesterSame && isYearSame;
-  }
-
-  @override
-  int get hashCode => Object.hashAll([semester.hashCode, year.hashCode]);
+  List<Object?> get props => [
+    year,
+    semester
+  ];
 }

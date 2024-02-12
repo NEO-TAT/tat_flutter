@@ -91,6 +91,7 @@ dependencies:
   uuid: ^4.1.0
   intl_utils: ^2.8.5
   flutter_native_splash: ^2.2.19 # restricted by path 1.8.2
+  equatable: ^2.0.5
 
 
 dependency_overrides:
