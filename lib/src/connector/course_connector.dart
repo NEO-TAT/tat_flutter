@@ -53,7 +53,7 @@ class CourseConnector {
 
     for (int rowIndex = 1; rowIndex < courseRows.length - 1; rowIndex++) {
       final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
-      courses.add(Course(
+      courses.add(Course.parseNodeString(
           idString: courseRowData[0].text,
           name: courseRowData[1].text,
           stageString: "",
@@ -127,7 +127,7 @@ class CourseConnector {
       final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
       final syllabusNode = courseRowData[18].getElementsByTagName("a");
       final syllabusLinkHref = syllabusNode.isEmpty ? null : syllabusNode.first.attributes["href"];
-      courses.add(Course(
+      courses.add(Course.parseNodeString(
           idString: courseRowData[0].text,
           name: courseRowData[1].text,
           stageString: courseRowData[2].text,

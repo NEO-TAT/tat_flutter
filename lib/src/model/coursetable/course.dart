@@ -7,50 +7,49 @@ part 'course.g.dart';
 
 @JsonSerializable()
 class Course {
-  String idString;
   late int id;
-
   String name;
-
-  String stageString;
   late double stage;
-
-  String creditString;
   late double credit;
-
-  String periodCountString;
   late int periodCount;
-
   String category;
-
-  String teacherString;
   late List<String> teachers;
-
-  String classNameString;
   late List<String> classNames;
-
-  List<String> periodSlots;
   late List<CoursePeriod> coursePeriods;
-
-  String classroomString;
   late List<String> classrooms;
-
   String applyStatus;
   String language;
   String syllabusLink;
   String note;
 
   Course({
-    required this.idString,
+    required this.id,
     required this.name,
-    required this.stageString,
-    required this.creditString,
-    required this.periodCountString,
+    required this.stage,
+    required this.credit,
+    required this.periodCount,
     required this.category,
-    required this.teacherString,
-    required this.classNameString,
-    required this.periodSlots,
-    required this.classroomString,
+    required this.teachers,
+    required this.classNames,
+    required this.coursePeriods,
+    required this.classrooms,
+    required this.applyStatus,
+    required this.language,
+    required this.syllabusLink,
+    required this.note
+  });
+
+  Course.parseNodeString({
+    required String idString,
+    required this.name,
+    required String stageString,
+    required String creditString,
+    required String periodCountString,
+    required this.category,
+    required String teacherString,
+    required String classNameString,
+    required List<String> periodSlots,
+    required String classroomString,
     required this.applyStatus,
     required this.language,
     required this.syllabusLink,
@@ -62,13 +61,9 @@ class Course {
     credit = JsonInit.doubleInit(creditString);
     periodCount = JsonInit.intInit(periodCountString);
     category = JsonInit.stringInit(category).trim();
-    teacherString = JsonInit.stringInit(teacherString).trim();
     teachers = teacherString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
-    periodSlots = JsonInit.listInit<String>(periodSlots);
     coursePeriods = _convertPeriodSlotsToCoursePeriods(periodSlots);
-    classroomString = JsonInit.stringInit(classroomString).trim();
     classrooms = classroomString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
-    classNameString = JsonInit.stringInit(classNameString).trim();
     classNames = classNameString.split(RegExp(r"\n")).map((element) => element.trim()).toList();
     applyStatus = JsonInit.stringInit(applyStatus).trim();
     language = JsonInit.stringInit(language).trim();
