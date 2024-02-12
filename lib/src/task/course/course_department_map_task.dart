@@ -23,10 +23,10 @@ class CourseDepartmentMapTask extends CourseSystemTask<Map<String, String>> {
 
       final collection = <String, String>{};
 
-      if(value != null) {
+      if (value != null) {
         collection.addAll(value);
       }
-      if(twoYearProgramDepartmentMap != null){
+      if (twoYearProgramDepartmentMap != null) {
         collection.addAll(twoYearProgramDepartmentMap);
       }
 

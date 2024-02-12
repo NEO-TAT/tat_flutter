@@ -514,9 +514,7 @@ class ISchoolPlusConnector {
       for (int i = 0; i < nodes.length; i++) {
         html.Element node = nodes[i].querySelectorAll('td')[1];
 
-        String information = node
-            .querySelector('div')
-            .innerHtml;
+        String information = node.querySelector('div').innerHtml;
         int splitIndex = information.indexOf(' ');
 
         String studentId = information.substring(0, splitIndex);
@@ -527,11 +525,7 @@ class ISchoolPlusConnector {
           continue;
         }
 
-        CourseStudent courseStudent = CourseStudent(
-            department: "",
-            id: studentId,
-            name: studentName
-        );
+        CourseStudent courseStudent = CourseStudent(department: "", id: studentId, name: studentName);
         courseStudents.add(courseStudent);
       }
 
@@ -541,7 +535,6 @@ class ISchoolPlusConnector {
       returnResult.status = IPlusReturnStatus.success;
       returnResult.result = courseStudents;
       return returnResult;
-
     } catch (e, stack) {
       Log.eWithStack(e, stack);
       final returnResult = ReturnWithStatus<List<CourseStudent>>();

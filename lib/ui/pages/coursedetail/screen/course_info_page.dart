@@ -87,7 +87,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     List<CourseStudent> students = await _getCourseStudent();
     Map<String, String> departmentMap = await _getCourseDepartmentMap();
 
-    if(students.isNotEmpty){
+    if (students.isNotEmpty) {
       listItem.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
@@ -285,7 +285,8 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     );
   }
 
-  Widget _buildClassmateInfo(int index, String departmentName, String studentId, String studentName, { bool isHeader = false }) {
+  Widget _buildClassmateInfo(int index, String departmentName, String studentId, String studentName,
+      {bool isHeader = false}) {
     double height = isHeader ? 25 : 50;
 
     final color = (index % 2 == 1)
@@ -332,7 +333,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       List<CourseStudent>? students = task.result;
-      if(students != null){
+      if (students != null) {
         return students;
       }
     }
@@ -345,7 +346,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       Map<String, String>? departmentMap = task.result;
-      if(departmentMap != null){
+      if (departmentMap != null) {
         return departmentMap;
       }
     }
@@ -355,32 +356,32 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   @override
   bool get wantKeepAlive => true;
 
-  String getDepartment(Map<String, String> departmentMap, String studentId){
+  String getDepartment(Map<String, String> departmentMap, String studentId) {
     /*
      * Since we don't have official data to describe the following hard-coded rule is correct.
      * It may need to confirm or just leave it.
      */
-    if(studentId.substring(0, 1) == "4"){
+    if (studentId.substring(0, 1) == "4") {
       return R.current.nationalTaipeiUniversity;
     }
 
-    if(studentId.substring(0, 1) == "B"){
+    if (studentId.substring(0, 1) == "B") {
       return R.current.taipeiMedicineUniversity;
     }
 
-    if(studentId.substring(3, 6) == "054"){
+    if (studentId.substring(3, 6) == "054") {
       return R.current.aduit;
     }
 
     String? department = departmentMap[studentId.substring(3, 5)];
 
-    if(department != null){
+    if (department != null) {
       return department;
     }
 
     department = departmentMap[studentId.substring(3, 6)];
 
-    if(department != null){
+    if (department != null) {
       return department;
     }
 
