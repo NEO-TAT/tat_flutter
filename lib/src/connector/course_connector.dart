@@ -53,7 +53,8 @@ class CourseConnector {
 
     for (int rowIndex = 1; rowIndex < courseRows.length - 1; rowIndex++) {
       final courseRowData = courseRows[rowIndex].getElementsByTagName("td");
-      courses.add(Course.parseNodeString(
+      courses.add(
+        Course.parseNodeString(
           idString: courseRowData[0].text,
           name: courseRowData[1].text,
           stageString: "",
@@ -67,7 +68,9 @@ class CourseConnector {
           applyStatus: courseRowData[14].text,
           language: courseRowData[15].text,
           syllabusLink: "",
-          note: courseRowData[16].text));
+          note: courseRowData[16].text,
+        ),
+      );
     }
 
     return courses;
