@@ -134,16 +134,20 @@ flutter_icons:
 flutter_native_splash:
   color: "#ffffff"
   image: assets/images/splash.png
+  branding: assets/images/branding.png
 
   color_dark: "#2b2b2b"
   image_dark: assets/images/splash-dark.png
+  branding_dark: assets/images/branding-dark.png
 
   android_12:
     color: "#ffffff"
     image: assets/images/splash-android_12.png
+    branding: assets/images/branding.png
 
     color_dark: "#2b2b2b"
     image_dark: assets/images/splash-android_12-dark.png
+    branding_dark: assets/images/branding-dark.png
 
 module:
   androidX: true
