@@ -42,7 +42,7 @@ class ISchoolPlusConnector {
   static Future<ISchoolPlusConnectorStatus> login(String account, doFirebaseLogin) async {
     try {
       final ssoIndexResponse = await getSSOIndexResponse();
-      if(ssoIndexResponse.isEmpty) return ISchoolPlusConnectorStatus.loginFail;
+      if (ssoIndexResponse.isEmpty) return ISchoolPlusConnectorStatus.loginFail;
 
       final ssoIndexTagNode = html.parse(ssoIndexResponse);
       final ssoIndexNodes = ssoIndexTagNode.getElementsByTagName("input");
@@ -54,14 +54,14 @@ class ISchoolPlusConnector {
         final value = node.attributes['value'];
         oauthData[name] = value;
       }
-      
+
       // Step 2
       // The ssoIndexJumpUrl should be "oauth2Server.do".
       // If not, it means that the school server has changed.
       // The response status code to this request should result in
       // "302" (the page has moved to a new location), which triggers automatic redirection
       // feature included in dio connector, thus no further actions needed.
-    
+
       final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
       jumpParameter.data = oauthData;
       final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
@@ -72,10 +72,9 @@ class ISchoolPlusConnector {
         );
       }
 
-      if(jumpResult.statusCode == 302){
+      if (jumpResult.statusCode == 302) {
         return ISchoolPlusConnectorStatus.loginSuccess;
-      }
-      else{
+      } else {
         return ISchoolPlusConnectorStatus.loginFail;
       }
     } catch (e, stack) {
@@ -84,21 +83,17 @@ class ISchoolPlusConnector {
     }
   }
 
-    static Future<String> getSSOIndexResponse() async {
-    final data = {
-      "apOu": "ischool_plus_oauth",
-      "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
-    };
-    for(int retry=0;true;retry++){
-      if(retry == 5) return "";
+  static Future<String> getSSOIndexResponse() async {
+    final data = {"apOu": "ischool_plus_oauth", "datetime1": DateTime.now().millisecondsSinceEpoch.toString()};
+    for (int retry = 0; true; retry++) {
+      if (retry == 5) return "";
       final parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
 
       final response = (await Connector.getDataByGet(parameter)).toString().trim();
-      if(response.contains("ssoForm")){
+      if (response.contains("ssoForm")) {
         return response;
-      }
-      else{
+      } else {
         await Future.delayed(const Duration(milliseconds: 100));
       }
     }
