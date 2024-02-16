@@ -41,28 +41,55 @@ class ISchoolPlusConnector {
   /// 4. do something...
   static Future<ISchoolPlusConnectorStatus> login(String account, doFirebaseLogin) async {
     try {
-      ConnectorParameter parameter;
+      final Map<String, String> oauthData = {};
+      final data = {
+        "apOu": "ischool_plus_oauth",
+        "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
+      };
 
-      html.Document tagNode;
-      Map<String, String> oauthData;
-      List<html.Element> oauthResponse;
-      Response jumpResult;
+      final parameter = ConnectorParameter(_ssoLoginUrl);
+      parameter.data = data;
 
-      // Step 1
-      oauthData = await getLoginOAuth();
+      final response = (await Connector.getDataByGet(parameter));
+      if(response.contains("重新登入")){
+        throw StateError('[TAT] ischool_plus_connector.dart: session out of date');
+      }
+
+      for(int retry=0;true;retry++){
+        if(retry == 5) return ISchoolPlusConnectorStatus.loginFail;
+        final tagNode = html.parse(response.toString().trim());
+        final nodes = tagNode.getElementsByTagName("input");
+
+        for (final node in nodes) {
+        final name = node.attributes['name'];
+        final value = node.attributes['value'];
+        oauthData[name] = value;
+        }
+        if(oauthData.length==5){
+          break;
+        }
+        else{
+          await Future.delayed(const Duration(milliseconds: 100));
+        }
+      }
 
       // Step 2
       // The `jumpUrl` should be "oauth2Server.do".
       // If not, it means that the school server has changed.
       // TODO: Add a validation measurement to check whether Step 1 is died or not. (It should not die if auth is correct)
-      jumpResult = await oauth2Server(oauthData);
-      tagNode = html.parse(jumpResult.toString().trim());
-      oauthResponse = tagNode.getElementsByTagName('a');
+      final jumpUrl = oauthData['action'];
+      final jumpParameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
+      jumpParameter.data = oauthData;
+      final Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
+      final tagNode = html.parse(jumpResult.toString().trim());
+      final oauthResponse = tagNode.getElementsByTagName('a');
 
       // Step 3
       // The redirectUrl is provided by <a> HTML DOM on Step 2.
       // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
-      await login2(oauthResponse);
+      final redirectUrl = oauthResponse.first.attributes["href"];
+      final redirectParameter = ConnectorParameter(redirectUrl);
+      await Connector.getDataByGet(redirectParameter);
 
       if (doFirebaseLogin) {
         await FirebaseAnalytics.instance.logLogin(
@@ -74,59 +101,6 @@ class ISchoolPlusConnector {
       Log.eWithStack(e.toString(), stack);
       rethrow;
     }
-  }
-
-  static Future<Map<String, String>> getLoginOAuth() async {
-    Map<String, String> result = {};
-
-    final data = {
-      "apOu": "ischool_plus_oauth",
-      "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
-    };
-
-    final parameter = ConnectorParameter(_ssoLoginUrl);
-    parameter.data = data;
-
-    final response = (await Connector.getDataByGet(parameter));
-    if(response.contains("重新登入")){
-      throw StateError('[TAT] ischool_plus_connector.dart: session out of date');
-    }
-    int retry=3;
-    do{
-      retry=retry-1;
-      final tagNode = html.parse(response.toString().trim());
-      final nodes = tagNode.getElementsByTagName("input");
-
-      for (final node in nodes) {
-      final name = node.attributes['name'];
-      final value = node.attributes['value'];
-      result[name] = value;
-      }
-      if(result.length!=5){
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
-      else{
-        return result;
-      }
-    }while(retry>0);
-    //throw an error for invaild input
-    //TODO: maybe add a custom error class for ischool plus retry mechanism
-  }
-
-  static Future<Response> oauth2Server(Map<String, String> oauthData) async {
-    final jumpUrl = oauthData['action'];
-    final parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
-    parameter.data = oauthData;
-
-    Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
-    return jumpResult;
-  }
-
-  static Future<void> login2(List<html.Element> nodes) async {
-    final redirectUrl = nodes.first.attributes["href"];
-    final parameter = ConnectorParameter(redirectUrl);
-
-    await Connector.getDataByGet(parameter);
   }
 
   static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(String courseId) async {
