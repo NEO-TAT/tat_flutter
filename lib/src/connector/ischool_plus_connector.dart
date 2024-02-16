@@ -80,9 +80,7 @@ class ISchoolPlusConnector {
     Map<String, String> result = {};
 
     final data = {
-      "apUrl": "https://istudy.ntut.edu.tw/login.php",
       "apOu": "ischool_plus_oauth",
-      "sso": "true",
       "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
     };
 
