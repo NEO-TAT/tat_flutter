@@ -1,11 +1,8 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'dart:io';
-import 'dart:math';
-
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/blocked_cookies.dart';
 import 'package:flutter_app/src/connector/core/dio_connector.dart';
 import 'package:flutter_app/src/connector/interceptors/request_interceptor.dart';
@@ -16,10 +13,6 @@ import 'package:path/path.dart';
 import 'package:tat_core/tat_core.dart';
 import 'dart:developer' as dev;
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   final tempDir = await Directory.systemTemp.createTemp();
