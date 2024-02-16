@@ -41,46 +41,27 @@ class ISchoolPlusConnector {
   /// 4. do something...
   static Future<ISchoolPlusConnectorStatus> login(String account, doFirebaseLogin) async {
     try {
+      final ssoIndexResponse = await getSSOIndexResponse();
+      if(ssoIndexResponse.isEmpty) return ISchoolPlusConnectorStatus.loginFail;
+
+      final ssoIndexTagNode = html.parse(ssoIndexResponse);
+      final ssoIndexNodes = ssoIndexTagNode.getElementsByTagName("input");
+      final ssoIndexJumpUrl = ssoIndexTagNode.getElementsByTagName("form")[0].attributes["action"];
+
       final Map<String, String> oauthData = {};
-      final data = {
-        "apOu": "ischool_plus_oauth",
-        "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
-      };
-
-      final parameter = ConnectorParameter(_ssoLoginUrl);
-      parameter.data = data;
-
-      final response = (await Connector.getDataByGet(parameter));
-      if(response.contains("重新登入")){
-        throw StateError('[TAT] ischool_plus_connector.dart: session out of date');
-      }
-
-      for(int retry=0;true;retry++){
-        if(retry == 5) return ISchoolPlusConnectorStatus.loginFail;
-        final tagNode = html.parse(response.toString().trim());
-        final nodes = tagNode.getElementsByTagName("input");
-
-        for (final node in nodes) {
+      for (final node in ssoIndexNodes) {
         final name = node.attributes['name'];
         final value = node.attributes['value'];
         oauthData[name] = value;
-        }
-        if(oauthData.length==5){
-          break;
-        }
-        else{
-          await Future.delayed(const Duration(milliseconds: 100));
-        }
       }
-
+      
       // Step 2
-      // The `jumpUrl` should be "oauth2Server.do".
+      // The ssoIndexJumpUrl should be "oauth2Server.do".
       // If not, it means that the school server has changed.
       // TODO: Add a validation measurement to check whether Step 1 is died or not. (It should not die if auth is correct)
-      final jumpUrl = oauthData['action'];
-      final jumpParameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
+      final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
       jumpParameter.data = oauthData;
-      final Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
+      final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
       final tagNode = html.parse(jumpResult.toString().trim());
       final oauthResponse = tagNode.getElementsByTagName('a');
 
@@ -100,6 +81,26 @@ class ISchoolPlusConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       rethrow;
+    }
+  }
+
+    static Future<String> getSSOIndexResponse() async {
+    final data = {
+      "apOu": "ischool_plus_oauth",
+      "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
+    };
+    for(int retry=0;true;retry++){
+      if(retry == 5) return "";
+      final parameter = ConnectorParameter(_ssoLoginUrl);
+      parameter.data = data;
+
+      final response = (await Connector.getDataByGet(parameter)).toString().trim();
+      if(response.contains("ssoForm")){
+        return response;
+      }
+      else{
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
     }
   }
 
