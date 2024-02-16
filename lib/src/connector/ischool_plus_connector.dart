@@ -36,9 +36,8 @@ class ISchoolPlusConnector {
 
   /// The Authorization Step of ISchool (2023-10-21)
   /// 1. GET https://app.ntut.edu.tw/ssoIndex.do
-  /// 2. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
-  /// 3. GET https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 3)
-  /// 4. do something...
+  /// 2_1. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
+  /// 2_2. follow the redirection to https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 2)
   static Future<ISchoolPlusConnectorStatus> login(String account, doFirebaseLogin) async {
     try {
       final ssoIndexResponse = await getSSOIndexResponse();
