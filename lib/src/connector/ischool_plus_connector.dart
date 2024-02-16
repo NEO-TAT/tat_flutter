@@ -61,22 +61,24 @@ class ISchoolPlusConnector {
       // The response status code to this request should result in
       // "302" (the page has moved to a new location), which triggers automatic redirection
       // feature included in dio connector, thus no further actions needed.
-
-      final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
-      jumpParameter.data = oauthData;
-      final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
+      for (int retry = 0; true; retry++) {
+        if (retry == 3) break;
+        final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
+        jumpParameter.data = oauthData;
+        final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
+        if (jumpResult.statusCode == 302) {
+          return ISchoolPlusConnectorStatus.loginSuccess;
+        } else {
+          await Future.delayed(const Duration(milliseconds: 100));
+        }
+      }
 
       if (doFirebaseLogin) {
         await FirebaseAnalytics.instance.logLogin(
           loginMethod: 'ntut_iplus',
         );
       }
-
-      if (jumpResult.statusCode == 302) {
-        return ISchoolPlusConnectorStatus.loginSuccess;
-      } else {
-        return ISchoolPlusConnectorStatus.loginFail;
-      }
+      return ISchoolPlusConnectorStatus.loginFail;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       rethrow;
