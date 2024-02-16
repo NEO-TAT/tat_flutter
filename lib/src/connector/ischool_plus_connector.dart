@@ -62,22 +62,19 @@ class ISchoolPlusConnector {
       final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
       jumpParameter.data = oauthData;
       final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
-      final tagNode = html.parse(jumpResult.toString().trim());
-      final oauthResponse = tagNode.getElementsByTagName('a');
-
-      // Step 3
-      // The redirectUrl is provided by <a> HTML DOM on Step 2.
-      // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
-      final redirectUrl = oauthResponse.first.attributes["href"];
-      final redirectParameter = ConnectorParameter(redirectUrl);
-      await Connector.getDataByGet(redirectParameter);
 
       if (doFirebaseLogin) {
         await FirebaseAnalytics.instance.logLogin(
           loginMethod: 'ntut_iplus',
         );
       }
-      return ISchoolPlusConnectorStatus.loginSuccess;
+
+      if(jumpResult.statusCode == 302){
+        return ISchoolPlusConnectorStatus.loginSuccess;
+      }
+      else{
+        return ISchoolPlusConnectorStatus.loginFail;
+      }
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       rethrow;
