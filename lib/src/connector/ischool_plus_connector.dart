@@ -58,7 +58,10 @@ class ISchoolPlusConnector {
       // Step 2
       // The ssoIndexJumpUrl should be "oauth2Server.do".
       // If not, it means that the school server has changed.
-      // TODO: Add a validation measurement to check whether Step 1 is died or not. (It should not die if auth is correct)
+      // The response status code to this request should result in
+      // "302" (the page has moved to a new location), which triggers automatic redirection
+      // feature included in dio connector, thus no further actions needed.
+    
       final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
       jumpParameter.data = oauthData;
       final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
