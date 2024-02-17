@@ -92,17 +92,17 @@ dependencies:
   intl_utils: ^2.8.5
   flutter_native_splash: ^2.2.19 # restricted by path 1.8.2
 
-
 dependency_overrides:
   intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   dependency_validator: ^3.2.3
-
-  #  flutter_launcher_icons: ^0.11.0 Restricted by flutter_native_splash. Enable it if you want to use it.
+  flutter_launcher_icons:
+    git:
+      url: git@github.com:fluttercommunity/flutter_launcher_icons.git
+      ref: 006cb1ed53f969bf11816cde5b16dd520e1ee40e # feat: added support for android 13+ themed icons
   build_runner: ^2.3.3 # restricted by dart language version. (<3)
   json_serializable: ^6.6.2 # restricted by dart language version. (<3)
   flutter_lints: ^2.0.3 # restricted by dart language version. (<3)
@@ -126,10 +126,15 @@ flutter_intl:
   # Run "flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/l10n/intl_messages.dart" to generate it.
   enabled: false
 
-flutter_icons:
+flutter_launcher_icons:
+  image_path: assets/images/original.png
+
   android: true
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: assets/images/android.png # Android 8.0+ icons
+  adaptive_icon_monochrome: assets/images/android.png # Android 13+ themed icons
+
   ios: true
-  image_path: "assets/images/tat.png"
 
 flutter_native_splash:
   color: "#ffffff"
