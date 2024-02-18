@@ -1,6 +1,7 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -65,12 +66,14 @@ class ISchoolPlusConnector {
         jumpParameter.data = oauthData;
         final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
         if (jumpResult.statusCode != 302) {
+          log("[TAT] ischool_plus_connector.dart: failed to get redirection location from oauth2Server, retrying...");
           await Future.delayed(const Duration(milliseconds: 100));
           continue;
         }
         final login2Parameter = ConnectorParameter(jumpResult.headers['location'][0]);
         final login2Result = await Connector.getDataByGet(login2Parameter);
         if (login2Result.contains("lost")) {
+          log("[TAT] ischool_plus_connector.dart: connection lost during redirection, retrying...");
           await Future.delayed(const Duration(milliseconds: 100));
           continue;
         }
@@ -97,6 +100,7 @@ class ISchoolPlusConnector {
 
       final response = (await Connector.getDataByGet(parameter)).toString().trim();
       if (response.contains("ssoForm")) return response;
+      log("[TAT] ischool_plus_connector.dart: failed to get ssoForm, retrying...");
       await Future.delayed(const Duration(milliseconds: 100));
     }
     return "";
