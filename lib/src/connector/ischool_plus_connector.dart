@@ -60,8 +60,7 @@ class ISchoolPlusConnector {
       // The response status code to this request should result in
       // "302" (the page has moved to a new location), which triggers automatic redirection
       // feature included in dio connector, thus no further actions needed.
-      for (int retry = 0; true; retry++) {
-        if (retry == 3) break;
+      for (int retry = 0; retry < 3; retry++) {
         final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
         jumpParameter.data = oauthData;
         final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
@@ -86,8 +85,7 @@ class ISchoolPlusConnector {
 
   static Future<String> getSSOIndexResponse() async {
     final data = {"apOu": "ischool_plus_oauth", "datetime1": DateTime.now().millisecondsSinceEpoch.toString()};
-    for (int retry = 0; true; retry++) {
-      if (retry == 5) return "";
+    for (int retry = 0; retry < 5; retry++) {
       final parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
 
@@ -98,6 +96,7 @@ class ISchoolPlusConnector {
         await Future.delayed(const Duration(milliseconds: 100));
       }
     }
+    return "";
   }
 
   static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(String courseId) async {
