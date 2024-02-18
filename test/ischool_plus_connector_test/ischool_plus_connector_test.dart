@@ -54,7 +54,7 @@ Future<void> main() async {
     // expect(isCurrentSessionAlive, isTrue);
   });
   test('ischool_login', () async {
-    final result = await ISchoolPlusConnector.login(userId, false);
+    final result = await ISchoolPlusConnector.login(userId, logEventToFirebase: false);
     expect(result, ISchoolPlusConnectorStatus.loginSuccess);
     dev.log('ischool login Done Test execution time: ${stopwatch.elapsed}');
     stopwatch.stop();
