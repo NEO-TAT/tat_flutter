@@ -38,7 +38,7 @@ class ISchoolPlusConnector {
   /// 1. GET https://app.ntut.edu.tw/ssoIndex.do
   /// 2_1. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
   /// 2_2. follow the redirection to https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 2)
-  static Future<ISchoolPlusConnectorStatus> login(String account, doFirebaseLogin) async {
+  static Future<ISchoolPlusConnectorStatus> login(String account, {bool logEventToFirebase = true}) async {
     try {
       final ssoIndexResponse = await getSSOIndexResponse();
       if (ssoIndexResponse.isEmpty) return ISchoolPlusConnectorStatus.loginFail;
@@ -71,7 +71,7 @@ class ISchoolPlusConnector {
         }
       }
 
-      if (doFirebaseLogin) {
+      if (logEventToFirebase) {
         await FirebaseAnalytics.instance.logLogin(
           loginMethod: 'ntut_iplus',
         );
