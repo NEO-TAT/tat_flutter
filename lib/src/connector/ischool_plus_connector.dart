@@ -90,11 +90,8 @@ class ISchoolPlusConnector {
       parameter.data = data;
 
       final response = (await Connector.getDataByGet(parameter)).toString().trim();
-      if (response.contains("ssoForm")) {
-        return response;
-      } else {
-        await Future.delayed(const Duration(milliseconds: 100));
-      }
+      if (response.contains("ssoForm")) return response;
+      await Future.delayed(const Duration(milliseconds: 100));
     }
     return "";
   }
