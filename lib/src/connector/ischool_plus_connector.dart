@@ -64,11 +64,17 @@ class ISchoolPlusConnector {
         final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
         jumpParameter.data = oauthData;
         final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
-        if (jumpResult.statusCode == 302) {
-          return ISchoolPlusConnectorStatus.loginSuccess;
-        } else {
+        if (jumpResult.statusCode != 302) {
           await Future.delayed(const Duration(milliseconds: 100));
+          continue;
         }
+        final login2Parameter = ConnectorParameter(jumpResult.headers['location'][0]);
+        final login2Result = await Connector.getDataByGet(login2Parameter);
+        if (login2Result.contains("lost")) {
+          await Future.delayed(const Duration(milliseconds: 100));
+          continue;
+        }
+        return ISchoolPlusConnectorStatus.loginSuccess;
       }
 
       if (logEventToFirebase) {
