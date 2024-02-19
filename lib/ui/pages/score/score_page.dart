@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
-import 'package:flutter_app/src/model/course/course_syllabus_json.dart';
+import 'package:flutter_app/src/model/course/course_syllabus.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';

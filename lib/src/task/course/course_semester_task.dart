@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
+import 'package:flutter_app/src/model/course/course_semester.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -25,7 +25,7 @@ class CourseSemesterTask extends CourseSystemTask<List<SemesterJson>> {
         value = await _selectSemesterDialog();
       } else {
         super.onStart(R.current.getCourseSemester);
-        value = await CourseConnector.getCourseSemester(id) as List<SemesterJson>?;
+        value = await CourseConnector.getCourseSemester(id);
         super.onEnd();
       }
 

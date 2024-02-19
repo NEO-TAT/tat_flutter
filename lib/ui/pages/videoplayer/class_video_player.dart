@@ -8,7 +8,6 @@ import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/connector/core/connector_parameter.dart';
 import 'package:flutter_app/src/file/file_download.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
@@ -20,16 +19,18 @@ import 'package:html/parser.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_player/video_player.dart';
 
+import '../../../src/model/coursetable/course.dart';
+
 class ClassVideoPlayer extends StatefulWidget {
   const ClassVideoPlayer(
     this.videoUrl,
-    this.courseInfo,
+    this.course,
     this.name, {
     super.key,
   });
 
   final String videoUrl;
-  final CourseInfoJson courseInfo;
+  final Course course;
   final String name;
 
   @override
@@ -192,7 +193,7 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
                     return;
                   }
 
-                  final courseName = widget.courseInfo.main.course.name;
+                  final courseName = widget.course.name;
                   final saveName = "${widget.name}_${_selectedVideoInfo.name}.mp4";
                   final subDir = (LanguageUtil.getLangIndex() == LangEnum.zh) ? "上課錄影" : "video";
                   final dirName = path.join(courseName, subDir);

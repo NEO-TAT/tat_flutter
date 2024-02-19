@@ -1,67 +1,45 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter_app/src/connector/course_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
-import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
 import 'package:flutter_app/src/util/language_util.dart';
 
+import '../../model/coursetable/course.dart';
+import '../../model/coursetable/course_table.dart';
+import '../../model/coursetable/user.dart';
 import '../task.dart';
 import 'course_system_task.dart';
 
-class CourseTableTask extends CourseSystemTask<CourseTableJson> {
+class CourseTableTask extends CourseSystemTask<CourseTable> {
   final String studentId;
-  final SemesterJson semester;
+  final int year;
+  final int semester;
 
-  CourseTableTask(this.studentId, this.semester) : super("CourseTableTask");
+  CourseTableTask(this.studentId, this.year, this.semester) : super("CourseTableTask");
 
   @override
   Future<TaskStatus> execute() async {
     final status = await super.execute();
     if (status == TaskStatus.success) {
       super.onStart(R.current.getCourse);
-      CourseMainInfo? value;
-      if (studentId.length == 5) {
-        value = await CourseConnector.getTWTeacherCourseMainInfoList(studentId, semester);
+      List<Course> courses;
+      User userInfo = await CourseConnector.getUserInfo(studentId, year, semester);
+      // TODO: Handle Teacher Situation.
+      if (LanguageUtil.getLangIndex() == LangEnum.zh) {
+        courses = await CourseConnector.getChineseCourses(studentId, year, semester);
       } else {
-        if (LanguageUtil.getLangIndex() == LangEnum.zh) {
-          value = await CourseConnector.getTWCourseMainInfoList(studentId, semester);
-        } else {
-          value = await CourseConnector.getENCourseMainInfoList(studentId, semester) as CourseMainInfo?;
-        }
+        courses = await CourseConnector.getEnglishCourses(studentId, year, semester);
       }
       super.onEnd();
-      if (value != null) {
-        final courseTable = CourseTableJson();
-        courseTable.courseSemester = semester;
-        courseTable.studentId = studentId;
-        courseTable.studentName = value.studentName;
+      final courseTable = CourseTable(year: year, semester: semester, courses: courses, user: userInfo);
+      LocalStorage.instance.addCourseTable(courseTable);
+      await LocalStorage.instance.saveCourseTableList();
 
-        for (final courseMainInfo in value.json) {
-          final courseInfo = CourseInfoJson();
-          bool add = false;
-          for (int i = 0; i < 7; i++) {
-            final day = Day.values[i];
-            final time = courseMainInfo.course.time[day];
-            courseInfo.main = courseMainInfo;
-            add |= courseTable.setCourseDetailByTimeString(day, time, courseInfo);
-          }
-          if (!add) {
-            courseTable.setCourseDetailByTime(Day.UnKnown, SectionNumber.T_UnKnown, courseInfo);
-          }
-        }
-        if (studentId == LocalStorage.instance.getAccount()) {
-          //只儲存自己的課表
-          LocalStorage.instance.addCourseTable(courseTable);
-          await LocalStorage.instance.saveCourseTableList();
-        }
-        result = courseTable;
-        return TaskStatus.success;
-      } else {
-        return super.onError(R.current.getCourseError);
-      }
+      result = courseTable;
+      return TaskStatus.success;
+    } else {
+      return super.onError(R.current.getCourseError);
     }
-    return status;
   }
 }

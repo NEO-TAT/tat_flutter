@@ -2,7 +2,7 @@
 // @dart=2.10
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
-import 'package:flutter_app/src/model/course/course_class_json.dart';
+import 'package:flutter_app/src/model/course/course_semester.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
@@ -97,7 +97,7 @@ class ScoreConnector {
 
         SemesterCourseScoreJson courseScore = SemesterCourseScoreJson();
 
-        SemesterJson semester = SemesterJson();
+        SemesterJson semester = SemesterJson.origin();
         semester.year = h3Node.text.split(" ")[0];
         semester.semester = h3Node.text.split(" ")[3];
         courseScore.semester = semester;
@@ -152,7 +152,7 @@ class ScoreConnector {
           .where((row) => row.getElementsByTagName("td").length >= 7)
           .toList(growable: false);
       for (int i = 0; i < (rankNodes.length / 3).floor(); i++) {
-        SemesterJson semester = SemesterJson();
+        SemesterJson semester = SemesterJson.origin();
         String semesterString = rankNodes[i * 3 + 2].getElementsByTagName("td")[0].innerHtml.split("<br>").first;
         semester.year = semesterString.split(" ")[0];
         semester.semester = semesterString.split(" ").reversed.toList()[0];

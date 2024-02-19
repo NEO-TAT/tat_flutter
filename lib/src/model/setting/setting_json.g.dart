@@ -26,7 +26,7 @@ Map<String, dynamic> _$SettingJsonToJson(SettingJson instance) => <String, dynam
 
 CourseSettingJson _$CourseSettingJsonFromJson(Map<String, dynamic> json) {
   return CourseSettingJson(
-    info: json['info'] == null ? null : CourseTableJson.fromJson(json['info'] as Map<String, dynamic>),
+    info: json['info'] == null ? null : CourseTable.fromJson(json['info'] as Map<String, dynamic>),
   );
 }
 

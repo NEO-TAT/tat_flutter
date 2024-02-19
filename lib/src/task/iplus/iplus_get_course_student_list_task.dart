@@ -2,31 +2,31 @@
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_app/src/connector/ischool_plus_connector.dart';
-import 'package:flutter_app/src/model/ischoolplus/course_file_json.dart';
+import 'package:flutter_app/src/model/course/course_student.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/ui/other/msg_dialog.dart';
 
 import '../task.dart';
 import 'iplus_system_task.dart';
 
-class IPlusCourseFileTask extends IPlusSystemTask<List<CourseFileJson>> {
-  final int id;
+class IPlusGetStudentListTask extends IPlusSystemTask<List<CourseStudent>> {
+  int courseId;
 
-  IPlusCourseFileTask(this.id) : super("IPlusCourseFileTask");
+  IPlusGetStudentListTask({required this.courseId}) : super("IPlusCourseAnnouncementTask");
 
   @override
   Future<TaskStatus> execute() async {
     final status = await super.execute();
     if (status == TaskStatus.success) {
-      super.onStart(R.current.getISchoolPlusCourseFile);
-      final value = await ISchoolPlusConnector.getCourseFile(id);
+      super.onStart(R.current.getISchoolPlusCourseAnnouncement);
+      final value = await ISchoolPlusConnector.getCourseStudent(courseId);
       super.onEnd();
       switch (value.status) {
         case IPlusReturnStatus.success:
           result = value.result;
           return TaskStatus.success;
         case IPlusReturnStatus.fail:
-          return super.onError(R.current.getISchoolPlusCourseFileError);
+          return super.onError(R.current.getISchoolPlusCourseAnnouncementError);
         case IPlusReturnStatus.noPermission:
           final parameter = MsgDialogParameter(
             title: R.current.warning,

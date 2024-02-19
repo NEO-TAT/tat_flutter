@@ -13,6 +13,7 @@ import 'package:flutter_app/src/util/html_utils.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 
+import '../model/course/course_student.dart';
 import 'core/connector_parameter.dart';
 import 'ntut_connector.dart';
 
@@ -33,6 +34,7 @@ class ISchoolPlusConnector {
   //static final String _iSchoolPlusIndexUrl = _iSchoolPlusUrl + "mooc/index.php";
   static const String _getCourseName = "${_iSchoolPlusUrl}learn/mooc_sysbar.php";
   static const _ssoLoginUrl = "${NTUTConnector.host}ssoIndex.do";
+  static const _getCourseStudentList = "${_iSchoolPlusUrl}learn/learn_ranking.php";
 
   /// The Authorization Step of ISchool (2023-10-21)
   /// 1. GET https://app.ntut.edu.tw/ssoIndex.do
@@ -112,7 +114,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(String courseId) async {
+  static Future<ReturnWithStatus<List<CourseFileJson>>> getCourseFile(int courseId) async {
     ConnectorParameter parameter;
     String result;
     html.Document tagNode;
@@ -263,7 +265,7 @@ class ISchoolPlusConnector {
 
   static String bid;
 
-  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>> getCourseAnnouncement(String courseId) async {
+  static Future<ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>> getCourseAnnouncement(int courseId) async {
     String result;
     var value = ReturnWithStatus<List<ISchoolPlusAnnouncementJson>>();
     try {
@@ -460,7 +462,7 @@ class ISchoolPlusConnector {
     String result;
     try {
       parameter = ConnectorParameter("https://istudy.ntut.edu.tw/forum/subscribe.php");
-      parameter.data = {"bid": bid};
+      parameter.data = {"bid": bid.toString()};
       await Connector.getDataByPost(parameter);
       result = await Connector.getDataByPost(parameter);
       tagNode = html.parse(result);
@@ -471,7 +473,7 @@ class ISchoolPlusConnector {
     }
   }
 
-  static Future<String> getBid(String courseId) async {
+  static Future<String> getBid() async {
     /*
     ConnectorParameter parameter;
     html.Document tagNode;
@@ -492,7 +494,55 @@ class ISchoolPlusConnector {
     return bid;
   }
 
-  static Future<bool> _selectCourse(String courseId) async {
+  static Future<ReturnWithStatus<List<CourseStudent>>> getCourseStudent(int courseId) async {
+    try {
+      if (!await _selectCourse(courseId)) {
+        final returnResult = ReturnWithStatus<List<CourseStudent>>();
+        returnResult.status = IPlusReturnStatus.noPermission;
+        return returnResult;
+      }
+
+      ConnectorParameter parameter = ConnectorParameter(_getCourseStudentList);
+      String result = await Connector.getDataByGet(parameter);
+
+      html.Document tagNode = html.parse(result);
+      html.Element table = tagNode.querySelectorAll('table')[1];
+      List<html.Element> nodes = table.querySelectorAll('tr');
+
+      List<CourseStudent> courseStudents = <CourseStudent>[];
+      for (int i = 0; i < nodes.length; i++) {
+        html.Element node = nodes[i].querySelectorAll('td')[1];
+
+        String information = node.querySelector('div').innerHtml;
+        int splitIndex = information.indexOf(' ');
+
+        String studentId = information.substring(0, splitIndex);
+        String studentName = information.substring(splitIndex + 2, information.length - 1);
+
+        // 過濾掉校務人士，如有多身分考慮枚舉或過濾 Email
+        if (studentId == 'istudyoaa') {
+          continue;
+        }
+
+        CourseStudent courseStudent = CourseStudent(department: "", id: studentId, name: studentName);
+        courseStudents.add(courseStudent);
+      }
+
+      courseStudents.sort((courseStudent, other) => courseStudent.id.compareTo(other.id));
+
+      final returnResult = ReturnWithStatus<List<CourseStudent>>();
+      returnResult.status = IPlusReturnStatus.success;
+      returnResult.result = courseStudents;
+      return returnResult;
+    } catch (e, stack) {
+      Log.eWithStack(e, stack);
+      final returnResult = ReturnWithStatus<List<CourseStudent>>();
+      returnResult.status = IPlusReturnStatus.fail;
+      return returnResult;
+    }
+  }
+
+  static Future<bool> _selectCourse(int courseId) async {
     ConnectorParameter parameter;
     html.Document tagNode;
     html.Element node;
@@ -508,7 +558,7 @@ class ISchoolPlusConnector {
       for (int i = 1; i < nodes.length; i++) {
         node = nodes[i];
         String name = node.text.split("_").last;
-        if (name == courseId) {
+        if (name == courseId.toString()) {
           courseValue = node.attributes["value"];
           break;
         }
