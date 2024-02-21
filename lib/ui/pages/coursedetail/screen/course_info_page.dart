@@ -42,6 +42,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     super.initState();
     isLoading = true;
     BackButtonInterceptor.add(myInterceptor);
+    Future.microtask(() => _loadCourseStudent());
     Future.delayed(Duration.zero, () {
       _addTask();
     });
@@ -92,6 +93,31 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     listItem.removeRange(0, listItem.length);
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
+
+    List<CourseStudent> students = await _getCourseStudent();
+    Map<String, String> departmentMap = await _getCourseDepartmentMap();
+
+    if(students.isNotEmpty){
+      listItem.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+          child: _buildClassmateInfo(1, R.current.kDepartment, R.current.studentId, R.current.name, isHeader: true),
+        ),
+      );
+
+      for (int i = 0; i < students.length; i++) {
+        final student = students.elementAt(i);
+        final studentName = student.name.isEmpty ? R.current.unknownStudent : student.name;
+        final studentId = student.id;
+        final department = getDepartment(departmentMap, studentId);
+        listItem.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+            child: _buildClassmateInfo(i, department, studentId, studentName),
+          ),
+        );
+      }
+    }
 
     isLoading = false;
     setState(() {});
@@ -199,6 +225,15 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       }
     }
     return <String, String>{};
+  }
+
+  void _loadCourseStudent() async {
+    TaskFlow taskFlow = TaskFlow();
+    final task = IPlusGetStudentListTask(courseId: courseMainInfo.course.id);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      task.result;
+    }
   }
 
   String getDepartment(Map<String, String> departmentMap, String studentId){
