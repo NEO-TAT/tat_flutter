@@ -17,7 +17,7 @@ import 'package:html/parser.dart' as html;
 import 'core/connector_parameter.dart';
 import 'ntut_connector.dart';
 
-enum ISchoolPlusConnectorStatus { loginSuccess, loginFail, unknownError }
+enum ISchoolPlusConnectorStatus { loginSuccess, loginGetSSOIndexError, loginRedirectionError, unknownError }
 
 enum IPlusReturnStatus { success, fail, noPermission }
 
@@ -42,7 +42,7 @@ class ISchoolPlusConnector {
   static Future<ISchoolPlusConnectorStatus> login(String account, {bool logEventToFirebase = true}) async {
     try {
       final ssoIndexResponse = await getSSOIndexResponse();
-      if (ssoIndexResponse.isEmpty) return ISchoolPlusConnectorStatus.loginFail;
+      if (ssoIndexResponse.isEmpty) return ISchoolPlusConnectorStatus.loginGetSSOIndexError;
 
       final ssoIndexTagNode = html.parse(ssoIndexResponse);
       final ssoIndexNodes = ssoIndexTagNode.getElementsByTagName("input");
@@ -85,7 +85,7 @@ class ISchoolPlusConnector {
           loginMethod: 'ntut_iplus',
         );
       }
-      return ISchoolPlusConnectorStatus.loginFail;
+      return ISchoolPlusConnectorStatus.loginRedirectionError;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       rethrow;
