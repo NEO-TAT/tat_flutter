@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
+import 'package:flutter_app/src/model/course/course_student.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:flutter_app/src/task/iplus/iplus_get_course_student_list_task.dart';
 
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -169,6 +171,92 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     } else {
       // TODO: handle exceptions when the url is null. (null means it may caused by the parse process error.)
     }
+  }
+
+  Future<List<CourseStudent>> _getCourseStudent() async {
+    TaskFlow taskFlow = TaskFlow();
+    final task = IPlusGetStudentListTask(courseId: courseMainInfo.course.id);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      List<CourseStudent> students = task.result;
+      if(students != null){
+        return students;
+      }
+    }
+    return <CourseStudent>[];
+  }
+
+  String getDepartment(Map<String, String> departmentMap, String studentId){
+    /*
+      * Since we don't have official data to describe the following hard-coded rule is correct.
+      * It may need to confirm or just leave it.
+      */
+    if(studentId.substring(0, 1) == "4"){
+      return R.current.nationalTaipeiUniversity;
+    }
+
+    if(studentId.substring(0, 1) == "B"){
+      return R.current.taipeiMedicineUniversity;
+    }
+
+    if(studentId.substring(3, 6) == "054"){
+      return R.current.aduit;
+    }
+
+    String department = departmentMap[studentId.substring(3, 5)];
+
+    if(department.isEmpty){
+      return department;
+    }
+
+    department = departmentMap[studentId.substring(3, 6)];
+
+    if(department != null){
+      return department;
+    }
+
+    return R.current.unknownDepartment;
+  }
+
+  Widget _buildClassmateInfo(int index, String departmentName, String studentId, String studentName, { bool isHeader = false }) {
+    double height = isHeader ? 25 : 50;
+
+    final color = (index % 2 == 1)
+        ? Theme.of(context).colorScheme.surface
+        : Theme.of(context).colorScheme.surfaceVariant.withAlpha(widget.courseInfoWithAlpha);
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          SizedBox(width: 4, height: height),
+          Expanded(
+            child: Text(
+              departmentName,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(width: 4, height: height),
+          Expanded(
+            child: Text(
+              studentId,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(width: 4, height: height),
+          Expanded(
+            child: Text(
+              studentName,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildCourseInfoWithButton(String text, String buttonText, String url) {
