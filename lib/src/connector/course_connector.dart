@@ -29,6 +29,7 @@ class CourseConnector {
   static const String _postTeacherCourseCNUrl = "${_courseCNHost}Teach.jsp";
   static const String _postCourseENUrl = "${_courseENHost}Select.jsp";
   static const String _creditUrl = "${_courseCNHost}Cprog.jsp";
+  static const String _getCourseDepartmentUrl = "${_courseCNHost}Subj.jsp";
 
   static Future<CourseConnectorStatus> login() async {
     String result;
@@ -61,6 +62,93 @@ class CourseConnector {
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return CourseConnectorStatus.loginFail;
+    }
+  }
+
+  // It should use code with key (59 -> CSIE, 32 -> Electric), and department name with value.
+  static Future<Map<String, String>> getDepartmentMap(String year, String semester) async {
+    try {
+      ConnectorParameter parameter = ConnectorParameter(_getCourseDepartmentUrl);
+      parameter.data = {
+        "format": "-2",
+        "year": year,
+        "sem": semester
+      };
+      String result = await Connector.getDataByGet(parameter);
+
+      Document tagNode = parse(result);
+      List<Element> departmentNodes = tagNode.getElementsByTagName("a");
+
+      Map<String, String> departmentMap = {};
+      for (Element element in departmentNodes) {
+        final href = element.attributes["href"];
+        if (href.isEmpty) {
+          continue;
+        }
+        String codeParameter = href.split("&").firstWhere((parameter) =>
+            parameter.contains("code"),
+            orElse: () => ""
+        );
+        if (codeParameter == "") {
+          continue;
+        }
+        String code = codeParameter.split("=")[1];
+        String departmentName = element.text;
+        departmentMap.putIfAbsent(code, () => departmentName);
+      }
+
+      return departmentMap;
+
+    } catch (e, stack){
+      Log.eWithStack(e, stack);
+      return null;
+    }
+  }
+
+  static Future<Map<String, String>> getTwoYearUndergraduateDepartmentMap(String year) async {
+    try {
+      ConnectorParameter parameter = ConnectorParameter(_creditUrl);
+      parameter.data = {
+        "format": "-3",
+        "year": year,
+        "matric": "6"
+      };
+      String result = await Connector.getDataByGet(parameter);
+
+      Document tagNode = parse(result);
+      List<Element> departmentNodes = tagNode.getElementsByTagName("a");
+
+      Map<String, String> departmentMap = {};
+      for (Element element in departmentNodes) {
+        final href = element.attributes["href"];
+        if (href.isEmpty) {
+          continue;
+        }
+        String divisionParameter = href.split("&").firstWhere((parameter) =>
+            parameter.contains("division"),
+            orElse: () => ""
+        );
+        if (divisionParameter == "") {
+          continue;
+        }
+        final String code = divisionParameter.split("=")[1];
+        final RegExp regExp = RegExp(".+【(.+)】");
+        final RegExpMatch matches = regExp.firstMatch(element.text);
+        if(matches == null || matches.groupCount == 0){
+          continue;
+        }
+        final departmentName = matches.group(1);
+        if(departmentName.isEmpty){
+          continue;
+        }
+        departmentMap.putIfAbsent(code, () => departmentName);
+      }
+
+      return departmentMap;
+
+    } catch (e, stack){
+      Log.eWithStack(e, stack);
+      return null;
     }
   }
 

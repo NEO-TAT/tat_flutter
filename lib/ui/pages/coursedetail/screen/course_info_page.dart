@@ -5,14 +5,17 @@ import 'dart:async';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
+import 'package:flutter_app/src/model/course/course_student.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
+import 'package:flutter_app/src/task/course/course_department_map_task.dart';
 import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:flutter_app/src/task/iplus/iplus_get_course_student_list_task.dart';
 
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
@@ -39,6 +42,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     super.initState();
     isLoading = true;
     BackButtonInterceptor.add(myInterceptor);
+    Future.microtask(() => _loadCourseStudent());
     Future.delayed(Duration.zero, () {
       _addTask();
     });
@@ -90,10 +94,35 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
 
+    List<CourseStudent> students = await _getCourseStudent();
+    Map<String, String> departmentMap = await _getCourseDepartmentMap();
+
+    if(students.isNotEmpty){
+      listItem.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+          child: _buildClassmateInfo(1, R.current.kDepartment, R.current.studentId, R.current.name, isHeader: true),
+        ),
+      );
+
+      for (int i = 0; i < students.length; i++) {
+        final student = students.elementAt(i);
+        final studentName = student.name.isEmpty ? R.current.unknownStudent : student.name;
+        final studentId = student.id;
+        final department = getDepartment(departmentMap, studentId);
+        listItem.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+            child: _buildClassmateInfo(i, department, studentId, studentName),
+          ),
+        );
+      }
+    }
+
     isLoading = false;
     setState(() {});
   }
-
+  
   @override
   Widget build(BuildContext context) {
     super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
@@ -169,6 +198,115 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     } else {
       // TODO: handle exceptions when the url is null. (null means it may caused by the parse process error.)
     }
+  }
+
+  Future<List<CourseStudent>> _getCourseStudent() async {
+    TaskFlow taskFlow = TaskFlow();
+    final task = IPlusGetStudentListTask(courseId: courseMainInfo.course.id);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      List<CourseStudent> students = task.result;
+      if(students != null){
+        return students;
+      }
+    }
+    return <CourseStudent>[];
+  }
+
+  Future<Map<String, String>> _getCourseDepartmentMap() async {
+    final semester = widget.courseInfo.extra.courseSemester;
+    TaskFlow taskFlow = TaskFlow();
+    final task = CourseDepartmentMapTask(year: semester.year, semester: semester.semester);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      Map<String, String> departmentMap = task.result;
+      if(departmentMap != null){
+        return departmentMap;
+      }
+    }
+    return <String, String>{};
+  }
+
+  void _loadCourseStudent() async {
+    TaskFlow taskFlow = TaskFlow();
+    final task = IPlusGetStudentListTask(courseId: courseMainInfo.course.id);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      task.result;
+    }
+  }
+
+  String getDepartment(Map<String, String> departmentMap, String studentId){
+    /*
+      * Since we don't have official data to describe the following hard-coded rule is correct.
+      * It may need to confirm or just leave it.
+      */
+    if(studentId.substring(0, 1) == "4"){
+      return R.current.nationalTaipeiUniversity;
+    }
+
+    if(studentId.substring(0, 1) == "B"){
+      return R.current.taipeiMedicineUniversity;
+    }
+
+    if(studentId.substring(3, 6) == "054"){
+      return R.current.aduit;
+    }
+
+    String department = departmentMap[studentId.substring(3, 5)];
+
+    if(department.isEmpty){
+      return department;
+    }
+
+    department = departmentMap[studentId.substring(3, 6)];
+
+    if(department != null){
+      return department;
+    }
+
+    return R.current.unknownDepartment;
+  }
+
+  Widget _buildClassmateInfo(int index, String departmentName, String studentId, String studentName, { bool isHeader = false }) {
+    double height = isHeader ? 25 : 50;
+
+    final color = (index % 2 == 1)
+        ? Theme.of(context).colorScheme.surface
+        : Theme.of(context).colorScheme.surfaceVariant.withAlpha(widget.courseInfoWithAlpha);
+    return Container(
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          SizedBox(width: 4, height: height),
+          Expanded(
+            child: Text(
+              departmentName,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(width: 4, height: height),
+          Expanded(
+            child: Text(
+              studentId,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(width: 4, height: height),
+          Expanded(
+            child: Text(
+              studentName,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildCourseInfoWithButton(String text, String buttonText, String url) {
