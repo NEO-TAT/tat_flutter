@@ -11,7 +11,7 @@ import '../task.dart';
 import 'iplus_system_task.dart';
 
 class IPlusGetStudentListTask extends IPlusSystemTask<List<CourseStudent>> {
-  int courseId;
+  String courseId;
 
   IPlusGetStudentListTask({required this.courseId}) : super("IPlusCourseAnnouncementTask");
 

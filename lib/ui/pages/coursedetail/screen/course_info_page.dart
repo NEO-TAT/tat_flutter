@@ -8,6 +8,7 @@ import 'package:flutter_app/src/model/course/course_main_extra_json.dart';
 import 'package:flutter_app/src/model/course/course_student.dart';
 import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/r.dart';
+import 'package:flutter_app/src/task/course/course_department_map_task.dart';
 import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
@@ -19,8 +20,10 @@ import 'package:flutter_app/src/task/iplus/iplus_get_course_student_list_task.da
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
+  final int year;
+  final int semester;
 
-  const CourseInfoPage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
+  const CourseInfoPage(this.studentId, this.year, this.semester, this.courseInfo, {Key key}) : super(key: key);
 
   final int courseInfoWithAlpha = 0x44;
 
@@ -184,6 +187,19 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       }
     }
     return <CourseStudent>[];
+  }
+
+  Future<Map<String, String>> _getCourseDepartmentMap() async {
+    TaskFlow taskFlow = TaskFlow();
+    final task = CourseDepartmentMapTask(year: widget.year, semester: widget.semester);
+    taskFlow.addTask(task);
+    if (await taskFlow.start()) {
+      Map<String, String> departmentMap = task.result;
+      if(departmentMap != null){
+        return departmentMap;
+      }
+    }
+    return <String, String>{};
   }
 
   String getDepartment(Map<String, String> departmentMap, String studentId){

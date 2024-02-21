@@ -2617,6 +2617,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Unknown Department`
+  String get unknownDepartment {
+    return Intl.message(
+      'Unknown Department',
+      name: 'unknownDepartment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unknown Student`
+  String get unknownStudent {
+    return Intl.message(
+      'Unknown Student',
+      name: 'unknownStudent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `name`
+  String get name {
+    return Intl.message(
+      'name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `student id`
+  String get studentId {
+    return Intl.message(
+      'student id',
+      name: 'studentId',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Getting classmate list...`
+  String get getCourseClassmateList {
+    return Intl.message(
+      'Getting classmate list...',
+      name: 'getCourseClassmateList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get classmate list error`
+  String get getCourseClassmateListError {
+    return Intl.message(
+      'Get classmate list error',
+      name: 'getCourseClassmateListError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NTPU`
+  String get nationalTaipeiUniversity {
+    return Intl.message(
+      'NTPU',
+      name: 'nationalTaipeiUniversity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TMU`
+  String get taipeiMedicineUniversity {
+    return Intl.message(
+      'TMU',
+      name: 'taipeiMedicineUniversity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aduit`
+  String get aduit {
+    return Intl.message(
+      'Aduit',
+      name: 'aduit',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

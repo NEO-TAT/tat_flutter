@@ -14,10 +14,12 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class ISchoolPage extends StatefulWidget {
+  final int year;
+  final int semester;
   final CourseInfoJson courseInfo;
   final String studentId;
 
-  const ISchoolPage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
+  const ISchoolPage(this.studentId, this.year, this.semester, this.courseInfo, {Key key}) : super(key: key);
 
   @override
   State<ISchoolPage> createState() => _ISchoolPageState();
@@ -33,7 +35,7 @@ class _ISchoolPageState extends State<ISchoolPage> with SingleTickerProviderStat
   void initState() {
     super.initState();
     tabPageList = TabPageList();
-    tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.courseInfo)));
+    tabPageList.add(TabPage(R.current.course, Icons.info, CourseInfoPage(widget.studentId, widget.year, widget.semester,widget.courseInfo)));
     if (widget.studentId == LocalStorage.instance.getAccount()) {
       tabPageList.add(TabPage(
           R.current.announcement, Icons.announcement, IPlusAnnouncementPage(widget.studentId, widget.courseInfo)));
