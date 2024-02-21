@@ -255,7 +255,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
 
     String department = departmentMap[studentId.substring(3, 5)];
 
-    if (department.isEmpty) {
+    if (department != null) {
       return department;
     }
 
