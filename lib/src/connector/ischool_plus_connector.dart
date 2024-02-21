@@ -148,8 +148,8 @@ class ISchoolPlusConnector {
 
         CourseStudent courseStudent = CourseStudent(
             department: "",
-            id: studentName,
-            name: studentId
+            id: studentId,
+            name: studentName
         );
         courseStudents.add(courseStudent);
       }
