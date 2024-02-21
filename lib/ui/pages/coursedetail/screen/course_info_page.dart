@@ -20,10 +20,8 @@ import 'package:flutter_app/src/task/iplus/iplus_get_course_student_list_task.da
 class CourseInfoPage extends StatefulWidget {
   final CourseInfoJson courseInfo;
   final String studentId;
-  final int year;
-  final int semester;
 
-  const CourseInfoPage(this.studentId, this.year, this.semester, this.courseInfo, {Key key}) : super(key: key);
+  const CourseInfoPage(this.studentId, this.courseInfo, {Key key}) : super(key: key);
 
   final int courseInfoWithAlpha = 0x44;
 
@@ -98,7 +96,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     isLoading = false;
     setState(() {});
   }
-
+  
   @override
   Widget build(BuildContext context) {
     super.build(context); //如果使用AutomaticKeepAliveClientMixin需要呼叫
@@ -190,8 +188,9 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
   }
 
   Future<Map<String, String>> _getCourseDepartmentMap() async {
+    final semester = widget.courseInfo.extra.courseSemester;
     TaskFlow taskFlow = TaskFlow();
-    final task = CourseDepartmentMapTask(year: widget.year, semester: widget.semester);
+    final task = CourseDepartmentMapTask(year: semester.year, semester: semester.semester);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
       Map<String, String> departmentMap = task.result;

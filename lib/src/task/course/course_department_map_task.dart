@@ -7,8 +7,8 @@ import '../task.dart';
 import 'course_system_task.dart';
 
 class CourseDepartmentMapTask extends CourseSystemTask<Map<String, String>> {
-  final int year;
-  final int semester;
+  final String year;
+  final String semester;
 
   CourseDepartmentMapTask({required this.year, required this.semester}) : super("CourseDepartmentMapTask");
 

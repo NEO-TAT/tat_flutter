@@ -66,13 +66,13 @@ class CourseConnector {
   }
 
   // It should use code with key (59 -> CSIE, 32 -> Electric), and department name with value.
-  static Future<Map<String, String>> getDepartmentMap(int year, int semester) async {
+  static Future<Map<String, String>> getDepartmentMap(String year, String semester) async {
     try {
       ConnectorParameter parameter = ConnectorParameter(_getCourseDepartmentUrl);
       parameter.data = {
         "format": "-2",
-        "year": year.toString(),
-        "sem": semester.toString()
+        "year": year,
+        "sem": semester
       };
       String result = await Connector.getDataByGet(parameter);
 
@@ -105,7 +105,7 @@ class CourseConnector {
     }
   }
 
-  static Future<Map<String, String>> getTwoYearUndergraduateDepartmentMap(int year) async {
+  static Future<Map<String, String>> getTwoYearUndergraduateDepartmentMap(String year) async {
     try {
       ConnectorParameter parameter = ConnectorParameter(_creditUrl);
       parameter.data = {

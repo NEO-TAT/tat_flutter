@@ -67,9 +67,9 @@ class RouteUtils {
     );
   }
 
-  static Future? toISchoolPage(String studentId, CourseInfoJson courseInfo, int year, int semester) {
+  static Future? toISchoolPage(String studentId, CourseInfoJson courseInfo) {
     return Get.to(
-      () => ISchoolPage(studentId, year, semester, courseInfo),
+      () => ISchoolPage(studentId, courseInfo),
       transition: transition,
     );
   }
