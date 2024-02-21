@@ -23,7 +23,8 @@ class IPlusSystemTask<T> extends NTUTTask<T> {
       final studentId = LocalStorage.instance.getAccount();
       final value = await ISchoolPlusConnector.login(studentId);
       super.onEnd();
-      
+
+      //TODO: generate string for this
       switch(value){
         case ISchoolPlusConnectorStatus.loginGetSSOIndexError:
           return onError("ischool login get SSO index error");
