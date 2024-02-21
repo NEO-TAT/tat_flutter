@@ -69,11 +69,7 @@ class CourseConnector {
   static Future<Map<String, String>> getDepartmentMap(String year, String semester) async {
     try {
       ConnectorParameter parameter = ConnectorParameter(_getCourseDepartmentUrl);
-      parameter.data = {
-        "format": "-2",
-        "year": year,
-        "sem": semester
-      };
+      parameter.data = {"format": "-2", "year": year, "sem": semester};
       String result = await Connector.getDataByGet(parameter);
 
       Document tagNode = parse(result);
@@ -85,10 +81,7 @@ class CourseConnector {
         if (href.isEmpty) {
           continue;
         }
-        String codeParameter = href.split("&").firstWhere((parameter) =>
-            parameter.contains("code"),
-            orElse: () => ""
-        );
+        String codeParameter = href.split("&").firstWhere((parameter) => parameter.contains("code"), orElse: () => "");
         if (codeParameter == "") {
           continue;
         }
@@ -98,8 +91,7 @@ class CourseConnector {
       }
 
       return departmentMap;
-
-    } catch (e, stack){
+    } catch (e, stack) {
       Log.eWithStack(e, stack);
       return null;
     }
@@ -108,11 +100,7 @@ class CourseConnector {
   static Future<Map<String, String>> getTwoYearUndergraduateDepartmentMap(String year) async {
     try {
       ConnectorParameter parameter = ConnectorParameter(_creditUrl);
-      parameter.data = {
-        "format": "-3",
-        "year": year,
-        "matric": "6"
-      };
+      parameter.data = {"format": "-3", "year": year, "matric": "6"};
       String result = await Connector.getDataByGet(parameter);
 
       Document tagNode = parse(result);
@@ -124,29 +112,26 @@ class CourseConnector {
         if (href.isEmpty) {
           continue;
         }
-        String divisionParameter = href.split("&").firstWhere((parameter) =>
-            parameter.contains("division"),
-            orElse: () => ""
-        );
+        String divisionParameter =
+            href.split("&").firstWhere((parameter) => parameter.contains("division"), orElse: () => "");
         if (divisionParameter == "") {
           continue;
         }
         final String code = divisionParameter.split("=")[1];
         final RegExp regExp = RegExp(".+【(.+)】");
         final RegExpMatch matches = regExp.firstMatch(element.text);
-        if(matches == null || matches.groupCount == 0){
+        if (matches == null || matches.groupCount == 0) {
           continue;
         }
         final departmentName = matches.group(1);
-        if(departmentName.isEmpty){
+        if (departmentName.isEmpty) {
           continue;
         }
         departmentMap.putIfAbsent(code, () => departmentName);
       }
 
       return departmentMap;
-
-    } catch (e, stack){
+    } catch (e, stack) {
       Log.eWithStack(e, stack);
       return null;
     }
