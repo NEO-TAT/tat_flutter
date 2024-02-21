@@ -25,11 +25,11 @@ class IPlusSystemTask<T> extends NTUTTask<T> {
       super.onEnd();
 
       //TODO: generate string for this
-      switch(value){
+      switch (value) {
         case ISchoolPlusConnectorStatus.loginGetSSOIndexError:
           return onError("ischool login get SSO index error");
         case ISchoolPlusConnectorStatus.loginRedirectionError:
-          return onError("ischool login redirection error"); 
+          return onError("ischool login redirection error");
         default:
           break;
       }
