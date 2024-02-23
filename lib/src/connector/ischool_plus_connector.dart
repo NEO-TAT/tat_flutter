@@ -147,6 +147,7 @@ class ISchoolPlusConnector {
         CourseStudent courseStudent = CourseStudent(department: "", id: studentId, name: studentName);
         courseStudents.add(courseStudent);
       }
+      courseStudents.sort((a, b) => a.id.compareTo(b.id));
 
       final returnResult = ReturnWithStatus<List<CourseStudent>>();
       returnResult.status = IPlusReturnStatus.success;
