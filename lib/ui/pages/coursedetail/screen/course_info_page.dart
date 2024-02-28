@@ -42,10 +42,10 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     super.initState();
     isLoading = true;
     BackButtonInterceptor.add(myInterceptor);
+    Future.microtask(() => _loadCourseStudent());
     Future.delayed(Duration.zero, () {
       _addTask();
     });
-    Future.microtask(() => _loadCourseStudent());
   }
 
   @override
