@@ -42,10 +42,10 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     super.initState();
     isLoading = true;
     BackButtonInterceptor.add(myInterceptor);
-    Future.microtask(() => _loadCourseStudent());
     Future.delayed(Duration.zero, () {
       _addTask();
     });
+    Future.microtask(() => _loadCourseStudent());
   }
 
   @override
@@ -229,6 +229,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
 
   void _loadCourseStudent() async {
     TaskFlow taskFlow = TaskFlow();
+    final courseMainInfo = widget.courseInfo.main;
     final task = IPlusGetStudentListTask(courseId: courseMainInfo.course.id);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
