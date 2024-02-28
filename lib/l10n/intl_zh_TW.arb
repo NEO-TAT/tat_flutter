@@ -256,5 +256,14 @@
   "androidPrivateBrowseGuideTitle": "關於隱私瀏覽",
   "androidPrivateBrowseGuideSubTitle": "開啟隱私瀏覽，安全更有保障",
   "kClass": "班級",
-  "kDepartment": "系所"
+  "kDepartment": "系所",
+  "unknownDepartment": "未知系所",
+  "unknownStudent": "未知學生",
+  "name": "姓名",
+  "studentId": "學號",
+  "getCourseClassmateList": "獲取學生名單中...",
+  "getCourseClassmateListError": "獲取學生名單錯誤",
+  "nationalTaipeiUniversity": "國立臺北大學",
+  "taipeiMedicineUniversity": "臺北醫學大學",
+  "aduit": "隨班附讀"
 }

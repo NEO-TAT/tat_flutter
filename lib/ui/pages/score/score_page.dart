@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
+import 'package:flutter_app/src/model/course/course_syllabus_json.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/src/task/course/course_extra_info_task.dart';
+import 'package:flutter_app/src/task/course/course_category_task.dart';
 import 'package:flutter_app/src/task/score/score_rank_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/app_expansion_tile.dart';
@@ -176,7 +177,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
         final courseInfo = courseInfoList[i];
         final courseId = courseInfo.courseId;
         if (courseInfo.category.isEmpty) {
-          final task = CourseExtraInfoTask(courseId);
+          final task = CourseCategoryTask(courseId);
           task.openLoadingDialog = false;
           if (courseId.isNotEmpty) {
             taskFlow.addTask(task);
@@ -190,10 +191,10 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
       taskFlow.callback = (task) {
         rate++;
         progressRateDialog.update(nowProgress: rate / total, progressString: sprintf("%d/%d", [rate, total]));
-        final extraInfo = task.result;
-        final courseScoreInfo = courseScoreCredit.getCourseByCourseId(extraInfo.course.id);
-        courseScoreInfo.category = extraInfo.course.category;
-        courseScoreInfo.openClass = extraInfo.course.openClass.replaceAll("\n", " ");
+        final CourseSyllabusJson courseSyllabusJson = task.result;
+        final courseScoreInfo = courseScoreCredit.getCourseByCourseId(courseSyllabusJson.courseId.toString());
+        courseScoreInfo.category = courseSyllabusJson.category;
+        courseScoreInfo.openClass = courseSyllabusJson.className;
       };
 
       await taskFlow.start();

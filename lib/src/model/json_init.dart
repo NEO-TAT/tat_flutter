@@ -4,4 +4,8 @@ class JsonInit {
   static String stringInit(String value) {
     return value ?? "";
   }
+
+  static List<T> listInit<T>(List<T> value) {
+    return value ?? [] as List<T>;
+  }
 }
