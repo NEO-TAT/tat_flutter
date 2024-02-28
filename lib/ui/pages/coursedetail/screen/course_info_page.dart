@@ -202,6 +202,7 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
 
   Future<List<CourseStudent>> _getCourseStudent() async {
     TaskFlow taskFlow = TaskFlow();
+    final courseMainInfo = widget.courseInfo.main;
     final task = IPlusGetStudentListTask(courseId: courseMainInfo.course.id);
     taskFlow.addTask(task);
     if (await taskFlow.start()) {
