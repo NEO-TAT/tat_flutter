@@ -117,7 +117,7 @@ class ISchoolPlusConnector {
   static Future<ReturnWithStatus<List<CourseStudent>>> getCourseStudent(String courseId) async {
     try {
       if (!await _selectCourse(courseId)) {
-        final returnResult = ReturnWithStatus();
+        final returnResult = ReturnWithStatus<List<CourseStudent>>();
         returnResult.status = IPlusReturnStatus.noPermission;
         return returnResult;
       }
@@ -155,7 +155,7 @@ class ISchoolPlusConnector {
       return returnResult;
     } catch (e, stack) {
       Log.eWithStack(e, stack);
-      final returnResult = ReturnWithStatus();
+      final returnResult = ReturnWithStatus<List<CourseStudent>>();
       returnResult.status = IPlusReturnStatus.fail;
       return returnResult;
     }
