@@ -1,6 +1,7 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -17,7 +18,7 @@ import '../model/course/course_student.dart';
 import 'core/connector_parameter.dart';
 import 'ntut_connector.dart';
 
-enum ISchoolPlusConnectorStatus { loginSuccess, loginFail, unknownError }
+enum ISchoolPlusConnectorStatus { loginSuccess, loginGetSSOIndexError, loginRedirectionError, unknownError }
 
 enum IPlusReturnStatus { success, fail, noPermission }
 
@@ -38,80 +39,73 @@ class ISchoolPlusConnector {
 
   /// The Authorization Step of ISchool (2023-10-21)
   /// 1. GET https://app.ntut.edu.tw/ssoIndex.do
-  /// 2. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2)
-  /// 3. GET https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 3)
-  /// 4. do something...
-  static Future<ISchoolPlusConnectorStatus> login(String account) async {
-    String result;
+  /// 2-1. POST https://app.ntut.edu.tw/oauth2Server.do (It should be. See the comment on step 2-1)
+  /// 2-2. follow the redirection to https://istudy.ntut.edu.tw/login2.php (It should be. See the comment on step 2-2)
+  static Future<ISchoolPlusConnectorStatus> login(String account, {bool logEventToFirebase = true}) async {
     try {
-      ConnectorParameter parameter;
-      html.Document tagNode;
-      List<html.Element> nodes;
-      final data = {
-        "apUrl": "https://istudy.ntut.edu.tw/login.php",
-        "apOu": "ischool_plus_oauth",
-        "sso": "true",
-        "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
-      };
+      final ssoIndexResponse = await getSSOIndexResponse();
+      if (ssoIndexResponse.isEmpty) return ISchoolPlusConnectorStatus.loginGetSSOIndexError;
 
-      // Step 1
-      parameter = ConnectorParameter(_ssoLoginUrl);
-      parameter.data = data;
-      result = (await Connector.getDataByGet(parameter));
+      final ssoIndexTagNode = html.parse(ssoIndexResponse);
+      final ssoIndexNodes = ssoIndexTagNode.getElementsByTagName("input");
+      final ssoIndexJumpUrl = ssoIndexTagNode.getElementsByTagName("form")[0].attributes["action"];
 
-      tagNode = html.parse(result.toString().trim());
-      nodes = tagNode.getElementsByTagName("input");
-      data.clear();
-      for (final node in nodes) {
+      final Map<String, String> oauthData = {};
+      for (final node in ssoIndexNodes) {
         final name = node.attributes['name'];
         final value = node.attributes['value'];
-        data[name] = value;
+        oauthData[name] = value;
       }
 
-      // Step 2
-      // The `jumpUrl` should be "oauth2Server.do".
-      // If not, it means that the school server has changed.
-      // TODO: Add a validation measurement to check whether Step 1 is died or not. (It should not die if auth is correct)
-      final jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
-      parameter.data = data;
-
-      Response<dynamic> jumpResult = (await Connector.getDataByPostResponse(parameter));
-      tagNode = html.parse(jumpResult.data.toString().trim());
-      nodes = tagNode.getElementsByTagName("a");
-
-      // Step 3
-      // The redirectUrl is provided by <a> HTML DOM on Step 2.
-      // It should be https://istudy.ntut.edu.tw/login2.php with lot of the parameters.
-      final redirectUrl = nodes.first.attributes["href"];
-      parameter = ConnectorParameter(redirectUrl);
-      await Connector.getDataByGet(parameter);
-
-      // Perform retry for cryptic API errors (?).
-      // If the string `connect lost` be found in the response, we will do the retry.
-
-      // [2023-10-21] We may not need this since the step was changed.
-      // TODO: Remove I-School retry loop since it's outdated.
-
-      int retryTimes = 3;
-      do {
-        if (jumpResult.data.toString().contains('connect lost')) {
-          // Take a short delay to avoid being blocked.
+      for (int retry = 0; retry < 3; retry++) {
+        // Step 2-1
+        // The ssoIndexJumpUrl should be "oauth2Server.do", and the response should contain redirection location.
+        // If not, a retry of getting redirection location will perform.
+        final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
+        jumpParameter.data = oauthData;
+        final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
+        if (jumpResult.statusCode != 302) {
+          log("[TAT] ischool_plus_connector.dart: failed to get redirection location from oauth2Server, retrying...");
           await Future.delayed(const Duration(milliseconds: 100));
-          jumpResult = (await Connector.getDataByPostResponse(parameter));
-        } else {
-          break;
+          continue;
         }
-      } while ((retryTimes--) > 0);
+        // Step 2-2
+        // The redirect location should be "https://istudy.ntut.edu.tw/login2.php", and the response should not contain
+        // "connection `lost`", if it does, a retry of getting redirection location will perform.
+        final login2Parameter = ConnectorParameter(jumpResult.headers['location'][0]);
+        final login2Result = await Connector.getDataByGet(login2Parameter);
+        if (login2Result.contains("lost")) {
+          log("[TAT] ischool_plus_connector.dart: connection lost during redirection, retrying...");
+          await Future.delayed(const Duration(milliseconds: 100));
+          continue;
+        }
+        return ISchoolPlusConnectorStatus.loginSuccess;
+      }
 
-      await FirebaseAnalytics.instance.logLogin(
-        loginMethod: 'ntut_iplus',
-      );
-      return ISchoolPlusConnectorStatus.loginSuccess;
+      if (logEventToFirebase) {
+        await FirebaseAnalytics.instance.logLogin(
+          loginMethod: 'ntut_iplus',
+        );
+      }
+      return ISchoolPlusConnectorStatus.loginRedirectionError;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
-      return ISchoolPlusConnectorStatus.loginFail;
+      rethrow;
     }
+  }
+
+  static Future<String> getSSOIndexResponse() async {
+    final data = {"apOu": "ischool_plus_oauth", "datetime1": DateTime.now().millisecondsSinceEpoch.toString()};
+    for (int retry = 0; retry < 5; retry++) {
+      final parameter = ConnectorParameter(_ssoLoginUrl);
+      parameter.data = data;
+
+      final response = (await Connector.getDataByGet(parameter)).toString().trim();
+      if (response.contains("ssoForm")) return response;
+      log("[TAT] ischool_plus_connector.dart: failed to get ssoForm, retrying...");
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
+    return "";
   }
 
   static Future<ReturnWithStatus<List<CourseStudent>>> getCourseStudent(String courseId) async {
