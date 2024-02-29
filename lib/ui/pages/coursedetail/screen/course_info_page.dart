@@ -42,7 +42,6 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     super.initState();
     isLoading = true;
     BackButtonInterceptor.add(myInterceptor);
-    Future.microtask(() => _loadCourseStudent());
     Future.delayed(Duration.zero, () {
       _addTask();
     });
@@ -226,16 +225,6 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       }
     }
     return <String, String>{};
-  }
-
-  void _loadCourseStudent() async {
-    TaskFlow taskFlow = TaskFlow();
-    final courseMainInfo = widget.courseInfo.main;
-    final task = IPlusGetStudentListTask(courseId: courseMainInfo.course.id);
-    taskFlow.addTask(task);
-    if (await taskFlow.start()) {
-      task.result;
-    }
   }
 
   String getDepartment(Map<String, String> departmentMap, String studentId) {
