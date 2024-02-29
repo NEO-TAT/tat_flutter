@@ -62,6 +62,8 @@
   "getScoreRankQuestionnaireError": "There's an error getting the grades.\nPlease check if the Online Course Evaluation Questionnaire has been completed",
   "getCalendar": "Getting calendar...",
   "getCalendarError": "Getting calendar error",
+  "getStudentList": "Getting student list...",
+  "getStudentListError": "Getting student list error",
   "deleteMessage": "Deleting message...",
   "deleteMessageError": "Delete error",
   "loginNTUTApp": "Login to the NTUTApp...",

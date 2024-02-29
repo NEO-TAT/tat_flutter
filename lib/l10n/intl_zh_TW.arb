@@ -62,6 +62,8 @@
   "getScoreRankQuestionnaireError": "取得成績錯誤，請確認期末教學評量是否填寫完成",
   "getCalendar": "取得行事曆中...",
   "getCalendarError": "取得行事曆錯誤",
+  "getStudentList": "取得修課名單...",
+  "getStudentListError": "取得修課名單錯誤",
   "deleteMessage": "刪除訊息中...",
   "deleteMessageError": "刪除錯誤",
   "loginNTUTApp": "登入北科助理...",

@@ -12,13 +12,13 @@ import 'iplus_system_task.dart';
 class IPlusGetStudentListTask extends IPlusSystemTask<List<CourseStudent>> {
   String courseId;
 
-  IPlusGetStudentListTask({required this.courseId}) : super("IPlusCourseAnnouncementTask");
+  IPlusGetStudentListTask({required this.courseId}) : super("IPlusGetStudentListTask");
 
   @override
   Future<TaskStatus> execute() async {
     final status = await super.execute();
     if (status == TaskStatus.success) {
-      super.onStart(R.current.getISchoolPlusCourseAnnouncement);
+      super.onStart(R.current.getStudentList);
       final value = await ISchoolPlusConnector.getCourseStudent(courseId);
       super.onEnd();
       switch (value.status) {
@@ -26,7 +26,7 @@ class IPlusGetStudentListTask extends IPlusSystemTask<List<CourseStudent>> {
           result = value.result;
           return TaskStatus.success;
         case IPlusReturnStatus.fail:
-          return super.onError(R.current.getISchoolPlusCourseAnnouncementError);
+          return super.onError(R.current.getStudentListError);
         case IPlusReturnStatus.noPermission:
           final parameter = MsgDialogParameter(
             title: R.current.warning,
