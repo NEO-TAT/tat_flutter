@@ -668,6 +668,26 @@ class S {
     );
   }
 
+  /// `Getting student list...`
+  String get getStudentList {
+    return Intl.message(
+      'Getting student list...',
+      name: 'getStudentList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Getting student list error`
+  String get getStudentListError {
+    return Intl.message(
+      'Getting student list error',
+      name: 'getStudentListError',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Deleting message...`
   String get deleteMessage {
     return Intl.message(

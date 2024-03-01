@@ -141,6 +141,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "getScoreRank": MessageLookupByLibrary.simpleMessage("取得成績中..."),
         "getScoreRankError": MessageLookupByLibrary.simpleMessage("取得成績錯誤"),
         "getScoreRankQuestionnaireError": MessageLookupByLibrary.simpleMessage("取得成績錯誤，請確認期末教學評量是否填寫完成"),
+        "getStudentList": MessageLookupByLibrary.simpleMessage("取得修課名單..."),
+        "getStudentListError": MessageLookupByLibrary.simpleMessage("取得修課名單錯誤"),
         "github": MessageLookupByLibrary.simpleMessage("Github"),
         "graduationSetting": MessageLookupByLibrary.simpleMessage("畢業學分標準設定"),
         "historicalDimension": MessageLookupByLibrary.simpleMessage("歷史向度"),

@@ -146,6 +146,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "getScoreRankError": MessageLookupByLibrary.simpleMessage("There\'s an error getting the grades"),
         "getScoreRankQuestionnaireError": MessageLookupByLibrary.simpleMessage(
             "There\'s an error getting the grades.\nPlease check if the Online Course Evaluation Questionnaire has been completed"),
+        "getStudentList": MessageLookupByLibrary.simpleMessage("Getting student list..."),
+        "getStudentListError": MessageLookupByLibrary.simpleMessage("Getting student list error"),
         "github": MessageLookupByLibrary.simpleMessage("Github"),
         "graduationSetting": MessageLookupByLibrary.simpleMessage("Graduation credit standard setting"),
         "historicalDimension": MessageLookupByLibrary.simpleMessage("Historical dimension"),
