@@ -97,8 +97,6 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
 
-
-
     if (students.isNotEmpty) {
       listItem.add(_buildInfoTitle(""));
       listItem.add(_buildInfoTitle(R.current.studentList));
