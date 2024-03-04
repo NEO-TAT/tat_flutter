@@ -70,6 +70,9 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       courseExtraInfo = task.result;
     }
     widget.courseInfo.extra = courseExtraInfo;
+    List<CourseStudent> students = await _getCourseStudent();
+    Map<String, String> departmentMap = await _getCourseDepartmentMap();
+
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseId, courseMainInfo.course.id])));
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, courseMainInfo.course.name])));
     courseData.add(_buildCourseInfo(sprintf("%s: %s    ", [R.current.credit, courseMainInfo.course.credits])));
@@ -88,15 +91,17 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       courseMainInfo.getClassroomNameList(),
       courseMainInfo.getClassroomHrefList(),
     ));
+    courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.numberOfStudent, students.length])));
 
     listItem.removeRange(0, listItem.length);
     listItem.add(_buildInfoTitle(R.current.courseData));
     listItem.addAll(courseData);
 
-    List<CourseStudent> students = await _getCourseStudent();
-    Map<String, String> departmentMap = await _getCourseDepartmentMap();
+
 
     if (students.isNotEmpty) {
+      listItem.add(_buildInfoTitle(""));
+      listItem.add(_buildInfoTitle(R.current.studentList));
       listItem.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
