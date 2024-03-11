@@ -39,13 +39,14 @@ class CourseConnector {
       List<Element> nodes;
       Map<String, String> data = {
         "apUrl": "https://aps.ntut.edu.tw/course/tw/courseSID.jsp",
-        "apOu": "aa_0010-",
+        "apOu": "aa_0010-oauth",
         "sso": "true",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
       parameter = ConnectorParameter(_ssoLoginUrl);
       parameter.data = data;
       result = await Connector.getDataByGet(parameter);
+
       tagNode = parse(result);
       nodes = tagNode.getElementsByTagName("input");
       data = {};
@@ -54,9 +55,15 @@ class CourseConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
-      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
+      String jumpUrl = "https://app.ntut.edu.tw/${tagNode.getElementsByTagName("form")[0].attributes["action"]}";
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
+      final response = await Connector.getDataByPostResponse(parameter);
+
+      tagNode = parse(response.toString());
+      jumpUrl = tagNode.getElementsByTagName("a").first.attributes["href"];
+      parameter = ConnectorParameter(jumpUrl);
+
       await Connector.getDataByPostResponse(parameter);
       return CourseConnectorStatus.loginSuccess;
     } catch (e, stack) {
