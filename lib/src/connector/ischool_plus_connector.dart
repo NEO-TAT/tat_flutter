@@ -4,13 +4,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/core/connector.dart';
 import 'package:flutter_app/src/model/ischoolplus/course_file_json.dart';
 import 'package:flutter_app/src/model/ischoolplus/ischool_plus_announcement_json.dart';
 import 'package:flutter_app/src/util/html_utils.dart';
+import 'package:get/get.dart';
 import 'package:html/dom.dart' as html;
 import 'package:html/parser.dart' as html;
 
@@ -20,7 +20,7 @@ import 'ntut_connector.dart';
 
 enum ISchoolPlusConnectorStatus { loginSuccess, loginGetSSOIndexError, loginRedirectionError, unknownError }
 
-enum IPlusReturnStatus { success, fail, noPermission }
+enum IPlusReturnStatus { success, fail, gotCache, noPermission }
 
 class ReturnWithStatus<T> {
   IPlusReturnStatus status;
@@ -146,8 +146,17 @@ class ISchoolPlusConnector {
       final returnResult = ReturnWithStatus<List<CourseStudent>>();
       returnResult.status = IPlusReturnStatus.success;
       returnResult.result = courseStudents;
+      Get.put<List<CourseStudent>>(courseStudents, tag: "CourseStudentList_$courseId", permanent: true);
       return returnResult;
     } catch (e, stack) {
+      try{
+        final returnResult = ReturnWithStatus<List<CourseStudent>>();
+        returnResult.result = Get.find<List<CourseStudent>>(tag: "CourseStudentList_$courseId");
+        returnResult.status = IPlusReturnStatus.gotCache;
+        return returnResult;
+      }catch (e){
+        Log.eWithStack(e, stack);
+      }
       Log.eWithStack(e, stack);
       final returnResult = ReturnWithStatus<List<CourseStudent>>();
       returnResult.status = IPlusReturnStatus.fail;
@@ -252,8 +261,7 @@ class ISchoolPlusConnector {
       parameter = ConnectorParameter("${_iSchoolPlusUrl}learn/path/SCORM_fetchResource.php");
       parameter.data = postParameter;
       parameter.referer = "https://istudy.ntut.edu.tw/learn/path/pathtree.php?cid=${postParameter['course_id']}";
-      Response response;
-      response = await Connector.getDataByPostResponse(parameter);
+      final response = await Connector.getDataByPostResponse(parameter);
       result = response.toString();
       RegExp exp;
       RegExpMatch matches;
