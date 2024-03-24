@@ -16,27 +16,35 @@ class IPlusGetStudentListTask extends IPlusSystemTask<List<CourseStudent>> {
 
   @override
   Future<TaskStatus> execute() async {
-    final status = await super.execute();
-    if (status == TaskStatus.success) {
-      super.onStart(R.current.getStudentList);
-      final value = await ISchoolPlusConnector.getCourseStudent(courseId);
-      super.onEnd();
-      switch (value.status) {
-        case IPlusReturnStatus.success:
-          result = value.result;
-          return TaskStatus.success;
-        case IPlusReturnStatus.fail:
-          return super.onError(R.current.getStudentListError);
-        case IPlusReturnStatus.noPermission:
-          final parameter = MsgDialogParameter(
-            title: R.current.warning,
-            dialogType: DialogType.info,
-            desc: R.current.iPlusNoThisClass,
-            okButtonText: R.current.sure,
-            removeCancelButton: true,
-          );
-          return super.onErrorParameter(parameter);
-      }
+  final status = await super.execute();
+    super.onStart(R.current.getStudentList);
+    final value = await ISchoolPlusConnector.getCourseStudent(courseId);
+    super.onEnd();
+    switch (value.status) {
+      case IPlusReturnStatus.success:
+        result = value.result;
+        return TaskStatus.success;
+      case IPlusReturnStatus.gotCache:
+        result = value.result;
+        final parameter = MsgDialogParameter(
+          title: R.current.warning,
+          dialogType: DialogType.info,
+          desc: "An error ocurred on retrieving course student, cache was loaded",
+          okButtonText: R.current.sure,
+          removeCancelButton: true,
+        );
+        return super.msgDialogShownResult(msgDialogParam: parameter, result: TaskStatus.success);
+      case IPlusReturnStatus.fail:
+        return super.onError(R.current.getStudentListError);
+      case IPlusReturnStatus.noPermission:
+        final parameter = MsgDialogParameter(
+          title: R.current.warning,
+          dialogType: DialogType.info,
+          desc: R.current.iPlusNoThisClass,
+          okButtonText: R.current.sure,
+          removeCancelButton: true,
+        );
+        return super.onErrorParameter(parameter);
     }
     return status;
   }
