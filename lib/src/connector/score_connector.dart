@@ -44,12 +44,7 @@ class ScoreConnector {
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
 
-      final oauthResult = await Connector.getDataByPostResponse(parameter);
-      final oauthTagNode = parse(oauthResult.data);
-      final jumpUrl2 = oauthTagNode.getElementsByTagName("a")[0].attributes['href'];
-      
-      parameter = ConnectorParameter(jumpUrl2);
-      await Connector.getDataByPostResponse(parameter);
+      await Connector.getDataByPost(parameter);
       return ScoreConnectorStatus.loginSuccess;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
