@@ -43,6 +43,12 @@ class ScoreConnector {
       String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
+
+      final oauthResult = await Connector.getDataByPostResponse(parameter);
+      final oauthTagNode = parse(oauthResult.data);
+      final jumpUrl2 = oauthTagNode.getElementsByTagName("a")[0].attributes['href'];
+      
+      parameter = ConnectorParameter(jumpUrl2);
       await Connector.getDataByPostResponse(parameter);
       return ScoreConnectorStatus.loginSuccess;
     } catch (e, stack) {
