@@ -26,9 +26,7 @@ class ScoreConnector {
       Document tagNode;
       List<Element> nodes;
       Map<String, String> data = {
-        "apUrl": "https://aps-course.ntut.edu.tw/StuQuery/LoginSID.jsp",
-        "apOu": "aa_003_LB",
-        "sso": "big5",
+        "apOu": "aa_003_LB_oauth",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
       parameter = ConnectorParameter(_ssoLoginUrl);
