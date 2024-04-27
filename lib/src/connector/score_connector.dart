@@ -22,32 +22,29 @@ class ScoreConnector {
   static const String _generalLessonAllScoreUrl = "${_scoreHost}StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
-    String result;
     try {
-      ConnectorParameter parameter;
-      Document tagNode;
-      List<Element> nodes;
-      Map<String, String> data = {
+      final Map<String, String> ssoIndexData = {
         "apOu": "aa_003_LB_oauth",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter(_ssoLoginUrl);
-      parameter.data = data;
-      result = await Connector.getDataByGet(parameter);
-      tagNode = parse(result);
-      nodes = tagNode.getElementsByTagName("input");
-      data = {};
-      for (Element node in nodes) {
-        String name = node.attributes['name'];
-        String value = node.attributes['value'];
-        data[name] = value;
+      final ssoIndexParameter = ConnectorParameter(_ssoLoginUrl);
+      ssoIndexParameter.data = ssoIndexData;
+
+      final ssoIndexTagNode = parse(await Connector.getDataByGet(ssoIndexParameter));
+      final ssoIndexNodes = ssoIndexTagNode.getElementsByTagName("input");
+      final ssoIndexJumpUrl = ssoIndexTagNode.getElementsByTagName("form")[0].attributes["action"];
+      final Map<String, String> oauthData = {};
+      for (Element node in ssoIndexNodes) {
+        final name = node.attributes['name'];
+        final value = node.attributes['value'];
+        oauthData[name] = value;
       }
-      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
-      parameter.data = data;
+      
+      final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
+      jumpParameter.data = oauthData;
 
       for (int retry = 0; retry < 3; retry++) {
-        final jumpResult = (await Connector.getDataByPostResponse(parameter));
+        final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
         if (jumpResult.statusCode != 302) {
           log("[TAT] score_connector.dart: failed to get redirection location from oauth2Server, retrying...");
           await Future.delayed(const Duration(milliseconds: 100));
