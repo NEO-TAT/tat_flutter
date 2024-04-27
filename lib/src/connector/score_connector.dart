@@ -1,5 +1,7 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
+import 'dart:developer';
+
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/model/course/course_class_json.dart';
@@ -41,11 +43,28 @@ class ScoreConnector {
         data[name] = value;
       }
       String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter(jumpUrl);
+      parameter = ConnectorParameter("${NTUTConnector.host}$jumpUrl");
       parameter.data = data;
 
-      await Connector.getDataByPost(parameter);
-      return ScoreConnectorStatus.loginSuccess;
+      for (int retry = 0; retry < 3; retry++) {
+        final jumpResult = (await Connector.getDataByPostResponse(parameter));
+        if (jumpResult.statusCode != 302) {
+          log("[TAT] score_connector.dart: failed to get redirection location from oauth2Server, retrying...");
+          await Future.delayed(const Duration(milliseconds: 100));
+          continue;
+        }
+
+        final loginOAuthParameter = ConnectorParameter(jumpResult.headers['location'][0]);
+        final loginOAuthResult = (await Connector.getDataByPostResponse(loginOAuthParameter)).toString().trim();
+        if (loginOAuthResult.contains("中斷連線")) {
+          log("[TAT] score_connector.dart: connection lost during redirection, retrying...");
+          await Future.delayed(const Duration(milliseconds: 100));
+          continue;
+        } else {
+          return ScoreConnectorStatus.loginSuccess;
+        }
+      }
+      return ScoreConnectorStatus.loginFail;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return ScoreConnectorStatus.loginFail;
