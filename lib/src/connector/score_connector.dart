@@ -39,7 +39,7 @@ class ScoreConnector {
         final value = node.attributes['value'];
         oauthData[name] = value;
       }
-      
+
       final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
       jumpParameter.data = oauthData;
 
