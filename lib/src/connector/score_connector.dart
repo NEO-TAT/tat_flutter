@@ -1,5 +1,7 @@
 // TODO: remove sdk version selector after migrating to null-safety.
 // @dart=2.10
+import 'dart:developer';
+
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/model/course/course_class_json.dart';
@@ -20,33 +22,46 @@ class ScoreConnector {
   static const String _generalLessonAllScoreUrl = "${_scoreHost}StuQuery/QryLAECourse.jsp";
 
   static Future<ScoreConnectorStatus> login() async {
-    String result;
     try {
-      ConnectorParameter parameter;
-      Document tagNode;
-      List<Element> nodes;
-      Map<String, String> data = {
-        "apUrl": "https://aps-course.ntut.edu.tw/StuQuery/LoginSID.jsp",
-        "apOu": "aa_003_LB",
-        "sso": "big5",
+      final Map<String, String> ssoIndexData = {
+        "apOu": "aa_003_LB_oauth",
         "datetime1": DateTime.now().millisecondsSinceEpoch.toString()
       };
-      parameter = ConnectorParameter(_ssoLoginUrl);
-      parameter.data = data;
-      result = await Connector.getDataByGet(parameter);
-      tagNode = parse(result);
-      nodes = tagNode.getElementsByTagName("input");
-      data = {};
-      for (Element node in nodes) {
-        String name = node.attributes['name'];
-        String value = node.attributes['value'];
-        data[name] = value;
+      final ssoIndexParameter = ConnectorParameter(_ssoLoginUrl);
+      ssoIndexParameter.data = ssoIndexData;
+
+      final ssoIndexTagNode = parse(await Connector.getDataByGet(ssoIndexParameter));
+      final ssoIndexNodes = ssoIndexTagNode.getElementsByTagName("input");
+      final ssoIndexJumpUrl = ssoIndexTagNode.getElementsByTagName("form")[0].attributes["action"];
+      final Map<String, String> oauthData = {};
+      for (Element node in ssoIndexNodes) {
+        final name = node.attributes['name'];
+        final value = node.attributes['value'];
+        oauthData[name] = value;
       }
-      String jumpUrl = tagNode.getElementsByTagName("form")[0].attributes["action"];
-      parameter = ConnectorParameter(jumpUrl);
-      parameter.data = data;
-      await Connector.getDataByPostResponse(parameter);
-      return ScoreConnectorStatus.loginSuccess;
+
+      final jumpParameter = ConnectorParameter("${NTUTConnector.host}$ssoIndexJumpUrl");
+      jumpParameter.data = oauthData;
+
+      for (int retry = 0; retry < 3; retry++) {
+        final jumpResult = (await Connector.getDataByPostResponse(jumpParameter));
+        if (jumpResult.statusCode != 302) {
+          log("[TAT] score_connector.dart: failed to get redirection location from oauth2Server, retrying...");
+          await Future.delayed(const Duration(milliseconds: 100));
+          continue;
+        }
+
+        final loginOAuthParameter = ConnectorParameter(jumpResult.headers['location'][0]);
+        final loginOAuthResult = (await Connector.getDataByPostResponse(loginOAuthParameter)).toString().trim();
+        if (loginOAuthResult.contains("中斷連線")) {
+          log("[TAT] score_connector.dart: connection lost during redirection, retrying...");
+          await Future.delayed(const Duration(milliseconds: 100));
+          continue;
+        } else {
+          return ScoreConnectorStatus.loginSuccess;
+        }
+      }
+      return ScoreConnectorStatus.loginFail;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
       return ScoreConnectorStatus.loginFail;
