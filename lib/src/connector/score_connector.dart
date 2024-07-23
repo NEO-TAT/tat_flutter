@@ -103,18 +103,24 @@ class ScoreConnector {
       }
 
       tagNode = parse(result);
-      final h3Nodes = tagNode.getElementsByTagName("h3");
+      final titleNodes = tagNode.querySelectorAll("input[type=submit]");
+      
       //依照學期取得課程資料
-      for (final h3Node in h3Nodes) {
-        final siblingOfH3 = h3Node.nextElementSibling;
-        if (siblingOfH3 == null || siblingOfH3.localName != "table") continue;
-        final tableNode = siblingOfH3;
+      for (final titleNode in titleNodes) {
+        final siblingOfTitle = titleNode.parent.localName == "form" ?
+          titleNode.parent.nextElementSibling : // 當成績單已發布 父元素為form 父元素的旁邊元素才是 分數table
+          titleNode.nextElementSibling ;  // 當成績單未發布 父元素為body 原元素旁邊元素就會是 分數table
+
+        if (siblingOfTitle == null || siblingOfTitle.localName != "table") continue;
+        final tableNode = siblingOfTitle;
 
         SemesterCourseScoreJson courseScore = SemesterCourseScoreJson();
 
         SemesterJson semester = SemesterJson();
-        semester.year = h3Node.text.split(" ")[0];
-        semester.semester = h3Node.text.split(" ")[3];
+
+        String semesterText = titleNode.attributes["value"];
+        semester.year = semesterText.split(" ")[0];
+        semester.semester = semesterText.split(" ")[3];
         courseScore.semester = semester;
         //取得課程名稱與分數
         scoreNodes = tableNode.getElementsByTagName("tr");
@@ -209,6 +215,7 @@ class ScoreConnector {
           }
         }
       }
+
       return courseScoreList;
     } catch (e, stack) {
       Log.eWithStack(e.toString(), stack);
