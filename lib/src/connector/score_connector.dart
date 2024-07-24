@@ -104,12 +104,13 @@ class ScoreConnector {
 
       tagNode = parse(result);
       final titleNodes = tagNode.querySelectorAll("input[type=submit]");
-      
+
       //依照學期取得課程資料
       for (final titleNode in titleNodes) {
-        final siblingOfTitle = titleNode.parent.localName == "form" ?
-          titleNode.parent.nextElementSibling : // 當成績單已發布 父元素為form 父元素的旁邊元素才是 分數table
-          titleNode.nextElementSibling ;  // 當成績單未發布 父元素為body 原元素旁邊元素就會是 分數table
+        final siblingOfTitle = titleNode.parent.localName == "form"
+            ? titleNode.parent.nextElementSibling
+            : // 當成績單已發布 父元素為form 父元素的旁邊元素才是 分數table
+            titleNode.nextElementSibling; // 當成績單未發布 父元素為body 原元素旁邊元素就會是 分數table
 
         if (siblingOfTitle == null || siblingOfTitle.localName != "table") continue;
         final tableNode = siblingOfTitle;
