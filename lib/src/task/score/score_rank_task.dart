@@ -20,8 +20,13 @@ class ScoreRankTask extends ScoreSystemTask<List<SemesterCourseScoreJson>> {
         super.onEnd();
 
         result = value;
+        writeCache();
         return TaskStatus.success;
       } catch (e) {
+        if (isCached) {
+          loadCache();
+          return TaskStatus.success;
+        }
         if (e is FormatException) {
           return super.onError(R.current.getScoreRankQuestionnaireError);
         } else {

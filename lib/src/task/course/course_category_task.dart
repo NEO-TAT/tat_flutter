@@ -10,7 +10,7 @@ import 'course_system_task.dart';
 class CourseCategoryTask extends CourseSystemTask<CourseSyllabusJson> {
   final String code;
 
-  CourseCategoryTask(this.code) : super("CourseCategoryTask");
+  CourseCategoryTask(this.code) : super("CourseCategoryTask $code");
 
   @override
   Future<TaskStatus> execute() async {
@@ -21,6 +21,7 @@ class CourseCategoryTask extends CourseSystemTask<CourseSyllabusJson> {
       super.onEnd();
 
       result = value;
+      writeCache();
       return TaskStatus.success;
     }
     return status;

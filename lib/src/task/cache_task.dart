@@ -19,6 +19,6 @@ class CacheTask<T> extends DialogTask<T> {
   }
 
   void writeCache() {
-    CacheStorage.instance.cache[name] = result as T;
+    CacheStorage.instance.cache[name] = result;
   }
 }
