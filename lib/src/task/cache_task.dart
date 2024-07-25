@@ -18,7 +18,7 @@ class CacheTask<T> extends DialogTask<T> {
     onErrorButCached();
   }
 
-  void writeCache(T value) {
-    _cache[name] = value;
+  void writeCache() {
+    _cache[name] = result as T;
   }
 }
