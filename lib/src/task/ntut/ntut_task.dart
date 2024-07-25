@@ -13,9 +13,9 @@ import 'package:flutter_app/ui/other/route_utils.dart';
 import 'package:get/get.dart';
 import 'package:tat_core/tat_core.dart';
 
-import '../dialog_task.dart';
+import '../cache_task.dart';
 
-class NTUTTask<T> extends DialogTask<T> {
+class NTUTTask<T> extends CacheTask<T> {
   static bool _isLogin = false;
 
   NTUTTask(name) : super("NTUTTask $name");
@@ -51,7 +51,7 @@ class NTUTTask<T> extends DialogTask<T> {
         return TaskStatus.success;
       }
     }
-
+    checkCache();
     try {
       super.onStart(R.current.loginNTUT);
       final loginResult = await NTUTConnector.login(account, password);
