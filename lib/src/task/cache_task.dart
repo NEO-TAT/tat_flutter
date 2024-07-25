@@ -8,17 +8,19 @@ class CacheTask<T> extends DialogTask<T> {
   bool isCached = false;
 
   void checkCache() {
-    log("[TAT] cache_task.dart: checking cache for key: $name");
+    log("[TAT] cache_task.dart: checking cache with  key: \"$name\"");
     isCached = CacheStorage.instance.cache.containsKey(name);
-    log("[TAT] cache_task.dart: cache for key $name exist: $isCached");
+    log("[TAT] cache_task.dart: cache for key \"$name\" exist: $isCached");
   }
 
   void loadCache() {
+    log("[TAT] cache_task.dart: loading cache with key \"$name\"");
     result = CacheStorage.instance.cache[name];
     onErrorButCached();
   }
 
   void writeCache() {
+    log("[TAT] cache_task.dart: writing cache with key \"$name\"");
     CacheStorage.instance.cache[name] = result;
   }
 }
