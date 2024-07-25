@@ -28,6 +28,7 @@ class NTUTTask<T> extends CacheTask<T> {
   Future<TaskStatus> execute() async {
     final account = LocalStorage.instance.getAccount();
     final password = LocalStorage.instance.getPassword();
+    checkCache();
 
     if (account.isEmpty || password.isEmpty) {
       _isLogin = false;
@@ -51,7 +52,7 @@ class NTUTTask<T> extends CacheTask<T> {
         return TaskStatus.success;
       }
     }
-    checkCache();
+
     try {
       super.onStart(R.current.loginNTUT);
       final loginResult = await NTUTConnector.login(account, password);
