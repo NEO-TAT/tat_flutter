@@ -30,6 +30,16 @@ class DialogTask<T> extends Task<T> {
     }
   }
 
+  Future<void> onErrorButCached() async {
+    final parameter = MsgDialogParameter(
+      // TODO: generate string for this
+      desc: "failed but cached",
+      dialogType: DialogType.warning,
+    );
+    MsgDialog(parameter).show();
+    // eventually it should return as success as it use result from the previous success fetch
+  }
+
   Future<TaskStatus> onError(String message) async {
     final parameter = MsgDialogParameter(
       desc: message,

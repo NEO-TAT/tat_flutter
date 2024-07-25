@@ -13,8 +13,9 @@ class CacheTask<T> extends DialogTask<T> {
     log("[TAT] cache_task.dart: cache for key $name exist: $isCached");
   }
 
-  T? readCache() {
-    return _cache[name];
+  void loadCache() {
+    result = _cache[name];
+    onErrorButCached();
   }
 
   void writeCache(String key, value) {
