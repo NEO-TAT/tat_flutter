@@ -5,11 +5,12 @@ class CacheTask<T> extends DialogTask<T> {
   CacheTask(String name) : super(name);
 
   final Map<String, T> _cache = {};
+  bool isCached = false;
 
   void checkCache() {
     log("[TAT] cache_task.dart: checking cache for key: $name");
-    fallback = _cache.containsKey(name);
-    log("[TAT] cache_task.dart: cache for key $name exist: $fallback");
+    isCached = _cache.containsKey(name);
+    log("[TAT] cache_task.dart: cache for key $name exist: $isCached");
   }
 
   T? readCache() {
