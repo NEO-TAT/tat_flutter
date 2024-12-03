@@ -37,6 +37,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "club.ntut.npc.tat"
     compileSdkVersion 34
+    ndkVersion "25.1.8937393"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
