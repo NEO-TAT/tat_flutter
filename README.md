@@ -134,7 +134,16 @@ Once all dependencies are successfully installed (excluding `tat_core`), you can
 > Otherwise, you will not be able to build successfully. For information on how to join the **NPC**, please refer to the
 > Contact Us section below.
 
-If you got any questions during the above steps, please feel free to contact us (NPC) anytime.
+## Using FVM to Install Flutter
+
+To set up FVM and Flutter 3.7.12 (our last supported version):
+
+1. Install the latest Dart SDK (e.g., `pacman -S dart`).
+2. Run `dart pub global activate fvm` to install FVM.
+3. Run `fvm use` in the project directory to install the Flutter version specified in `.fvmrc`.
+4. Use `fvm flutter --version` to verify that Flutter is correctly installed.
+
+If you have any questions during the above steps, please feel free to contact us (NPC) anytime.
 
 ## Discussion
 
