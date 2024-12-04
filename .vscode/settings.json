@@ -1,12 +1,17 @@
 {
   "dart.lineLength": 120,
+  "dart.flutterSdkPath": ".fvm/versions/3.7.12",
   "[dart]": {
-    "editor.rulers": [120]
+    "editor.rulers": [
+      120
+    ]
   },
   "markdownlint.ignore": ".gitignore",
   "[markdown]": {
     "editor.wordWrap": "bounded",
     "editor.wordWrapColumn": 120,
-    "editor.rulers": [120]
+    "editor.rulers": [
+      120
+    ]
   }
 }
