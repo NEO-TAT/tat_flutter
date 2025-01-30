@@ -31,7 +31,6 @@ enum OnListViewPress {
   about,
   login,
   subSystem,
-  // rollCallRemind,
 }
 
 class OtherPage extends StatefulWidget {
@@ -57,12 +56,6 @@ class _OtherPageState extends State<OtherPage> {
       "title": R.current.informationSystem,
       "onPress": OnListViewPress.subSystem
     },
-    // {
-    //   "icon": Icons.access_alarm,
-    //   "color": Colors.red,
-    //   "title": R.current.rollCallRemind,
-    //   "onPress": OnListViewPress.rollCallRemind,
-    // },
     {
       "icon": EvaIcons.downloadOutline,
       "color": Colors.yellow[700],
@@ -145,27 +138,6 @@ class _OtherPageState extends State<OtherPage> {
           title: R.current.feedback,
         );
         break;
-      // case OnListViewPress.rollCallRemind:
-      //   // TODO(TU): update this log to the real feature log.
-      //   await FirebaseAnalytics.instance.logEvent(
-      //     name: 'z_roll_call_pre_msg_clicked',
-      //     parameters: {
-      //       'position': 'other_page',
-      //     },
-      //   );
-
-      //   if (await AppConfig.zuvioRollCallFeatureEnabled) {
-      //     RouteUtils.launchRollCallDashBoardPageAfterLogin();
-      //   } else {
-      //     MsgDialog(MsgDialogParameter(
-      //       desc: R.current.zuvioAutoRollCallFeatureReleaseNotice,
-      //       title: R.current.comingSoon,
-      //       dialogType: DialogType.info,
-      //       removeCancelButton: true,
-      //       okButtonText: R.current.sure,
-      //     )).show();
-      //   }
-      //   break;
       default:
         MyToast.show(R.current.noFunction);
         break;

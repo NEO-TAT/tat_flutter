@@ -12,7 +12,6 @@ import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tat_core/tat_core.dart';
 
 import '../model/course/course_class_json.dart';
 
@@ -34,8 +33,6 @@ class LocalStorage {
   final _courseSemesterJsonKey = "CourseSemesterListJson";
   final _scoreCreditJsonKey = "ScoreCreditJsonKey";
   final _settingJsonKey = "SettingJsonKey";
-  final _zUserInfoKey = 'ZUserInfoKey';
-  final _zLoginCredentialKey = 'ZLoginCredentialKey';
   final _firstRun = <String, bool>{};
   final _courseTableList = <CourseTableJson>[];
 
@@ -218,21 +215,6 @@ class LocalStorage {
   Future<void> _clearAnnouncementSetting() {
     _setting.announcement = AnnouncementSettingJson();
     return _saveAnnouncementSetting();
-  }
-
-  Future<void> saveZuvioLoginCredential(ZLoginCredential credential) =>
-      _writeString(_zLoginCredentialKey, jsonEncode(credential.toJson()));
-
-  Future<void> saveZuvioUserInfo(ZUserInfo userInfo) => _writeString(_zUserInfoKey, jsonEncode(userInfo.toJson()));
-
-  ZLoginCredential getZuvioLoginCredential() {
-    final savedData = _readString(_zLoginCredentialKey);
-    return (savedData == null) ? null : ZLoginCredential.fromJson(jsonDecode(savedData) as Map<String, dynamic>);
-  }
-
-  ZUserInfo getZuvioUserInfo() {
-    final savedData = _readString(_zUserInfoKey);
-    return (savedData == null) ? null : ZUserInfo.fromJson(jsonDecode(savedData) as Map<String, dynamic>);
   }
 
   void clearSemesterJsonList() => _courseSemesterList?.clear();
