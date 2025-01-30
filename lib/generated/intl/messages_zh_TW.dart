@@ -13,9 +13,9 @@
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = new MessageLookup();
+final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
+typedef MessageIfAbsent = String Function(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'zh_TW';
@@ -51,7 +51,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "areYouSureToDownload": MessageLookupByLibrary.simpleMessage("確定要下載檔案嗎"),
         "authCodeFail": MessageLookupByLibrary.simpleMessage("驗證碼錯誤"),
         "autoAppCheck": MessageLookupByLibrary.simpleMessage("自動檢查更新"),
-        "autoRollCall": MessageLookupByLibrary.simpleMessage("自動點名"),
         "begin": MessageLookupByLibrary.simpleMessage("開始"),
         "calculationCredit": MessageLookupByLibrary.simpleMessage("計算學分"),
         "calendar": MessageLookupByLibrary.simpleMessage("行事曆"),
@@ -229,10 +228,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "restart": MessageLookupByLibrary.simpleMessage("重試"),
         "resultsOfVariousSubjects": MessageLookupByLibrary.simpleMessage("各科成績"),
         "revisedCommonCompulsory": MessageLookupByLibrary.simpleMessage("校訂共同必修"),
-        "rollCall": MessageLookupByLibrary.simpleMessage("點名"),
-        "rollCallRemind": MessageLookupByLibrary.simpleMessage("點名提醒"),
-        "rollCallScheduleCanceled": MessageLookupByLibrary.simpleMessage("點名行程已取消"),
-        "rollCallScheduledSuccessfully": MessageLookupByLibrary.simpleMessage("點名行程新增成功"),
         "ruleDimension": MessageLookupByLibrary.simpleMessage("法治向度"),
         "sameOldPassword": MessageLookupByLibrary.simpleMessage("不可以與之前密碼相同"),
         "save": MessageLookupByLibrary.simpleMessage("儲存"),
@@ -288,7 +283,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "versionInfo": MessageLookupByLibrary.simpleMessage("版本資訊"),
         "videoMayLoadFailedWarningMsg": MessageLookupByLibrary.simpleMessage("影片載入時間視當下網路環境而定\n若載入時間過長，請嘗試退出後再試一次"),
         "warning": MessageLookupByLibrary.simpleMessage("警告"),
-        "willRestart": MessageLookupByLibrary.simpleMessage("將自動重啟並套用語言"),
-        "zuvioAutoRollCallFeatureReleaseNotice": MessageLookupByLibrary.simpleMessage("Zuvio (自動)點名提醒的功能即將上線\n敬請期待！")
+        "willRestart": MessageLookupByLibrary.simpleMessage("將自動重啟並套用語言")
       };
 }

@@ -13,9 +13,9 @@
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = new MessageLookup();
+final messages = MessageLookup();
 
-typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
+typedef MessageIfAbsent = String Function(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
@@ -53,7 +53,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "areYouSureToDownload": MessageLookupByLibrary.simpleMessage("Are you sure you want to download the file"),
         "authCodeFail": MessageLookupByLibrary.simpleMessage("Verification code error"),
         "autoAppCheck": MessageLookupByLibrary.simpleMessage("Auto App Check"),
-        "autoRollCall": MessageLookupByLibrary.simpleMessage("Auto RollCall"),
         "begin": MessageLookupByLibrary.simpleMessage("Begin"),
         "calculationCredit": MessageLookupByLibrary.simpleMessage("Calculation credit"),
         "calendar": MessageLookupByLibrary.simpleMessage("Calendar"),
@@ -239,11 +238,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "restart": MessageLookupByLibrary.simpleMessage("Restart"),
         "resultsOfVariousSubjects": MessageLookupByLibrary.simpleMessage("Results of various subjects"),
         "revisedCommonCompulsory": MessageLookupByLibrary.simpleMessage("Revised Common Compulsory"),
-        "rollCall": MessageLookupByLibrary.simpleMessage("RollCall"),
-        "rollCallRemind": MessageLookupByLibrary.simpleMessage("RollCall Remind"),
-        "rollCallScheduleCanceled": MessageLookupByLibrary.simpleMessage("The roll call schedule has been cancelled"),
-        "rollCallScheduledSuccessfully":
-            MessageLookupByLibrary.simpleMessage("The roll call schedule was added successfully"),
         "ruleDimension": MessageLookupByLibrary.simpleMessage("Rule of law"),
         "sameOldPassword": MessageLookupByLibrary.simpleMessage("Same password as before"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
@@ -305,8 +299,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "videoMayLoadFailedWarningMsg": MessageLookupByLibrary.simpleMessage(
             "The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again"),
         "warning": MessageLookupByLibrary.simpleMessage("Warning"),
-        "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically"),
-        "zuvioAutoRollCallFeatureReleaseNotice":
-            MessageLookupByLibrary.simpleMessage("Zuvio\'s (auto) roll-call reminder is coming soon!")
+        "willRestart": MessageLookupByLibrary.simpleMessage("Will restart automatically")
       };
 }
