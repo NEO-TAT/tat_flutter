@@ -70,8 +70,8 @@ class _CourseInfoPageState extends State<CourseInfoPage> with AutomaticKeepAlive
       courseExtraInfo = task.result;
     }
     widget.courseInfo.extra = courseExtraInfo;
-    List<CourseStudent> students = await _getCourseStudent();
-    Map<String, String> departmentMap = await _getCourseDepartmentMap();
+    final List<CourseStudent> students = await _getCourseStudent();
+    final Map<String, String> departmentMap = await _getCourseDepartmentMap();
 
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseId, courseMainInfo.course.id])));
     courseData.add(_buildCourseInfo(sprintf("%s: %s", [R.current.courseName, courseMainInfo.course.name])));
