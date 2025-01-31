@@ -24,7 +24,7 @@ This dictionary contains the names of the API endpoints.
 This dictionary contains the service names related to NTUT.
 
 - `iSchool`
-- `Zuvio`
+- `NTUT`
 
 ### third_party_terms
 

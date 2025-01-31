@@ -2428,61 +2428,11 @@ class S {
     );
   }
 
-  /// `Auto RollCall`
-  String get autoRollCall {
-    return Intl.message(
-      'Auto RollCall',
-      name: 'autoRollCall',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `RollCall`
-  String get rollCall {
-    return Intl.message(
-      'RollCall',
-      name: 'rollCall',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `RollCall Remind`
-  String get rollCallRemind {
-    return Intl.message(
-      'RollCall Remind',
-      name: 'rollCallRemind',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again`
   String get videoMayLoadFailedWarningMsg {
     return Intl.message(
       'The video loading time depends on the current network environment\nIf it takes too long to load, try leave this page and trying again',
       name: 'videoMayLoadFailedWarningMsg',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The roll call schedule was added successfully`
-  String get rollCallScheduledSuccessfully {
-    return Intl.message(
-      'The roll call schedule was added successfully',
-      name: 'rollCallScheduledSuccessfully',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The roll call schedule has been cancelled`
-  String get rollCallScheduleCanceled {
-    return Intl.message(
-      'The roll call schedule has been cancelled',
-      name: 'rollCallScheduleCanceled',
       desc: '',
       args: [],
     );
@@ -2573,16 +2523,6 @@ class S {
     return Intl.message(
       'Begin',
       name: 'begin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Zuvio's (auto) roll-call reminder is coming soon!`
-  String get zuvioAutoRollCallFeatureReleaseNotice {
-    return Intl.message(
-      'Zuvio\'s (auto) roll-call reminder is coming soon!',
-      name: 'zuvioAutoRollCallFeatureReleaseNotice',
       desc: '',
       args: [],
     );

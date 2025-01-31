@@ -3,10 +3,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+// import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/debug/log/log.dart';
-import 'package:flutter_app/src/config/app_config.dart';
+// import 'package:flutter_app/src/config/app_config.dart';
 import 'package:flutter_app/src/config/app_link.dart';
 import 'package:flutter_app/src/connector/ntut_connector.dart';
 import 'package:flutter_app/src/file/file_store.dart';
@@ -31,7 +31,6 @@ enum OnListViewPress {
   about,
   login,
   subSystem,
-  rollCallRemind,
 }
 
 class OtherPage extends StatefulWidget {
@@ -56,12 +55,6 @@ class _OtherPageState extends State<OtherPage> {
       "color": Colors.lightBlue,
       "title": R.current.informationSystem,
       "onPress": OnListViewPress.subSystem
-    },
-    {
-      "icon": Icons.access_alarm,
-      "color": Colors.red,
-      "title": R.current.rollCallRemind,
-      "onPress": OnListViewPress.rollCallRemind,
     },
     {
       "icon": EvaIcons.downloadOutline,
@@ -144,28 +137,6 @@ class _OtherPageState extends State<OtherPage> {
           initialUrl: link ?? AppLink.feedbackBaseUrl,
           title: R.current.feedback,
         );
-        break;
-      case OnListViewPress.rollCallRemind:
-        // TODO(TU): update this log to the real feature log.
-        await FirebaseAnalytics.instance.logEvent(
-          name: 'z_roll_call_pre_msg_clicked',
-          parameters: {
-            'position': 'other_page',
-          },
-        );
-
-        if (await AppConfig.zuvioRollCallFeatureEnabled) {
-          RouteUtils.launchRollCallDashBoardPageAfterLogin();
-        } else {
-          MsgDialog(MsgDialogParameter(
-            desc: R.current.zuvioAutoRollCallFeatureReleaseNotice,
-            title: R.current.comingSoon,
-            dialogType: DialogType.info,
-            removeCancelButton: true,
-            okButtonText: R.current.sure,
-          )).show();
-        }
-
         break;
       default:
         MyToast.show(R.current.noFunction);
