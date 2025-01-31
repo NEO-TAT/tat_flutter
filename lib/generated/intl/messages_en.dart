@@ -283,7 +283,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeSelect": MessageLookupByLibrary.simpleMessage("Take select"),
         "time": MessageLookupByLibrary.simpleMessage("Time"),
         "titleCourse": MessageLookupByLibrary.simpleMessage("Course"),
-        "titleNotification": MessageLookupByLibrary.simpleMessage("Notification"),
         "titleOther": MessageLookupByLibrary.simpleMessage("Other"),
         "titleScore": MessageLookupByLibrary.simpleMessage("Score"),
         "totalAverage": MessageLookupByLibrary.simpleMessage("Total average"),
