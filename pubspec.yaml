@@ -91,6 +91,7 @@ dependencies:
   uuid: ^4.1.0
   intl_utils: ^2.8.5
   flutter_native_splash: ^2.2.19 # restricted by path 1.8.2
+  http: ^0.13.6
 
 
 dependency_overrides:
@@ -99,6 +100,7 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  #change_app_package_name: ^1.4.0
 
   dependency_validator: ^3.2.3
 

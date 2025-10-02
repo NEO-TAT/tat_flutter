@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="club.ntut.npc.tat">
+    package="club.ntut.npc.ntpu_tat">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -21,7 +21,7 @@
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
-        android:label="TAT">
+        android:label="NTPU TAT">
 
         <activity
             android:name=".MainActivity"

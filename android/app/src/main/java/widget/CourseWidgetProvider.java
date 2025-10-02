@@ -20,8 +20,8 @@ import android.widget.RemoteViews;
 
 import java.util.Arrays;
 
-import club.ntut.npc.tat.MainActivity;
-import club.ntut.npc.tat.R;
+import club.ntut.npc.ntpu_tat.MainActivity;
+import club.ntut.npc.ntpu_tat.R;
 import io.flutter.Log;
 
 

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/src/model/course/course_score_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/src/task/course/course_credit_info_task.dart';
-import 'package:flutter_app/src/task/course/course_department_task.dart';
-import 'package:flutter_app/src/task/course/course_division_task.dart';
-import 'package:flutter_app/src/task/course/course_year_task.dart';
+import 'package:flutter_app/src/task/course/NTUT/course_credit_info_task.dart';
+import 'package:flutter_app/src/task/course/NTUT/course_department_task.dart';
+import 'package:flutter_app/src/task/course/NTUT/course_division_task.dart';
+import 'package:flutter_app/src/task/course/NTUT/course_year_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:get/get.dart';
 

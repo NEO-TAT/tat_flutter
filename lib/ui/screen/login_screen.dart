@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/src/config/app_colors.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/src/task/ntut/ntut_task.dart';
+import 'package:flutter_app/src/task/ntpu/ntpu_task.dart';
 import 'package:flutter_app/src/task/task.dart';
 import 'package:flutter_app/ui/other/route_utils.dart';
 
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
       LocalStorage.instance.setAccount(account);
       LocalStorage.instance.setPassword(password);
 
-      final loginTask = NTUTTask('LoginOnLoginScreen');
+      final loginTask = NTPU_Task('LoginOnLoginScreen');
 
       final loginTaskResult = await loginTask.execute();
       if (loginTaskResult == TaskStatus.success) {

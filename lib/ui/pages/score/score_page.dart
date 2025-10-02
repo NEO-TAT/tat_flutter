@@ -8,7 +8,7 @@ import 'package:flutter_app/src/model/course/course_syllabus_json.dart';
 import 'package:flutter_app/src/providers/app_provider.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/src/task/course/course_category_task.dart';
+import 'package:flutter_app/src/task/course/NTUT/course_category_task.dart';
 import 'package:flutter_app/src/task/score/score_rank_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/app_expansion_tile.dart';

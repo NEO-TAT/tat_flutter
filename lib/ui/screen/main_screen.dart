@@ -69,25 +69,25 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
     // Request login status check and also do the initial login.
     // We will ignore all failed cases of this step, since we should allow offline mode.
     // But some cases (like Wrong Password) will move user to the login screen and wipe data.
-    final checkLoginTaskResult = await checkIfLogin();
-    if (checkLoginTaskResult == TaskStatus.shouldGiveUp) {
-      return;
-    }
+    // final checkLoginTaskResult = await checkIfLogin();
+    // if (checkLoginTaskResult == TaskStatus.shouldGiveUp) {
+    //   return;
+    // }
 
     setState(() {
       _pageList = [];
       _pageList.add(const CourseTablePage());
-      _pageList.add(const NotificationPage());
-      _pageList.add(const CalendarPage());
-      _pageList.add(const ScoreViewerPage());
+      // _pageList.add(const NotificationPage());
+      // _pageList.add(const CalendarPage());
+      // _pageList.add(const ScoreViewerPage());
       _pageList.add(OtherPage(_pageController));
     });
   }
 
-  Future<TaskStatus> checkIfLogin() {
-    final loginTask = NTUTTask('AutoLoginOnMainScreen');
-    return loginTask.execute();
-  }
+  // Future<TaskStatus> checkIfLogin() {
+  //   final loginTask = NTUTTask('AutoLoginOnMainScreen');
+  //   return loginTask.execute();
+  // }
 
   void initFlutterDownloader() async {
     await MyDownloader.init();
@@ -149,23 +149,23 @@ class _MainScreenState extends State<MainScreen> with RouteAware {
             ),
             label: R.current.titleCourse,
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              EvaIcons.emailOutline,
-            ),
-            label: R.current.titleNotification,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              EvaIcons.calendarOutline,
-            ),
-            label: R.current.calendar,
-          ),
-          BottomNavigationBarItem(
-              icon: const Icon(
-                EvaIcons.bookOpenOutline,
-              ),
-              label: R.current.titleScore),
+          // BottomNavigationBarItem(
+          //   icon: const Icon(
+          //     EvaIcons.emailOutline,
+          //   ),
+          //   label: R.current.titleNotification,
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: const Icon(
+          //     EvaIcons.calendarOutline,
+          //   ),
+          //   label: R.current.calendar,
+          // ),
+          // BottomNavigationBarItem(
+          //     icon: const Icon(
+          //       EvaIcons.bookOpenOutline,
+          //     ),
+          //     label: R.current.titleScore),
           BottomNavigationBarItem(
             icon: const Icon(
               EvaIcons.menu,

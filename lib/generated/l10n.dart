@@ -288,6 +288,16 @@ class S {
     );
   }
 
+  /// `Login to the NTPU...`
+  String get loginNTPU {
+    return Intl.message(
+      'Login to the NTPU...',
+      name: 'loginNTPU',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Account password incorrect`
   String get accountPasswordError {
     return Intl.message(

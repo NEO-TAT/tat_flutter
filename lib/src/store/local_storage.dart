@@ -38,6 +38,15 @@ class LocalStorage {
 
   final _httpClientInterceptors = <Interceptor>[];
 
+  static final Dio NetworkConnector = Dio(
+      BaseOptions(
+          followRedirects: false,
+          validateStatus: (ResponseStatus) {
+            return ResponseStatus != null && ResponseStatus < 400;
+          }
+      ) /*Allow Dio to return http status 302.*/
+  );
+
   SharedPreferences _pref;
   UserDataJson _userData;
   List<SemesterJson> _courseSemesterList;

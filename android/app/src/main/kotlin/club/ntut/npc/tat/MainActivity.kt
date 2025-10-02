@@ -1,4 +1,4 @@
-package club.ntut.npc.tat
+package club.ntut.npc.ntpu_tat
 
 import android.content.Intent
 import androidx.annotation.NonNull

@@ -15,8 +15,8 @@ import 'package:flutter_app/src/model/coursetable/course_table_json.dart';
 import 'package:flutter_app/src/model/userdata/user_data_json.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/store/local_storage.dart';
-import 'package:flutter_app/src/task/course/course_semester_task.dart';
-import 'package:flutter_app/src/task/course/course_table_task.dart';
+import 'package:flutter_app/src/task/course/NTPU/course_semester_task.dart';
+import 'package:flutter_app/src/task/course/NTPU/course_table_task.dart';
 import 'package:flutter_app/src/task/iplus/iplus_subscribe_notice_task.dart';
 import 'package:flutter_app/src/task/task_flow.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
@@ -59,83 +59,83 @@ class _CourseTablePageState extends State<CourseTablePage> {
     Future.microtask(() => _loadLocalSettings());
   }
 
-  void getCourseNotice() async {
-    setState(() {
-      loadCourseNotice = false;
-    });
-    if (!LocalStorage.instance.getOtherSetting().checkIPlusNew) {
-      return;
-    }
-    if (!LocalStorage.instance.getFirstUse(LocalStorage.courseNotice, timeOut: 15 * 60)) {
-      return;
-    }
-    if (LocalStorage.instance.getAccount() != LocalStorage.instance.getCourseSetting().info.studentId) {
-      //只有顯示自己的課表時才會檢查新公告
-      return;
-    }
-    setState(() {
-      loadCourseNotice = true;
-    });
-
-    TaskFlow taskFlow = TaskFlow();
-    var task = IPlusSubscribeNoticeTask();
-    task.openLoadingDialog = false;
-    taskFlow.addTask(task);
-    if (await taskFlow.start()) {
-      List<String> v = task.result;
-      List<String> value = [];
-      v = v ?? [];
-      for (int i = 0; i < v.length; i++) {
-        String courseName = v[i];
-        CourseInfoJson courseInfo = courseTableData.getCourseInfoByCourseName(courseName);
-        if (courseInfo != null) {
-          value.add(courseName);
-        }
-      }
-      if (value != null && value.isNotEmpty) {
-        Get.dialog(
-          AlertDialog(
-            title: Text(R.current.findNewMessage),
-            content: SizedBox(
-              width: double.minPositive,
-              child: ListView.builder(
-                itemCount: value.length,
-                shrinkWrap: true, //使清單最小化
-                itemBuilder: (BuildContext context, int index) {
-                  return TextButton(
-                    child: Text(value[index]),
-                    onPressed: () {
-                      String courseName = value[index];
-                      CourseInfoJson courseInfo = courseTableData.getCourseInfoByCourseName(courseName);
-                      if (courseInfo != null) {
-                        _showCourseDetail(courseInfo);
-                      } else {
-                        MyToast.show(R.current.noSupport);
-                        Get.back();
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(R.current.sure),
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-            ],
-          ),
-          barrierDismissible: true,
-        );
-      }
-    }
-    LocalStorage.instance.setAlreadyUse(LocalStorage.courseNotice);
-    setState(() {
-      loadCourseNotice = false;
-    });
-  }
+  // void getCourseNotice() async {
+  //   setState(() {
+  //     loadCourseNotice = false;
+  //   });
+  //   if (!LocalStorage.instance.getOtherSetting().checkIPlusNew) {
+  //     return;
+  //   }
+  //   if (!LocalStorage.instance.getFirstUse(LocalStorage.courseNotice, timeOut: 15 * 60)) {
+  //     return;
+  //   }
+  //   if (LocalStorage.instance.getAccount() != LocalStorage.instance.getCourseSetting().info.studentId) {
+  //     //只有顯示自己的課表時才會檢查新公告
+  //     return;
+  //   }
+  //   setState(() {
+  //     loadCourseNotice = true;
+  //   });
+  //
+  //   TaskFlow taskFlow = TaskFlow();
+  //   var task = IPlusSubscribeNoticeTask();
+  //   task.openLoadingDialog = false;
+  //   taskFlow.addTask(task);
+  //   if (await taskFlow.start()) {
+  //     List<String> v = task.result;
+  //     List<String> value = [];
+  //     v = v ?? [];
+  //     for (int i = 0; i < v.length; i++) {
+  //       String courseName = v[i];
+  //       CourseInfoJson courseInfo = courseTableData.getCourseInfoByCourseName(courseName);
+  //       if (courseInfo != null) {
+  //         value.add(courseName);
+  //       }
+  //     }
+  //     if (value != null && value.isNotEmpty) {
+  //       Get.dialog(
+  //         AlertDialog(
+  //           title: Text(R.current.findNewMessage),
+  //           content: SizedBox(
+  //             width: double.minPositive,
+  //             child: ListView.builder(
+  //               itemCount: value.length,
+  //               shrinkWrap: true, //使清單最小化
+  //               itemBuilder: (BuildContext context, int index) {
+  //                 return TextButton(
+  //                   child: Text(value[index]),
+  //                   onPressed: () {
+  //                     String courseName = value[index];
+  //                     CourseInfoJson courseInfo = courseTableData.getCourseInfoByCourseName(courseName);
+  //                     if (courseInfo != null) {
+  //                       _showCourseDetail(courseInfo);
+  //                     } else {
+  //                       MyToast.show(R.current.noSupport);
+  //                       Get.back();
+  //                     }
+  //                   },
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //           actions: <Widget>[
+  //             TextButton(
+  //               child: Text(R.current.sure),
+  //               onPressed: () {
+  //                 Get.back();
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //         barrierDismissible: true,
+  //       );
+  //     }
+  //   }
+  //   LocalStorage.instance.setAlreadyUse(LocalStorage.courseNotice);
+  //   setState(() {
+  //     loadCourseNotice = false;
+  //   });
+  // }
 
   @override
   void setState(fn) {
@@ -175,27 +175,27 @@ class _CourseTablePageState extends State<CourseTablePage> {
     UserDataJson userData = LocalStorage.instance.getUserData();
     studentId = studentId?.trim() ?? '';
     studentId = (studentId.isEmpty ? null : studentId) ?? userData.account;
-    if (courseTableData?.studentId != studentId) {
-      LocalStorage.instance.clearSemesterJsonList(); //需重設因為更換了studentId
-    }
+    // if (courseTableData?.studentId != studentId) {
+    //   LocalStorage.instance.clearSemesterJsonList(); //需重設因為更換了studentId
+    // }
     SemesterJson semesterJson;
-    if (semesterSetting == null || semesterSetting.semester.isEmpty || semesterSetting.year.isEmpty) {
-      await _getSemesterList(studentId);
-      semesterJson = LocalStorage.instance.getSemesterJsonItem(0);
-    } else {
-      semesterJson = semesterSetting;
-    }
-    if (semesterJson == null) {
-      return;
-    }
+    // if (semesterSetting == null || semesterSetting.semester.isEmpty || semesterSetting.year.isEmpty) {
+    //   await _getSemesterList(studentId);
+    //   semesterJson = LocalStorage.instance.getSemesterJsonItem(0);
+    // } else {
+    //   semesterJson = semesterSetting;
+    // }
+    // if (semesterJson == null) {
+    //   return;
+    // }
 
     CourseTableJson courseTable;
-    if (!refresh) {
-      courseTable = LocalStorage.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
-    }
+    // if (!refresh) {
+    //   courseTable = LocalStorage.instance.getCourseTable(studentId, semesterSetting); //去取找是否已經暫存
+    // }
     if (courseTable == null) {
       TaskFlow taskFlow = TaskFlow();
-      var task = CourseTableTask(studentId, semesterJson);
+      var task = CourseTableTask(studentId);
       taskFlow.addTask(task);
       if (await taskFlow.start()) {
         courseTable = task.result;
@@ -655,7 +655,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
         actions: courseInfo.main.course.id.isNotEmpty
             ? [
                 TextButton.icon(
-                  onPressed: () => _showCourseDetail(courseInfo),
+                  // onPressed: () => _showCourseDetail(courseInfo),
                   icon: const Icon(Icons.add_outlined),
                   label: Text(R.current.details),
                 ),
@@ -727,7 +727,7 @@ class _CourseTablePageState extends State<CourseTablePage> {
     if (courseTable == null) {
       return;
     }
-    getCourseNotice(); //查詢訂閱的課程是否有公告
+    // getCourseNotice(); //查詢訂閱的課程是否有公告
     courseTableData = courseTable;
     _studentIdControl.text = courseTable.studentId;
     _unFocusStudentInput();
