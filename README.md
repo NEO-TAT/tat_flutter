@@ -14,7 +14,7 @@
   >
     <img
       src="https://is3-ssl.mzstatic.com/image/thumb/Purple112/v4/20/2b/3b/202b3b1c-c977-5445-365d-52593ed795f3/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/540x540bb.jpg"
-      alt="TAT - 北科生活"
+      alt="NTPU TAT 北大版"
       style="
         width: 170px;
         height: 170px;
@@ -28,15 +28,19 @@
 </h1>
 
 <h1 align="center">
-<b>TAT</b>
-<i><p><small>the Best NTUT Campus life assistant</small></p></i>
+<b>NTPU TAT</b>
+<i><p><small>the Best NTPU Campus life assistant</small></p></i>
 </h1>
 
 <h6 align="center">
 
 [![CI](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/NEO-TAT/tat_flutter/actions/workflows/build.yml)
 
-<a href="https://play.google.com/store/apps/details?id=club.ntut.npc.tat">
+<h4 align="center">Forked by NTUT Programming Club's project "TAT"</h4>
+<h4 align="center">Note: Contents of this article was forked from original "TAT" projects, so it's not fully for NTPU TAT.</h4>
+
+
+<!---a href="https://play.google.com/store/apps/details?id=club.ntut.npc.tat">
   <img
     height="50px"
     alt="Get it on Google Play"
@@ -50,7 +54,7 @@
     alt="Get it on AppStore"
     src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
   />
-</a>
+</a--->
 
 </h6>
 
@@ -66,8 +70,7 @@ Additionally, we offer common functions of i-Plus, such as downloading course fi
 Furthermore, you can view your friends' course tables and see what courses they have chosen.
 
 If you would like to learn more about the features, why not download and try it for yourself? We support both Android
-and iOS/iPadOS platforms, making it the most widely used assistant app at National Taipei University of Technology
-(NTUT).
+and iOS/iPadOS platforms, making it the most widely used assistant app at National Taipei University (NTPU).
 
 ## Our story
 
