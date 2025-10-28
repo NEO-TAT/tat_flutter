@@ -26,7 +26,7 @@ enum NTUTConnectorStatus {
 }
 
 class NTUTConnector {
-  static const host = "https://app.ntut.edu.tw/";
+  static const host = "https://nportal.ntut.edu.tw/";
   static const _getPictureUrl = "${host}photoView.do";
   static const _getTreeUrl = "${host}aptreeList.do";
   static const _getCalendarUrl = "${host}calModeApp.do";
