@@ -20,7 +20,7 @@ dependencies:
   tat_core:
     git:
       url: git@github.com:NTUT-NPC/TAT-Core.git
-      ref: e5a9259946f1139fa61a784916192915831fe2c5 # restricted by dart language version. (<3)
+      ref: 7611fe96ff2bb7bb5341c742d94f869d86d33e1c # restricted by dart language version. (<3)
 
   path: ^1.8.2 # restricted by flutter sdk.
   path_provider: ^2.0.15
