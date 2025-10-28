@@ -55,7 +55,7 @@ class CourseConnector {
         String value = node.attributes['value'];
         data[name] = value;
       }
-      String jumpUrl = "https://app.ntut.edu.tw/${tagNode.getElementsByTagName("form")[0].attributes["action"]}";
+      String jumpUrl = "${NTUTConnector.host}${tagNode.getElementsByTagName("form")[0].attributes["action"]}";
       parameter = ConnectorParameter(jumpUrl);
       parameter.data = data;
       final response = await Connector.getDataByPostResponse(parameter);
