@@ -288,7 +288,7 @@ class _ScoreViewerPageState extends State<ScoreViewerPage> with TickerProviderSt
                   _generalLessonItemTile,
                   _otherDepartmentItemTile,
                   const ScoreCalculationWarning(),
-                  // popup waring when showing this screen
+                  // show disclaimer warning inline when showing this screen
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
