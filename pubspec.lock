@@ -668,7 +668,7 @@ packages:
       path: "."
       ref: "006cb1ed53f969bf11816cde5b16dd520e1ee40e"
       resolved-ref: "006cb1ed53f969bf11816cde5b16dd520e1ee40e"
-      url: "git@github.com:fluttercommunity/flutter_launcher_icons.git"
+      url: "https://github.com/fluttercommunity/flutter_launcher_icons.git"
     source: git
     version: "0.13.1"
   flutter_lints:

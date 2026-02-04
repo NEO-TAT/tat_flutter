@@ -101,7 +101,7 @@ dev_dependencies:
   dependency_validator: ^3.2.3
   flutter_launcher_icons:
     git:
-      url: git@github.com:fluttercommunity/flutter_launcher_icons.git
+      url: https://github.com/fluttercommunity/flutter_launcher_icons.git
       ref: 006cb1ed53f969bf11816cde5b16dd520e1ee40e # feat: added support for android 13+ themed icons
   build_runner: ^2.3.3 # restricted by dart language version. (<3)
   json_serializable: ^6.6.2 # restricted by dart language version. (<3)
