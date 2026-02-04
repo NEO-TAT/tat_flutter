@@ -54,6 +54,12 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
 
+    # Patch flutter_inappwebview for iOS 18 compatibility
+    - name: Patch flutter_inappwebview
+      run: |
+        sed -i '' 's/public override func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil)/open override func evaluateJavaScript(_ javaScriptString: String, completionHandler: (@MainActor (Any?, Error?) -> Void)? = nil)/' \
+          ~/.pub-cache/hosted/pub.dev/flutter_inappwebview-5.8.0/ios/Classes/InAppWebView/InAppWebView.swift
+
     # Build ios app
     - name: Build app
       run: flutter build ios --no-codesign --flavor beta
