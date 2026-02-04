@@ -2098,6 +2098,16 @@ class S {
     );
   }
 
+  /// `"Interdisciplinary & Other Elective Credits" refer to the credits that students can earn by taking General Education courses, various departmental courses (including their own department and other departments), university-level courses, and college-level courses. Among them, a maximum of 4 credits can be recognized for General Education courses.\nFor detailed regulations, please refer to the course standards or consult the Academic Affairs Office.`
+  String get courseDisclaimer {
+    return Intl.message(
+      '"Interdisciplinary & Other Elective Credits" refer to the credits that students can earn by taking General Education courses, various departmental courses (including their own department and other departments), university-level courses, and college-level courses. Among them, a maximum of 4 credits can be recognized for General Education courses.\nFor detailed regulations, please refer to the course standards or consult the Academic Affairs Office.',
+      name: 'courseDisclaimer',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Results of various subjects`
   String get resultsOfVariousSubjects {
     return Intl.message(

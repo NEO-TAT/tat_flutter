@@ -243,6 +243,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "scoreCalculationWarning": MessageLookupByLibrary.simpleMessage(
             "This calculation is for reference only. Actually, please focus on the school."),
+        "courseDisclaimer": MessageLookupByLibrary.simpleMessage(
+            "\"Interdisciplinary & Other Elective Credits\" refer to the credits that students can earn by taking General Education courses, various departmental courses (including their own department and other departments), university-level courses, and college-level courses. Among them, a maximum of 4 credits can be recognized for General Education courses.\nFor detailed regulations, please refer to the course standards or consult the Academic Affairs Office."),
         "scoreSearch": MessageLookupByLibrary.simpleMessage("Score query"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
         "searchCredit": MessageLookupByLibrary.simpleMessage("Search credit"),
