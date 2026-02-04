@@ -36,6 +36,7 @@ jobs:
       with:
         path: /Library/Developer/CoreSimulator/Profiles/Runtimes
         key: ios-simulator-xcode16-ios18
+        save-always: true
 
     - name: Download iOS Simulator
       if: steps.cache-simulator.outputs.cache-hit != 'true'
