@@ -88,6 +88,15 @@ jobs:
           fi
         done
 
+        # Add FirebaseAuth import to firebase_messaging .m file (needed for FIRAuth)
+        MESSAGING_IMPL="$PUB_CACHE/firebase_messaging-14.7.1/ios/Classes/FLTFirebaseMessagingPlugin.m"
+        if [[ -f "$MESSAGING_IMPL" ]] && ! grep -q '@import FirebaseAuth;' "$MESSAGING_IMPL"; then
+          sed -i '' '1a\
+        @import FirebaseAuth;
+        ' "$MESSAGING_IMPL"
+          echo "Added FirebaseAuth import to: $MESSAGING_IMPL"
+        fi
+
         # Patch firebase_auth - fix non-modular header imports
         for file in "$PUB_CACHE"/firebase_auth-*/ios/Classes/**/*.{h,m}; do
           if [[ -f "$file" ]] && grep -q '#import <Firebase/Firebase.h>' "$file"; then
