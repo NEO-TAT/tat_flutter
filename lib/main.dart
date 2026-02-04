@@ -25,8 +25,8 @@ Future<void> main() async {
   final firebaseOptions = ScopedFirebaseOptions.getCurrentPlatformOn(Environment.real());
   try {
     await Firebase.initializeApp(options: firebaseOptions);
-  } catch (e) {
-    // Firebase already initialized (e.g., by native code)
+  } on FirebaseException catch (e) {
+    if (e.code != 'duplicate-app') rethrow;
   }
 
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
