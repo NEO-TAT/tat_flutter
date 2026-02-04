@@ -23,7 +23,11 @@ Future<void> main() async {
   Log.init();
 
   final firebaseOptions = ScopedFirebaseOptions.getCurrentPlatformOn(Environment.real());
-  await Firebase.initializeApp(options: firebaseOptions);
+  try {
+    await Firebase.initializeApp(options: firebaseOptions);
+  } catch (e) {
+    // Firebase already initialized (e.g., by native code)
+  }
 
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
