@@ -206,6 +206,7 @@
   "takeForeignDepartmentCredits": "外系學分",
   "takeForeignDepartmentCreditsLimit": "學分上限",
   "scoreCalculationWarning": "此計算僅供參考，實際請以學校為主",
+  "courseDisclaimer": "「跨域及自由選修」學分係指學生得修習通識博雅課程、各系專業課程(含本系與他系)及校院級課程，其中通識博雅課程至多認列4學分。\n詳細規定請參閱課程標準或詢問教務處。",
   "resultsOfVariousSubjects": "各科成績",
   "semesterGrades": "學期成績",
   "totalAverage": "總平均",
