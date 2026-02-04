@@ -25,9 +25,20 @@ jobs:
     # Select Xcode version.
     - name: Select Xcode 16
       run: sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+
     - name: List simulators
       run: xcrun simctl list > /dev/null
-    - name: install platform tools
+
+    # Cache iOS Simulator runtime
+    - name: Cache iOS Simulator
+      uses: actions/cache@v4
+      id: cache-simulator
+      with:
+        path: /Library/Developer/CoreSimulator/Profiles/Runtimes
+        key: ios-simulator-xcode16-ios18
+
+    - name: Download iOS Simulator
+      if: steps.cache-simulator.outputs.cache-hit != 'true'
       run: xcodebuild -downloadPlatform iOS
 
     # Set up Flutter.
