@@ -132,19 +132,22 @@ flutter_icons:
   image_path: "assets/images/tat.png"
 
 flutter_native_splash:
-  color: "#FFFFFF"
+  color: "#ffffff"
   image: assets/images/splash.png
+  branding: assets/images/branding.png
 
   color_dark: "#2b2b2b"
   image_dark: assets/images/splash-dark.png
+  branding_dark: assets/images/branding-dark.png
 
-  android: true
-  android_gravity: center
+  android_12:
+    color: "#ffffff"
+    image: assets/images/splash-android_12.png
+    branding: assets/images/branding.png
 
-  ios: true
-  ios_content_mode: center
-
-  fullscreen: true
+    color_dark: "#2b2b2b"
+    image_dark: assets/images/splash-android_12-dark.png
+    branding_dark: assets/images/branding-dark.png
 
 module:
   androidX: true
