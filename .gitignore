@@ -57,6 +57,3 @@ app.*.map.json
 
 # Test files
 **/test/ischool_plus_connector_test/credential.json
-
-# FVM Version Cache
-.fvm/
