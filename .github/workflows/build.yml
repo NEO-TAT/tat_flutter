@@ -46,6 +46,7 @@ jobs:
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.7.x'
+        cache: true
 
     # install ssh key
     - name: Install SSH Key
