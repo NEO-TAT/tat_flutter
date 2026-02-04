@@ -1208,16 +1208,6 @@ class S {
     );
   }
 
-  /// `Notification`
-  String get titleNotification {
-    return Intl.message(
-      'Notification',
-      name: 'titleNotification',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Delete`
   String get delete {
     return Intl.message(

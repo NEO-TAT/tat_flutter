@@ -271,7 +271,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeSelect": MessageLookupByLibrary.simpleMessage("實得選修"),
         "time": MessageLookupByLibrary.simpleMessage("時間"),
         "titleCourse": MessageLookupByLibrary.simpleMessage("課表"),
-        "titleNotification": MessageLookupByLibrary.simpleMessage("訊息"),
         "titleOther": MessageLookupByLibrary.simpleMessage("其它"),
         "titleScore": MessageLookupByLibrary.simpleMessage("成績"),
         "totalAverage": MessageLookupByLibrary.simpleMessage("總平均"),
