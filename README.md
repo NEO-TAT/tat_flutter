@@ -99,28 +99,34 @@ unexpected errors.
 
 Due to the strong drive of [Flutter](https://flutter.dev/), the development of TAT is accomplished with half the effort.
 
-- First, it is recommended that you install Flutter in your development environment. If you are not yet familiar with
-  Flutter, you may refer to its official website for tutorials.
+- First, install [mise](https://mise.jdx.dev/) by following the
+  [instructions](https://mise.jdx.dev/getting-started.html). This project uses mise to manage tool versions (Flutter,
+  Java, and Ruby).
 
-- Next, you are required to install [Android Studio](https://developer.android.com/studio) or
+- Next, install [Android Studio](https://developer.android.com/studio) or
   [VSCode](https://code.visualstudio.com/) in your development environment, as Flutter and Dart officially recommend the
   use of these two solutions for development. However, if you believe that other editors/IDEs are a better choice for
   you, you may try installing them as well.
 
-- Once your editor/IDE is set up, it is advisable to run Flutter Doctor to check for any missing steps.
-
-  ```bash
-  # Make sure you are using the latest Stable version of Flutter and Dart.
-  flutter doctor -v
-  ```
-
-- Now, you may clone the code of TAT to your environment through [Git](https://git-scm.com/).
+- Clone the code of TAT to your environment through [Git](https://git-scm.com/).
 
   ```bash
   git clone --recurse-submodules git@github.com:NEO-TAT/tat_flutter.git
   ```
 
-- Then, start installing the dependencies in the TAT project.
+- Install all required tools specified in `mise.toml`.
+
+  ```bash
+  mise install
+  ```
+
+- Verify that Flutter is correctly installed.
+
+  ```bash
+  flutter doctor -v
+  ```
+
+- Install the dependencies in the TAT project.
 
   ```bash
   flutter pub get
@@ -133,14 +139,6 @@ Once all dependencies are successfully installed (excluding `tat_core`), you can
 > **NTUT Programming Club(N.P.C.)**, as this will enable your Android Studio to access TAT's core business logic code.
 > Otherwise, you will not be able to build successfully. For information on how to join the **NPC**, please refer to the
 > Contact Us section below.
-
-## Using FVM to Install Flutter
-
-To set up FVM and Flutter 3.7.12 (our last supported version):
-
-1. Follow the [instructions](https://fvm.app/documentation/getting-started/installation) to install FVM.
-1. Run `fvm use` in the project directory to install the Flutter version specified in `.fvmrc`.
-1. Use `fvm flutter --version` to verify that Flutter is correctly installed.
 
 If you have any questions during the above steps, please feel free to contact us (NPC) anytime.
 
@@ -197,13 +195,6 @@ Furthermore, we have compiled detailed development materials into our
 
 ## Contributors
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-[![All Contributors](https://img.shields.io/github/all-contributors/NEO-TAT/tat_flutter?color=ee8449&style=flat-square)](#contributors)
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
+[![Contributors](https://img.shields.io/github/contributors/NEO-TAT/tat_flutter?color=ee8449&style=flat-square)](https://github.com/NEO-TAT/tat_flutter/graphs/contributors)
 
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-_Copyright © 2023 All rights reserved and owned by [**N.P.C. 北科程式設計研究社**](https://ntut.club)._
+_Copyright © 2026 All rights reserved and owned by [**N.P.C. 北科程式設計研究社**](https://ntut.club)._
