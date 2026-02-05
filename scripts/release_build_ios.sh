@@ -2,7 +2,6 @@
 
 readonly SCRIPTS_DIR="$(dirname "$0")"
 
-flutter pub get && \
 bash "$SCRIPTS_DIR"/format.sh && \
 flutter analyze && \
 flutter build ipa -v --release --flavor real \

@@ -36,14 +36,23 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "club.ntut.npc.tat"
-    compileSdkVersion 34
-    ndkVersion "25.1.8937393"
+    compileSdk 35
+    ndkVersion = "25.1.8937393"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
+    lint {
         disable 'InvalidPackage'
         checkReleaseBuilds false
         abortOnError false
@@ -51,8 +60,8 @@ android {
 
     defaultConfig {
         applicationId "club.ntut.npc.tat"
-        minSdkVersion 24
-        targetSdkVersion 34
+        minSdk 24
+        targetSdk 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -85,7 +94,7 @@ android {
         }
     }
 
-    flavorDimensions "default"
+    flavorDimensions = ["default"]
     productFlavors {
         beta {
             dimension "default"

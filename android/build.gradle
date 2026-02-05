@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.1.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.4.0'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
@@ -26,6 +26,38 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(':app')
+}
+
+// AGP 8.x workarounds for plugins
+subprojects { subproject ->
+    subproject.plugins.withId('com.android.library') {
+        subproject.android {
+            compileSdk 35
+
+            if (namespace == null || namespace.isEmpty()) {
+                def manifest = subproject.file("src/main/AndroidManifest.xml")
+                if (manifest.exists()) {
+                    def xml = new groovy.xml.XmlSlurper().parse(manifest)
+                    namespace = xml.@package.toString()
+                }
+            }
+        }
+
+        // Force Java 11 after plugin evaluation
+        subproject.afterEvaluate {
+            subproject.android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_11
+                    targetCompatibility JavaVersion.VERSION_11
+                }
+            }
+        }
+    }
+    subproject.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "11"
+        }
+    }
 }
 
 tasks.register("clean", Delete) {

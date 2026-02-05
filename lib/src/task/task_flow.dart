@@ -1,6 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
-
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_app/debug/log/log.dart';
 import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/task/course/course_system_task.dart';
@@ -41,7 +39,7 @@ class TaskFlow {
   }
 
   Future<bool> start() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
+    final connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       MyToast.show(R.current.pleaseConnectToNetwork);
       return false;

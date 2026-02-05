@@ -7,6 +7,7 @@
 -keep class io.flutter.plugins.**  { *; }
 
 -dontwarn io.flutter.embedding.**
+-dontwarn com.google.android.play.core.splitcompat.SplitCompatApplication
 
 ## Gson rules
 # Gson uses generic type information stored in a class file when working with fields. Proguard

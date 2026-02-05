@@ -9,7 +9,7 @@ import 'package:flutter_app/src/r.dart';
 import 'package:flutter_app/src/util/remote_config_util.dart';
 import 'package:flutter_app/ui/other/my_toast.dart';
 import 'package:get/get.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
