@@ -232,6 +232,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sameOldPassword": MessageLookupByLibrary.simpleMessage("不可以與之前密碼相同"),
         "save": MessageLookupByLibrary.simpleMessage("儲存"),
         "scoreCalculationWarning": MessageLookupByLibrary.simpleMessage("此計算僅供參考，實際請以學校為主"),
+        "courseDisclaimer": MessageLookupByLibrary.simpleMessage(
+            "「跨域及自由選修」學分係指學生得修習通識博雅課程、各系專業課程(含本系與他系)及校院級課程，其中通識博雅課程至多認列4學分。\n詳細規定請參閱課程標準或詢問教務處。"),
         "scoreSearch": MessageLookupByLibrary.simpleMessage("分數查詢"),
         "search": MessageLookupByLibrary.simpleMessage("搜尋"),
         "searchCredit": MessageLookupByLibrary.simpleMessage("查詢學分"),
@@ -269,7 +271,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "takeSelect": MessageLookupByLibrary.simpleMessage("實得選修"),
         "time": MessageLookupByLibrary.simpleMessage("時間"),
         "titleCourse": MessageLookupByLibrary.simpleMessage("課表"),
-        "titleNotification": MessageLookupByLibrary.simpleMessage("訊息"),
         "titleOther": MessageLookupByLibrary.simpleMessage("其它"),
         "titleScore": MessageLookupByLibrary.simpleMessage("成績"),
         "totalAverage": MessageLookupByLibrary.simpleMessage("總平均"),
