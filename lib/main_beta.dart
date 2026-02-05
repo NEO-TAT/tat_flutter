@@ -23,7 +23,11 @@ Future<void> main() async {
   Log.init();
 
   final firebaseOptions = ScopedFirebaseOptions.getCurrentPlatformOn(Environment.beta());
-  await Firebase.initializeApp(options: firebaseOptions);
+  try {
+    await Firebase.initializeApp(options: firebaseOptions);
+  } on FirebaseException catch (e) {
+    if (e.code != 'duplicate-app') rethrow;
+  }
 
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
