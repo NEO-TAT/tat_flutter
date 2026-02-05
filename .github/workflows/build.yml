@@ -29,17 +29,7 @@ jobs:
     - name: List simulators
       run: xcrun simctl list > /dev/null
 
-    # Cache iOS Simulator runtime
-    - name: Cache iOS Simulator
-      uses: actions/cache@v4
-      id: cache-simulator
-      with:
-        path: /Library/Developer/CoreSimulator/Profiles/Runtimes
-        key: ios-simulator-xcode16-ios18
-        save-always: true
-
     - name: Download iOS Simulator
-      if: steps.cache-simulator.outputs.cache-hit != 'true'
       run: xcodebuild -downloadPlatform iOS
 
     # Set up Flutter.
