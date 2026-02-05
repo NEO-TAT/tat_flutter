@@ -18,15 +18,26 @@ jobs:
 
     steps:
 
+    # checkout codebase.
+    - name: Checkout codebase
+      uses: actions/checkout@v3
+
+    # Select Xcode version.
+    - name: Select Xcode 16
+      run: sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+
+    - name: List simulators
+      run: xcrun simctl list > /dev/null
+
+    - name: Download iOS Simulator
+      run: xcodebuild -downloadPlatform iOS
+
     # Set up Flutter.
     - name: Clone Flutter repository with stable channel
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.7.x'
-
-    # checkout codebase.
-    - name: Checkout codebase
-      uses: actions/checkout@v3
+        cache: true
 
     # install ssh key
     - name: Install SSH Key
@@ -45,6 +56,52 @@ jobs:
     # Get packages.
     - name: Get dependencies
       run: flutter pub get
+
+    # Patch Flutter plugins for Xcode 16+ compatibility
+    - name: Patch plugins for Xcode 16+
+      run: |
+        PUB_CACHE="$HOME/.pub-cache/hosted/pub.dev"
+
+        # Patch firebase_crashlytics - fix non-modular header imports
+        for file in "$PUB_CACHE"/firebase_crashlytics-*/ios/Classes/*.{h,m}; do
+          if [[ -f "$file" ]] && grep -q '#import <Firebase/Firebase.h>' "$file"; then
+            sed -i '' 's/#import <Firebase\/Firebase.h>/@import FirebaseCrashlytics;/' "$file"
+            echo "Patched: $file"
+          fi
+        done
+
+        # Patch firebase_messaging - fix non-modular header imports
+        for file in "$PUB_CACHE"/firebase_messaging-*/ios/Classes/*.h; do
+          if [[ -f "$file" ]] && grep -q '#import <Firebase/Firebase.h>' "$file"; then
+            sed -i '' 's/#import <Firebase\/Firebase.h>/@import FirebaseMessaging;/' "$file"
+            echo "Patched: $file"
+          fi
+        done
+
+        # Add FirebaseAuth import to firebase_messaging .m file (needed for FIRAuth)
+        MESSAGING_IMPL="$PUB_CACHE/firebase_messaging-14.7.1/ios/Classes/FLTFirebaseMessagingPlugin.m"
+        if [[ -f "$MESSAGING_IMPL" ]] && ! grep -q '@import FirebaseAuth;' "$MESSAGING_IMPL"; then
+          sed -i '' '1a\
+        @import FirebaseAuth;
+        ' "$MESSAGING_IMPL"
+          echo "Added FirebaseAuth import to: $MESSAGING_IMPL"
+        fi
+
+        # Patch firebase_auth - fix non-modular header imports
+        for file in "$PUB_CACHE"/firebase_auth-*/ios/Classes/**/*.{h,m}; do
+          if [[ -f "$file" ]] && grep -q '#import <Firebase/Firebase.h>' "$file"; then
+            sed -i '' 's/#import <Firebase\/Firebase.h>/@import FirebaseAuth;/' "$file"
+            echo "Patched: $file"
+          fi
+        done
+
+        # Patch flutter_inappwebview for iOS 18 Swift compatibility
+        for file in "$PUB_CACHE"/flutter_inappwebview-*/ios/Classes/InAppWebView/InAppWebView.swift; do
+          if [[ -f "$file" ]] && grep -q 'public override func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil)' "$file"; then
+            sed -i '' 's/public override func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)? = nil)/open override func evaluateJavaScript(_ javaScriptString: String, completionHandler: (@MainActor (Any?, Error?) -> Void)? = nil)/' "$file"
+            echo "Patched: $file"
+          fi
+        done
 
     # Build ios app
     - name: Build app
