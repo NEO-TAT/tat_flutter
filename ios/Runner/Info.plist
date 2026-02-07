@@ -61,8 +61,6 @@
 	<string>Check change password</string>
 	<key>NSMotionUsageDescription</key>
 	<string>App 需要您的同意, 才能訪問運動與健身</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App 需要您的同意, 才能訪問相簿</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>App 需要您的同意, 才能訪問語音識別</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
