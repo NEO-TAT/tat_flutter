@@ -158,8 +158,10 @@ class _VideoPlayer extends State<ClassVideoPlayer> {
   }
 
   Future<void> initController(Uri url) async {
+    final headers = await Connector.getLoginHeaders(url.toString()) ?? {};
     _playerController = VideoPlayerController.networkUrl(
       url,
+      httpHeaders: headers,
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
 
