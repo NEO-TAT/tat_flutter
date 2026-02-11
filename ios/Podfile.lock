@@ -4,9 +4,9 @@ PODS:
     - firebase_core
     - Flutter
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - connectivity (0.0.1):
+  - connectivity_plus (0.0.1):
     - Flutter
-    - Reachability
+    - ReachabilitySwift
   - device_info_plus (0.0.1):
     - Flutter
   - Firebase/Analytics (10.15.0):
@@ -222,7 +222,7 @@ PODS:
   - open_filex (0.0.2):
     - Flutter
   - OrderedSet (5.0.0)
-  - package_info (0.0.1):
+  - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -232,7 +232,7 @@ PODS:
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
-  - Reachability (3.7.6)
+  - ReachabilitySwift (5.2.4)
   - RecaptchaInterop (100.0.0)
   - rive_common (0.0.1):
     - Flutter
@@ -254,7 +254,7 @@ PODS:
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
-  - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -272,7 +272,7 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - open_filex (from `.symlinks/plugins/open_filex/ios`)
-  - package_info (from `.symlinks/plugins/package_info/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - rive_common (from `.symlinks/plugins/rive_common/ios`)
@@ -307,15 +307,15 @@ SPEC REPOS:
     - OrderedSet
     - PromisesObjC
     - PromisesSwift
-    - Reachability
+    - ReachabilitySwift
     - RecaptchaInterop
     - Toast
 
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
-  connectivity:
-    :path: ".symlinks/plugins/connectivity/ios"
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_analytics:
@@ -351,8 +351,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/local_auth_ios/ios"
   open_filex:
     :path: ".symlinks/plugins/open_filex/ios"
-  package_info:
-    :path: ".symlinks/plugins/package_info/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
   permission_handler_apple:
@@ -379,7 +379,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   cloud_firestore: 10c90bb5e7be1bae7b1861a883367b5edb20be9c
-  connectivity: e7d9fd79099f39025737062855c00248b7afcdf0
+  connectivity_plus: 8ae6f53b7408bd5fab9577a50ee19f32d2072255
   device_info_plus: d668d0dcad87727e865495c472b911b15d7ee26a
   Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
   firebase_analytics: 2daff73f1848a9569c850dd8949cd5ff07fa1a9c
@@ -417,12 +417,12 @@ SPEC CHECKSUMS:
   nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   open_filex: 432f3cd11432da3e39f47fcc0df2b1603854eff1
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
-  package_info: cce50adca9873c79f931618469d2114b91d71189
+  package_info_plus: daf540c5df62978ab02a6fda3129ff37975a7061
   path_provider_foundation: 2a68637f8a62df7f6e790a428d1bdf72cb4e2d59
   permission_handler_apple: 3787117e48f80715ff04a3830ca039283d6a4f29
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
+  ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   rive_common: 174a033b260147a98ca082e0c76a6eacc800c4cc
   share_plus: 4dfe6f47fc3248e89b3eea0be59a95d0433ebe1a
